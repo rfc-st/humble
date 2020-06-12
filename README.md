@@ -3,11 +3,12 @@
 <p align=center>
 <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/python-%3E=_3.2-green.svg"></a>
 <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
-</p>
-
-HTTP Headers Analyzer
-
+<br />
+<br />
+HTTP Headers Analyzer<br />
+<br />
 <i>"A journey of a thousand miles begins with a single step. - Lao Tzu"</i>
+</p>
 <br />
 <br />
 .: Brief analysis
