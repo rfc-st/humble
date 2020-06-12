@@ -17,12 +17,10 @@ HTTP Headers Analyzer<br />
 <br />
 <br />
 .: Brief analysis + retrieved headers
-
 ![Imgur Image](https://imgur.com/dEIscIr.jpg)
 <br />
 <br />
 .: Full analysis
-
 ![Imgur Image](https://imgur.com/cjbPhvV.jpg)
 <br />
 <br />
