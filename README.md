@@ -9,8 +9,13 @@ HTTP Headers Analyzer
 
 <i>"A journey of a thousand miles begins with a single step. - Lao Tzu"</i>
 
+Brief analysis
 ![Imgur Image](https://imgur.com/grACNDz.jpg)
+
+Brief analysis + retrieved headers
 ![Imgur Image](https://imgur.com/dEIscIr.jpg)
+
+Full analysis
 ![Imgur Image](https://imgur.com/cjbPhvV.jpg)
 
 ## Installation
