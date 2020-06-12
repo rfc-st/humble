@@ -8,22 +8,23 @@
 HTTP Headers Analyzer
 
 <i>"A journey of a thousand miles begins with a single step. - Lao Tzu"</i>
-
-
+<br />
+<br />
 .: Brief analysis
 
 ![Imgur Image](https://imgur.com/grACNDz.jpg)
-
-
+<br />
+<br />
 .: Brief analysis + retrieved headers
 
 ![Imgur Image](https://imgur.com/dEIscIr.jpg)
-
-
+<br />
+<br />
 .: Full analysis
 
 ![Imgur Image](https://imgur.com/cjbPhvV.jpg)
-
+<br />
+<br />
 ## Installation
 
 **NOTE**: Python 3.2 or higher is required.
