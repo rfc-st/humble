@@ -6,9 +6,9 @@ HTTP Headers Analyzer
 <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 </p>
 
-![Imgur Image](https://imgur.com/JEkLfNJ.jpg)
+![Imgur Image](https://imgur.com/grACNDz.jpg)
 
-![Imgur Image](https://imgur.com/tla5ZmV.jpg)
+![Imgur Image](https://imgur.com/cjbPhvV.jpg)
 
 ## Installation
 
