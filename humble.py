@@ -200,7 +200,6 @@ def brief_analysis():
 
 init(autoreset=True)
 
-# parser = argparse.ArgumentParser(prog='humble')
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
                         description="humble (HTTP Headers Analyzer) - \
 https://github.com/rfc-st/humble")
