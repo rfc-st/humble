@@ -29,8 +29,8 @@
 
 # TO-DO:
 # Add more headers (Ex. NEL)
-# Add more cases for insecure headers
-# Ouput analysis to file
+# Add more checks for insecure headers
+# Ouput analysis to file (Ex. HTML with template)
 
 from datetime import datetime
 from colorama import Fore, Style, init
@@ -42,7 +42,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.10/06/2020, by Rafa 'Bluesman' Faura"
+version = "v.13/06/2020, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
