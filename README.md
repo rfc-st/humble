@@ -17,7 +17,7 @@ HTTP Headers Analyzer<br />
 <br />
 <br />
 .: Brief analysis + retrieved headers
-![Imgur Image](https://imgur.com/dEIscIr.jpg)
+![Imgur Image](https://imgur.com/ZjmFocw.jpg)
 <br />
 <br />
 .: Full analysis
