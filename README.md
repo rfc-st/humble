@@ -12,7 +12,6 @@ HTTP Headers Analyzer<br />
 <br />
 <br />
 .: Brief analysis
-
 ![Imgur Image](https://imgur.com/grACNDz.jpg)
 <br />
 <br />
