@@ -18,7 +18,7 @@ HTTP Headers Analyzer
 # clone the repo
 $ git clone https://github.com/rfc-st/humble.git
 
-# change the working directory to sherlock
+# change the working directory to humble
 $ cd humble
 
 # install python3 and python3-pip if not exist
