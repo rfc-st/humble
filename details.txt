@@ -14,6 +14,10 @@
  Allow and deny the use of browser features.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
 
+[mnel]
+ Enables web applications to declare a reporting policy that can be used to report network or application errors.
+ Ref: https://scotthelme.co.uk/network-error-logging-deep-dive/
+
 [mpragma]
  For backwards compatibility with HTTP/1.0 caches where the Cache-Control HTTP/1.1 header is not yet present.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
@@ -65,4 +69,3 @@
 
 [aisc]
  All, or any of the values ​​in these headers are not considered totally secure; check the following advices:
-
