@@ -76,13 +76,13 @@ optional arguments:
 * `Server`
 * `X-AspNet-Version`
 * `X-AspNetMvc-Version`
+* `X-Drupal-Cache`
+* `X-Drupal-Dynamic-Cache`
 * `X-Generator`
 * `X-Nginx-Cache-Status`
 * `X-Powered-By`
 * `X-Powered-By-Plesk`
 * `X-Powered-CMS`
-* `X-Drupal-Cache`
-* `X-Drupal-Dynamic-Cache`
 
 ## Insecure values check
 * `Access-Control-Allow-Origin`
