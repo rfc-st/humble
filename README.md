@@ -64,6 +64,7 @@ optional arguments:
 * `Content-Security-Policy`
 * `Expect-CT`
 * `Feature-Policy`
+* `NEL`
 * `Pragma`
 * `Referrer-Policy`
 * `Strict-Transport-Security`
