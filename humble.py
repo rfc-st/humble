@@ -28,8 +28,8 @@
 # Recommended terminal width for best output: 152
 
 # TO-DO:
-# Add more headers (Ex. NEL)
-# Add more checks for insecure headers
+# Keep adding more headers
+# Keep checking for more insecure headers / values
 # Ouput analysis to file (Ex. HTML with template)
 
 from datetime import datetime
@@ -94,7 +94,7 @@ def brief_analysis():
         print_section("[1. Missing headers]\n")
 
         list_miss = ['Cache-Control', 'Content-Security-Policy', 'Expect-CT',
-                     'Feature-Policy', 'Pragma', 'Referrer-Policy',
+                     'Feature-Policy', 'NEL', 'Pragma', 'Referrer-Policy',
                      'Strict-Transport-Security', 'X-Content-Type-Options',
                      'X-Frame-Options', 'X-XSS-Protection']
 
@@ -281,12 +281,13 @@ m_cnt = 0
 print_section("[1. Missing headers]\n")
 
 list_miss = ['Cache-Control', 'Content-Security-Policy', 'Expect-CT',
-             'Feature-Policy', 'Pragma', 'Referrer-Policy',
+             'Feature-Policy', 'NEL', 'Pragma', 'Referrer-Policy',
              'Strict-Transport-Security', 'X-Content-Type-Options',
              'X-Frame-Options', 'X-XSS-Protection']
 
-list_detail = ['[mcache]', '[mcsp]', '[mexpect]', '[mfeature]', '[mpragma]',
-               '[mreferrer]', '[msts]', '[mxcto]', '[mxfo]', '[mxxp]']
+list_detail = ['[mcache]', '[mcsp]', '[mexpect]', '[mfeature]', '[mnel]',
+               '[mpragma]', '[mreferrer]', '[msts]', '[mxcto]', '[mxfo]',
+               '[mxxp]']
 
 if any(elem.lower() in headers for elem in list_miss):
     for key in list_miss:
