@@ -60,39 +60,38 @@ optional arguments:
 ```
 
 ## Missing headers check
-Cache-Control\
-Content-Security-Policy\
-Expect-CT\
-Feature-Policy\
-Pragma\
-Referrer-Policy\
-Strict-Transport-Security\
-X-Content-Type-Options\
-X-Frame-Options\
-X-XSS-Protection
+* `Cache-Control`
+* `Content-Security-Policy`
+* `Expect-CT`
+* `Feature-Policy`
+* `Pragma`
+* `Referrer-Policy`
+* `Strict-Transport-Security`
+* `X-Content-Type-Options`
+* `X-Frame-Options`
+* `X-XSS-Protection`
 
 ## Fingerprint headers check
-Server\
-X-AspNet-Version\
-X-AspNetMvc-Version\
-X-Generator\
-X-Nginx-Cache-Status\
-X-Powered-By\
-X-Powered-By-Plesk\
-X-Powered-CMS\
-X-Drupal-Cache\
-X-Drupal-Dynamic-Cache
-
+* `Server`
+* `X-AspNet-Version\`
+* `X-AspNetMvc-Version`
+* `X-Generator`
+* `X-Nginx-Cache-Status`
+* `X-Powered-By`
+* `X-Powered-By-Plesk`
+* `X-Powered-CMS`
+* `X-Drupal-Cache`
+* `X-Drupal-Dynamic-Cache`
 
 ## Insecure values check
-Access-Control-Allow-Origin\
-Cache-Control\
-Content-Security-Policy\
-Etag\
-Referrer-Policy\
-Set-Cookie\
-Strict-Transport-Security\
-X-XSS-Protection
+* `Access-Control-Allow-Origin`
+* `Cache-Control`
+* `Content-Security-Policy`
+* `Etag`
+* `Referrer-Policy`
+* `Set-Cookie`
+* `Strict-Transport-Security`
+* `X-XSS-Protection`
 
 
 ## License
