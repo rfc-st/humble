@@ -73,7 +73,7 @@ optional arguments:
 
 ## Fingerprint headers check
 * `Server`
-* `X-AspNet-Version\`
+* `X-AspNet-Version`
 * `X-AspNetMvc-Version`
 * `X-Generator`
 * `X-Nginx-Cache-Status`
