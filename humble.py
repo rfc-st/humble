@@ -187,7 +187,7 @@ if any(elem.lower() in headers for elem in list_miss):
                 print_detail(list_detail[idx_m], "d")
             m_cnt += 1
 
-if args.brief:
+if args.brief and m_cnt != 0:
     print("")
 
 if m_cnt == 0:
@@ -217,7 +217,7 @@ if any(elem.lower() in headers for elem in list_fng):
                 print("")
             f_cnt += 1
 
-if args.brief:
+if args.brief and f_cnt != 0:
     print("")
 
 if f_cnt == 0:
@@ -264,7 +264,7 @@ if 'Etag' in headers:
     if not args.brief:
         print(" Make sure the value " + headers["Etag"] + " does not include \
 inodes information.")
-    print("")
+        print("")
     i_cnt += 1
 
 if 'Referrer-Policy' in headers:
@@ -304,7 +304,7 @@ if 'X-XSS-Protection' in headers and headers["X-XSS-Protection"] != \
         print_detail("[ixxp]", "a")
     i_cnt += 1
 
-if args.brief:
+if args.brief and i_cnt != 0:
     print("")
 
 if i_cnt == 0:
