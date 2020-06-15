@@ -28,8 +28,7 @@
 # Recommended terminal width for best output: 152
 
 # TO-DO:
-# Keep adding more headers
-# Keep checking for more insecure headers / values
+# Add more checks (missing, fingerprint, insecure)
 # Ouput analysis to file (Ex. HTML with template)
 
 from datetime import datetime
@@ -42,7 +41,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.13/06/2020, by Rafa 'Bluesman' Faura"
+version = "v.15/06/2020, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -85,6 +84,42 @@ def print_detail(id, mode):
                     print(next(rf))
                 elif mode == 'a':
                     print(next(rf))
+
+
+def exceptions():
+    try:
+        r = requests.get(domain, timeout=6)
+        r.raise_for_status()
+    except requests.exceptions.MissingSchema:
+        print("\nError: No schema supplied (e.g., http, https)\n")
+        raise SystemExit
+    except requests.exceptions.InvalidURL:
+        print("\nError: '" + domain + "' is not a valid URL\n")
+        raise SystemExit
+    except requests.exceptions.HTTPError:
+        if r.status_code == 401:
+            print("\nError: Unauthorized access to '" + domain + "'.\n")
+            raise SystemExit
+        elif r.status_code == 403:
+            print("\nError: Forbidden access to '" + domain + "'.\n")
+            raise SystemExit
+        elif r.status_code == 404:
+            print("\nError: '" + domain + "' not found\n")
+            raise SystemExit
+        elif r.status_code == 407:
+            print("\nError: Proxy required to acess'" + domain + "'\n")
+            raise SystemExit
+        elif str(r.status_code).startswith("5"):
+            print("\nError: Server error requesting '" + domain + "' \n")
+            raise SystemExit
+    except requests.exceptions.ConnectionError:
+        print("\nError: '" + domain + "' not found\n")
+        raise SystemExit
+    except requests.exceptions.Timeout:
+        print("\nError: '" + domain + "' is taking too long to respond\n")
+        raise SystemExit
+    except requests.exceptions.RequestException as err:
+        raise SystemExit(err)
 
 
 def brief_analysis():
@@ -222,44 +257,11 @@ domain = args.domain
 
 # Exception handling on requests
 
-try:
-    r = requests.get(domain, timeout=6)
-    r.raise_for_status()
-except requests.exceptions.MissingSchema:
-    print("\nError: No schema supplied (e.g., http, https)\n")
-    raise SystemExit
-except requests.exceptions.InvalidURL:
-    print("\nError: '" + domain + "' is not a valid URL\n")
-    raise SystemExit
-except requests.exceptions.HTTPError:
-    if r.status_code == 401:
-        print("\nError: Unauthorized access to '" + domain + "'.\n")
-        raise SystemExit
-    elif r.status_code == 403:
-        print("\nError: Forbidden access to '" + domain + "'.\n")
-        raise SystemExit
-    elif r.status_code == 404:
-        print("\nError: '" + domain + "' not found\n")
-        raise SystemExit
-    elif r.status_code == 407:
-        print("\nError: Proxy required to acess'" + domain + "'\n")
-        raise SystemExit
-    elif str(r.status_code).startswith("5"):
-        print("\nError: Server error requesting '" + domain + "' \n")
-        raise SystemExit
-except requests.exceptions.ConnectionError:
-    print("\nError: '" + domain + "' not found\n")
-    raise SystemExit
-except requests.exceptions.Timeout:
-    print("\nError: '" + domain + "' is taking too long to respond\n")
-    raise SystemExit
-except requests.exceptions.RequestException as err:
-    raise SystemExit(err)
+exceptions()
 
 # Headers retrieval
 
 r = requests.get(domain)
-
 headers = r.headers
 
 # Date and domain
