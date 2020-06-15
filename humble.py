@@ -86,7 +86,7 @@ def print_detail(id, mode):
                     print(next(rf))
 
 
-def exceptions():
+def request_exceptions():
     try:
         r = requests.get(domain, timeout=6)
         r.raise_for_status()
@@ -122,115 +122,6 @@ def exceptions():
         raise SystemExit(err)
 
 
-def brief_analysis():
-    if args.brief:
-        m_cnt = 0
-
-        print_section("[1. Missing headers]\n")
-
-        list_miss = ['Cache-Control', 'Content-Security-Policy', 'Expect-CT',
-                     'Feature-Policy', 'NEL', 'Pragma', 'Referrer-Policy',
-                     'Strict-Transport-Security', 'X-Content-Type-Options',
-                     'X-Frame-Options', 'X-XSS-Protection']
-
-        if any(elem.lower() in headers for elem in list_miss):
-            for key in list_miss:
-                if key not in headers:
-                    print_header(key)
-                    m_cnt += 1
-
-        if m_cnt == 0:
-            print_ok()
-
-        print('\n')
-
-        f_cnt = 0
-
-        print_section("[2. Fingerprint headers]\n")
-
-        list_fng = ['Server', 'X-AspNet-Version', 'X-AspNetMvc-Version',
-                    'X-Generator', 'X-Nginx-Cache-Status', 'X-Powered-By',
-                    'X-Powered-By-Plesk', 'X-Powered-CMS', 'X-Drupal-Cache',
-                    'X-Drupal-Dynamic-Cache']
-
-        if any(elem.lower() in headers for elem in list_fng):
-            for key in list_fng:
-                if key in headers:
-                    print_header(key)
-                    f_cnt += 1
-
-        if f_cnt == 0:
-            print_ok()
-
-        print('\n')
-
-        i_cnt = 0
-
-        print_section("[3. Insecure values]\n")
-
-        if 'Access-Control-Allow-Origin' in headers and \
-                headers["Access-Control-Allow-Origin"] == "*":
-            print_header("Access-Control-Allow-Origin")
-            i_cnt += 1
-
-        if 'Cache-Control' in headers:
-            list_cache = ['no-cache', 'no-store', 'must-revalidate']
-            if not all(elem.lower() in headers["Cache-Control"].lower() for
-               elem in
-               list_cache):
-                print_header("Cache-Control")
-                i_cnt += 1
-
-        if 'Content-Security-Policy' in headers:
-            list_csp = ['unsafe-inline', 'unsafe-eval']
-            if any(elem.lower() in
-                   headers["Content-Security-Policy"].lower() for elem in
-                   list_csp):
-                print_header("Content-Security-Policy")
-                i_cnt += 1
-
-        if 'Etag' in headers:
-            print_header("Etag")
-            i_cnt += 1
-
-        if 'Referrer-Policy' in headers:
-            list_ref = ['strict-origin', 'strict-origin-when-cross-origin',
-                        'no-referrer-when-downgrade', 'no-referrer']
-            if not any(elem.lower() in headers["Referrer-Policy"].lower() for
-               elem in list_ref):
-                print_header("Referrer-Policy")
-                i_cnt += 1
-
-        if 'Set-Cookie' in headers:
-            list_cookie = ['secure', 'httponly']
-            if not all(elem.lower() in headers["Set-Cookie"].lower() for
-               elem in list_cookie):
-                print_header("Set-Cookie")
-                i_cnt += 1
-
-        if 'Strict-Transport-Security' in headers:
-            list_sts = ['includeSubDomains', 'max-age']
-            age = int(''.join([n for n in headers["Strict-Transport-Security"]
-                      if n.isdigit()]))
-            if not all(elem.lower() in
-                       headers["Strict-Transport-Security"].lower() for elem
-                       in list_sts) or (age is None or age < 31536000):
-                print_header("Strict-Transport-Security")
-                i_cnt += 1
-
-        if 'X-XSS-Protection' in headers and headers["X-XSS-Protection"] != \
-                '1; mode=block':
-            print_header("X-XSS-Protection")
-            i_cnt += 1
-
-        if i_cnt == 0:
-            print_ok()
-
-        print('\n')
-
-        sys.exit()
-
-
 # Arguments
 
 init(autoreset=True)
@@ -255,9 +146,9 @@ args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 domain = args.domain
 
-# Exception handling on requests
+# Exception handling
 
-exceptions()
+request_exceptions()
 
 # Headers retrieval
 
@@ -272,11 +163,7 @@ print_summary()
 
 print_headers()
 
-# Brief analysis (no details/advices)
-
-brief_analysis()
-
-# Full analysis - Check for missing headers
+# Analysys - Missing headers
 
 m_cnt = 0
 
@@ -295,22 +182,27 @@ if any(elem.lower() in headers for elem in list_miss):
     for key in list_miss:
         if key not in headers:
             print_header(key)
-            idx_m = list_miss.index(key)
-            print_detail(list_detail[idx_m], "d")
+            if not args.brief:
+                idx_m = list_miss.index(key)
+                print_detail(list_detail[idx_m], "d")
             m_cnt += 1
+
+if args.brief:
+    print("")
 
 if m_cnt == 0:
     print_ok()
-    print("")
 
 print("")
 
-# Full analysis - Check for fingerprinting through headers / values
+# Analysis - Fingerprinting through headers / values
 
 f_cnt = 0
 
 print_section("[2. Fingerprint headers]\n")
-print_detail("[afgp]", "a")
+
+if not args.brief:
+    print_detail("[afgp]", "a")
 
 list_fng = ['Server', 'X-AspNet-Version', 'X-AspNetMvc-Version', 'X-Generator',
             'X-Nginx-Cache-Status', 'X-Powered-By', 'X-Powered-By-Plesk',
@@ -320,9 +212,13 @@ if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
         if key in headers:
             print_header(key)
-            print(" " + headers[key])
-            print("")
+            if not args.brief:
+                print(" " + headers[key])
+                print("")
             f_cnt += 1
+
+if args.brief:
+    print("")
 
 if f_cnt == 0:
     print_ok()
@@ -330,17 +226,19 @@ if f_cnt == 0:
 
 print("")
 
-# Full analysis - Check for insecure values
+# Analysis - Insecure values
 
 i_cnt = 0
 
 print_section("[3. Insecure values]\n")
-print_detail("[aisc]", "a")
+if not args.brief:
+    print_detail("[aisc]", "a")
 
 if 'Access-Control-Allow-Origin' in headers and \
                                  headers["Access-Control-Allow-Origin"] == "*":
     print_header("Access-Control-Allow-Origin")
-    print_detail("[iacc]", "a")
+    if not args.brief:
+        print_detail("[iacc]", "a")
     i_cnt += 1
 
 if 'Cache-Control' in headers:
@@ -348,7 +246,8 @@ if 'Cache-Control' in headers:
     if not all(elem.lower() in headers["Cache-Control"].lower() for elem in
                list_cache):
         print_header("Cache-Control")
-        print_detail("[icache]", "a")
+        if not args.brief:
+            print_detail("[icache]", "a")
         i_cnt += 1
 
 if 'Content-Security-Policy' in headers:
@@ -356,12 +255,14 @@ if 'Content-Security-Policy' in headers:
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp):
         print_header("Content-Security-Policy")
-        print_detail("[icsp]", "a")
+        if not args.brief:
+            print_detail("[icsp]", "a")
         i_cnt += 1
 
 if 'Etag' in headers:
     print_header("Etag")
-    print(" Make sure the value " + headers["Etag"] + " does not include \
+    if not args.brief:
+        print(" Make sure the value " + headers["Etag"] + " does not include \
 inodes information.")
     print("")
     i_cnt += 1
@@ -372,7 +273,8 @@ if 'Referrer-Policy' in headers:
     if not any(elem.lower() in headers["Referrer-Policy"].lower() for elem in
                list_ref):
         print_header("Referrer-Policy")
-        print_detail("[iref]", "d")
+        if not args.brief:
+            print_detail("[iref]", "d")
         i_cnt += 1
 
 if 'Set-Cookie' in headers:
@@ -380,7 +282,8 @@ if 'Set-Cookie' in headers:
     if not all(elem.lower() in headers["Set-Cookie"].lower() for elem in
        list_cookie):
         print_header("Set-Cookie")
-        print_detail("[iset]", "a")
+        if not args.brief:
+            print_detail("[iset]", "a")
         i_cnt += 1
 
 if 'Strict-Transport-Security' in headers:
@@ -390,14 +293,19 @@ if 'Strict-Transport-Security' in headers:
     if not all(elem.lower() in headers["Strict-Transport-Security"].lower() for
        elem in list_sts) or (age is None or age < 31536000):
         print_header("Strict-Transport-Security")
-        print_detail("[ists]", "a")
+        if not args.brief:
+            print_detail("[ists]", "a")
         i_cnt += 1
 
 if 'X-XSS-Protection' in headers and headers["X-XSS-Protection"] != \
                       '1; mode=block':
     print_header("X-XSS-Protection")
-    print_detail("[ixxp]", "a")
+    if not args.brief:
+        print_detail("[ixxp]", "a")
     i_cnt += 1
+
+if args.brief:
+    print("")
 
 if i_cnt == 0:
     print_ok()
