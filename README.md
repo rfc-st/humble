@@ -12,18 +12,15 @@ HTTP Headers Analyzer<br />
 <br />
 <br />
 .: Brief analysis<br />
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.jpg" alt="Brief Analysis">
+<br />
+.: Brief analysis + retrieved headers<br />
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.jpg" alt="Brief analysis + retrieved headers">
+<br />
+.: Full analysis<br />
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_full.jpg" alt="Full analysis">
+<br />
 
-![Imgur Image](https://imgur.com/grACNDz.jpg)
-<br />
-<br />
-.: Brief analysis + retrieved headers
-![Imgur Image](https://imgur.com/ZjmFocw.jpg)
-<br />
-<br />
-.: Full analysis
-![Imgur Image](https://imgur.com/cjbPhvV.jpg)
-<br />
-<br />
 ## Installation
 
 **NOTE**: Python 3.2 or higher is required.
