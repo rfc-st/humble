@@ -10,14 +10,16 @@ HTTP Headers Analyzer<br />
 <i>"A journey of a thousand miles begins with a single step. - Lao Tzu"</i>
 </p>
 <br />
-<br />
 .: Brief analysis<br />
+<p></p>
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.jpg" alt="Brief Analysis">
 <br />
 .: Brief analysis + retrieved headers<br />
+<p></p>
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.jpg" alt="Brief analysis + retrieved headers">
 <br />
 .: Full analysis<br />
+<p></p>
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_full.jpg" alt="Full analysis">
 <br />
 
