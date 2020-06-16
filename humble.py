@@ -41,7 +41,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.15/06/2020, by Rafa 'Bluesman' Faura"
+version = "v.16/06/2020, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -295,6 +295,28 @@ if 'Strict-Transport-Security' in headers:
         print_header("Strict-Transport-Security")
         if not args.brief:
             print_detail("[ists]", "a")
+        i_cnt += 1
+
+if 'X-Content-Type-Options' in headers:
+    list_csp = [',']
+    if any(elem.lower() in headers["X-Content-Type-Options"].lower() for
+       elem in list_csp):
+        print_header("X-Content-Type-Options")
+        if not args.brief:
+            print(" The value '" + headers["X-Content-Type-Options"] + "' is \
+invalid. Use only 'nosniff'.")
+            print("")
+        i_cnt += 1
+
+if 'X-Frame-Options' in headers:
+    list_csp = [',']
+    if any(elem.lower() in headers["X-Frame-Options"].lower() for
+       elem in list_csp):
+        print_header("X-Frame-Options")
+        if not args.brief:
+            print(" The value '" + headers["X-Frame-Options"] + "' is \
+invalid. Use only 'DENY' or 'SAMEORIGIN'.")
+            print("")
         i_cnt += 1
 
 if 'X-XSS-Protection' in headers and headers["X-XSS-Protection"] != \
