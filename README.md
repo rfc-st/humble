@@ -91,6 +91,8 @@ optional arguments:
 * `Referrer-Policy`
 * `Set-Cookie`
 * `Strict-Transport-Security`
+* `X-Content-Type-Options`
+* `X-Frame-Options`
 * `X-XSS-Protection`
 
 
