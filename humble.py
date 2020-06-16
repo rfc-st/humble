@@ -298,9 +298,9 @@ if 'Strict-Transport-Security' in headers:
         i_cnt += 1
 
 if 'X-Content-Type-Options' in headers:
-    list_csp = [',']
+    list_xcto = [',']
     if any(elem.lower() in headers["X-Content-Type-Options"].lower() for
-       elem in list_csp):
+       elem in list_xcto):
         print_header("X-Content-Type-Options")
         if not args.brief:
             print(" The value '" + headers["X-Content-Type-Options"] + "' is \
@@ -309,9 +309,9 @@ invalid. Use only 'nosniff'.")
         i_cnt += 1
 
 if 'X-Frame-Options' in headers:
-    list_csp = [',']
+    list_xfo = [',']
     if any(elem.lower() in headers["X-Frame-Options"].lower() for
-       elem in list_csp):
+       elem in list_xfo):
         print_header("X-Frame-Options")
         if not args.brief:
             print(" The value '" + headers["X-Frame-Options"] + "' is \
