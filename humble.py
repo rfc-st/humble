@@ -41,7 +41,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.16/06/2020, by Rafa 'Bluesman' Faura"
+version = "v.17/06/2020, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -234,11 +234,16 @@ print_section("[3. Insecure values]\n")
 if not args.brief:
     print_detail("[aisc]", "a")
 
-if 'Access-Control-Allow-Origin' in headers and \
-                                 headers["Access-Control-Allow-Origin"] == "*":
-    print_header("Access-Control-Allow-Origin")
+if 'Access-Control-Allow-Origin' in headers:
+    list_access = ['*', 'null']
+    if any(elem.lower() in headers["Access-Control-Allow-Origin"].lower() for
+       elem in list_access):
+        print_header("Access-Control-Allow-Origin")
     if not args.brief:
-        print_detail("[iacc]", "a")
+        print(" Review the value '" +
+              headers["Access-Control-Allow-Origin"] + "' regarding your \
+CORS (Cross-origin resource sharing) requirements.")
+        print("")
     i_cnt += 1
 
 if 'Cache-Control' in headers:
