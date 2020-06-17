@@ -324,12 +324,12 @@ invalid. Use only 'DENY' or 'SAMEORIGIN'.")
             print("")
         i_cnt += 1
 
-if 'X-XSS-Protection' in headers and headers["X-XSS-Protection"] != \
-                      '1; mode=block':
-    print_header("X-XSS-Protection")
-    if not args.brief:
-        print_detail("[ixxp]", "a")
-    i_cnt += 1
+if 'X-XSS-Protection' in headers:
+    if not headers["X-XSS-Protection"].startswith('1; mode=block'):
+        print_header("X-XSS-Protection")
+        if not args.brief:
+            print_detail("[ixxp]", "a")
+        i_cnt += 1
 
 if args.brief and i_cnt != 0:
     print("")
