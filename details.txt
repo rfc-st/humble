@@ -42,9 +42,6 @@
  Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
-[iacc]
- The value '*' allows requesting code from any origin to access the resource; review your CORS (Cross-origin resource sharing) requirements.
-
 [icache]
  Use 'no-cache', 'no-store', and 'must-revalidate' if there are sensitive data or private resources in the domain.
 
