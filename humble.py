@@ -316,7 +316,7 @@ if 'X-Content-Type-Options' in headers:
             print(" The value '" + headers["X-Content-Type-Options"] + "' is \
 invalid. Use only 'nosniff'.")
             print("")
-            i_cnt += 1
+        i_cnt += 1
 
 if 'X-Frame-Options' in headers:
     if ',' in headers['X-Frame-Options']:
@@ -327,7 +327,7 @@ invalid. Use only 'DENY', 'SAMEORIGIN' or 'ALLOW-FROM'.\n Better yet: \
 replace this header with the 'frame-ancestors' directive from the \
 Content-Security-Policy header. ")
             print("")
-            i_cnt += 1
+        i_cnt += 1
 
 if 'X-XSS-Protection' in headers:
     if not headers["X-XSS-Protection"].startswith('1; mode=block'):
