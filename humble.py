@@ -273,9 +273,7 @@ inodes information.")
     i_cnt += 1
 
 if 'Feature-Policy' in headers:
-    list_fpol = ['*']
-    if any(elem.lower() in headers["Feature-Policy"].lower() for elem in
-           list_fpol):
+    if '*' in headers['Feature-Policy']:
         print_header("Feature-Policy")
         if not args.brief:
             print_detail("[ifpol]", "a")
@@ -312,26 +310,24 @@ if 'Strict-Transport-Security' in headers:
         i_cnt += 1
 
 if 'X-Content-Type-Options' in headers:
-    list_xcto = [',']
-    if any(elem.lower() in headers["X-Content-Type-Options"].lower() for
-       elem in list_xcto):
+    if ',' in headers['X-Content-Type-Options']:
         print_header("X-Content-Type-Options")
         if not args.brief:
             print(" The value '" + headers["X-Content-Type-Options"] + "' is \
 invalid. Use only 'nosniff'.")
             print("")
-        i_cnt += 1
+            i_cnt += 1
 
 if 'X-Frame-Options' in headers:
-    list_xfo = [',']
-    if any(elem.lower() in headers["X-Frame-Options"].lower() for
-       elem in list_xfo):
+    if ',' in headers['X-Frame-Options']:
         print_header("X-Frame-Options")
         if not args.brief:
             print(" The value '" + headers["X-Frame-Options"] + "' is \
-invalid. Use only 'DENY' or 'SAMEORIGIN'.")
+invalid. Use only 'DENY', 'SAMEORIGIN' or 'ALLOW-FROM'.\n Better yet: \
+replace this header with the 'frame-ancestors' directive from the \
+Content-Security-Policy header. ")
             print("")
-        i_cnt += 1
+            i_cnt += 1
 
 if 'X-XSS-Protection' in headers:
     if not headers["X-XSS-Protection"].startswith('1; mode=block'):
