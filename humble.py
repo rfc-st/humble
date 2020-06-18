@@ -41,7 +41,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.17/06/2020, by Rafa 'Bluesman' Faura"
+version = "v.18/06/2020, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -271,6 +271,15 @@ if 'Etag' in headers:
 inodes information.")
         print("")
     i_cnt += 1
+
+if 'Feature-Policy' in headers:
+    list_fpol = ['*']
+    if any(elem.lower() in headers["Feature-Policy"].lower() for elem in
+           list_fpol):
+        print_header("Feature-Policy")
+        if not args.brief:
+            print_detail("[ifpol]", "a")
+        i_cnt += 1
 
 if 'Referrer-Policy' in headers:
     list_ref = ['strict-origin', 'strict-origin-when-cross-origin',
