@@ -48,6 +48,9 @@
 [icsp]
  Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible, by moving inline code to .js/.css files or using nonces/hashes.
 
+[ifpol]
+ Review the value '*': allows the feature in this document, and all nested browsing contexts (iframes) regardless of their origin.
+
 [iref]
  Use 'strict-origin' or 'strict-origin-when-cross-origin' if there are sensitive or private resources in the domain.
  Otherwise use 'no-referrer-when-downgrade' or even 'no-referrer' if is not required.
