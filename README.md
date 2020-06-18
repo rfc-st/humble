@@ -88,6 +88,7 @@ optional arguments:
 * `Cache-Control`
 * `Content-Security-Policy`
 * `Etag`
+* `Feature-Policy`
 * `Referrer-Policy`
 * `Set-Cookie`
 * `Strict-Transport-Security`
