@@ -1,4 +1,2 @@
-argparse
 colorama
-datetime
 requests
