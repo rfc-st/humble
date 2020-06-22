@@ -29,7 +29,7 @@
 
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
-# Ouput analysis to file (Ex. HTML with template)
+# Add analysis rating
 
 from datetime import datetime
 from colorama import Fore, Style, init
@@ -41,7 +41,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.18/06/2020, by Rafa 'Bluesman' Faura"
+version = "v.22/06/2020, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -152,7 +152,10 @@ request_exceptions()
 
 # Headers retrieval
 
-r = requests.get(domain)
+c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0)\
+ Gecko/20100101 Firefox/77.0'}
+
+r = requests.get(domain, headers=c_headers)
 headers = r.headers
 
 # Date and domain
