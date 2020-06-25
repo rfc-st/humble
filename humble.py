@@ -36,6 +36,7 @@ from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import sys
 import requests
+import tldextract
 
 if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
@@ -173,9 +174,8 @@ headers = r.headers
 
 if args.output:
     orig_stdout = sys.stdout
-    name_s = domain.partition("//")[2]
-    name_e = name_s.partition(".")[0] + "_" +\
-        datetime.now().strftime("%Y%m%d") + ".txt"
+    name_s = tldextract.extract(domain)
+    name_e = name_s.domain + "_" + datetime.now().strftime("%Y%m%d") + ".txt"
     f = open(name_e, 'w')
     sys.stdout = f
 
@@ -372,6 +372,6 @@ print("")
 if args.output:
     sys.stdout = orig_stdout
     print("")
-    print('Analysis saved to ' + name_e)
+    print('Analysis saved to "' + name_e + '"')
     print("")
     f.close()
