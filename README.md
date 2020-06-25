@@ -12,15 +12,15 @@ HTTP Headers Analyzer<br />
 <br />
 .: Brief analysis<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b_22062020.jpg" alt="Brief Analysis">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b_22062025.jpg" alt="Brief Analysis">
 <br />
 .: Brief analysis + retrieved headers<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br_22062020.jpg" alt="Brief analysis + retrieved headers">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br_22062025.jpg" alt="Brief analysis + retrieved headers">
 <br />
 .: Full analysis<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_22062020.jpg" alt="Full analysis">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_22062025.jpg" alt="Full analysis">
 <br />
 
 ## Installation
@@ -54,7 +54,7 @@ required arguments:
 optional arguments:
   -h, --help     show this help message and exit
   -b             show brief analysis (no details/advices)
-  -o             save analysis to file (domain_ddmmyyyy.txt)
+  -o             save analysis to file (domain_yyyymmdd.txt)
   -r             show retrieved HTTP headers
   -v, --version  show version
 ```
