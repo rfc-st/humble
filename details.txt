@@ -68,4 +68,5 @@
  Change these values, or remove the headers, if any of them identify real software/version:
 
 [aisc]
- All, or any of the values ​​in these headers are not considered totally secure; check the following advices:
+ All, or any of the values in these headers could be considered insecure; check the following advices:
+
