@@ -67,7 +67,7 @@ def print_header(header):
 
 def print_summary():
     print('\n')
-    now = datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
+    now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     print_section("[0. Info]\n")
     print(" Date:  ", now)
     print(' Domain: ' + domain)
@@ -146,7 +146,7 @@ required.add_argument('-d', type=str, dest='domain', required=True,
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
                       help="show brief analysis (no details/advices)")
 optional.add_argument("-o", dest='output', action="store_true", required=False,
-                      help="save analysis to file (domain_ddmmyyyy.txt)")
+                      help="save analysis to file (domain_yyyymmdd.txt)")
 optional.add_argument("-r", dest='retrieved', action="store_true",
                       required=False, help="show retrieved HTTP headers")
 optional.add_argument("-v", "--version", action='version',
@@ -175,7 +175,7 @@ if args.output:
     orig_stdout = sys.stdout
     name_s = domain.partition("//")[2]
     name_e = name_s.partition(".")[0] + "_" +\
-        datetime.now().strftime("%d%m%Y") + ".txt"
+        datetime.now().strftime("%Y%m%d") + ".txt"
     f = open(name_e, 'w')
     sys.stdout = f
 
