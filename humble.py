@@ -41,19 +41,28 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.23/06/2020, by Rafa 'Bluesman' Faura"
+version = "v.25/06/2020, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
-    print(Style.BRIGHT + title)
+    if not args.output:
+        print(Style.BRIGHT + title)
+    else:
+        print(title)
 
 
 def print_ok():
-    print(Fore.GREEN + ' Nothing to report, all seems OK!')
+    if not args.output:
+        print(Fore.GREEN + ' Nothing to report, all seems OK!')
+    else:
+        print(' Nothing to report, all seems OK!')
 
 
 def print_header(header):
-    print(Fore.RED + " " + header)
+    if not args.output:
+        print(Fore.RED + " " + header)
+    else:
+        print(" " + header)
 
 
 def print_summary():
@@ -136,6 +145,8 @@ required.add_argument('-d', type=str, dest='domain', required=True,
                       E.g., https://google.com")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
                       help="show brief analysis (no details/advices)")
+optional.add_argument("-o", dest='output', action="store_true", required=False,
+                      help="save analysis to file (domain_ddmmyyyy.txt)")
 optional.add_argument("-r", dest='retrieved', action="store_true",
                       required=False, help="show retrieved HTTP headers")
 optional.add_argument("-v", "--version", action='version',
@@ -157,6 +168,16 @@ c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0)\
 
 r = requests.get(domain, headers=c_headers)
 headers = r.headers
+
+# Save analysis to file
+
+if args.output:
+    orig_stdout = sys.stdout
+    name_s = domain.partition("//")[2]
+    name_e = name_s.partition(".")[0] + "_" +\
+        datetime.now().strftime("%d%m%Y") + ".txt"
+    f = open(name_e, 'w')
+    sys.stdout = f
 
 # Date and domain
 
@@ -347,3 +368,10 @@ if i_cnt == 0:
     print("")
 
 print("")
+
+if args.output:
+    sys.stdout = orig_stdout
+    print("")
+    print('Analysis saved to ' + name_e)
+    print("")
+    f.close()
