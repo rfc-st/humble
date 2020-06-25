@@ -53,7 +53,7 @@
 
 [iref]
  Use 'strict-origin' or 'strict-origin-when-cross-origin' if there are sensitive or private resources in the domain.
- Otherwise use 'no-referrer-when-downgrade' or even 'no-referrer' if is not required.
+ Otherwise fallback to 'no-referrer-when-downgrade' (default browser behaviour) or even 'no-referrer' if is not required.
 
 [iset]
  Use 'secure' and 'httponly' to ensure that cookies are sent securely and are not accessed by unintended parties or scripts.
