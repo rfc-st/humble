@@ -54,7 +54,7 @@ required arguments:
 optional arguments:
   -h, --help     show this help message and exit
   -b             show brief analysis (no details/advices)
-  -o             save analysis to file (domain_ddmmyyyy.txt)
+  -o             save analysis to file (domain_yyyymmdd.txt)
   -r             show retrieved HTTP headers
   -v, --version  show version
 ```
