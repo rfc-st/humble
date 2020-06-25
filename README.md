@@ -98,7 +98,7 @@ optional arguments:
 ## To-do
 
 - [ ] Add more header/value checks (only security-oriented)
-- [ ] Output analysis to file (ex.: TXT, PDF, HTML, etc.)
+- [ ] Save analysis to more formats (ex.: PDF, HTML)
 
 
 ## License
