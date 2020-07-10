@@ -42,7 +42,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.25/06/2020, by Rafa 'Bluesman' Faura"
+version = "v.10/07/2020, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -146,8 +146,8 @@ required.add_argument('-d', type=str, dest='domain', required=True,
                       E.g., https://google.com")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
                       help="show brief analysis (no details/advices)")
-optional.add_argument("-o", dest='output', action="store_true", required=False,
-                      help="save analysis to file (domain_yyyymmdd.txt)")
+optional.add_argument("-o", dest='output', choices=['html', 'txt', 'pdf'],
+                      help="save analysis to file (domain_yyyymmdd)")
 optional.add_argument("-r", dest='retrieved', action="store_true",
                       required=False, help="show retrieved HTTP headers")
 optional.add_argument("-v", "--version", action='version',
@@ -172,12 +172,17 @@ headers = r.headers
 
 # Save analysis to file
 
-if args.output:
+if args.output == 'txt':
     orig_stdout = sys.stdout
     name_s = tldextract.extract(domain)
     name_e = name_s.domain + "_" + datetime.now().strftime("%Y%m%d") + ".txt"
     f = open(name_e, 'w')
     sys.stdout = f
+else:
+    print("")
+    print('Not implemented, yet! :)')
+    print("")
+    raise SystemExit
 
 # Date and domain
 
@@ -369,7 +374,7 @@ if i_cnt == 0:
 
 print("")
 
-if args.output:
+if args.output == 'txt':
     sys.stdout = orig_stdout
     print("")
     print('Analysis saved to "' + name_e + '"')
