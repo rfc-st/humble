@@ -43,20 +43,20 @@ $ pip3 install -r requirements.txt
 ## Usage
 
 ```bash
-$ python3 humble.py --help
-usage: humble.py [-h] -d DOMAIN [-b] [-o] [-r] [-v]
+$ python3 humble.py
+usage: humble.py [-h] -d DOMAIN [-b] [-o {html,txt,pdf}] [-r] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 required arguments:
-  -d DOMAIN      domain to scan, including schema. E.g., https://google.com
+  -d DOMAIN          domain to scan, including schema. E.g., https://google.com
 
 optional arguments:
-  -h, --help     show this help message and exit
-  -b             show brief analysis (no details/advices)
-  -o             save analysis to file (domain_yyyymmdd.txt)
-  -r             show retrieved HTTP headers
-  -v, --version  show version
+  -h, --help         show this help message and exit
+  -b                 show brief analysis (no details/advices)
+  -o {html,txt,pdf}  save analysis to file (domain_yyyymmdd)
+  -r                 show retrieved HTTP headers
+  -v, --version      show version
 ```
 
 ## Missing headers check

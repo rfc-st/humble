@@ -146,7 +146,7 @@ required.add_argument('-d', type=str, dest='domain', required=True,
                       E.g., https://google.com")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
                       help="show brief analysis (no details/advices)")
-optional.add_argument("-o", dest='output', choices=['html', 'txt', 'pdf'],
+optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
                       help="save analysis to file (domain_yyyymmdd)")
 optional.add_argument("-r", dest='retrieved', action="store_true",
                       required=False, help="show retrieved HTTP headers")
