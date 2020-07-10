@@ -172,17 +172,19 @@ headers = r.headers
 
 # Save analysis to file
 
-if args.output == 'txt':
-    orig_stdout = sys.stdout
-    name_s = tldextract.extract(domain)
-    name_e = name_s.domain + "_" + datetime.now().strftime("%Y%m%d") + ".txt"
-    f = open(name_e, 'w')
-    sys.stdout = f
-else:
-    print("")
-    print('Not implemented, yet! :)')
-    print("")
-    raise SystemExit
+if args.output is not None:
+    if args.output == 'txt':
+        orig_stdout = sys.stdout
+        name_s = tldextract.extract(domain)
+        name_e = name_s.domain + "_" + datetime.now().strftime("%Y%m%d") +\
+            ".txt"
+        f = open(name_e, 'w')
+        sys.stdout = f
+    else:
+        print("")
+        print('Not implemented, yet! :)')
+        print("")
+        raise SystemExit
 
 # Date and domain
 
