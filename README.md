@@ -106,6 +106,17 @@ optional arguments:
 - [ ] Add more header/value checks (only security-oriented)
 - [ ] Save analysis to more formats (ex.: PDF, HTML)
 
+## Further reading
+
+https://caniuse.com/
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+https://github.com/search?q=http+headers+analyze
+https://github.com/search?q=http+headers+secure
+https://github.com/search?q=http+headers+security
+https://owasp.org/www-project-secure-headers/
+https://securityheaders.com/
+https://scotthelme.co.uk/
+https://www.w3.org
 
 ## License
 
