@@ -108,15 +108,15 @@ optional arguments:
 
 ## Further reading
 
-https://caniuse.com/
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
-https://github.com/search?q=http+headers+analyze
-https://github.com/search?q=http+headers+secure
-https://github.com/search?q=http+headers+security
-https://owasp.org/www-project-secure-headers/
-https://securityheaders.com/
-https://scotthelme.co.uk/
-https://www.w3.org
+https://caniuse.com/<br />
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers<br />
+https://github.com/search?q=http+headers+analyze<br />
+https://github.com/search?q=http+headers+secure<br />
+https://github.com/search?q=http+headers+security<br />
+https://owasp.org/www-project-secure-headers/<br />
+https://securityheaders.com/<br />
+https://scotthelme.co.uk/<br />
+https://www.w3.org<br />
 
 ## License
 
