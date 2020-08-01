@@ -200,14 +200,14 @@ m_cnt = 0
 
 print_section("[1. Missing headers]\n")
 
-list_miss = ['Cache-Control', 'Content-Security-Policy', 'Expect-CT',
-             'Feature-Policy', 'NEL', 'Pragma', 'Referrer-Policy',
+list_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Security-Policy',
+             'Expect-CT', 'Feature-Policy', 'NEL', 'Pragma', 'Referrer-Policy',
              'Strict-Transport-Security', 'X-Content-Type-Options',
              'X-Frame-Options', 'X-XSS-Protection']
 
-list_detail = ['[mcache]', '[mcsp]', '[mexpect]', '[mfeature]', '[mnel]',
-               '[mpragma]', '[mreferrer]', '[msts]', '[mxcto]', '[mxfo]',
-               '[mxxp]']
+list_detail = ['[mcache]', '[mcsd]', '[mcsp]', '[mexpect]', '[mfeature]',
+               '[mnel]', '[mpragma]', '[mreferrer]', '[msts]', '[mxcto]',
+               '[mxfo]', '[mxxp]']
 
 if any(elem.lower() in headers for elem in list_miss):
     for key in list_miss:

@@ -2,6 +2,10 @@
  Directives for caching in both requests and responses.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
+[mcsd]
+ Clears browsing data (cookies, storage, cache) associated with the requesting website.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
+
 [mcsp]
  Helps to detect and mitigate Cross Site Scripting (XSS) and data injection attacks, among others.
  Ref: https://content-security-policy.com/
