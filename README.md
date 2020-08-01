@@ -73,16 +73,19 @@ optional arguments:
 * `X-XSS-Protection`
 
 ## Fingerprint headers check
-* `Server`
-* `X-AspNet-Version`
-* `X-AspNetMvc-Version`
-* `X-Drupal-Cache`
-* `X-Drupal-Dynamic-Cache`
-* `X-Generator`
-* `X-Nginx-Cache-Status`
-* `X-Powered-By`
-* `X-Powered-By-Plesk`
-* `X-Powered-CMS`
+* `MicrosoftSharePointTeamServices`
+* `'Server`
+* `'X-AspNet-Version`
+* `'X-AspNetMvc-Version`
+* `'X-Cocoon-Version`
+* `'X-Drupal-Cache`
+* `'X-Drupal-Dynamic-Cache`
+* `'X-Generator`
+* `'X-Nginx-Cache-Status`
+* `'X-Powered-By`
+* `'X-Powered-By-Plesk`
+* `'X-Powered-CMS`
+* `'X-Server-Powered-By`
 
 ## Insecure values check
 * `Access-Control-Allow-Origin`

@@ -42,7 +42,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.10/07/2020, by Rafa 'Bluesman' Faura"
+version = "v.01/08/2020, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -235,9 +235,11 @@ print_section("[2. Fingerprint headers]\n")
 if not args.brief:
     print_detail("[afgp]", "a")
 
-list_fng = ['Server', 'X-AspNet-Version', 'X-AspNetMvc-Version', 'X-Generator',
-            'X-Nginx-Cache-Status', 'X-Powered-By', 'X-Powered-By-Plesk',
-            'X-Powered-CMS', 'X-Drupal-Cache', 'X-Drupal-Dynamic-Cache']
+list_fng = ['MicrosoftSharePointTeamServices', 'Server', 'X-AspNet-Version',
+            'X-AspNetMvc-Version', 'X-Cocoon-Version', 'X-Drupal-Cache',
+            'X-Drupal-Dynamic-Cache', 'X-Generator', 'X-Nginx-Cache-Status',
+            'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
+            'X-Server-Powered-By']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
