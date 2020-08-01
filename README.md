@@ -61,6 +61,7 @@ optional arguments:
 
 ## Missing headers check
 * `Cache-Control`
+* `Clear-Site-Data`
 * `Content-Security-Policy`
 * `Expect-CT`
 * `Feature-Policy`
