@@ -42,7 +42,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.01/08/2020, by Rafa 'Bluesman' Faura"
+version = "v.2020/08/07, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -235,11 +235,14 @@ print_section("[2. Fingerprint headers]\n")
 if not args.brief:
     print_detail("[afgp]", "a")
 
-list_fng = ['MicrosoftSharePointTeamServices', 'Server', 'X-AspNet-Version',
-            'X-AspNetMvc-Version', 'X-Cocoon-Version', 'X-Drupal-Cache',
-            'X-Drupal-Dynamic-Cache', 'X-Generator', 'X-Nginx-Cache-Status',
-            'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
-            'X-Server-Powered-By']
+list_fng = ['MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
+            'MS-Author-Via', 'Powered-By', 'Server', 'X-AspNet-Version',
+            'X-AspNetMvc-Version', 'X-Backend', 'X-CF-Powered-By',
+            'X-Cocoon-Version', 'X-Content-Powered-By', 'X-Drupal-Cache',
+            'X-Drupal-Dynamic-Cache', 'X-Generator', 'X-Mod-Pagespeed',
+            'X-Nginx-Cache-Status', 'X-Page-Speed', 'X-Powered-By',
+            'X-Powered-By-Plesk', 'X-Powered-CMS', 'X-Redirect-By',
+            'X-Server-Powered-By', 'X-Shopify-Stage']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:

@@ -74,19 +74,29 @@ optional arguments:
 * `X-XSS-Protection`
 
 ## Fingerprint headers check
+* `MicrosoftOfficeWebServer`
 * `MicrosoftSharePointTeamServices`
+* `MS-Author-Via`
+* `Powered-By`
 * `Server`
 * `X-AspNet-Version`
 * `X-AspNetMvc-Version`
+* `X-Backend`
+* `X-CF-Powered-By`
 * `X-Cocoon-Version`
+* `X-Content-Powered-By`
 * `X-Drupal-Cache`
 * `X-Drupal-Dynamic-Cache`
 * `X-Generator`
+* `X-Mod-Pagespeed`
 * `X-Nginx-Cache-Status`
+* `X-Page-Speed`
 * `X-Powered-By`
 * `X-Powered-By-Plesk`
 * `X-Powered-CMS`
+* `X-Redirect-By`
 * `X-Server-Powered-By`
+* `X-Shopify-Stage`
 
 ## Insecure values check
 * `Access-Control-Allow-Origin`
