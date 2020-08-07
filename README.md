@@ -126,7 +126,9 @@ https://github.com/search?q=http+headers+security<br />
 https://owasp.org/www-project-secure-headers/<br />
 https://securityheaders.com/<br />
 https://scotthelme.co.uk/<br />
+https://webtechsurvey.com/common-response-headers<br />
 https://www.w3.org<br />
+
 
 ## License
 
