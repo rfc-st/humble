@@ -71,6 +71,9 @@
 [ixxp]
  Use '1; mode=block' in order to enable cross-site scripting filter and prevent rendering the page if an attack is detected.
 
+[aemp]
+ The following headers have no value, which is equivalent to as if they were not enabled: 
+
 [afgp]
  Change these values, or remove the headers, if any of them identify real software/version:
 

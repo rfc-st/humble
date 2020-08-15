@@ -112,6 +112,20 @@ optional arguments:
 * `X-Permitted-Cross-Domain-Policies`
 * `X-XSS-Protection`
 
+## Empty values check
+* `Cache-Control`
+* `Clear-Site-Data`
+* `Content-Security-Policy`
+* `Expect-CT`
+* `Feature-Policy`
+* `NEL`
+* `Pragma`
+* `Referrer-Policy`
+* `Strict-Transport-Security`
+* `X-Content-Type-Options`
+* `X-Frame-Options`
+* `X-XSS-Protection`
+
 ## To-do
 
 - [ ] Add more header/value checks (only security-oriented)

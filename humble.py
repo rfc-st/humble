@@ -24,8 +24,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# INFO:
 # PEP8 compliant (http://pep8online.com/). Yay!
 # Recommended terminal width for best output: 152
+# This is my *first* Python script, bear with me!. I'm still learning :)
 
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
@@ -383,6 +385,30 @@ if args.brief and i_cnt != 0:
     print("")
 
 if i_cnt == 0:
+    print_ok()
+    print("")
+
+print("")
+
+# Analysis - Empty values
+
+e_cnt = 0
+
+print_section("[4. Empty values]\n")
+if not args.brief:
+    print_detail("[aemp]", "a")
+
+if any(elem.lower() in headers for elem in list_miss):
+    for key in list_miss:
+        if key in headers:
+            if not headers[key]:
+                print_header(key)
+                e_cnt += 1
+
+if args.brief and e_cnt != 0:
+    print("")
+
+if e_cnt == 0:
     print_ok()
     print("")
 
