@@ -42,7 +42,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.2020/08/07, by Rafa 'Bluesman' Faura"
+version = "v.2020/08/15, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -363,6 +363,13 @@ invalid. Use only 'DENY', 'SAMEORIGIN' or 'ALLOW-FROM'.\n Better yet: \
 replace this header with the 'frame-ancestors' directive from the \
 Content-Security-Policy header. ")
             print("")
+        i_cnt += 1
+
+if 'X-Permitted-Cross-Domain-Policies' in headers:
+    if 'all' in headers['X-Permitted-Cross-Domain-Policies']:
+        print_header("X-Permitted-Cross-Domain-Policies")
+        if not args.brief:
+            print_detail("[ixcd]", "a")
         i_cnt += 1
 
 if 'X-XSS-Protection' in headers:

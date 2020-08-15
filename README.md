@@ -109,6 +109,7 @@ optional arguments:
 * `Strict-Transport-Security`
 * `X-Content-Type-Options`
 * `X-Frame-Options`
+* `X-Permitted-Cross-Domain-Policies`
 * `X-XSS-Protection`
 
 ## To-do
