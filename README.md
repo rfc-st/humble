@@ -60,21 +60,18 @@ optional arguments:
 ```
 
 ## Missing headers check
-* `Cache-Control`
-* `Clear-Site-Data`
-* `Content-Security-Policy`
-* `Expect-CT`
-* `Feature-Policy`
-* `NEL`
-* `Pragma`
-* `Referrer-Policy`
-* `Strict-Transport-Security`
-* `X-Content-Type-Options`
-* `X-Frame-Options`
-* `X-XSS-Protection`
+|||
+| ------------- | ------------- |
+| `Cache-Control`| `Clear-Site-Data` |
+| `Content-Security-Policy` | `Expect-CT` |
+| `Feature-Policy` | `NEL` | 
+| `Pragma` | `Referrer-Policy` |
+| `Strict-Transport-Security` | `X-Content-Type-Options` |
+| `X-Frame-Options` | `X-XSS-Protection` |
+|||
 
 ## Fingerprint headers check
-| | |
+|||
 | ------------- | ------------- |
 | `MicrosoftOfficeWebServer`  | `X-Content-Powered-By`|
 | `MicrosoftSharePointTeamServices` | `X-Drupal-Cache` | 
@@ -88,21 +85,19 @@ optional arguments:
 | `X-Backend` | `X-Powered-CMS` | 
 | `X-Backend-Server` | `X-Redirect-By` | 
 | `X-CF-Powered-By` | `X-Server-Powered-By` | 
-| `X-Cocoon-Version` | `X-Shopify-Stage` | 
+| `X-Cocoon-Version` | `X-Shopify-Stage` |
+|||
 
 ## Insecure values check
-* `Access-Control-Allow-Origin`
-* `Cache-Control`
-* `Content-Security-Policy`
-* `Etag`
-* `Feature-Policy`
-* `Referrer-Policy`
-* `Set-Cookie`
-* `Strict-Transport-Security`
-* `X-Content-Type-Options`
-* `X-Frame-Options`
-* `X-Permitted-Cross-Domain-Policies`
-* `X-XSS-Protection`
+|||
+| ------------- | ------------- |
+| `Access-Control-Allow-Origin` | `Cache-Control` |
+| `Content-Security-Policy` | `Etag` |
+| `Feature-Policy` | `Referrer-Policy` |
+| `Set-Cookie` | `Strict-Transport-Security` |
+| `X-Content-Type-Options` | `X-Frame-Options` |
+| `X-Permitted-Cross-Domain-Policies` | `X-XSS-Protection` |
+|||
 
 ## Empty values check
 * Any response header
