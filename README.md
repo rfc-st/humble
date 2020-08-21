@@ -82,6 +82,7 @@ optional arguments:
 * `X-AspNet-Version`
 * `X-AspNetMvc-Version`
 * `X-Backend`
+* `X-Backend-Server`
 * `X-CF-Powered-By`
 * `X-Cocoon-Version`
 * `X-Content-Powered-By`
