@@ -348,6 +348,13 @@ if 'Strict-Transport-Security' in headers:
             print_detail("[ists]", "a")
         i_cnt += 1
 
+if 'Timing-Allow-Origin' in headers:
+    if '*' in headers['Timing-Allow-Origin']:
+        print_header("Timing-Allow-Origin")
+        if not args.brief:
+            print_detail("[itao]", "a")
+        i_cnt += 1
+
 if 'X-Content-Type-Options' in headers:
     if ',' in headers['X-Content-Type-Options']:
         print_header("X-Content-Type-Options")

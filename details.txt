@@ -65,6 +65,9 @@
 [ists]
  It is recommended to add 'includeSubDomains' and define 'max-age' equal or greater than 31536000 (seconds = 1 year).
 
+[itao]
+ The value '*' gives permission to any origin to see timing resources via Resource Timing API. 
+
 [ixcd]
  Set this header as restrictively as possible; the value 'all' could permit any cross-domain requests from Flash and PDF documents.
 
@@ -79,4 +82,3 @@
 
 [aisc]
  All, or any of the values in these headers could be considered insecure; check the following advices:
-

@@ -94,9 +94,10 @@ optional arguments:
 | `Access-Control-Allow-Origin` | `Cache-Control` |
 | `Content-Security-Policy` | `Etag` |
 | `Feature-Policy` | `Referrer-Policy` |
-| `Set-Cookie` | `Strict-Transport-Security` |
-| `X-Content-Type-Options` | `X-Frame-Options` |
-| `X-Permitted-Cross-Domain-Policies` | `X-XSS-Protection` |
+| `Timing-Allow-Origin` | `X-Frame-Options` |
+| `Set-Cookie` | `X-XSS-Protection` |
+| `Strict-Transport-Security` | `X-Permitted-Cross-Domain-Policies` |
+| `X-Content-Type-Options` ||
 |||
 
 ## Empty values check
