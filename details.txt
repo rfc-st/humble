@@ -72,10 +72,10 @@
  Use '1; mode=block' in order to enable cross-site scripting filter and prevent rendering the page if an attack is detected.
 
 [aemp]
- The following headers have no value, which is equivalent to as if they were not enabled: 
+ The following headers have no value, which in some cases could be equivalent to as if they were not enabled:
 
 [afgp]
- Change these values, or remove the headers, if any of them identify real software/version:
+ Remove these headers, or modify their values, if any of them identify real software/version:
 
 [aisc]
  All, or any of the values in these headers could be considered insecure; check the following advices:

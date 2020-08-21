@@ -44,7 +44,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.2020/08/15, by Rafa 'Bluesman' Faura"
+version = "v.2020/08/21, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -196,7 +196,7 @@ print_summary()
 
 print_headers()
 
-# Analysys - Missing headers
+# Analysys - 1. Missing headers
 
 m_cnt = 0
 
@@ -228,7 +228,7 @@ if m_cnt == 0:
 
 print("")
 
-# Analysis - Fingerprinting through headers / values
+# Analysis - 2. Fingerprinting through headers / values
 
 f_cnt = 0
 
@@ -249,11 +249,12 @@ list_fng = ['MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
         if key in headers:
-            print_header(key)
-            if not args.brief:
-                print(" " + headers[key])
-                print("")
-            f_cnt += 1
+            if headers[key]:
+                print_header(key)
+                if not args.brief:
+                    print(" " + headers[key])
+                    print("")
+                f_cnt += 1
 
 if args.brief and f_cnt != 0:
     print("")
@@ -264,7 +265,7 @@ if f_cnt == 0:
 
 print("")
 
-# Analysis - Insecure values
+# Analysis - 3. Insecure values
 
 i_cnt = 0
 
@@ -390,7 +391,7 @@ if i_cnt == 0:
 
 print("")
 
-# Analysis - Empty values
+# Analysis - 4. Empty values
 
 e_cnt = 0
 
@@ -398,15 +399,11 @@ print_section("[4. Empty values]\n")
 if not args.brief:
     print_detail("[aemp]", "a")
 
-if any(elem.lower() in headers for elem in list_miss):
-    for key in list_miss:
-        if key in headers:
-            if not headers[key]:
-                print_header(key)
-                e_cnt += 1
-
-if args.brief and e_cnt != 0:
-    print("")
+for key in headers:
+    if not headers[key]:
+        print_header(key)
+        print("")
+        e_cnt += 1
 
 if e_cnt == 0:
     print_ok()
