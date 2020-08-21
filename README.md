@@ -74,30 +74,21 @@ optional arguments:
 * `X-XSS-Protection`
 
 ## Fingerprint headers check
-* `MicrosoftOfficeWebServer`
-* `MicrosoftSharePointTeamServices`
-* `MS-Author-Via`
-* `Powered-By`
-* `Server`
-* `X-AspNet-Version`
-* `X-AspNetMvc-Version`
-* `X-Backend`
-* `X-Backend-Server`
-* `X-CF-Powered-By`
-* `X-Cocoon-Version`
-* `X-Content-Powered-By`
-* `X-Drupal-Cache`
-* `X-Drupal-Dynamic-Cache`
-* `X-Generator`
-* `X-Mod-Pagespeed`
-* `X-Nginx-Cache-Status`
-* `X-Page-Speed`
-* `X-Powered-By`
-* `X-Powered-By-Plesk`
-* `X-Powered-CMS`
-* `X-Redirect-By`
-* `X-Server-Powered-By`
-* `X-Shopify-Stage`
+| | |
+| ------------- | ------------- |
+| `MicrosoftOfficeWebServer`  | `X-Content-Powered-By`|
+| `MicrosoftSharePointTeamServices` | `X-Drupal-Cache` | 
+| `MicrosoftOfficeWebServer` | `X-Drupal-Dynamic-Cache` | 
+| `MicrosoftSharePointTeamServices` | `X-Generator` | 
+| `MS-Author-Via` | `X-Mod-Pagespeed` | 
+| `Powered-By` | `X-Nginx-Cache-Status` | 
+| `Server` | `X-Page-Speed` | 
+| `X-AspNet-Version` | `X-Powered-By` | 
+| `X-AspNetMvc-Version` | `X-Powered-By-Plesk` | 
+| `X-Backend` | `X-Powered-CMS` | 
+| `X-Backend-Server` | `X-Redirect-By` | 
+| `X-CF-Powered-By` | `X-Server-Powered-By` | 
+| `X-Cocoon-Version` | `X-Shopify-Stage` | 
 
 ## Insecure values check
 * `Access-Control-Allow-Origin`
