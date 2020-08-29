@@ -86,6 +86,8 @@ optional arguments:
 | `X-Backend-Server` | `X-Redirect-By` | 
 | `X-CF-Powered-By` | `X-Server-Powered-By` | 
 | `X-Cocoon-Version` | `X-Shopify-Stage` |
+| `X-FW-Server` | `X-Litespeed-Cache` |
+| `X-Server` | |   
 |||
 
 ## Insecure values check
