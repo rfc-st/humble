@@ -12,15 +12,15 @@ HTTP Headers Analyzer<br />
 <br />
 .: Brief analysis<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b_20200815.JPG" alt="Brief Analysis">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b_20200911.JPG" alt="Brief Analysis">
 <br />
 .: Brief analysis + retrieved headers<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br_20200815.JPG" alt="Brief analysis + retrieved headers">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br_20200911.JPG" alt="Brief analysis + retrieved headers">
 <br />
 .: Full analysis<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_20200815.JPG" alt="Full analysis">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_20200911.JPG" alt="Full analysis">
 <br />
 
 ## Installation
