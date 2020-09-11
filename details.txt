@@ -14,9 +14,9 @@
  For reporting/enforcement of Certificate Transparency requirements, preventing the use of misissued certificates from going unnoticed.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
-[mfeature]
- Allow and deny the use of browser features.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
+[mpermission]
+ Previously called 'Feature-Policy', allow and deny the use of browser features.
+ Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
 [mnel]
  Enables web applications to declare a reporting policy that can be used to report network or application errors.

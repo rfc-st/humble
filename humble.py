@@ -44,7 +44,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.2020/08/29, by Rafa 'Bluesman' Faura"
+version = "v.2020/09/11, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -203,11 +203,11 @@ m_cnt = 0
 print_section("[1. Missing headers]\n")
 
 list_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Security-Policy',
-             'Expect-CT', 'Feature-Policy', 'NEL', 'Pragma', 'Referrer-Policy',
-             'Strict-Transport-Security', 'X-Content-Type-Options',
-             'X-Frame-Options', 'X-XSS-Protection']
+             'Expect-CT', 'Permissions-Policy', 'NEL', 'Pragma',
+             'Referrer-Policy', 'Strict-Transport-Security',
+             'X-Content-Type-Options', 'X-Frame-Options', 'X-XSS-Protection']
 
-list_detail = ['[mcache]', '[mcsd]', '[mcsp]', '[mexpect]', '[mfeature]',
+list_detail = ['[mcache]', '[mcsd]', '[mcsp]', '[mexpect]', '[mpermission]',
                '[mnel]', '[mpragma]', '[mreferrer]', '[msts]', '[mxcto]',
                '[mxfo]', '[mxxp]']
 
@@ -312,9 +312,9 @@ inodes information.")
         print("")
     i_cnt += 1
 
-if 'Feature-Policy' in headers:
-    if '*' in headers['Feature-Policy']:
-        print_header("Feature-Policy")
+if 'Permissions-Policy' in headers:
+    if '*' in headers['Permissions-Policy']:
+        print_header("Permissions-Policy")
         if not args.brief:
             print_detail("[ifpol]", "a")
         i_cnt += 1

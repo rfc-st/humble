@@ -64,7 +64,7 @@ optional arguments:
 | ------------- | ------------- |
 | `Cache-Control`| `Clear-Site-Data` |
 | `Content-Security-Policy` | `Expect-CT` |
-| `Feature-Policy` | `NEL` | 
+| `Permissions-Policy` | `NEL` | 
 | `Pragma` | `Referrer-Policy` |
 | `Strict-Transport-Security` | `X-Content-Type-Options` |
 | `X-Frame-Options` | `X-XSS-Protection` |
@@ -73,8 +73,6 @@ optional arguments:
 ## Fingerprint headers check
 |||
 | ------------- | ------------- |
-| `MicrosoftOfficeWebServer`  | `X-Content-Powered-By`|
-| `MicrosoftSharePointTeamServices` | `X-Drupal-Cache` | 
 | `MicrosoftOfficeWebServer` | `X-Drupal-Dynamic-Cache` | 
 | `MicrosoftSharePointTeamServices` | `X-Generator` | 
 | `MS-Author-Via` | `X-Mod-Pagespeed` | 
@@ -88,6 +86,8 @@ optional arguments:
 | `X-Cocoon-Version` | `X-Shopify-Stage` |
 | `X-FW-Server` | `X-Litespeed-Cache` |
 | `X-Server` | |   
+| `X-Content-Powered-By`|| 
+| `X-Drupal-Cache` ||
 |||
 
 ## Insecure values check
@@ -95,7 +95,7 @@ optional arguments:
 | ------------- | ------------- |
 | `Access-Control-Allow-Origin` | `Cache-Control` |
 | `Content-Security-Policy` | `Etag` |
-| `Feature-Policy` | `Referrer-Policy` |
+| `Permissions-Policy` | `Referrer-Policy` |
 | `Timing-Allow-Origin` | `X-Frame-Options` |
 | `Set-Cookie` | `X-XSS-Protection` |
 | `Strict-Transport-Security` | `X-Permitted-Cross-Domain-Policies` |
