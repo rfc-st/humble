@@ -44,7 +44,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.2020/09/11, by Rafa 'Bluesman' Faura"
+version = "v.2020/10/12, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -242,10 +242,12 @@ list_fng = ['MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
             'X-AspNetMvc-Version', 'X-Backend', 'X-Backend-Server',
             'X-CF-Powered-By', 'X-Cocoon-Version', 'X-Content-Powered-By',
             'X-Drupal-Cache', 'X-Drupal-Dynamic-Cache', 'X-FW-Server',
-            'X-Generator', 'X-Litespeed-Cache', 'X-Mod-Pagespeed',
-            'X-Nginx-Cache-Status', 'X-Page-Speed', 'X-Powered-By',
-            'X-Powered-By-Plesk', 'X-Powered-CMS', 'X-Redirect-By',
-            'X-Server', 'X-Server-Powered-By', 'X-Shopify-Stage']
+            'X-Generator', 'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
+            'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
+            'X-Mod-Pagespeed', 'X-Nginx-Cache-Status', 'X-Page-Speed',
+            'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
+            'X-Redirect-By', 'X-Server', 'X-Server-Powered-By',
+            'X-Shopify-Stage']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:

@@ -85,9 +85,10 @@ optional arguments:
 | `X-CF-Powered-By` | `X-Server-Powered-By` | 
 | `X-Cocoon-Version` | `X-Shopify-Stage` |
 | `X-FW-Server` | `X-Litespeed-Cache` |
-| `X-Server` | |   
-| `X-Content-Powered-By`|| 
-| `X-Drupal-Cache` ||
+| `X-Server` | `X-Litespeed-Cache-Control` |   
+| `X-Content-Powered-By`| `X-LiteSpeed-Purge` | 
+| `X-Drupal-Cache` | `X-LiteSpeed-Tag` |
+| `X-LiteSpeed-Vary` ||
 |||
 
 ## Insecure values check
