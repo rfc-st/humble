@@ -44,7 +44,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.2020/10/15, by Rafa 'Bluesman' Faura"
+version = '\r\n' + "2020/10/15, by Rafa 'Bluesman' Faura" + '\r\n' + '\r\n'
 
 
 def print_section(title):
