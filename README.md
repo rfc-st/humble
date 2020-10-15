@@ -88,7 +88,7 @@ optional arguments:
 | `X-Server` | `X-Litespeed-Cache-Control` |   
 | `X-Content-Powered-By`| `X-LiteSpeed-Purge` | 
 | `X-Drupal-Cache` | `X-LiteSpeed-Tag` |
-| `X-LiteSpeed-Vary` ||
+| `X-LiteSpeed-Vary` | `Via` |
 |||
 
 ## Insecure values check

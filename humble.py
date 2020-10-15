@@ -44,7 +44,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = "v.2020/10/12, by Rafa 'Bluesman' Faura"
+version = "v.2020/10/15, by Rafa 'Bluesman' Faura"
 
 
 def print_section(title):
@@ -238,7 +238,7 @@ if not args.brief:
     print_detail("[afgp]", "a")
 
 list_fng = ['MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
-            'MS-Author-Via', 'Powered-By', 'Server', 'X-AspNet-Version',
+            'MS-Author-Via', 'Powered-By', 'Server', 'Via', 'X-AspNet-Version',
             'X-AspNetMvc-Version', 'X-Backend', 'X-Backend-Server',
             'X-CF-Powered-By', 'X-Cocoon-Version', 'X-Content-Powered-By',
             'X-Drupal-Cache', 'X-Drupal-Dynamic-Cache', 'X-FW-Server',
