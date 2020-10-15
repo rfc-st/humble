@@ -100,7 +100,7 @@ optional arguments:
 | `Timing-Allow-Origin` | `X-Frame-Options` |
 | `Set-Cookie` | `X-XSS-Protection` |
 | `Strict-Transport-Security` | `X-Permitted-Cross-Domain-Policies` |
-| `X-Content-Type-Options` ||
+| `X-Content-Type-Options` | `X-Runtime` |
 |||
 
 ## Empty values check

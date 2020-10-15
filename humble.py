@@ -385,6 +385,15 @@ if 'X-Permitted-Cross-Domain-Policies' in headers:
             print_detail("[ixcd]", "a")
         i_cnt += 1
 
+if 'X-Runtime' in headers:
+    print_header("X-Runtime")
+    if not args.brief:
+        print(" The value '" + headers["X-Runtime"] + "' could allow valid \
+user harvesting attacks (by providing the time it takes to process each \
+request). ")
+        print("")
+        i_cnt += 1
+
 if 'X-XSS-Protection' in headers:
     if not headers["X-XSS-Protection"].startswith('1; mode=block'):
         print_header("X-XSS-Protection")

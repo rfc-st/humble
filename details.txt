@@ -70,7 +70,7 @@
 
 [ixcd]
  Set this header as restrictively as possible; the value 'all' could permit any cross-domain requests from Flash and PDF documents.
-
+ 
 [ixxp]
  Use '1; mode=block' in order to enable cross-site scripting filter and prevent rendering the page if an attack is detected.
 
