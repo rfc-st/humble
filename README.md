@@ -89,6 +89,8 @@ optional arguments:
 | `X-Content-Powered-By`| `X-LiteSpeed-Purge` | 
 | `X-Drupal-Cache` | `X-LiteSpeed-Tag` |
 | `X-LiteSpeed-Vary` | `Via` |
+| `X-Varnish` | `X-Debug-Token` |
+| `X-Debug-Token-Link` | `swift-performance` |
 |||
 
 ## Insecure values check
