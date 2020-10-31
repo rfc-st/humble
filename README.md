@@ -104,6 +104,7 @@ optional arguments:
 | `Set-Cookie` | `X-XSS-Protection` |
 | `Strict-Transport-Security` | `X-Permitted-Cross-Domain-Policies` |
 | `X-Content-Type-Options` | `X-Runtime` |
+| `Public-Key-Pins` ||
 |||
 
 ## Empty values check

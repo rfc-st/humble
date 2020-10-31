@@ -323,6 +323,12 @@ if 'Permissions-Policy' in headers:
             print_detail("[ifpol]", "a")
         i_cnt += 1
 
+if 'Public-Key-Pins' in headers:
+    print_header("Public-Key-Pins")
+    if not args.brief:
+        print_detail("[ipkp]", "d")
+    i_cnt += 1
+
 if 'Referrer-Policy' in headers:
     list_ref = ['strict-origin', 'strict-origin-when-cross-origin',
                 'no-referrer-when-downgrade', 'no-referrer']

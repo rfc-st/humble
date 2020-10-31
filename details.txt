@@ -55,6 +55,10 @@
 [ifpol]
  The value '*' allows the feature in this document, and all nested browsing contexts (iframes) regardless of their origin.
 
+[ipkp]
+ This header, and public Key Pinning mechanism, was deprecated in favor of Certificate Transparency and Expect-CT header.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Public-Key-Pins
+
 [iref]
  Use 'strict-origin' or 'strict-origin-when-cross-origin' if there are sensitive or private resources in the domain.
  Otherwise fallback to 'no-referrer-when-downgrade' (default browser behaviour) or even 'no-referrer' if is not required.
