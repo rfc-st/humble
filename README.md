@@ -91,6 +91,7 @@ optional arguments:
 | `X-LiteSpeed-Vary` | `Via` |
 | `X-Varnish` | `X-Debug-Token` |
 | `X-Debug-Token-Link` | `swift-performance` |
+| `Servlet-Engine` ||
 |||
 
 ## Insecure values check

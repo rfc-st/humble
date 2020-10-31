@@ -45,7 +45,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2020/10/30, by Rafa 'Bluesman' Faura" + '\r\n' + '\r\n'
+version = '\r\n' + "2020/10/31, by Rafa 'Bluesman' Faura" + '\r\n' + '\r\n'
 
 
 def print_section(title):
@@ -249,7 +249,7 @@ list_fng = ['MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
             'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
             'X-Redirect-By', 'X-Server', 'X-Server-Powered-By',
             'X-Shopify-Stage', 'X-Varnish', 'X-Debug-Token',
-            'X-Debug-Token-Link', 'swift-performance']
+            'X-Debug-Token-Link', 'swift-performance', 'Servlet-Engine']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
