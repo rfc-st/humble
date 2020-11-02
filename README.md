@@ -132,5 +132,4 @@ https://www.w3.org<br />
 ## License
 
 MIT © Rafa 'Bluesman' Faura<br/>
-Original Creator - Rafa 'Bluesman' Faura
-rafael.fcucalon@gmail.com
+Original Creator - Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
