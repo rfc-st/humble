@@ -48,6 +48,23 @@ if sys.version_info < (3, 2):
 version = '\r\n' + "2020/11/02, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
+guides = '\r\n' + '[Apache]' + '\r\n' + '\r\n' + \
+         'https://htaccessbook.com/important-security-headers/' + '\r\n' + \
+         'https://geekflare.com/apache-web-server-hardening-security/' + \
+         '\r\n' + \
+         'https://www.adminbyaccident.com/security/how-to-harden-apache-\
+http/' + '\r\n' + \
+         'https://www.digitalocean.com/community/tutorials/recommended-steps\
+-to-harden-apache-http-on-freebsd-12-0' + '\r\n' + '\r\n' + '[IIS]' + \
+ '\r\n' + '\r\n' + 'https://geekflare.com/http-header-implementation/' + \
+ '\r\n' + 'https://www.ryadel.com/en/iis-web-config-secure-http-response-\
+headers-pass-securityheaders-io-scan/' + '\r\n' + 'https://www.\
+reflections-ibs.com/blog/articles/hardening-your-http-response-headers-in-\
+iis-server-security-headers' + '\r\n' + '\r\n' + '[Nginx]' + '\r\n' + \
+ '\r\n' + 'https://www.acunetix.com/blog/web-security-zone/hardening-nginx/' \
+ + '\r\n' + 'https://www.getpagespeed.com/server-setup/nginx-security-headers\
+-the-right-way' + '\r\n'
+
 
 def print_section(title):
     if not args.output:
@@ -100,6 +117,11 @@ def print_detail(id, mode):
                     print(next(rf))
 
 
+def show_guides():
+    print(guides)
+    raise SystemExit
+
+
 def request_exceptions():
     try:
         r = requests.get(domain, timeout=6)
@@ -145,7 +167,7 @@ parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
 https://github.com/rfc-st/humble")
 optional = parser._action_groups.pop()
 required = parser.add_argument_group('required arguments')
-required.add_argument('-d', type=str, dest='domain', required=True,
+optional.add_argument('-d', type=str, dest='domain', required=False,
                       help="domain to scan, including schema. \
                       E.g., https://google.com")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
@@ -154,6 +176,8 @@ optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
                       help="save analysis to file (domain_yyyymmdd)")
 optional.add_argument("-r", dest='retrieved', action="store_true",
                       required=False, help="show retrieved HTTP headers")
+optional.add_argument("-g", dest='guides', action="store_true", required=False,
+                      help="show guidelines on securing most used web servers")
 optional.add_argument("-v", "--version", action='version',
                       version=version, help="show version")
 parser._action_groups.append(optional)
@@ -161,6 +185,11 @@ parser._action_groups.append(optional)
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 domain = args.domain
+
+# Show guides
+
+if args.guides:
+    show_guides()
 
 # Exception handling
 
