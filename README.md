@@ -91,7 +91,8 @@ optional arguments:
 | `X-LiteSpeed-Vary` | `Via` |
 | `X-Varnish` | `X-Debug-Token` |
 | `X-Debug-Token-Link` | `swift-performance` |
-| `Servlet-Engine` ||
+| `Servlet-Engine` | `X-Turbo-Charged-By` |
+| `Liferay-Portal` | |
 |||
 
 ## Insecure values check
@@ -128,8 +129,8 @@ https://scotthelme.co.uk/<br />
 https://webtechsurvey.com/common-response-headers<br />
 https://www.w3.org<br />
 
-
 ## License
 
 MIT © Rafa 'Bluesman' Faura<br/>
 Original Creator - Rafa 'Bluesman' Faura
+rafael.fcucalon@gmail.com

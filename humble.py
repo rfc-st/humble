@@ -45,7 +45,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2020/10/31, by Rafa 'Bluesman' Faura" + '\r\n' + '\r\n'
+version = '\r\n' + "2020/11/02, by Rafa 'Bluesman' Faura" + '\r\n' + '\r\n'
 
 
 def print_section(title):
@@ -238,18 +238,20 @@ print_section("[2. Fingerprint headers]\n")
 if not args.brief:
     print_detail("[afgp]", "a")
 
-list_fng = ['MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
-            'MS-Author-Via', 'Powered-By', 'Server', 'Via', 'X-AspNet-Version',
-            'X-AspNetMvc-Version', 'X-Backend', 'X-Backend-Server',
-            'X-CF-Powered-By', 'X-Cocoon-Version', 'X-Content-Powered-By',
-            'X-Drupal-Cache', 'X-Drupal-Dynamic-Cache', 'X-FW-Server',
-            'X-Generator', 'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
+list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
+            'MicrosoftSharePointTeamServices', 'MS-Author-Via', 'Powered-By',
+            'Server', 'Via', 'X-AspNet-Version', 'X-AspNetMvc-Version',
+            'X-Backend', 'X-Backend-Server', 'X-CF-Powered-By',
+            'X-Cocoon-Version', 'X-Content-Powered-By', 'X-Drupal-Cache',
+            'X-Drupal-Dynamic-Cache', 'X-FW-Server', 'X-Generator',
+            'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
             'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
             'X-Mod-Pagespeed', 'X-Nginx-Cache-Status', 'X-Page-Speed',
             'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
             'X-Redirect-By', 'X-Server', 'X-Server-Powered-By',
-            'X-Shopify-Stage', 'X-Varnish', 'X-Debug-Token',
-            'X-Debug-Token-Link', 'swift-performance', 'Servlet-Engine']
+            'X-Shopify-Stage', 'X-Turbo-Charged-By', 'X-Varnish',
+            'X-Debug-Token', 'X-Debug-Token-Link', 'swift-performance',
+            'Servlet-Engine']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
