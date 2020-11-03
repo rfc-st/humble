@@ -110,6 +110,12 @@ optional arguments:
 ## Empty values check
 * Any response header
 
+## Guidelines to enable secure headers
+* Apache
+* Cloudflare workers
+* IIS
+* Nginx
+
 ## To-do
 
 - [ ] Add more header/value checks (only security-oriented)
