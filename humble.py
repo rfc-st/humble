@@ -45,25 +45,26 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2020/11/02, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2020/11/03, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
-guides = '\r\n' + '[Apache]' + '\r\n' + '\r\n' + \
-         'https://htaccessbook.com/important-security-headers/' + '\r\n' + \
-         'https://geekflare.com/apache-web-server-hardening-security/' + \
-         '\r\n' + \
-         'https://www.adminbyaccident.com/security/how-to-harden-apache-\
-http/' + '\r\n' + \
-         'https://www.digitalocean.com/community/tutorials/recommended-steps\
--to-harden-apache-http-on-freebsd-12-0' + '\r\n' + '\r\n' + '[IIS]' + \
- '\r\n' + '\r\n' + 'https://geekflare.com/http-header-implementation/' + \
- '\r\n' + 'https://www.ryadel.com/en/iis-web-config-secure-http-response-\
-headers-pass-securityheaders-io-scan/' + '\r\n' + 'https://www.\
-reflections-ibs.com/blog/articles/hardening-your-http-response-headers-in-\
-iis-server-security-headers' + '\r\n' + '\r\n' + '[Nginx]' + '\r\n' + \
- '\r\n' + 'https://www.acunetix.com/blog/web-security-zone/hardening-nginx/' \
- + '\r\n' + 'https://www.getpagespeed.com/server-setup/nginx-security-headers\
--the-right-way' + '\r\n'
+guides = '\r\n' + Style.BRIGHT + '[Apache]' + Style.NORMAL + '\r\n' + \
+ '\r\n' + 'https://htaccessbook.com/important-security-headers/' + '\r\n' + \
+ 'https://geekflare.com/apache-web-server-hardening-security/' + \
+ '\r\n' + 'https://www.adminbyaccident.com/security/how-to-harden-apache-\
+http/' + '\r\n' + 'https://www.digitalocean.com/community/tutorials/\
+recommended-steps-to-harden-apache-http-on-freebsd-12-0' + '\r\n' + '\r\n' + \
+ Style.BRIGHT + '[Cloudflare]' + '\r\n' + '\r\n' + Style.NORMAL + 'https://\
+jarv.is/notes/security-headers-cloudflare-workers/' + '\r\n' + 'https://blog.\
+headforcloud.com/2020/06/26/static-hosting-cf-workers/' + '\r\n' + '\r\n' + \
+ Style.BRIGHT + '[IIS]' + Style.NORMAL + '\r\n' + '\r\n' + 'https://geekflare.\
+com/http-header-implementation/' + '\r\n' + 'https://www.ryadel.com/en/iis-\
+web-config-secure-http-response-headers-pass-securityheaders-io-scan/' + \
+ '\r\n' + 'https://www.reflections-ibs.com/blog/articles/hardening-your-http\
+-response-headers-in-iis-server-security-headers' + '\r\n' + '\r\n' + \
+ Style.BRIGHT + '[Nginx]' + Style.NORMAL + '\r\n' + '\r\n' + 'https://www.\
+acunetix.com/blog/web-security-zone/hardening-nginx/' + '\r\n' + 'https://www\
+.getpagespeed.com/server-setup/nginx-security-headers-the-right-way' + '\r\n'
 
 
 def print_section(title):
