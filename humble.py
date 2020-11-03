@@ -4,7 +4,7 @@
 #
 # MIT License
 #
-# Copyright (c) 2020 Rafa 'Bluesman' Faura
+# Copyright (c) 2020 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -102,7 +102,6 @@ def print_headers():
         print_section("[HTTP Headers]\n")
         for key, value in sorted(headers.items()):
             print(" " + key + ':', value)
-
     print('\n')
 
 
@@ -272,17 +271,17 @@ if not args.brief:
 list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'MicrosoftSharePointTeamServices', 'MS-Author-Via', 'Powered-By',
             'Server', 'Via', 'X-AspNet-Version', 'X-AspNetMvc-Version',
-            'X-Backend', 'X-Backend-Server', 'X-CF-Powered-By',
+            'X-Backend', 'X-Backend-Server', 'X-BEServer', 'X-CF-Powered-By',
             'X-Cocoon-Version', 'X-Content-Powered-By', 'X-Drupal-Cache',
-            'X-Drupal-Dynamic-Cache', 'X-FW-Server', 'X-Generator',
-            'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
+            'X-Drupal-Dynamic-Cache', 'X-FEServer', 'X-FW-Server',
+            'X-Generator', 'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
             'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
-            'X-Mod-Pagespeed', 'X-Nginx-Cache-Status', 'X-Page-Speed',
-            'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
-            'X-Redirect-By', 'X-Server', 'X-Server-Powered-By',
-            'X-Shopify-Stage', 'X-Turbo-Charged-By', 'X-Varnish',
-            'X-Debug-Token', 'X-Debug-Token-Link', 'swift-performance',
-            'Servlet-Engine']
+            'X-Mod-Pagespeed', 'X-Nginx-Cache-Status', 'X-OWA-Version',
+            'X-Page-Speed', 'X-Powered-By', 'X-Powered-By-Plesk',
+            'X-Powered-CMS', 'X-Redirect-By', 'X-Server',
+            'X-Server-Powered-By', 'X-Shopify-Stage', 'X-Turbo-Charged-By',
+            'X-Varnish', 'X-Debug-Token', 'X-Debug-Token-Link',
+            'swift-performance', 'Servlet-Engine']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:

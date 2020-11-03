@@ -91,7 +91,8 @@ optional arguments:
 | `X-Varnish` | `X-Debug-Token` |
 | `X-Debug-Token-Link` | `swift-performance` |
 | `Servlet-Engine` | `X-Turbo-Charged-By` |
-| `Liferay-Portal` | |
+| `Liferay-Portal` | `X-OWA-Version` |
+| `X-BEServer` | `X-FEServer` |
 |||
 
 ## Insecure values check
