@@ -45,7 +45,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2020/11/03, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2020/11/04, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + Style.BRIGHT + '[Apache]' + Style.NORMAL + '\r\n' + \
@@ -271,17 +271,18 @@ if not args.brief:
 list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'MicrosoftSharePointTeamServices', 'MS-Author-Via', 'Powered-By',
             'Server', 'Via', 'X-AspNet-Version', 'X-AspNetMvc-Version',
-            'X-Backend', 'X-Backend-Server', 'X-BEServer', 'X-CF-Powered-By',
-            'X-Cocoon-Version', 'X-Content-Powered-By', 'X-Drupal-Cache',
-            'X-Drupal-Dynamic-Cache', 'X-FEServer', 'X-FW-Server',
-            'X-Generator', 'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
-            'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
-            'X-Mod-Pagespeed', 'X-Nginx-Cache-Status', 'X-OWA-Version',
-            'X-Page-Speed', 'X-Powered-By', 'X-Powered-By-Plesk',
-            'X-Powered-CMS', 'X-Redirect-By', 'X-Server',
-            'X-Server-Powered-By', 'X-Shopify-Stage', 'X-Turbo-Charged-By',
-            'X-Varnish', 'X-Debug-Token', 'X-Debug-Token-Link',
-            'swift-performance', 'Servlet-Engine']
+            'X-Backend', 'X-Backend-Server', 'X-BEServer',
+            'X-Cache-Only-Varnish', 'X-CF-Powered-By', 'X-Cocoon-Version',
+            'X-Content-Powered-By', 'X-Drupal-Cache', 'X-Drupal-Dynamic-Cache',
+            'X-FEServer', 'X-FW-Server', 'X-Generator', 'X-Litespeed-Cache',
+            'X-Litespeed-Cache-Control', 'X-LiteSpeed-Purge',
+            'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary', 'X-Mod-Pagespeed',
+            'X-Nginx-Cache-Status', 'X-OWA-Version', 'X-Page-Speed',
+            'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
+            'X-Redirect-By', 'X-Server', 'X-Server-Powered-By',
+            'X-Shopify-Stage', 'X-Turbo-Charged-By', 'X-Varnish',
+            'X-Debug-Token', 'X-Debug-Token-Link', 'swift-performance',
+            'Servlet-Engine']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:

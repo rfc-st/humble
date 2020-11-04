@@ -61,51 +61,45 @@ optional arguments:
 ## Missing headers check
 |||
 | ------------- | ------------- |
-| `Cache-Control`| `Clear-Site-Data` |
-| `Content-Security-Policy` | `Expect-CT` |
-| `Permissions-Policy` | `NEL` | 
-| `Pragma` | `Referrer-Policy` |
-| `Strict-Transport-Security` | `X-Content-Type-Options` |
-| `X-Frame-Options` | `X-XSS-Protection` |
+| `Cache-Control`| `Pragma` |
+| `Clear-Site-Data` | `Referrer-Policy` |
+| `Content-Security-Policy` | `Strict-Transport-Security` | 
+| `Expect-CT` | `X-Content-Type-Options` |
+| `NEL` | `X-Frame-Options` |
+| `Permissions-Policy` | `X-XSS-Protection` |
 |||
 
 ## Fingerprint headers check
-|||
-| ------------- | ------------- |
-| `MicrosoftOfficeWebServer` | `X-Drupal-Dynamic-Cache` | 
-| `MicrosoftSharePointTeamServices` | `X-Generator` | 
-| `MS-Author-Via` | `X-Mod-Pagespeed` | 
-| `Powered-By` | `X-Nginx-Cache-Status` | 
-| `Server` | `X-Page-Speed` | 
-| `X-AspNet-Version` | `X-Powered-By` | 
-| `X-AspNetMvc-Version` | `X-Powered-By-Plesk` | 
-| `X-Backend` | `X-Powered-CMS` | 
-| `X-Backend-Server` | `X-Redirect-By` | 
-| `X-CF-Powered-By` | `X-Server-Powered-By` | 
-| `X-Cocoon-Version` | `X-Shopify-Stage` |
-| `X-FW-Server` | `X-Litespeed-Cache` |
-| `X-Server` | `X-Litespeed-Cache-Control` |   
-| `X-Content-Powered-By`| `X-LiteSpeed-Purge` | 
-| `X-Drupal-Cache` | `X-LiteSpeed-Tag` |
-| `X-LiteSpeed-Vary` | `Via` |
-| `X-Varnish` | `X-Debug-Token` |
-| `X-Debug-Token-Link` | `swift-performance` |
-| `Servlet-Engine` | `X-Turbo-Charged-By` |
-| `Liferay-Portal` | `X-OWA-Version` |
-| `X-BEServer` | `X-FEServer` |
-|||
+||||
+| ------------- | ------------- | ------------- |
+| `Liferay-Portal` | `MicrosoftOfficeWebServer` | `MicrosoftSharePointTeamServices` |
+| `MS-Author-Via` | `Powered-By'` | `Server` | 
+| `Via` | `X-AspNet-Version` | `X-AspNetMvc-Version` | 
+| `X-Backend` | `X-Backend-Server` | `X-BEServer` | 
+| `X-Cache-Only-Varnish` | `X-CF-Powered-By` | `X-Cocoon-Version` | 
+| `X-Content-Powered-By` | `X-Drupal-Cache` | `X-Drupal-Dynamic-Cache` | 
+| `X-FEServer` | `X-FW-Server` | `X-Generator` | 
+| `X-Litespeed-Cache` | `X-Litespeed-Cache-Control` | `X-LiteSpeed-Purge` |
+| `X-LiteSpeed-Tag` | `X-LiteSpeed-Vary` | `X-Mod-Pagespeed` | 
+| `X-Nginx-Cache-Status` | `X-OWA-Version` | `X-Page-Speed` | 
+| `X-Powered-By` | `X-Powered-By-Plesk` |  `X-Powered-CMS` | 
+| `X-Redirect-By` | `X-Server` | `X-Server-Powered-By` | 
+| `X-Shopify-Stage` | `X-Turbo-Charged-By` | `X-Varnish` | 
+| `X-Debug-Token` | `X-Debug-Token-Link` | `swift-performance` | 
+| `Servlet-Engine` | | |
+||||
 
 ## Insecure values check
 |||
 | ------------- | ------------- |
-| `Access-Control-Allow-Origin` | `Cache-Control` |
-| `Content-Security-Policy` | `Etag` |
-| `Permissions-Policy` | `Referrer-Policy` |
-| `Timing-Allow-Origin` | `X-Frame-Options` |
-| `Set-Cookie` | `X-XSS-Protection` |
-| `Strict-Transport-Security` | `X-Permitted-Cross-Domain-Policies` |
-| `X-Content-Type-Options` | `X-Runtime` |
-| `Public-Key-Pins` ||
+| `Access-Control-Allow-Origin` | `Strict-Transport-Security` |
+| `Cache-Control` | `Timing-Allow-Origin` |
+| `Content-Security-Policy` | `X-Content-Type-Options` |
+| `Etag` | `X-Frame-Options` |
+| `Permissions-Policy` | `X-Permitted-Cross-Domain-Policies` |
+| `Public-Key-Pins` | `X-Runtime` |
+| `Referrer-Policy` | `X-XSS-Protection` |
+| `Set-Cookie` ||
 |||
 
 ## Empty values check
