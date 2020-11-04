@@ -59,21 +59,19 @@ optional arguments:
 ```
 
 ## Missing headers check
-|||
-| ------------- | ------------- |
-| `Cache-Control`| `Pragma` |
-| `Clear-Site-Data` | `Referrer-Policy` |
-| `Content-Security-Policy` | `Strict-Transport-Security` | 
-| `Expect-CT` | `X-Content-Type-Options` |
-| `NEL` | `X-Frame-Options` |
-| `Permissions-Policy` | `X-XSS-Protection` |
-|||
+||||
+| ------------- | ------------- | ------------- | 
+| `Cache-Control` | `Pragma` | `Clear-Site-Data` | 
+| `Referrer-Policy` | `Content-Security-Policy` | `Strict-Transport-Security` | 
+| `Expect-CT` | `X-Content-Type-Options` | `NEL` | 
+| `X-Frame-Options` | `Permissions-Policy` | `X-XSS-Protection` |
+||||
 
 ## Fingerprint headers check
 ||||
 | ------------- | ------------- | ------------- |
 | `Liferay-Portal` | `MicrosoftOfficeWebServer` | `MicrosoftSharePointTeamServices` |
-| `MS-Author-Via` | `Powered-By'` | `Server` | 
+| `MS-Author-Via` | `Powered-By` | `Server` | 
 | `Via` | `X-AspNet-Version` | `X-AspNetMvc-Version` | 
 | `X-Backend` | `X-Backend-Server` | `X-BEServer` | 
 | `X-Cache-Only-Varnish` | `X-CF-Powered-By` | `X-Cocoon-Version` | 
@@ -90,17 +88,14 @@ optional arguments:
 ||||
 
 ## Insecure values check
-|||
-| ------------- | ------------- |
-| `Access-Control-Allow-Origin` | `Strict-Transport-Security` |
-| `Cache-Control` | `Timing-Allow-Origin` |
-| `Content-Security-Policy` | `X-Content-Type-Options` |
-| `Etag` | `X-Frame-Options` |
-| `Permissions-Policy` | `X-Permitted-Cross-Domain-Policies` |
-| `Public-Key-Pins` | `X-Runtime` |
-| `Referrer-Policy` | `X-XSS-Protection` |
-| `Set-Cookie` ||
-|||
+||||
+| ------------- | ------------- | ------------- |
+| `Access-Control-Allow-Origin` | `Strict-Transport-Security` | `Cache-Control` | 
+| `Timing-Allow-Origin` | `Content-Security-Policy` | `X-Content-Type-Options` |
+| `Etag` | `X-Frame-Options` | `Permissions-Policy` | 
+| `X-Permitted-Cross-Domain-Policies` | `Public-Key-Pins` | `X-Runtime` |
+| `Referrer-Policy` | `X-XSS-Protection` | `Set-Cookie` |
+||||
 
 ## Empty values check
 * Any response header
