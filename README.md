@@ -100,10 +100,12 @@ optional arguments:
 ## Empty values check
 * Any response header
 
-## Guidelines to enable secure headers
-* Apache
-* Cloudflare workers
-* IIS
+## Guidelines to enable security HTTP headers
+* Amazon AWS
+* Apache HTTP Server
+* Cloudflare
+* MaxCDN
+* Microsoft Internet Information Services
 * Nginx
 
 ## To-do
