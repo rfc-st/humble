@@ -100,7 +100,7 @@ optional arguments:
 ## Empty values check
 * Any response header
 
-## Guidelines to enable security HTTP headers
+## Guidelines included to enable security HTTP headers
 * Amazon AWS
 * Apache HTTP Server
 * Cloudflare

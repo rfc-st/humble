@@ -56,7 +56,7 @@
  The value '*' allows the feature in this document, and all nested browsing contexts (iframes) regardless of their origin.
 
 [ipkp]
- This header, and public Key Pinning mechanism, was deprecated in favor of Certificate Transparency and Expect-CT header.
+ This header, and public Key Pinning mechanism, were deprecated in favor of Certificate Transparency and Expect-CT header.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Public-Key-Pins
 
 [iref]
