@@ -54,7 +54,7 @@ optional arguments:
   -b                 show brief analysis (no details/advices)
   -o {html,pdf,txt}  save analysis to file (domain_yyyymmdd)
   -r                 show retrieved HTTP headers
-  -g                 show guidelines on securing most used web servers
+  -g                 show guidelines on securing most used web servers/services
   -v, --version      show version
 ```
 

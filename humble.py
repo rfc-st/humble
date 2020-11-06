@@ -185,7 +185,8 @@ optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
 optional.add_argument("-r", dest='retrieved', action="store_true",
                       required=False, help="show retrieved HTTP headers")
 optional.add_argument("-g", dest='guides', action="store_true", required=False,
-                      help="show guidelines on securing most used web servers")
+                      help="show guidelines on securing most used web servers/\
+services")
 optional.add_argument("-v", "--version", action='version',
                       version=version, help="show version")
 parser._action_groups.append(optional)
