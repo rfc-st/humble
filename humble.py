@@ -45,7 +45,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2020/11/06, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2020/11/13, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Links that may be useful to secure servers/services and \
@@ -127,7 +127,7 @@ def print_detail(id, mode):
 
 def show_guides():
     print(guides)
-    raise SystemExit
+    sys.exit()
 
 
 def request_exceptions():
@@ -135,7 +135,7 @@ def request_exceptions():
         r = requests.get(domain, timeout=6)
         r.raise_for_status()
     except requests.exceptions.MissingSchema:
-        print("\nError: No schema supplied (e.g., http, https)\n")
+        print("\nError: No schema supplied (e.g., https)\n")
         raise SystemExit
     except requests.exceptions.InvalidURL:
         print("\nError: '" + domain + "' is not a valid URL\n")
@@ -151,7 +151,7 @@ def request_exceptions():
             print("\nError: '" + domain + "' not found\n")
             raise SystemExit
         elif r.status_code == 407:
-            print("\nError: Proxy required to acess'" + domain + "'\n")
+            print("\nError: Proxy required to access'" + domain + "'\n")
             raise SystemExit
         elif str(r.status_code).startswith("5"):
             print("\nError: Server error requesting '" + domain + "' \n")
@@ -178,12 +178,12 @@ required = parser.add_argument_group('required arguments')
 optional.add_argument('-d', type=str, dest='domain', required=False,
                       help="domain to scan, including schema. \
                       E.g., https://google.com")
+optional.add_argument("-r", dest='retrieved', action="store_true",
+                      required=False, help="show retrieved HTTP headers")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
                       help="show brief analysis (no details/advices)")
 optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
                       help="save analysis to file (domain_yyyymmdd)")
-optional.add_argument("-r", dest='retrieved', action="store_true",
-                      required=False, help="show retrieved HTTP headers")
 optional.add_argument("-g", dest='guides', action="store_true", required=False,
                       help="show guidelines on securing most used web servers/\
 services")
@@ -206,8 +206,8 @@ request_exceptions()
 
 # Headers retrieval
 
-c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0)\
- Gecko/20100101 Firefox/77.0'}
+c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:\
+82.0) Gecko/20100101 Firefox/82.0'}
 
 r = requests.get(domain, headers=c_headers)
 headers = r.headers
