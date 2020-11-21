@@ -45,7 +45,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2020/11/13, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2020/11/21, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Links that may be useful to secure servers/services and \
@@ -125,11 +125,6 @@ def print_detail(id, mode):
                     print(next(rf))
 
 
-def show_guides():
-    print(guides)
-    sys.exit()
-
-
 def request_exceptions():
     try:
         r = requests.get(domain, timeout=6)
@@ -198,7 +193,8 @@ domain = args.domain
 # Show guides
 
 if args.guides:
-    show_guides()
+    print(guides)
+    sys.exit()
 
 # Exception handling
 
