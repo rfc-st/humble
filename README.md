@@ -10,17 +10,17 @@ HTTP Headers Analyzer<br />
 <i>"A journey of a thousand miles begins with a single step. - Lao Tzu"</i>
 </p>
 <br />
-.: Brief analysis<br />
+.: Brief analysis (Windows)<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b_20200911.JPG" alt="Brief Analysis">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.JPG" alt="Brief Analysis">
 <br />
-.: Brief analysis + retrieved headers<br />
+.: Brief analysis + retrieved headers (Linux)<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br_20200911.JPG" alt="Brief analysis + retrieved headers">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.JPG" alt="Brief analysis + retrieved headers">
 <br />
-.: Full analysis<br />
+.: Full analysis (Linux)<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_20200911.JPG" alt="Full analysis">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.JPG" alt="Full analysis">
 <br />
 
 ## Installation
@@ -43,7 +43,9 @@ $ pip3 install -r requirements.txt
 ## Usage
 
 ```bash
-$ python3 humble.py
+(Windows) $ py humble.py
+(Linux)   $ python3 humble.py
+
 usage: humble.py [-h] [-d DOMAIN] [-b] [-o {html,pdf,txt}] [-r] [-g] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
