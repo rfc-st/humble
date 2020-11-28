@@ -45,7 +45,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2020/11/21, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2020/11/28, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Links that may be useful to secure servers/services and \
@@ -97,17 +97,15 @@ def print_header(header):
 
 
 def print_summary():
-    print('\n')
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-    print_section("[0. Info]\n")
+    print_section('\r\n' + '\r\n' + "[0. Info]\n")
     print(" Date:  ", now)
     print(' Domain: ' + domain)
 
 
 def print_headers():
     if args.retrieved:
-        print('\n')
-        print_section("[HTTP Headers]\n")
+        print_section('\r\n' + '\r\n' + "[HTTP Headers]\n")
         for key, value in sorted(headers.items()):
             print(" " + key + ':', value)
     print('\n')
@@ -219,9 +217,7 @@ if args.output is not None:
         f = open(name_e, 'w')
         sys.stdout = f
     else:
-        print("")
-        print('Not implemented, yet! :)')
-        print("")
+        print('\r\n' + 'Not implemented, yet! :)')
         raise SystemExit
 
 # Date and domain
@@ -478,7 +474,5 @@ print("")
 
 if args.output == 'txt':
     sys.stdout = orig_stdout
-    print("")
-    print('Analysis saved to "' + name_e + '"')
-    print("")
+    print('\r\n' + 'Analysis saved to "' + name_e + '"')
     f.close()
