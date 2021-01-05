@@ -74,6 +74,10 @@
 
 [ixcd]
  Set this header as restrictively as possible; the value 'all' could permit any cross-domain requests from Flash and PDF documents.
+
+[ixpb]
+ xmlrpc.php (its pingback functionality) can introduce security vulnerabilities and has been superseded by the WordPress REST API.
+ Ref: https://kinsta.com/blog/xmlrpc-php/
  
 [ixxp]
  Use '1; mode=block' in order to enable cross-site scripting filter and prevent rendering the page if an attack is detected.

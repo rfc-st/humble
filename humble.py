@@ -427,6 +427,13 @@ if 'X-Permitted-Cross-Domain-Policies' in headers:
             print_detail("[ixcd]", "a")
         i_cnt += 1
 
+if 'X-Pingback' in headers:
+    if 'xmlrpc.php' in headers['X-Pingback']:
+        print_header("X-Pingback")
+        if not args.brief:
+            print_detail("[ixpb]", "d")
+        i_cnt += 1
+
 if 'X-Runtime' in headers:
     print_header("X-Runtime")
     if not args.brief:
