@@ -130,5 +130,5 @@ https://www.w3.org<br />
 
 ## License
 
-MIT © Rafa 'Bluesman' Faura<br/>
+MIT © 2020-2021 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)<br/>
 Original Creator - Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
