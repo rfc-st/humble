@@ -30,6 +30,10 @@ HTTP Headers Analyzer<br />
 **NOTE**: Python 3.2 or higher is required.
 
 ```bash
+# install git
+(Windows) https://git-scm.com/download/win
+(Linux) https://git-scm.com/download/linux
+
 # clone the repo
 $ git clone https://github.com/rfc-st/humble.git
 
@@ -43,7 +47,7 @@ $ cd humble
 # install the requirements
 $ pip3 install -r requirements.txt
 
-# update humble (inside working directory)
+# update humble (every couple of weeks, inside humble's working directory)
 $ git pull
 ```
 
