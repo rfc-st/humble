@@ -25,7 +25,7 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.JPG" alt="Full analysis">
 <br />
 
-## Installation
+## Installation & Update
 
 **NOTE**: Python 3.2 or higher is required.
 
@@ -37,9 +37,14 @@ $ git clone https://github.com/rfc-st/humble.git
 $ cd humble
 
 # install python3 and python3-pip if not exist
+(Windows) https://www.python.org/downloads/windows/
+(Linux) available, by default, in any common distro. Otherwise install them via, e.g. Synaptic, apt, dnf, yum ...
 
 # install the requirements
 $ pip3 install -r requirements.txt
+
+# update humble (inside working directory)
+$ git pull
 ```
 
 ## Usage
