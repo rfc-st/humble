@@ -174,9 +174,9 @@ optional.add_argument('-d', type=str, dest='domain', required=False,
 optional.add_argument("-r", dest='retrieved', action="store_true",
                       required=False, help="show retrieved HTTP headers")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
-                      help="show brief analysis (no details/advices)")
+                      help="show brief report (no details/advices)")
 optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
-                      help="save analysis to file (domain_yyyymmdd)")
+                      help="save report to file (domain_yyyymmdd)")
 optional.add_argument("-g", dest='guides', action="store_true", required=False,
                       help="show guidelines on securing most used web servers/\
 services")
@@ -206,7 +206,7 @@ c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:\
 r = requests.get(domain, headers=c_headers)
 headers = r.headers
 
-# Save analysis to file
+# Save report to file
 
 if args.output is not None:
     if args.output == 'txt':
@@ -228,7 +228,7 @@ print_summary()
 
 print_headers()
 
-# Analysys - 1. Missing headers
+# Report - 1. Missing headers
 
 m_cnt = 0
 
@@ -260,7 +260,7 @@ if m_cnt == 0:
 
 print("")
 
-# Analysis - 2. Fingerprinting through headers / values
+# Report - 2. Fingerprinting through headers / values
 
 f_cnt = 0
 
@@ -304,7 +304,7 @@ if f_cnt == 0:
 
 print("")
 
-# Analysis - 3. Insecure values
+# Report - 3. Insecure values
 
 i_cnt = 0
 
@@ -459,7 +459,7 @@ if i_cnt == 0:
 
 print("")
 
-# Analysis - 4. Empty values
+# Report - 4. Empty values
 
 e_cnt = 0
 

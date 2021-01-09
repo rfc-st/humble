@@ -10,17 +10,17 @@ HTTP Headers Analyzer<br />
 <i>"A journey of a thousand miles begins with a single step. - Lao Tzu"</i>
 </p>
 <br />
-.: Brief analysis (Windows)<br />
+.: Brief report (Windows)<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.JPG" alt="Brief Analysis">
 </p>
 <br />
-.: Brief analysis + retrieved headers (Linux)<br />
+.: Brief report and retrieved headers (Linux)<br />
 <p></p>
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.JPG" alt="Brief analysis + retrieved headers">
 <br />
-.: Full analysis (Linux)<br />
+.: Full report (Linux)<br />
 <p></p>
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.JPG" alt="Full analysis">
 <br />
@@ -55,8 +55,8 @@ humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 optional arguments:
   -h, --help         show this help message and exit
   -d DOMAIN          domain to scan, including schema. E.g., https://google.com
-  -b                 show brief analysis (no details/advices)
-  -o {html,pdf,txt}  save analysis to file (domain_yyyymmdd)
+  -b                 show brief report (no details/advices)
+  -o {html,pdf,txt}  save report to file (domain_yyyymmdd)
   -r                 show retrieved HTTP headers
   -g                 show guidelines on securing most used web servers/services
   -v, --version      show version
@@ -116,7 +116,7 @@ optional arguments:
 ## To-do
 
 - [ ] Add more header/value checks (only security-oriented)
-- [ ] Save analysis to more formats (ex.: PDF, HTML)
+- [ ] Save report to more formats (ex.: PDF, HTML)
 
 ## Further reading
 
