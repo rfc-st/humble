@@ -12,7 +12,9 @@ HTTP Headers Analyzer<br />
 <br />
 .: Brief analysis (Windows)<br />
 <p></p>
+<p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.JPG" alt="Brief Analysis">
+</p>
 <br />
 .: Brief analysis + retrieved headers (Linux)<br />
 <p></p>
