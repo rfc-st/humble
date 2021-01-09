@@ -42,7 +42,7 @@ $ cd humble
 
 # install python3 and python3-pip if not exist
 (Windows) https://www.python.org/downloads/windows/
-(Linux) available, by default, in any common distro. Otherwise install them via, e.g. Synaptic, apt, dnf, yum ...
+(Linux) if not installed by default, install them via, e.g. Synaptic, apt, dnf, yum ...
 
 # install the requirements
 $ pip3 install -r requirements.txt
