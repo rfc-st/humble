@@ -32,7 +32,7 @@
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
 # Add more output formats
-# Add analysis rating
+# Add analysis rating (tricky ...)
 
 from datetime import datetime
 from colorama import Fore, Style, init
@@ -45,7 +45,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2021/01/09, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/01/29, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Links that may be useful to secure servers/services and \
@@ -234,14 +234,16 @@ m_cnt = 0
 
 print_section("[1. Missing headers]\n")
 
-list_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Security-Policy',
+list_miss = ['Cache-Control', 'Clear-Site-Data',
+             'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
+             'Cross-Origin-Resource-Policy', 'Content-Security-Policy',
              'Expect-CT', 'NEL', 'Permissions-Policy', 'Pragma',
              'Referrer-Policy', 'Strict-Transport-Security',
              'X-Content-Type-Options', 'X-Frame-Options', 'X-XSS-Protection']
 
-list_detail = ['[mcache]', '[mcsd]', '[mcsp]', '[mexpect]', '[mnel]',
-               '[mpermission]', '[mpragma]', '[mreferrer]', '[msts]',
-               '[mxcto]', '[mxfo]', '[mxxp]']
+list_detail = ['[mcache]', '[mcsd]', '[mcoe]', '[mcop]', '[mcor]', '[mcsp]',
+               '[mexpect]', '[mnel]', '[mpermission]', '[mpragma]',
+               '[mreferrer]', '[msts]', '[mxcto]', '[mxfo]', '[mxxp]']
 
 if any(elem.lower() in headers for elem in list_miss):
     for key in list_miss:

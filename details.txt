@@ -6,6 +6,18 @@
  Clears browsing data (cookies, storage, cache) associated with the requesting website.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 
+[mcoe]
+ Prevents a document from loading any cross-origin resources that don't explicitly grant the document permission.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
+
+[mcop]
+ Allows to ensure a top-level document does not share a browsing context group with cross-origin documents.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+
+[mcor]
+ Allows a resource owner to specify who can load the resource. Is an additional layer of protection beyond the default same-origin policy.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)
+
 [mcsp]
  Helps to detect and mitigate Cross Site Scripting (XSS) and data injection attacks, among others.
  Ref: https://content-security-policy.com/
@@ -23,7 +35,7 @@
  Ref: https://scotthelme.co.uk/network-error-logging-deep-dive/
 
 [mpragma]
- For backwards compatibility with HTTP/1.0 caches where the Cache-Control HTTP/1.1 header is not yet present.
+ For backwards compatibility with HTTP/1.0 caches.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
 
 [mreferrer]
