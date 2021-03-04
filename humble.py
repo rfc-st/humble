@@ -45,7 +45,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2021/02/20, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/03/04, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Links that may be useful to secure servers/services and \
@@ -68,8 +68,8 @@ support.maxcdn.com/hc/en-us/articles/360036557712-Edge-Rules-Recipes' + \
 Services]' + Style.NORMAL + '\r\n' + '\r\n' + 'https://geekflare.com/http-\
 header-implementation/' + '\r\n' + 'https://www.ryadel.com/en/iis-web-config\
 -secure-http-response-headers-pass-securityheaders-io-scan/' + '\r\n' + \
- 'https://www.reflections-ibs.com/blog/articles/hardening-your-http-response-\
-headers-in-iis-server-security-headers' + '\r\n' + '\r\n' + Style.BRIGHT + \
+ 'https://www.linkedin.com/pulse/hardening-your-http-response-headers-iis-\
+server-omar-el-sergany' + '\r\n' + '\r\n' + Style.BRIGHT + \
  '[Nginx]' + Style.NORMAL + '\r\n' + '\r\n' + 'https://www.acunetix.com/\
 blog/web-security-zone/hardening-nginx/' + '\r\n' + 'https://www.getpagespeed\
 .com/server-setup/nginx-security-headers-the-right-way' + '\r\n'
