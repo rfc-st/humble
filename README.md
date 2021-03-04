@@ -13,16 +13,16 @@ HTTP Headers Analyzer<br />
 .: Brief report (Windows)<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.JPG" alt="Brief Analysis">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.PNG" alt="Brief Analysis">
 </p>
 <br />
 .: Brief report and retrieved headers (Linux)<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.JPG" alt="Brief analysis + retrieved headers">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="Brief analysis + retrieved headers">
 <br />
 .: Full report (Linux)<br />
 <p></p>
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.JPG" alt="Full analysis">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="Full analysis">
 <br />
 
 ## Installation & Update
