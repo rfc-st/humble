@@ -45,7 +45,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2021/03/13, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/03/14, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Links that may be useful to secure servers/services and \
@@ -136,9 +136,6 @@ def request_exceptions():
     except requests.exceptions.HTTPError:
         if r.status_code == 401:
             print("\nError: Unauthorized access to '" + domain + "'.\n")
-            raise SystemExit
-        elif r.status_code == 403:
-            print("\nError: Forbidden access to '" + domain + "'.\n")
             raise SystemExit
         elif r.status_code == 404:
             print("\nError: '" + domain + "' not found\n")
