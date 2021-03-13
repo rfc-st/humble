@@ -30,19 +30,19 @@ HTTP Headers Analyzer<br />
 **NOTE**: Python 3.2 or higher is required.
 
 ```bash
+# install python3 and python3-pip if not exist
+(Windows) https://www.python.org/downloads/windows/
+(Linux) if not installed by default, install them via, e.g. Synaptic, apt, dnf, yum ...
+
 # install git
 (Windows) https://git-scm.com/download/win
 (Linux) https://git-scm.com/download/linux
 
-# clone the repo
+# clone the repository
 $ git clone https://github.com/rfc-st/humble.git
 
 # change the working directory to humble
 $ cd humble
-
-# install python3 and python3-pip if not exist
-(Windows) https://www.python.org/downloads/windows/
-(Linux) if not installed by default, install them via, e.g. Synaptic, apt, dnf, yum ...
 
 # install the requirements
 $ pip3 install -r requirements.txt
