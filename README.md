@@ -72,6 +72,9 @@ optional arguments:
 ```
 
 ## Missing headers check
+
+<details>
+  <summary>Click me!</summary>
 ||||
 | ------------- | ------------- | ------------- | 
 | `Cache-Control` | `Pragma` | `Clear-Site-Data` | 
@@ -80,8 +83,12 @@ optional arguments:
 | `Expect-CT` | `X-Content-Type-Options` | `NEL` | 
 | `X-Frame-Options` | `Permissions-Policy` | `X-XSS-Protection` |
 ||||
+</details>
 
 ## Fingerprint headers check
+
+<details>
+  <summary>Click me!</summary>
 ||||
 | ------------- | ------------- | ------------- |
 | `Liferay-Portal` | `MicrosoftOfficeWebServer` | `MicrosoftSharePointTeamServices` |
@@ -100,8 +107,12 @@ optional arguments:
 | `X-Debug-Token` | `X-Debug-Token-Link` | `swift-performance` | 
 | `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | |
 ||||
+</details>
 
 ## Insecure values check
+
+<details>
+  <summary>Click me!</summary>
 ||||
 | ------------- | ------------- | ------------- |
 | `Access-Control-Allow-Origin` | `Strict-Transport-Security` | `Cache-Control` | 
@@ -111,6 +122,7 @@ optional arguments:
 | `Referrer-Policy` | `X-XSS-Protection` | `Set-Cookie` |
 | `X-Pingback`| | |
 ||||
+</details>
 
 ## Empty values check
 * Any response header
