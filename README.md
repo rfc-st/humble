@@ -72,57 +72,46 @@ optional arguments:
 ```
 
 ## Missing headers check
-
-<details>
-  <summary>Click me!</summary>
-  ||||
-  | ------------- | ------------- | ------------- | 
-  | `Cache-Control` | `Pragma` | `Clear-Site-Data` | 
-  | `Cross-Origin-Embedder-Policy` | `Cross-Origin-Opener-Policy` | `Cross-Origin-Resource-Policy` |
-  | `Referrer-Policy` | `Content-Security-Policy` | `Strict-Transport-Security` | 
-  | `Expect-CT` | `X-Content-Type-Options` | `NEL` | 
-  | `X-Frame-Options` | `Permissions-Policy` | `X-XSS-Protection` |
-  ||||
-</details>
+||||
+| ------------- | ------------- | ------------- | 
+| `Cache-Control` | `Pragma` | `Clear-Site-Data` | 
+| `Cross-Origin-Embedder-Policy` | `Cross-Origin-Opener-Policy` | `Cross-Origin-Resource-Policy` |
+| `Referrer-Policy` | `Content-Security-Policy` | `Strict-Transport-Security` | 
+| `Expect-CT` | `X-Content-Type-Options` | `NEL` | 
+| `X-Frame-Options` | `Permissions-Policy` | `X-XSS-Protection` |
+||||
 
 ## Fingerprint headers check
 
-<details>
-  <summary>Click me!</summary>
-  ||||
- | ------------- | ------------- | ------------- |
- | `Liferay-Portal` | `MicrosoftOfficeWebServer` | `MicrosoftSharePointTeamServices` |
- | `MS-Author-Via` | `Powered-By` | `Server` | 
- | `Via` | `X-AspNet-Version` | `X-AspNetMvc-Version` | 
- | `X-Backend` | `X-Backend-Server` | `X-BEServer` | 
- |  `X-Cache-Only-Varnish` | `X-CF-Powered-By` | `X-Cocoon-Version` | 
- | `X-Content-Powered-By` | `X-Drupal-Cache` | `X-Drupal-Dynamic-Cache` | 
- | `X-FEServer` | `X-FW-Server` | `X-Generator` | 
- | `X-Litespeed-Cache` | `X-Litespeed-Cache-Control` | `X-LiteSpeed-Purge` |
- | `X-LiteSpeed-Tag` | `X-LiteSpeed-Vary` | `X-Mod-Pagespeed` | 
- | `X-Nginx-Cache-Status` | `X-OWA-Version` | `X-Page-Speed` | 
- | `X-Powered-By` | `X-Powered-By-Plesk` |  `X-Powered-CMS` | 
- | `X-Redirect-By` | `X-Server` | `X-Server-Powered-By` | 
- | `X-Shopify-Stage` | `X-Turbo-Charged-By` | `X-Varnish` | 
- | `X-Debug-Token` | `X-Debug-Token-Link` | `swift-performance` | 
- | `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | |
- ||||
-</details>
+||||
+| ------------- | ------------- | ------------- |
+| `Liferay-Portal` | `MicrosoftOfficeWebServer` | `MicrosoftSharePointTeamServices` |
+| `MS-Author-Via` | `Powered-By` | `Server` | 
+| `Via` | `X-AspNet-Version` | `X-AspNetMvc-Version` | 
+| `X-Backend` | `X-Backend-Server` | `X-BEServer` | 
+|  `X-Cache-Only-Varnish` | `X-CF-Powered-By` | `X-Cocoon-Version` | 
+| `X-Content-Powered-By` | `X-Drupal-Cache` | `X-Drupal-Dynamic-Cache` | 
+| `X-FEServer` | `X-FW-Server` | `X-Generator` | 
+| `X-Litespeed-Cache` | `X-Litespeed-Cache-Control` | `X-LiteSpeed-Purge` |
+| `X-LiteSpeed-Tag` | `X-LiteSpeed-Vary` | `X-Mod-Pagespeed` | 
+| `X-Nginx-Cache-Status` | `X-OWA-Version` | `X-Page-Speed` | 
+| `X-Powered-By` | `X-Powered-By-Plesk` |  `X-Powered-CMS` | 
+| `X-Redirect-By` | `X-Server` | `X-Server-Powered-By` | 
+| `X-Shopify-Stage` | `X-Turbo-Charged-By` | `X-Varnish` | 
+| `X-Debug-Token` | `X-Debug-Token-Link` | `swift-performance` | 
+| `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | |
+||||
 
 ## Insecure values check
-
-<details>
-  <summary>Click me!</summary>
- ||||
- | ------------- | ------------- | ------------- |
- | `Access-Control-Allow-Origin` | `Strict-Transport-Security` | `Cache-Control` | 
- | `Timing-Allow-Origin` | `Content-Security-Policy` | `X-Content-Type-Options` |
- | `Etag` | `X-Frame-Options` | `Permissions-Policy` | 
- | `X-Permitted-Cross-Domain-Policies` | `Public-Key-Pins` | `X-Runtime` |
- | `Referrer-Policy` | `X-XSS-Protection` | `Set-Cookie` |
- | `X-Pingback`| | |
- ||||
-</details>
+||||
+| ------------- | ------------- | ------------- |
+| `Access-Control-Allow-Origin` | `Strict-Transport-Security` | `Cache-Control` | 
+| `Timing-Allow-Origin` | `Content-Security-Policy` | `X-Content-Type-Options` |
+| `Etag` | `X-Frame-Options` | `Permissions-Policy` | 
+| `X-Permitted-Cross-Domain-Policies` | `Public-Key-Pins` | `X-Runtime` |
+| `Referrer-Policy` | `X-XSS-Protection` | `Set-Cookie` |
+| `X-Pingback`| | |
+||||
 
 ## Empty values check
 * Any response header
