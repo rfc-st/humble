@@ -127,6 +127,7 @@ optional arguments:
 ## To-do
 
 - [ ] Add more header/value checks (only security-oriented)
+- [ ] Add analysis rating
 - [ ] Save report to more formats (ex.: PDF, HTML)
 
 ## Further reading
