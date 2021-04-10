@@ -72,6 +72,12 @@ optional arguments:
 ```
 
 ## Missing headers check
+<details>
+
+<br />
+
+<summary>Click me!</summary>
+
 ||||
 | ------------- | ------------- | ------------- | 
 | `Cache-Control` | `Pragma` | `Clear-Site-Data` | 
@@ -81,7 +87,14 @@ optional arguments:
 | `X-Frame-Options` | `Permissions-Policy` | `X-XSS-Protection` |
 ||||
 
+</details>
+
 ## Fingerprint headers check
+<details>
+
+<br />
+
+<summary>Click me!</summary>
 
 ||||
 | ------------- | ------------- | ------------- |
@@ -102,7 +115,15 @@ optional arguments:
 | `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | `X-Cache-Handler` |
 ||||
 
+</details>
+
 ## Insecure values check
+<details>
+
+<br />
+
+<summary>Click me!</summary>
+
 ||||
 | ------------- | ------------- | ------------- |
 | `Access-Control-Allow-Origin` | `Strict-Transport-Security` | `Cache-Control` | 
@@ -112,6 +133,8 @@ optional arguments:
 | `Referrer-Policy` | `X-XSS-Protection` | `Set-Cookie` |
 | `X-Pingback`| `X-DNS-Prefetch-Control` | `Server-Timing` |
 ||||
+
+</details>
 
 ## Empty values check
 * Any response header
