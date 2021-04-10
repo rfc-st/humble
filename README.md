@@ -110,7 +110,7 @@ optional arguments:
 | `Etag` | `X-Frame-Options` | `Permissions-Policy` | 
 | `X-Permitted-Cross-Domain-Policies` | `Public-Key-Pins` | `X-Runtime` |
 | `Referrer-Policy` | `X-XSS-Protection` | `Set-Cookie` |
-| `X-Pingback`| | |
+| `X-Pingback`| `X-DNS-Prefetch-Control` | |
 ||||
 
 ## Empty values check

@@ -408,6 +408,13 @@ invalid. Use only 'nosniff'.")
             print("")
         i_cnt += 1
 
+if 'X-DNS-Prefetch-Control' in headers:
+    if 'on' in headers['X-DNS-Prefetch-Control']:
+        print_header("X-DNS-Prefetch-Control")
+        if not args.brief:
+            print_detail("[ixdp]", "d")
+        i_cnt += 1
+
 if 'X-Frame-Options' in headers:
     if ',' in headers['X-Frame-Options']:
         print_header("X-Frame-Options")

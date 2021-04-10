@@ -87,6 +87,10 @@
 [ixcd]
  Set this header as restrictively as possible; the value 'all' could permit any cross-domain requests from Flash and PDF documents.
 
+[ixdp]
+ Enabling DNS prefetching could bypass Content-Security-Policy directives
+ Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
+
 [ixpb]
  xmlrpc.php (its pingback functionality) can introduce security vulnerabilities and has been superseded by the WordPress REST API.
  Ref: https://kinsta.com/blog/xmlrpc-php/
