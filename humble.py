@@ -316,12 +316,12 @@ if 'Access-Control-Allow-Origin' in headers:
     if any(elem.lower() in headers["Access-Control-Allow-Origin"].lower() for
        elem in list_access):
         print_header("Access-Control-Allow-Origin")
-    if not args.brief:
-        print(" Review the value '" +
-              headers["Access-Control-Allow-Origin"] + "' regarding your \
+        if not args.brief:
+            print(" Review the value '" +
+                  headers["Access-Control-Allow-Origin"] + "' regarding your \
 CORS (Cross-origin resource sharing) requirements.")
         print("")
-    i_cnt += 1
+        i_cnt += 1
 
 if 'Cache-Control' in headers:
     list_cache = ['no-cache', 'no-store', 'must-revalidate']
@@ -344,8 +344,8 @@ if 'Content-Security-Policy' in headers:
 if 'Etag' in headers:
     print_header("Etag")
     if not args.brief:
-        print(" Make sure the value " + headers["Etag"] + " does not include \
-inodes information.")
+        print(" Make sure the value '" + headers["Etag"] + "' does not \
+include inodes information.")
         print("")
     i_cnt += 1
 
@@ -380,6 +380,14 @@ if 'Set-Cookie' in headers:
         if not args.brief:
             print_detail("[iset]", "a")
         i_cnt += 1
+
+if 'Server-Timing' in headers:
+    print_header("Server-Timing")
+    if not args.brief:
+        print(" Make sure the value '" + headers["Server-Timing"] + " 'does \
+not expose potentially sensitive application or infrastructure information.")
+        print("")
+    i_cnt += 1
 
 if 'Strict-Transport-Security' in headers:
     list_sts = ['includeSubDomains', 'max-age']
