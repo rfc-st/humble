@@ -44,7 +44,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2021/04/09, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/04/10, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -281,7 +281,8 @@ list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-Powered-By-Plesk', 'X-Powered-CMS', 'X-Redirect-By',
             'X-Server', 'X-Server-Powered-By', 'X-Shopify-Stage',
             'X-Turbo-Charged-By', 'X-Varnish', 'X-Debug-Token',
-            'X-Debug-Token-Link', 'swift-performance', 'Servlet-Engine']
+            'X-Debug-Token-Link', 'swift-performance', 'Servlet-Engine',
+            'X-Cache-Handler']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:

@@ -99,7 +99,7 @@ optional arguments:
 | `X-Redirect-By` | `X-Server` | `X-Server-Powered-By` | 
 | `X-Shopify-Stage` | `X-Turbo-Charged-By` | `X-Varnish` | 
 | `X-Debug-Token` | `X-Debug-Token-Link` | `swift-performance` | 
-| `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | |
+| `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | `X-Cache-Handler` |
 ||||
 
 ## Insecure values check
