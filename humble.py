@@ -349,6 +349,14 @@ include inodes information.")
         print("")
     i_cnt += 1
 
+if domain[0:5] == 'http:':
+    print_header("HTTP instead HTTPS")
+    if not args.brief:
+        print(" You are analyzing a domain via HTTP (" + domain + "), \
+in which the communications are not encrypted.")
+        print("")
+    i_cnt += 1
+
 if 'Permissions-Policy' in headers:
     if '*' in headers['Permissions-Policy']:
         print_header("Permissions-Policy")
