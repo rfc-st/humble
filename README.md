@@ -76,7 +76,7 @@ optional arguments:
 
 <br />
 
-<summary>Click me!</summary>
+<summary>Show / Hide</summary>
 
 ||||
 | ------------- | ------------- | ------------- | 
@@ -94,7 +94,7 @@ optional arguments:
 
 <br />
 
-<summary>Click me!</summary>
+<summary>Show / Hide</summary>
 
 ||||
 | ------------- | ------------- | ------------- |
@@ -102,7 +102,7 @@ optional arguments:
 | `MS-Author-Via` | `Powered-By` | `Server` | 
 | `Via` | `X-AspNet-Version` | `X-AspNetMvc-Version` | 
 | `X-Backend` | `X-Backend-Server` | `X-BEServer` | 
-|  `X-Cache-Only-Varnish` | `X-CF-Powered-By` | `X-Cocoon-Version` | 
+| `X-Cache-Only-Varnish` | `X-CF-Powered-By` | `X-Cocoon-Version` | 
 | `X-Content-Powered-By` | `X-Drupal-Cache` | `X-Drupal-Dynamic-Cache` | 
 | `X-FEServer` | `X-FW-Server` | `X-Generator` | 
 | `X-Litespeed-Cache` | `X-Litespeed-Cache-Control` | `X-LiteSpeed-Purge` |
@@ -113,6 +113,7 @@ optional arguments:
 | `X-Shopify-Stage` | `X-Turbo-Charged-By` | `X-Varnish` | 
 | `X-Debug-Token` | `X-Debug-Token-Link` | `swift-performance` | 
 | `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | `X-Cache-Handler` |
+| `X-DevSrv-CMS` | | | 
 ||||
 
 </details>
@@ -122,7 +123,7 @@ optional arguments:
 
 <br />
 
-<summary>Click me!</summary>
+<summary>Show / Hide</summary>
 
 ||||
 | ------------- | ------------- | ------------- |
@@ -131,7 +132,7 @@ optional arguments:
 | `Etag` | `X-Frame-Options` | `Permissions-Policy` | 
 | `X-Permitted-Cross-Domain-Policies` | `Public-Key-Pins` | `X-Runtime` |
 | `Referrer-Policy` | `X-XSS-Protection` | `Set-Cookie` |
-| `X-Pingback`| `X-DNS-Prefetch-Control` | `Server-Timing` |
+| `X-Pingback` | `X-DNS-Prefetch-Control` | `Server-Timing` |
 ||||
 
 </details>
