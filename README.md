@@ -133,6 +133,7 @@ optional arguments:
 | `X-Permitted-Cross-Domain-Policies` | `Public-Key-Pins` | `X-Runtime` |
 | `Referrer-Policy` | `X-XSS-Protection` | `Set-Cookie` |
 | `X-Pingback` | `X-DNS-Prefetch-Control` | `Server-Timing` |
+| `HTTP instead HTTPS` | | |
 ||||
 
 </details>
