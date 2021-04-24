@@ -113,7 +113,7 @@ optional arguments:
 | `X-Shopify-Stage` | `X-Turbo-Charged-By` | `X-Varnish` | 
 | `X-Debug-Token` | `X-Debug-Token-Link` | `swift-performance` | 
 | `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | `X-Cache-Handler` |
-| `X-DevSrv-CMS` | | | 
+| `X-DevSrv-CMS` | `X-FW-Version` | | 
 ||||
 
 </details>
