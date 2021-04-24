@@ -106,7 +106,10 @@ def print_headers():
     if args.retrieved:
         print_section('\r\n' + '\r\n' + "[HTTP Headers]\n")
         for key, value in sorted(headers.items()):
-            print(" " + Fore.CYAN + key + ':', value)
+            if not args.output:
+                print(" " + Fore.CYAN + key + ':', value)
+            else:
+                print(" " + key + ':', value)
     print('\n')
 
 
