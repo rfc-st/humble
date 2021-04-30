@@ -84,7 +84,7 @@ optional arguments:
 | `Cross-Origin-Embedder-Policy` | `Cross-Origin-Opener-Policy` | `Cross-Origin-Resource-Policy` |
 | `Referrer-Policy` | `Content-Security-Policy` | `Strict-Transport-Security` | 
 | `Expect-CT` | `X-Content-Type-Options` | `NEL` | 
-| `X-Frame-Options` | `Permissions-Policy` | `X-XSS-Protection` |
+| `X-Frame-Options` | `Permissions-Policy` | |
 ||||
 
 </details>

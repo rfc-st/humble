@@ -54,10 +54,6 @@
  Indicate whether or not a browser should be allowed to render a page in a <frame>, <iframe>, <embed> or <object>.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
-[mxxp]
- Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
-
 [icache]
  Use 'no-cache', 'no-store', and 'must-revalidate' if there are sensitive data or private resources in the domain.
 
@@ -96,7 +92,8 @@
  Ref: https://kinsta.com/blog/xmlrpc-php/
  
 [ixxp]
- Use '1; mode=block' in order to enable cross-site scripting filter and prevent rendering the page if an attack is detected.
+ No main or recent browser currently support this header; furthermore, it can create additional security problems.
+ To mitigate XSS attacks, it is recommended to restrictively enable the "Content-Security-Policy" header.
 
 [aemp]
  The following headers have no value, which in some cases could be equivalent to as if they were not enabled:

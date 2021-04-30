@@ -44,7 +44,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2021/04/24, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/04/30, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -238,11 +238,11 @@ list_miss = ['Cache-Control', 'Clear-Site-Data',
              'Cross-Origin-Resource-Policy', 'Content-Security-Policy',
              'Expect-CT', 'NEL', 'Permissions-Policy', 'Pragma',
              'Referrer-Policy', 'Strict-Transport-Security',
-             'X-Content-Type-Options', 'X-Frame-Options', 'X-XSS-Protection']
+             'X-Content-Type-Options', 'X-Frame-Options']
 
 list_detail = ['[mcache]', '[mcsd]', '[mcoe]', '[mcop]', '[mcor]', '[mcsp]',
                '[mexpect]', '[mnel]', '[mpermission]', '[mpragma]',
-               '[mreferrer]', '[msts]', '[mxcto]', '[mxfo]', '[mxxp]']
+               '[mreferrer]', '[msts]', '[mxcto]', '[mxfo]']
 
 if any(elem.lower() in headers for elem in list_miss):
     for key in list_miss:
@@ -469,10 +469,10 @@ request). ")
         i_cnt += 1
 
 if 'X-XSS-Protection' in headers:
-    if not headers["X-XSS-Protection"].startswith('1; mode=block'):
+    if '0' not in headers["X-XSS-Protection"]:
         print_header("X-XSS-Protection")
         if not args.brief:
-            print_detail("[ixxp]", "a")
+            print_detail("[ixxp]", "d")
         i_cnt += 1
 
 if args.brief and i_cnt != 0:
