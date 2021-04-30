@@ -285,7 +285,8 @@ list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-Redirect-By', 'X-Server', 'X-Server-Powered-By',
             'X-Shopify-Stage', 'X-Turbo-Charged-By', 'X-Varnish',
             'X-Debug-Token', 'X-Debug-Token-Link', 'swift-performance',
-            'Servlet-Engine', 'X-Cache-Handler', 'X-FW-Version']
+            'Servlet-Engine', 'X-Cache-Handler', 'X-FW-Version',
+            'X-Application-Context', 'X-Version', 'X-Version-Id']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
