@@ -154,7 +154,7 @@ optional arguments:
 
 - [ ] Add more header/value checks (only security-oriented)
 - [ ] Add analysis rating
-- [ ] Save report to more formats (ex.: PDF, HTML)
+- [ ] Save report to more formats (ex.: HTML)
 
 ## Further reading
 

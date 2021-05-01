@@ -33,18 +33,21 @@
 # Add more output formats
 # Add analysis rating (tricky ...)
 
+from fpdf import FPDF
 from datetime import datetime
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+import os
 import sys
 import requests
 import tldextract
+
 
 if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2021/04/30, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/01, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -208,7 +211,7 @@ headers = r.headers
 # Save report to file
 
 if args.output is not None:
-    if args.output == 'txt':
+    if args.output == 'txt' or 'pdf':
         orig_stdout = sys.stdout
         name_s = tldextract.extract(domain)
         name_e = name_s.domain + "_" + datetime.now().strftime("%Y%m%d") +\
@@ -348,7 +351,7 @@ if 'Content-Security-Policy' in headers:
 if 'Etag' in headers:
     print_header("Etag")
     if not args.brief:
-        print(" Make sure the value '" + headers["Etag"] + "' does not \
+        print(" The value '" + headers["Etag"] + "' should not \
 include inodes information.")
         print("")
     i_cnt += 1
@@ -509,3 +512,17 @@ if args.output == 'txt':
     sys.stdout = orig_stdout
     print('\r\n' + 'Analysis saved to "' + name_e + '"')
     f.close()
+elif args.output == 'pdf':
+    sys.stdout = orig_stdout
+    f.close()
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Courier", size=10)
+    f = open(name_e, "r")
+    for x in f:
+        pdf.multi_cell(197, 5, txt=x, align='L')
+    name_p = name_e[:-4] + ".pdf"
+    pdf.output(name_p)
+    print('\r\n' + 'Analysis saved to "' + name_p + '"')
+    f.close()
+    os.remove(name_e)

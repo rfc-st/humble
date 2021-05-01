@@ -3,27 +3,27 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 [mcsd]
- Clears browsing data (cookies, storage, cache) associated with the requesting website.
+ Clears browsing data (cookies, storage, cache).
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 
 [mcoe]
- Prevents a document from loading any cross-origin resources that don't explicitly grant the document permission.
+ Prevents documents and workers from loading non-same-origin requests unless allowed.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
 
 [mcop]
- Allows to ensure a top-level document does not share a browsing context group with cross-origin documents.
+ Prevent other websites from gaining arbitrary window references to a page.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
 
 [mcor]
- Allows a resource owner to specify who can load the resource. Is an additional layer of protection beyond the default same-origin policy.
+ Allows a resource owner to specify who can load the resource.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)
 
 [mcsp]
- Helps to detect and mitigate Cross Site Scripting (XSS) and data injection attacks, among others.
+ Detect and mitigate Cross Site Scripting (XSS) and data injection attacks, among others.
  Ref: https://content-security-policy.com/
  
 [mexpect]
- For reporting/enforcement of Certificate Transparency requirements, preventing the use of misissued certificates from going unnoticed.
+ Prevents the use of misissued certificates from going unnoticed.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
 [mpermission]
@@ -31,7 +31,7 @@
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
 [mnel]
- Enables web applications to declare a reporting policy that can be used to report network or application errors.
+ Enables web applications to declare a reporting policy to report errors.
  Ref: https://scotthelme.co.uk/network-error-logging-deep-dive/
 
 [mpragma]
@@ -39,23 +39,23 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
 
 [mreferrer]
- Controls how much referrer information (sent via the Referer header) should be included with requests.
+ Controls how much referrer information should be included with requests.
  Ref: https://scotthelme.co.uk/a-new-security-header-referrer-policy/
 
 [msts]
- Lets a web site tell browsers that it should only be accessed using HTTPS, instead of using HTTP.
+ Tell browsers that it should only be accessed using HTTPS, instead of using HTTP.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [mxcto]
- Indicate that the MIME types advertised in the Content-Type headers should not be changed and be followed.
+ Indicate that the MIME types in the Content-Type headers should not be changed and be followed.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
 [mxfo]
- Indicate whether or not a browser should be allowed to render a page in a <frame>, <iframe>, <embed> or <object>.
+ Whether or not a browser should be allowed to render a page in a <frame>, <iframe>, <embed> or <object>.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
 [icache]
- Use 'no-cache', 'no-store', and 'must-revalidate' if there are sensitive data or private resources in the domain.
+ Use 'no-cache', 'no-store', and 'must-revalidate' if there are sensitive data.
 
 [icsp]
  Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible, by moving inline code to .js/.css files or using nonces/hashes.
@@ -81,25 +81,24 @@
  The value '*' gives permission to any origin to see timing resources via Resource Timing API. 
 
 [ixcd]
- Set this header as restrictively as possible; the value 'all' could permit any cross-domain requests from Flash and PDF documents.
+ The value 'all' could permit any cross-domain requests from Flash and PDF documents.
 
 [ixdp]
  Enabling DNS prefetching could bypass Content-Security-Policy directives
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
 [ixpb]
- xmlrpc.php (its pingback functionality) can introduce security vulnerabilities and has been superseded by the WordPress REST API.
+ xmlrpc.php (its pingback functionality) can introduce security vulnerabilities; has been superseded by the WordPress REST API.
  Ref: https://kinsta.com/blog/xmlrpc-php/
  
 [ixxp]
- No main or recent browser currently support this header; furthermore, it can create additional security problems.
- To mitigate XSS attacks, it is recommended to restrictively enable the "Content-Security-Policy" header.
+ To mitigate XSS attacks, restrictively enable the "Content-Security-Policy" header.
 
 [aemp]
- The following headers have no value, which in some cases could be equivalent to as if they were not enabled:
+ The following headers have no value (could be equivalent to as if they were not enabled):
 
 [afgp]
- Remove these headers, or modify their values, if any of them identify real software/version:
+ Remove or modify these headers, if identify real software/version:
 
 [aisc]
- All, or any of the values in these headers could be considered insecure; check the following advices:
+ All, or any, of the values in these headers could be considered insecure:
