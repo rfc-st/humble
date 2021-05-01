@@ -526,7 +526,7 @@ elif args.output == 'pdf':
     pdf.set_font("Courier", size=10)
     w = pdf.get_string_width(title) + 5
     pdf.set_x((210 - w) / 2)
-    pdf.multi_cell(w, 5, "Humble HTTP headers analysis" + "\n" +
+    pdf.multi_cell(w, 5, "Humble HTTP headers analyzer" + "\n" +
                          "(https://github.com/rfc-st/humble)", align='C')
 
     # PDF Body
