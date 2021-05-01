@@ -516,7 +516,21 @@ elif args.output == 'pdf':
     sys.stdout = orig_stdout
     f.close()
     pdf = FPDF()
+    title = "Humble HTTP headers analysis of " + domain
+    pdf.set_title(title)
+    pdf.set_author("humble (https://github.com/rfc-st/humble)")
     pdf.add_page()
+
+    # PDF Header
+
+    pdf.set_font("Courier", size=10)
+    w = pdf.get_string_width(title) + 5
+    pdf.set_x((210 - w) / 2)
+    pdf.multi_cell(w, 5, "Humble HTTP headers analysis" + "\n" +
+                         "(https://github.com/rfc-st/humble)", align='C')
+
+    # PDF Body
+
     pdf.set_font("Courier", size=10)
     f = open(name_e, "r")
     for x in f:
