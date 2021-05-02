@@ -61,7 +61,7 @@ $ git pull
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
-usage: humble.py [-h] [-d DOMAIN] [-b] [-o {html,pdf,txt}] [-r] [-g] [-v]
+usage: humble.py [-h] [-d DOMAIN] [-b] [-o {txt,pdf] [-r] [-g] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
@@ -69,7 +69,7 @@ optional arguments:
   -h, --help         show this help message and exit
   -d DOMAIN          domain to scan, including schema. E.g., https://google.com
   -b                 show brief report (no details/advices)
-  -o {html,pdf,txt}  save report to file (domain_yyyymmdd)
+  -o {txt,pdf}       save report to file (domain_yyyymmdd.ext)
   -r                 show retrieved HTTP headers
   -g                 show guidelines on securing most used web servers/services
   -v, --version      show version
