@@ -520,6 +520,7 @@ elif args.output == 'pdf':
     title = "Humble HTTP headers analysis of " + domain
     pdf.set_title(title)
     pdf.set_author("humble (https://github.com/rfc-st/humble)")
+    pdf.set_display_mode(zoom='real')
     pdf.add_page()
 
     # PDF Header
@@ -529,6 +530,7 @@ elif args.output == 'pdf':
     pdf.set_x((210 - w) / 2)
     pdf.multi_cell(w, 5, "Humble HTTP headers analyzer" + "\n" +
                          "(https://github.com/rfc-st/humble)", align='C')
+    pdf.line(71, 20, 139, 20)
 
     # PDF Body
 
