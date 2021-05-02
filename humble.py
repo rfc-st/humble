@@ -47,7 +47,7 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2021/05/01, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/02, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -100,6 +100,9 @@ def print_header(header):
 
 def print_summary():
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
+    if args.output == 'txt':
+        print('\r\n' + "Humble HTTP headers analyzer" + "\n" +
+              "(https://github.com/rfc-st/humble)")
     print_section('\r\n' + '\r\n' + "[0. Info]\n")
     print(" Date:  ", now)
     print(' Domain: ' + domain)
@@ -177,8 +180,8 @@ optional.add_argument("-r", dest='retrieved', action="store_true",
                       required=False, help="show retrieved HTTP headers")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
                       help="show brief report (no details/advices)")
-optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
-                      help="save report to file (domain_yyyymmdd)")
+optional.add_argument("-o", dest='output', choices=['txt', 'pdf'],
+                      help="save report to file (domain_yyyymmdd.ext)")
 optional.add_argument("-g", dest='guides', action="store_true", required=False,
                       help="show guidelines on securing most used web servers/\
 services")
@@ -208,19 +211,17 @@ c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:\
 r = requests.get(domain, headers=c_headers)
 headers = r.headers
 
-# Save report to file
+# Save analysis to file
 
 if args.output is not None:
-    if args.output == 'txt' or 'pdf':
-        orig_stdout = sys.stdout
-        name_s = tldextract.extract(domain)
-        name_e = name_s.domain + "_" + datetime.now().strftime("%Y%m%d") +\
-            ".txt"
-        f = open(name_e, 'w')
-        sys.stdout = f
-    else:
-        print('\r\n' + 'Not implemented, yet! :)')
-        raise SystemExit
+    orig_stdout = sys.stdout
+    name_s = tldextract.extract(domain)
+    name_e = name_s.domain + "_" + datetime.now().strftime("%Y%m%d") + ".txt"
+    if args.output == 'pdf':
+        name_e = name_s.domain + "_" +\
+         datetime.now().strftime("%Y%m%d") + "t.txt"
+    f = open(name_e, 'w')
+    sys.stdout = f
 
 # Date and domain
 
@@ -510,7 +511,7 @@ print("")
 
 if args.output == 'txt':
     sys.stdout = orig_stdout
-    print('\r\n' + 'Analysis saved to "' + name_e + '"')
+    print('\r\n' + 'Analysis saved to "' + name_e + '".')
     f.close()
 elif args.output == 'pdf':
     sys.stdout = orig_stdout
@@ -535,8 +536,8 @@ elif args.output == 'pdf':
     f = open(name_e, "r")
     for x in f:
         pdf.multi_cell(197, 5, txt=x, align='L')
-    name_p = name_e[:-4] + ".pdf"
+    name_p = name_e[:-5] + ".pdf"
     pdf.output(name_p)
-    print('\r\n' + 'Analysis saved to "' + name_p + '"')
+    print('\r\n' + 'Analysis saved to "' + name_p + '".')
     f.close()
     os.remove(name_e)
