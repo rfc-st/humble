@@ -39,6 +39,7 @@ from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import os
 import sys
+import platform
 import requests
 import tldextract
 
@@ -47,7 +48,12 @@ if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
     sys.exit()
 
-version = '\r\n' + "2021/05/02, by Rafa 'Bluesman' Faura \
+if platform.system() == 'Windows':
+    spacing = '\n'
+else:
+    spacing = '\r\n'
+
+version = '\r\n' + "2021/05/03, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -101,9 +107,9 @@ def print_header(header):
 def print_summary():
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     if args.output == 'txt':
-        print('\r\n' + "Humble HTTP headers analyzer" + "\n" +
+        print(spacing + "Humble HTTP headers analyzer" + "\n" +
               "(https://github.com/rfc-st/humble)")
-    print_section('\r\n' + '\r\n' + "[0. Info]\n")
+    print_section(spacing + spacing + "[0. Info]\n")
     print(" Date:  ", now)
     print(' Domain: ' + domain)
 
