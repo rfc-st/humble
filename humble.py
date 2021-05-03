@@ -30,7 +30,7 @@
 
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
-# Add more output formats
+# Add more output formats (ex. HTML)
 # Add analysis rating (tricky ...)
 
 from fpdf import FPDF
@@ -42,7 +42,6 @@ import sys
 import platform
 import requests
 import tldextract
-
 
 if sys.version_info < (3, 2):
     print("\nError: this tool requires, at least, Python 3.2.\n")
@@ -81,6 +80,16 @@ server-omar-el-sergany' + '\r\n' + '\r\n' + Style.BRIGHT + \
  '[Nginx]' + Style.NORMAL + '\r\n' + '\r\n' + 'https://www.acunetix.com/\
 blog/web-security-zone/hardening-nginx/' + '\r\n' + 'https://www.getpagespeed\
 .com/server-setup/nginx-security-headers-the-right-way' + '\r\n'
+
+
+class PDF(FPDF):
+
+    # PDF Footer
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 8)
+        self.cell(0, 10, 'Page ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
 
 
 def print_section(title):
@@ -522,7 +531,8 @@ if args.output == 'txt':
 elif args.output == 'pdf':
     sys.stdout = orig_stdout
     f.close()
-    pdf = FPDF()
+    pdf = PDF()
+    pdf.alias_nb_pages()
     title = "Humble HTTP headers analysis of " + domain
     pdf.set_title(title)
     pdf.set_author("humble (https://github.com/rfc-st/humble)")
@@ -544,6 +554,7 @@ elif args.output == 'pdf':
     f = open(name_e, "r")
     for x in f:
         pdf.multi_cell(197, 5, txt=x, align='L')
+
     name_p = name_e[:-5] + ".pdf"
     pdf.output(name_p)
     print('\r\n' + 'Analysis saved to "' + name_p + '".')
