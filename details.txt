@@ -35,7 +35,7 @@
  Ref: https://scotthelme.co.uk/network-error-logging-deep-dive/
 
 [mpragma]
- For backwards compatibility with HTTP/1.0 caches.
+ Used for backwards compatibility with HTTP/1.0 clients.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
 
 [mreferrer]
@@ -58,13 +58,13 @@
  Use 'no-cache', 'no-store', and 'must-revalidate' if there are sensitive data.
 
 [icsp]
- Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible, by moving inline code to .js/.css files or using nonces/hashes.
+ Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible.
 
 [ifpol]
  The value '*' allows the feature in this document, and all nested browsing contexts (iframes) regardless of their origin.
 
 [ipkp]
- This header, and public Key Pinning mechanism, were deprecated in favor of Certificate Transparency and Expect-CT header.
+ Public Key Pinning mechanism was deprecated in favor of Certificate Transparency and Expect-CT header.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Public-Key-Pins
 
 [iref]
@@ -72,10 +72,10 @@
  Otherwise fallback to 'no-referrer-when-downgrade' or even 'no-referrer' if is not required.
 
 [iset]
- Use 'secure' and 'httponly' to ensure that cookies are sent securely and are not accessed by unintended parties or scripts.
+ Use 'secure' and 'httponly' to ensure that cookies are sent securely and not accessed by unintended parties or scripts.
 
 [ists]
- It is recommended to add 'includeSubDomains' and define 'max-age' equal or greater than 31536000 (seconds = 1 year).
+ Add 'includeSubDomains' and define 'max-age' equal or greater than 31536000 (1 year).
 
 [itao]
  The value '*' gives permission to any origin to see timing resources via Resource Timing API. 
