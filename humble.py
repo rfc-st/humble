@@ -483,7 +483,7 @@ if 'X-XSS-Protection' in headers:
     if '0' not in headers["X-XSS-Protection"]:
         print_header("X-XSS-Protection")
         if not args.brief:
-            print_detail("[ixxp]", "d")
+            print_detail("[ixxp]", "a")
         i_cnt += 1
 
 if args.brief and i_cnt != 0:
