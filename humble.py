@@ -52,7 +52,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/03, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/04, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -84,12 +84,22 @@ blog/web-security-zone/hardening-nginx/' + '\r\n' + 'https://www.getpagespeed\
 
 class PDF(FPDF):
 
-    # PDF Footer
+    # PDF Header & Footer
+
+    def header(self):
+        self.set_font('Courier', 'B', size=10)
+        self.set_y(15)
+        self.cell(0, 5, "Humble HTTP headers analyzer", 0, 2, 'C')
+        self.cell(0, 5, "(https://github.com/rfc-st/humble)", 0, 0, 'C')
+        if self.page_no() == 1:
+            self.ln(9)
+        else:
+            self.ln(13)
 
     def footer(self):
         self.set_y(-15)
         self.set_font('Arial', 'I', 8)
-        self.cell(0, 10, 'Page ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
+        self.cell(0, 10, 'Page ' + str(self.page_no()) + ' of {nb}', 0, 0, 'C')
 
 
 def print_section(title):
@@ -538,15 +548,6 @@ elif args.output == 'pdf':
     pdf.set_author("humble (https://github.com/rfc-st/humble)")
     pdf.set_display_mode(zoom='real')
     pdf.add_page()
-
-    # PDF Header
-
-    pdf.set_font("Courier", size=10)
-    w = pdf.get_string_width(title) + 5
-    pdf.set_x((210 - w) / 2)
-    pdf.multi_cell(w, 5, "Humble HTTP headers analyzer" + "\n" +
-                         "(https://github.com/rfc-st/humble)", align='C')
-    pdf.line(71, 20, 139, 20)
 
     # PDF Body
 
