@@ -30,8 +30,7 @@
 
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
-# Add more output formats (ex. HTML)
-# Add analysis rating (tricky ...)
+# Add analysis rating
 
 from fpdf import FPDF
 from datetime import datetime
@@ -125,7 +124,7 @@ def print_header(header):
 
 def print_summary():
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-    if args.output == 'txt':
+    if args.output == 'txt' or args.output == 'html':
         print(spacing + "Humble HTTP headers analyzer" + "\n" +
               "(https://github.com/rfc-st/humble)")
     print_section(spacing + spacing + "[0. Info]\n")
@@ -205,7 +204,7 @@ optional.add_argument("-r", dest='retrieved', action="store_true",
                       required=False, help="show retrieved HTTP headers")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
                       help="show brief report (no details/advices)")
-optional.add_argument("-o", dest='output', choices=['txt', 'pdf'],
+optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
                       help="save report to file (domain_yyyymmdd.ext)")
 optional.add_argument("-g", dest='guides', action="store_true", required=False,
                       help="show guidelines on securing most used web servers/\
@@ -242,7 +241,7 @@ if args.output is not None:
     orig_stdout = sys.stdout
     name_s = tldextract.extract(domain)
     name_e = name_s.domain + "_" + datetime.now().strftime("%Y%m%d") + ".txt"
-    if args.output == 'pdf':
+    if args.output == 'pdf' or args.output == 'html':
         name_e = name_s.domain + "_" +\
          datetime.now().strftime("%Y%m%d") + "t.txt"
     f = open(name_e, 'w')
@@ -560,4 +559,32 @@ elif args.output == 'pdf':
     pdf.output(name_p)
     print('\r\n' + 'Analysis saved to "' + name_p + '".')
     f.close()
+    os.remove(name_e)
+elif args.output == 'html':
+    sys.stdout = orig_stdout
+    f.close()
+
+    # HTML Template
+
+    title = "HTTP headers analysis"
+    header = '<!DOCTYPE html><html lang="en"><head><title>' + title + \
+             '</title><style>pre {overflow-x: auto;'\
+             'white-space: pre-wrap;white-space: -moz-pre-wrap;'\
+             'white-space: -pre-wrap;white-space: -o-pre-wrap;'\
+             'word-wrap: break-word;}'\
+             '</style></head>'
+    body = '<body><pre>'
+    footer = '</pre></body></html>'
+
+    name_p = name_e[:-5] + ".html"
+
+    with open(name_e, 'r') as input, open(name_p, 'w') as output:
+        output.write(str(header))
+        output.write(str(body))
+        for line in input:
+            content = line
+            output.write(str(content))
+        output.write(footer)
+
+    print('\r\n' + 'Analysis saved to "' + name_p + '".')
     os.remove(name_e)
