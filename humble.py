@@ -125,8 +125,8 @@ def print_header(header):
 def print_summary():
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     if args.output == 'txt' or args.output == 'html':
-        print(spacing + "Humble HTTP headers analyzer" + "\n" +
-              "(https://github.com/rfc-st/humble)")
+        print(spacing + " Humble HTTP headers analyzer" + "\n" +
+              " https://github.com/rfc-st/humble")
     print_section(spacing + spacing + "[0. Info]\n")
     print(" Date:  ", now)
     print(' Domain: ' + domain)
@@ -567,11 +567,11 @@ elif args.output == 'html':
     # HTML Template
 
     title = "HTTP headers analysis"
-    header = '<!DOCTYPE html><html lang="en"><head><title>' + title + \
-             '</title><style>pre {overflow-x: auto;'\
+    header = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>\
+             <title>' + title + '</title><style>pre {overflow-x: auto;'\
              'white-space: pre-wrap;white-space: -moz-pre-wrap;'\
              'white-space: -pre-wrap;white-space: -o-pre-wrap;'\
-             'word-wrap: break-word;}'\
+             'word-wrap: break-word;} a {color: blue; text-decoration: none;}'\
              '</style></head>'
     body = '<body><pre>'
     footer = '</pre></body></html>'
@@ -582,8 +582,18 @@ elif args.output == 'html':
         output.write(str(header))
         output.write(str(body))
         for line in input:
-            content = line
-            output.write(str(content))
+            if 'rfc-st' in line:
+                output.write('<a href="' + line + '">' + line + '</a>')
+            elif 'Domain:' in line:
+                output.write(line[:9] + '<a href="' + line[9:] + '">' +
+                             line[9:] + '</a>')
+            elif line.startswith("["):
+                output.write('<strong>' + line + '</strong>')
+            elif ' Ref: ' in line:
+                output.write(line[:6] + '<a href="' + line[6:] + '">' +
+                             line[6:] + '</a>')
+            else:
+                output.write(line)
         output.write(footer)
 
     print('\r\n' + 'Analysis saved to "' + name_p + '".')
