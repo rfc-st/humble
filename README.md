@@ -23,16 +23,19 @@ HTTP Headers Analyzer<br />
 </p>
 <br />
 .: Full report (Linux)<br />
+<p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="Full analysis">
 </p>
 <br />
 .: Analysis exported to PDF. <a href="https://github.com/rfc-st/humble/blob/master/samples/facebook_headers_20210507.pdf">Example.</a><br />
+<p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="Export analysis to PDF">
 </p>
 <br />
 .: Analysis exported to HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/facebook_headers_20210507.html">Example.</a><br />
+<p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Export analysis to HTML">
 </p>
