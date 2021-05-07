@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/06, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/07, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -571,8 +571,9 @@ elif args.output == 'html':
              <title>' + title + '</title><style>pre {overflow-x: auto;'\
              'white-space: pre-wrap;white-space: -moz-pre-wrap;'\
              'white-space: -pre-wrap;white-space: -o-pre-wrap;'\
-             'word-wrap: break-word;} a {color: blue; text-decoration: none;}'\
-             '</style></head>'
+             'word-wrap: break-word; font-size: 13px;} \
+              a {color: blue; text-decoration: none;} .ok {color: green;}\
+             </style></head>'
     body = '<body><pre>'
     footer = '</pre></body></html>'
 
@@ -587,6 +588,8 @@ elif args.output == 'html':
             elif 'Domain:' in line:
                 output.write(line[:9] + '<a href="' + line[9:] + '">' +
                              line[9:] + '</a>')
+            elif ' Nothing to ' in line:
+                output.write('<span class="ok">' + line + '</span>')
             elif line.startswith("["):
                 output.write('<strong>' + line + '</strong>')
             elif ' Ref: ' in line:
