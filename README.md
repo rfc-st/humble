@@ -24,9 +24,13 @@ HTTP Headers Analyzer<br />
 <p></p>
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="Full analysis">
 <br />
-.: Export analysis to PDF (Windows)<br />
+.: Analysis exported to PDF<br />
 <p></p>
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="Export analysis to PDF">
+<br />
+.: Analysis exported to HTML<br />
+<p></p>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Export analysis to HTML">
 <br />
 
 ## Installation & Update
