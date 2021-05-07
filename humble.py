@@ -234,15 +234,17 @@ c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:\
 
 r = requests.get(domain, headers=c_headers)
 headers = r.headers
+infix = "_headers_"
 
 # Save analysis to file
 
 if args.output is not None:
     orig_stdout = sys.stdout
     name_s = tldextract.extract(domain)
-    name_e = name_s.domain + "_" + datetime.now().strftime("%Y%m%d") + ".txt"
+    name_e = name_s.domain + infix + datetime.now().strftime("%Y%m%d")\
+        + ".txt"
     if args.output == 'pdf' or args.output == 'html':
-        name_e = name_s.domain + "_" +\
+        name_e = name_s.domain + infix +\
          datetime.now().strftime("%Y%m%d") + "t.txt"
     f = open(name_e, 'w')
     sys.stdout = f
@@ -588,10 +590,10 @@ elif args.output == 'html':
             elif 'Domain:' in line:
                 output.write(line[:9] + '<a href="' + line[9:] + '">' +
                              line[9:] + '</a>')
-            elif ' Nothing to ' in line:
-                output.write('<span class="ok">' + line + '</span>')
             elif line.startswith("["):
                 output.write('<strong>' + line + '</strong>')
+            elif ' Nothing to ' in line:
+                output.write('<span class="ok">' + line + '</span>')
             elif ' Ref: ' in line:
                 output.write(line[:6] + '<a href="' + line[6:] + '">' +
                              line[6:] + '</a>')
