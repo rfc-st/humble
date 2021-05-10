@@ -345,6 +345,12 @@ print_section("[3. Insecure values]\n")
 if not args.brief:
     print_detail("[aisc]", "a")
 
+list_ins = ['Access-Control-Allow-Origin', 'Etag', 'HTTP instead HTTPS',
+            'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
+            'Timing-Allow-Origin', 'X-DNS-Prefetch-Control',
+            'X-Permitted-Cross-Domain-Policies', 'X-Pingback',
+            'X-Runtime', 'X-XSS-Protection']
+
 if 'Access-Control-Allow-Origin' in headers:
     list_access = ['*', 'null']
     if any(elem.lower() in headers["Access-Control-Allow-Origin"].lower() for
@@ -472,7 +478,7 @@ if 'X-Frame-Options' in headers:
             print(" The value '" + headers["X-Frame-Options"] + "' is \
 invalid. Use only 'DENY', 'SAMEORIGIN' or 'ALLOW-FROM'.\n Better yet: \
 replace this header with the 'frame-ancestors' directive from the \
-Content-Security-Policy header. ")
+""Content-Security-Policy"" header. ")
             print("")
         i_cnt += 1
 
@@ -575,7 +581,7 @@ elif args.output == 'html':
              'white-space: -pre-wrap;white-space: -o-pre-wrap;'\
              'word-wrap: break-word; font-size: 13px;} \
               a {color: blue; text-decoration: none;} .ok {color: green;}\
-             .header {color: #660033;} </style></head>'
+             .header {color: #660033;} .ko {color: red;} </style></head>'
     body = '<body><pre>'
     footer = '</pre></body></html>'
 
@@ -586,6 +592,9 @@ elif args.output == 'html':
         output.write(str(body))
 
         for line in input:
+
+            # TO-DO: simplify via regexp?
+
             if 'rfc-st' in line:
                 output.write('<a href="' + line + '">' + line + '</a>')
             elif 'Domain:' in line:
@@ -604,6 +613,18 @@ elif args.output == 'html':
                         line = line.replace(line[0: line.index(":")],
                                             '<span class="header">' +
                                             line[0: line.index(":")] +
+                                            '</span>')
+                for i in list_miss:
+                    if i in line and ':' not in line and '"' not in line:
+                        line = line.replace(line, '<span class="ko">' + line +
+                                            '</span>')
+                for i in list_fng:
+                    if i in line and ':' not in line and '"' not in line:
+                        line = line.replace(line, '<span class="ko">' + line +
+                                            '</span>')
+                for i in list_ins:
+                    if i in line and ':' not in line and '"' not in line:
+                        line = line.replace(line, '<span class="ko">' + line +
                                             '</span>')
                 output.write(line)
         output.write(footer)

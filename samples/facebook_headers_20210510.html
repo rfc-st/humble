@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>             <title>HTTP headers analysis</title><style>pre {overflow-x: auto;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word; font-size: 13px;}               a {color: blue; text-decoration: none;} .ok {color: green;}             </style></head><body><pre>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>             <title>HTTP headers analysis</title><style>pre {overflow-x: auto;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word; font-size: 13px;}               a {color: blue; text-decoration: none;} .ok {color: green;}             .header {color: #660033;} .ko {color: red;} </style></head><body><pre>
  Humble HTTP headers analyzer
 <a href=" https://github.com/rfc-st/humble
 "> https://github.com/rfc-st/humble
@@ -6,50 +6,50 @@
 
 <strong>[0. Info]
 </strong>
- Date:   2021/05/07 - 20:38:37
+ Date:   2021/05/10 - 04:52:25
  Domain: <a href="https://facebook.com
 ">https://facebook.com
 </a>
 
 <strong>[1. Missing headers]
 </strong>
- Clear-Site-Data
- Clears browsing data (cookies, storage, cache) associated with the requesting website.
+<span class="ko"> Clear-Site-Data
+</span> Clears browsing data (cookies, storage, cache) associated with the requesting website.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 ">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 </a>
- Cross-Origin-Embedder-Policy
- Prevents documents and workers from loading non-same-origin requests unless allowed.
+<span class="ko"> Cross-Origin-Embedder-Policy
+</span> Prevents documents and workers from loading non-same-origin requests unless allowed.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
 ">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
 </a>
- Cross-Origin-Opener-Policy
- Prevent other websites from gaining arbitrary window references to a page.
+<span class="ko"> Cross-Origin-Opener-Policy
+</span> Prevent other websites from gaining arbitrary window references to a page.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
 ">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
 </a>
- Cross-Origin-Resource-Policy
- Allows a resource owner to specify who can load the resource.
+<span class="ko"> Cross-Origin-Resource-Policy
+</span> Allows a resource owner to specify who can load the resource.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)
 ">https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)
 </a>
- Expect-CT
- Prevents the use of misissued certificates from going unnoticed.
+<span class="ko"> Expect-CT
+</span> Prevents the use of misissued certificates from going unnoticed.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 ">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 </a>
- NEL
- Enables web applications to declare a reporting policy to report errors.
+<span class="ko"> NEL
+</span> Enables web applications to declare a reporting policy to report errors.
  Ref: <a href="https://scotthelme.co.uk/network-error-logging-deep-dive/
 ">https://scotthelme.co.uk/network-error-logging-deep-dive/
 </a>
- Permissions-Policy
- Previously called 'Feature-Policy', allow and deny the use of browser features.
+<span class="ko"> Permissions-Policy
+</span> Previously called "Feature-Policy", allow and deny the use of browser features.
  Ref: <a href="https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 ">https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 </a>
- Referrer-Policy
- Controls how much referrer information should be included with requests.
+<span class="ko"> Referrer-Policy
+</span> Controls how much referrer information should be included with requests.
  Ref: <a href="https://scotthelme.co.uk/a-new-security-header-referrer-policy/
 ">https://scotthelme.co.uk/a-new-security-header-referrer-policy/
 </a>
@@ -65,11 +65,11 @@
 </strong>
  All, or any, of the values in these headers could be considered insecure:
 
- Content-Security-Policy
- Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible.
+<span class="ko"> Content-Security-Policy
+</span> Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible.
 
- Strict-Transport-Security
- Add 'includeSubDomains' and define 'max-age' equal or greater than 31536000 (1 year).
+<span class="ko"> Strict-Transport-Security
+</span> Add 'includeSubDomains' and define 'max-age' equal or greater than 31536000 (1 year).
 
 
 <strong>[4. Empty values]

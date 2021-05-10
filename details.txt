@@ -27,7 +27,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
 [mpermission]
- Previously called 'Feature-Policy', allow and deny the use of browser features.
+ Previously called "Feature-Policy", allow and deny the use of browser features.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
 [mnel]
@@ -47,7 +47,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [mxcto]
- Indicate that MIME types in the Content-Type headers should not be changed and be followed.
+ Indicate that MIME types in the "Content-Type" headers should be followed.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
 [mxfo]
@@ -64,7 +64,7 @@
  The value '*' allows the feature in this document, and iframes regardless of their origin.
 
 [ipkp]
- This header was deprecated in favor of Certificate Transparency and Expect-CT header.
+ This header was deprecated in favor of Certificate Transparency and "Expect-CT" header.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Public-Key-Pins
 
 [iref]
@@ -84,7 +84,7 @@
  The value 'all' could permit any cross-domain requests from Flash and PDF documents.
 
 [ixdp]
- Enabling DNS prefetching could bypass Content-Security-Policy directives
+ Enabling DNS prefetching could bypass "Content-Security-Policy" directives
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
 [ixpb]
