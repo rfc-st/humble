@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/07, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/10, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -575,7 +575,7 @@ elif args.output == 'html':
              'white-space: -pre-wrap;white-space: -o-pre-wrap;'\
              'word-wrap: break-word; font-size: 13px;} \
               a {color: blue; text-decoration: none;} .ok {color: green;}\
-             </style></head>'
+             .header {color: #660033;} </style></head>'
     body = '<body><pre>'
     footer = '</pre></body></html>'
 
@@ -584,6 +584,7 @@ elif args.output == 'html':
     with open(name_e, 'r') as input, open(name_p, 'w') as output:
         output.write(str(header))
         output.write(str(body))
+
         for line in input:
             if 'rfc-st' in line:
                 output.write('<a href="' + line + '">' + line + '</a>')
@@ -598,6 +599,12 @@ elif args.output == 'html':
                 output.write(line[:6] + '<a href="' + line[6:] + '">' +
                              line[6:] + '</a>')
             else:
+                for i in list(headers):
+                    if str(i + ": ") in line and 'Date:   ' not in line:
+                        line = line.replace(line[0: line.index(":")],
+                                            '<span class="header">' +
+                                            line[0: line.index(":")] +
+                                            '</span>')
                 output.write(line)
         output.write(footer)
 
