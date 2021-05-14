@@ -275,6 +275,9 @@ list_detail = ['[mcache]', '[mcsd]', '[mcoe]', '[mcop]', '[mcor]', '[mcsp]',
                '[mexpect]', '[mnel]', '[mpermission]', '[mpragma]',
                '[mreferrer]', '[msts]', '[mxcto]', '[mxfo]']
 
+# TO-DO: we expect at least **one** security HTTP header enabled on the domain.
+# Catch those cases where they haven't enabled any (yes, they exist ... ugh).
+
 if any(elem.lower() in headers for elem in list_miss):
     for key in list_miss:
         if key not in headers:
@@ -289,6 +292,7 @@ if args.brief and m_cnt != 0:
 
 if m_cnt == 0:
     print_ok()
+    print("")
 
 print("")
 
@@ -308,16 +312,17 @@ list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-Cache-Only-Varnish', 'X-CF-Powered-By', 'X-Cocoon-Version',
             'X-Content-Powered-By', 'X-DevSrv-CMS', 'X-Drupal-Cache',
             'X-Drupal-Dynamic-Cache', 'X-FEServer', 'X-FW-Server',
-            'X-Generator', 'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
-            'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
-            'X-Mod-Pagespeed', 'X-Nginx-Cache-Status',
-            'X-Nginx-Upstream-Cache-Status', 'X-OWA-Version', 'X-Page-Speed',
-            'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
-            'X-Redirect-By', 'X-Server', 'X-Server-Powered-By',
-            'X-Shopify-Stage', 'X-Turbo-Charged-By', 'X-Varnish',
-            'X-Debug-Token', 'X-Debug-Token-Link', 'swift-performance',
-            'Servlet-Engine', 'X-Cache-Handler', 'X-FW-Version',
-            'X-Application-Context', 'X-Version', 'X-Version-Id']
+            'X-Garden-Version', 'X-Generator', 'X-Litespeed-Cache',
+            'X-Litespeed-Cache-Control', 'X-LiteSpeed-Purge',
+            'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary', 'X-Mod-Pagespeed',
+            'X-Nginx-Cache-Status', 'X-Nginx-Upstream-Cache-Status',
+            'X-OWA-Version', 'X-Page-Speed', 'X-Powered-By',
+            'X-Powered-By-Plesk', 'X-Powered-CMS', 'X-Redirect-By',
+            'X-Server', 'X-Server-Powered-By', 'X-Shopify-Stage',
+            'X-Turbo-Charged-By', 'X-Varnish', 'X-Debug-Token',
+            'X-Debug-Token-Link', 'swift-performance', 'Servlet-Engine',
+            'X-Cache-Handler', 'X-FW-Version', 'X-Application-Context',
+            'X-Version', 'X-Version-Id']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:

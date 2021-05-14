@@ -130,7 +130,7 @@ optional arguments:
 | `X-Debug-Token` | `X-Debug-Token-Link` | `swift-performance` | 
 | `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | `X-Cache-Handler` |
 | `X-DevSrv-CMS` | `X-FW-Version` | `X-Application-Context` | 
-| `X-Version` | `X-Version-Id` | |
+| `X-Version` | `X-Version-Id` | `X-Garden-Version` |
 ||||
 
 </details>
