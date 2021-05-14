@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/10, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/14, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -124,9 +124,10 @@ def print_header(header):
 
 def print_summary():
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-    if args.output == 'txt' or args.output == 'html':
-        print(spacing + " Humble HTTP headers analyzer" + "\n" +
-              " https://github.com/rfc-st/humble")
+    if args.output != 'pdf':
+        print(spacing)
+        print(" Humble HTTP headers analyzer" + "\n" +
+              " (https://github.com/rfc-st/humble)")
     print_section(spacing + spacing + "[0. Info]\n")
     print(" Date:  ", now)
     print(' Domain: ' + domain)
@@ -576,12 +577,12 @@ elif args.output == 'html':
 
     title = "HTTP headers analysis"
     header = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>\
-             <title>' + title + '</title><style>pre {overflow-x: auto;'\
-             'white-space: pre-wrap;white-space: -moz-pre-wrap;'\
-             'white-space: -pre-wrap;white-space: -o-pre-wrap;'\
-             'word-wrap: break-word; font-size: 13px;} \
-              a {color: blue; text-decoration: none;} .ok {color: green;}\
-             .header {color: #660033;} .ko {color: red;} </style></head>'
+<title>' + title + '</title><style>pre {overflow-x: auto;\
+white-space: pre-wrap;white-space: -moz-pre-wrap;\
+white-space: -pre-wrap;white-space: -o-pre-wrap;\
+word-wrap: break-word; font-size: medium;}\
+a {color: blue; text-decoration: none;} .ok {color: green;}\
+.header {color: #660033;} .ko {color: red;} </style></head>'
     body = '<body><pre>'
     footer = '</pre></body></html>'
 
@@ -596,7 +597,8 @@ elif args.output == 'html':
             # TO-DO: simplify via regexp?
 
             if 'rfc-st' in line:
-                output.write('<a href="' + line + '">' + line + '</a>')
+                output.write(line[:2] + '<a href="' + line[2:-2] + '">' +
+                             line[2:] + '</a>')
             elif 'Domain:' in line:
                 output.write(line[:9] + '<a href="' + line[9:] + '">' +
                              line[9:] + '</a>')
