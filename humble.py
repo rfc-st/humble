@@ -275,9 +275,6 @@ list_detail = ['[mcache]', '[mcsd]', '[mcoe]', '[mcop]', '[mcor]', '[mcsp]',
                '[mexpect]', '[mnel]', '[mpermission]', '[mpragma]',
                '[mreferrer]', '[msts]', '[mxcto]', '[mxfo]']
 
-# TO-DO: we expect at least **one** security HTTP header enabled on the domain.
-# Catch those cases where they haven't enabled any (yes, they exist ... ugh).
-
 if any(elem.lower() in headers for elem in list_miss):
     for key in list_miss:
         if key not in headers:
@@ -286,6 +283,16 @@ if any(elem.lower() in headers for elem in list_miss):
                 idx_m = list_miss.index(key)
                 print_detail(list_detail[idx_m], "d")
             m_cnt += 1
+
+# Shame, shame on you!. Have you not enabled *any* security HTTP header?.
+
+else:
+    for key in list_miss:
+        print_header(key)
+        if not args.brief:
+            idx_m = list_miss.index(key)
+            print_detail(list_detail[idx_m], "d")
+        m_cnt += 1
 
 if args.brief and m_cnt != 0:
     print("")
