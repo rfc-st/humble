@@ -38,6 +38,7 @@ from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import os
 import sys
+import time
 import platform
 import requests
 import tldextract
@@ -227,6 +228,15 @@ parser._action_groups.append(optional)
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 domain = args.domain
+
+# Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
+
+print(spacing + 'Analyzing ' + domain + spacing, end='\r')
+time.sleep(2)
+sys.stdout.write('\x1b[1A')
+sys.stdout.write('\x1b[2K')
+sys.stdout.write('\x1b[1A')
+sys.stdout.write('\x1b[2K')
 
 # Show guides
 
