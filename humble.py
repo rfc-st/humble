@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/14, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/15, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -124,7 +124,17 @@ def print_header(header):
 
 def print_summary():
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-    if args.output != 'pdf':
+    if not args.output:
+        print(spacing)
+        banner = '''  _                     _     _
+ | |__  _   _ _ __ ___ | |__ | | ___
+ | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
+ | | | | |_| | | | | | | |_) | |  __/
+ |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
+'''
+        print(banner)
+        print(" (https://github.com/rfc-st/humble)")
+    elif args.output != 'pdf':
         print(spacing)
         print(" Humble HTTP headers analyzer" + "\n" +
               " (https://github.com/rfc-st/humble)")
@@ -553,6 +563,8 @@ if e_cnt == 0:
     print("")
 
 print("")
+
+# Export analysis
 
 if args.output == 'txt':
     sys.stdout = orig_stdout
