@@ -125,7 +125,7 @@ def print_header(header):
 def print_summary():
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     if not args.output:
-        print(spacing)
+        print("")
         banner = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
  | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
