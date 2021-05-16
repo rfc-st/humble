@@ -52,7 +52,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/15, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/16, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -171,30 +171,31 @@ def request_exceptions():
     try:
         r = requests.get(domain, timeout=6)
         r.raise_for_status()
-    except requests.exceptions.MissingSchema:
-        print("\nError: No schema supplied (e.g., https)\n")
+    except (requests.exceptions.MissingSchema,
+            requests.exceptions.InvalidSchema):
+        print("\nError: No 'http' or 'https' schema supplied.\n")
         raise SystemExit
     except requests.exceptions.InvalidURL:
-        print("\nError: '" + domain + "' is not a valid URL\n")
+        print("\nError: '" + domain + "' is not a valid URL.\n")
         raise SystemExit
     except requests.exceptions.HTTPError:
         if r.status_code == 401:
-            print("\nError: Unauthorized access to '" + domain + "'.\n")
+            print("\nError: Unauthorized access to '" + domain + "'\n")
             raise SystemExit
         elif r.status_code == 404:
             print("\nError: '" + domain + "' not found\n")
             raise SystemExit
         elif r.status_code == 407:
-            print("\nError: Proxy required to access'" + domain + "'\n")
+            print("\nError: Proxy required to access '" + domain + "'\n")
             raise SystemExit
         elif str(r.status_code).startswith("5"):
-            print("\nError: Server error requesting '" + domain + "' \n")
+            print("\nError: Server error requesting '" + domain + "'\n")
             raise SystemExit
     except requests.exceptions.ConnectionError:
         print("\nError: '" + domain + "' not found\n")
         raise SystemExit
     except requests.exceptions.Timeout:
-        print("\nError: '" + domain + "' is taking too long to respond\n")
+        print("\nError: '" + domain + "' is taking too long to respond.\n")
         raise SystemExit
     except requests.exceptions.RequestException as err:
         raise SystemExit(err)
