@@ -232,12 +232,13 @@ domain = args.domain
 
 # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
 
-print(spacing + 'Analyzing ' + domain + spacing, end='\r')
-time.sleep(2)
-sys.stdout.write('\x1b[1A')
-sys.stdout.write('\x1b[2K')
-sys.stdout.write('\x1b[1A')
-sys.stdout.write('\x1b[2K')
+if not args.guides:
+    print(spacing + 'Analyzing ' + domain + spacing, end='\r')
+    time.sleep(2)
+    sys.stdout.write('\x1b[1A')
+    sys.stdout.write('\x1b[2K')
+    sys.stdout.write('\x1b[1A')
+    sys.stdout.write('\x1b[2K')
 
 # Show guides
 
