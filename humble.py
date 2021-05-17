@@ -38,13 +38,12 @@ from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import os
 import sys
-import time
 import platform
 import requests
 import tldextract
 
-if sys.version_info < (3, 2):
-    print("\nError: this tool requires, at least, Python 3.2.\n")
+if sys.version_info < (3, 5):
+    print("\nError: this tool requires, at least, Python 3.5.\n")
     sys.exit()
 
 if platform.system() == 'Windows':
@@ -52,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/16, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/17, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
