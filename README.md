@@ -69,6 +69,8 @@ $ git pull
 
 ## Usage
 
+**NOTE**: Tested on Windows 10 20H2 (19042.985) and Kali Linux 2021.1.
+
 ```bash
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
