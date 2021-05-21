@@ -133,6 +133,7 @@ optional arguments:
 | `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | `X-Cache-Handler` |
 | `X-DevSrv-CMS` | `X-FW-Version` | `X-Application-Context` | 
 | `X-Version` | `X-Version-Id` | `X-Garden-Version` |
+| `X-Nitro-Cache` | `X-Nitro-Cache-From` | `X-Nitro-Rev` |
 ||||
 
 </details>

@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/17, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/21, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -241,8 +241,8 @@ request_exceptions()
 
 # Headers retrieval
 
-c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:\
-82.0) Gecko/20100101 Firefox/82.0'}
+c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0)\
+    Gecko/20100101 Firefox/88.0'}
 
 r = requests.get(domain, headers=c_headers)
 headers = r.headers
@@ -340,7 +340,8 @@ list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-Turbo-Charged-By', 'X-Varnish', 'X-Debug-Token',
             'X-Debug-Token-Link', 'swift-performance', 'Servlet-Engine',
             'X-Cache-Handler', 'X-FW-Version', 'X-Application-Context',
-            'X-Version', 'X-Version-Id']
+            'X-Version', 'X-Version-Id', 'X-Nitro-Cache', 'X-Nitro-Cache-From',
+            'X-Nitro-Rev']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
