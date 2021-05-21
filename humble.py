@@ -570,7 +570,9 @@ print("")
 
 if args.output == 'txt':
     sys.stdout = orig_stdout
-    print('\r\n' + 'Analysis saved to "' + name_e + '".')
+    print('\r\n' + 'Report saved to "' +
+          os.path.normcase(os.path.dirname(os.path.realpath(name_e)) + '/' +
+                           name_e + '".'))
     f.close()
 elif args.output == 'pdf':
     sys.stdout = orig_stdout
@@ -592,7 +594,9 @@ elif args.output == 'pdf':
 
     name_p = name_e[:-5] + ".pdf"
     pdf.output(name_p)
-    print('\r\n' + 'Analysis saved to "' + name_p + '".')
+    print('\r\n' + 'Report saved to "' +
+          os.path.normcase(os.path.dirname(os.path.realpath(name_p)) + '/' +
+                           name_p + '".'))
     f.close()
     os.remove(name_e)
 elif args.output == 'html':
@@ -657,5 +661,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                 output.write(line)
         output.write(footer)
 
-    print('\r\n' + 'Analysis saved to "' + name_p + '".')
+    print('\r\n' + 'Report saved to "' +
+          os.path.normcase(os.path.dirname(os.path.realpath(name_p)) + '/' +
+                           name_p + '".'))
     os.remove(name_e)
