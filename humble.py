@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/21, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/22, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -99,6 +99,12 @@ class PDF(FPDF):
         self.set_y(-15)
         self.set_font('Arial', 'I', 8)
         self.cell(0, 10, 'Page ' + str(self.page_no()) + ' of {nb}', 0, 0, 'C')
+
+
+def print_path(filename):
+    print('\r\n' + 'Report saved to "' +
+          os.path.normcase(os.path.dirname(os.path.realpath(filename)) + '/' +
+                           filename + '".'))
 
 
 def print_section(title):
@@ -570,9 +576,7 @@ print("")
 
 if args.output == 'txt':
     sys.stdout = orig_stdout
-    print('\r\n' + 'Report saved to "' +
-          os.path.normcase(os.path.dirname(os.path.realpath(name_e)) + '/' +
-                           name_e + '".'))
+    print_path(name_e)
     f.close()
 elif args.output == 'pdf':
     sys.stdout = orig_stdout
@@ -594,9 +598,7 @@ elif args.output == 'pdf':
 
     name_p = name_e[:-5] + ".pdf"
     pdf.output(name_p)
-    print('\r\n' + 'Report saved to "' +
-          os.path.normcase(os.path.dirname(os.path.realpath(name_p)) + '/' +
-                           name_p + '".'))
+    print_path(name_p)
     f.close()
     os.remove(name_e)
 elif args.output == 'html':
@@ -661,7 +663,5 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                 output.write(line)
         output.write(footer)
 
-    print('\r\n' + 'Report saved to "' +
-          os.path.normcase(os.path.dirname(os.path.realpath(name_p)) + '/' +
-                           name_p + '".'))
+    print_path(name_p)
     os.remove(name_e)
