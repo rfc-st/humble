@@ -101,8 +101,19 @@ class PDF(FPDF):
         self.cell(0, 10, 'Page ' + str(self.page_no()) + ' of {nb}', 0, 0, 'C')
 
 
+def clean_output():
+
+    # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
+
+    sys.stdout.write('\x1b[1A')
+    sys.stdout.write('\x1b[2K')
+    sys.stdout.write('\x1b[1A')
+    sys.stdout.write('\x1b[2K')
+
+
 def print_path(filename):
-    print('\r\n' + 'Report saved to "' +
+    clean_output()
+    print('Report saved to "' +
           os.path.normcase(os.path.dirname(os.path.realpath(filename)) + '/' +
                            filename + '".'))
 
@@ -131,7 +142,8 @@ def print_header(header):
 def print_summary():
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     if not args.output:
-        print("")
+        clean_output()
+        # print("")
         banner = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
  | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
@@ -178,29 +190,37 @@ def request_exceptions():
         r.raise_for_status()
     except (requests.exceptions.MissingSchema,
             requests.exceptions.InvalidSchema):
-        print("\nError: No 'http' or 'https' schema supplied.\n")
+        clean_output()
+        print("Error: No 'http' or 'https' schema supplied.")
         raise SystemExit
     except requests.exceptions.InvalidURL:
-        print("\nError: '" + domain + "' is not a valid URL.\n")
+        clean_output()
+        print("Error: '" + domain + "' is not a valid URL.")
         raise SystemExit
     except requests.exceptions.HTTPError:
         if r.status_code == 401:
-            print("\nError: Unauthorized access to '" + domain + "'\n")
+            clean_output()
+            print("Error: Unauthorized access to '" + domain + "'")
             raise SystemExit
         elif r.status_code == 404:
-            print("\nError: '" + domain + "' not found\n")
+            clean_output()
+            print("Error: '" + domain + "' not found.")
             raise SystemExit
         elif r.status_code == 407:
-            print("\nError: Proxy required to access '" + domain + "'\n")
+            clean_output()
+            print("Error: Proxy required to access '" + domain + "'")
             raise SystemExit
         elif str(r.status_code).startswith("5"):
-            print("\nError: Server error requesting '" + domain + "'\n")
+            clean_output()
+            print("Error: Server error requesting '" + domain + "'")
             raise SystemExit
     except requests.exceptions.ConnectionError:
-        print("\nError: '" + domain + "' not found\n")
+        clean_output()
+        print("Error: '" + domain + "' not found.")
         raise SystemExit
     except requests.exceptions.Timeout:
-        print("\nError: '" + domain + "' is taking too long to respond.\n")
+        clean_output()
+        print("Error: '" + domain + "' is taking too long to respond.")
         raise SystemExit
     except requests.exceptions.RequestException as err:
         raise SystemExit(err)
@@ -240,6 +260,8 @@ domain = args.domain
 if args.guides:
     print(guides)
     sys.exit()
+else:
+    print(spacing + 'Analyzing ' + domain + " ..." + spacing)
 
 # Exception handling
 
