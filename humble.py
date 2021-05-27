@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/26, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/05/27, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -655,6 +655,9 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
     name_p = name_e[:-5] + ".html"
 
+    list_final = list_miss + list_fng + list_ins
+    list_final.sort()
+
     with open(name_e, 'r') as input, open(name_p, 'w') as output:
         output.write(str(header))
         output.write(str(body))
@@ -683,15 +686,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                                             '<span class="header">' +
                                             line[0: line.index(":")] +
                                             '</span>')
-                for i in list_miss:
-                    if i in line and ':' not in line and '"' not in line:
-                        line = line.replace(line, '<span class="ko">' + line +
-                                            '</span>')
-                for i in list_fng:
-                    if i in line and ':' not in line and '"' not in line:
-                        line = line.replace(line, '<span class="ko">' + line +
-                                            '</span>')
-                for i in list_ins:
+                for i in list_final:
                     if i in line and ':' not in line and '"' not in line:
                         line = line.replace(line, '<span class="ko">' + line +
                                             '</span>')
