@@ -134,6 +134,8 @@ optional arguments:
 | `X-DevSrv-CMS` | `X-FW-Version` | `X-Application-Context` | 
 | `X-Version` | `X-Version-Id` | `X-Garden-Version` |
 | `X-Nitro-Cache` | `X-Nitro-Cache-From` | `X-Nitro-Rev` |
+| `X-ShopId` | `X-ShardId` | `X-Sorting-Hat-ShopId` |
+| `X-Storefront-Renderer-Rendered`, | `X-Storefront-Renderer-Verified` | `X-Sorting-Hat-PodId` |
 ||||
 
 </details>
