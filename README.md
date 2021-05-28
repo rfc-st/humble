@@ -8,8 +8,26 @@
 HTTP Headers Analyzer<br />
 <br />
 <i>"A journey of a thousand miles begins with a single step. - Lao Tzu"</i>
-</p>
 <br />
+<br />
+
+#### Table of contents
+
+[Screenshots](#screenshots)<br />
+[Installation & Update](#installation--update)<br />
+[Usage](#usage)<br />
+[Missing Headers Check](#missing-headers-check)<br />
+[Fingerprint Headers Check](#fingerprint-headers-check)<br />
+[Insecure Values Check](#insecure-values-check)<br />
+[Empty Values Check](#empty-values-check)<br />
+[Guidelines included](#guidelines-included-to-enable-security-http-headers)<br />
+[To-Do](#to-do)<br />
+[Further Reading](#further-reading)<br />
+[License](#license)<br />
+<br />
+
+## Screenshots
+
 .: Brief report (Windows)<br />
 <p></p>
 <p align="center">
