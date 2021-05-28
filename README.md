@@ -11,7 +11,7 @@ HTTP Headers Analyzer<br />
 <br />
 <br />
 
-#### Table of contents
+### Table of contents
 
 [Screenshots](#screenshots)<br />
 [Installation & Update](#installation--update)<br />
