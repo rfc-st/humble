@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/05/28, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/06/11, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -163,7 +163,7 @@ def print_summary():
 
 def print_headers():
     if args.retrieved:
-        print_section(spacing + spacing + "[HTTP Headers]\n")
+        print_section(spacing + spacing + "[HTTP Response Headers]\n")
         for key, value in sorted(headers.items()):
             if not args.output:
                 print(" " + Fore.CYAN + key + ':', value)
