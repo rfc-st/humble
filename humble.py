@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/06/11, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/06/27, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -314,7 +314,7 @@ print_headers()
 
 m_cnt = 0
 
-print_section("[1. Missing headers]\n")
+print_section("[1. Missing HTTP Response Headers]\n")
 
 list_miss = ['Cache-Control', 'Clear-Site-Data',
              'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
@@ -359,7 +359,7 @@ print("")
 
 f_cnt = 0
 
-print_section("[2. Fingerprint headers]\n")
+print_section("[2. Fingerprint HTTP Response Headers]\n")
 
 if not args.brief:
     print_detail("[afgp]", "a")
@@ -409,7 +409,7 @@ print("")
 
 i_cnt = 0
 
-print_section("[3. Insecure values]\n")
+print_section("[3. Insecure HTTP Response Headers Values]\n")
 if not args.brief:
     print_detail("[aisc]", "a")
 
@@ -593,7 +593,7 @@ print("")
 
 e_cnt = 0
 
-print_section("[4. Empty values]\n")
+print_section("[4. Empty HTTP Response Headers Values]\n")
 if not args.brief:
     print_detail("[aemp]", "a")
 
