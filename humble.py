@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/06/27, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/07/03, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -282,8 +282,8 @@ request_exceptions()
 
 # Headers retrieval
 
-c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0)\
-    Gecko/20100101 Firefox/88.0'}
+c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)\
+    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
 
 r = requests.get(domain, headers=c_headers)
 headers = r.headers
@@ -321,7 +321,7 @@ list_miss = ['Cache-Control', 'Clear-Site-Data',
              'Cross-Origin-Resource-Policy', 'Content-Security-Policy',
              'Expect-CT', 'NEL', 'Permissions-Policy', 'Pragma',
              'Referrer-Policy', 'Strict-Transport-Security',
-             'X-Content-Type-Options', 'X-Frame-Options']
+             'X-Content-Type-Options']
 
 list_detail = ['[mcache]', '[mcsd]', '[mcoe]', '[mcop]', '[mcor]', '[mcsp]',
                '[mexpect]', '[mnel]', '[mpermission]', '[mpragma]',
@@ -335,6 +335,16 @@ if any(elem.lower() in headers for elem in list_miss):
                 idx_m = list_miss.index(key)
                 print_detail(list_detail[idx_m], "d")
             m_cnt += 1
+
+# 'frame-ancestors' directive obsoletes the 'X-Frame-Options' header
+# https://www.w3.org/TR/CSP2/#frame-ancestors-and-frame-options
+
+if 'X-Frame-Options' not in headers:
+    if 'frame-ancestors' not in headers['Content-Security-Policy']:
+        print_header('X-Frame-Options')
+        if not args.brief:
+            print_detail("[mxfo]", "d")
+        m_cnt += 1
 
 # Shame, shame on you!. Have you not enabled *any* security HTTP header?.
 
@@ -657,6 +667,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
     name_p = name_e[:-5] + ".html"
 
+    list_miss.append('X-Frame-Options')
     list_final = list_miss + list_fng + list_ins
     list_final.sort()
 
