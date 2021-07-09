@@ -475,6 +475,12 @@ in which the communications are not encrypted.")
         print("")
     i_cnt += 1
 
+if 'Feature-Policy' in headers:
+    print_header("Feature-Policy")
+    if not args.brief:
+        print_detail("[iffea]", "d")
+    i_cnt += 1
+
 if 'Permissions-Policy' in headers:
     if '*' in headers['Permissions-Policy']:
         print_header("Permissions-Policy")

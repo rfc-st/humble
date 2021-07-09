@@ -60,6 +60,10 @@
 [icsp]
  Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible.
 
+[iffea]
+ "Feature-Policy" has been renamed to "Permissions-Policy".
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
+
 [ifpol]
  The value '*' allows the feature in this document, and iframes regardless of their origin.
 
