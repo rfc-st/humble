@@ -340,11 +340,12 @@ if any(elem.lower() in headers for elem in list_miss):
 # https://www.w3.org/TR/CSP2/#frame-ancestors-and-frame-options
 
 elif 'X-Frame-Options' not in headers:
-    if 'frame-ancestors' not in headers['Content-Security-Policy']:
-        print_header('X-Frame-Options')
-        if not args.brief:
-            print_detail("[mxfo]", "d")
-        m_cnt += 1
+    if 'Content-Security-Policy' in headers:
+        if 'frame-ancestors' not in headers['Content-Security-Policy']:
+            print_header('X-Frame-Options')
+            if not args.brief:
+                print_detail("[mxfo]", "d")
+            m_cnt += 1
 
 # Shame, shame on you!. Have you not enabled *any* security HTTP header?.
 
