@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/07/03, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/07/10, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -282,8 +282,8 @@ request_exceptions()
 
 # Headers retrieval
 
-c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)\
-    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0)\
+ Gecko/20100101 Firefox/89.0'}
 
 r = requests.get(domain, headers=c_headers)
 headers = r.headers
@@ -339,7 +339,7 @@ if any(elem.lower() in headers for elem in list_miss):
 # 'frame-ancestors' directive obsoletes the 'X-Frame-Options' header
 # https://www.w3.org/TR/CSP2/#frame-ancestors-and-frame-options
 
-if 'X-Frame-Options' not in headers:
+elif 'X-Frame-Options' not in headers:
     if 'frame-ancestors' not in headers['Content-Security-Policy']:
         print_header('X-Frame-Options')
         if not args.brief:
