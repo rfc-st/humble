@@ -154,6 +154,7 @@ optional arguments:
 | `X-Nitro-Cache` | `X-Nitro-Cache-From` | `X-Nitro-Rev` |
 | `X-ShopId` | `X-ShardId` | `X-Sorting-Hat-ShopId` |
 | `X-Storefront-Renderer-Rendered` | `X-Storefront-Renderer-Verified` | `X-Sorting-Hat-PodId` |
+| `WPO-Cache-Status` | | |
 ||||
 
 </details>

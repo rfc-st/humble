@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/07/10, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/07/30, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -143,7 +143,6 @@ def print_summary():
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     if not args.output:
         clean_output()
-        # print("")
         banner = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
  | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
@@ -285,7 +284,7 @@ request_exceptions()
 c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0)\
  Gecko/20100101 Firefox/89.0'}
 
-r = requests.get(domain, headers=c_headers)
+r = requests.get(domain, headers=c_headers, timeout=60)
 headers = r.headers
 infix = "_headers_"
 
@@ -395,7 +394,7 @@ list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-Version', 'X-Version-Id', 'X-Nitro-Cache', 'X-Nitro-Cache-From',
             'X-Nitro-Rev', 'X-ShopId', 'X-ShardId', 'X-Sorting-Hat-ShopId',
             'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
-            'X-Sorting-Hat-PodId']
+            'X-Sorting-Hat-PodId', 'WPO-Cache-Status']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
