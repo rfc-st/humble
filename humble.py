@@ -30,7 +30,7 @@
 
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
-# Add analysis rating
+# Add analysis rating (*at the beginning of the output* .... tricky, tricky)
 
 from fpdf import FPDF
 from datetime import datetime
@@ -51,7 +51,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/07/30, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/08/28, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \

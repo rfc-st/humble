@@ -23,6 +23,7 @@ HTTP Headers Analyzer<br />
 [Guidelines included](#guidelines-included-to-enable-security-http-headers)<br />
 [To-Do](#to-do)<br />
 [Further Reading](#further-reading)<br />
+[Contribute](#contribute)<br />
 [License](#license)<br />
 <br />
 
@@ -180,7 +181,8 @@ optional arguments:
 </details>
 
 ## Empty values check
-* Any response header
+
+Any HTTP response header.
 
 ## Guidelines included to enable security HTTP headers
 * Amazon AWS
@@ -207,6 +209,10 @@ https://securityheaders.com/<br />
 https://scotthelme.co.uk/<br />
 https://webtechsurvey.com/common-response-headers<br />
 https://www.w3.org<br />
+
+## Contribute
+
+Create a <a href="https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=feature_request.md&title=">Feature request</a> or drop me an email! (rafael.fcucalon@gmail.com)
 
 ## License
 
