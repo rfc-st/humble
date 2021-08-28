@@ -38,9 +38,12 @@ from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import os
 import sys
+import time
 import platform
 import requests
 import tldextract
+
+start = time.time()
 
 if sys.version_info < (3, 5):
     print("\nError: this tool requires, at least, Python 3.5.\n")
@@ -99,6 +102,16 @@ class PDF(FPDF):
         self.set_y(-15)
         self.set_font('Arial', 'I', 8)
         self.cell(0, 10, 'Page ' + str(self.page_no()) + ' of {nb}', 0, 0, 'C')
+
+
+def analysis_time():
+    print(".:")
+    print("")
+    seconds = end - start
+    print(" Analysis done in " + str(round(seconds, 2)) + " seconds!.")
+    print("")
+    print(".:")
+    print("")
 
 
 def clean_output():
@@ -624,6 +637,8 @@ if e_cnt == 0:
     print("")
 
 print("")
+end = time.time()
+analysis_time()
 
 # Export analysis
 
