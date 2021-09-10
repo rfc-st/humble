@@ -9,7 +9,8 @@ HTTP Headers Analyzer<br />
 <br />
 <i>"A journey of a thousand miles begins with a single step. - Lao Tzu"</i>
 <br />
-<i>"You step onto the road, and if you don't keep your feet, there's no knowing where you might be swept off to. - Bilbo Baggins"</i>
+<br />
+<i>"And if you don't keep your feet, there's no knowing where you might be swept off to. - Bilbo Baggins"</i>
 <br />
 <br />
 
