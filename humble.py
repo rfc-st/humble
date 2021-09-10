@@ -54,7 +54,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/09/03, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/09/10, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -203,49 +203,52 @@ def request_exceptions():
     except (requests.exceptions.MissingSchema,
             requests.exceptions.InvalidSchema):
         clean_output()
-        print("Error: No 'http:' or 'https:' schema supplied.\n\n\
-(Check URL syntax and try again)")
+        print("Schema Error: No 'http:' or 'https:' schema supplied.\n\n\
+(Check syntax and try again)")
         raise SystemExit
     except requests.exceptions.InvalidURL:
         clean_output()
-        print("Error: '" + domain + "' is not valid.\n\n\
-(Check URL syntax and try again)")
+        print("Domain Error: '" + domain + "' is not valid.\n\n\
+(Check syntax and try again)")
         raise SystemExit
     except requests.exceptions.HTTPError:
+        httpcode = str(r.status_code)
         if r.status_code == 401:
             clean_output()
-            print("Error: Authentication required to access '" + domain +
-                  "'\n\n(Not supported yet by 'humble')")
+            print(httpcode + " Error: Authentication required to access '" +
+                  domain + "'\n\n(Not supported yet by 'humble')")
             raise SystemExit
         elif r.status_code == 403:
             clean_output()
-            print("Error: Forbidden access to '" + domain + "'\n\n\
-(Perhaps caused by a WAF or IP block due to GDPR)")
+            print(httpcode + " Error: Forbidden access to '" + domain +
+                  "'\n\n(Perhaps caused by a WAF or IP block due to GDPR)" +
+                  "\n\n(Or the server considers that this humble request is\
+ not as polite as it should be. It is, seriously! :)")
             raise SystemExit
         elif r.status_code == 404:
             clean_output()
-            print("Error: '" + domain + "' not found." + "\n\n\
-(Check URL syntax and try again)")
+            print(httpcode + " Error: '" + domain + "' not found." + "\n\n\
+(Check syntax and try again)")
             raise SystemExit
         elif r.status_code == 407:
             clean_output()
-            print("Error: Proxy authentication required to access '" + domain +
-                  "'\n\n(Not supported yet by 'humble')")
+            print(httpcode + " Error: Proxy authentication required to access\
+'" + domain + "'\n\n(Not supported yet by 'humble')")
             raise SystemExit
         elif str(r.status_code).startswith("5"):
             clean_output()
-            print("Error: Server error requesting '" + domain + "'\n\n\
-(Wait a while and try again)")
+            print(httpcode + " Error: Server error requesting '" + domain +
+                  "'\n\n(Wait a while and try again)")
             raise SystemExit
     except requests.exceptions.ConnectionError:
         clean_output()
-        print("Error: '" + domain + "' not found.\n\n\
-(Check URL syntax and try again)")
+        print("404 Error: '" + domain + "' not found.\n\n(Check syntax and try\
+ again)")
         raise SystemExit
     except requests.exceptions.Timeout:
         clean_output()
-        print("Error: '" + domain + "' is taking too long to respond.\n\n\
-(Wait a while and try again)")
+        print("Timeout Error: '" + domain + "' is taking too long to respond.\
+\n\n(Wait a while and try again)")
         raise SystemExit
     except requests.exceptions.RequestException as err:
         raise SystemExit(err)
