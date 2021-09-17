@@ -54,7 +54,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/09/10, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/09/17, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -364,7 +364,9 @@ elif 'X-Frame-Options' not in headers:
 
 # Shame, shame on you!. Have you not enabled *any* security HTTP header?.
 
-else:
+list_miss.append('X-Frame-Options')
+
+if not any(elem.lower() in headers for elem in list_miss):
     for key in list_miss:
         print_header(key)
         if not args.brief:
