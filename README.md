@@ -139,26 +139,26 @@ optional arguments:
 ||||
 | ------------- | ------------- | ------------- |
 | `Liferay-Portal` | `MicrosoftOfficeWebServer` | `MicrosoftSharePointTeamServices` |
-| `MS-Author-Via` | `Powered-By` | `Server` | 
-| `Via` | `X-AspNet-Version` | `X-AspNetMvc-Version` | 
-| `X-Backend` | `X-Backend-Server` | `X-BEServer` | 
-| `X-Cache-Only-Varnish` | `X-CF-Powered-By` | `X-Cocoon-Version` | 
-| `X-Content-Powered-By` | `X-Drupal-Cache` | `X-Drupal-Dynamic-Cache` | 
-| `X-FEServer` | `X-FW-Server` | `X-Generator` | 
-| `X-Litespeed-Cache` | `X-Litespeed-Cache-Control` | `X-LiteSpeed-Purge` |
-| `X-LiteSpeed-Tag` | `X-LiteSpeed-Vary` | `X-Mod-Pagespeed` | 
-| `X-Nginx-Cache-Status` | `X-OWA-Version` | `X-Page-Speed` | 
-| `X-Powered-By` | `X-Powered-By-Plesk` |  `X-Powered-CMS` | 
-| `X-Redirect-By` | `X-Server` | `X-Server-Powered-By` | 
-| `X-Shopify-Stage` | `X-Turbo-Charged-By` | `X-Varnish` | 
-| `X-Debug-Token` | `X-Debug-Token-Link` | `swift-performance` | 
-| `Servlet-Engine` | `X-Nginx-Upstream-Cache-Status` | `X-Cache-Handler` |
-| `X-DevSrv-CMS` | `X-FW-Version` | `X-Application-Context` | 
-| `X-Version` | `X-Version-Id` | `X-Garden-Version` |
-| `X-Nitro-Cache` | `X-Nitro-Cache-From` | `X-Nitro-Rev` |
-| `X-ShopId` | `X-ShardId` | `X-Sorting-Hat-ShopId` |
-| `X-Storefront-Renderer-Rendered` | `X-Storefront-Renderer-Verified` | `X-Sorting-Hat-PodId` |
-| `WPO-Cache-Status` | | |
+| `MS-Author-Via` | `Powered-By` | `Server` |
+| `Servlet-Engine` | `swift-performance` | `Via` |
+| `WPO-Cache-Status` | `X-Application-Context` | `X-AspNet-Version` |
+| `X-AspNetMvc-Version` | `X-Backend` | `X-Backend-Server` |
+| `X-BEServer` | `X-Cache-Handler` | `X-Cache-Only-Varnish` |
+| `X-CF-Powered-By` | `X-Cocoon-Version` | `X-Compressed-By` |
+| `X-Content-Powered-By` | `X-Debug-Token` | `X-Debug-Token-Link` |
+| `X-DevSrv-CMS` | `X-Drupal-Cache` | `X-Drupal-Dynamic-Cache` |
+| `X-FEServer` | `X-FW-Server` | `X-FW-Version` |
+| `X-Garden-Version` | `X-Generator` | `X-Litespeed-Cache` |
+| `X-Litespeed-Cache-Control` | `X-LiteSpeed-Purge` | `X-LiteSpeed-Tag` |
+| `X-LiteSpeed-Vary` | `X-Mod-Pagespeed` | `X-Nginx-Cache-Status` |
+| `X-Nginx-Upstream-Cache-Status` | `X-Nitro-Cache` | `X-Nitro-Cache-From` |
+| `X-Nitro-Rev` | `X-OWA-Version` | `X-Page-Speed` |
+| `X-Powered-By` | `X-Powered-By-Plesk` | `X-Powered-CMS` |
+| `X-Redirect-By` | `X-Server` | `X-Server-Powered-By` |
+| `X-ShardId` | `X-ShopId` | `X-Shopify-Stage` |
+| `X-Sorting-Hat-PodId` | `X-Sorting-Hat-ShopId` | `X-Storefront-Renderer-Rendered` |
+| `X-Storefront-Renderer-Verified` | `X-Turbo-Charged-By` | `X-Varnish` |
+| `X-Version` | `X-Version-Id` | |
 ||||
 
 </details>

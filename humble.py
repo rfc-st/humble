@@ -54,7 +54,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/09/17, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/10/08, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -394,25 +394,25 @@ if not args.brief:
 
 list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'MicrosoftSharePointTeamServices', 'MS-Author-Via', 'Powered-By',
-            'Server', 'Via', 'X-AspNet-Version', 'X-AspNetMvc-Version',
-            'X-Backend', 'X-Backend-Server', 'X-BEServer',
-            'X-Cache-Only-Varnish', 'X-CF-Powered-By', 'X-Cocoon-Version',
-            'X-Content-Powered-By', 'X-DevSrv-CMS', 'X-Drupal-Cache',
-            'X-Drupal-Dynamic-Cache', 'X-FEServer', 'X-FW-Server',
-            'X-Garden-Version', 'X-Generator', 'X-Litespeed-Cache',
-            'X-Litespeed-Cache-Control', 'X-LiteSpeed-Purge',
-            'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary', 'X-Mod-Pagespeed',
-            'X-Nginx-Cache-Status', 'X-Nginx-Upstream-Cache-Status',
-            'X-OWA-Version', 'X-Page-Speed', 'X-Powered-By',
-            'X-Powered-By-Plesk', 'X-Powered-CMS', 'X-Redirect-By',
-            'X-Server', 'X-Server-Powered-By', 'X-Shopify-Stage',
-            'X-Turbo-Charged-By', 'X-Varnish', 'X-Debug-Token',
-            'X-Debug-Token-Link', 'swift-performance', 'Servlet-Engine',
-            'X-Cache-Handler', 'X-FW-Version', 'X-Application-Context',
-            'X-Version', 'X-Version-Id', 'X-Nitro-Cache', 'X-Nitro-Cache-From',
-            'X-Nitro-Rev', 'X-ShopId', 'X-ShardId', 'X-Sorting-Hat-ShopId',
+            'Server', 'Servlet-Engine', 'swift-performance', 'Via',
+            'WPO-Cache-Status' 'X-Application-Context', 'X-AspNet-Version',
+            'X-AspNetMvc-Version', 'X-Backend', 'X-Backend-Server',
+            'X-BEServer', 'X-Cache-Handler', 'X-Cache-Only-Varnish',
+            'X-CF-Powered-By', 'X-Cocoon-Version', 'X-Compressed-By',
+            'X-Content-Powered-By', 'X-Debug-Token', 'X-Debug-Token-Link',
+            'X-DevSrv-CMS', 'X-Drupal-Cache', 'X-Drupal-Dynamic-Cache',
+            'X-FEServer', 'X-FW-Server', 'X-FW-Version', 'X-Garden-Version',
+            'X-Generator', 'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
+            'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
+            'X-Mod-Pagespeed', 'X-Nginx-Cache-Status',
+            'X-Nginx-Upstream-Cache-Status', 'X-Nitro-Cache',
+            'X-Nitro-Cache-From', 'X-Nitro-Rev', 'X-OWA-Version',
+            'X-Page-Speed', 'X-Powered-By', 'X-Powered-By-Plesk',
+            'X-Powered-CMS', 'X-Redirect-By', 'X-Server',
+            'X-Server-Powered-By', 'X-ShardId', 'X-ShopId', 'X-Shopify-Stage',
+            'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId',
             'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
-            'X-Sorting-Hat-PodId', 'WPO-Cache-Status']
+            'X-Turbo-Charged-By', 'X-Varnish', 'X-Version', 'X-Version-Id']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
