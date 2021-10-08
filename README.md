@@ -120,11 +120,11 @@ optional arguments:
 
 ||||
 | ------------- | ------------- | ------------- | 
-| `Cache-Control` | `Pragma` | `Clear-Site-Data` | 
+| `Cache-Control` | `Clear-Site-Data` | `Content-Security-Policy` |
 | `Cross-Origin-Embedder-Policy` | `Cross-Origin-Opener-Policy` | `Cross-Origin-Resource-Policy` |
-| `Referrer-Policy` | `Content-Security-Policy` | `Strict-Transport-Security` | 
-| `Expect-CT` | `X-Content-Type-Options` | `NEL` | 
-| `X-Frame-Options` | `Permissions-Policy` | |
+| `Expect-CT` | `NEL` | `Permissions-Policy` |
+| `Pragma` | `Referrer-Policy` | `Strict-Transport-Security` | 
+| `X-Content-Type-Options` | `X-Frame-Options` | |
 ||||
 
 </details>
@@ -172,13 +172,13 @@ optional arguments:
 
 ||||
 | ------------- | ------------- | ------------- |
-| `Access-Control-Allow-Origin` | `Strict-Transport-Security` | `Cache-Control` | 
-| `Timing-Allow-Origin` | `Content-Security-Policy` | `X-Content-Type-Options` |
-| `Etag` | `X-Frame-Options` | `Permissions-Policy` | 
-| `X-Permitted-Cross-Domain-Policies` | `Public-Key-Pins` | `X-Runtime` |
-| `Referrer-Policy` | `X-XSS-Protection` | `Set-Cookie` |
-| `X-Pingback` | `X-DNS-Prefetch-Control` | `Server-Timing` |
-| `HTTP instead HTTPS` | `Feature-Policy` | |
+| `Access-Control-Allow-Origin` | `Cache-Control` | `Content-Security-Policy` |
+| `Etag` | `Feature-Policy` | `HTTP instead HTTPS` |
+| `Permissions-Policy` | `Public-Key-Pins` | `Referrer-Policy` |
+| `Server-Timing` | `Set-Cookie` | `Strict-Transport-Security` |
+| `Timing-Allow-Origin` | `X-Content-Type-Options` | `X-DNS-Prefetch-Control` |
+| `X-Frame-Options` | `X-Permitted-Cross-Domain-Policies` | `X-Pingback` |
+| `X-Runtime` | `X-XSS-Protection` | |
 ||||
 
 </details>
