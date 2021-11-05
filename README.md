@@ -158,7 +158,7 @@ optional arguments:
 | `X-ShardId` | `X-ShopId` | `X-Shopify-Stage` |
 | `X-Sorting-Hat-PodId` | `X-Sorting-Hat-ShopId` | `X-Storefront-Renderer-Rendered` |
 | `X-Storefront-Renderer-Verified` | `X-Turbo-Charged-By` | `X-Varnish` |
-| `X-Version` | `X-Version-Id` | |
+| `X-Version` | `X-Version-Id` | `X-Accel-Buffering` |
 ||||
 
 </details>

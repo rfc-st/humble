@@ -54,7 +54,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/10/08, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/11/05, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -412,7 +412,8 @@ list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-Server-Powered-By', 'X-ShardId', 'X-ShopId', 'X-Shopify-Stage',
             'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId',
             'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
-            'X-Turbo-Charged-By', 'X-Varnish', 'X-Version', 'X-Version-Id']
+            'X-Turbo-Charged-By', 'X-Varnish', 'X-Version', 'X-Version-Id',
+            'X-Accel-Buffering']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
