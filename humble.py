@@ -31,6 +31,7 @@
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
 # Add analysis rating (*at the beginning of the output* .... tricky, tricky)
+# Show the application related to each fingerprint header
 
 from fpdf import FPDF
 from datetime import datetime
