@@ -413,7 +413,8 @@ list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId',
             'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
             'X-Turbo-Charged-By', 'X-Varnish', 'X-Version', 'X-Version-Id',
-            'X-Accel-Buffering']
+            'X-Accel-Buffering', 'X-Accel-Redirect', 'X-Accel-Charset',
+            'X-Accel-Expires', 'X-Accel-Limit-Rate']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
