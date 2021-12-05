@@ -268,9 +268,11 @@ optional.add_argument('-d', type=str, dest='domain', required=False,
                       help="domain to analyze, including schema. \
                       E.g., https://google.com")
 optional.add_argument("-r", dest='retrieved', action="store_true",
-                      required=False, help="show HTTP response headers and full analysis (with references and details)")
+                      required=False, help="show HTTP response headers and \
+                          full analysis (with references and details)")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
-                      help="show brief analysis (without references or details)")
+                      help="show brief analysis (without references or \
+                          details)")
 optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
                       help="save analysis to file (domain_yyyymmdd.ext)")
 optional.add_argument("-g", dest='guides', action="store_true", required=False,
