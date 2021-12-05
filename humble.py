@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/11/05, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/12/05, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -396,7 +396,9 @@ if not args.brief:
 list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'MicrosoftSharePointTeamServices', 'MS-Author-Via', 'Powered-By',
             'Server', 'Servlet-Engine', 'swift-performance', 'Via',
-            'WPO-Cache-Status' 'X-Application-Context', 'X-AspNet-Version',
+            'WPO-Cache-Status', 'X-Accel-Buffering', 'X-Accel-Redirect',
+            'X-Accel-Charset', 'X-Accel-Expires', 'X-Accel-Limit-Rate',
+            'X-Application-Context', 'X-AspNet-Version',
             'X-AspNetMvc-Version', 'X-Backend', 'X-Backend-Server',
             'X-BEServer', 'X-Cache-Handler', 'X-Cache-Only-Varnish',
             'X-CF-Powered-By', 'X-Cocoon-Version', 'X-Compressed-By',
@@ -410,12 +412,12 @@ list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-Nitro-Cache-From', 'X-Nitro-Rev', 'X-OWA-Version',
             'X-Page-Speed', 'X-Powered-By', 'X-Powered-By-Plesk',
             'X-Powered-CMS', 'X-Redirect-By', 'X-Server',
-            'X-Server-Powered-By', 'X-ShardId', 'X-ShopId', 'X-Shopify-Stage',
+            'X-Server-Powered-By', 'X-ShardId', 'X-ShopId',
+            'X-Shopify-Request-Trackable', 'X-Shopify-Stage',
             'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId',
             'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
             'X-Turbo-Charged-By', 'X-Varnish', 'X-Version', 'X-Version-Id',
-            'X-Accel-Buffering', 'X-Accel-Redirect', 'X-Accel-Charset',
-            'X-Accel-Expires', 'X-Accel-Limit-Rate']
+            ]
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
