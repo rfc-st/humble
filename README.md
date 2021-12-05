@@ -160,7 +160,7 @@ optional arguments:
 | `X-ShopId` | `X-Shopify-Request-Trackable` | `X-Shopify-Stage` | 
 | `X-Sorting-Hat-PodId` | `X-Sorting-Hat-ShopId` | `X-Storefront-Renderer-Rendered` |
 | `X-Storefront-Renderer-Verified` | `X-Turbo-Charged-By` | `X-Varnish` |
-| `X-Version` | `X-Version-Id` | `X-Accel-Buffering` |
+| `X-Version` | `X-Version-Id` ||
 ||||
 
 </details>
