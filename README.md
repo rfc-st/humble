@@ -103,12 +103,11 @@ humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 optional arguments:
   -h, --help         show this help message and exit
-  -d DOMAIN          domain to scan, including schema. E.g., https://google.com
-  -b                 show brief report (no details/advices)
-  -o {html,pdf,txt}  save report to file (domain_yyyymmdd.ext)
-  -r                 show retrieved HTTP headers
+  -d DOMAIN          domain to analyze, including schema. E.g., https://google.com
+  -r                 show HTTP response headers and full analysis (with references and details)
+  -b                 show brief analysis (without references or details)
+  -o {html,pdf,txt}  save analysis to file (domain_yyyymmdd.ext)
   -g                 show guidelines on securing most used web servers/services
-  -v, --version      show version
 ```
 
 ## Missing headers check
