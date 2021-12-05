@@ -393,7 +393,7 @@ print_section("[2. Fingerprint HTTP Response Headers]\n")
 if not args.brief:
     print_detail("[afgp]", "a")
 
-list_fng = ['Liferay-Portal', 'MicrosoftOfficeWebServer',
+list_fng = ['Hummingbird-Cache', 'Liferay-Portal', 'MicrosoftOfficeWebServer',
             'MicrosoftSharePointTeamServices', 'MS-Author-Via', 'Powered-By',
             'Server', 'Servlet-Engine', 'swift-performance', 'Via',
             'WPO-Cache-Status', 'X-Accel-Buffering', 'X-Accel-Redirect',
