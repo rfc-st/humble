@@ -455,8 +455,8 @@ list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'X-Runtime', 'X-XSS-Protection']
 
 if 'Access-Control-Allow-Methods' in headers:
-    list_methods = ['PUT' 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
-                    'DELETE', ' DEBUG' 'PATCH']
+    list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
+                    'DELETE', 'DEBUG', 'PATCH']
     if any(elem.lower() in headers["Access-Control-Allow-Methods"].lower() for
        elem in list_methods):
         print_header("Access-Control-Allow-Methods")
