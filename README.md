@@ -87,6 +87,9 @@ $ pip3 install -r requirements.txt
 
 # update humble (every couple of weeks, inside humble's working directory)
 $ git pull
+
+# or download the latest release
+https://github.com/rfc-st/humble/releases
 ```
 
 ## Usage
