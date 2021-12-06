@@ -67,6 +67,9 @@
 [ifpol]
  The value '*' allows the feature in this document, and iframes regardless of their origin.
 
+[imethods]
+ Ref: https://appcheck-ng.com/http-verbs-security-risks/
+
 [ipkp]
  This header was deprecated in favor of Certificate Transparency and "Expect-CT" header.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Public-Key-Pins

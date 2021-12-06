@@ -448,11 +448,23 @@ print_section("[3. Insecure HTTP Response Headers Values]\n")
 if not args.brief:
     print_detail("[aisc]", "a")
 
-list_ins = ['Access-Control-Allow-Origin', 'Etag', 'HTTP instead HTTPS',
-            'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
-            'Timing-Allow-Origin', 'X-DNS-Prefetch-Control',
+list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
+            'Etag', 'HTTP instead HTTPS', 'Public-Key-Pins', 'Set-Cookie',
+            'Server-Timing', 'Timing-Allow-Origin', 'X-DNS-Prefetch-Control',
             'X-Permitted-Cross-Domain-Policies', 'X-Pingback',
             'X-Runtime', 'X-XSS-Protection']
+
+if 'Access-Control-Allow-Methods' in headers:
+    list_methods = ['PUT' 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
+                    'DELETE', ' DEBUG' 'PATCH']
+    if any(elem.lower() in headers["Access-Control-Allow-Methods"].lower() for
+       elem in list_methods):
+        print_header("Access-Control-Allow-Methods")
+        if not args.brief:
+            print(" These enabled HTTP verbs may have security implications, \
+check them: '" + headers["Access-Control-Allow-Methods"] + "'.")
+            print_detail("[imethods]", "a")
+        i_cnt += 1
 
 if 'Access-Control-Allow-Origin' in headers:
     list_access = ['*', 'null']

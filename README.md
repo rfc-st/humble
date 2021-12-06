@@ -176,13 +176,13 @@ optional arguments:
 
 ||||
 | ------------- | ------------- | ------------- |
-| `Access-Control-Allow-Origin` | `Cache-Control` | `Content-Security-Policy` |
-| `Etag` | `Feature-Policy` | `HTTP instead HTTPS` |
-| `Permissions-Policy` | `Public-Key-Pins` | `Referrer-Policy` |
-| `Server-Timing` | `Set-Cookie` | `Strict-Transport-Security` |
-| `Timing-Allow-Origin` | `X-Content-Type-Options` | `X-DNS-Prefetch-Control` |
-| `X-Frame-Options` | `X-Permitted-Cross-Domain-Policies` | `X-Pingback` |
-| `X-Runtime` | `X-XSS-Protection` | |
+| `Access-Control-Allow-Methods` | `Access-Control-Allow-Origin` | `Cache-Control` | 
+| `Content-Security-Policy` | `Etag` | `Feature-Policy` | 
+| `HTTP instead HTTPS` | `Permissions-Policy` | `Public-Key-Pins` | 
+| `Referrer-Policy` | `Server-Timing` | `Set-Cookie` | 
+| `Strict-Transport-Security` | `Timing-Allow-Origin` | `X-Content-Type-Options` |
+| `X-DNS-Prefetch-Control` | `X-Frame-Options` | `X-Permitted-Cross-Domain-Policies` | 
+| `X-Pingback` | `X-Runtime` | `X-XSS-Protection` |
 ||||
 
 </details>
