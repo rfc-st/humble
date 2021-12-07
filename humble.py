@@ -449,14 +449,15 @@ if not args.brief:
     print_detail("[aisc]", "a")
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
-            'Etag', 'HTTP instead HTTPS', 'Public-Key-Pins', 'Set-Cookie',
-            'Server-Timing', 'Timing-Allow-Origin', 'X-DNS-Prefetch-Control',
-            'X-Permitted-Cross-Domain-Policies', 'X-Pingback',
-            'X-Runtime', 'X-XSS-Protection']
+            'Allow' 'Etag', 'HTTP instead HTTPS', 'Public-Key-Pins',
+            'Set-Cookie', 'Server-Timing', 'Timing-Allow-Origin',
+            'X-DNS-Prefetch-Control', 'X-Permitted-Cross-Domain-Policies',
+            'X-Pingback', 'X-Runtime', 'X-XSS-Protection']
+
+list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
+                'DELETE', 'DEBUG', 'PATCH']
 
 if 'Access-Control-Allow-Methods' in headers:
-    list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
-                    'DELETE', 'DEBUG', 'PATCH']
     if any(elem.lower() in headers["Access-Control-Allow-Methods"].lower() for
        elem in list_methods):
         print_header("Access-Control-Allow-Methods")
@@ -476,6 +477,15 @@ if 'Access-Control-Allow-Origin' in headers:
                   headers["Access-Control-Allow-Origin"] + "' regarding your \
 CORS (Cross-origin resource sharing) requirements.")
             print("")
+        i_cnt += 1
+
+if 'Allow' in headers:
+    if any(elem.lower() in headers["Allow"].lower() for elem in list_methods):
+        print_header("Allow")
+        if not args.brief:
+            print(" Make sure these enabled HTTP methods are needed: '" +
+                  headers["Allow"] + "'.")
+            print_detail("[imethods]", "a")
         i_cnt += 1
 
 if 'Cache-Control' in headers:
