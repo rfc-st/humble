@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/12/06, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/12/07, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -461,8 +461,8 @@ if 'Access-Control-Allow-Methods' in headers:
        elem in list_methods):
         print_header("Access-Control-Allow-Methods")
         if not args.brief:
-            print(" These enabled HTTP verbs may have security implications, \
-check them: '" + headers["Access-Control-Allow-Methods"] + "'.")
+            print(" Make sure these enabled HTTP methods are needed: '" +
+                  headers["Access-Control-Allow-Methods"] + "'.")
             print_detail("[imethods]", "a")
         i_cnt += 1
 
