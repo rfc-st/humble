@@ -449,7 +449,7 @@ if not args.brief:
     print_detail("[aisc]", "a")
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
-            'Allow' 'Etag', 'HTTP instead HTTPS', 'Public-Key-Pins',
+            'Allow', 'Etag', 'HTTP instead HTTPS', 'Public-Key-Pins',
             'Set-Cookie', 'Server-Timing', 'Timing-Allow-Origin',
             'X-DNS-Prefetch-Control', 'X-Permitted-Cross-Domain-Policies',
             'X-Pingback', 'X-Runtime', 'X-XSS-Protection']
