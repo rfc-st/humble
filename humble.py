@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/12/07, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/12/08, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -411,12 +411,12 @@ list_fng = ['Hummingbird-Cache', 'Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
             'X-Mod-Pagespeed', 'X-Nginx-Cache-Status',
             'X-Nginx-Upstream-Cache-Status', 'X-Nitro-Cache',
-            'X-Nitro-Cache-From', 'X-Nitro-Rev', 'X-OWA-Version',
-            'X-Page-Speed', 'X-Powered-By', 'X-Powered-By-Plesk',
-            'X-Powered-CMS', 'X-Redirect-By', 'X-Server',
-            'X-Server-Powered-By', 'X-ShardId', 'X-ShopId',
-            'X-Shopify-Request-Trackable', 'X-Shopify-Stage',
-            'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId',
+            'X-Nitro-Cache-From', 'X-Nitro-Rev', 'X-ORACLE-DMS-ECID',
+            'X-ORACLE-DMS-RID', 'X-OWA-Version', 'X-Page-Speed',
+            'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
+            'X-Redirect-By', 'X-Server', 'X-Server-Powered-By',
+            'X-ShardId', 'X-ShopId', 'X-Shopify-Request-Trackable',
+            'X-Shopify-Stage', 'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId',
             'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
             'X-Turbo-Charged-By', 'X-Varnish', 'X-Version', 'X-Version-Id',
             ]

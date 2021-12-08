@@ -156,13 +156,14 @@ optional arguments:
 | `X-Litespeed-Cache-Control` | `X-LiteSpeed-Purge` | `X-LiteSpeed-Tag` |
 | `X-LiteSpeed-Vary` | `X-Mod-Pagespeed` | `X-Nginx-Cache-Status` |
 | `X-Nginx-Upstream-Cache-Status` | `X-Nitro-Cache` | `X-Nitro-Cache-From` |
-| `X-Nitro-Rev` | `X-OWA-Version` | `X-Page-Speed` |
-| `X-Powered-By` | `X-Powered-By-Plesk` | `X-Powered-CMS` |
-| `X-Redirect-By` | `X-Server` | `X-Server-Powered-By` |
-| `X-ShardId` | `X-ShopId` | `X-Shopify-Request-Trackable` |
-| `X-Shopify-Stage` | `X-Sorting-Hat-PodId` | `X-Sorting-Hat-ShopId` |
-| `X-Storefront-Renderer-Rendered` | `X-Storefront-Renderer-Verified` | `X-Turbo-Charged-By` |
-| `X-Varnish` | `X-Version` | `X-Version-Id` |
+| `X-Nitro-Rev` | `X-ORACLE-DMS-ECID` | `X-ORACLE-DMS-RID` |
+| `X-OWA-Version` | `X-Page-Speed` | `X-Powered-By` | 
+| `X-Powered-By-Plesk` | `X-Powered-CMS` | `X-Redirect-By` | 
+| `X-Server` | `X-Server-Powered-By` | `X-ShardId` | 
+| `X-ShopId` | `X-Shopify-Request-Trackable` | `X-Shopify-Stage` |
+| `X-Sorting-Hat-PodId` | `X-Sorting-Hat-ShopId` | `X-Storefront-Renderer-Rendered` | 
+| `X-Storefront-Renderer-Verified` | `X-Turbo-Charged-By` | `X-Varnish` | 
+| `X-Version` | `X-Version-Id` |
 ||||
 
 </details>
