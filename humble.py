@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/12/08, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/12/09, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -456,7 +456,7 @@ list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'X-Pingback', 'X-Runtime', 'X-XSS-Protection']
 
 list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
-                'DELETE', 'DEBUG', 'PATCH']
+                'DELETE', 'DEBUG', 'PATCH', '*']
 
 if 'Access-Control-Allow-Methods' in headers:
     if any(elem.lower() in headers["Access-Control-Allow-Methods"].lower() for
