@@ -410,6 +410,7 @@ list_fng = ['Hummingbird-Cache', 'Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-FW-Version', 'X-Garden-Version', 'X-Generator',
             'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
             'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
+            'X-Magento-Cache-Control', 'X-Magento-Cache-Debug',
             'X-Mod-Pagespeed', 'X-Nginx-Cache-Status',
             'X-Nginx-Upstream-Cache-Status', 'X-Nitro-Cache',
             'X-Nitro-Cache-From', 'X-Nitro-Rev', 'X-ORACLE-DMS-ECID',
@@ -419,7 +420,8 @@ list_fng = ['Hummingbird-Cache', 'Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-ShopId', 'X-Shopify-Request-Trackable', 'X-Shopify-Stage',
             'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId',
             'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
-            'X-Turbo-Charged-By', 'X-Varnish', 'X-Version', 'X-Version-Id'
+            'X-Turbo-Charged-By', 'X-Varnish', 'X-Varnish-Cache',
+            'X-Varnish-CC', 'X-Version', 'X-Version-Id'
             ]
 
 if any(elem.lower() in headers for elem in list_fng):
