@@ -16,6 +16,7 @@ HTTP Headers Analyzer<br />
 
 ### Table of contents
 
+[Features](#features)<br />
 [Screenshots](#screenshots)<br />
 [Installation & Update](#installation--update)<br />
 [Usage](#usage)<br />
@@ -28,6 +29,17 @@ HTTP Headers Analyzer<br />
 [Further Reading](#further-reading)<br />
 [Contribute](#contribute)<br />
 [License](#license)<br />
+<br />
+
+## Features
+
+:heavy_check_mark: 13 checks of missing HTTP response headers.<br />
+:heavy_check_mark: 73 checks of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 22 checks of HTTP response headers with values considered insecure.<br />
+:heavy_check_mark: Export of analysis to html, pdf and txt.<br />
+:heavy_check_mark: PEP8 compliant code.<br />
+:heavy_check_mark: Fully tested on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
+:heavy_check_mark: Permissive license (MIT).<br />
 <br />
 
 ## Screenshots
@@ -93,8 +105,6 @@ https://github.com/rfc-st/humble/releases
 ```
 
 ## Usage
-
-**NOTE**: Tested on Windows 10 20H2 (19042.985) and Kali Linux 2021.1.
 
 ```bash
 (Windows) $ py humble.py
