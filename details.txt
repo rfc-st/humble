@@ -105,7 +105,7 @@
  The following headers have no value (could be equivalent to as if they were not enabled):
 
 [afgp]
- Remove these headers (or modify their values), if they refer to actual software/versions:
+ Remove these headers (or modify their values), if they leak information about software, versions, hostnames or IP addresses:
 
 [aisc]
  All, or any, of the values in these headers could be considered insecure:
