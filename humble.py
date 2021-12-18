@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/12/09, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/12/18, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -416,8 +416,9 @@ list_fng = ['Hummingbird-Cache', 'Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-Nitro-Cache-From', 'X-Nitro-Rev', 'X-ORACLE-DMS-ECID',
             'X-ORACLE-DMS-RID', 'X-OWA-Version', 'X-Page-Speed',
             'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
-            'X-Redirect-By', 'X-Server', 'X-Server-Powered-By', 'X-ShardId',
-            'X-ShopId', 'X-Shopify-Request-Trackable', 'X-Shopify-Stage',
+            'X-Redirect-By', 'X-Server', 'X-ServerName', 'X-Server-Name',
+            'X-Server-Powered-By', 'X-ShardId', 'X-ShopId',
+            'X-Shopify-Request-Trackable', 'X-Shopify-Stage',
             'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId',
             'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
             'X-Turbo-Charged-By', 'X-Varnish', 'X-Varnish-Cache',
