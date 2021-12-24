@@ -34,7 +34,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 13 checks of missing HTTP response headers.<br />
-:heavy_check_mark: 79 checks of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 82 checks of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 22 checks of HTTP response headers with values considered insecure.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
 :heavy_check_mark: PEP8 compliant code.<br />
@@ -174,7 +174,8 @@ optional arguments:
 | `X-Server-Name` | `X-Server-Powered-By` | `X-ShardId` | 
 | `X-ShopId` | `X-Shopify-Request-Trackable` | `X-Shopify-Stage` |
 | `X-Sorting-Hat-PodId` | `X-Sorting-Hat-ShopId` | `X-Storefront-Renderer-Rendered` |
-| `X-Storefront-Renderer-Verified` | `X-Turbo-Charged-By` | `X-Varnish` |
+| `X-Storefront-Renderer-Verified` | `X-TEC-API-ORIGIN` | `X-TEC-API-ROOT` |
+| `X-TEC-API-VERSION` | `X-Turbo-Charged-By` | `X-Varnish` |
 | `X-Varnish-Cache` | `X-Varnish-CC` | `X-Version` | 
 | `X-Version-Id` |||
 ||||
