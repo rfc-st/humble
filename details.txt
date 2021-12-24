@@ -15,7 +15,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
 
 [mcor]
- Allows a resource owner to specify who can load the resource.
+ Protect servers against certain cross-origin or cross-site embedding of the returned source.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)
 
 [mcsp]

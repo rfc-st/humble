@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2021/12/18, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2021/12/24, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -453,10 +453,11 @@ if not args.brief:
     print_detail("[aisc]", "a")
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
-            'Allow', 'Etag', 'HTTP instead HTTPS', 'Public-Key-Pins',
-            'Set-Cookie', 'Server-Timing', 'Timing-Allow-Origin',
-            'X-DNS-Prefetch-Control', 'X-Permitted-Cross-Domain-Policies',
-            'X-Pingback', 'X-Runtime', 'X-XSS-Protection']
+            'Allow', 'Etag', 'Feature-Policy', 'HTTP instead HTTPS',
+            'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
+            'Timing-Allow-Origin', 'X-DNS-Prefetch-Control',
+            'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
+            'X-XSS-Protection']
 
 list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
                 'DELETE', 'DEBUG', 'PATCH', '*']
