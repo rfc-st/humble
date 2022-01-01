@@ -244,5 +244,5 @@ Thanks for your time!! :).
 
 ## License
 
-MIT © 2020-2021 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)<br/>
+MIT © 2020-2022 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)<br/>
 Original Creator - Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
