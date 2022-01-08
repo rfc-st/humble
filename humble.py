@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/01/01, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/01/08, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -78,8 +78,8 @@ support.maxcdn.com/hc/en-us/articles/360036557712-Edge-Rules-Recipes' + \
 Services]' + Style.NORMAL + '\r\n' + '\r\n' + 'https://geekflare.com/http-\
 header-implementation/' + '\r\n' + 'https://www.ryadel.com/en/iis-web-config\
 -secure-http-response-headers-pass-securityheaders-io-scan/' + '\r\n' + \
- 'https://www.linkedin.com/pulse/hardening-your-http-response-headers-iis-\
-server-omar-el-sergany' + '\r\n' + '\r\n' + Style.BRIGHT + \
+ 'https://beaglesecurity.com/blog/article/hardening-server-security-by-\
+implementing-security-headers.html' + '\r\n' + '\r\n' + Style.BRIGHT + \
  '[Nginx]' + Style.NORMAL + '\r\n' + '\r\n' + 'https://www.acunetix.com/\
 blog/web-security-zone/hardening-nginx/' + '\r\n' + 'https://www.getpagespeed\
 .com/server-setup/nginx-security-headers-the-right-way' + '\r\n'
