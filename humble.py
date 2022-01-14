@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/01/08, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/01/14, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -395,20 +395,20 @@ print_section("[2. Fingerprint HTTP Response Headers]\n")
 if not args.brief:
     print_detail("[afgp]", "a")
 
-list_fng = ['Hummingbird-Cache', 'Liferay-Portal', 'MicrosoftOfficeWebServer',
-            'MicrosoftSharePointTeamServices', 'MS-Author-Via',
-            'Oracle-Mobile-Runtime-Version', 'Powered-By', 'Server',
-            'Servlet-Engine', 'swift-performance', 'Via', 'WPO-Cache-Status',
-            'X-Accel-Buffering', 'X-Accel-Redirect', 'X-Accel-Charset',
-            'X-Accel-Expires', 'X-Accel-Limit-Rate', 'X-AH-Environment',
-            'X-Application-Context', 'X-AspNet-Version', 'X-AspNetMvc-Version',
-            'X-Backend', 'X-Backend-Server', 'X-BEServer', 'X-Cache-Handler',
-            'X-Cache-Only-Varnish', 'X-CF-Powered-By', 'X-Cocoon-Version',
-            'X-Compressed-By', 'X-Content-Powered-By', 'X-Debug-Token',
-            'X-Debug-Token-Link', 'X-DevSrv-CMS', 'X-Drupal-Cache',
-            'X-Drupal-Dynamic-Cache', 'X-FEServer', 'X-FW-Server',
-            'X-FW-Version', 'X-Garden-Version', 'X-Generator',
-            'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
+list_fng = ['Composed-By', 'Hummingbird-Cache', 'Liferay-Portal',
+            'MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
+            'MS-Author-Via', 'Oracle-Mobile-Runtime-Version', 'Powered-By',
+            'Server', 'Servlet-Engine', 'swift-performance', 'Via',
+            'WPO-Cache-Status', 'X-Accel-Buffering', 'X-Accel-Redirect',
+            'X-Accel-Charset', 'X-Accel-Expires', 'X-Accel-Limit-Rate',
+            'X-AH-Environment', 'X-Application-Context', 'X-AspNet-Version',
+            'X-AspNetMvc-Version', 'X-Backend', 'X-Backend-Server',
+            'X-BEServer', 'X-Cache-Handler', 'X-Cache-Only-Varnish',
+            'X-CF-Powered-By', 'X-Cocoon-Version', 'X-Compressed-By',
+            'X-Content-Powered-By', 'X-Debug-Token', 'X-Debug-Token-Link',
+            'X-DevSrv-CMS', 'X-Drupal-Cache', 'X-Drupal-Dynamic-Cache',
+            'X-FEServer', 'X-FW-Server', 'X-FW-Version', 'X-Garden-Version',
+            'X-Generator', 'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
             'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
             'X-Magento-Cache-Control', 'X-Magento-Cache-Debug',
             'X-Mod-Pagespeed', 'X-Nginx-Cache-Status',
@@ -419,8 +419,8 @@ list_fng = ['Hummingbird-Cache', 'Liferay-Portal', 'MicrosoftOfficeWebServer',
             'X-Redirect-By', 'X-Server', 'X-ServerName', 'X-Server-Name',
             'X-Server-Powered-By', 'X-ShardId', 'X-ShopId',
             'X-Shopify-Request-Trackable', 'X-Shopify-Stage',
-            'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId', 'X-TEC-API-ORIGIN',
-            'X-TEC-API-ROOT', 'X-TEC-API-VERSION',
+            'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId', 'X-Spip-Cache',
+            'X-TEC-API-ORIGIN', 'X-TEC-API-ROOT', 'X-TEC-API-VERSION',
             'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
             'X-Turbo-Charged-By', 'X-Varnish', 'X-Varnish-Cache',
             'X-Varnish-CC', 'X-Version', 'X-Version-Id'
