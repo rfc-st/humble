@@ -416,15 +416,15 @@ list_fng = ['Composed-By', 'Hummingbird-Cache', 'Liferay-Portal',
             'X-Nitro-Cache-From', 'X-Nitro-Rev', 'X-ORACLE-DMS-ECID',
             'X-ORACLE-DMS-RID', 'X-OWA-Version', 'X-Page-Speed',
             'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
-            'X-Provided-By', 'X-Redirect-By', 'X-Redirect-Powered-By',
-            'X-Server', 'X-ServerName', 'X-Server-Name', 'X-Server-Powered-By',
-            'X-ShardId', 'X-ShopId', 'X-Shopify-Request-Trackable',
-            'X-Shopify-Stage', 'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId',
-            'X-Spip-Cache', 'X-TEC-API-ORIGIN', 'X-TEC-API-ROOT',
-            'X-TEC-API-VERSION', 'X-Storefront-Renderer-Rendered',
-            'X-Storefront-Renderer-Verified', 'X-Turbo-Charged-By',
-            'X-Varnish', 'X-Varnish-Cache', 'X-Varnish-CC', 'X-Version',
-            'X-Version-Id'
+            'X-Provided-By', 'X-Rack-Cache', 'X-Redirect-By',
+            'X-Redirect-Powered-By', 'X-Server', 'X-ServerName',
+            'X-Server-Name', 'X-Server-Powered-By', 'X-ShardId', 'X-ShopId',
+            'X-Shopify-Request-Trackable', 'X-Shopify-Stage',
+            'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId', 'X-Spip-Cache',
+            'X-TEC-API-ORIGIN', 'X-TEC-API-ROOT', 'X-TEC-API-VERSION',
+            'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
+            'X-Turbo-Charged-By', 'X-Varnish', 'X-Varnish-Cache',
+            'X-Varnish-CC', 'X-Version', 'X-Version-Id'
             ]
 
 if any(elem.lower() in headers for elem in list_fng):
