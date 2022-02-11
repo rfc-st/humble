@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/01/15, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/02/11, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -398,17 +398,18 @@ if not args.brief:
 list_fng = ['Composed-By', 'Hummingbird-Cache', 'Liferay-Portal',
             'MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
             'MS-Author-Via', 'Oracle-Mobile-Runtime-Version', 'Powered-By',
-            'Server', 'Servlet-Engine', 'swift-performance', 'Via',
-            'WPO-Cache-Status', 'X-Accel-Buffering', 'X-Accel-Redirect',
-            'X-Accel-Charset', 'X-Accel-Expires', 'X-Accel-Limit-Rate',
-            'X-AH-Environment', 'X-Application-Context', 'X-AspNet-Version',
-            'X-AspNetMvc-Version', 'X-Backend', 'X-Backend-Server',
-            'X-BEServer', 'X-Cache-Handler', 'X-Cache-Only-Varnish',
-            'X-CF-Powered-By', 'X-Cocoon-Version', 'X-Compressed-By',
-            'X-Content-Powered-By', 'X-Debug-Token', 'X-Debug-Token-Link',
-            'X-DevSrv-CMS', 'X-Drupal-Cache', 'X-Drupal-Dynamic-Cache',
-            'X-FEServer', 'X-FW-Server', 'X-FW-Version', 'X-Garden-Version',
-            'X-Generator', 'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
+            'Server', 'Servlet-Engine', 'simplycom-server',
+            'swift-performance', 'Via', 'WPO-Cache-Status',
+            'X-Accel-Buffering', 'X-Accel-Redirect', 'X-Accel-Charset',
+            'X-Accel-Expires', 'X-Accel-Limit-Rate', 'X-AH-Environment',
+            'X-Application-Context', 'X-AspNet-Version', 'X-AspNetMvc-Version',
+            'X-Backend', 'X-Backend-Server', 'X-BEServer', 'X-Cache-Handler',
+            'X-Cache-Only-Varnish', 'X-CF-Powered-By', 'X-Cocoon-Version',
+            'X-Compressed-By', 'X-Content-Powered-By', 'X-Debug-Token',
+            'X-Debug-Token-Link', 'X-DevSrv-CMS', 'X-Drupal-Cache',
+            'X-Drupal-Dynamic-Cache', 'X-FEServer', 'X-FW-Server',
+            'X-FW-Version', 'X-Garden-Version', 'X-Generator',
+            'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
             'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
             'X-Magento-Cache-Control', 'X-Magento-Cache-Debug',
             'X-Mod-Pagespeed', 'X-Nginx-Cache-Status',
