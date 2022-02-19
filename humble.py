@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/02/11, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/02/19, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -110,6 +110,28 @@ def analysis_time():
     print("")
     seconds = end - start
     print(" Analysis done in " + str(round(seconds, 2)) + " seconds!.")
+    print("")
+
+
+def advice():
+    advice = " Advice: check the "
+    if i_cnt > 0 and m_cnt > 0 and f_cnt > 0:
+        print(advice + "insecure values, then the missing headers and finally \
+those associated with fingerprint.")
+    elif i_cnt > 0 and m_cnt > 0:
+        print(advice + "insecure values and then the missing headers.")
+    elif i_cnt > 0 and f_cnt > 0:
+        print(advice + "insecure values and those associated with \
+fingerprint.")
+    elif m_cnt > 0 and f_cnt > 0:
+        print(advice + "missing headers and those associated with \
+fingerprint.")
+    elif i_cnt > 0:
+        print(advice + "insecure values.")
+    elif m_cnt > 0:
+        print(advice + "missing headers.")
+    elif f_cnt > 0:
+        print(advice + "fingerprint headers.")
     print("")
     print(".:")
     print("")
@@ -681,6 +703,7 @@ if e_cnt == 0:
 print("")
 end = time.time()
 analysis_time()
+advice()
 
 # Export analysis
 

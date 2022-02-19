@@ -33,7 +33,7 @@ HTTP Headers Analyzer<br />
 
 ## Features
 
-:heavy_check_mark: 13 checks of missing HTTP response headers.<br />
+:heavy_check_mark: 14 checks of missing HTTP response headers.<br />
 :heavy_check_mark: 88 checks of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 22 checks of HTTP response headers with values considered insecure.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
