@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/02/19, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/02/24, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -417,7 +417,7 @@ print_section("[2. Fingerprint HTTP Response Headers]\n")
 if not args.brief:
     print_detail("[afgp]", "a")
 
-list_fng = ['Composed-By', 'Hummingbird-Cache', 'Liferay-Portal',
+list_fng = ['Composed-By', 'Generator', 'Hummingbird-Cache', 'Liferay-Portal',
             'MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
             'MS-Author-Via', 'Oracle-Mobile-Runtime-Version', 'Powered-By',
             'Server', 'Servlet-Engine', 'simplycom-server',
