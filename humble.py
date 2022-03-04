@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/02/24, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/03/04, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -420,7 +420,7 @@ if not args.brief:
 list_fng = ['Composed-By', 'Generator', 'Hummingbird-Cache', 'Liferay-Portal',
             'MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
             'MS-Author-Via', 'Oracle-Mobile-Runtime-Version', 'Powered-By',
-            'Server', 'Servlet-Engine', 'simplycom-server',
+            'Product', 'Server', 'Servlet-Engine', 'simplycom-server',
             'swift-performance', 'Via', 'WPO-Cache-Status',
             'X-Accel-Buffering', 'X-Accel-Redirect', 'X-Accel-Charset',
             'X-Accel-Expires', 'X-Accel-Limit-Rate', 'X-AH-Environment',
