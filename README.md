@@ -34,7 +34,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 14 checks of missing HTTP response headers.<br />
-:heavy_check_mark: 92 checks of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 93 checks of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 22 checks of HTTP response headers with values considered insecure.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
@@ -182,8 +182,8 @@ optional arguments:
 | `X-Sorting-Hat-PodId` | `X-Sorting-Hat-ShopId` | `X-Storefront-Renderer-Rendered` |
 | `X-Storefront-Renderer-Verified` | `X-Spip-Cache` | `X-TEC-API-ORIGIN` |
 | `X-TEC-API-ROOT` | `X-TEC-API-VERSION` | `X-Turbo-Charged-By` |
-| `X-Varnish` | `X-Varnish-Cache` | `X-Varnish-CC` |
-| `X-Version` | `X-Version-Id` ||
+| `X-Using-Nginx-Controller` | `X-Varnish` | `X-Varnish-Cache` |
+| `X-Varnish-CC` | `X-Version` | `X-Version-Id` |
 ||||
 
 </details>
