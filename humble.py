@@ -313,6 +313,13 @@ domain = args.domain
 if args.guides:
     print(guides)
     sys.exit()
+
+# Peace
+
+elif ".ru" in domain or ".ru/" in domain:
+    print(spacing + "This humble program will not analyze these domains until \
+Russia withdraws from Ukraine." + spacing)
+    sys.exit()
 else:
     print(spacing + 'Analyzing ' + domain + " ..." + spacing)
 
