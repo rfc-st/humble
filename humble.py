@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/03/18, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/03/19, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -307,6 +307,7 @@ parser._action_groups.append(optional)
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 domain = args.domain
+suffix = tldextract.extract(domain).suffix
 
 # Show guides
 
@@ -316,8 +317,8 @@ if args.guides:
 
 # Peace
 
-elif ".ru" in domain or ".ru/" in domain:
-    print(spacing + "This humble program will not analyze these domains until \
+elif suffix == "ru":
+    print(spacing + "This humble program will not analyze this domain until \
 Russia withdraws from Ukraine." + spacing)
     sys.exit()
 else:
