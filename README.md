@@ -157,7 +157,7 @@ optional arguments:
 | `Liferay-Portal` | `MicrosoftOfficeWebServer` | `MicrosoftSharePointTeamServices` |
 | `MS-Author-Via` | `Oracle-Mobile-Runtime-Version` | `Powered-By` |
 | `Product` | `Server` | `Servlet-Engine` |
-| `simplycom-server` | `SPIisLatency | SPRequestDuration`
+| `simplycom-server` | `SPIisLatency` | `SPRequestDuration` |
 | `SPRequestGuid` | `swift-performance` | `Via` |
 | `WPO-Cache-Status` | `X-Accel-Buffering` | `X-Accel-Redirect` |
 | `X-Accel-Charset` | `X-Accel-Expires` | `X-Accel-Limit-Rate` |
