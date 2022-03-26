@@ -74,3 +74,15 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 
 For answers to common questions about this code of conduct, see
 https://www.contributor-covenant.org/faq
+
+## Update 2022/03/26
+
+Due to the invasion of Ukraine by Russia (at the end of February 2022 and until today), the author of this software took the decision to block any analysis performed against Russian domains (identified by the suffix .ru), blocking them. This blocking can be undone very easily, with small modifications to the source code. All commits, from the first to the most recent, have been made by the same person, so this decision was unique and unanimous.
+
+The author of this software knows that, unfortunately, this blocking goes against the very nature of Free Software, against this Document itself and against the freedom of any individual to be able to analyze any domain.
+
+But, sometimes, these actions are the only possible way to protest against certain behaviors and aggressions. The author of this software hopes, above all, that the invasion will end as soon as possible.
+
+If you need a service to analyze HTTP response headers on Russian domains, I highly recommend the great https://securityheaders.com/ (with which I have no personal or professional relationship whatsoever).
+
+Thank you for taking the time to read these lines.
