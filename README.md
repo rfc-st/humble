@@ -38,11 +38,11 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: 22 checks of HTTP response headers with values considered insecure.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
-:heavy_check_mark: <a href="http://pep8online.com/">PEP8</a> compliant code.<br />
+:heavy_check_mark: <a href="http://pep8online.com/" target="_blank">PEP8</a> compliant code.<br />
 :heavy_check_mark: Tested, one by one, on hundreds of URLs.<br />
 :heavy_check_mark: Fully working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
-:heavy_check_mark: Permissive license (<a href="https://github.com/rfc-st/humble/blob/master/LICENSE">MIT)<a>.<br />
-:heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master">updated</a>.<br />
+:heavy_check_mark: Permissive license (<a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>).<br />
+:heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
 <br />
 
 ## Screenshots
