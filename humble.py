@@ -540,12 +540,25 @@ if 'Cache-Control' in headers:
         i_cnt += 1
 
 if 'Content-Security-Policy' in headers:
-    list_csp = ['unsafe-inline', 'unsafe-eval']
+    list_csp_directives = ['child-src', 'connect-src', 'default-src',
+                           'font-src', 'frame-src', 'img-src', 'manifest-src',
+                           'media-src', 'object-src', 'prefetch-src',
+                           'script-src', 'script-src-elem', 'script-src-attr',
+                           'style-src', 'style-src-elem', 'style-src-attr',
+                           'worker-src', 'base-uri', 'sandbox', 'form-action',
+                           'frame-ancestors', 'navigate-to', 'report-to']
+    list_csp_insecure = ['unsafe-inline', 'unsafe-eval']
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
-       elem in list_csp):
+       elem in list_csp_insecure):
         print_header("Content-Security-Policy")
         if not args.brief:
             print_detail("[icsp]", "a")
+        i_cnt += 1
+    elif not any(elem.lower() in headers["Content-Security-Policy"].lower() for
+                 elem in list_csp_directives):
+        print_header("Content-Security-Policy")
+        if not args.brief:
+            print_detail("[icsi]", "d")
         i_cnt += 1
 
 if 'Etag' in headers:

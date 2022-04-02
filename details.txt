@@ -60,6 +60,10 @@
 [icsp]
  Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible.
 
+[icsi]
+ Include at least one valid directive.
+ Ref: https://www.w3.org/TR/CSP3/#csp-directives
+
 [iffea]
  "Feature-Policy" has been renamed to "Permissions-Policy".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
