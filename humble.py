@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/03/26, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/04/02, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -316,6 +316,7 @@ if args.guides:
     sys.exit()
 
 # Peace
+# https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
 elif suffix == "ru":
     print(spacing + "This humble program will not analyze this domain until \
