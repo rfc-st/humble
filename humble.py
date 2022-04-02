@@ -546,7 +546,8 @@ if 'Content-Security-Policy' in headers:
                            'script-src', 'script-src-elem', 'script-src-attr',
                            'style-src', 'style-src-elem', 'style-src-attr',
                            'worker-src', 'base-uri', 'sandbox', 'form-action',
-                           'frame-ancestors', 'navigate-to', 'report-to']
+                           'frame-ancestors', 'navigate-to', 'report-to',
+                           'upgrade-insecure-requests']
     list_csp_insecure = ['unsafe-inline', 'unsafe-eval']
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp_insecure):
