@@ -307,7 +307,6 @@ parser._action_groups.append(optional)
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 domain = args.domain
-suffix = tldextract.extract(domain).suffix
 
 # Show guides
 
@@ -318,7 +317,9 @@ if args.guides:
 # Peace
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
-elif suffix == "ru":
+suffix = tldextract.extract(domain).suffix
+
+if suffix == "ru":
     print(spacing + "This humble program will not analyze this domain until \
 Russia withdraws from Ukraine." + spacing)
     sys.exit()
