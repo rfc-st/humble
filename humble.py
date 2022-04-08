@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/04/02, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/04/08, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -514,13 +514,14 @@ if 'Access-Control-Allow-Origin' in headers:
     list_access = ['*', 'null']
     if any(elem.lower() in headers["Access-Control-Allow-Origin"].lower() for
        elem in list_access):
-        print_header("Access-Control-Allow-Origin")
-        if not args.brief:
-            print(" Review the value '" +
-                  headers["Access-Control-Allow-Origin"] + "' regarding your \
-CORS (Cross-origin resource sharing) requirements.")
+        if not ('.*' and '*.') in headers["Access-Control-Allow-Origin"]:
+            print_header("Access-Control-Allow-Origin")
+            if not args.brief:
+                print(" Review the value '" +
+                      headers["Access-Control-Allow-Origin"] + "' regarding \
+your CORS (Cross-origin resource sharing) requirements.")
             print("")
-        i_cnt += 1
+    i_cnt += 1
 
 if 'Allow' in headers:
     if any(elem.lower() in headers["Allow"].lower() for elem in list_methods):
