@@ -520,7 +520,7 @@ if 'Access-Control-Allow-Origin' in headers:
                 print(" Review the value '" +
                       headers["Access-Control-Allow-Origin"] + "' regarding \
 your CORS (Cross-origin resource sharing) requirements.")
-            print("")
+                print("")
     i_cnt += 1
 
 if 'Allow' in headers:
