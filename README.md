@@ -34,7 +34,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 14 checks of missing HTTP response headers.<br />
-:heavy_check_mark: 99 checks of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 102 checks of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 22 checks of HTTP response headers with values considered insecure.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
@@ -169,7 +169,8 @@ optional arguments:
 | `X-Debug-Token-Link` | `X-DevSrv-CMS` | `X-Drupal-Cache` |
 | `X-Drupal-Cache-Contexts` | `X-Drupal-Cache-Tags` | `X-Drupal-Dynamic-Cache` |
 | `X-FEServer` | `X-FW-Server` | `X-FW-Version` |
-| `X-Garden-Version` | `X-Generator` | `X-Litespeed-Cache` |
+| `X-Garden-Version` | `X-Generator` | `X-Hudson` |
+| `X-Jenkins` | `X-Jenkins-Session` | `X-Litespeed-Cache` |
 | `X-Litespeed-Cache-Control` | `X-Magento-Cache-Control` | `X-Magento-Cache-Debug` |
 | `X-LiteSpeed-Purge` | `X-LiteSpeed-Tag` | `X-LiteSpeed-Vary` |
 | `X-Mod-Pagespeed` | `X-MS-InvokeApp` | `X-Nginx-Cache-Status` |
