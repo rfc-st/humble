@@ -113,3 +113,7 @@
 
 [aisc]
  All, or any, of the values in these headers could be considered insecure:
+
+[bcnt]
+ This humble program will not analyze Russian domains, nor will it be allowed to be used from Russian IPs, until Russia withdraws from Ukraine.
+ Ref: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326

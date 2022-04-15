@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/04/08, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/04/15, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -219,6 +219,11 @@ def print_detail(id, mode):
                     print(next(rf))
 
 
+def get_location():
+    response = requests.get(f'https://ipapi.co/country_name/')
+    return response
+
+
 def request_exceptions():
     try:
         r = requests.get(domain, timeout=6)
@@ -318,10 +323,11 @@ if args.guides:
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
 suffix = tldextract.extract(domain).suffix
+country = get_location()
 
-if suffix == "ru":
-    print(spacing + "This humble program will not analyze this domain until \
-Russia withdraws from Ukraine." + spacing)
+if suffix == "ru" or b'Russia' in country:
+    print("")
+    print_detail("[bcnt]", "d")
     sys.exit()
 else:
     print(spacing + 'Analyzing ' + domain + " ..." + spacing)

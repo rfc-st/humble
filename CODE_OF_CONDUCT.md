@@ -77,12 +77,12 @@ https://www.contributor-covenant.org/faq
 
 ## Update 2022/03/26
 
-Due to the invasion of Ukraine by Russia (at the end of February 2022 and until today), the author of this software took the decision to block any analysis performed against Russian domains (identified by the suffix .ru), blocking them. This blocking can be undone very easily, with small modifications to the source code. All commits, from the first to the most recent, have been made by the same person, so this decision was unique and unanimous.
+Due to the invasion of Ukraine by Russia (started at the end of February 2022), the author of this software took the decision to modify the code to block all analysis against Russian domains and the use of this software from Russian IPs: all commits, from the first to the most recent, have been made by the same person, so this decision was unique and unanimous.
 
-The author of this software knows that, unfortunately, this blocking goes against the very nature of Free Software, against this Document itself and against the freedom of any individual to be able to analyze any domain.
+The author of this software knows that, unfortunately, this blocking goes against the very nature of Free Software, against this very Document and against the freedom of any individual to be able to analyze any domain. The author of this software also recognizes that this blocking can be bypassed very easily: by modifying the code itself, using a VPN, a proxy, etc.
 
-But, sometimes, these actions are the only possible way to protest against certain behaviors and aggressions. The author of this software hopes, above all, that the invasion will end as soon as possible.
+Sometimes, these blocks are the only possible (and peaceful) way to protest against certain behaviors, aggressions and threats. The author of this software hopes, above all, that the invasion will end as soon as possible and that peace will return to Ukraine.
 
-If you need a service to analyze HTTP response headers on Russian domains, I highly recommend the great https://securityheaders.com/ (with which I have no personal or professional relationship whatsoever).
+If you need a service to analyze HTTP response headers of Russian domains, I highly recommend the great https://securityheaders.com/ (with which I have no personal or professional relationship).
 
 Thank you for taking the time to read these lines.
