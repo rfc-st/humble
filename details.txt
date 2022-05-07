@@ -64,6 +64,10 @@
  Include at least one valid directive; check the following link for the available and deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
+[icdp]
+ Avoid using deprecated directives; check the following link:
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#deprecated_directives
+
 [iffea]
  "Feature-Policy" has been renamed to "Permissions-Policy".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
