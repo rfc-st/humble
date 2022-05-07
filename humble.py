@@ -558,6 +558,8 @@ if 'Content-Security-Policy' in headers:
                            'frame-ancestors', 'navigate-to', 'report-to',
                            'upgrade-insecure-requests', 'require-sri-for',
                            'require-trusted-types-for', 'trusted-types']
+    list_csp_deprecated = ['block-all-mixed-content', 'plugin-types',
+                           'referrer', 'report-uri']
     list_csp_insecure = ['unsafe-inline', 'unsafe-eval']
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp_insecure):
@@ -570,6 +572,12 @@ if 'Content-Security-Policy' in headers:
         print_header("Content-Security-Policy")
         if not args.brief:
             print_detail("[icsi]", "d")
+        i_cnt += 1
+    elif any(elem.lower() in headers["Content-Security-Policy"].lower() for
+             elem in list_csp_deprecated):
+        print_header("Content-Security-Policy")
+        if not args.brief:
+            print_detail("[icdp]", "d")
         i_cnt += 1
 
 if 'Etag' in headers:
