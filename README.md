@@ -34,7 +34,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 14 checks of missing HTTP response headers.<br />
-:heavy_check_mark: 105 checks of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 106 checks of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 22 checks of HTTP response headers with values considered insecure.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
@@ -163,31 +163,32 @@ optional arguments:
 | `X-Accel-Redirect` | `X-Accel-Charset` | `X-Accel-Expires` |
 | `X-Accel-Limit-Rate` | `X-AH-Environment` | `X-Application-Context` |
 | `X-AspNet-Version` | `X-AspNetMvc-Version` | `X-Backend` |
-| `X-Backend-Server` | `X-BEServer` | `X-Cache-Handler` |
-| `X-Cache-Only-Varnish` | `X-Cache-Type` | `X-CF-Powered-By` | 
-| `X-CMS-Version` | `X-Cocoon-Version` | `X-Compressed-By` |
-| `X-Content-Powered-By` | `X-Debug-Token` | `X-Debug-Token-Link` |
-| `X-DevSrv-CMS` | `X-Drupal-Cache` | `X-Drupal-Cache-Contexts` |
-| `X-Drupal-Cache-Tags` | `X-Drupal-Dynamic-Cache` | `X-FEServer` |
-| `X-FW-Server` | `X-FW-Version` | `X-Garden-Version` |
-| `X-Generated-By` | `X-Generator` | `X-Hudson` |
-| `X-Jenkins` | `X-Jenkins-Session` | `X-Litespeed-Cache` |
-| `X-Litespeed-Cache-Control` | `X-Magento-Cache-Control` | `X-Magento-Cache-Debug` |
-| `X-LiteSpeed-Purge` | `X-LiteSpeed-Tag` | `X-LiteSpeed-Vary` |
-| `X-Mod-Pagespeed` | `X-MS-InvokeApp` | `X-Nginx-Cache-Status` |
-| `X-Nginx-Upstream-Cache-Status` | `X-Nitro-Cache` | `X-Nitro-Cache-From` |
-| `X-Nitro-Rev` | `X-ORACLE-DMS-ECID` | `X-ORACLE-DMS-RID` |
-| `X-OWA-Version` | `X-Page-Speed` | `X-Powered-By` |
-| `X-Powered-By-Plesk` | `X-Powered-CMS` | `X-Provided-By` |
-| `X-Rack-Cache` | `X-Redirect-By` | `X-Redirect-Powered-By` |
-| `X-Server` | `X-ServerName` | `X-Server-Name` |
-| `X-Server-Powered-By` | `X-ShardId` | `X-SharePointHealthScore` |
-| `X-ShopId` | `X-Shopify-Request-Trackable` | `X-Shopify-Stage` |
-| `X-Sorting-Hat-PodId` | `X-Sorting-Hat-ShopId` | `X-Storefront-Renderer-Rendered` |
-| `X-Storefront-Renderer-Verified` | `X-Spip-Cache` | `X-TEC-API-ORIGIN` |
-| `X-TEC-API-ROOT` | `X-TEC-API-VERSION` | `X-Turbo-Charged-By` |
-| `X-Using-Nginx-Controller` | `X-Varnish` | `X-Varnish-Cache` |
-| `X-Varnish-CC` | `X-Version` | `X-Version-Id` |
+| `X-Backend-Server` | `X-BEServer` | `X-Bitrix-Composite` |
+| `X-Cache-Handler` | `X-Cache-Only-Varnish` | `X-Cache-Type` |
+| `X-CF-Powered-By` | `X-CMS-Version` | `X-Cocoon-Version` |
+| `X-Compressed-By` | `X-Content-Powered-By` | `X-Debug-Token` |
+| `X-Debug-Token-Link` | `X-DevSrv-CMS` | `X-Drupal-Cache` |
+| `X-Drupal-Cache-Contexts` | `X-Drupal-Cache-Tags` | `X-Drupal-Dynamic-Cache` |
+| `X-FEServer` | `X-FW-Server` | `X-FW-Version` |
+| `X-Garden-Version` | `X-Generated-By` | `X-Generator` |
+| `X-Hudson` | `X-Jenkins` | `X-Jenkins-Session` |
+| `X-Litespeed-Cache` | `X-Litespeed-Cache-Control` | `X-Magento-Cache-Control` |
+| `X-Magento-Cache-Debug` | `X-LiteSpeed-Purge` | `X-LiteSpeed-Tag` |
+| `X-LiteSpeed-Vary` | `X-Mod-Pagespeed` | `X-MS-InvokeApp` |
+| `X-Nginx-Cache-Status` | `X-Nginx-Upstream-Cache-Status` | `X-Nitro-Cache` |
+| `X-Nitro-Cache-From` | `X-Nitro-Rev` | `X-ORACLE-DMS-ECID` |
+| `X-ORACLE-DMS-RID` | `X-OWA-Version` | `X-Page-Speed` |
+| `X-Powered-By` | `X-Powered-By-Plesk` | `X-Powered-CMS` |
+| `X-Provided-By` | `X-Rack-Cache` | `X-Redirect-By` |
+| `X-Redirect-Powered-By` | `X-Server` | `X-ServerName` |
+| `X-Server-Name` | `X-Server-Powered-By` | `X-ShardId` |
+| `X-SharePointHealthScore` | `X-ShopId` | `X-Shopify-Request-Trackable` |
+| `X-Shopify-Stage` | `X-Sorting-Hat-PodId` | `X-Sorting-Hat-ShopId` |
+| `X-Storefront-Renderer-Rendered` | `X-Storefront-Renderer-Verified` | `X-Spip-Cache` |
+| `X-TEC-API-ORIGIN` | `X-TEC-API-ROOT` | `X-TEC-API-VERSION` |
+| `X-Turbo-Charged-By` | `X-Using-Nginx-Controller` | `X-Varnish` |
+| `X-Varnish-Cache` | `X-Varnish-CC` | `X-Version` |
+| `X-Version-Id` |||
 ||||
 
 </details>
