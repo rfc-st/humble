@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/05/01, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/05/07, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -556,7 +556,8 @@ if 'Content-Security-Policy' in headers:
                            'style-src', 'style-src-elem', 'style-src-attr',
                            'worker-src', 'base-uri', 'sandbox', 'form-action',
                            'frame-ancestors', 'navigate-to', 'report-to',
-                           'upgrade-insecure-requests']
+                           'upgrade-insecure-requests', 'require-sri-for',
+                           'require-trusted-types-for', 'trusted-types']
     list_csp_insecure = ['unsafe-inline', 'unsafe-eval']
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp_insecure):
