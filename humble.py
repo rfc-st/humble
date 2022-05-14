@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/05/07, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/05/14, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -216,6 +216,10 @@ def print_detail(id, mode):
                     print(next(rf), end='')
                     print(next(rf))
                 elif mode == 'a':
+                    print(next(rf))
+                elif mode == 'm':
+                    print(next(rf), end='')
+                    print(next(rf), end='')
                     print(next(rf))
 
 
@@ -574,11 +578,11 @@ if 'Content-Security-Policy' in headers:
         if not args.brief:
             print_detail("[icsi]", "d")
         i_cnt += 1
-    elif any(elem.lower() in headers["Content-Security-Policy"].lower() for
-             elem in list_csp_deprecated):
+    if any(elem.lower() in headers["Content-Security-Policy"].lower() for
+           elem in list_csp_deprecated):
         print_header("Content-Security-Policy")
         if not args.brief:
-            print_detail("[icdp]", "d")
+            print_detail("[icdp]", "m")
         i_cnt += 1
 
 if 'Etag' in headers:

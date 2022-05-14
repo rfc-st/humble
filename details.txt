@@ -61,12 +61,13 @@
  Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible.
 
 [icsi]
- Include at least one valid directive; check the following link for the available and deprecated.
+ Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icdp]
- Avoid using deprecated directives; check the following link:
+ Avoid using deprecated directives.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#deprecated_directives
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#reporting_directives
 
 [iffea]
  "Feature-Policy" has been renamed to "Permissions-Policy".
