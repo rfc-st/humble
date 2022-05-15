@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/05/14, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/05/15, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -739,10 +739,9 @@ print_section("[4. Empty HTTP Response Headers Values]\n")
 if not args.brief:
     print_detail("[aemp]", "a")
 
-for key in headers:
+for key in sorted(headers):
     if not headers[key]:
         print_header(key)
-        print("")
         e_cnt += 1
 
 if e_cnt == 0:
