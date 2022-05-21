@@ -121,7 +121,7 @@
  Remove these headers (or modify their values), if they leak information about software, versions, hostnames or IP addresses:
 
 [aisc]
- All, or any, of the values in these headers could be considered insecure:
+ The following headers are deprecated or their values may be considered unsafe:
 
 [bcnt]
  This humble program will not analyze Russian domains, nor will it be allowed to be used from Russian IPs, until Russia withdraws from Ukraine.
