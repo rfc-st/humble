@@ -508,8 +508,9 @@ list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'Allow', 'Etag', 'Feature-Policy', 'HTTP instead HTTPS',
             'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
             'Timing-Allow-Origin', 'X-Content-Security-Policy',
-            'X-DNS-Prefetch-Control', 'X-Permitted-Cross-Domain-Policies',
-            'X-Pingback', 'X-Runtime', 'X-Webkit-CSP', 'X-XSS-Protection']
+            'X-DNS-Prefetch-Control', 'X-Pad',
+            'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
+            'X-Webkit-CSP', 'X-XSS-Protection']
 
 list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
                 'DELETE', 'DEBUG', 'PATCH', '*']
@@ -699,6 +700,12 @@ replace this header with the 'frame-ancestors' directive from the \
 ""Content-Security-Policy"" header. ")
             print("")
         i_cnt += 1
+
+if 'X-Pad' in headers:
+    print_header("X-Pad")
+    if not args.brief:
+        print_detail("[ixpad]", "d")
+    i_cnt += 1
 
 if 'X-Permitted-Cross-Domain-Policies' in headers:
     if 'all' in headers['X-Permitted-Cross-Domain-Policies']:

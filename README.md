@@ -35,7 +35,7 @@ HTTP Headers Analyzer<br />
 
 :heavy_check_mark: 14 checks of missing HTTP response headers.<br />
 :heavy_check_mark: 106 checks of fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 24 checks of deprecated HTTP response headers or with values considered insecure.<br />
+:heavy_check_mark: 25 checks of deprecated HTTP response headers or with values considered insecure.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
 :heavy_check_mark: <a href="http://pep8online.com/" target="_blank">PEP8</a> compliant code.<br />
@@ -208,8 +208,9 @@ optional arguments:
 | `Public-Key-Pins` | `Referrer-Policy` | `Server-Timing` | 
 | `Set-Cookie` | `Strict-Transport-Security` | `Timing-Allow-Origin` | 
 | `X-Content-Security-Policy` | `X-Content-Type-Options` | `X-DNS-Prefetch-Control` |
-| `X-Frame-Options` | `X-Permitted-Cross-Domain-Policies` | `X-Pingback` | 
-| `X-Runtime` | `X-Webkit-CSP` | `X-XSS-Protection` |
+| `X-Frame-Options` | `X-Pad` | `X-Permitted-Cross-Domain-Policies` |
+| `X-Pingback` | `X-Runtime` | `X-Webkit-CSP` | 
+| `X-XSS-Protection` |||
 ||||
 
 </details>

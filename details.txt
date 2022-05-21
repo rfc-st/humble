@@ -107,6 +107,10 @@
  Enabling DNS prefetching could bypass "Content-Security-Policy" directives.
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
+[ixpad]
+ This header is deprecated.
+ Ref: https://stackoverflow.com/questions/8711584/x-pad-avoid-browser-bug-header-added-by-apache
+
 [ixpb]
  xmlrpc.php can introduce vulnerabilities; has been superseded by the WordPress REST API.
  Ref: https://kinsta.com/blog/xmlrpc-php/
