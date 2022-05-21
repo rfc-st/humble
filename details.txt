@@ -99,8 +99,12 @@
 [ixcd]
  The value 'all' could permit any cross-domain requests from Flash and PDF documents.
 
+[ixcsp]
+ This header is deprecated. Use instead "Content-Security-Policy".
+ Ref: https://content-security-policy.com/
+
 [ixdp]
- Enabling DNS prefetching could bypass "Content-Security-Policy" directives
+ Enabling DNS prefetching could bypass "Content-Security-Policy" directives.
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
 [ixpb]

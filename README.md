@@ -22,7 +22,7 @@ HTTP Headers Analyzer<br />
 [Usage](#usage)<br />
 [Missing Headers Check](#missing-headers-check)<br />
 [Fingerprint Headers Check](#fingerprint-headers-check)<br />
-[Insecure Values Check](#insecure-values-check)<br />
+[Deprecated Headers and Insecure Values Checks](#insecure-values-check)<br />
 [Empty Values Check](#empty-values-check)<br />
 [Guidelines included](#guidelines-included-to-enable-security-http-headers)<br />
 [To-Do](#to-do)<br />
@@ -35,7 +35,7 @@ HTTP Headers Analyzer<br />
 
 :heavy_check_mark: 14 checks of missing HTTP response headers.<br />
 :heavy_check_mark: 106 checks of fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 22 checks of HTTP response headers with values considered insecure.<br />
+:heavy_check_mark: 24 checks of deprecated HTTP response headers or with values considered insecure.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
 :heavy_check_mark: <a href="http://pep8online.com/" target="_blank">PEP8</a> compliant code.<br />
@@ -193,7 +193,7 @@ optional arguments:
 
 </details>
 
-## Insecure values check
+## Deprecated headers and insecure values checks
 <details>
 
 <br />
@@ -207,9 +207,9 @@ optional arguments:
 | `Feature-Policy` | `HTTP instead HTTPS` | `Permissions-Policy` | 
 | `Public-Key-Pins` | `Referrer-Policy` | `Server-Timing` | 
 | `Set-Cookie` | `Strict-Transport-Security` | `Timing-Allow-Origin` | 
-| `X-Content-Type-Options` | `X-DNS-Prefetch-Control` | `X-Frame-Options` | 
-| `X-Permitted-Cross-Domain-Policies` | `X-Pingback` | `X-Runtime` | 
-| `X-XSS-Protection` |||
+| `X-Content-Security-Policy` | `X-Content-Type-Options` | `X-DNS-Prefetch-Control` |
+| `X-Frame-Options` | `X-Permitted-Cross-Domain-Policies` | `X-Pingback` | 
+| `X-Runtime` | `X-Webkit-CSP` | `X-XSS-Protection` |
 ||||
 
 </details>

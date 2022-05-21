@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/05/15, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/05/21, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -116,18 +116,20 @@ def analysis_time():
 def advice():
     advice = " Advice: check the "
     if i_cnt > 0 and m_cnt > 0 and f_cnt > 0:
-        print(advice + "insecure values, then the missing headers and finally \
+        print(advice + "deprecated headers/insecure values, then the missing \
+headers and finally \
 those associated with fingerprint.")
     elif i_cnt > 0 and m_cnt > 0:
-        print(advice + "insecure values and then the missing headers.")
+        print(advice + "deprecated headers/insecure and then the missing \
+headers.")
     elif i_cnt > 0 and f_cnt > 0:
-        print(advice + "insecure values and those associated with \
+        print(advice + "deprecated headers/insecure and those associated with \
 fingerprint.")
     elif m_cnt > 0 and f_cnt > 0:
         print(advice + "missing headers and those associated with \
 fingerprint.")
     elif i_cnt > 0:
-        print(advice + "insecure values.")
+        print(advice + "deprecated headers/insecure values.")
     elif m_cnt > 0:
         print(advice + "missing headers.")
     elif f_cnt > 0:
@@ -494,11 +496,11 @@ if f_cnt == 0:
 
 print("")
 
-# Report - 3. Insecure values
+# Report - 3. Deprecated Headers and Insecure values
 
 i_cnt = 0
 
-print_section("[3. Insecure HTTP Response Headers Values]\n")
+print_section("[3. Deprecated HTTP Response Headers and Insecure Values]\n")
 if not args.brief:
     print_detail("[aisc]", "a")
 
@@ -674,6 +676,12 @@ invalid. Use only 'nosniff'.")
             print("")
         i_cnt += 1
 
+if 'X-Content-Security-Policy' in headers:
+    print_header("X-Content-Security-Policy")
+    if not args.brief:
+        print_detail("[ixcsp]", "d")
+    i_cnt += 1
+
 if 'X-DNS-Prefetch-Control' in headers:
     if 'on' in headers['X-DNS-Prefetch-Control']:
         print_header("X-DNS-Prefetch-Control")
@@ -714,6 +722,12 @@ user harvesting attacks (by providing the time it takes to process each \
 request). ")
         print("")
         i_cnt += 1
+
+if 'X-Webkit-CSP' in headers:
+    print_header("X-Webkit-CSP")
+    if not args.brief:
+        print_detail("[ixcsp]", "d")
+    i_cnt += 1
 
 if 'X-XSS-Protection' in headers:
     if '0' not in headers["X-XSS-Protection"]:
