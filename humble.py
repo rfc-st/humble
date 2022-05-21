@@ -507,9 +507,9 @@ if not args.brief:
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'Allow', 'Etag', 'Feature-Policy', 'HTTP instead HTTPS',
             'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
-            'Timing-Allow-Origin', 'X-DNS-Prefetch-Control',
-            'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
-            'X-XSS-Protection']
+            'Timing-Allow-Origin', 'X-Content-Security-Policy',
+            'X-DNS-Prefetch-Control', 'X-Permitted-Cross-Domain-Policies',
+            'X-Pingback', 'X-Runtime', 'X-Webkit-CSP', 'X-XSS-Protection']
 
 list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
                 'DELETE', 'DEBUG', 'PATCH', '*']
