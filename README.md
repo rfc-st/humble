@@ -22,7 +22,7 @@ HTTP Headers Analyzer<br />
 [Usage](#usage)<br />
 [Missing Headers Check](#missing-headers-check)<br />
 [Fingerprint Headers Check](#fingerprint-headers-check)<br />
-[Deprecated Headers and Insecure Values Checks](#insecure-values-check)<br />
+[Deprecated Headers and Insecure Values Checks](#deprecated-headers-and-insecure-values-checks)<br />
 [Empty Values Check](#empty-values-check)<br />
 [Guidelines included](#guidelines-included-to-enable-security-http-headers)<br />
 [To-Do](#to-do)<br />
