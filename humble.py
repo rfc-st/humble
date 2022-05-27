@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/05/21, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/05/28, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -460,12 +460,12 @@ list_fng = ['Composed-By', 'Generator', 'Hummingbird-Cache', 'Liferay-Portal',
             'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
             'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
             'X-Magento-Cache-Control', 'X-Magento-Cache-Debug',
-            'X-Mod-Pagespeed', 'X-MS-InvokeApp', 'X-Nginx-Cache-Status',
-            'X-Nginx-Upstream-Cache-Status', 'X-Nitro-Cache',
-            'X-Nitro-Cache-From', 'X-Nitro-Rev', 'X-ORACLE-DMS-ECID',
-            'X-ORACLE-DMS-RID', 'X-OWA-Version', 'X-Page-Speed',
-            'X-Powered-By', 'X-Powered-By-Plesk', 'X-Powered-CMS',
-            'X-Provided-By', 'X-Rack-Cache', 'X-Redirect-By',
+            'X-Mod-Pagespeed', 'X-MS-InvokeApp', 'X-Nginx-Cache',
+            'X-Nginx-Cache-Status', 'X-Nginx-Upstream-Cache-Status',
+            'X-Nitro-Cache', 'X-Nitro-Cache-From', 'X-Nitro-Rev',
+            'X-ORACLE-DMS-ECID', 'X-ORACLE-DMS-RID', 'X-OWA-Version',
+            'X-Page-Speed', 'X-Powered-By', 'X-Powered-By-Plesk',
+            'X-Powered-CMS', 'X-Provided-By', 'X-Rack-Cache', 'X-Redirect-By',
             'X-Redirect-Powered-By', 'X-Server', 'X-ServerName',
             'X-Server-Name', 'X-Server-Powered-By', 'X-ShardId',
             'X-SharePointHealthScore', 'X-ShopId',
