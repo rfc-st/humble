@@ -65,7 +65,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icdp]
- Avoid using deprecated directives.
+ Avoid using deprecated directives: 'block-all-mixed-content', 'plugin-types', 'referrer' or 'report-uri'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#deprecated_directives
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#reporting_directives
 
