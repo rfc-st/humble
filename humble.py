@@ -46,8 +46,8 @@ import tldextract
 
 start = time.time()
 
-if sys.version_info < (3, 5):
-    print("\nError: this tool requires, at least, Python 3.5.\n")
+if sys.version_info < (3, 6):
+    print("\nError: this tool requires, at least, Python 3.6.\n")
     sys.exit()
 
 if platform.system() == 'Windows':
