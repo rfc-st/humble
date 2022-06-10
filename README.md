@@ -80,7 +80,7 @@ HTTP Headers Analyzer<br />
 
 ## Installation & Update
 
-**NOTE**: Python 3.5 or higher is required.
+**NOTE**: Python 3.6 or higher is required.
 
 ```bash
 # install python3 and python3-pip if not exist
