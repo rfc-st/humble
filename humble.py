@@ -616,6 +616,12 @@ if 'Permissions-Policy' in headers:
         if not args.brief:
             print_detail("[ifpol]", "a")
         i_cnt += 1
+    if 'none' in headers['Permissions-Policy']:
+        print_header("Permissions-Policy")
+        if not args.brief:
+            print("Use '()' instead 'none'.")
+            print("")
+        i_cnt += 1
 
 if 'Public-Key-Pins' in headers:
     print_header("Public-Key-Pins")
