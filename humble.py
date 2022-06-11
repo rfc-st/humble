@@ -259,11 +259,6 @@ def request_exceptions():
                   "\n\n(Or the server considers that this humble request is\
  not as polite as it should be. It is, seriously! :)")
             raise SystemExit
-        elif r.status_code == 404:
-            clean_output()
-            print(httpcode + " Error: '" + domain + "' not found." + "\n\n\
-(Check syntax and try again)")
-            raise SystemExit
         elif r.status_code == 407:
             clean_output()
             print(httpcode + " Error: Proxy authentication required to access\
