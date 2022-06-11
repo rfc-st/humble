@@ -34,7 +34,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 14 checks of missing HTTP response headers.<br />
-:heavy_check_mark: 107 checks of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 108 checks of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 25 checks of deprecated HTTP response headers or with values considered insecure.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
@@ -175,20 +175,20 @@ optional arguments:
 | `X-Litespeed-Cache` | `X-Litespeed-Cache-Control` | `X-Magento-Cache-Control` |
 | `X-Magento-Cache-Debug` | `X-LiteSpeed-Purge` | `X-LiteSpeed-Tag` |
 | `X-LiteSpeed-Vary` | `X-Mod-Pagespeed` | `X-MS-InvokeApp` |
-| `X-Nginx-Cache` | `X-Nginx-Cache-Status` | `X-Nginx-Upstream-Cache-Status` |
-| `X-Nitro-Cache` | `X-Nitro-Cache-From` | `X-Nitro-Rev` |
-| `X-ORACLE-DMS-ECID` | `X-ORACLE-DMS-RID` | `X-OWA-Version` |
-| `X-Page-Speed` | `X-Powered-By` | `X-Powered-By-Plesk` |
-| `X-Powered-CMS` | `X-Provided-By` | `X-Rack-Cache` |
-| `X-Redirect-By` | `X-Redirect-Powered-By` | `X-Server` |
-| `X-ServerName` | `X-Server-Name` | `X-Server-Powered-By` |
-| `X-ShardId` | `X-SharePointHealthScore` | `X-ShopId` |
-| `X-Shopify-Request-Trackable` | `X-Shopify-Stage` | `X-Sorting-Hat-PodId` |
-| `X-Sorting-Hat-ShopId` | `X-Storefront-Renderer-Rendered` | `X-Storefront-Renderer-Verified` |
-| `X-Spip-Cache` | `X-TEC-API-ORIGIN` | `X-TEC-API-ROOT` |
-| `X-TEC-API-VERSION` | `X-Turbo-Charged-By` | `X-Using-Nginx-Controller` |
-| `X-Varnish` | `X-Varnish-Cache` | `X-Varnish-CC` |
-| `X-Version` | `X-Version-Id` ||
+| `X-Nextjs-Cache | ``X-Nginx-Cache` | `X-Nginx-Cache-Status` |
+| `X-Nginx-Upstream-Cache-Status` | `X-Nitro-Cache` | `X-Nitro-Cache-From` |
+| `X-Nitro-Rev` | `X-ORACLE-DMS-ECID` | `X-ORACLE-DMS-RID` |
+| `X-OWA-Version` | `X-Page-Speed` | `X-Powered-By` |
+| `X-Powered-By-Plesk` | `X-Powered-CMS` | `X-Provided-By` |
+| `X-Rack-Cache` | `X-Redirect-By` | `X-Redirect-Powered-By` |
+| `X-Server` | `X-ServerName` | `X-Server-Name` |
+| `X-Server-Powered-By` | `X-ShardId` | `X-SharePointHealthScore` |
+| `X-ShopId` | `X-Shopify-Request-Trackable` | `X-Shopify-Stage` |
+| `X-Sorting-Hat-PodId` | `X-Sorting-Hat-ShopId` | `X-Storefront-Renderer-Rendered` |
+| `X-Storefront-Renderer-Verified` | `X-Spip-Cache` | `X-TEC-API-ORIGIN` |
+| `X-TEC-API-ROOT` | `X-TEC-API-VERSION` | `X-Turbo-Charged-By` |
+| `X-Using-Nginx-Controller` | `X-Varnish` | `X-Varnish-Cache` |
+| `X-Varnish-CC` | `X-Version` | `X-Version-Id` |
 ||||
 
 </details>
