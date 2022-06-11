@@ -58,7 +58,9 @@
  Use 'no-cache', 'no-store', and 'must-revalidate' if there are sensitive data.
 
 [icsp]
- Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible.
+ Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible, as they negate most of the security benefits provided by this header.
+ Ref: https://csper.io/blog/no-more-unsafe-inline
+ Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
 
 [icsi]
  Include at least one valid directive.
@@ -68,6 +70,10 @@
  Avoid using deprecated directives: 'block-all-mixed-content', 'plugin-types', 'referrer' or 'report-uri'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#deprecated_directives
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#reporting_directives
+
+[ieta]
+ Although unlikely to be exploited, make sure that this header does not include inode information.
+ Ref: https://www.pentestpartners.com/security-blog/vulnerabilities-that-arent-etag-headers/
 
 [iffea]
  "Feature-Policy" has been renamed to "Permissions-Policy".
@@ -94,7 +100,11 @@
  Add 'includeSubDomains' and define 'max-age' equal or greater than 31536000 (1 year).
 
 [itao]
- The value '*' gives permission to any origin to see timing resources. 
+ The value '*' gives permission to any origin to see timing resources.
+
+[itim]
+  Make sure the value this header does not expose potentially sensitive application or infrastructure information.
+  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing#privacy_and_security
 
 [ixcd]
  The value 'all' could permit any cross-domain requests from Flash and PDF documents.
@@ -117,6 +127,7 @@
  
 [ixxp]
  To mitigate XSS attacks, restrictively enable the "Content-Security-Policy" header.
+ Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [aemp]
  The following headers have no value (could be equivalent to as if they were not enabled):

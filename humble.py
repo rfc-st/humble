@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/06/10, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/06/11, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -573,7 +573,7 @@ if 'Content-Security-Policy' in headers:
        elem in list_csp_insecure):
         print_header("Content-Security-Policy")
         if not args.brief:
-            print_detail("[icsp]", "a")
+            print_detail("[icsp]", "m")
         i_cnt += 1
     elif not any(elem.lower() in headers["Content-Security-Policy"].lower() for
                  elem in list_csp_directives):
@@ -591,9 +591,7 @@ if 'Content-Security-Policy' in headers:
 if 'Etag' in headers:
     print_header("Etag")
     if not args.brief:
-        print(" The value '" + headers["Etag"] + "' should not \
-include inodes information.")
-        print("")
+        print_detail("[ieta]", "d")
     i_cnt += 1
 
 if domain[0:5] == 'http:':
@@ -619,7 +617,7 @@ if 'Permissions-Policy' in headers:
     if 'none' in headers['Permissions-Policy']:
         print_header("Permissions-Policy")
         if not args.brief:
-            print("Use '()' instead 'none'.")
+            print("'none' is not a correct value; use '()' instead.")
             print("")
         i_cnt += 1
 
@@ -651,9 +649,7 @@ if 'Set-Cookie' in headers:
 if 'Server-Timing' in headers:
     print_header("Server-Timing")
     if not args.brief:
-        print(" Make sure the value '" + headers["Server-Timing"] + " 'does \
-not expose potentially sensitive application or infrastructure information.")
-        print("")
+        print_detail("[itim]", "d")
     i_cnt += 1
 
 if 'Strict-Transport-Security' in headers:
@@ -746,7 +742,7 @@ if 'X-XSS-Protection' in headers:
     if '0' not in headers["X-XSS-Protection"]:
         print_header("X-XSS-Protection")
         if not args.brief:
-            print_detail("[ixxp]", "a")
+            print_detail("[ixxp]", "d")
         i_cnt += 1
 
 if args.brief and i_cnt != 0:
