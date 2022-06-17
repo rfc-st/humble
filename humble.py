@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/06/11, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/06/17, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -367,11 +367,11 @@ print_summary()
 
 print_headers()
 
-# Report - 1. Missing headers
+# Report - 1. Missing HTTP Security Headers
 
 m_cnt = 0
 
-print_section("[1. Missing HTTP Response Headers]\n")
+print_section("[1. Missing HTTP Security Headers]\n")
 
 list_miss = ['Cache-Control', 'Clear-Site-Data',
              'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
@@ -492,7 +492,7 @@ if f_cnt == 0:
 
 print("")
 
-# Report - 3. Deprecated Headers and Insecure values
+# Report - 3. Deprecated HTTP Headers and Insecure values
 
 i_cnt = 0
 
@@ -750,7 +750,7 @@ if i_cnt == 0:
 
 print("")
 
-# Report - 4. Empty values
+# Report - 4. Empty HTTP Response Headers Values
 
 e_cnt = 0
 
@@ -767,6 +767,36 @@ if e_cnt == 0:
     print_ok()
     print("")
 
+print("")
+
+# Report - 5. Browser Compatibility for Enabled HTTP Security Headers
+
+print_section("[5. Browser Compatibility for Enabled HTTP Security Headers]\n")
+
+list_sec = ['Cache-Control', 'Clear-Site-Data',
+            'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
+            'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy',
+            'Expect-CT', 'NEL', 'Permissions-Policy', 'Pragma',
+            'Referrer-Policy', 'Strict-Transport-Security',
+            'X-Content-Type-Options', 'X-Frame-Options']
+
+if any(elem.lower() in headers for elem in list_sec):
+    for key in list_sec:
+        if key in headers:
+            if not args.output:
+                print(" " + Fore.CYAN + key + Fore.RESET + ": " +
+                      "https://caniuse.com/?search=" + key)
+            else:
+                print("  " + key + ": " + "https://caniuse.com/?search=" + key)
+
+if not any(elem.lower() in headers for elem in list_miss):
+    if not args.output:
+        print(Style.BRIGHT + Fore.RED + " No HTTP security headers are \
+enabled.")
+    else:
+        print(" No HTTP security headers are enabled.")
+
+print("")
 print("")
 end = time.time()
 analysis_time()
@@ -842,9 +872,18 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                 output.write('<strong>' + line + '</strong>')
             elif ' Nothing to ' in line:
                 output.write('<span class="ok">' + line + '</span>')
+            elif ' No HTTP' in line:
+                output.write('<span class="ko">' + line + '</span>')
             elif ' Ref: ' in line:
                 output.write(line[:6] + '<a href="' + line[6:] + '">' +
                              line[6:] + '</a>')
+            elif 'caniuse' in line:
+                line = line[1:]
+                line = line.replace(line[0: line.index(":")],
+                                    '<span class="header">' +
+                                    line[0: line.index(":")] +
+                                    '</span>')
+                output.write(line)
             else:
                 for i in list(headers):
                     if str(i + ": ") in line and 'Date:   ' not in line:
@@ -857,6 +896,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                         line = line.replace(line, '<span class="ko">' + line +
                                             '</span>')
                 output.write(line)
+
         output.write(footer)
 
     print_path(name_p)
