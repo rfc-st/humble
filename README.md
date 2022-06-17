@@ -230,7 +230,6 @@ Any HTTP response header.
 
 ## To-do
 
-- [ ] Update screenshots
 - [ ] Add more header/value checks (only security-oriented)
 - [ ] Add analysis rating
 - [ ] Show the application related to each fingerprint header 
