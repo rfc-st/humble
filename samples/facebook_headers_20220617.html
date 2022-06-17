@@ -6,11 +6,11 @@
 
 <strong>[0. Info]
 </strong>
- Date   : 2022/02/20 - 00:42:40
- Domain : https://facebook.com/
+ Date   : 2022/06/17 - 22:39:31
+ Domain : https://www.facebook.com
 
 
-<strong>[1. Missing HTTP Response Headers]
+<strong>[1. Missing HTTP Security Headers]
 </strong>
 <span class="ko"> Clear-Site-Data
 </span> Clears browsing data (cookies, storage, cache) associated with the requesting website.
@@ -55,13 +55,24 @@
 <span class="ok"> Nothing to report, all seems OK!
 </span>
 
-<strong>[3. Insecure HTTP Response Headers Values]
+<strong>[3. Deprecated HTTP Response Headers and Insecure Values]
 </strong>
- All, or any, of the values in these headers could be considered insecure:
+ The following headers are deprecated or their values may be considered unsafe:
 
 <span class="ko"> Content-Security-Policy
-</span> Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible.
-
+</span> Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible, as they negate most of the security benefits provided by this header.
+ Ref: <a href="https://csper.io/blog/no-more-unsafe-inline
+">https://csper.io/blog/no-more-unsafe-inline
+</a> Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
+">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
+</a>
+<span class="ko"> Content-Security-Policy
+</span> Avoid using deprecated directives: 'block-all-mixed-content', 'plugin-types', 'referrer' or 'report-uri'.
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#deprecated_directives
+">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#deprecated_directives
+</a> Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#reporting_directives
+">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#reporting_directives
+</a>
 <span class="ko"> Strict-Transport-Security
 </span> Add 'includeSubDomains' and define 'max-age' equal or greater than 31536000 (1 year).
 
@@ -73,11 +84,22 @@
 <span class="ok"> Nothing to report, all seems OK!
 </span>
 
+<strong>[5. Browser Compatibility for Enabled HTTP Security Headers]
+</strong>
+<span class="header"> Cache-Control</span>: https://caniuse.com/?search=Cache-Control
+<span class="header"> Content-Security-Policy</span>: https://caniuse.com/?search=Content-Security-Policy
+<span class="header"> Cross-Origin-Opener-Policy</span>: https://caniuse.com/?search=Cross-Origin-Opener-Policy
+<span class="header"> Pragma</span>: https://caniuse.com/?search=Pragma
+<span class="header"> Strict-Transport-Security</span>: https://caniuse.com/?search=Strict-Transport-Security
+<span class="header"> X-Content-Type-Options</span>: https://caniuse.com/?search=X-Content-Type-Options
+<span class="header"> X-Frame-Options</span>: https://caniuse.com/?search=X-Frame-Options
+
+
 .:
 
- Analysis done in 0.61 seconds!.
+ Analysis done in 0.62 seconds!.
 
- Advice: check the insecure values and then the missing headers.
+ Advice: check the deprecated headers/insecure and then the missing headers.
 
 .:
 
