@@ -766,7 +766,12 @@ if not args.brief:
 for key in sorted(headers):
     if not headers[key]:
         print_header(key)
+        if not args.brief:
+            print(" " + headers[key])
         e_cnt += 1
+
+if args.brief and e_cnt != 0:
+    print("")
 
 if e_cnt == 0:
     print_ok()
