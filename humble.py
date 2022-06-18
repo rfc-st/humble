@@ -771,6 +771,9 @@ print("")
 
 # Report - 5. Browser Compatibility for Enabled HTTP Security Headers
 
+# caniuse.com support data contributions under CC-BY-4.0 license
+# https://github.com/Fyrd/caniuse/blob/main/LICENSE
+
 print_section("[5. Browser Compatibility for Enabled HTTP Security Headers]\n")
 
 list_sec = ['Cache-Control', 'Clear-Site-Data',
