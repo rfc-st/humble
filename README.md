@@ -177,7 +177,7 @@ optional arguments:
 | `X-Litespeed-Cache` | `X-Litespeed-Cache-Control` | `X-Magento-Cache-Control` |
 | `X-Magento-Cache-Debug` | `X-LiteSpeed-Purge` | `X-LiteSpeed-Tag` |
 | `X-LiteSpeed-Vary` | `X-Mod-Pagespeed` | `X-MS-InvokeApp` |
-| `X-Nextjs-Cache | ``X-Nginx-Cache` | `X-Nginx-Cache-Status` |
+| `X-Nextjs-Cache` | `X-Nginx-Cache` | `X-Nginx-Cache-Status` |
 | `X-Nginx-Upstream-Cache-Status` | `X-Nitro-Cache` | `X-Nitro-Cache-From` |
 | `X-Nitro-Rev` | `X-ORACLE-DMS-ECID` | `X-ORACLE-DMS-RID` |
 | `X-OWA-Version` | `X-Page-Speed` | `X-Powered-By` |
