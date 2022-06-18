@@ -785,9 +785,14 @@ if any(elem.lower() in headers for elem in list_sec):
         if key in headers:
             if not args.output:
                 print(" " + Fore.CYAN + key + Fore.RESET + ": " +
-                      "https://caniuse.com/?search=" + key)
+                      "https://caniuse.com/?search=" +
+                      key.replace("Content-Security-Policy",
+                                  "mdn-http_headers_csp_content-security-\
+policy"))
             else:
-                print("  " + key + ": " + "https://caniuse.com/?search=" + key)
+                print("  " + key + ": " + "https://caniuse.com/?search=" +
+                      key.replace("Content-Security-Policy", "mdn-http_headers\
+_csp_content-security-policy"))
 
 if not any(elem.lower() in headers for elem in list_miss):
     if not args.output:
