@@ -55,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/06/17, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/06/18, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -860,7 +860,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
         for line in input:
 
-            # TO-DO: simplify via regexp?
+            # TO-DO: this is a mess ... simplify, use templates, etc
 
             if 'rfc-st' in line:
                 output.write(line[:2] + '<a href="' + line[2:-2] + '">' +
@@ -879,10 +879,13 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                              line[6:] + '</a>')
             elif 'caniuse' in line:
                 line = line[1:]
-                line = line.replace(line[0: line.index(":")],
+                line = line.replace(line[0: line.index(": ")],
                                     '<span class="header">' +
-                                    line[0: line.index(":")] +
-                                    '</span>')
+                                    line[0: line.index(": ")] + '</span>')
+                line = line.replace(line[line.index("https"):],
+                                    '<a href=' +
+                                    line[line.index("https"):] + '">' +
+                                    line[line.index("https"):] + '</a>')
                 output.write(line)
             else:
                 for i in list(headers):
