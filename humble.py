@@ -33,6 +33,11 @@
 # Add analysis rating (*at the beginning of the output* .... tricky, tricky)
 # Show the application related to each fingerprint header
 
+# ADVICE:
+# Use the information provided by this program *wisely*: there is far more
+# merit in teaching, learning and helping others than in taking shortcuts to
+# harm, attack or take advantage. Think about it!
+
 from fpdf import FPDF
 from datetime import datetime
 from colorama import Fore, Style, init
