@@ -581,7 +581,7 @@ if 'Content-Security-Policy' in headers:
            elem in list_csp_deprecated):
         print_header("Content-Security-Policy")
         if not args.brief:
-            print_detail("[icdp]", "m")
+            print_detail("[icdp]", "d")
         i_cnt += 1
 
 if 'Etag' in headers:
@@ -826,7 +826,7 @@ elif args.output == 'pdf':
 
     # PDF Body
 
-    pdf.set_font("Courier", size=10)
+    pdf.set_font("Courier", size=9)
     f = open(name_e, "r")
     for x in f:
         pdf.multi_cell(197, 5, txt=x, align='L')
