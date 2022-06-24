@@ -116,6 +116,11 @@
  Enabling DNS prefetching could bypass "Content-Security-Policy" directives.
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
+[ixdow]
+ This header is specific to Internet Explorer 8 (discontinued in 2016).
+ Ref: https://www.nwebsec.com/HttpHeaders/SecurityHeaders/XDownloadOptions
+ Ref: https://www.fireeye.com/blog/threat-research/2016/01/end_of_life_for_ie.html
+
 [ixpad]
  This header is deprecated.
  Ref: https://stackoverflow.com/questions/8711584/x-pad-avoid-browser-bug-header-added-by-apache

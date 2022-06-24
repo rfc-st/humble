@@ -510,7 +510,7 @@ list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'Allow', 'Etag', 'Feature-Policy', 'HTTP instead HTTPS',
             'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
             'Timing-Allow-Origin', 'X-Content-Security-Policy',
-            'X-DNS-Prefetch-Control', 'X-Pad',
+            'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad',
             'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
             'X-Webkit-CSP', 'X-XSS-Protection']
 
@@ -693,6 +693,12 @@ if 'X-DNS-Prefetch-Control' in headers:
         if not args.brief:
             print_detail("[ixdp]", "d")
         i_cnt += 1
+
+if 'X-Download-Options' in headers:
+    print_header("X-Download-Options")
+    if not args.brief:
+        print_detail("[ixdow]", "m")
+    i_cnt += 1
 
 if 'X-Frame-Options' in headers:
     if ',' in headers['X-Frame-Options']:
