@@ -619,7 +619,7 @@ if 'Permissions-Policy' in headers:
     if 'none' in headers['Permissions-Policy']:
         print_header("Permissions-Policy")
         if not args.brief:
-            print("'none' is not a correct value; use '()' instead.")
+            print(" 'none' is not a correct value; use '()' instead.")
             print("")
         i_cnt += 1
 
