@@ -32,6 +32,7 @@
 # Add more checks (missing, fingerprint, insecure)
 # Add analysis rating (*at the beginning of the output* .... tricky, tricky)
 # Show the application related to each fingerprint header
+# Improve PDF output through fpdf2 library.
 
 # ADVICE:
 # Use the information provided by this program *wisely*: there is far more
@@ -60,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/06/18, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/06/24, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
