@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/06/24, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/06/25, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -460,9 +460,9 @@ list_fng = ['Composed-By', 'Generator', 'Hummingbird-Cache', 'Liferay-Portal',
             'X-Generator', 'X-Hudson', 'X-Jenkins', 'X-Jenkins-Session',
             'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
             'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
-            'X-Magento-Cache-Control', 'X-Magento-Cache-Debug',
-            'X-Mod-Pagespeed', 'X-MS-InvokeApp', 'X-Nextjs-Cache',
-            'X-Nginx-Cache', 'X-Nginx-Cache-Status'
+            'X-Magento-Cache-Control', 'X-Magnolia-Registration',
+            'X-Magento-Cache-Debug', 'X-Mod-Pagespeed', 'X-MS-InvokeApp',
+            'X-Nextjs-Cache', 'X-Nginx-Cache', 'X-Nginx-Cache-Status'
             'X-Nginx-Upstream-Cache-Status', 'X-Nitro-Cache',
             'X-Nitro-Cache-From', 'X-Nitro-Rev', 'X-ORACLE-DMS-ECID',
             'X-ORACLE-DMS-RID', 'X-OWA-Version', 'X-Page-Speed',
