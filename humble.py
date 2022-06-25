@@ -738,10 +738,7 @@ if 'X-Pingback' in headers:
 if 'X-Runtime' in headers:
     print_header("X-Runtime")
     if not args.brief:
-        print(" The value '" + headers["X-Runtime"] + "' could allow valid \
-user harvesting attacks (by providing the time it takes to process each \
-request). ")
-        print("")
+        print_detail("[ixrun]", "d")
         i_cnt += 1
 
 if 'X-Webkit-CSP' in headers:

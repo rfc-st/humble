@@ -136,6 +136,10 @@
 [ixpb]
  xmlrpc.php can introduce vulnerabilities; has been superseded by the WordPress REST API.
  Ref: https://kinsta.com/blog/xmlrpc-php/
+
+[ixrun]
+ The value of this header could allow valid user harvesting attacks.
+ Ref: https://www.virtuesecurity.com/kb/x-runtime-header-timing-attacks/
  
 [ixxp]
  To mitigate XSS attacks, restrictively enable the "Content-Security-Policy" header.
