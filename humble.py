@@ -599,9 +599,13 @@ if 'Etag' in headers:
 if domain[0:5] == 'http:':
     print_header("HTTP instead HTTPS")
     if not args.brief:
-        print(" You are analyzing a domain via HTTP (" + domain + "), \
-in which the communications are not encrypted.")
-        print("")
+        print_detail("[ihttp]", "d")
+    i_cnt += 1
+
+if (domain[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
+    print_header("'Strict-Transport-Security' in HTTP")
+    if not args.brief:
+        print_detail("[ihsts]", "d")
     i_cnt += 1
 
 if 'Feature-Policy' in headers:
@@ -654,7 +658,7 @@ if 'Server-Timing' in headers:
         print_detail("[itim]", "d")
     i_cnt += 1
 
-if 'Strict-Transport-Security' in headers:
+if ('Strict-Transport-Security' in headers) and (domain[0:5] != 'http:'):
     list_sts = ['includeSubDomains', 'max-age']
     age = int(''.join([n for n in headers["Strict-Transport-Security"] if
               n.isdigit()]))

@@ -81,6 +81,10 @@
 [ifpol]
  The value '*' allows the feature in this document, and iframes regardless of their origin.
 
+[ihttp]
+ You are analyzing a domain via HTTP, in which the communications are not encrypted.
+ Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
+
 [imethods]
  Ref: https://appcheck-ng.com/http-verbs-security-risks/
 
@@ -97,6 +101,10 @@
 
 [ists]
  Add 'includeSubDomains' and define 'max-age' equal or greater than 31536000 (1 year).
+
+[ihsts]
+ This header is ignored by the browser when accessing via HTTP.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [itao]
  The value '*' gives permission to any origin to see timing resources.
@@ -140,7 +148,7 @@
  These headers can leak information about software, versions, hostnames or IP addresses:
 
 [aisc]
- The following headers are deprecated or their values may be considered unsafe:
+ The following headers/protocols are deprecated or their values may be considered unsafe:
 
 [bcnt]
  This humble program will not analyze Russian domains, nor will it be allowed to be used from Russian IPs, until Russia withdraws from Ukraine.
