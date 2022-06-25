@@ -261,9 +261,10 @@ def request_exceptions():
         elif r.status_code == 403:
             clean_output()
             print(httpcode + " Error: Forbidden access to '" + domain +
-                  "'\n\n(Perhaps caused by a WAF or IP block due to GDPR)" +
+                  "'\n\nPerhaps caused by a WAF or IP block due to GDPR." +
                   "\n\n(Or the server considers that this humble request is\
- not as polite as it should be. It is, seriously! :)")
+ not as polite as it should be. It is, seriously! :).\n\
+Ref: https://github.com/rfc-st/humble/issues/2")
             raise SystemExit
         elif r.status_code == 407:
             clean_output()
