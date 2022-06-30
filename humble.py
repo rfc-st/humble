@@ -604,7 +604,7 @@ if domain[0:5] == 'http:':
     i_cnt += 1
 
 if (domain[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
-    print_header("'Strict-Transport-Security' in HTTP")
+    print_header("Strict-Transport-Security in HTTP")
     if not args.brief:
         print_detail("[ihsts]", "d")
     i_cnt += 1
@@ -624,8 +624,7 @@ if 'Permissions-Policy' in headers:
     if 'none' in headers['Permissions-Policy']:
         print_header("Permissions-Policy")
         if not args.brief:
-            print(" 'none' is not a correct value; use '()' instead.")
-            print("")
+            print_detail("[ifpoli]", "d")
         i_cnt += 1
 
 if 'Public-Key-Pins' in headers:

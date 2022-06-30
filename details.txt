@@ -81,6 +81,10 @@
 [ifpol]
  The value '*' allows the feature in this document, and iframes regardless of their origin.
 
+[ifpoli]
+ 'none' is not a correct value; use '()' instead.
+ Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
+
 [ihttp]
  You are analyzing a domain via HTTP, in which the communications are not encrypted.
  Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
