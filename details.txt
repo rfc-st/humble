@@ -96,6 +96,10 @@
  Use 'strict-origin' or 'strict-origin-when-cross-origin' if there are sensitive resources.
  Or fall back to 'no-referrer-when-downgrade' or even 'no-referrer'.
 
+[irefi]
+ 'unsafe-url' will leak potentially-private information from HTTPS URLs to insecure origins.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
 [iset]
  Enable 'secure' and 'httponly': to send it via HTTPS and not be accessed by client APIs.
 

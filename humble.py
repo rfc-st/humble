@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/06/25, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/06/30, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -642,6 +642,11 @@ if 'Referrer-Policy' in headers:
         print_header("Referrer-Policy")
         if not args.brief:
             print_detail("[iref]", "d")
+        i_cnt += 1
+    if 'unsafe-url' in headers['Referrer-Policy']:
+        print_header("Referrer-Policy")
+        if not args.brief:
+            print_detail("[irefi]", "d")
         i_cnt += 1
 
 if 'Set-Cookie' in headers:
