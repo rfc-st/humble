@@ -276,6 +276,8 @@ Ref: https://github.com/rfc-st/humble/issues/2")
             print(httpcode + " Error: Server error requesting '" + domain +
                   "'\n\n(Wait a while and try again)")
             raise SystemExit
+    except requests.exceptions.SSLError:
+        pass
     except requests.exceptions.ConnectionError:
         clean_output()
         print("404 Error: '" + domain + "' not found.\n\n(Check syntax and try\
@@ -349,7 +351,9 @@ request_exceptions()
 c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; \
  rv:100.0) Gecko/20100101 Firefox/100.0'}
 
-r = requests.get(domain, headers=c_headers, timeout=60)
+requests.packages.urllib3.disable_warnings()
+r = requests.get(domain, verify=False, headers=c_headers, timeout=60)
+
 headers = r.headers
 infix = "_headers_"
 
