@@ -604,6 +604,14 @@ if 'Content-Security-Policy' in headers:
         if not args.brief:
             print_detail("[icdp]", "d")
         i_cnt += 1
+    if '=' in headers['Content-Security-Policy']:
+        if ('nonce' not in headers['Content-Security-Policy']) or \
+           ('sha' not in headers['Content-Security-Policy']) or \
+           ('style-src-elem' not in headers['Content-Security-Policy']):
+            print_header("Content-Security-Policy")
+        if not args.brief:
+            print_detail("[icsn]", "d")
+        i_cnt += 1
 
 if 'Etag' in headers:
     print_header("Etag")
