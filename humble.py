@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/06/30, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/01, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -276,6 +276,9 @@ Ref: https://github.com/rfc-st/humble/issues/2")
             print(httpcode + " Error: Server error requesting '" + domain +
                   "'\n\n(Wait a while and try again)")
             raise SystemExit
+
+    # Can be useful with self-signed certificates, development environments ...
+
     except requests.exceptions.SSLError:
         pass
     except requests.exceptions.ConnectionError:
@@ -350,6 +353,9 @@ request_exceptions()
 
 c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; \
  rv:100.0) Gecko/20100101 Firefox/100.0'}
+
+# About suppression of warnings and non-verification of SSL certificates:
+# could be useful with self-signed certificates, development environments ...
 
 requests.packages.urllib3.disable_warnings()
 r = requests.get(domain, verify=False, headers=c_headers, timeout=60)
