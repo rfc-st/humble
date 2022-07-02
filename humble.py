@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/01, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/02, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -549,10 +549,8 @@ if 'Access-Control-Allow-Origin' in headers:
         if not ('.*' and '*.') in headers["Access-Control-Allow-Origin"]:
             print_header("Access-Control-Allow-Origin")
             if not args.brief:
-                print(" Review the value '" +
-                      headers["Access-Control-Allow-Origin"] + "' regarding \
-your CORS (Cross-origin resource sharing) requirements.")
-                print("")
+                print_detail("[iaccess]", "d")
+            i_cnt += 1
     i_cnt += 1
 
 if 'Allow' in headers:
