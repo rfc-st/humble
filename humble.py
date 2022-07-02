@@ -731,11 +731,7 @@ if 'X-Frame-Options' in headers:
     if ',' in headers['X-Frame-Options']:
         print_header("X-Frame-Options")
         if not args.brief:
-            print(" The value '" + headers["X-Frame-Options"] + "' is \
-invalid. Use only 'DENY', 'SAMEORIGIN' or 'ALLOW-FROM'.\n Better yet: \
-replace this header with the 'frame-ancestors' directive from the \
-""Content-Security-Policy"" header. ")
-            print("")
+            print_detail("[ixfo]", "m")
         i_cnt += 1
 
 if 'X-Pad' in headers:
