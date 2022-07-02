@@ -691,7 +691,7 @@ if ('Strict-Transport-Security' in headers) and (domain[0:5] != 'http:'):
        elem in list_sts) or (age is None or age < 31536000):
         print_header("Strict-Transport-Security")
         if not args.brief:
-            print_detail("[ists]", "a")
+            print_detail("[ists]", "m")
         i_cnt += 1
 
 if 'Timing-Allow-Origin' in headers:

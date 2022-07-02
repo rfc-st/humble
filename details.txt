@@ -120,7 +120,9 @@
  Enable 'secure' and 'httponly': to send it via HTTPS and not be accessed by client APIs.
 
 [ists]
- Add 'includeSubDomains' and define 'max-age' equal or greater than 31536000 (1 year).
+ Add 'includeSubDomains' and set 'max-age' to at least 31536000 (one year).
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+ Ref: https://https.cio.gov/hsts/
 
 [ihsts]
  This header is ignored by the browser when accessing via HTTP.
