@@ -705,9 +705,7 @@ if 'X-Content-Type-Options' in headers:
     if ',' in headers['X-Content-Type-Options']:
         print_header("X-Content-Type-Options")
         if not args.brief:
-            print(" The value '" + headers["X-Content-Type-Options"] + "' is \
-invalid. Use only 'nosniff'.")
-            print("")
+            print_detail("[ictp]", "d")
         i_cnt += 1
 
 if 'X-Content-Security-Policy' in headers:
