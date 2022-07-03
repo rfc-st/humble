@@ -603,7 +603,15 @@ if 'Content-Security-Policy' in headers:
            elem in list_csp_deprecated):
         print_header("Content-Security-Policy")
         if not args.brief:
-            print_detail("[icdp]", "d")
+            csp_list = "".join(str(x) for x in
+                               headers["Content-Security-Policy"])
+            csp_deprecated_str = ", ".join(str(x) for x in list_csp_deprecated)
+            match = [x for x in list_csp_deprecated if x in csp_list]
+            match_str = ', '.join(match)
+            print(" Avoid using deprecated directives: " + match_str + "." +
+                  "\n Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/\
+Headers/Content-Security-Policy")
+            print("")
         i_cnt += 1
     if '=' in headers['Content-Security-Policy']:
         if not any(elem.lower() in headers["Content-Security-Policy"].lower()
