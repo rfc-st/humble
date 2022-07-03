@@ -684,7 +684,7 @@ if 'Set-Cookie' in headers:
        list_cookie):
         print_header("Set-Cookie")
         if not args.brief:
-            print_detail("[iset]", "a")
+            print_detail("[iset]", "d")
         i_cnt += 1
 
 if 'Server-Timing' in headers:

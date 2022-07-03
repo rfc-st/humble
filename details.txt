@@ -115,6 +115,7 @@
 
 [iset]
  Enable 'secure' and 'httponly': to send it via HTTPS and not be accessed by client APIs.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [ists]
  Add 'includeSubDomains' and set 'max-age' to at least 31536000 (one year).
