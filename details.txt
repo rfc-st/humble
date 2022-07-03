@@ -78,10 +78,6 @@
  The value ',' is invalid. Use only 'nosniff'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
-[icdp]
- Avoid using deprecated directives.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
-
 [ieta]
  Although unlikely to be exploited, this header should not include inode information.
  Ref: https://www.pentestpartners.com/security-blog/vulnerabilities-that-arent-etag-headers/
