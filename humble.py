@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/02, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/03, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -585,6 +585,8 @@ if 'Content-Security-Policy' in headers:
     list_csp_deprecated = ['block-all-mixed-content', 'plugin-types',
                            'referrer', 'report-uri']
     list_csp_insecure = ['unsafe-inline', 'unsafe-eval']
+    list_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-uri',
+                      'report-to']
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp_insecure):
         print_header("Content-Security-Policy")
@@ -604,13 +606,12 @@ if 'Content-Security-Policy' in headers:
             print_detail("[icdp]", "d")
         i_cnt += 1
     if '=' in headers['Content-Security-Policy']:
-        if ('nonce' not in headers['Content-Security-Policy']) or \
-           ('sha' not in headers['Content-Security-Policy']) or \
-           ('style-src-elem' not in headers['Content-Security-Policy']):
+        if not any(elem.lower() in headers["Content-Security-Policy"].lower()
+                   for elem in list_csp_equal):
             print_header("Content-Security-Policy")
-        if not args.brief:
-            print_detail("[icsn]", "d")
-        i_cnt += 1
+            if not args.brief:
+                print_detail("[icsn]", "d")
+            i_cnt += 1
 
 if 'Etag' in headers:
     print_header("Etag")

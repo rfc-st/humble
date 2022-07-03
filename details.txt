@@ -71,7 +71,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icsn]
- '=' is an incorrect value in this header definition.
+ '=' could be an incorrect value in the definition of this header.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [ictp]
