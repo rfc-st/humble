@@ -88,6 +88,7 @@
 
 [ifpol]
  The value '*' allows the feature in this document, and iframes regardless of their origin.
+ Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpoli]
  'none' is not a correct value; use '()' instead.

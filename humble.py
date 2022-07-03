@@ -649,7 +649,7 @@ if 'Permissions-Policy' in headers:
     if '*' in headers['Permissions-Policy']:
         print_header("Permissions-Policy")
         if not args.brief:
-            print_detail("[ifpol]", "a")
+            print_detail("[ifpol]", "d")
         i_cnt += 1
     if 'none' in headers['Permissions-Policy']:
         print_header("Permissions-Policy")
