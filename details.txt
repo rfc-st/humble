@@ -135,6 +135,8 @@
 
 [ixcd]
  The value 'all' could permit any cross-domain requests from Flash and PDF documents.
+ Ref: https://getbutterfly.com/security-headers-a-concise-guide/
+ Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
 
 [ixcsp]
  This header is deprecated. Use instead "Content-Security-Policy".

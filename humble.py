@@ -754,7 +754,7 @@ if 'X-Permitted-Cross-Domain-Policies' in headers:
     if 'all' in headers['X-Permitted-Cross-Domain-Policies']:
         print_header("X-Permitted-Cross-Domain-Policies")
         if not args.brief:
-            print_detail("[ixcd]", "a")
+            print_detail("[ixcd]", "m")
         i_cnt += 1
 
 if 'X-Pingback' in headers:
