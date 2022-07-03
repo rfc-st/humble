@@ -670,7 +670,7 @@ if 'Referrer-Policy' in headers:
                list_ref):
         print_header("Referrer-Policy")
         if not args.brief:
-            print_detail("[iref]", "d")
+            print_detail("[iref]", "m")
         i_cnt += 1
     if 'unsafe-url' in headers['Referrer-Policy']:
         print_header("Referrer-Policy")
