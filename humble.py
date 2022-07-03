@@ -708,7 +708,7 @@ if 'Timing-Allow-Origin' in headers:
     if '*' in headers['Timing-Allow-Origin']:
         print_header("Timing-Allow-Origin")
         if not args.brief:
-            print_detail("[itao]", "a")
+            print_detail("[itao]", "d")
         i_cnt += 1
 
 if 'X-Content-Type-Options' in headers:
