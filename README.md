@@ -34,7 +34,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 14 checks of missing HTTP response headers.<br />
-:heavy_check_mark: 124 checks of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 125 checks of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 26 checks of deprecated HTTP response headers or with values considered insecure.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
@@ -197,7 +197,7 @@ optional arguments:
 | `X-TEC-API-ORIGIN` | `X-TEC-API-ROOT` | `X-TEC-API-VERSION` |
 | `X-Turbo-Charged-By` | `X-Using-Nginx-Controller` | `X-Varnish` |
 | `X-Varnish-Cache` | `X-Varnish-CC` | `X-Version` |
-| `X-Version-Id` |||
+| `X-Version-Id` | `X-Wix-Request-Id` ||
 ||||
 
 </details>

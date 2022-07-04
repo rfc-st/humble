@@ -492,8 +492,8 @@ list_fng = ['Composed-By', 'Generator', 'Hummingbird-Cache', 'Liferay-Portal',
             'X-TEC-API-ORIGIN', 'X-TEC-API-ROOT', 'X-TEC-API-VERSION',
             'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
             'X-Turbo-Charged-By', 'X-Using-Nginx-Controller', 'X-Varnish',
-            'X-Varnish-Cache', 'X-Varnish-CC', 'X-Version', 'X-Version-Id'
-            ]
+            'X-Varnish-Cache', 'X-Varnish-CC', 'X-Version', 'X-Version-Id',
+            'X-Wix-Request-Id']
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
