@@ -538,8 +538,12 @@ if 'Access-Control-Allow-Methods' in headers:
        elem in list_methods):
         print_header("Access-Control-Allow-Methods")
         if not args.brief:
-            print(" Make sure these enabled HTTP methods are needed: '" +
-                  headers["Access-Control-Allow-Methods"] + "'.")
+            methods_list = "".join(str(x) for x in
+                                   headers["Access-Control-Allow-Methods"])
+            match_method = [x for x in list_methods if x in methods_list]
+            match_method_str = ','.join(match_method)
+            print(" Make sure these enabled HTTP methods are needed: " +
+                  match_method_str + ".")
             print_detail("[imethods]", "a")
         i_cnt += 1
 
@@ -605,7 +609,6 @@ if 'Content-Security-Policy' in headers:
         if not args.brief:
             csp_list = "".join(str(x) for x in
                                headers["Content-Security-Policy"])
-            csp_deprecated_str = ", ".join(str(x) for x in list_csp_deprecated)
             match = [x for x in list_csp_deprecated if x in csp_list]
             match_str = ', '.join(match)
             print(" Avoid using deprecated directives: " + match_str + "." +
