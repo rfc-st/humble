@@ -59,7 +59,8 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
 
 [icache]
- Use 'no-cache', 'no-store', and 'must-revalidate' if there are sensitive data.
+ Enable 'no-cache', 'no-store', and 'must-revalidate' if there are sensitive data.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 [icsp]
  'unsafe-inline' and 'unsafe-eval' negate most of the security benefits provided by this header.

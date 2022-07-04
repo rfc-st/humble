@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/03, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/04, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -569,7 +569,7 @@ if 'Cache-Control' in headers:
                list_cache):
         print_header("Cache-Control")
         if not args.brief:
-            print_detail("[icache]", "a")
+            print_detail("[icache]", "d")
         i_cnt += 1
 
 if 'Content-Security-Policy' in headers:
