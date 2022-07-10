@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/04, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/10, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -634,6 +634,12 @@ if domain[0:5] == 'http:':
     print_header("HTTP instead HTTPS")
     if not args.brief:
         print_detail("[ihttp]", "d")
+    i_cnt += 1
+
+if (domain[0:5] == 'http:') and ('Expect-CT' in headers):
+    print_header("Expect-CT in HTTP")
+    if not args.brief:
+        print_detail("[iexct]", "d")
     i_cnt += 1
 
 if (domain[0:5] == 'http:') and ('Strict-Transport-Security' in headers):

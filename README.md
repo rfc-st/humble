@@ -35,7 +35,7 @@ HTTP Headers Analyzer<br />
 
 :heavy_check_mark: 14 checks of missing HTTP response headers.<br />
 :heavy_check_mark: 125 checks of fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 26 checks of deprecated HTTP response headers or with values considered insecure.<br />
+:heavy_check_mark: 27 checks of deprecated HTTP response headers or with values considered insecure.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
@@ -213,13 +213,13 @@ optional arguments:
 | ------------- | ------------- | ------------- |
 | `Access-Control-Allow-Methods` | `Access-Control-Allow-Origin` | `Allow` |
 | `Cache-Control` | `Content-Security-Policy` | `Etag` | 
-| `Feature-Policy` | `HTTP instead HTTPS` | `Permissions-Policy` | 
-| `Public-Key-Pins` | `Referrer-Policy` | `Server-Timing` | 
-| `Set-Cookie` | `Strict-Transport-Security` | `Timing-Allow-Origin` | 
-| `X-Content-Security-Policy` | `X-Content-Type-Options` | `X-DNS-Prefetch-Control` |
-| `X-Download-Options` | `X-Frame-Options` | `X-Pad` |
-| `X-Permitted-Cross-Domain-Policies` | `X-Pingback` | `X-Runtime` |
-| `X-Webkit-CSP` | `X-XSS-Protection` ||
+| `Expect-CT` | `Feature-Policy` | `HTTP instead HTTPS` |
+| `Permissions-Policy` | `Public-Key-Pins` | `Referrer-Policy` |
+| `Server-Timing` | `Set-Cookie` | `Strict-Transport-Security` |
+| `Timing-Allow-Origin` |  `X-Content-Security-Policy` | `X-Content-Type-Options` |
+| `X-DNS-Prefetch-Control` | `X-Download-Options` | `X-Frame-Options` |
+| `X-Pad` | `X-Permitted-Cross-Domain-Policies` | `X-Pingback` | 
+| `X-Runtime` | `X-Webkit-CSP` | `X-XSS-Protection` |
 ||||
 
 </details>
