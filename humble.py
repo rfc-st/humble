@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/10, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/11, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -390,15 +390,15 @@ m_cnt = 0
 
 print_section("[1. Missing HTTP Security Headers]\n")
 
-list_miss = ['Cache-Control', 'Clear-Site-Data',
+list_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
              'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
              'Cross-Origin-Resource-Policy', 'Content-Security-Policy',
              'Expect-CT', 'NEL', 'Permissions-Policy', 'Pragma',
              'Referrer-Policy', 'Strict-Transport-Security',
              'X-Content-Type-Options']
 
-list_detail = ['[mcache]', '[mcsd]', '[mcoe]', '[mcop]', '[mcor]', '[mcsp]',
-               '[mexpect]', '[mnel]', '[mpermission]', '[mpragma]',
+list_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
+               '[mcsp]', '[mexpect]', '[mnel]', '[mpermission]', '[mpragma]',
                '[mreferrer]', '[msts]', '[mxcto]', '[mxfo]']
 
 if any(elem.lower() in headers for elem in list_miss):
@@ -832,7 +832,7 @@ print("")
 
 print_section("[5. Browser Compatibility for Enabled HTTP Security Headers]\n")
 
-list_sec = ['Cache-Control', 'Clear-Site-Data',
+list_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
             'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
             'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy',
             'Expect-CT', 'NEL', 'Permissions-Policy', 'Pragma',

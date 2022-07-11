@@ -33,7 +33,7 @@ HTTP Headers Analyzer<br />
 
 ## Features
 
-:heavy_check_mark: 14 checks of missing HTTP response headers.<br />
+:heavy_check_mark: 15 checks of missing HTTP response headers.<br />
 :heavy_check_mark: 125 checks of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 27 checks of deprecated HTTP response headers or with values considered insecure.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
@@ -138,11 +138,11 @@ optional arguments:
 
 ||||
 | ------------- | ------------- | ------------- | 
-| `Cache-Control` | `Clear-Site-Data` | `Content-Security-Policy` |
-| `Cross-Origin-Embedder-Policy` | `Cross-Origin-Opener-Policy` | `Cross-Origin-Resource-Policy` |
-| `Expect-CT` | `NEL` | `Permissions-Policy` |
-| `Pragma` | `Referrer-Policy` | `Strict-Transport-Security` | 
-| `X-Content-Type-Options` | `X-Frame-Options` | |
+| `Cache-Control` | `Clear-Site-Data` | `Content-Type` |
+| `Content-Security-Policy` | `Cross-Origin-Embedder-Policy` | `Cross-Origin-Opener-Policy` |
+| `Cross-Origin-Resource-Policy` | `Expect-CT` | `NEL` |
+| `Permissions-Policy` | `Pragma` | `Referrer-Policy` |
+| `Strict-Transport-Security` | `X-Content-Type-Options` | `X-Frame-Options` |
 ||||
 
 </details>

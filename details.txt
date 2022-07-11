@@ -6,6 +6,11 @@
  Clears browsing data (cookies, storage, cache) associated with the requesting website.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 
+[mctype]
+ Indicates the original media type of the resource.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
+ Ref: https://textslashplain.com/2018/01/08/content-types-matter-more-than-you-think/
+
 [mcoe]
  Prevents documents and workers from loading non-same-origin requests unless allowed.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
