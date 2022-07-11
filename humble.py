@@ -253,12 +253,7 @@ def request_exceptions():
         raise SystemExit
     except requests.exceptions.HTTPError:
         httpcode = str(r.status_code)
-        if r.status_code == 401:
-            clean_output()
-            print(httpcode + " Error: Authentication required to access '" +
-                  domain + "'\n\n(Not supported yet by 'humble')")
-            raise SystemExit
-        elif r.status_code == 403:
+        if r.status_code == 403:
             clean_output()
             print(httpcode + " Error: Forbidden access to '" + domain +
                   "'\n\nPerhaps caused by a WAF or IP block due to GDPR." +
