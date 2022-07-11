@@ -161,7 +161,7 @@
 [ixdow]
  This header is specific to Internet Explorer 8 (discontinued in 2016).
  Ref: https://www.nwebsec.com/HttpHeaders/SecurityHeaders/XDownloadOptions
- Ref: https://www.fireeye.com/blog/threat-research/2016/01/end_of_life_for_ie.html
+ Ref: https://docs.microsoft.com/en-us/lifecycle/products/internet-explorer-8
 
 [ixfo]
  The value ',' is invalid. Use only 'DENY', 'SAMEORIGIN' or 'ALLOW-FROM'.
