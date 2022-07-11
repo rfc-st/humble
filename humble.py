@@ -643,6 +643,13 @@ if (domain[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
         print_detail("[ihsts]", "d")
     i_cnt += 1
 
+if (domain[0:5] == 'http:') and ('WWW-Authenticate' in headers) and\
+   ('Basic' in headers['WWW-Authenticate']):
+    print_header("WWW-Authenticate")
+    if not args.brief:
+        print_detail("[ihbas]", "d")
+    i_cnt += 1
+
 if 'Feature-Policy' in headers:
     print_header("Feature-Policy")
     if not args.brief:
