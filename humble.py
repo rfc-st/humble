@@ -916,6 +916,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
     name_p = name_e[:-5] + ".html"
 
+    list_miss.append('WWW-Authenticate')
     list_miss.append('X-Frame-Options')
     list_final = list_miss + list_fng + list_ins
     list_final.sort()
