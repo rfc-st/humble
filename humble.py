@@ -663,28 +663,38 @@ if 'Feature-Policy' in headers:
 if 'Permissions-Policy' in headers:
 
     # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+    # https://csplite.com/fp/
 
     list_per_features = ['accelerometer', 'ambient-light-sensor',
                          'autoplay', 'battery', 'browsing-topics', 'camera',
                          'clipboard-read', 'clipboard-write',
                          'conversion-measurement', 'cross-origin-isolated',
-                         'display-capture', 'document-domain',
+                         'display-capture', 'document-access',
+                         'document-domain', 'document-write',
                          'encrypted-media', 'execution-while-not-rendered',
                          'execution-while-out-of-viewport',
-                         'focus-without-user-activation', 'fullscreen',
-                         'gamepad', 'geolocation', 'gyroscope', 'hid',
-                         'idle-detection', 'magnetometer', 'microphone',
-                         'midi', 'navigation-override', 'payment',
+                         'focus-without-user-activation',
+                         'font-display-late-swap', 'fullscreen', 'gamepad',
+                         'geolocation', 'gyroscope', 'hid', 'idle-detection',
+                         'interest-cohort', 'layout-animations', 'lazyload',
+                         'legacy-image-formats', 'loading-frame-default-eager',
+                         'magnetometer', 'microphone', 'midi',
+                         'navigation-override', 'oversized-images', 'payment',
                          'picture-in-picture', 'publickey-credentials-get',
-                         'screen-wake-lock', 'serial', 'speaker-selection',
-                         'sync-script', 'sync-xhr', 'trust-token-redemption',
-                         'usb', 'vertical-scroll', 'web-share',
-                         'window-placement', 'xr-spatial-tracking']
+                         'screen-wake-lock', 'serial', 'speaker',
+                         'speaker-selection', 'sync-script', 'sync-xhr',
+                         'trust-token-redemption', 'unoptimized-images',
+                         'unoptimized-lossless-images',
+                         'unoptimized-lossless-images-strict',
+                         'unoptimized-lossy-images', 'unsized-media', 'usb'
+                         'vertical-scroll', 'vibrate', 'wake-lock',
+                         'web-share', 'window-placement',
+                         'xr-spatial-tracking']
     if not any(elem.lower() in headers["Permissions-Policy"].lower() for
                elem in list_per_features):
         print_header("Permissions-Policy")
         if not args.brief:
-            print_detail("[ifpoln]", "d")
+            print_detail("[ifpoln]", "m")
         i_cnt += 1
     if '*' in headers['Permissions-Policy']:
         print_header("Permissions-Policy")

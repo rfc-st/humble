@@ -95,6 +95,7 @@
 [ifpoln]
  Include at least one valid feature.
  Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+ Ref: https://csplite.com/fp/
 
 [ifpol]
  The value '*' allows the feature in this document, and iframes regardless of their origin.
