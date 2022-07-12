@@ -202,7 +202,7 @@ optional arguments:
 
 </details>
 
-## Deprecated headers and insecure values checks
+## Deprecated headers/protocols and insecure values checks
 <details>
 
 <br />

@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/11, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/12, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -509,11 +509,12 @@ if f_cnt == 0:
 
 print("")
 
-# Report - 3. Deprecated HTTP Headers and Insecure values
+# Report - 3. Deprecated HTTP Headers/Protocols and Insecure values
 
 i_cnt = 0
 
-print_section("[3. Deprecated HTTP Response Headers and Insecure Values]\n")
+print_section("[3. Deprecated HTTP Response Headers/Protocols and Insecure \
+Values]\n")
 if not args.brief:
     print_detail("[aisc]", "a")
 
@@ -572,6 +573,9 @@ if 'Cache-Control' in headers:
         i_cnt += 1
 
 if 'Content-Security-Policy' in headers:
+
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+
     list_csp_directives = ['child-src', 'connect-src', 'default-src',
                            'font-src', 'frame-src', 'img-src', 'manifest-src',
                            'media-src', 'object-src', 'prefetch-src',
@@ -657,6 +661,31 @@ if 'Feature-Policy' in headers:
     i_cnt += 1
 
 if 'Permissions-Policy' in headers:
+
+    # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+
+    list_per_features = ['accelerometer', 'ambient-light-sensor',
+                         'autoplay', 'battery', 'browsing-topics', 'camera',
+                         'clipboard-read', 'clipboard-write',
+                         'conversion-measurement', 'cross-origin-isolated',
+                         'display-capture', 'document-domain',
+                         'encrypted-media', 'execution-while-not-rendered',
+                         'execution-while-out-of-viewport',
+                         'focus-without-user-activation', 'fullscreen',
+                         'gamepad', 'geolocation', 'gyroscope', 'hid',
+                         'idle-detection', 'magnetometer', 'microphone',
+                         'midi', 'navigation-override', 'payment',
+                         'picture-in-picture', 'publickey-credentials-get',
+                         'screen-wake-lock', 'serial', 'speaker-selection',
+                         'sync-script', 'sync-xhr', 'trust-token-redemption',
+                         'usb', 'vertical-scroll', 'web-share',
+                         'window-placement', 'xr-spatial-tracking']
+    if not any(elem.lower() in headers["Permissions-Policy"].lower() for
+               elem in list_per_features):
+        print_header("Permissions-Policy")
+        if not args.brief:
+            print_detail("[ifpoln]", "d")
+        i_cnt += 1
     if '*' in headers['Permissions-Policy']:
         print_header("Permissions-Policy")
         if not args.brief:

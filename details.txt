@@ -92,6 +92,10 @@
  "Feature-Policy" has been renamed to "Permissions-Policy".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
 
+[ifpoln]
+ Include at least one valid feature.
+ Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+
 [ifpol]
  The value '*' allows the feature in this document, and iframes regardless of their origin.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
