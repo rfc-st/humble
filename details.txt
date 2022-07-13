@@ -146,6 +146,10 @@
  This header is ignored by the browser when accessing via HTTP.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
+[ipkph]
+ This header must be returned only in HTTPS connections.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Public_Key_Pinning
+
 [itao]
  The value '*' gives permission to any origin to see timing resources.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin

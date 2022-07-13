@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/12, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/13, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -630,35 +630,22 @@ if 'Etag' in headers:
         print_detail("[ieta]", "d")
     i_cnt += 1
 
-if domain[0:5] == 'http:':
-    print_header("HTTP instead HTTPS")
-    if not args.brief:
-        print_detail("[ihttp]", "d")
-    i_cnt += 1
-
 if (domain[0:5] == 'http:') and ('Expect-CT' in headers):
     print_header("Expect-CT in HTTP")
     if not args.brief:
         print_detail("[iexct]", "d")
     i_cnt += 1
 
-if (domain[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
-    print_header("Strict-Transport-Security in HTTP")
-    if not args.brief:
-        print_detail("[ihsts]", "d")
-    i_cnt += 1
-
-if (domain[0:5] == 'http:') and ('WWW-Authenticate' in headers) and\
-   ('Basic' in headers['WWW-Authenticate']):
-    print_header("WWW-Authenticate")
-    if not args.brief:
-        print_detail("[ihbas]", "d")
-    i_cnt += 1
-
 if 'Feature-Policy' in headers:
     print_header("Feature-Policy")
     if not args.brief:
         print_detail("[iffea]", "d")
+    i_cnt += 1
+
+if domain[0:5] == 'http:':
+    print_header("HTTP instead HTTPS")
+    if not args.brief:
+        print_detail("[ihttp]", "d")
     i_cnt += 1
 
 if 'Permissions-Policy' in headers:
@@ -714,6 +701,12 @@ if 'Public-Key-Pins' in headers:
         print_detail("[ipkp]", "d")
     i_cnt += 1
 
+if (domain[0:5] == 'http:') and ('Public-Key-Pins' in headers):
+    print_header("Public-Key-Pins in HTTP")
+    if not args.brief:
+        print_detail("[ipkph]", "d")
+    i_cnt += 1
+
 if 'Referrer-Policy' in headers:
     list_ref = ['strict-origin', 'strict-origin-when-cross-origin',
                 'no-referrer-when-downgrade', 'no-referrer']
@@ -729,6 +722,12 @@ if 'Referrer-Policy' in headers:
             print_detail("[irefi]", "d")
         i_cnt += 1
 
+if 'Server-Timing' in headers:
+    print_header("Server-Timing")
+    if not args.brief:
+        print_detail("[itim]", "d")
+    i_cnt += 1
+
 if 'Set-Cookie' in headers:
     list_cookie = ['secure', 'httponly']
     if not all(elem.lower() in headers["Set-Cookie"].lower() for elem in
@@ -737,12 +736,6 @@ if 'Set-Cookie' in headers:
         if not args.brief:
             print_detail("[iset]", "d")
         i_cnt += 1
-
-if 'Server-Timing' in headers:
-    print_header("Server-Timing")
-    if not args.brief:
-        print_detail("[itim]", "d")
-    i_cnt += 1
 
 if ('Strict-Transport-Security' in headers) and (domain[0:5] != 'http:'):
     list_sts = ['includeSubDomains', 'max-age']
@@ -755,6 +748,12 @@ if ('Strict-Transport-Security' in headers) and (domain[0:5] != 'http:'):
             print_detail("[ists]", "m")
         i_cnt += 1
 
+if (domain[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
+    print_header("Strict-Transport-Security in HTTP")
+    if not args.brief:
+        print_detail("[ihsts]", "d")
+    i_cnt += 1
+
 if 'Timing-Allow-Origin' in headers:
     if '*' in headers['Timing-Allow-Origin']:
         print_header("Timing-Allow-Origin")
@@ -762,18 +761,25 @@ if 'Timing-Allow-Origin' in headers:
             print_detail("[itao]", "d")
         i_cnt += 1
 
-if 'X-Content-Type-Options' in headers:
-    if ',' in headers['X-Content-Type-Options']:
-        print_header("X-Content-Type-Options")
-        if not args.brief:
-            print_detail("[ictp]", "d")
-        i_cnt += 1
+if (domain[0:5] == 'http:') and ('WWW-Authenticate' in headers) and\
+   ('Basic' in headers['WWW-Authenticate']):
+    print_header("WWW-Authenticate")
+    if not args.brief:
+        print_detail("[ihbas]", "d")
+    i_cnt += 1
 
 if 'X-Content-Security-Policy' in headers:
     print_header("X-Content-Security-Policy")
     if not args.brief:
         print_detail("[ixcsp]", "d")
     i_cnt += 1
+
+if 'X-Content-Type-Options' in headers:
+    if ',' in headers['X-Content-Type-Options']:
+        print_header("X-Content-Type-Options")
+        if not args.brief:
+            print_detail("[ictp]", "d")
+        i_cnt += 1
 
 if 'X-DNS-Prefetch-Control' in headers:
     if 'on' in headers['X-DNS-Prefetch-Control']:
