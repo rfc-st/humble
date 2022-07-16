@@ -822,6 +822,13 @@ if 'X-Pingback' in headers:
             print_detail("[ixpb]", "d")
         i_cnt += 1
 
+if 'X‑Robots-Tag' in headers:
+    if 'all' in headers['X‑Robots-Tag']:
+        print_header("X‑Robots-Tag")
+        if not args.brief:
+            print_detail("[ixrob]", "m")
+        i_cnt += 1
+
 if 'X-Runtime' in headers:
     print_header("X-Runtime")
     if not args.brief:

@@ -35,7 +35,7 @@ HTTP Headers Analyzer<br />
 
 :heavy_check_mark: 15 checks of missing HTTP response headers.<br />
 :heavy_check_mark: 131 checks of fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 28 checks of deprecated HTTP response headers/protocols or with values considered insecure.<br />
+:heavy_check_mark: 29 checks of deprecated HTTP response headers/protocols or with values considered insecure.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
@@ -221,8 +221,8 @@ optional arguments:
 | `Timing-Allow-Origin` | `WWW-Authenticate` | `X-Content-Security-Policy` |
 | `X-Content-Type-Options` | `X-DNS-Prefetch-Control` | `X-Download-Options` |
 | `X-Frame-Options` | `X-Pad` | `X-Permitted-Cross-Domain-Policies` |
-| `X-Pingback` | `X-Runtime` | `X-Webkit-CSP` | 
-| `X-XSS-Protection` |||
+| `X-Pingback` | `X‑Robots-Tag` | `X-Runtime` |
+| `X-Webkit-CSP` | `X-XSS-Protection` ||
 ||||
 
 </details>

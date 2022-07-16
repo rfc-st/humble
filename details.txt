@@ -189,6 +189,11 @@
  xmlrpc.php can introduce vulnerabilities; has been superseded by the WordPress REST API.
  Ref: https://kinsta.com/blog/xmlrpc-php/
 
+[ixrob]
+ The value 'all' implies no restrictions for indexing or serving content, regarding search engines.
+ Could pose a security risk: indexing of exposed administration panels, sensitive information, etc.
+ Ref: https://semoladigital.com/robots-meta-tag-xrobots-tag-data-nosnippet-everything-you-need-to-know/
+
 [ixrun]
  The value of this header could allow valid user harvesting attacks.
  Ref: https://www.virtuesecurity.com/kb/x-runtime-header-timing-attacks/
