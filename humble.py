@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/13, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/16, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
@@ -468,12 +468,13 @@ list_fng = ['Composed-By', 'Generator', 'Hummingbird-Cache', 'Liferay-Portal',
             'X-HS-CF-Cache-Status', 'X-HS-Combine-CSS', 'X-HS-Content-Id',
             'X-HS-Content-Group-Id', 'X-Hs-Https-Only', 'X-HS-Hub-Id',
             'X-HS-Prerendered', 'X-HubSpot-Correlation-Id', 'X-Hudson',
-            'X-Jenkins', 'X-Jenkins-Session', 'X-Litespeed-Cache',
-            'X-Litespeed-Cache-Control', 'X-LiteSpeed-Purge',
-            'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary', 'X-Magento-Tags',
-            'X-Magento-Cache-Control', 'X-Magnolia-Registration',
-            'X-Magento-Cache-Debug', 'X-Mod-Pagespeed', 'X-MS-InvokeApp',
-            'X-Nextjs-Cache', 'X-Nginx-Cache', 'X-Nginx-Cache-Status',
+            'X-Jenkins', 'X-Jenkins-Session', 'X-Litespeed-Alt-Svc',
+            'X-Litespeed-Cache', 'X-Litespeed-Cache-Control',
+            'X-LiteSpeed-Purge', 'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary',
+            'X-Magento-Tags', 'X-Magento-Cache-Control',
+            'X-Magnolia-Registration', 'X-Magento-Cache-Debug',
+            'X-Mod-Pagespeed', 'X-MS-InvokeApp', 'X-Nextjs-Cache',
+            'X-Nginx-Cache', 'X-Nginx-Cache-Status',
             'X-Nginx-Upstream-Cache-Status', 'X-Nitro-Cache',
             'X-Nitro-Cache-From', 'X-Nitro-Disabled',
             'X-Nitro-Disabled-Reason', 'X-Nitro-Expires', 'X-Nitro-Rev',
