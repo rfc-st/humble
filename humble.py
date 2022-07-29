@@ -61,34 +61,8 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/16, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/29, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
-
-guides = '\r\n' + 'Articles that may be useful to secure servers/services and \
-enable security HTTP headers:' + '\r\n' + '\r\n' + Style.BRIGHT + \
- '[Amazon AWS]' + Style.NORMAL + '\r\n' + '\r\n' + \
- 'https://medium.com/faun/hardening-the-http-security-\
-headers-with-aws-lambda-edge-and-cloudfront-2e2da1ae4d83' + '\r\n' + '\r\n' + \
- Style.BRIGHT + '[Apache HTTP Server]' + Style.NORMAL + '\r\n' + '\r\n' + \
- 'https://htaccessbook.com/important-security-headers/' + '\r\n' + 'https://\
-geekflare.com/apache-web-server-hardening-security/' + '\r\n' + 'https://www\
-.adminbyaccident.com/security/how-to-harden-apache-http/' + '\r\n' + \
- 'https://www.digitalocean.com/community/tutorials/recommended-steps-to-\
-harden-apache-http-on-freebsd-12-0' + '\r\n' + '\r\n' + Style.BRIGHT + \
- '[Cloudflare]' + '\r\n' + '\r\n' + Style.NORMAL + 'https://jarv.is/notes/\
-security-headers-cloudflare-workers/' + '\r\n' + 'https://blog.headforcloud.\
-com/2020/06/26/static-hosting-cf-workers/' + '\r\n' + '\r\n' + \
- Style.BRIGHT + '[MaxCDN]' + Style.NORMAL + '\r\n' + '\r\n' + 'https://\
-support.maxcdn.com/hc/en-us/articles/360036557712-Edge-Rules-Recipes' + \
- '\r\n' + '\r\n' + Style.BRIGHT + '[Microsoft Internet Information \
-Services]' + Style.NORMAL + '\r\n' + '\r\n' + 'https://geekflare.com/http-\
-header-implementation/' + '\r\n' + 'https://www.ryadel.com/en/iis-web-config\
--secure-http-response-headers-pass-securityheaders-io-scan/' + '\r\n' + \
- 'https://beaglesecurity.com/blog/article/hardening-server-security-by-\
-implementing-security-headers.html' + '\r\n' + '\r\n' + Style.BRIGHT + \
- '[Nginx]' + Style.NORMAL + '\r\n' + '\r\n' + 'https://www.acunetix.com/\
-blog/web-security-zone/hardening-nginx/' + '\r\n' + 'https://www.getpagespeed\
-.com/server-setup/nginx-security-headers-the-right-way' + '\r\n'
 
 
 class PDF(FPDF):
@@ -231,6 +205,15 @@ def print_detail(id, mode):
                     print(next(rf))
 
 
+def print_guides():
+    with open('guides.txt', 'r') as gd:
+        for line in gd:
+            if line.startswith('['):
+                print(Style.BRIGHT + line, end='')
+            else:
+                print(line, end='')
+
+
 def get_location():
     response = requests.get(f'https://ipapi.co/country_name/')
     return response
@@ -324,7 +307,7 @@ domain = args.domain
 # Show guides
 
 if args.guides:
-    print(guides)
+    print_guides()
     sys.exit()
 
 # Peace
