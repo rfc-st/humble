@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/29, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/07/30, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -316,10 +316,12 @@ if args.guides:
 suffix = tldextract.extract(domain).suffix
 country = get_location()
 
-if suffix == "ru" or b'Russia' in country:
+if suffix[-2:] == "ru" or b'Russia' in country:
     print("")
     print_detail("[bcnt]", "d")
     sys.exit()
+elif suffix[-2:] == "ua" or b'Ukraine' in country:
+    print(spacing + '(Slava Ukraini!). Analyzing ' + domain + " ..." + spacing)
 else:
     print(spacing + 'Analyzing ' + domain + " ..." + spacing)
 
