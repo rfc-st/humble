@@ -81,7 +81,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [ictp]
- The value ',' is invalid. Use only 'nosniff'.
+ The only valid value is 'nosniff'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
 [ieta]

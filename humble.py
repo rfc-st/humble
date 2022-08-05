@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/07/30, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/08/05, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -761,7 +761,7 @@ if 'X-Content-Security-Policy' in headers:
     i_cnt += 1
 
 if 'X-Content-Type-Options' in headers:
-    if ',' in headers['X-Content-Type-Options']:
+    if 'nosniff' not in headers['X-Content-Type-Options']:
         print_header("X-Content-Type-Options")
         if not args.brief:
             print_detail("[ictp]", "d")
