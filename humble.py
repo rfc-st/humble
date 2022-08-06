@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/08/05, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/08/06, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -431,51 +431,10 @@ print_section("[2. Fingerprint HTTP Response Headers]\n")
 if not args.brief:
     print_detail("[afgp]", "a")
 
-list_fng = ['Composed-By', 'Generator', 'Hummingbird-Cache', 'Liferay-Portal',
-            'MicrosoftOfficeWebServer', 'MicrosoftSharePointTeamServices',
-            'MS-Author-Via', 'Oracle-Mobile-Runtime-Version', 'Platform',
-            'Powered-By', 'Product', 'Server', 'Servlet-Engine',
-            'simplycom-server', 'SPIisLatency', 'SPRequestDuration',
-            'SPRequestGuid', 'swift-performance', 'Via', 'WP-Super-Cache',
-            'WPO-Cache-Status', 'X-Accel-Buffering', 'X-Accel-Redirect',
-            'X-Accel-Charset', 'X-Accel-Expires', 'X-Accel-Limit-Rate',
-            'X-AH-Environment', 'X-Application-Context', 'X-AspNet-Version',
-            'X-AspNetMvc-Version', 'X-Backend', 'X-Backend-Server',
-            'X-BEServer', 'X-Bitrix-Composite', 'X-Cache-Handler',
-            'X-Cache-Only-Varnish', 'X-Cache-Type', 'X-CF-Powered-By',
-            'X-CMS', 'X-CMS-Version', 'X-Cocoon-Version', 'X-Compressed-By',
-            'X-Content-Powered-By', 'X-Debug-Token', 'X-Debug-Token-Link',
-            'X-DevSrv-CMS', 'X-Drupal-Cache', 'X-Drupal-Cache-Contexts',
-            'X-Drupal-Cache-Tags', 'X-Drupal-Dynamic-Cache', 'X-FEServer',
-            'X-FW-Dynamic', 'X-FW-Hash', 'X-FW-Serve', 'X-FW-Server',
-            'X-FW-Static', 'X-FW-Type', 'X-FW-Version', 'X-Garden-Version',
-            'X-Generated-By', 'X-Generator', 'X-HS-Cache-Config',
-            'X-HS-Cache-Control', 'X-HS-CF-Cache-Status', 'X-HS-Combine-CSS',
-            'X-HS-Content-Id', 'X-HS-Content-Group-Id', 'X-Hs-Https-Only',
-            'X-HS-Hub-Id', 'X-HS-Prerendered', 'X-HubSpot-Correlation-Id',
-            'X-Hudson', 'X-Jenkins', 'X-Jenkins-Session',
-            'X-Litespeed-Alt-Svc', 'X-Litespeed-Cache',
-            'X-Litespeed-Cache-Control', 'X-LiteSpeed-Purge',
-            'X-LiteSpeed-Tag', 'X-LiteSpeed-Vary', 'X-Magento-Tags',
-            'X-Magento-Cache-Control', 'X-Magnolia-Registration',
-            'X-Magento-Cache-Debug', 'X-Mod-Pagespeed', 'X-MS-InvokeApp',
-            'X-Nextjs-Cache', 'X-Nginx-Cache', 'X-Nginx-Cache-Status',
-            'X-Nginx-Upstream-Cache-Status', 'X-Nitro-Cache',
-            'X-Nitro-Cache-From', 'X-Nitro-Disabled',
-            'X-Nitro-Disabled-Reason', 'X-Nitro-Expires', 'X-Nitro-Rev',
-            'X-ORACLE-DMS-ECID', 'X-ORACLE-DMS-RID', 'X-OWA-Version',
-            'X-Page-Speed', 'X-Powered-By', 'X-Powered-By-Plesk',
-            'X-Powered-CMS', 'X-Provided-By', 'X-Rack-Cache', 'X-Redirect-By',
-            'X-Redirect-Powered-By', 'X-Server', 'X-ServerName',
-            'X-Server-Name', 'X-Server-Powered-By', 'X-ShardId',
-            'X-SharePointHealthScore', 'X-ShopId',
-            'X-Shopify-Request-Trackable', 'X-Shopify-Stage',
-            'X-Sorting-Hat-PodId', 'X-Sorting-Hat-ShopId', 'X-Spip-Cache',
-            'X-TEC-API-ORIGIN', 'X-TEC-API-ROOT', 'X-TEC-API-VERSION',
-            'X-Storefront-Renderer-Rendered', 'X-Storefront-Renderer-Verified',
-            'X-Turbo-Charged-By', 'X-Using-Nginx-Controller', 'X-Varnish',
-            'X-Varnish-Cache', 'X-Varnish-CC', 'X-Version', 'X-Version-Id',
-            'X-Wix-Request-Id']
+with open('fingerprint.txt', 'r') as fn:
+    list_fng = []
+    for line in fn:
+        list_fng.append(line.strip())
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
