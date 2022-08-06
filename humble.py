@@ -424,6 +424,11 @@ print("")
 
 # Report - 2. Fingerprinting through headers / values
 
+# Part of the content of the file 'fingerprint.txt' has been made possible
+# thanks to Wappalyzer, under MIT license.
+# https://github.com/wappalyzer/wappalyzer/tree/master/src/technologies
+# https://github.com/wappalyzer/wappalyzer/blob/master/LICENSE
+
 f_cnt = 0
 
 print_section("[2. Fingerprint HTTP Response Headers]\n")
