@@ -668,7 +668,7 @@ if 'Referrer-Policy' in headers:
                 'no-referrer-when-downgrade', 'no-referrer']
     if not any(elem.lower() in headers["Referrer-Policy"].lower() for elem in
                list_ref):
-        print_header("Referrer-Policy (Not recommended value)")
+        print_header("Referrer-Policy (Recommended Values)")
         if not args.brief:
             print_detail("[iref]", "m")
         i_cnt += 1
@@ -699,7 +699,7 @@ if ('Strict-Transport-Security' in headers) and (domain[0:5] != 'http:'):
               n.isdigit()]))
     if not all(elem.lower() in headers["Strict-Transport-Security"].lower() for
        elem in list_sts) or (age is None or age < 31536000):
-        print_header("Strict-Transport-Security (Not Recommended Values)")
+        print_header("Strict-Transport-Security (Recommended Values)")
         if not args.brief:
             print_detail("[ists]", "m")
         i_cnt += 1
