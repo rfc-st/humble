@@ -630,7 +630,7 @@ if 'Permissions-Policy' in headers:
                          'trust-token-redemption', 'unoptimized-images',
                          'unoptimized-lossless-images',
                          'unoptimized-lossless-images-strict',
-                         'unoptimized-lossy-images', 'unsized-media', 'usb'
+                         'unoptimized-lossy-images', 'unsized-media', 'usb',
                          'vertical-scroll', 'vibrate', 'wake-lock',
                          'web-share', 'window-placement',
                          'xr-spatial-tracking']
