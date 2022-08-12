@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/08/06, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/08/12, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -573,6 +573,12 @@ Headers/Content-Security-Policy")
             if not args.brief:
                 print_detail("[icsn]", "d")
             i_cnt += 1
+    if ('http:' in headers['Content-Security-Policy']) and \
+            (domain[0:5] == 'https'):
+        print_header("Content-Security-Policy")
+        if not args.brief:
+            print_detail("[icsh]", "m")
+        i_cnt += 1
 
 if 'Etag' in headers:
     print_header("Etag")

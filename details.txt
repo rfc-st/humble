@@ -80,6 +80,11 @@
  '=' could be an incorrect value in the definition of this header.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
+[icsh]
+ It is not recommended to allow content of insecure schemes ('http://').
+ Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-implemented-with-insecure-scheme.html
+ Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-allowing-media-to-be-loaded.html
+
 [ictp]
  The only valid value is 'nosniff'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
