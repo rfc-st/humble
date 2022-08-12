@@ -35,7 +35,7 @@ HTTP Headers Analyzer<br />
 
 :heavy_check_mark: 15 checks of missing HTTP response headers.<br />
 :heavy_check_mark: 202 checks of fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 29 checks of deprecated HTTP response headers/protocols or with values considered insecure.<br />
+:heavy_check_mark: 38 checks of deprecated HTTP response headers/protocols or with values considered insecure.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to html, pdf and txt.<br />
@@ -152,27 +152,8 @@ optional arguments:
 Check <a href="https://github.com/rfc-st/humble/blob/master/fingerprint.txt">this</a> file.
 
 ## Deprecated headers/protocols and insecure values checks
-<details>
 
-<br />
-
-<summary>Show / Hide</summary>
-
-||||
-| ------------- | ------------- | ------------- |
-| `Access-Control-Allow-Methods` | `Access-Control-Allow-Origin` | `Allow` |
-| `Cache-Control` | `Content-Security-Policy` | `Etag` | 
-| `Expect-CT` | `Feature-Policy` | `HTTP instead HTTPS` |
-| `Permissions-Policy` | `Public-Key-Pins` | `Referrer-Policy` |
-| `Server-Timing` | `Set-Cookie` | `Strict-Transport-Security` |
-| `Timing-Allow-Origin` | `WWW-Authenticate` | `X-Content-Security-Policy` |
-| `X-Content-Type-Options` | `X-DNS-Prefetch-Control` | `X-Download-Options` |
-| `X-Frame-Options` | `X-Pad` | `X-Permitted-Cross-Domain-Policies` |
-| `X-Pingback` | `X‑Robots-Tag` | `X-Runtime` |
-| `X-Webkit-CSP` | `X-XSS-Protection` ||
-||||
-
-</details>
+Check <a href="https://github.com/rfc-st/humble/blob/master/insecure.txt">this</a> file.
 
 ## Empty values check
 

@@ -1,0 +1,38 @@
+Access-Control-Allow-Methods: Insecure Methods
+Access-Control-Allow-Origin: Not Recommended values
+Allow: Insecure Methods
+Cache-Control: Not Recommended Values
+Content-Security-Policy: Unsafe Values
+Content-Security-Policy: No Valid Directives
+Content-Security-Policy: Deprecated Directives
+Content-Security-Policy: Incorrect values
+Content-Security-Policy: Insecure Schemes
+Etag: Potentially Unsafe Header
+Expect-CT: Header via Unsafe Scheme
+Feature-Policy: Deprecated Header
+HTTP: Domain Via Unsafe Scheme
+Permissions-Policy: No Valid Features
+Permissions-Policy: Too Permissive Value
+Permissions-Policy: Incorrect Values
+Public-Key-Pins: Deprecated Header
+Public-Key-Pins: Header via Unsafe Scheme
+Referrer-Policy: Not recommended value
+Referrer-Policy: Unsafe Value
+Server-Timing: Potentially Unsafe Header
+Set-Cookie: Insecure Attributes
+Strict-Transport-Security: Not Recommended Values
+Strict-Transport-Security: Ignored Header via Unsafe Scheme
+Timing-Allow-Origin: Potentially Unsafe Header
+WWW-Authenticate: Unsafe Value
+X-Content-Security-Policy: Deprecated Header
+X-Content-Type-Options: Incorrect Value
+X-DNS-Prefetch-Control: Potentially Unsafe Header
+X-Download-Options: Deprecated Header
+X-Frame-Options: Incorrect Value
+X-Pad: Deprecated Header
+X-Permitted-Cross-Domain-Policies: Unsafe Value
+X-Pingback: Unsafe Value
+X-Robots-Tag: Unsafe Value
+X-Runtime: Unsafe Value
+X-Webkit-CSP: Deprecated Header
+X-XSS-Protection: Unsafe Value
