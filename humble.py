@@ -543,19 +543,19 @@ if 'Content-Security-Policy' in headers:
                       'report-to']
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp_insecure):
-        print_header("Content-Security-Policy")
+        print_header("Content-Security-Policy (Unsafe Values)")
         if not args.brief:
             print_detail("[icsp]", "m")
         i_cnt += 1
     elif not any(elem.lower() in headers["Content-Security-Policy"].lower() for
                  elem in list_csp_directives):
-        print_header("Content-Security-Policy")
+        print_header("Content-Security-Policy (No Valid Directives)")
         if not args.brief:
             print_detail("[icsi]", "d")
         i_cnt += 1
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
            elem in list_csp_deprecated):
-        print_header("Content-Security-Policy")
+        print_header("Content-Security-Policy (Deprecated Directives)")
         if not args.brief:
             csp_list = "".join(str(x) for x in
                                headers["Content-Security-Policy"])
@@ -569,13 +569,13 @@ Headers/Content-Security-Policy")
     if '=' in headers['Content-Security-Policy']:
         if not any(elem.lower() in headers["Content-Security-Policy"].lower()
                    for elem in list_csp_equal):
-            print_header("Content-Security-Policy")
+            print_header("Content-Security-Policy (Incorrect Values)")
             if not args.brief:
                 print_detail("[icsn]", "d")
             i_cnt += 1
     if ('http:' in headers['Content-Security-Policy']) and \
             (domain[0:5] == 'https'):
-        print_header("Content-Security-Policy")
+        print_header("Content-Security-Policy (Insecure Schemes)")
         if not args.brief:
             print_detail("[icsh]", "m")
         i_cnt += 1
@@ -636,17 +636,17 @@ if 'Permissions-Policy' in headers:
                          'xr-spatial-tracking']
     if not any(elem.lower() in headers["Permissions-Policy"].lower() for
                elem in list_per_features):
-        print_header("Permissions-Policy")
+        print_header("Permissions-Policy (No Valid Features)")
         if not args.brief:
             print_detail("[ifpoln]", "m")
         i_cnt += 1
     if '*' in headers['Permissions-Policy']:
-        print_header("Permissions-Policy")
+        print_header("Permissions-Policy (Too Permissive Value)")
         if not args.brief:
             print_detail("[ifpol]", "d")
         i_cnt += 1
     if 'none' in headers['Permissions-Policy']:
-        print_header("Permissions-Policy")
+        print_header("Permissions-Policy (Incorrect Value)")
         if not args.brief:
             print_detail("[ifpoli]", "d")
         i_cnt += 1
@@ -668,12 +668,12 @@ if 'Referrer-Policy' in headers:
                 'no-referrer-when-downgrade', 'no-referrer']
     if not any(elem.lower() in headers["Referrer-Policy"].lower() for elem in
                list_ref):
-        print_header("Referrer-Policy")
+        print_header("Referrer-Policy (Not recommended value)")
         if not args.brief:
             print_detail("[iref]", "m")
         i_cnt += 1
     if 'unsafe-url' in headers['Referrer-Policy']:
-        print_header("Referrer-Policy")
+        print_header("Referrer-Policy (Unsafe Value)")
         if not args.brief:
             print_detail("[irefi]", "d")
         i_cnt += 1
@@ -699,13 +699,13 @@ if ('Strict-Transport-Security' in headers) and (domain[0:5] != 'http:'):
               n.isdigit()]))
     if not all(elem.lower() in headers["Strict-Transport-Security"].lower() for
        elem in list_sts) or (age is None or age < 31536000):
-        print_header("Strict-Transport-Security")
+        print_header("Strict-Transport-Security (Not Recommended Values)")
         if not args.brief:
             print_detail("[ists]", "m")
         i_cnt += 1
 
 if (domain[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
-    print_header("Strict-Transport-Security in HTTP")
+    print_header("Strict-Transport-Security (Ignored Header)")
     if not args.brief:
         print_detail("[ihsts]", "d")
     i_cnt += 1
