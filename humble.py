@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/08/12, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/08/13, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -483,7 +483,7 @@ list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
 if 'Access-Control-Allow-Methods' in headers:
     if any(elem.lower() in headers["Access-Control-Allow-Methods"].lower() for
        elem in list_methods):
-        print_header("Access-Control-Allow-Methods")
+        print_header("Access-Control-Allow-Methods (Insecure Methods)")
         if not args.brief:
             methods_list = "".join(str(x) for x in
                                    headers["Access-Control-Allow-Methods"])
@@ -499,7 +499,7 @@ if 'Access-Control-Allow-Origin' in headers:
     if any(elem.lower() in headers["Access-Control-Allow-Origin"].lower() for
        elem in list_access):
         if not ('.*' and '*.') in headers["Access-Control-Allow-Origin"]:
-            print_header("Access-Control-Allow-Origin")
+            print_header("Access-Control-Allow-Origin (Unsafe Values)")
             if not args.brief:
                 print_detail("[iaccess]", "d")
             i_cnt += 1
@@ -507,7 +507,7 @@ if 'Access-Control-Allow-Origin' in headers:
 
 if 'Allow' in headers:
     if any(elem.lower() in headers["Allow"].lower() for elem in list_methods):
-        print_header("Allow")
+        print_header("Allow (Insecure Methods)")
         if not args.brief:
             print(" Make sure these enabled HTTP methods are needed: '" +
                   headers["Allow"] + "'.")
@@ -518,7 +518,7 @@ if 'Cache-Control' in headers:
     list_cache = ['no-cache', 'no-store', 'must-revalidate']
     if not all(elem.lower() in headers["Cache-Control"].lower() for elem in
                list_cache):
-        print_header("Cache-Control")
+        print_header("Cache-Control (Recommended Values)")
         if not args.brief:
             print_detail("[icache]", "d")
         i_cnt += 1
@@ -581,25 +581,25 @@ Headers/Content-Security-Policy")
         i_cnt += 1
 
 if 'Etag' in headers:
-    print_header("Etag")
+    print_header("Etag (Potentially Unsafe Header)")
     if not args.brief:
         print_detail("[ieta]", "d")
     i_cnt += 1
 
 if (domain[0:5] == 'http:') and ('Expect-CT' in headers):
-    print_header("Expect-CT in HTTP")
+    print_header("Expect-CT (Header via Unsafe Scheme)")
     if not args.brief:
         print_detail("[iexct]", "d")
     i_cnt += 1
 
 if 'Feature-Policy' in headers:
-    print_header("Feature-Policy")
+    print_header("Feature-Policy (Deprecated Header)")
     if not args.brief:
         print_detail("[iffea]", "d")
     i_cnt += 1
 
 if domain[0:5] == 'http:':
-    print_header("HTTP instead HTTPS")
+    print_header("HTTP (Domain Via Unsafe Scheme)")
     if not args.brief:
         print_detail("[ihttp]", "d")
     i_cnt += 1
@@ -652,13 +652,13 @@ if 'Permissions-Policy' in headers:
         i_cnt += 1
 
 if 'Public-Key-Pins' in headers:
-    print_header("Public-Key-Pins")
+    print_header("Public-Key-Pins (Deprecated Header)")
     if not args.brief:
         print_detail("[ipkp]", "d")
     i_cnt += 1
 
 if (domain[0:5] == 'http:') and ('Public-Key-Pins' in headers):
-    print_header("Public-Key-Pins in HTTP")
+    print_header("Public-Key-Pins (Header via Unsafe Scheme)")
     if not args.brief:
         print_detail("[ipkph]", "d")
     i_cnt += 1
@@ -679,7 +679,7 @@ if 'Referrer-Policy' in headers:
         i_cnt += 1
 
 if 'Server-Timing' in headers:
-    print_header("Server-Timing")
+    print_header("Server-Timing (Potentially Unsafe Header)")
     if not args.brief:
         print_detail("[itim]", "d")
     i_cnt += 1
@@ -688,7 +688,7 @@ if 'Set-Cookie' in headers:
     list_cookie = ['secure', 'httponly']
     if not all(elem.lower() in headers["Set-Cookie"].lower() for elem in
        list_cookie):
-        print_header("Set-Cookie")
+        print_header("Set-Cookie (Insecure Attributes)")
         if not args.brief:
             print_detail("[iset]", "d")
         i_cnt += 1
@@ -712,93 +712,93 @@ if (domain[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
 
 if 'Timing-Allow-Origin' in headers:
     if '*' in headers['Timing-Allow-Origin']:
-        print_header("Timing-Allow-Origin")
+        print_header("Timing-Allow-Origin (Potentially Unsafe Header)")
         if not args.brief:
             print_detail("[itao]", "d")
         i_cnt += 1
 
 if (domain[0:5] == 'http:') and ('WWW-Authenticate' in headers) and\
    ('Basic' in headers['WWW-Authenticate']):
-    print_header("WWW-Authenticate")
+    print_header("WWW-Authenticate (Unsafe Value)")
     if not args.brief:
         print_detail("[ihbas]", "d")
     i_cnt += 1
 
 if 'X-Content-Security-Policy' in headers:
-    print_header("X-Content-Security-Policy")
+    print_header("X-Content-Security-Policy (Deprecated Header)")
     if not args.brief:
         print_detail("[ixcsp]", "d")
     i_cnt += 1
 
 if 'X-Content-Type-Options' in headers:
     if 'nosniff' not in headers['X-Content-Type-Options']:
-        print_header("X-Content-Type-Options")
+        print_header("X-Content-Type-Options (Incorrect Value)")
         if not args.brief:
             print_detail("[ictp]", "d")
         i_cnt += 1
 
 if 'X-DNS-Prefetch-Control' in headers:
     if 'on' in headers['X-DNS-Prefetch-Control']:
-        print_header("X-DNS-Prefetch-Control")
+        print_header("X-DNS-Prefetch-Control (Potentially Unsafe Header)")
         if not args.brief:
             print_detail("[ixdp]", "d")
         i_cnt += 1
 
 if 'X-Download-Options' in headers:
-    print_header("X-Download-Options")
+    print_header("X-Download-Options (Deprecated Header)")
     if not args.brief:
         print_detail("[ixdow]", "m")
     i_cnt += 1
 
 if 'X-Frame-Options' in headers:
     if ',' in headers['X-Frame-Options']:
-        print_header("X-Frame-Options")
+        print_header("X-Frame-Options (Incorrect Value)")
         if not args.brief:
             print_detail("[ixfo]", "m")
         i_cnt += 1
 
 if 'X-Pad' in headers:
-    print_header("X-Pad")
+    print_header("X-Pad (Deprecated Header)")
     if not args.brief:
         print_detail("[ixpad]", "d")
     i_cnt += 1
 
 if 'X-Permitted-Cross-Domain-Policies' in headers:
     if 'all' in headers['X-Permitted-Cross-Domain-Policies']:
-        print_header("X-Permitted-Cross-Domain-Policies")
+        print_header("X-Permitted-Cross-Domain-Policies (Unsafe Value)")
         if not args.brief:
             print_detail("[ixcd]", "m")
         i_cnt += 1
 
 if 'X-Pingback' in headers:
     if 'xmlrpc.php' in headers['X-Pingback']:
-        print_header("X-Pingback")
+        print_header("X-Pingback (Unsafe Value)")
         if not args.brief:
             print_detail("[ixpb]", "d")
         i_cnt += 1
 
 if 'X-Robots-Tag' in headers:
     if 'all' in headers['X-Robots-Tag']:
-        print_header("X-Robots-Tag")
+        print_header("X-Robots-Tag (Unsafe Value)")
         if not args.brief:
             print_detail("[ixrob]", "m")
         i_cnt += 1
 
 if 'X-Runtime' in headers:
-    print_header("X-Runtime")
+    print_header("X-Runtime (Unsafe Value)")
     if not args.brief:
         print_detail("[ixrun]", "d")
         i_cnt += 1
 
 if 'X-Webkit-CSP' in headers:
-    print_header("X-Webkit-CSP")
+    print_header("X-Webkit-CSP (Deprecated Header)")
     if not args.brief:
         print_detail("[ixcsp]", "d")
     i_cnt += 1
 
 if 'X-XSS-Protection' in headers:
     if '0' not in headers["X-XSS-Protection"]:
-        print_header("X-XSS-Protection")
+        print_header("X-XSS-Protection (Unsafe Value)")
         if not args.brief:
             print_detail("[ixxp]", "d")
         i_cnt += 1
