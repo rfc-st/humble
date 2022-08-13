@@ -176,6 +176,7 @@ X-Shopify-Stage
 X-Sorting-Hat-PodId
 X-Sorting-Hat-ShopId
 X-Spip-Cache
+X-Spdwp-Ngx
 X-Streams-Distribution
 X-Supplied-By
 X-TEC-API-ORIGIN
