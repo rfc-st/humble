@@ -1,5 +1,7 @@
 # humble
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c51df2f848694537b544e67e4c373270)](https://app.codacy.com/gh/rfc-st/humble?utm_source=github.com&utm_medium=referral&utm_content=rfc-st/humble&utm_campaign=Badge_Grade_Settings)
+
 <p align=center>
 <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/python-%3E=_3.6-green.svg"></a>
 <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
