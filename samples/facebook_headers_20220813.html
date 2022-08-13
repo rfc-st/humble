@@ -6,8 +6,8 @@
 
 <strong>[0. Info]
 </strong>
- Date   : 2022/06/18 - 09:14:30
- Domain : https://www.facebook.com
+ Date   : 2022/08/13 - 20:19:55
+ Domain : https://facebook.com
 
 
 <strong>[1. Missing HTTP Security Headers]
@@ -50,32 +50,34 @@
 
 <strong>[2. Fingerprint HTTP Response Headers]
 </strong>
- Remove these headers (or modify their values), if they leak information about software, versions, hostnames or IP addresses:
+ These headers can leak information about software, versions, hostnames or IP addresses:
 
 <span class="ok"> Nothing to report, all seems OK!
 </span>
 
-<strong>[3. Deprecated HTTP Response Headers and Insecure Values]
+<strong>[3. Deprecated HTTP Response Headers/Protocols and Insecure Values]
 </strong>
- The following headers are deprecated or their values may be considered unsafe:
+ The following headers/protocols are deprecated or their values may be considered unsafe:
 
-<span class="ko"> Content-Security-Policy
-</span> Remove 'unsafe-inline' and/or 'unsafe-eval' whenever possible, as they negate most of the security benefits provided by this header.
+<span class="ko"> Content-Security-Policy (Unsafe Values)
+</span> 'unsafe-inline' and 'unsafe-eval' negate most of the security benefits provided by this header.
  Ref: <a href="https://csper.io/blog/no-more-unsafe-inline
 ">https://csper.io/blog/no-more-unsafe-inline
 </a> Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
 ">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
 </a>
-<span class="ko"> Content-Security-Policy
-</span> Avoid using deprecated directives: 'block-all-mixed-content', 'plugin-types', 'referrer' or 'report-uri'.
- Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#deprecated_directives
-">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#deprecated_directives
-</a> Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#reporting_directives
-">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#reporting_directives
+<span class="ko"> Content-Security-Policy (Deprecated Directives)
+</span> Avoid using deprecated directives: block-all-mixed-content, report-uri.
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 </a>
-<span class="ko"> Strict-Transport-Security
-</span> Add 'includeSubDomains' and define 'max-age' equal or greater than 31536000 (1 year).
-
+<span class="ko"> Strict-Transport-Security (Recommended Values)
+</span> Add 'includeSubDomains' and set 'max-age' to at least 31536000 (one year).
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+</a> Ref: <a href="https://https.cio.gov/hsts/
+">https://https.cio.gov/hsts/
+</a>
 
 <strong>[4. Empty HTTP Response Headers Values]
 </strong>
@@ -88,8 +90,10 @@
 </strong>
 <span class="header"> Cache-Control</span>: <a href=https://caniuse.com/?search=Cache-Control
 ">https://caniuse.com/?search=Cache-Control
-</a><span class="header"> Content-Security-Policy</span>: <a href=https://caniuse.com/?search=Content-Security-Policy
-">https://caniuse.com/?search=Content-Security-Policy
+</a><span class="header"> Content-Type</span>: <a href=https://caniuse.com/?search=Content-Type
+">https://caniuse.com/?search=Content-Type
+</a><span class="header"> Content-Security-Policy</span>: <a href=https://caniuse.com/?search=mdn-http_headers_csp_content-security-policy
+">https://caniuse.com/?search=mdn-http_headers_csp_content-security-policy
 </a><span class="header"> Cross-Origin-Opener-Policy</span>: <a href=https://caniuse.com/?search=Cross-Origin-Opener-Policy
 ">https://caniuse.com/?search=Cross-Origin-Opener-Policy
 </a><span class="header"> Pragma</span>: <a href=https://caniuse.com/?search=Pragma
@@ -104,7 +108,7 @@
 
 .:
 
- Analysis done in 0.47 seconds!.
+ Analysis done in 0.83 seconds!.
 
  Advice: check the deprecated headers/insecure and then the missing headers.
 
