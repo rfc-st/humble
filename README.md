@@ -4,6 +4,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/python-%3E=_3.6-green.svg"></a>
 <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest Release"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release"></a>
+<a target="_blank" href="https://snyk.io/test/github/rfc-st/humble"><img src="https://snyk.io/test/github/rfc-st/humble/badge.svg"></a>
 <br />
 <br />
 HTTP Headers Analyzer<br />
