@@ -5,8 +5,8 @@
 <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest Release"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release"></a>
 <a target="_blank" href="https://snyk.io/test/github/rfc-st/humble" title="Snyk Analysis"><img src="https://snyk.io/test/github/rfc-st/humble/badge.svg"></a>
-<a target="_blank" href="https://www.codacy.com/gh/rfc-st/humble/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rfc-st/humble&amp;utm_campaign=Badge_Grade" title="Codacy Analysis"><img src="https://app.codacy.com/project/badge/Grade/2a69fe20ad6a47c19f2d8f4fb05b1816"></a>
-<a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="OWASP Technical Resource"><img src=https://img.shields.io/badge/owasp-technical%20resource-brightgreen"></a>
+<a target="_blank" href="https://lgtm.com/projects/g/rfc-st/humble?mode=list" title="LGTM Analysis"><img src="https://img.shields.io/lgtm/grade/python/github/rfc-st/humble"></a>
+<a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="OWASP Technical Resource"><img src="https://img.shields.io/badge/owasp-technical%20resource-brightgreen"></a>
 <br />
 <br />
 HTTP Headers Analyzer<br />
