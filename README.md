@@ -4,7 +4,8 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/python-%3E=_3.6-green.svg"></a>
 <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest Release"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release"></a>
-<a target="_blank" href="https://snyk.io/test/github/rfc-st/humble"><img src="https://snyk.io/test/github/rfc-st/humble/badge.svg"></a>
+<a target="_blank" href="https://snyk.io/test/github/rfc-st/humble" title="Snyk Analysis"><img src="https://snyk.io/test/github/rfc-st/humble/badge.svg"></a>
+<a target="_blank" href="https://www.codacy.com/gh/rfc-st/humble/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rfc-st/humble&amp;utm_campaign=Badge_Grade" title="Codacy Analysis"><img src="https://app.codacy.com/project/badge/Grade/2a69fe20ad6a47c19f2d8f4fb05b1816"></a>
 <br />
 <br />
 HTTP Headers Analyzer<br />
