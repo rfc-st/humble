@@ -90,26 +90,25 @@ def analysis_time():
     print("")
     seconds = end - start
     print(" Analysis done in " + str(round(seconds, 2)) + " seconds!.")
-    print("")
+    analysis_detail()
 
 
 def advice():
     advice = " Advice: check the "
     if i_cnt > 0 and m_cnt > 0 and f_cnt > 0:
-        print(advice + "deprecated headers/insecure values, then the missing \
-headers and finally \
-those associated with fingerprint.")
+        print(advice + "deprecated/insecure headers, then the missing \
+ones and finally those associated with fingerprint.")
     elif i_cnt > 0 and m_cnt > 0:
-        print(advice + "deprecated headers/insecure and then the missing \
-headers.")
+        print(advice + "deprecated/insecure headers and then the missing \
+ones.")
     elif i_cnt > 0 and f_cnt > 0:
-        print(advice + "deprecated headers/insecure and those associated with \
+        print(advice + "deprecated/insecure headers and those associated with \
 fingerprint.")
     elif m_cnt > 0 and f_cnt > 0:
         print(advice + "missing headers and those associated with \
 fingerprint.")
     elif i_cnt > 0:
-        print(advice + "deprecated headers/insecure values.")
+        print(advice + "deprecated/insecure headers.")
     elif m_cnt > 0:
         print(advice + "missing headers.")
     elif f_cnt > 0:
@@ -217,6 +216,15 @@ def print_guides():
 def get_location():
     response = requests.get(f'https://ipapi.co/country_name/')
     return response
+
+
+def analysis_detail():
+    print(" ")
+    print("  ⇨ Missing headers:              " + str(m_cnt))
+    print("  ⇨ Fingerprint headers:          " + str(f_cnt))
+    print("  ⇨ Deprecated/Insecure headers:  " + str(i_cnt))
+    print("  ⇨ Empty headers:                " + str(e_cnt))
+    print("")
 
 
 def request_exceptions():
