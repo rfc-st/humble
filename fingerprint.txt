@@ -194,6 +194,8 @@ X-Using-Nginx-Controller
 X-Varnish
 X-Varnish-Cache
 X-Varnish-CC
+X-Vercel-Cache
+X-Vercel-ID
 X-Version
 X-Version-Id
 X-Wix-Renderer-Server
