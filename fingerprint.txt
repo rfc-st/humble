@@ -32,6 +32,7 @@ SW-Version-ID
 Swift-Performance
 Via
 WebDevSrc
+Weglot-Translated
 WP-Super-Cache
 WPO-Cache-Status
 X-Accel-Buffering
