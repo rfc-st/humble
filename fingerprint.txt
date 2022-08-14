@@ -16,6 +16,7 @@ OracleCommerceCloud-Version
 Oracle-Mobile-Runtime-Version
 Platform
 Powered-By
+Processed-By
 Product
 Server
 Servlet-Engine
