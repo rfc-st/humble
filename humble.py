@@ -220,10 +220,10 @@ def get_location():
 
 def analysis_detail():
     print(" ")
-    print("  ⇨ Missing headers:              " + str(m_cnt))
-    print("  ⇨ Fingerprint headers:          " + str(f_cnt))
-    print("  ⇨ Deprecated/Insecure headers:  " + str(i_cnt))
-    print("  ⇨ Empty headers:                " + str(e_cnt))
+    print("  Missing headers:              " + str(m_cnt))
+    print("  Fingerprint headers:          " + str(f_cnt))
+    print("  Deprecated/Insecure headers:  " + str(i_cnt))
+    print("  Empty headers:                " + str(e_cnt))
     print("")
 
 
