@@ -163,6 +163,7 @@ X-Redirect-Powered-By
 X-Rebelmouse-Cache-Control
 X-Rebelmouse-Surrogate-Control
 X-Rocket-Nginx-Bypass
+X-Rocket-Nginx-Serving-Static
 X-Sanity-Shard
 X-ServedBy
 X-Server
