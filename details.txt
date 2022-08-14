@@ -89,6 +89,10 @@
  The only valid value is 'nosniff'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
+[ictpd]
+ This header, or its values, may be duplicated.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+
 [ieta]
  Although unlikely to be exploited, this header should not include inode information.
  Ref: https://www.pentestpartners.com/security-blog/vulnerabilities-that-arent-etag-headers/
@@ -182,8 +186,8 @@
  Ref: https://docs.microsoft.com/en-us/lifecycle/products/internet-explorer-8
 
 [ixfo]
- The value ',' is invalid. Use only 'DENY', 'SAMEORIGIN' or 'ALLOW-FROM'.
- Better yet: replace this header with the "Content-Security-Policy" header.
+ This header, or its values, may be duplicated.
+ Better yet: replace its functionality with the "Content-Security-Policy" header.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
 [ixpad]

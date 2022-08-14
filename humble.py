@@ -731,7 +731,12 @@ if 'X-Content-Security-Policy' in headers:
     i_cnt += 1
 
 if 'X-Content-Type-Options' in headers:
-    if 'nosniff' not in headers['X-Content-Type-Options']:
+    if ',' in headers['X-Content-Type-Options']:
+        print_header("X-Content-Type-Options (Duplicated Values)")
+        if not args.brief:
+            print_detail("[ictpd]", "d")
+        i_cnt += 1
+    elif 'nosniff' not in headers['X-Content-Type-Options']:
         print_header("X-Content-Type-Options (Incorrect Value)")
         if not args.brief:
             print_detail("[ictp]", "d")
@@ -752,7 +757,7 @@ if 'X-Download-Options' in headers:
 
 if 'X-Frame-Options' in headers:
     if ',' in headers['X-Frame-Options']:
-        print_header("X-Frame-Options (Incorrect Value)")
+        print_header("X-Frame-Options (Duplicated Values)")
         if not args.brief:
             print_detail("[ixfo]", "m")
         i_cnt += 1
