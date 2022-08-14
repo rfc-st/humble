@@ -333,6 +333,16 @@ elif suffix[-2:] == "ua" or b'Ukraine' in country:
 else:
     print(spacing + 'Analyzing ' + domain + " ..." + spacing)
 
+# Regarding 'dh key too small' errors.
+# https://stackoverflow.com/a/41041028
+
+requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+try:
+    requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS \
+        += ':HIGH:!DH:!aNULL'
+except AttributeError:
+    pass
+
 # Exception handling
 
 request_exceptions()
