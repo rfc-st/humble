@@ -95,31 +95,6 @@ def analysis_time():
     analysis_detail()
 
 
-def advice():
-    advice = " Advice: check the "
-    if i_cnt > 0 and m_cnt > 0 and f_cnt > 0:
-        print(advice + "deprecated/insecure headers, the missing and the \
-fingerprint ones.")
-    elif i_cnt > 0 and m_cnt > 0:
-        print(advice + "deprecated/insecure headers and then the missing \
-ones.")
-    elif i_cnt > 0 and f_cnt > 0:
-        print(advice + "deprecated/insecure headers and those associated with \
-fingerprint.")
-    elif m_cnt > 0 and f_cnt > 0:
-        print(advice + "missing headers and those associated with \
-fingerprint.")
-    elif i_cnt > 0:
-        print(advice + "deprecated/insecure headers.")
-    elif m_cnt > 0:
-        print(advice + "missing headers.")
-    elif f_cnt > 0:
-        print(advice + "fingerprint headers.")
-    print("")
-    print(".:")
-    print("")
-
-
 def clean_output():
 
     # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
@@ -226,6 +201,8 @@ def analysis_detail():
     print("  Fingerprint headers:          " + str(f_cnt))
     print("  Deprecated/Insecure headers:  " + str(i_cnt))
     print("  Empty headers:                " + str(e_cnt))
+    print("")
+    print(".:")
     print("")
 
 
@@ -900,7 +877,6 @@ print("")
 print("")
 end = time.time()
 analysis_time()
-advice()
 
 # Export analysis
 
