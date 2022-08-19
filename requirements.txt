@@ -1,4 +1,4 @@
 colorama
-fpdf
+fpdf2
 requests
 tldextract

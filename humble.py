@@ -39,8 +39,8 @@
 # merit in teaching, learning and helping others than in taking shortcuts to
 # harm, attack or take advantage. Think about it!
 
-from fpdf import FPDF
 from datetime import datetime
+from fpdf import FPDF, HTMLMixin
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import os
@@ -61,19 +61,21 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/08/14, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/08/19, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
-class PDF(FPDF):
+class PDF(FPDF, HTMLMixin):
 
     # PDF Header & Footer
 
     def header(self):
-        self.set_font('Courier', 'B', size=10)
+        self.set_font('Courier', 'B', 10)
         self.set_y(15)
-        self.cell(0, 5, "Humble HTTP headers analyzer", 0, 2, 'C')
-        self.cell(0, 5, "(https://github.com/rfc-st/humble)", 0, 0, 'C')
+        self.cell(0, 5, "Humble HTTP headers analyzer", new_x="CENTER",
+                  new_y="NEXT", align='C')
+        self.ln(1)
+        self.cell(0, 5, "(https://github.com/rfc-st/humble)", align='C')
         if self.page_no() == 1:
             self.ln(9)
         else:
@@ -81,7 +83,7 @@ class PDF(FPDF):
 
     def footer(self):
         self.set_y(-15)
-        self.set_font('Arial', 'I', 8)
+        self.set_font('Helvetica', 'I', 8)
         self.cell(0, 10, 'Page ' + str(self.page_no()) + ' of {nb}', 0, 0, 'C')
 
 
@@ -96,8 +98,8 @@ def analysis_time():
 def advice():
     advice = " Advice: check the "
     if i_cnt > 0 and m_cnt > 0 and f_cnt > 0:
-        print(advice + "deprecated/insecure headers, then the missing \
-ones and finally those associated with fingerprint.")
+        print(advice + "deprecated/insecure headers, the missing and the \
+fingerprint ones.")
     elif i_cnt > 0 and m_cnt > 0:
         print(advice + "deprecated/insecure headers and then the missing \
 ones.")
@@ -922,8 +924,16 @@ elif args.output == 'pdf':
     pdf.set_font("Courier", size=9)
     f = open(name_e, "r")
     for x in f:
-        pdf.multi_cell(197, 5, txt=x, align='L')
-
+        if '[' in x:
+            pdf.set_font(style="B")
+        elif 'https://' in x:
+            x = str(pdf.write_html(x.replace(x[x.index("https://"):],
+                    '<a href=' + x[x.index("https://"):] + '">' +
+                x[x.index("https://"):-1] + '</a>')))
+            x = x.replace('None', "")
+        else:
+            pdf.set_font(style="")
+        pdf.multi_cell(197, 2.6, txt=x, align='L')
     name_p = name_e[:-5] + ".pdf"
     pdf.output(name_p)
     print_path(name_p)
