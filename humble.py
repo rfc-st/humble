@@ -901,6 +901,7 @@ elif args.output == 'pdf':
     f = open(name_e, "r")
     for x in f:
         if '[' in x:
+            pdf.start_section(x)
             pdf.set_font(style="B")
         elif 'https://' in x:
             x = str(pdf.write_html(x.replace(x[x.index("https://"):],
