@@ -100,6 +100,8 @@ X-Garden-Version
 X-Generated-By
 X-Generator
 X-Global-Transaction-ID
+X-Hiawatha-Cache
+X-Hiawatha-Cache-Remove 
 X-HS-Cache-Config
 X-HS-Cache-Control
 X-HS-CF-Cache-Status
@@ -181,6 +183,7 @@ X-Sorting-Hat-ShopId
 X-Spip-Cache
 X-Spdwp-Ngx
 X-Streams-Distribution
+X-Supported-By
 X-Supplied-By
 X-TEC-API-ORIGIN
 X-TEC-API-ROOT
