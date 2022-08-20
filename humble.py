@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/08/20, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/08/21, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -84,7 +84,7 @@ class PDF(FPDF, HTMLMixin):
     def footer(self):
         self.set_y(-15)
         self.set_font('Helvetica', 'I', 8)
-        self.cell(0, 10, 'Page ' + str(self.page_no()) + ' of {nb}', 0, 0, 'C')
+        self.cell(0, 10, 'Page ' + str(self.page_no()) + ' of {nb}', align='C')
 
 
 def analysis_time():
@@ -865,9 +865,6 @@ if any(elem.lower() in headers for elem in list_sec):
             elif args.output == 'txt':
                 print(" " + key + ": " + compat_site +
                       key.replace("Content-Security-Policy", csp_replace))
-            elif args.output == 'pdf':
-                print("  " + key + ": " + compat_site +
-                      key.replace("Content-Security-Policy", csp_replace))
             else:
                 print("  " + key + ": " + compat_site +
                       key.replace("Content-Security-Policy", csp_replace))
@@ -907,7 +904,7 @@ elif args.output == 'pdf':
     f = open(name_e, "r")
     for x in f:
         if '[' in x:
-            pdf.start_section(x)
+            pdf.start_section(x.replace('[', '').replace(']', ''))
             pdf.set_font(style="B")
         elif 'https://' in x:
             x = str(pdf.write_html(x.replace(x[x.index("https://"):],
