@@ -61,7 +61,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/08/19, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/08/20, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -845,6 +845,9 @@ print("")
 
 print_section("[5. Browser Compatibility for Enabled HTTP Security Headers]\n")
 
+compat_site = "https://caniuse.com/?search="
+csp_replace = "contentsecuritypolicy2"
+
 list_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
             'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
             'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy',
@@ -857,14 +860,17 @@ if any(elem.lower() in headers for elem in list_sec):
         if key in headers:
             if not args.output:
                 print(" " + Fore.CYAN + key + Fore.RESET + ": " +
-                      "https://caniuse.com/?search=" +
-                      key.replace("Content-Security-Policy",
-                                  "mdn-http_headers_csp_content-security-\
-policy"))
+                      compat_site +
+                      key.replace("Content-Security-Policy", csp_replace))
+            elif args.output == 'txt':
+                print(" " + key + ": " + compat_site +
+                      key.replace("Content-Security-Policy", csp_replace))
+            elif args.output == 'pdf':
+                print("  " + key + ": " + compat_site +
+                      key.replace("Content-Security-Policy", csp_replace))
             else:
-                print("  " + key + ": " + "https://caniuse.com/?search=" +
-                      key.replace("Content-Security-Policy", "mdn-http_headers\
-_csp_content-security-policy"))
+                print("  " + key + ": " + compat_site +
+                      key.replace("Content-Security-Policy", csp_replace))
 
 if not any(elem.lower() in headers for elem in list_miss):
     if not args.output:
@@ -910,7 +916,7 @@ elif args.output == 'pdf':
             x = x.replace('None', "")
         else:
             pdf.set_font(style="")
-        pdf.multi_cell(197, 2.6, txt=x, align='L')
+        pdf.multi_cell(0, 2.6, txt=x, align='L')
     name_p = name_e[:-5] + ".pdf"
     pdf.output(name_p)
     print_path(name_p)
