@@ -907,10 +907,10 @@ elif args.output == 'pdf':
             pdf.start_section(x.replace('[', '').replace(']', ''))
             pdf.set_font(style="B")
         elif 'https://' in x:
-            x = str(pdf.write_html(x.replace(x[x.index("https://"):],
-                    '<a href=' + x[x.index("https://"):] + '">' +
-                x[x.index("https://"):-1] + '</a>')))
-            x = x.replace('None', "")
+            x = (str(pdf.write_html(x.replace(x[x.index("https://"):-1],
+                     '<a href=' + x[x.index("https://"):] + '">' +
+                     x[x.index("https://"):-1] + '</a>'))))\
+                        .replace('None', "")
         else:
             pdf.set_font(style="")
         pdf.multi_cell(0, 2.6, txt=x, align='L')
