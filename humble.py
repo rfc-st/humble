@@ -862,7 +862,7 @@ if any(elem.lower() in headers for elem in list_sec):
                 print(" " + Fore.CYAN + key + Fore.RESET + ": " +
                       compat_site +
                       key.replace("Content-Security-Policy", csp_replace))
-            elif args.output == 'txt':
+            elif args.output != 'html':
                 print(" " + key + ": " + compat_site +
                       key.replace("Content-Security-Policy", csp_replace))
             else:
@@ -908,9 +908,8 @@ elif args.output == 'pdf':
             pdf.set_font(style="B")
         elif 'https://' in x:
             x = (str(pdf.write_html(x.replace(x[x.index("https://"):-1],
-                     '<a href=' + x[x.index("https://"):] + '">' +
-                     x[x.index("https://"):-1] + '</a>'))))\
-                        .replace('None', "")
+                 '<a href=' + x[x.index("https://"):] + '">' +
+                 x[x.index("https://"):-1] + '</a>')))).replace('None', "")
         else:
             pdf.set_font(style="")
         pdf.multi_cell(0, 2.6, txt=x, align='L')
