@@ -86,6 +86,22 @@ class PDF(FPDF, HTMLMixin):
         self.cell(0, 10, 'Page ' + str(self.page_no()) + ' of {nb}', align='C')
 
 
+def pdf_metadata():
+    title = "Humble HTTP headers analysis of " + domain
+    git_url = "https://github.com/rfc-st/humble" + " (v." + \
+              version.strip()[:10] + ")"
+    pdf.set_author(git_url)
+    pdf.set_creation_date = datetime.now(datetime.utcnow().astimezone().
+                                         tzinfo).isoformat()
+    pdf.set_creator(git_url)
+    pdf.set_keywords("HTTP Headers " "Analyzer " "Analysis " "Cybersecurity "
+                     "Security-scanner " "Security-Tools " "Header-Parser ")
+    pdf.set_lang("en-US")
+    pdf.set_subject("HTTP headers analysis")
+    pdf.set_title(title)
+    pdf.set_producer(git_url)
+
+
 def pdf_sections():
 
     list_secpos = ['[0', '[1', '[2', '[3', '[4', '[5']
@@ -904,9 +920,7 @@ elif args.output == 'pdf':
     f.close()
     pdf = PDF()
     pdf.alias_nb_pages()
-    title = "Humble HTTP headers analysis of " + domain
-    pdf.set_title(title)
-    pdf.set_author("humble (https://github.com/rfc-st/humble)")
+    pdf_metadata()
     pdf.set_display_mode(zoom='real')
     pdf.add_page()
 
