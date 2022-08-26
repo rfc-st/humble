@@ -137,6 +137,7 @@ X-Magnolia-Registration
 X-Magento-Cache-Debug
 X-Mod-Pagespeed
 X-MS-InvokeApp
+X-MS-Version
 X-Nextjs-Cache
 X-Nginx-Cache
 X-Nginx-Cache-Status
