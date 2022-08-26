@@ -32,7 +32,6 @@
 # Add more checks (missing, fingerprint, insecure)
 # Add analysis rating (*at the beginning of the output* .... tricky, tricky)
 # Show the application related to each fingerprint header
-# Improve PDF output through fpdf2 library.
 
 # ADVICE:
 # Use the information provided by this program *wisely*: there is far more
@@ -61,7 +60,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/08/21, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/08/26, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -85,6 +84,19 @@ class PDF(FPDF, HTMLMixin):
         self.set_y(-15)
         self.set_font('Helvetica', 'I', 8)
         self.cell(0, 10, 'Page ' + str(self.page_no()) + ' of {nb}', align='C')
+
+
+def pdf_sections():
+
+    list_secpos = ['[0', '[1', '[2', '[3', '[4', '[5']
+    list_sectxt = ['0.- Analysis Info', '1.- Missing Headers',
+                   '2.- Fingerprint Headers',
+                   '3.- Deprecated/Insecure Headers', '4.- Empty Headers',
+                   '5.- Browser Compatibility']
+
+    for i in range(len(list_secpos)):
+        if x.startswith(list_secpos[i]):
+            pdf.start_section(list_sectxt[i])
 
 
 def analysis_time():
@@ -904,12 +916,13 @@ elif args.output == 'pdf':
     f = open(name_e, "r")
     for x in f:
         if '[' in x:
-            pdf.start_section(x.replace('[', '').replace(']', ''))
-            pdf.set_font(style="B")
-        elif 'https://' in x:
-            x = (str(pdf.write_html(x.replace(x[x.index("https://"):-1],
+            pdf_sections()
+        if 'https://' in x:
+            x = (str(pdf.write_html(x.replace(x[x.index("https://"):],
                  '<a href=' + x[x.index("https://"):] + '">' +
                  x[x.index("https://"):-1] + '</a>')))).replace('None', "")
+        if '[' in x:
+            pdf.set_font(style="B")
         else:
             pdf.set_font(style="")
         pdf.multi_cell(0, 2.6, txt=x, align='L')

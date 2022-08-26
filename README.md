@@ -176,7 +176,6 @@ Any HTTP response header.
 - [ ] Add more header/value checks (only security-oriented)
 - [ ] Add analysis rating
 - [ ] Show the application related to each fingerprint header
-- [ ] Improve PDF output through fpdf2 library
 
 ## Further reading
 
