@@ -952,7 +952,7 @@ elif args.output == 'html':
     # HTML Template
 
     title = "HTTP headers analysis"
-    header = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>\
+    header = '<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8"/>\
 <title>' + title + '</title><style>pre {overflow-x: auto;\
 white-space: pre-wrap;white-space: -moz-pre-wrap;\
 white-space: -pre-wrap;white-space: -o-pre-wrap;\
@@ -998,8 +998,8 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                                     '<span class="header">' +
                                     line[0: line.index(": ")] + '</span>')
                 line = line.replace(line[line.index("https"):],
-                                    '<a href=' +
-                                    line[line.index("https"):] + '">' +
+                                    '''<a href="''' +
+                                    line[line.index("https"):] + '''">''' +
                                     line[line.index("https"):] + '</a>')
                 output.write(line)
             else:

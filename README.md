@@ -42,7 +42,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: 39 checks of deprecated HTTP response headers/protocols or with values considered insecure.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
-:heavy_check_mark: Export of analysis to HTML, PDF (1.4) and TXT.<br />
+:heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
 :heavy_check_mark: <a href="http://pep8online.com/" target="_blank">PEP8</a> compliant code.<br />
 :heavy_check_mark: Tested, one by one, on hundreds of URLs.<br />
