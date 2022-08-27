@@ -60,7 +60,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/08/26, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/08/27, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -110,9 +110,9 @@ def pdf_sections():
                    '3.- Deprecated/Insecure Headers', '4.- Empty Headers',
                    '5.- Browser Compatibility']
 
-    for i in range(len(list_secpos)):
-        if x.startswith(list_secpos[i]):
-            pdf.start_section(list_sectxt[i])
+    for index, element in enumerate(list_secpos):
+        if x.startswith(element):
+            pdf.start_section(list_sectxt[index])
 
 
 def analysis_time():
