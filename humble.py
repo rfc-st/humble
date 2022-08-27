@@ -528,7 +528,6 @@ if 'Access-Control-Allow-Origin' in headers:
             if not args.brief:
                 print_detail("[iaccess]", "d")
             i_cnt += 1
-    i_cnt += 1
 
 if 'Allow' in headers:
     if any(elem.lower() in headers["Allow"].lower() for elem in list_methods):
