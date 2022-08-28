@@ -60,7 +60,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/08/27, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/08/28, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -398,13 +398,12 @@ print_section("[1. Missing HTTP Security Headers]\n")
 list_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
              'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
              'Cross-Origin-Resource-Policy', 'Content-Security-Policy',
-             'Expect-CT', 'NEL', 'Permissions-Policy', 'Pragma',
-             'Referrer-Policy', 'Strict-Transport-Security',
-             'X-Content-Type-Options']
+             'NEL', 'Permissions-Policy', 'Pragma', 'Referrer-Policy',
+             'Strict-Transport-Security', 'X-Content-Type-Options']
 
 list_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
-               '[mcsp]', '[mexpect]', '[mnel]', '[mpermission]', '[mpragma]',
-               '[mreferrer]', '[msts]', '[mxcto]', '[mxfo]']
+               '[mcsp]', '[mnel]', '[mpermission]', '[mpragma]', '[mreferrer]',
+               '[msts]', '[mxcto]', '[mxfo]']
 
 if any(elem.lower() in headers for elem in list_miss):
     for key in list_miss:
@@ -610,8 +609,8 @@ if 'Etag' in headers:
         print_detail("[ieta]", "d")
     i_cnt += 1
 
-if (domain[0:5] == 'http:') and ('Expect-CT' in headers):
-    print_header("Expect-CT (Header via Unsafe Scheme)")
+if 'Expect-CT' in headers:
+    print_header("Expect-CT (Deprecated Header)")
     if not args.brief:
         print_detail("[iexct]", "d")
     i_cnt += 1
@@ -679,12 +678,6 @@ if 'Public-Key-Pins' in headers:
     print_header("Public-Key-Pins (Deprecated Header)")
     if not args.brief:
         print_detail("[ipkp]", "d")
-    i_cnt += 1
-
-if (domain[0:5] == 'http:') and ('Public-Key-Pins' in headers):
-    print_header("Public-Key-Pins (Header via Unsafe Scheme)")
-    if not args.brief:
-        print_detail("[ipkph]", "d")
     i_cnt += 1
 
 if 'Referrer-Policy' in headers:
@@ -878,9 +871,9 @@ csp_replace = "contentsecuritypolicy2"
 list_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
             'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
             'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy',
-            'Expect-CT', 'NEL', 'Permissions-Policy', 'Pragma',
-            'Referrer-Policy', 'Strict-Transport-Security',
-            'X-Content-Type-Options', 'X-Frame-Options']
+            'NEL', 'Permissions-Policy', 'Pragma', 'Referrer-Policy',
+            'Strict-Transport-Security', 'X-Content-Type-Options',
+            'X-Frame-Options']
 
 if any(elem.lower() in headers for elem in list_sec):
     for key in list_sec:

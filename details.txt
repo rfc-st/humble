@@ -26,10 +26,6 @@
 [mcsp]
  Detect and mitigate Cross Site Scripting (XSS) and data injection attacks, among others.
  Ref: https://content-security-policy.com/
- 
-[mexpect]
- Prevents the use of misissued certificates from going unnoticed.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
 [mpermission]
  Previously called "Feature-Policy", allow and deny the use of browser features.
@@ -122,8 +118,8 @@
  Ref: https://appcheck-ng.com/http-verbs-security-risks/
 
 [ipkp]
- This header was deprecated in favor of Certificate Transparency and "Expect-CT" header.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Public-Key-Pins
+ This header is deprecated.
+ Ref: https://scotthelme.co.uk/hpkp-is-no-more/
 
 [iref]
  Use 'strict-origin' or 'strict-origin-when-cross-origin' if there are sensitive resources.
@@ -152,8 +148,8 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
 
 [iexct]
- This header is ignored by the browser when accessing via HTTP.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
+ This header is deprecated.
+ Ref: https://chromestatus.com/feature/6244547273687040
 
 [ipkph]
  This header must be returned only in HTTPS connections.

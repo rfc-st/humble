@@ -8,14 +8,13 @@ Content-Security-Policy: Deprecated Directives
 Content-Security-Policy: Incorrect values
 Content-Security-Policy: Insecure Schemes
 Etag: Potentially Unsafe Header
-Expect-CT: Header via Unsafe Scheme
+Expect-CT: Deprecated Header
 Feature-Policy: Deprecated Header
 HTTP: Domain Via Unsafe Scheme
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value
 Permissions-Policy: Incorrect Values
 Public-Key-Pins: Deprecated Header
-Public-Key-Pins: Header via Unsafe Scheme
 Referrer-Policy: Recommended Values
 Referrer-Policy: Unsafe Value
 Server-Timing: Potentially Unsafe Header
