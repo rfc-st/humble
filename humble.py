@@ -60,7 +60,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/08/28, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/09/02, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -719,6 +719,11 @@ if ('Strict-Transport-Security' in headers) and (domain[0:5] != 'http:'):
         print_header("Strict-Transport-Security (Recommended Values)")
         if not args.brief:
             print_detail("[ists]", "m")
+        i_cnt += 1
+    if ',' in headers['Strict-Transport-Security']:
+        print_header("Strict-Transport-Security (Duplicated Values)")
+        if not args.brief:
+            print_detail("[istsd]", "d")
         i_cnt += 1
 
 if (domain[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
