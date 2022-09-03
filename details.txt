@@ -1,3 +1,10 @@
+[python]
+ This tool requires, at least, Python 3.6.
+ Ref: https://github.com/rfc-st/humble#installation--update
+
+[ok]
+ Nothing to report, all seems OK!
+
 [mcache]
  Directives for caching in both requests and responses.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control

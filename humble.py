@@ -51,10 +51,6 @@ import tldextract
 
 start = time.time()
 
-if sys.version_info < (3, 6):
-    print("\nError: this tool requires, at least, Python 3.6.\n")
-    sys.exit()
-
 if platform.system() == 'Windows':
     spacing = '\n'
 else:
@@ -148,10 +144,8 @@ def print_section(title):
 
 
 def print_ok():
-    if not args.output:
-        print(Fore.GREEN + ' Nothing to report, all seems OK!')
-    else:
-        print(' Nothing to report, all seems OK!')
+    print("")
+    print_detail('[ok]', 'a')
 
 
 def print_header(header):
@@ -206,11 +200,18 @@ def print_detail(id, mode):
                     print(next(rf), end='')
                     print(next(rf))
                 elif mode == 'a':
-                    print(next(rf))
+                    print(next(rf), end='')
                 elif mode == 'm':
                     print(next(rf), end='')
                     print(next(rf), end='')
                     print(next(rf))
+
+
+def python_ver():
+    if sys.version_info < (3, 6):
+        print("")
+        print_detail('[python]', 'd')
+        sys.exit()
 
 
 def print_guides():
@@ -325,6 +326,8 @@ parser._action_groups.append(optional)
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 domain = args.domain
+
+python_ver()
 
 # Show guides
 

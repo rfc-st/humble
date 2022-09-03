@@ -1,3 +1,10 @@
+[python]
+ Este programa requiere, como mínimo, Python 3.6.
+ Ref: https://github.com/rfc-st/humble#installation--update
+
+[ok]
+ Nada que reportar, todo parece bien.
+
 [mcache]
  Directivas para el cacheo de peticiones y respuestas.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control

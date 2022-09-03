@@ -43,7 +43,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
-:heavy_check_mark: Results of the analysis in English and Spanish (Work In Progress).<br />
+:heavy_check_mark: i18n: analysis results in English or Spanish (Work In Progress).<br />
 :heavy_check_mark: <a href="http://pep8online.com/" target="_blank">PEP8</a> compliant code.<br />
 :heavy_check_mark: Tested, one by one, on hundreds of URLs.<br />
 :heavy_check_mark: Fully working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
