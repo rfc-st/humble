@@ -43,7 +43,6 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
-:heavy_check_mark: Results of the analysis in English and Spanish (Work In Progress).<br />
 :heavy_check_mark: <a href="http://pep8online.com/" target="_blank">PEP8</a> compliant code.<br />
 :heavy_check_mark: Tested, one by one, on hundreds of URLs.<br />
 :heavy_check_mark: Fully working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
@@ -120,7 +119,7 @@ https://github.com/rfc-st/humble/releases
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
-usage: humble.py [-h] [-d DOMAIN] [-r] [-b] [-o {html,pdf,txt}] [-l {es}] [-g] [-v]
+usage: humble.py [-h] [-d DOMAIN] [-r] [-b] [-o {html,pdf,txt}] [-g] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
@@ -130,7 +129,6 @@ options:
   -r                 show HTTP response headers and full analysis (with references and details)
   -b                 show brief analysis (without references or details)
   -o {html,pdf,txt}  save analysis to file (domain_yyyymmdd.ext)
-  -l {es}            Displays the analysis in the indicated language; if omitted, English will be used
   -g                 show guidelines on securing most used web servers/services
   -v, --version      show version
 ```
