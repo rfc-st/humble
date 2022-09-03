@@ -194,7 +194,11 @@ def print_headers():
 
 
 def print_detail(id, mode):
-    with open('details.txt') as rf:
+    if args.language == 'es':
+        details_file = 'details_es.txt'
+    else:
+        details_file = 'details.txt'
+    with open(details_file) as rf:
         for line in rf:
             line = line.strip()
             if line.startswith(id):
@@ -308,6 +312,9 @@ optional.add_argument("-b", dest='brief', action="store_true", required=False,
                           details)")
 optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
                       help="save analysis to file (domain_yyyymmdd.ext)")
+optional.add_argument("-l", dest='language', choices=['es'],
+                      help="Displays the analysis in the indicated language; \
+                        if omitted, English will be used")
 optional.add_argument("-g", dest='guides', action="store_true", required=False,
                       help="show guidelines on securing most used web servers/\
 services")
