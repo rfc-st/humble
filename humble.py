@@ -933,7 +933,7 @@ elif args.output == 'pdf':
     for x in f:
         if '[' in x:
             pdf_sections()
-        if 'https://' in x:
+        if 'https://' in x and 'content-security' not in x:
             x = (str(pdf.write_html(x.replace(x[x.index("https://"):],
                  '<a href=' + x[x.index("https://"):] + '">' +
                  x[x.index("https://"):-1] + '</a>')))).replace('None', "")
@@ -941,7 +941,7 @@ elif args.output == 'pdf':
             pdf.set_font(style="B")
         else:
             pdf.set_font(style="")
-        pdf.multi_cell(0, 2.6, txt=x, align='L')
+        pdf.multi_cell(197, 2.6, txt=x, align='L')
     name_p = name_e[:-5] + ".pdf"
     pdf.output(name_p)
     print_path(name_p)
