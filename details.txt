@@ -211,6 +211,10 @@
  To mitigate XSS attacks, restrictively enable the "Content-Security-Policy" header.
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
+[ixxpd]
+ This header, or its values, may be duplicated.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+
 [aemp]
  The following headers have no value (could be equivalent to as if they were not enabled):
 

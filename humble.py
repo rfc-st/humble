@@ -60,7 +60,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/09/02, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/09/03, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -828,6 +828,11 @@ if 'X-XSS-Protection' in headers:
         print_header("X-XSS-Protection (Unsafe Value)")
         if not args.brief:
             print_detail("[ixxp]", "d")
+        i_cnt += 1
+    if ',' in headers['X-XSS-Protection']:
+        print_header("X-XSS-Protection (Duplicated Values)")
+        if not args.brief:
+            print_detail("[ixxpd]", "d")
         i_cnt += 1
 
 if args.brief and i_cnt != 0:

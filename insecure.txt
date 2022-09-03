@@ -37,3 +37,4 @@ X-Robots-Tag: Unsafe Value
 X-Runtime: Unsafe Value
 X-Webkit-CSP: Deprecated Header
 X-XSS-Protection: Unsafe Value
+X-XSS-Protection: Duplicated Values
