@@ -1,3 +1,9 @@
+[info]
+ Date:
+
+[url]
+ URL: 
+
 [python]
  This tool requires, at least, Python 3.6.
  Ref: https://github.com/rfc-st/humble#installation--update

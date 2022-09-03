@@ -172,8 +172,11 @@ def print_summary():
         print(" Humble HTTP headers analyzer" + "\n" +
               " (https://github.com/rfc-st/humble)")
     print_section(spacing + spacing + "[0. Info]\n")
-    print(" Date   :", now)
-    print(" Domain : " + domain)
+    print_detail('[info]', 'a')
+    print("  " + now)
+    print("")
+    print_detail('[url]', 'a')
+    print("  " + domain)
 
 
 def print_headers():
