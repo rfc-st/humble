@@ -144,7 +144,6 @@ def print_section(title):
 
 
 def print_ok():
-    print("")
     print_detail('[ok]', 'a')
 
 
@@ -204,6 +203,7 @@ def print_detail(id, mode):
                     print(next(rf))
                 elif mode == 'a':
                     print(next(rf), end='')
+                    print("")
                 elif mode == 'm':
                     print(next(rf), end='')
                     print(next(rf), end='')
@@ -455,7 +455,6 @@ if args.brief and m_cnt != 0:
 
 if m_cnt == 0:
     print_ok()
-    print("")
 
 print("")
 
@@ -877,7 +876,6 @@ if args.brief and e_cnt != 0:
 
 if e_cnt == 0:
     print_ok()
-    print("")
 
 print("")
 
