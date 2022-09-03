@@ -127,6 +127,8 @@ def clean_output():
     sys.stdout.write('\x1b[2K')
     sys.stdout.write('\x1b[1A')
     sys.stdout.write('\x1b[2K')
+    sys.stdout.write('\x1b[1A')
+    sys.stdout.write('\x1b[2K')
 
 
 def print_path(filename):
@@ -349,9 +351,12 @@ if suffix[-2:] == "ru" or b'Russia' in country:
     print_detail("[bcnt]", "d")
     sys.exit()
 elif suffix[-2:] == "ua" or b'Ukraine' in country:
-    print(spacing + '(Slava Ukraini!). Analyzing ' + domain + " ..." + spacing)
+    print_detail('[analysis_ua]', 'a')
+    print("  " + domain)
 else:
-    print(spacing + 'Analyzing ' + domain + " ..." + spacing)
+    print("")
+    print_detail('[analysis]', 'a')
+    print("  " + domain)
 
 # Regarding 'dh key too small' errors.
 # https://stackoverflow.com/a/41041028
