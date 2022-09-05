@@ -56,7 +56,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/09/03, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/09/05, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -83,7 +83,7 @@ class PDF(FPDF, HTMLMixin):
 
 
 def pdf_metadata():
-    title = "Humble HTTP headers analysis of " + domain
+    title = "Humble HTTP headers analysis of " + URL
     git_url = "https://github.com/rfc-st/humble" + " (v." + \
               version.strip()[:10] + ")"
     pdf.set_author(git_url)
@@ -160,6 +160,7 @@ def print_summary():
     now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     if not args.output:
         clean_output()
+        print("")
         banner = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
  | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
@@ -173,11 +174,9 @@ def print_summary():
         print(" Humble HTTP headers analyzer" + "\n" +
               " (https://github.com/rfc-st/humble)")
     print_section(spacing + spacing + "[0. Info]\n")
-    print_detail('[info]', 'a')
-    print("  " + now)
-    print("")
-    print_detail('[url]', 'a')
-    print("  " + domain)
+    print_detail('[info]', 'l')
+    print(" " + now)
+    print(' URL  : ' + URL)
 
 
 def print_headers():
@@ -206,6 +205,8 @@ def print_detail(id, mode):
                 elif mode == 'a':
                     print(next(rf), end='')
                     print("")
+                elif mode == 'l':
+                    print(next(rf).replace('\n', ''), end='')
                 elif mode == 'm':
                     print(next(rf), end='')
                     print(next(rf), end='')
@@ -246,7 +247,7 @@ def analysis_detail():
 
 def request_exceptions():
     try:
-        r = requests.get(domain, timeout=6)
+        r = requests.get(URL, timeout=6)
         r.raise_for_status()
     except (requests.exceptions.MissingSchema,
             requests.exceptions.InvalidSchema):
@@ -256,14 +257,14 @@ def request_exceptions():
         raise SystemExit
     except requests.exceptions.InvalidURL:
         clean_output()
-        print("Domain Error: '" + domain + "' is not valid.\n\n\
+        print("URL Error: '" + URL + "' is not valid.\n\n\
 (Check syntax and try again)")
         raise SystemExit
     except requests.exceptions.HTTPError:
         httpcode = str(r.status_code)
         if r.status_code == 403:
             clean_output()
-            print(httpcode + " Error: Forbidden access to '" + domain +
+            print(httpcode + " Error: Forbidden access to '" + URL +
                   "'\n\nPerhaps caused by a WAF or IP block due to GDPR." +
                   "\n\n(Or the server considers that this humble request is\
  not as polite as it should be. It is, seriously! :).\n\
@@ -272,11 +273,11 @@ Ref: https://github.com/rfc-st/humble/issues/2")
         elif r.status_code == 407:
             clean_output()
             print(httpcode + " Error: Proxy authentication required to access\
-'" + domain + "'\n\n(Not supported yet by 'humble')")
+'" + URL + "'\n\n(Not supported yet by 'humble')")
             raise SystemExit
         elif str(r.status_code).startswith("5"):
             clean_output()
-            print(httpcode + " Error: Server error requesting '" + domain +
+            print(httpcode + " Error: Server error requesting '" + URL +
                   "'\n\n(Wait a while and try again)")
             raise SystemExit
 
@@ -286,12 +287,12 @@ Ref: https://github.com/rfc-st/humble/issues/2")
         pass
     except requests.exceptions.ConnectionError:
         clean_output()
-        print("404 Error: '" + domain + "' not found.\n\n(Check syntax and try\
+        print("404 Error: '" + URL + "' not found.\n\n(Check syntax and try\
  again)")
         raise SystemExit
     except requests.exceptions.Timeout:
         clean_output()
-        print("Timeout Error: '" + domain + "' is taking too long to respond.\
+        print("Timeout Error: '" + URL + "' is taking too long to respond.\
 \n\n(Wait a while and try again)")
         raise SystemExit
     except requests.exceptions.RequestException as err:
@@ -307,8 +308,8 @@ parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
 https://github.com/rfc-st/humble")
 optional = parser._action_groups.pop()
 required = parser.add_argument_group('required arguments')
-optional.add_argument('-d', type=str, dest='domain', required=False,
-                      help="domain to analyze, including schema. \
+optional.add_argument('-u', type=str, dest='URL', required=False,
+                      help="URL to analyze, including schema. \
                       E.g., https://google.com")
 optional.add_argument("-r", dest='retrieved', action="store_true",
                       required=False, help="show HTTP response headers and \
@@ -317,7 +318,7 @@ optional.add_argument("-b", dest='brief', action="store_true", required=False,
                       help="show brief analysis (without references or \
                           details)")
 optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
-                      help="save analysis to file (domain_yyyymmdd.ext)")
+                      help="save analysis to file (URL_yyyymmdd.ext)")
 optional.add_argument("-l", dest='language', choices=['es'],
                       help="Displays the analysis in the indicated language; \
                         if omitted, English will be used")
@@ -330,7 +331,7 @@ parser._action_groups.append(optional)
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
-domain = args.domain
+URL = args.URL
 
 python_ver()
 
@@ -343,7 +344,7 @@ if args.guides:
 # Peace
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
-suffix = tldextract.extract(domain).suffix
+suffix = tldextract.extract(URL).suffix
 country = get_location()
 
 if suffix[-2:] == "ru" or b'Russia' in country:
@@ -352,11 +353,9 @@ if suffix[-2:] == "ru" or b'Russia' in country:
     sys.exit()
 elif suffix[-2:] == "ua" or b'Ukraine' in country:
     print_detail('[analysis_ua]', 'a')
-    print("  " + domain)
 else:
     print("")
     print_detail('[analysis]', 'a')
-    print("  " + domain)
 
 # Regarding 'dh key too small' errors.
 # https://stackoverflow.com/a/41041028
@@ -381,7 +380,7 @@ c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; \
 # could be useful with self-signed certificates, development environments ...
 
 requests.packages.urllib3.disable_warnings()
-r = requests.get(domain, verify=False, headers=c_headers, timeout=60)
+r = requests.get(URL, verify=False, headers=c_headers, timeout=60)
 
 headers = r.headers
 infix = "_headers_"
@@ -390,7 +389,7 @@ infix = "_headers_"
 
 if args.output is not None:
     orig_stdout = sys.stdout
-    name_s = tldextract.extract(domain)
+    name_s = tldextract.extract(URL)
     name_e = name_s.domain + infix + datetime.now().strftime("%Y%m%d")\
         + ".txt"
     if args.output == 'pdf' or args.output == 'html':
@@ -399,7 +398,7 @@ if args.output is not None:
     f = open(name_e, 'w')
     sys.stdout = f
 
-# Date and domain
+# Date and URL
 
 print_summary()
 
@@ -497,7 +496,6 @@ if args.brief and f_cnt != 0:
 
 if f_cnt == 0:
     print_ok()
-    print("")
 
 print("")
 
@@ -614,7 +612,7 @@ Headers/Content-Security-Policy")
                 print_detail("[icsn]", "d")
             i_cnt += 1
     if ('http:' in headers['Content-Security-Policy']) and \
-            (domain[0:5] == 'https'):
+            (URL[0:5] == 'https'):
         print_header("Content-Security-Policy (Insecure Schemes)")
         if not args.brief:
             print_detail("[icsh]", "m")
@@ -638,8 +636,8 @@ if 'Feature-Policy' in headers:
         print_detail("[iffea]", "d")
     i_cnt += 1
 
-if domain[0:5] == 'http:':
-    print_header("HTTP (Domain Via Unsafe Scheme)")
+if URL[0:5] == 'http:':
+    print_header("HTTP (URL Via Unsafe Scheme)")
     if not args.brief:
         print_detail("[ihttp]", "d")
     i_cnt += 1
@@ -727,7 +725,7 @@ if 'Set-Cookie' in headers:
             print_detail("[iset]", "d")
         i_cnt += 1
 
-if ('Strict-Transport-Security' in headers) and (domain[0:5] != 'http:'):
+if ('Strict-Transport-Security' in headers) and (URL[0:5] != 'http:'):
     list_sts = ['includeSubDomains', 'max-age']
     age = int(''.join([n for n in headers["Strict-Transport-Security"] if
               n.isdigit()]))
@@ -743,7 +741,7 @@ if ('Strict-Transport-Security' in headers) and (domain[0:5] != 'http:'):
             print_detail("[istsd]", "d")
         i_cnt += 1
 
-if (domain[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
+if (URL[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
     print_header("Strict-Transport-Security (Ignored Header)")
     if not args.brief:
         print_detail("[ihsts]", "d")
@@ -756,7 +754,7 @@ if 'Timing-Allow-Origin' in headers:
             print_detail("[itao]", "d")
         i_cnt += 1
 
-if (domain[0:5] == 'http:') and ('WWW-Authenticate' in headers) and\
+if (URL[0:5] == 'http:') and ('WWW-Authenticate' in headers) and\
    ('Basic' in headers['WWW-Authenticate']):
     print_header("WWW-Authenticate (Unsafe Value)")
     if not args.brief:
@@ -998,9 +996,9 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
             if 'rfc-st' in line:
                 output.write(line[:2] + '<a href="' + line[2:-2] + '">' +
                              line[2:] + '</a>')
-            elif 'Domain:' in line:
-                output.write(line[:9] + '<a href="' + line[9:] + '">' +
-                             line[9:] + '</a>')
+            elif ' URL  : ' in line:
+                output.write(line[:6] + '<a href="' + line[6:] + '">' +
+                             line[6:] + '</a>')
             elif line.startswith("["):
                 output.write('<strong>' + line + '</strong>')
             elif ' Nothing to ' in line:

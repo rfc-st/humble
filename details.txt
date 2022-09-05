@@ -1,14 +1,11 @@
 [analysis_ua]
- (Slava Ukraini!). Analyzing:
+ (Slava Ukraini!). Analyzing URL, Please wait ...
 
 [analysis]
- Analyzing:
+ Analyzing URL, Please wait ...
 
 [info]
- Date:
-
-[url]
- URL: 
+ Date :
 
 [python]
  This tool requires, at least, Python 3.6.

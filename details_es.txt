@@ -1,14 +1,11 @@
 [analysis_ua]
- (Slava Ukraini!). Analizando:
+ (Slava Ukraini!). Analizando URL, por favor espere ...
 
 [analysis]
- Analizando:
+ Analizando URL, por favor espere ...
 
 [info]
  Fecha:
-
-[url]
- URL: 
 
 [python]
  Este programa requiere, como mínimo, Python 3.6.
