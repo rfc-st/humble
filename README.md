@@ -120,16 +120,16 @@ https://github.com/rfc-st/humble/releases
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
-usage: humble.py [-h] [-d DOMAIN] [-r] [-b] [-o {html,pdf,txt}] [-l {es}] [-g] [-v]
+usage: humble.py [-h] [-u URL] [-r] [-b] [-o {html,pdf,txt}] [-l {es}] [-g] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 options:
   -h, --help         show this help message and exit
-  -d DOMAIN          domain to analyze, including schema. E.g., https://google.com
+  -u URL             URL to analyze, including schema. E.g., https://google.com
   -r                 show HTTP response headers and full analysis (with references and details)
   -b                 show brief analysis (without references or details)
-  -o {html,pdf,txt}  save analysis to file (domain_yyyymmdd.ext)
+  -o {html,pdf,txt}  save analysis to file (URL_yyyymmdd.ext)
   -l {es}            Displays the analysis in the indicated language; if omitted, English will be used
   -g                 show guidelines on securing most used web servers/services
   -v, --version      show version
