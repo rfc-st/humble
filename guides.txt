@@ -1,6 +1,3 @@
-
-Articles that may be useful to secure servers/services and enable security HTTP headers:
-
 [Amazon AWS]
 
 https://medium.com/faun/hardening-the-http-security-headers-with-aws-lambda-edge-and-cloudfront-2e2da1ae4d83

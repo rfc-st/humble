@@ -1,3 +1,6 @@
+[guides]
+Articles that may be useful to secure servers/services and enable security HTTP headers:
+
 [e_schema]
  Error: No "http" or "https" schema supplied. Check syntax and try again.
 

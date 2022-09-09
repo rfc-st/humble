@@ -229,6 +229,8 @@ def python_ver():
 
 
 def print_guides():
+    print("")
+    print_detail('[guides]', 'a')
     with open('guides.txt', 'r') as gd:
         for line in gd:
             if line.startswith('['):

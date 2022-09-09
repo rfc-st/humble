@@ -1,3 +1,6 @@
+[guides]
+Referencias que pueden ser utilidad para securizar servidores y habilitar cabeceras HTTP:
+
 [e_schema]
  Error: Incluye el esquema "http" o "https" en la URL a analizar.
 
