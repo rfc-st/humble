@@ -67,7 +67,7 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="Brief analysis + retrieved headers" width=70% height=70%>
 </p>
 <br />
-.: Full report (Linux)<br />
+.: Full report (Linux). Analysis in Spanish.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="Full analysis" width=70% height=70%>
