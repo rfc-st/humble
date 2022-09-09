@@ -2,7 +2,7 @@
  Informe guardado en 
 
 [0section]
-[0. Información]
+[0. Datos]
 
 [0headers]
 [Cabeceras de respuesta HTTP]
@@ -17,7 +17,7 @@
 [3. Protocolos/Cabeceras de respuesta HTTP deprecadas o con valores inseguros]
 
 [4empty]
-[4. Cabeceras de respuesta HTTP vacías]
+[4. Cabeceras de respuesta HTTP sin valor]
 
 [5compat]
 [5. Compatibilidad de navegadores con cabeceras HTTP de respuesta]
@@ -32,7 +32,7 @@
  Fecha:
 
 [python]
- Este programa requiere, como mínimo, Python 3.6.
+ Este programa requiere, al menos, Python 3.6.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [ok]
@@ -167,7 +167,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 
 [irefi]
- 'unsafe-url' filtra datos potencialmente privados de las URLs HTTPS a orígenes inseguros.
+ 'unsafe-url' filtra datos potencialmente privados de las URLs HTTPS a fuentes inseguras.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 
 [iset]
@@ -188,7 +188,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [ihbas]
- La autentificación "Basic", mediante HTTP, transmite los credenciales en base64, sin encriptarlos.
+ El valor "Basic", mediante HTTP, transmite los credenciales en base64, sin encriptarlos.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
 
 [iexct]
@@ -240,7 +240,7 @@
 
 [ixrob]
  El valor 'all' permite que se indexe, y sirva, todo el contenido del sitio web.
- Puede suponer un riesgo de seguridad, al indexar información sensible.
+ Puede suponer un riesgo de seguridad, al indexar datos sensibles.
  Ref: https://semoladigital.com/robots-meta-tag-xrobots-tag-data-nosnippet-everything-you-need-to-know/
 
 [ixrun]
@@ -278,7 +278,7 @@
   Protocolos/Cabeceras deprecadas o inseguras:  
 
 [empty_cnt]
-  Cabeceras vacías:                             
+  Cabeceras sin valor:                          
 
 [analysis_time]
 Analisis realizado en 
