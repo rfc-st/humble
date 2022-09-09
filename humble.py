@@ -264,33 +264,30 @@ def request_exceptions():
     except (requests.exceptions.MissingSchema,
             requests.exceptions.InvalidSchema):
         clean_output()
-        print("Schema Error: No 'http:' or 'https:' schema supplied.\n\n\
-(Check syntax and try again)")
+        print("")
+        print_detail('[e_schema]', 'l')
         raise SystemExit
     except requests.exceptions.InvalidURL:
         clean_output()
-        print("URL Error: '" + URL + "' is not valid.\n\n\
-(Check syntax and try again)")
+        print("")
+        print_detail('[e_invalid]', 'l')
         raise SystemExit
     except requests.exceptions.HTTPError:
         httpcode = str(r.status_code)
         if r.status_code == 403:
             clean_output()
-            print(httpcode + " Error: Forbidden access to '" + URL +
-                  "'\n\nPerhaps caused by a WAF or IP block due to GDPR." +
-                  "\n\n(Or the server considers that this humble request is\
- not as polite as it should be. It is, seriously! :).\n\
-Ref: https://github.com/rfc-st/humble/issues/2")
+            print("")
+            print_detail('[e_waf_gdpr]', 'l')
             raise SystemExit
         elif r.status_code == 407:
             clean_output()
-            print(httpcode + " Error: Proxy authentication required to access\
-'" + URL + "'\n\n(Not supported yet by 'humble')")
+            print("")
+            print_detail('[e_proxy]', 'l')
             raise SystemExit
         elif str(r.status_code).startswith("5"):
             clean_output()
-            print(httpcode + " Error: Server error requesting '" + URL +
-                  "'\n\n(Wait a while and try again)")
+            print("")
+            print_detail('[e_serror]', 'l')
             raise SystemExit
 
     # Can be useful with self-signed certificates, development environments ...
@@ -299,13 +296,13 @@ Ref: https://github.com/rfc-st/humble/issues/2")
         pass
     except requests.exceptions.ConnectionError:
         clean_output()
-        print("404 Error: '" + URL + "' not found.\n\n(Check syntax and try\
- again)")
+        print("")
+        print_detail('[e_404]', 'l')
         raise SystemExit
     except requests.exceptions.Timeout:
         clean_output()
-        print("Timeout Error: '" + URL + "' is taking too long to respond.\
-\n\n(Wait a while and try again)")
+        print("")
+        print_detail('[e_timeout]', 'l')
         raise SystemExit
     except requests.exceptions.RequestException as err:
         raise SystemExit(err)

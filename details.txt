@@ -1,3 +1,24 @@
+[e_schema]
+ Error: No "http" or "https" schema supplied. Check syntax and try again.
+
+[e_invalid]
+ Error: The URL is not valid. Check syntax and try again.
+
+[e_waf_gdpr]
+ Error: Forbidden access to the URL. Perhaps caused by a WAF or IP block?.
+
+[e_proxy]
+ Error: Proxy authentication required (not yet supported by this program).
+
+[e_serror]
+ Error: Server error requesting URL (wait a while and try again).
+
+[e_404]
+ Error: URL not found. Check syntax and try again.
+
+[e_timeout]
+ Error: URL is taking too long to respond. Wait a while and try again.
+ 
 [report]
  Report saved to 
 

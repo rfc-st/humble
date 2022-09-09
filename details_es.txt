@@ -1,3 +1,24 @@
+[e_schema]
+ Error: Incluye el esquema "http" o "https" en la URL a analizar.
+
+[e_invalid]
+ Error: La URL indicada no resuelve. Revisa que sea correcta y prueba de nuevo.
+
+[e_waf_gdpr]
+ Error: El servidor ha denegado el acceso a la URL: por un WAF, bloqueo de IP o protecciones adicionales.
+
+[e_proxy]
+ Error: La URL solicitada requiere autenticar previamente con proxy (este programa no lo contempla actualmente).
+
+[e_serror]
+ Error: Error interno de servidor al analizar la URL: espera unos minutos y prueba de nuevo.
+
+[e_404]
+ Error: No se encuentra la URL. Revisa que sea correcta.
+
+[e_timeout]
+ Error: Se ha ssuperado el tiempo de espera. Prueba de nuevo pasados unos minutos.
+
 [report]
  Informe guardado en 
 
