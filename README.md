@@ -6,6 +6,7 @@
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest Release"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release"></a>
 <a target="_blank" href="https://lgtm.com/projects/g/rfc-st/humble?mode=list" title="LGTM Analysis"><img src="https://img.shields.io/lgtm/grade/python/github/rfc-st/humble"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="OWASP Technical Resource"><img src="https://img.shields.io/badge/owasp-technical%20resource-brightgreen"></a>
+<img src="https://img.shields.io/badge/languages-en%20%7C%20es-brightgreen">
 <br />
 <br />
 HTTP Headers Analyzer<br />
