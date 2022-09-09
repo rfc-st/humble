@@ -1,3 +1,27 @@
+[report]
+ Informe guardado en 
+
+[0section]
+[0. Información]
+
+[0headers]
+[Cabeceras de respuesta HTTP]
+
+[1missing]
+[1. Cabeceras de respuesta HTTP no habilitadas]
+
+[2fingerprint]
+[2. Huella digital por cabeceras de respuesta HTTP]
+
+[3depinsecure]
+[3. Protocolos/Cabeceras de respuesta HTTP deprecadas o con valores inseguros]
+
+[4empty]
+[4. Cabeceras de respuesta HTTP vacías]
+
+[5compat]
+[5. Compatibilidad de navegadores con cabeceras HTTP de respuesta]
+
 [analysis_ua]
  (Slava Ukraini!). Analizando URL, por favor espere ...
 
@@ -243,3 +267,21 @@
 [bcnt]
  Este humilde programa no analiza dominios rusos, ni permite su uso desde Rusia, hasta que se retire de Ucrania.
  Ref: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
+
+[miss_cnt]
+  Cabeceras no habilitadas:                     
+
+[finger_cnt]
+  Huella digital por cabeceras:                 
+
+[insecure_cnt]
+  Protocolos/Cabeceras deprecadas o inseguras:  
+
+[empty_cnt]
+  Cabeceras vacías:                             
+
+[analysis_time]
+Analisis realizado en 
+
+[analysis_time_sec]
+ segundos!.  

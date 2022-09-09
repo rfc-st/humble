@@ -56,7 +56,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/09/05, by Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/09/09, by Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -115,7 +115,10 @@ def analysis_time():
     print(".:")
     print("")
     seconds = end - start
-    print(" Analysis done in " + str(round(seconds, 2)) + " seconds!.")
+    print_detail('[analysis_time]', 'l')
+    print(str(round(seconds, 2)), end='')
+    print_detail('[analysis_time_sec]', 'l')
+    print("")
     analysis_detail()
 
 
@@ -133,16 +136,10 @@ def clean_output():
 
 def print_path(filename):
     clean_output()
-    print('Report saved to "' +
-          os.path.normcase(os.path.dirname(os.path.realpath(filename)) + '/' +
-                           filename + '".'))
-
-
-def print_section(title):
-    if not args.output:
-        print(Style.BRIGHT + title)
-    else:
-        print(title)
+    print("")
+    print_detail('[report]', 'l')
+    print('"' + os.path.normcase(os.path.dirname(os.path.realpath(filename)) +
+          '/' + filename + '"'))
 
 
 def print_ok():
@@ -173,7 +170,8 @@ def print_summary():
         print(spacing)
         print(" Humble HTTP headers analyzer" + "\n" +
               " (https://github.com/rfc-st/humble)")
-    print_section(spacing + spacing + "[0. Info]\n")
+    print(spacing)
+    print_detail('[0section]', 's')
     print_detail('[info]', 'l')
     print(" " + now)
     print(' URL  : ' + URL)
@@ -181,7 +179,9 @@ def print_summary():
 
 def print_headers():
     if args.retrieved:
-        print_section(spacing + spacing + "[HTTP Response Headers]\n")
+        print("")
+        print("")
+        print_detail('[0headers]', 's')
         for key, value in sorted(headers.items()):
             if not args.output:
                 print(" " + Fore.CYAN + key + ':', value)
@@ -207,6 +207,13 @@ def print_detail(id, mode):
                     print("")
                 elif mode == 'l':
                     print(next(rf).replace('\n', ''), end='')
+                elif mode == 's':
+                    if not args.output:
+                        print(Style.BRIGHT + next(rf), end='')
+                        print("")
+                    else:
+                        print(next(rf), end='')
+                        print("")
                 elif mode == 'm':
                     print(next(rf), end='')
                     print(next(rf), end='')
@@ -236,10 +243,14 @@ def get_location():
 
 def analysis_detail():
     print(" ")
-    print("  Missing headers:              " + str(m_cnt))
-    print("  Fingerprint headers:          " + str(f_cnt))
-    print("  Deprecated/Insecure headers:  " + str(i_cnt))
-    print("  Empty headers:                " + str(e_cnt))
+    print_detail('[miss_cnt]', 'l')
+    print(str(m_cnt))
+    print_detail('[finger_cnt]', 'l')
+    print(str(f_cnt))
+    print_detail('[insecure_cnt]', 'l')
+    print(str(i_cnt))
+    print_detail('[empty_cnt]', 'l')
+    print(str(e_cnt))
     print("")
     print(".:")
     print("")
@@ -410,7 +421,7 @@ print_headers()
 
 m_cnt = 0
 
-print_section("[1. Missing HTTP Security Headers]\n")
+print_detail('[1missing]', 's')
 
 list_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
              'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
@@ -471,7 +482,7 @@ print("")
 
 f_cnt = 0
 
-print_section("[2. Fingerprint HTTP Response Headers]\n")
+print_detail('[2fingerprint]', 's')
 
 if not args.brief:
     print_detail("[afgp]", "a")
@@ -503,8 +514,8 @@ print("")
 
 i_cnt = 0
 
-print_section("[3. Deprecated HTTP Response Headers/Protocols and Insecure \
-Values]\n")
+print_detail('[3depinsecure]', 's')
+
 if not args.brief:
     print_detail("[aisc]", "a")
 
@@ -863,7 +874,8 @@ print("")
 
 e_cnt = 0
 
-print_section("[4. Empty HTTP Response Headers Values]\n")
+print_detail('[4empty]', 's')
+
 if not args.brief:
     print_detail("[aemp]", "a")
 
@@ -887,7 +899,7 @@ print("")
 # caniuse.com support data contributions under CC-BY-4.0 license
 # https://github.com/Fyrd/caniuse/blob/main/LICENSE
 
-print_section("[5. Browser Compatibility for Enabled HTTP Security Headers]\n")
+print_detail('[5compat]', 's')
 
 compat_site = "https://caniuse.com/?search="
 csp_replace = "contentsecuritypolicy2"
@@ -946,7 +958,8 @@ elif args.output == 'pdf':
     f = open(name_e, "r")
     for x in f:
         if '[' in x:
-            pdf_sections()
+            # pdf_sections()
+            pdf.start_section((x[1:-1])[:-1])
         if 'https://' in x and 'content-security' not in x:
             x = (str(pdf.write_html(x.replace(x[x.index("https://"):],
                  '<a href=' + x[x.index("https://"):] + '">' +
@@ -992,6 +1005,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
         for line in input:
 
             # TO-DO: this is a mess ... simplify, use templates, etc
+            # Adapt it for i18n
 
             if 'rfc-st' in line:
                 output.write(line[:2] + '<a href="' + line[2:-2] + '">' +
@@ -1001,7 +1015,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                              line[6:] + '</a>')
             elif line.startswith("["):
                 output.write('<strong>' + line + '</strong>')
-            elif ' Nothing to ' in line:
+            elif ' Nothing to ' in line or ' Nada que ' in line:
                 output.write('<span class="ok">' + line + '</span>')
             elif ' No HTTP' in line:
                 output.write('<span class="ko">' + line + '</span>')

@@ -1,3 +1,27 @@
+[report]
+ Report saved to 
+
+[0section]
+[0. Info]
+
+[0headers]
+[HTTP Response Headers]
+
+[1missing]
+[1. Missing HTTP Security Headers]
+
+[2fingerprint]
+[2. Fingerprint HTTP Response Headers]
+
+[3depinsecure]
+[3. Deprecated HTTP Response Headers/Protocols and Insecure Values]
+
+[4empty]
+[4. Empty HTTP Response Headers Values]
+
+[5compat]
+[5. Browser Compatibility for Enabled HTTP Security Headers]
+
 [analysis_ua]
  (Slava Ukraini!). Analyzing URL, Please wait ...
 
@@ -243,3 +267,21 @@
 [bcnt]
  This humble program will not analyze Russian domains, nor will it be allowed to be used from Russian IPs, until Russia withdraws from Ukraine.
  Ref: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
+
+[miss_cnt]
+  Missing headers:              
+
+[finger_cnt]
+  Fingerprint headers:          
+
+[insecure_cnt]
+  Deprecated/Insecure headers:  
+
+[empty_cnt]
+  Empty headers:                
+
+[analysis_time]
+Analysis done in 
+
+[analysis_time_sec]
+ seconds!.  
