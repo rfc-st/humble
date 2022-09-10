@@ -57,7 +57,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/09/09. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/09/10. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -939,6 +939,9 @@ analysis_time()
 
 # Export analysis
 
+bold_strings = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
+                "[Cabeceras")
+
 if args.output == 'txt':
     sys.stdout = orig_stdout
     print_path(name_e)
@@ -964,7 +967,7 @@ elif args.output == 'pdf':
             x = (str(pdf.write_html(x.replace(x[x.index("https://"):],
                  '<a href=' + x[x.index("https://"):] + '">' +
                  x[x.index("https://"):-1] + '</a>')))).replace('None', "")
-        if '[' in x:
+        if any(s in x for s in bold_strings):
             pdf.set_font(style="B")
         else:
             pdf.set_font(style="")
@@ -1013,7 +1016,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
             elif ' URL  : ' in line:
                 output.write(line[:6] + '<a href="' + line[6:] + '">' +
                              line[6:] + '</a>')
-            elif line.startswith("["):
+            elif any(s in line for s in bold_strings):
                 output.write('<strong>' + line + '</strong>')
             elif ' Nothing to ' in line or ' Nada que ' in line:
                 output.write('<span class="ok">' + line + '</span>')
