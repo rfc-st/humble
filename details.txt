@@ -1,3 +1,123 @@
+[icsp_h]
+ Content-Security-Policy (Unsafe Values)
+
+[imethods_h]
+ Access-Control-Allow-Methods (Insecure Methods)
+
+[iaccess_h]
+ Access-Control-Allow-Origin (Unsafe Values)
+
+[imethods_hh]
+ Allow (Insecure Methods)
+
+[icache_h]
+ Cache-Control (Recommended Values)
+
+[icsi_h]
+ Content-Security-Policy (No Valid Directives)
+
+[icsi_d]
+ Content-Security-Policy (Deprecated Directives)
+
+[icsn_h]
+ Content-Security-Policy (Incorrect Values)
+
+[icsh_h]
+ Content-Security-Policy (Insecure Schemes)
+
+[ieta_h]
+ Etag (Potentially Unsafe Header)
+
+[iexct_h]
+ Expect-CT (Deprecated Header)
+
+[iffea_h]
+ Feature-Policy (Deprecated Header)
+
+[ihttp_h]
+ HTTP (URL Via Unsafe Scheme)
+
+[ifpoln_h]
+ Permissions-Policy (No Valid Features)
+
+[ifpol_h]
+ Permissions-Policy (Too Permissive Value)
+
+[ifpoli_h]
+ Permissions-Policy (Incorrect Value)
+
+[ipkp_h]
+ Public-Key-Pins (Deprecated Header)
+
+[iref_h]
+ Referrer-Policy (Recommended Values)
+
+[irefi_h]
+ Referrer-Policy (Unsafe Value)
+
+[itim_h]
+ Server-Timing (Potentially Unsafe Header)
+
+[iset_h]
+ Set-Cookie (Insecure Attributes)
+
+[ists_h]
+ Strict-Transport-Security (Recommended Values)
+
+[istsd_h]
+ Strict-Transport-Security (Duplicated Values)
+
+[ihsts_h]
+ Strict-Transport-Security (Ignored Header)
+
+[itao_h]
+ Timing-Allow-Origin (Potentially Unsafe Header)
+
+[ihbas_h]
+ WWW-Authenticate (Unsafe Value)
+
+[ixcsp_h]
+ X-Content-Security-Policy (Deprecated Header)
+
+[ictpd_h]
+ X-Content-Type-Options (Duplicated Values)
+
+[ictp_h]
+ X-Content-Type-Options (Incorrect Value)
+
+[ixdp_h]
+ X-DNS-Prefetch-Control (Potentially Unsafe Header)
+
+[ixdow_h]
+ X-Download-Options (Deprecated Header)
+
+[ixfo_h]
+ X-Frame-Options (Duplicated Values)
+
+[ixpad_h]
+ X-Pad (Deprecated Header)
+
+[ixcd_h]
+ X-Permitted-Cross-Domain-Policies (Unsafe Value)
+
+[ixpb_h]
+ X-Pingback (Unsafe Value)
+
+[ixrob_h]
+ X-Robots-Tag (Unsafe Value)
+
+[ixrun_h]
+ X-Runtime (Unsafe Value)
+
+[ixcsp_h]
+ X-Webkit-CSP (Deprecated Header)
+
+[ixxp_h]
+ X-XSS-Protection (Unsafe Value)
+
+[ixxpd_h]
+ X-XSS-Protection (Duplicated Values)
+
 [pdf_t]
 Humble HTTP headers analyzer
 

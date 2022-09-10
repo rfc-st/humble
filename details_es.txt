@@ -1,3 +1,123 @@
+[icsp_h]
+ Content-Security-Policy (Valores inseguros)
+
+[imethods_h]
+ Access-Control-Allow-Methods (Valores inseguros)
+
+[iaccess_h]
+ Access-Control-Allow-Origin (Valores inseguros)
+
+[imethods_hh]
+ Allow (Valores inseguros)
+
+[icache_h]
+ Cache-Control (Valores recomendados)
+
+[icsi_h]
+ Content-Security-Policy (Sin directivas adecuadas)
+
+[icsi_d]
+ Content-Security-Policy (Directivas obsoletas)
+
+[icsn_h]
+ Content-Security-Policy (Valores incorrectos)
+
+[icsh_h]
+ Content-Security-Policy (Esquemas inseguros)
+
+[ieta_h]
+ Etag (Cabecera potencialmente insegura)
+
+[iexct_h]
+ Expect-CT (Cabecera obsoleta)
+
+[iffea_h]
+ Feature-Policy (Cabecera obsoleta)
+
+[ihttp_h]
+ HTTP (Esquema inseguro)
+
+[ifpoln_h]
+ Permissions-Policy (Sin valores adecuados)
+
+[ifpol_h]
+ Permissions-Policy (Valores muy permisivos)
+
+[ifpoli_h]
+ Permissions-Policy (Valores incorrectos)
+
+[ipkp_h]
+ Public-Key-Pins (Cabecera obsoleta)
+
+[iref_h]
+ Referrer-Policy (Valores recomendados)
+
+[irefi_h]
+ Referrer-Policy (Valor inseguro)
+
+[itim_h]
+ Server-Timing (Cabecera potencialmente insegura)
+
+[iset_h]
+ Set-Cookie (Atributos inseguros)
+
+[ists_h]
+ Strict-Transport-Security (Valores recomendados)
+
+[istsd_h]
+ Strict-Transport-Security (Valores duplicados)
+
+[ihsts_h]
+ Strict-Transport-Security (Cabecera ignorada)
+
+[itao_h]
+ Timing-Allow-Origin (Cabecera potencialmente insegura)
+
+[ihbas_h]
+ WWW-Authenticate (Valor inseguro)
+
+[ixcsp_h]
+ X-Content-Security-Policy (Cabecera obsoleta)
+
+[ictpd_h]
+ X-Content-Type-Options (Valores duplicados)
+
+[ictp_h]
+ X-Content-Type-Options (Valor incorrecto)
+
+[ixdp_h]
+ X-DNS-Prefetch-Control (Cabecera potencialmente insegura)
+
+[ixdow_h]
+ X-Download-Options (Cabecera deprecada)
+
+[ixfo_h]
+ X-Frame-Options (Valores duplicados)
+
+[ixpad_h]
+ X-Pad (Cabecera deprecada)
+
+[ixcd_h]
+ X-Permitted-Cross-Domain-Policies (Valor inseguro)
+
+[ixpb_h]
+ X-Pingback (Valor inseguro)
+
+[ixrob_h]
+ X-Robots-Tag (Valor inseguro)
+
+[ixrun_h]
+ X-Runtime (Valor inseguro)
+
+[ixcsp_h]
+ X-Webkit-CSP (Cabecera deprecada)
+
+[ixxp_h]
+ X-XSS-Protection (Valor inseguro)
+
+[ixxpd_h]
+ X-XSS-Protection (Valores duplicados)
+
 [pdf_t]
 Analizador de cabeceras HTTP
 
