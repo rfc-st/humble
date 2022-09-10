@@ -101,15 +101,23 @@ def pdf_metadata():
 
 def pdf_sections():
 
-    list_secpos = ['[0', '[1', '[2', '[3', '[4', '[5']
-    list_sectxt = ['0.- Analysis Info', '1.- Missing Headers',
-                   '2.- Fingerprint Headers',
-                   '3.- Deprecated/Insecure Headers', '4.- Empty Headers',
-                   '5.- Browser Compatibility']
+    list_secpos = ['[0.', '[HTTP R', '[1.', '[2.', '[3.', '[4.', '[5.',
+                   '[Cabeceras']
+    list_sectxt = ['[0section_s]', '[0headers_s]', '[1missing_s]',
+                   '[2fingerprint_s]', '[3depinsecure_s]', '[4empty_s]',
+                   '[5compat_s]', '[0headers_s]']
 
     for index, element in enumerate(list_secpos):
         if x.startswith(element):
-            pdf.start_section(list_sectxt[index])
+            pdf.start_section(get_detail(list_sectxt[index]))
+
+
+def get_language():
+    if args.language == 'es':
+        details_file = 'details_es.txt'
+    else:
+        details_file = 'details.txt'
+    return details_file
 
 
 def analysis_time():
@@ -192,10 +200,7 @@ def print_headers():
 
 
 def print_detail(id, mode):
-    if args.language == 'es':
-        details_file = 'details_es.txt'
-    else:
-        details_file = 'details.txt'
+    details_file = get_language()
     with open(details_file) as rf:
         for line in rf:
             line = line.strip()
@@ -219,6 +224,16 @@ def print_detail(id, mode):
                     print(next(rf), end='')
                     print(next(rf), end='')
                     print(next(rf))
+
+
+def get_detail(id):
+    details_file = get_language()
+    with open(details_file) as rf:
+        for line in rf:
+            line = line.strip()
+            if line.startswith(id):
+                detail_line = next(rf)
+    return detail_line
 
 
 def python_ver():
@@ -961,8 +976,7 @@ elif args.output == 'pdf':
     f = open(name_e, "r")
     for x in f:
         if '[' in x:
-            # pdf_sections()
-            pdf.start_section((x[1:-1])[:-1])
+            pdf_sections()
         if 'https://' in x and 'content-security' not in x:
             x = (str(pdf.write_html(x.replace(x[x.index("https://"):],
                  '<a href=' + x[x.index("https://"):] + '">' +
