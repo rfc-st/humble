@@ -68,7 +68,7 @@ class PDF(FPDF, HTMLMixin):
     def header(self):
         self.set_font('Courier', 'B', 10)
         self.set_y(15)
-        self.cell(0, 5, "Humble HTTP headers analyzer", new_x="CENTER",
+        self.cell(0, 5, get_detail('[pdf_t]'), new_x="CENTER",
                   new_y="NEXT", align='C')
         self.ln(1)
         self.cell(0, 5, "(https://github.com/rfc-st/humble)", align='C')
@@ -80,21 +80,20 @@ class PDF(FPDF, HTMLMixin):
     def footer(self):
         self.set_y(-15)
         self.set_font('Helvetica', 'I', 8)
-        self.cell(0, 10, 'Page ' + str(self.page_no()) + ' of {nb}', align='C')
+        self.cell(0, 10, get_detail('[pdf_p]') + str(self.page_no()) +
+                  ' of {nb}', align='C')
 
 
 def pdf_metadata():
-    title = "Humble HTTP headers analysis of " + URL
+    title = (get_detail('[pdf_m]')).replace('\n', '') + URL
     git_url = "https://github.com/rfc-st/humble" + " (v." + \
               version.strip()[:10] + ")"
     pdf.set_author(git_url)
-    pdf.set_creation_date = datetime.now(datetime.utcnow().astimezone().
-                                         tzinfo).isoformat()
+    pdf.set_creation_date = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     pdf.set_creator(git_url)
-    pdf.set_keywords("HTTP Headers " "Analyzer " "Analysis " "Cybersecurity "
-                     "Security-scanner " "Security-Tools " "Header-Parser ")
-    pdf.set_lang("en-US")
-    pdf.set_subject("HTTP headers analysis")
+    pdf.set_keywords(get_detail('[pdf_k]').replace('\n', ''))
+    pdf.set_lang(get_detail('[pdf_l]'))
+    pdf.set_subject(get_detail('[pdf_s]').replace('\n', ''))
     pdf.set_title(title)
     pdf.set_producer(git_url)
 
