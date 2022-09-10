@@ -294,7 +294,6 @@ def request_exceptions():
         print_detail('[e_invalid]', 'l')
         raise SystemExit
     except requests.exceptions.HTTPError:
-        httpcode = str(r.status_code)
         if r.status_code == 403:
             clean_output()
             print("")
