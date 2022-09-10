@@ -2,19 +2,19 @@
 Analizador de cabeceras HTTP
 
 [pdf_p]
-Página 
+P. 
 
 [pdf_m]
-Análisis de las cabeceras HTTP de 
+Informe de las cabeceras HTTP de 
 
 [pdf_k]
-Cabeceras HTTP Analizador Análisis Ciberseguridad Seguridad
+Cabeceras HTTP Analizador Informe Ciberseguridad Seguridad
 
 [pdf_l]
 es-ES
 
 [pdf_s]
-Análisis de cabeceras HTTP
+Informe de cabeceras HTTP
 
 [0section_s]
 0.- Datos
