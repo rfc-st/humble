@@ -200,7 +200,7 @@ def print_headers():
 
 def print_detail(id, mode):
     details_file = get_language()
-    with open(details_file) as rf:
+    with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
             if line.startswith(id):
@@ -232,7 +232,7 @@ def print_detail(id, mode):
 
 def get_detail(id):
     details_file = get_language()
-    with open(details_file) as rf:
+    with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
             if line.startswith(id):
@@ -250,7 +250,7 @@ def python_ver():
 def print_guides():
     print("")
     print_detail('[guides]', 'a')
-    with open('guides.txt', 'r') as gd:
+    with open('guides.txt', 'r', encoding='utf8') as gd:
         for line in gd:
             if line.startswith('['):
                 print(Style.BRIGHT + line, end='')
@@ -424,7 +424,7 @@ if args.output is not None:
     if args.output == 'pdf' or args.output == 'html':
         name_e = name_s.domain + infix +\
          datetime.now().strftime("%Y%m%d") + "t.txt"
-    f = open(name_e, 'w')
+    f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
 # Date and URL
@@ -505,7 +505,7 @@ print_detail('[2fingerprint]', 's')
 if not args.brief:
     print_detail("[afgp]", "a")
 
-with open('fingerprint.txt', 'r') as fn:
+with open('fingerprint.txt', 'r', encoding='utf8') as fn:
     list_fng = []
     for line in fn:
         list_fng.append(line.strip())
@@ -976,7 +976,7 @@ elif args.output == 'pdf':
     # PDF Body
 
     pdf.set_font("Courier", size=9)
-    f = open(name_e, "r")
+    f = open(name_e, "r", encoding='utf8')
     for x in f:
         if '[' in x:
             pdf_sections()
@@ -1018,7 +1018,8 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
     list_final = list_miss + list_fng + list_ins
     list_final.sort()
 
-    with open(name_e, 'r') as input, open(name_p, 'w') as output:
+    with open(name_e, 'r', encoding='utf8') as input,\
+            open(name_p, 'w', encoding='utf8') as output:
         output.write(str(header))
         output.write(str(body))
 
@@ -1031,8 +1032,8 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                 output.write(line[:2] + '<a href="' + line[2:-2] + '">' +
                              line[2:] + '</a>')
             elif ' URL  : ' in line:
-                output.write(line[:6] + '<a href="' + line[6:] + '">' +
-                             line[6:] + '</a>')
+                output.write(line[:7] + '<a href="' + line[7:] + '">' +
+                             line[7:] + '</a>')
             elif any(s in line for s in bold_strings):
                 output.write('<strong>' + line + '</strong>')
             elif ' Nothing to ' in line or ' Nada que ' in line:

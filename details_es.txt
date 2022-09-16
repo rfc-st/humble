@@ -185,7 +185,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Informe guardado en 
 
 [0section]
-[0. Datos]
+[0. Información]
 
 [0headers]
 [Cabeceras de respuesta HTTP]
