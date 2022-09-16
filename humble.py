@@ -463,13 +463,12 @@ if any(elem.lower() in headers for elem in list_miss):
 # 'frame-ancestors' directive obsoletes the 'X-Frame-Options' header
 # https://www.w3.org/TR/CSP2/#frame-ancestors-and-frame-options
 
-elif 'X-Frame-Options' not in headers:
-    if 'Content-Security-Policy' in headers:
-        if 'frame-ancestors' not in headers['Content-Security-Policy']:
-            print_header('X-Frame-Options')
-            if not args.brief:
-                print_detail("[mxfo]", "d")
-            m_cnt += 1
+elif 'X-Frame-Options' not in headers and 'Content-Security-Policy' in headers:
+    if 'frame-ancestors' not in headers['Content-Security-Policy']:
+        print_header('X-Frame-Options')
+        if not args.brief:
+            print_detail("[mxfo]", "d")
+        m_cnt += 1
 
 # Shame, shame on you!. Have you not enabled *any* security HTTP header?.
 
@@ -549,19 +548,19 @@ list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
 
 insecure_s = 'http:'
 
-if 'Access-Control-Allow-Methods' in headers:
-    if any(elem.lower() in headers["Access-Control-Allow-Methods"].lower() for
-       elem in list_methods):
-        print_detail('[imethods_h]', 'h')
-        if not args.brief:
-            methods_list = "".join(str(x) for x in
-                                   headers["Access-Control-Allow-Methods"])
-            match_method = [x for x in list_methods if x in methods_list]
-            match_method_str = ','.join(match_method)
-            print(" Make sure these enabled HTTP methods are needed: " +
-                  match_method_str + ".")
-            print_detail("[imethods]", "a")
-        i_cnt += 1
+if 'Access-Control-Allow-Methods' in headers and \
+                                  any(elem.lower() in headers["Access-Control-\
+Allow-Methods"].lower() for elem in list_methods):
+    print_detail('[imethods_h]', 'h')
+    if not args.brief:
+        methods_list = "".join(str(x) for x in
+                               headers["Access-Control-Allow-Methods"])
+        match_method = [x for x in list_methods if x in methods_list]
+        match_method_str = ','.join(match_method)
+        print(" Make sure these enabled HTTP methods are needed: " +
+              match_method_str + ".")
+        print_detail("[imethods]", "a")
+    i_cnt += 1
 
 if 'Access-Control-Allow-Origin' in headers:
     list_access = ['*', 'null']
@@ -778,12 +777,11 @@ if (URL[0:5] == insecure_s) and ('Strict-Transport-Security' in headers):
         print_detail("[ihsts]", "d")
     i_cnt += 1
 
-if 'Timing-Allow-Origin' in headers:
-    if '*' in headers['Timing-Allow-Origin']:
-        print_detail('[itao_h]', 'h')
-        if not args.brief:
-            print_detail("[itao]", "d")
-        i_cnt += 1
+if 'Timing-Allow-Origin' in headers and '*' in headers['Timing-Allow-Origin']:
+    print_detail('[itao_h]', 'h')
+    if not args.brief:
+        print_detail("[itao]", "d")
+    i_cnt += 1
 
 if (URL[0:5] == insecure_s) and ('WWW-Authenticate' in headers) and\
    ('Basic' in headers['WWW-Authenticate']):
@@ -823,12 +821,11 @@ if 'X-Download-Options' in headers:
         print_detail("[ixdow]", "m")
     i_cnt += 1
 
-if 'X-Frame-Options' in headers:
-    if ',' in headers['X-Frame-Options']:
-        print_detail('[ixfo_h]', 'h')
-        if not args.brief:
-            print_detail("[ixfo]", "m")
-        i_cnt += 1
+if 'X-Frame-Options' in headers and ',' in headers['X-Frame-Options']:
+    print_detail('[ixfo_h]', 'h')
+    if not args.brief:
+        print_detail("[ixfo]", "m")
+    i_cnt += 1
 
 if 'X-Pad' in headers:
     print_detail('[ixpad_h]', 'h')
@@ -843,19 +840,17 @@ if 'X-Permitted-Cross-Domain-Policies' in headers:
             print_detail("[ixcd]", "m")
         i_cnt += 1
 
-if 'X-Pingback' in headers:
-    if 'xmlrpc.php' in headers['X-Pingback']:
-        print_detail('[ixpb_h]', 'h')
-        if not args.brief:
-            print_detail("[ixpb]", "d")
-        i_cnt += 1
+if 'X-Pingback' in headers and 'xmlrpc.php' in headers['X-Pingback']:
+    print_detail('[ixpb_h]', 'h')
+    if not args.brief:
+        print_detail("[ixpb]", "d")
+    i_cnt += 1
 
-if 'X-Robots-Tag' in headers:
-    if 'all' in headers['X-Robots-Tag']:
-        print_detail('[ixrob_h]', 'h')
-        if not args.brief:
-            print_detail("[ixrob]", "m")
-        i_cnt += 1
+if 'X-Robots-Tag' in headers and 'all' in headers['X-Robots-Tag']:
+    print_detail('[ixrob_h]', 'h')
+    if not args.brief:
+        print_detail("[ixrob]", "m")
+    i_cnt += 1
 
 if 'X-Runtime' in headers:
     print_detail('[ixrun_h]', 'h')
