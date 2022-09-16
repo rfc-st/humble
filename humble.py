@@ -512,13 +512,12 @@ with open('fingerprint.txt', 'r', encoding='utf8') as fn:
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
-        if key in headers:
-            if headers[key]:
-                print_header(key)
-                if not args.brief:
-                    print(" " + headers[key])
-                    print("")
-                f_cnt += 1
+        if key in headers and headers[key]:
+            print_header(key)
+            if not args.brief:
+                print(" " + headers[key])
+                print("")
+            f_cnt += 1
 
 if args.brief and f_cnt != 0:
     print("")
@@ -548,6 +547,8 @@ list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
 list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
                 'DELETE', 'DEBUG', 'PATCH', '*']
 
+insecure_s = 'http:'
+
 if 'Access-Control-Allow-Methods' in headers:
     if any(elem.lower() in headers["Access-Control-Allow-Methods"].lower() for
        elem in list_methods):
@@ -566,7 +567,7 @@ if 'Access-Control-Allow-Origin' in headers:
     list_access = ['*', 'null']
     if any(elem.lower() in headers["Access-Control-Allow-Origin"].lower() for
        elem in list_access):
-        if not ('.*' and '*.') in headers["Access-Control-Allow-Origin"]:
+        if ('.*' and '*.') not in headers["Access-Control-Allow-Origin"]:
             print_detail('[iaccess_h]', 'h')
             if not args.brief:
                 print_detail("[iaccess]", "d")
@@ -608,6 +609,7 @@ if 'Content-Security-Policy' in headers:
     list_csp_insecure = ['unsafe-inline', 'unsafe-eval']
     list_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-uri',
                       'report-to']
+
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp_insecure):
         print_detail('[icsp_h]', 'h')
@@ -640,7 +642,7 @@ Headers/Content-Security-Policy")
             if not args.brief:
                 print_detail("[icsn]", "d")
             i_cnt += 1
-    if ('http:' in headers['Content-Security-Policy']) and \
+    if (insecure_s in headers['Content-Security-Policy']) and \
             (URL[0:5] == 'https'):
         print_detail('[icsh_h]', 'h')
         if not args.brief:
@@ -665,7 +667,7 @@ if 'Feature-Policy' in headers:
         print_detail("[iffea]", "d")
     i_cnt += 1
 
-if URL[0:5] == 'http:':
+if URL[0:5] == insecure_s:
     print_detail('[ihttp_h]', 'h')
     if not args.brief:
         print_detail("[ihttp]", "d")
@@ -754,7 +756,7 @@ if 'Set-Cookie' in headers:
             print_detail("[iset]", "d")
         i_cnt += 1
 
-if ('Strict-Transport-Security' in headers) and (URL[0:5] != 'http:'):
+if ('Strict-Transport-Security' in headers) and (URL[0:5] != insecure_s):
     list_sts = ['includeSubDomains', 'max-age']
     age = int(''.join([n for n in headers["Strict-Transport-Security"] if
               n.isdigit()]))
@@ -770,7 +772,7 @@ if ('Strict-Transport-Security' in headers) and (URL[0:5] != 'http:'):
             print_detail("[istsd]", "d")
         i_cnt += 1
 
-if (URL[0:5] == 'http:') and ('Strict-Transport-Security' in headers):
+if (URL[0:5] == insecure_s) and ('Strict-Transport-Security' in headers):
     print_detail('[ihsts_h]', 'h')
     if not args.brief:
         print_detail("[ihsts]", "d")
@@ -783,7 +785,7 @@ if 'Timing-Allow-Origin' in headers:
             print_detail("[itao]", "d")
         i_cnt += 1
 
-if (URL[0:5] == 'http:') and ('WWW-Authenticate' in headers) and\
+if (URL[0:5] == insecure_s) and ('WWW-Authenticate' in headers) and\
    ('Basic' in headers['WWW-Authenticate']):
     print_detail('[ihbas_h]', 'h')
     if not args.brief:
@@ -975,15 +977,17 @@ elif args.output == 'pdf':
 
     # PDF Body
 
+    secure_s = "https://"
+
     pdf.set_font("Courier", size=9)
     f = open(name_e, "r", encoding='utf8')
     for x in f:
         if '[' in x:
             pdf_sections()
         if 'https://' in x and 'content-security' not in x:
-            x = (str(pdf.write_html(x.replace(x[x.index("https://"):],
-                 '<a href=' + x[x.index("https://"):] + '">' +
-                 x[x.index("https://"):-1] + '</a>')))).replace('None', "")
+            x = (str(pdf.write_html(x.replace(x[x.index(secure_s):],
+                 '<a href=' + x[x.index(secure_s):] + '">' +
+                 x[x.index(secure_s):-1] + '</a>')))).replace('None', "")
         if any(s in x for s in bold_strings):
             pdf.set_font(style="B")
         else:
@@ -1028,26 +1032,29 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
             # TO-DO: this is a mess ... simplify, use templates, etc
             # Adapt it for i18n
 
+            ahref_s = '<a href="'
+            span_s = '</span>'
+
             if 'rfc-st' in line:
-                output.write(line[:2] + '<a href="' + line[2:-2] + '">' +
+                output.write(line[:2] + ahref_s + line[2:-2] + '">' +
                              line[2:] + '</a>')
             elif ' URL  : ' in line:
-                output.write(line[:7] + '<a href="' + line[7:] + '">' +
+                output.write(line[:7] + ahref_s + line[7:] + '">' +
                              line[7:] + '</a>')
             elif any(s in line for s in bold_strings):
                 output.write('<strong>' + line + '</strong>')
             elif ' Nothing to ' in line or ' Nada que ' in line:
-                output.write('<span class="ok">' + line + '</span>')
+                output.write('<span class="ok">' + line + span_s)
             elif ' No HTTP' in line:
-                output.write('<span class="ko">' + line + '</span>')
+                output.write('<span class="ko">' + line + span_s)
             elif ' Ref: ' in line:
-                output.write(line[:6] + '<a href="' + line[6:] + '">' +
+                output.write(line[:6] + ahref_s + line[6:] + '">' +
                              line[6:] + '</a>')
             elif 'caniuse' in line:
                 line = line[1:]
                 line = line.replace(line[0: line.index(": ")],
                                     '<span class="header">' +
-                                    line[0: line.index(": ")] + '</span>')
+                                    line[0: line.index(": ")] + span_s)
                 line = line.replace(line[line.index("https"):],
                                     '''<a href="''' +
                                     line[line.index("https"):] + '''">''' +
@@ -1059,11 +1066,11 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                         line = line.replace(line[0: line.index(":")],
                                             '<span class="header">' +
                                             line[0: line.index(":")] +
-                                            '</span>')
+                                            span_s)
                 for i in list_final:
                     if i in line and ':' not in line and '"' not in line:
                         line = line.replace(line, '<span class="ko">' + line +
-                                            '</span>')
+                                            span_s)
                 output.write(line)
 
         output.write(footer)
