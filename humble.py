@@ -31,7 +31,6 @@
 
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
-# Add analysis rating (*at the beginning of the output* .... tricky, tricky)
 # Show the application related to each fingerprint header
 
 # ADVICE:
@@ -123,9 +122,9 @@ def analysis_time():
     print(".:")
     print("")
     seconds = end - start
-    print_detail('[analysis_time]', 'l')
+    print_detail_l('[analysis_time]')
     print(str(round(seconds, 2)), end='')
-    print_detail('[analysis_time_sec]', 'l')
+    print_detail_l('[analysis_time_sec]')
     print("")
     analysis_detail()
 
@@ -145,13 +144,13 @@ def clean_output():
 def print_path(filename):
     clean_output()
     print("")
-    print_detail('[report]', 'l')
+    print_detail_l('[report]')
     print('"' + os.path.normcase(os.path.dirname(os.path.realpath(filename)) +
           '/' + filename + '"'))
 
 
 def print_ok():
-    print_detail('[ok]', 'a')
+    print_detail_a('[ok]')
 
 
 def print_header(header):
@@ -179,8 +178,8 @@ def print_summary():
         print(" Humble HTTP headers analyzer" + "\n" +
               " (https://github.com/rfc-st/humble)")
     print(spacing)
-    print_detail('[0section]', 's')
-    print_detail('[info]', 'l')
+    print_detail_s('[0section]')
+    print_detail_l('[info]')
     print(" " + now)
     print(' URL  : ' + URL)
 
@@ -189,7 +188,7 @@ def print_headers():
     if args.retrieved:
         print("")
         print("")
-        print_detail('[0headers]', 's')
+        print_detail_s('[0headers]')
         for key, value in sorted(headers.items()):
             if not args.output:
                 print(" " + Fore.CYAN + key + ':', value)
@@ -198,43 +197,67 @@ def print_headers():
     print('\n')
 
 
-# Looking for ways to refactor this function to reduce its cognitive
-# complexity (from 21 to 15) ...
-
-def print_detail(id, mode):
-    details_file = get_language()
+def print_detail_a(id):
     with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
             if line.startswith(id):
-                if mode == 'd':
-                    print(next(rf), end='')
-                    print(next(rf))
-                elif mode == 'a':
+                print(next(rf), end='')
+                print("")
+
+
+def print_detail_d(id):
+    with open(details_file, encoding='utf8') as rf:
+        for line in rf:
+            line = line.strip()
+            if line.startswith(id):
+                print(next(rf), end='')
+                print(next(rf))
+
+
+def print_detail_l(id):
+    with open(details_file, encoding='utf8') as rf:
+        for line in rf:
+            line = line.strip()
+            if line.startswith(id):
+                print(next(rf).replace('\n', ''), end='')
+
+
+def print_detail_m(id):
+    with open(details_file, encoding='utf8') as rf:
+        for line in rf:
+            line = line.strip()
+            if line.startswith(id):
+                print(next(rf), end='')
+                print(next(rf), end='')
+                print(next(rf))
+
+
+def print_detail_s(id):
+    with open(details_file, encoding='utf8') as rf:
+        for line in rf:
+            line = line.strip()
+            if line.startswith(id):
+                if not args.output:
+                    print(Style.BRIGHT + next(rf), end='')
+                    print("")
+                else:
                     print(next(rf), end='')
                     print("")
-                elif mode == 'l':
-                    print(next(rf).replace('\n', ''), end='')
-                elif mode == 's':
-                    if not args.output:
-                        print(Style.BRIGHT + next(rf), end='')
-                        print("")
-                    else:
-                        print(next(rf), end='')
-                        print("")
-                elif mode == 'h':
-                    if not args.output:
-                        print(Style.BRIGHT + Fore.RED + next(rf), end='')
-                    else:
-                        print(next(rf), end='')
-                elif mode == 'm':
+
+
+def print_detail_h(id):
+    with open(details_file, encoding='utf8') as rf:
+        for line in rf:
+            line = line.strip()
+            if line.startswith(id):
+                if not args.output:
+                    print(Style.BRIGHT + Fore.RED + next(rf), end='')
+                else:
                     print(next(rf), end='')
-                    print(next(rf), end='')
-                    print(next(rf))
 
 
 def get_detail(id):
-    details_file = get_language()
     with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
@@ -246,13 +269,13 @@ def get_detail(id):
 def python_ver():
     if sys.version_info < (3, 6):
         print("")
-        print_detail('[python]', 'd')
+        print_detail_d('[python]')
         sys.exit()
 
 
 def print_guides():
     print("")
-    print_detail('[guides]', 'a')
+    print_detail_a('[guides]')
     with open('guides.txt', 'r', encoding='utf8') as gd:
         for line in gd:
             if line.startswith('['):
@@ -268,13 +291,13 @@ def get_location():
 
 def analysis_detail():
     print(" ")
-    print_detail('[miss_cnt]', 'l')
+    print_detail_l('[miss_cnt]')
     print(str(m_cnt))
-    print_detail('[finger_cnt]', 'l')
+    print_detail_l('[finger_cnt]')
     print(str(f_cnt))
-    print_detail('[insecure_cnt]', 'l')
+    print_detail_l('[insecure_cnt]')
     print(str(i_cnt))
-    print_detail('[empty_cnt]', 'l')
+    print_detail_l('[empty_cnt]')
     print(str(e_cnt))
     print("")
     print(".:")
@@ -289,28 +312,28 @@ def request_exceptions():
             requests.exceptions.InvalidSchema):
         clean_output()
         print("")
-        print_detail('[e_schema]', 'l')
+        print_detail_l('[e_schema]')
         raise SystemExit
     except requests.exceptions.InvalidURL:
         clean_output()
         print("")
-        print_detail('[e_invalid]', 'l')
+        print_detail_l('[e_invalid]')
         raise SystemExit
     except requests.exceptions.HTTPError:
         if r.status_code == 403:
             clean_output()
             print("")
-            print_detail('[e_waf_gdpr]', 'l')
+            print_detail_l('[e_waf_gdpr]')
             raise SystemExit
         elif r.status_code == 407:
             clean_output()
             print("")
-            print_detail('[e_proxy]', 'l')
+            print_detail_l('[e_proxy]')
             raise SystemExit
         elif str(r.status_code).startswith("5"):
             clean_output()
             print("")
-            print_detail('[e_serror]', 'l')
+            print_detail_l('[e_serror]')
             raise SystemExit
 
     # Can be useful with self-signed certificates, development environments ...
@@ -320,12 +343,12 @@ def request_exceptions():
     except requests.exceptions.ConnectionError:
         clean_output()
         print("")
-        print_detail('[e_404]', 'l')
+        print_detail_l('[e_404]')
         raise SystemExit
     except requests.exceptions.Timeout:
         clean_output()
         print("")
-        print_detail('[e_timeout]', 'l')
+        print_detail_l('[e_timeout]')
         raise SystemExit
     except requests.exceptions.RequestException as err:
         raise SystemExit(err)
@@ -365,6 +388,8 @@ args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 URL = args.URL
 
+details_file = get_language()
+
 python_ver()
 
 # Show guides
@@ -381,13 +406,13 @@ country = get_location()
 
 if suffix[-2:] == "ru" or b'Russia' in country:
     print("")
-    print_detail("[bcnt]", "d")
+    print_detail_d("[bcnt]")
     sys.exit()
 elif suffix[-2:] == "ua" or b'Ukraine' in country:
-    print_detail('[analysis_ua]', 'a')
+    print_detail_a('[analysis_ua]')
 else:
     print("")
-    print_detail('[analysis]', 'a')
+    print_detail_a('[analysis]')
 
 # Regarding 'dh key too small' errors.
 # https://stackoverflow.com/a/41041028
@@ -443,7 +468,7 @@ print_headers()
 
 m_cnt = 0
 
-print_detail('[1missing]', 's')
+print_detail_s('[1missing]')
 
 list_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
              'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
@@ -461,7 +486,7 @@ if any(elem.lower() in headers for elem in list_miss):
             print_header(key)
             if not args.brief:
                 idx_m = list_miss.index(key)
-                print_detail(list_detail[idx_m], "d")
+                print_detail_d(list_detail[idx_m])
             m_cnt += 1
 
 # 'frame-ancestors' directive obsoletes the 'X-Frame-Options' header
@@ -471,7 +496,7 @@ elif 'X-Frame-Options' not in headers and 'Content-Security-Policy' in headers:
     if 'frame-ancestors' not in headers['Content-Security-Policy']:
         print_header('X-Frame-Options')
         if not args.brief:
-            print_detail("[mxfo]", "d")
+            print_detail_d("[mxfo]")
         m_cnt += 1
 
 # Shame, shame on you!. Have you not enabled *any* security HTTP header?.
@@ -483,7 +508,7 @@ if not any(elem.lower() in headers for elem in list_miss):
         print_header(key)
         if not args.brief:
             idx_m = list_miss.index(key)
-            print_detail(list_detail[idx_m], "d")
+            print_detail_d(list_detail[idx_m])
         m_cnt += 1
 
 if args.brief and m_cnt != 0:
@@ -503,10 +528,10 @@ print("")
 
 f_cnt = 0
 
-print_detail('[2fingerprint]', 's')
+print_detail_s('[2fingerprint]')
 
 if not args.brief:
-    print_detail("[afgp]", "a")
+    print_detail_a("[afgp]")
 
 with open('fingerprint.txt', 'r', encoding='utf8') as fn:
     list_fng = []
@@ -534,10 +559,10 @@ print("")
 
 i_cnt = 0
 
-print_detail('[3depinsecure]', 's')
+print_detail_s('[3depinsecure]')
 
 if not args.brief:
-    print_detail("[aisc]", "a")
+    print_detail_a("[aisc]")
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'Allow', 'Etag', 'Feature-Policy', 'HTTP instead HTTPS',
@@ -555,7 +580,7 @@ insecure_s = 'http:'
 if 'Access-Control-Allow-Methods' in headers and \
                                   any(elem.lower() in headers["Access-Control-\
 Allow-Methods"].lower() for elem in list_methods):
-    print_detail('[imethods_h]', 'h')
+    print_detail_h('[imethods_h]')
     if not args.brief:
         methods_list = "".join(str(x) for x in
                                headers["Access-Control-Allow-Methods"])
@@ -563,7 +588,7 @@ Allow-Methods"].lower() for elem in list_methods):
         match_method_str = ','.join(match_method)
         print(" Make sure these enabled HTTP methods are needed: " +
               match_method_str + ".")
-        print_detail("[imethods]", "a")
+        print_detail_a("[imethods]")
     i_cnt += 1
 
 if 'Access-Control-Allow-Origin' in headers:
@@ -571,27 +596,27 @@ if 'Access-Control-Allow-Origin' in headers:
     if any(elem.lower() in headers["Access-Control-Allow-Origin"].lower() for
        elem in list_access):
         if ('.*' and '*.') not in headers["Access-Control-Allow-Origin"]:
-            print_detail('[iaccess_h]', 'h')
+            print_detail_h('[iaccess_h]')
             if not args.brief:
-                print_detail("[iaccess]", "d")
+                print_detail_d("[iaccess]")
             i_cnt += 1
 
 if 'Allow' in headers:
     if any(elem.lower() in headers["Allow"].lower() for elem in list_methods):
-        print_detail('[imethods_hh]', 'h')
+        print_detail_h('[imethods_hh]')
         if not args.brief:
             print(" Make sure these enabled HTTP methods are needed: '" +
                   headers["Allow"] + "'.")
-            print_detail("[imethods]", "a")
+            print_detail_a("[imethods]")
         i_cnt += 1
 
 if 'Cache-Control' in headers:
     list_cache = ['no-cache', 'no-store', 'must-revalidate']
     if not all(elem.lower() in headers["Cache-Control"].lower() for elem in
                list_cache):
-        print_detail('[icache_h]', 'h')
+        print_detail_h('[icache_h]')
         if not args.brief:
-            print_detail("[icache]", "d")
+            print_detail_d("[icache]")
         i_cnt += 1
 
 if 'Content-Security-Policy' in headers:
@@ -615,19 +640,19 @@ if 'Content-Security-Policy' in headers:
 
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp_insecure):
-        print_detail('[icsp_h]', 'h')
+        print_detail_h('[icsp_h]')
         if not args.brief:
-            print_detail("[icsp]", "m")
+            print_detail_m("[icsp]")
         i_cnt += 1
     elif not any(elem.lower() in headers["Content-Security-Policy"].lower() for
                  elem in list_csp_directives):
-        print_detail('[icsi_h]', 'h')
+        print_detail_h('[icsi_h]')
         if not args.brief:
-            print_detail("[icsi]", "d")
+            print_detail_d("[icsi]")
         i_cnt += 1
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
            elem in list_csp_deprecated):
-        print_detail('[icsi_d]', 'h')
+        print_detail_h('[icsi_d]')
         if not args.brief:
             csp_list = "".join(str(x) for x in
                                headers["Content-Security-Policy"])
@@ -641,39 +666,39 @@ Headers/Content-Security-Policy")
     if '=' in headers['Content-Security-Policy']:
         if not any(elem.lower() in headers["Content-Security-Policy"].lower()
                    for elem in list_csp_equal):
-            print_detail('[icsn_h]', 'h')
+            print_detail_h('[icsn_h]')
             if not args.brief:
-                print_detail("[icsn]", "d")
+                print_detail_d("[icsn]")
             i_cnt += 1
     if (insecure_s in headers['Content-Security-Policy']) and \
             (URL[0:5] == 'https'):
-        print_detail('[icsh_h]', 'h')
+        print_detail_h('[icsh_h]')
         if not args.brief:
-            print_detail("[icsh]", "m")
+            print_detail_m("[icsh]")
         i_cnt += 1
 
 if 'Etag' in headers:
-    print_detail('[ieta_h]', 'h')
+    print_detail_h('[ieta_h]')
     if not args.brief:
-        print_detail("[ieta]", "d")
+        print_detail_d("[ieta]")
     i_cnt += 1
 
 if 'Expect-CT' in headers:
-    print_detail('[iexct_h]', 'h')
+    print_detail_h('[iexct_h]')
     if not args.brief:
-        print_detail("[iexct]", "d")
+        print_detail_d("[iexct]")
     i_cnt += 1
 
 if 'Feature-Policy' in headers:
-    print_detail('[iffea_h]', 'h')
+    print_detail_h('[iffea_h]')
     if not args.brief:
-        print_detail("[iffea]", "d")
+        print_detail_d("[iffea]")
     i_cnt += 1
 
 if URL[0:5] == insecure_s:
-    print_detail('[ihttp_h]', 'h')
+    print_detail_h('[ihttp_h]')
     if not args.brief:
-        print_detail("[ihttp]", "d")
+        print_detail_d("[ihttp]")
     i_cnt += 1
 
 if 'Permissions-Policy' in headers:
@@ -708,25 +733,25 @@ if 'Permissions-Policy' in headers:
                          'xr-spatial-tracking']
     if not any(elem.lower() in headers["Permissions-Policy"].lower() for
                elem in list_per_features):
-        print_detail('[ifpoln_h]', 'h')
+        print_detail_h('[ifpoln_h]')
         if not args.brief:
-            print_detail("[ifpoln]", "m")
+            print_detail_m("[ifpoln]")
         i_cnt += 1
     if '*' in headers['Permissions-Policy']:
-        print_detail('[ifpol_h]', 'h')
+        print_detail_h('[ifpol_h]')
         if not args.brief:
-            print_detail("[ifpol]", "d")
+            print_detail_d("[ifpol]")
         i_cnt += 1
     if 'none' in headers['Permissions-Policy']:
-        print_detail('[ifpoli_h]', 'h')
+        print_detail_h('[ifpoli_h]')
         if not args.brief:
-            print_detail("[ifpoli]", "d")
+            print_detail_d("[ifpoli]")
         i_cnt += 1
 
 if 'Public-Key-Pins' in headers:
-    print_detail('[ipkp_h]', 'h')
+    print_detail_h('[ipkp_h]')
     if not args.brief:
-        print_detail("[ipkp]", "d")
+        print_detail_d("[ipkp]")
     i_cnt += 1
 
 if 'Referrer-Policy' in headers:
@@ -734,29 +759,29 @@ if 'Referrer-Policy' in headers:
                 'no-referrer-when-downgrade', 'no-referrer']
     if not any(elem.lower() in headers["Referrer-Policy"].lower() for elem in
                list_ref):
-        print_detail('[iref_h]', 'h')
+        print_detail_h('[iref_h]')
         if not args.brief:
-            print_detail("[iref]", "m")
+            print_detail_m("[iref]")
         i_cnt += 1
     if 'unsafe-url' in headers['Referrer-Policy']:
-        print_detail('[irefi_h]', 'h')
+        print_detail_h('[irefi_h]')
         if not args.brief:
-            print_detail("[irefi]", "d")
+            print_detail_d("[irefi]")
         i_cnt += 1
 
 if 'Server-Timing' in headers:
-    print_detail('[itim_h]', 'h')
+    print_detail_h('[itim_h]')
     if not args.brief:
-        print_detail("[itim]", "d")
+        print_detail_d("[itim]")
     i_cnt += 1
 
 if 'Set-Cookie' in headers:
     list_cookie = ['secure', 'httponly']
     if not all(elem.lower() in headers["Set-Cookie"].lower() for elem in
        list_cookie):
-        print_detail('[iset_h]', 'h')
+        print_detail_h('[iset_h]')
         if not args.brief:
-            print_detail("[iset]", "d")
+            print_detail_d("[iset]")
         i_cnt += 1
 
 if ('Strict-Transport-Security' in headers) and (URL[0:5] != insecure_s):
@@ -765,119 +790,119 @@ if ('Strict-Transport-Security' in headers) and (URL[0:5] != insecure_s):
               n.isdigit()]))
     if not all(elem.lower() in headers["Strict-Transport-Security"].lower() for
        elem in list_sts) or (age is None or age < 31536000):
-        print_detail('[ists_h]', 'h')
+        print_detail_h('[ists_h]')
         if not args.brief:
-            print_detail("[ists]", "m")
+            print_detail_m("[ists]")
         i_cnt += 1
     if ',' in headers['Strict-Transport-Security']:
-        print_detail('[istsd_h]', 'h')
+        print_detail_h('[istsd_h]')
         if not args.brief:
-            print_detail("[istsd]", "d")
+            print_detail_d("[istsd]")
         i_cnt += 1
 
 if (URL[0:5] == insecure_s) and ('Strict-Transport-Security' in headers):
-    print_detail('[ihsts_h]', 'h')
+    print_detail_h('[ihsts_h]')
     if not args.brief:
-        print_detail("[ihsts]", "d")
+        print_detail_d("[ihsts]")
     i_cnt += 1
 
 if 'Timing-Allow-Origin' in headers and '*' in headers['Timing-Allow-Origin']:
-    print_detail('[itao_h]', 'h')
+    print_detail_h('[itao_h]')
     if not args.brief:
-        print_detail("[itao]", "d")
+        print_detail_d("[itao]")
     i_cnt += 1
 
 if (URL[0:5] == insecure_s) and ('WWW-Authenticate' in headers) and\
    ('Basic' in headers['WWW-Authenticate']):
-    print_detail('[ihbas_h]', 'h')
+    print_detail_h('[ihbas_h]')
     if not args.brief:
-        print_detail("[ihbas]", "d")
+        print_detail_d("[ihbas]")
     i_cnt += 1
 
 if 'X-Content-Security-Policy' in headers:
-    print_detail('[ixcsp_h]', 'h')
+    print_detail_h('[ixcsp_h]')
     if not args.brief:
-        print_detail("[ixcsp]", "d")
+        print_detail_d("[ixcsp]")
     i_cnt += 1
 
 if 'X-Content-Type-Options' in headers:
     if ',' in headers['X-Content-Type-Options']:
-        print_detail('[ictpd_h]', 'h')
+        print_detail_h('[ictpd_h]')
         if not args.brief:
-            print_detail("[ictpd]", "d")
+            print_detail_d("[ictpd]")
         i_cnt += 1
     elif 'nosniff' not in headers['X-Content-Type-Options']:
-        print_detail('[ictp_h]', 'h')
+        print_detail_h('[ictp_h]')
         if not args.brief:
-            print_detail("[ictp]", "d")
+            print_detail_d("[ictp]")
         i_cnt += 1
 
 if 'X-DNS-Prefetch-Control' in headers:
     if 'on' in headers['X-DNS-Prefetch-Control']:
-        print_detail('[ixdp_h]', 'h')
+        print_detail_h('[ixdp_h]')
         if not args.brief:
-            print_detail("[ixdp]", "d")
+            print_detail_d("[ixdp]")
         i_cnt += 1
 
 if 'X-Download-Options' in headers:
-    print_detail('[ixdow_h]', 'h')
+    print_detail_h('[ixdow_h]')
     if not args.brief:
-        print_detail("[ixdow]", "m")
+        print_detail_m("[ixdow]")
     i_cnt += 1
 
 if 'X-Frame-Options' in headers and ',' in headers['X-Frame-Options']:
-    print_detail('[ixfo_h]', 'h')
+    print_detail_h('[ixfo_h]')
     if not args.brief:
-        print_detail("[ixfo]", "m")
+        print_detail_m("[ixfo]")
     i_cnt += 1
 
 if 'X-Pad' in headers:
-    print_detail('[ixpad_h]', 'h')
+    print_detail_h('[ixpad_h]')
     if not args.brief:
-        print_detail("[ixpad]", "d")
+        print_detail_d("[ixpad]")
     i_cnt += 1
 
 if 'X-Permitted-Cross-Domain-Policies' in headers:
     if 'all' in headers['X-Permitted-Cross-Domain-Policies']:
-        print_detail('[ixcd_h]', 'h')
+        print_detail_h('[ixcd_h]')
         if not args.brief:
-            print_detail("[ixcd]", "m")
+            print_detail_m("[ixcd]")
         i_cnt += 1
 
 if 'X-Pingback' in headers and 'xmlrpc.php' in headers['X-Pingback']:
-    print_detail('[ixpb_h]', 'h')
+    print_detail_h('[ixpb_h]')
     if not args.brief:
-        print_detail("[ixpb]", "d")
+        print_detail_d("[ixpb]")
     i_cnt += 1
 
 if 'X-Robots-Tag' in headers and 'all' in headers['X-Robots-Tag']:
-    print_detail('[ixrob_h]', 'h')
+    print_detail_h('[ixrob_h]')
     if not args.brief:
-        print_detail("[ixrob]", "m")
+        print_detail_m("[ixrob]")
     i_cnt += 1
 
 if 'X-Runtime' in headers:
-    print_detail('[ixrun_h]', 'h')
+    print_detail_h('[ixrun_h]')
     if not args.brief:
-        print_detail("[ixrun]", "d")
+        print_detail_d("[ixrun]")
         i_cnt += 1
 
 if 'X-Webkit-CSP' in headers:
-    print_detail('[ixwcsp_h]', 'h')
+    print_detail_h('[ixwcsp_h]')
     if not args.brief:
-        print_detail("[ixcsp]", "d")
+        print_detail_d("[ixcsp]")
     i_cnt += 1
 
 if 'X-XSS-Protection' in headers:
     if '0' not in headers["X-XSS-Protection"]:
-        print_detail('[ixxp_h]', 'h')
+        print_detail_h('[ixxp_h]')
         if not args.brief:
-            print_detail("[ixxp]", "d")
+            print_detail_d("[ixxp]")
         i_cnt += 1
     if ',' in headers['X-XSS-Protection']:
-        print_detail('[ixxpd_h]', 'l')
+        print_detail_l('[ixxpd_h]')
         if not args.brief:
-            print_detail("[ixxpd]", "d")
+            print_detail_d("[ixxpd]")
         i_cnt += 1
 
 if args.brief and i_cnt != 0:
@@ -893,10 +918,10 @@ print("")
 
 e_cnt = 0
 
-print_detail('[4empty]', 's')
+print_detail_s('[4empty]')
 
 if not args.brief:
-    print_detail("[aemp]", "a")
+    print_detail_a("[aemp]")
 
 for key in sorted(headers):
     if not headers[key]:
@@ -918,7 +943,7 @@ print("")
 # caniuse.com support data contributions under CC-BY-4.0 license
 # https://github.com/Fyrd/caniuse/blob/main/LICENSE
 
-print_detail('[5compat]', 's')
+print_detail_s('[5compat]')
 
 compat_site = "https://caniuse.com/?search="
 csp_replace = "contentsecuritypolicy2"

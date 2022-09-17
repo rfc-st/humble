@@ -177,7 +177,6 @@ Any HTTP response header.
 ## To-do
 
 - [ ] Add more header/value checks (only security-oriented)
-- [ ] Add analysis rating
 - [ ] Show the application related to each fingerprint header
 
 ## Further reading
