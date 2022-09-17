@@ -89,13 +89,13 @@
  X-DNS-Prefetch-Control (Cabecera potencialmente insegura)
 
 [ixdow_h]
- X-Download-Options (Cabecera deprecada)
+ X-Download-Options (Cabecera obsoleta)
 
 [ixfo_h]
  X-Frame-Options (Valores duplicados)
 
 [ixpad_h]
- X-Pad (Cabecera deprecada)
+ X-Pad (Cabecera obsoleta)
 
 [ixcd_h]
  X-Permitted-Cross-Domain-Policies (Valor inseguro)
@@ -109,8 +109,8 @@
 [ixrun_h]
  X-Runtime (Valor inseguro)
 
-[ixcsp_h]
- X-Webkit-CSP (Cabecera deprecada)
+[ixwcsp_h]
+ X-Webkit-CSP (Cabecera obsoleta)
 
 [ixxp_h]
  X-XSS-Protection (Valor inseguro)
@@ -404,7 +404,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
 [ixdow]
- ESta cabecera es exclusiva de Internet Explorer 8 (obsoleto desde 2016).
+ Esta cabecera es exclusiva de Internet Explorer 8 (obsoleto desde 2016).
  Ref: https://www.nwebsec.com/HttpHeaders/SecurityHeaders/XDownloadOptions
  Ref: https://docs.microsoft.com/en-us/lifecycle/products/internet-explorer-8
 

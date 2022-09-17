@@ -57,7 +57,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/09/10. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/09/17. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -197,6 +197,9 @@ def print_headers():
                 print(" " + key + ':', value)
     print('\n')
 
+
+# Looking for ways to refactor this function to reduce its cognitive
+# complexity (from 21 to 15) ...
 
 def print_detail(id, mode):
     details_file = get_language()
@@ -405,8 +408,9 @@ request_exceptions()
 c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; \
  rv:100.0) Gecko/20100101 Firefox/100.0'}
 
-# About suppression of warnings and non-verification of SSL certificates:
-# could be useful with self-signed certificates, development environments ...
+# Yes: Server certificates should be verified during SSL/TLS connections.
+# Despite this, I think 'verify=False' would benefit analysis of URLs with
+# self-signed certificates, associated with development environments, etc. ...
 
 requests.packages.urllib3.disable_warnings()
 r = requests.get(URL, verify=False, headers=c_headers, timeout=60)
@@ -859,7 +863,7 @@ if 'X-Runtime' in headers:
         i_cnt += 1
 
 if 'X-Webkit-CSP' in headers:
-    print_detail('[ixcsp_h]', 'h')
+    print_detail('[ixwcsp_h]', 'h')
     if not args.brief:
         print_detail("[ixcsp]", "d")
     i_cnt += 1

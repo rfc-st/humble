@@ -109,7 +109,7 @@
 [ixrun_h]
  X-Runtime (Unsafe Value)
 
-[ixcsp_h]
+[ixwcsp_h]
  X-Webkit-CSP (Deprecated Header)
 
 [ixxp_h]
