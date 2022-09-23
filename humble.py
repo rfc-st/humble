@@ -908,7 +908,6 @@ if args.brief and i_cnt != 0:
 
 if i_cnt == 0:
     print_ok()
-    print("")
 
 print("")
 
