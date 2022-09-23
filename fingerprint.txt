@@ -11,7 +11,10 @@ KBN-Version
 Liferay-Portal
 MicrosoftOfficeWebServer
 MicrosoftSharePointTeamServices
+MS-ASProtocolCommands
+MS-ASProtocolVersions
 MS-Author-Via
+MS-Server-ActiveSync
 OracleCommerceCloud-Version
 Oracle-Mobile-Runtime-Version
 Platform
@@ -136,7 +139,12 @@ X-Magento-Cache-Control
 X-Magnolia-Registration
 X-Magento-Cache-Debug
 X-Mod-Pagespeed
+X-MS-ASThrottle
+X-MS-Credential-Service-Url
+X-MS-Credentials-Expire
 X-MS-InvokeApp
+X-MS-Location
+X-MS-RP
 X-MS-Version
 X-Nextjs-Cache
 X-Nginx-Cache
@@ -151,6 +159,7 @@ X-Nitro-Rev
 X-ORACLE-DMS-ECID
 X-ORACLE-DMS-RID
 X-OWA-Version
+X-OWA-OWSVersion
 X-Page-Speed
 X-PHPFusion
 X-Plenty-Shop
