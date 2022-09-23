@@ -33,9 +33,12 @@
 # Show the application related to each fingerprint header
 
 # ADVICE:
-# Use the information provided by this program *wisely*: there is far more
+# Use the information provided by this script *wisely*: there is far more
 # merit in teaching, learning and helping others than in taking shortcuts to
-# harm, attack or take advantage. Think about it!
+# harm, attack or take advantage.
+#
+# Don't just be a 'script kiddie'. If you are interested in this world,
+# research, learn, and become a Security analyst. Good luck!.
 
 from datetime import datetime
 from fpdf import FPDF, HTMLMixin
