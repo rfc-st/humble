@@ -1,3 +1,12 @@
+[icsi_d_r]
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+
+[icsi_d_s]
+ Evite utilizar directivas obsoletas: 
+
+[imethods_s]
+ Asegúrese de que estos métodos HTTP habilitados son necesarios: 
+
 [icsp_h]
  Content-Security-Policy (Valores inseguros)
 

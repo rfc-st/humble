@@ -27,7 +27,6 @@
 # INFO:
 # PEP8 compliant (http://pep8online.com/). Yay!
 # Recommended terminal width for best output: 152
-# Keep improving i18n
 
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
@@ -56,7 +55,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/09/17. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/09/23. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -565,12 +564,12 @@ if not args.brief:
     print_detail_a("[aisc]")
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
-            'Allow', 'Etag', 'Feature-Policy', 'HTTP instead HTTPS',
-            'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
-            'Timing-Allow-Origin', 'X-Content-Security-Policy',
-            'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad',
-            'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
-            'X-Webkit-CSP', 'X-XSS-Protection']
+            'Allow', 'Etag', 'Expect-CT', 'Feature-Policy',
+            'HTTP instead HTTPS', 'Public-Key-Pins', 'Set-Cookie',
+            'Server-Timing', 'Timing-Allow-Origin',
+            'X-Content-Security-Policy', 'X-DNS-Prefetch-Control',
+            'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
+            'X-Pingback', 'X-Runtime', 'X-Webkit-CSP', 'X-XSS-Protection']
 
 list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
                 'DELETE', 'DEBUG', 'PATCH', '*']
@@ -586,8 +585,8 @@ Allow-Methods"].lower() for elem in list_methods):
                                headers["Access-Control-Allow-Methods"])
         match_method = [x for x in list_methods if x in methods_list]
         match_method_str = ','.join(match_method)
-        print(" Make sure these enabled HTTP methods are needed: " +
-              match_method_str + ".")
+        print_detail_l("[imethods_s]")
+        print(match_method_str)
         print_detail_a("[imethods]")
     i_cnt += 1
 
@@ -605,8 +604,8 @@ if 'Allow' in headers:
     if any(elem.lower() in headers["Allow"].lower() for elem in list_methods):
         print_detail_h('[imethods_hh]')
         if not args.brief:
-            print(" Make sure these enabled HTTP methods are needed: '" +
-                  headers["Allow"] + "'.")
+            print_detail_l("[imethods_s]")
+            print(headers["Allow"])
             print_detail_a("[imethods]")
         i_cnt += 1
 
@@ -658,10 +657,9 @@ if 'Content-Security-Policy' in headers:
                                headers["Content-Security-Policy"])
             match = [x for x in list_csp_deprecated if x in csp_list]
             match_str = ', '.join(match)
-            print(" Avoid using deprecated directives: " + match_str + "." +
-                  "\n Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/\
-Headers/Content-Security-Policy")
-            print("")
+            print_detail_l("[icsi_d_s]")
+            print(match_str)
+            print_detail_a("[icsi_d_r]")
         i_cnt += 1
     if '=' in headers['Content-Security-Policy']:
         if not any(elem.lower() in headers["Content-Security-Policy"].lower()
