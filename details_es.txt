@@ -260,7 +260,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 
 [mcsp]
  Detecta y mitiga, entre otros, ataques Cross-site scripting.
- Ref: https://content-security-policy.com/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [mpermission]
  Anteriormente llamada "Feature-Policy", permite o deniega funciones del navegador.
@@ -409,7 +409,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 
 [ixcsp]
  Esta cabecera está obsoleta; utilice la cabecera "Content-Security-Policy".
- Ref: https://content-security-policy.com/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [ixdp]
  Esta cabecera puede eludir las directivas de la cabecera "Content-Security-Policy".

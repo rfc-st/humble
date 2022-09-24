@@ -260,7 +260,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 
 [mcsp]
  Detect and mitigate Cross Site Scripting (XSS) and data injection attacks, among others.
- Ref: https://content-security-policy.com/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [mpermission]
  Previously called "Feature-Policy", allow and deny the use of browser features.
@@ -409,7 +409,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 
 [ixcsp]
  This header is deprecated. Use instead "Content-Security-Policy".
- Ref: https://content-security-policy.com/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [ixdp]
  Enabling DNS prefetching could bypass "Content-Security-Policy" directives.
