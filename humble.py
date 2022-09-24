@@ -58,7 +58,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/09/23. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/09/24. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -567,9 +567,8 @@ if not args.brief:
     print_detail_a("[aisc]")
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
-            'Allow', 'Etag', 'Expect-CT', 'Feature-Policy',
-            'HTTP instead HTTPS', 'Public-Key-Pins', 'Set-Cookie',
-            'Server-Timing', 'Timing-Allow-Origin',
+            'Allow', 'Etag', 'Expect-CT', 'Feature-Policy', 'Public-Key-Pins',
+            'Set-Cookie', 'Server-Timing', 'Timing-Allow-Origin',
             'X-Content-Security-Policy', 'X-DNS-Prefetch-Control',
             'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
             'X-Pingback', 'X-Runtime', 'X-Webkit-CSP', 'X-XSS-Protection']
@@ -971,11 +970,11 @@ if any(elem.lower() in headers for elem in list_sec):
 
 if not any(elem.lower() in headers for elem in list_miss):
     if not args.output:
-        print(Style.BRIGHT + Fore.RED + " No HTTP security headers are \
-enabled.")
+        print_detail_h("[bcompat_n]")
     else:
-        print(" No HTTP security headers are enabled.")
+        print_detail_l("[bcompat_n]")
 
+print("")
 print("")
 print("")
 end = time.time()
@@ -1067,9 +1066,9 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                              line[7:] + '</a>')
             elif any(s in line for s in bold_strings):
                 output.write('<strong>' + line + '</strong>')
-            elif ' Nothing to ' in line or ' Nada que ' in line:
+            elif ' Nothing to ' in line or ' Todo parece ' in line:
                 output.write('<span class="ok">' + line + span_s)
-            elif ' No HTTP' in line:
+            elif ' No HTTP' in line or ' No hay cabeceras' in line:
                 output.write('<span class="ko">' + line + span_s)
             elif ' Ref: ' in line:
                 output.write(line[:6] + ahref_s + line[6:] + '">' +

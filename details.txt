@@ -1,3 +1,6 @@
+[bcompat_n]
+ No HTTP security headers are enabled.
+
 [icsi_d_r]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
