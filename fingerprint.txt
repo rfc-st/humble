@@ -1,4 +1,5 @@
 Arastta
+Azure-AsyncOperation
 CMS-Version
 COMMERCE-SERVER-SOFTWARE
 Composed-By
@@ -140,10 +141,13 @@ X-Magnolia-Registration
 X-Magento-Cache-Debug
 X-Mod-Pagespeed
 X-MS-ASThrottle
+X-MS-Client-Request-Id
 X-MS-Credential-Service-Url
 X-MS-Credentials-Expire
+X-MS-Correlation-Id
 X-MS-InvokeApp
 X-MS-Location
+X-MS-Request-Id
 X-MS-RP
 X-MS-Version
 X-Nextjs-Cache
