@@ -1066,9 +1066,9 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                              line[7:] + '</a>')
             elif any(s in line for s in bold_strings):
                 output.write('<strong>' + line + '</strong>')
-            elif ' Nothing to ' in line or ' Todo parece ' in line:
+            elif get_detail('[ok]') in line:
                 output.write('<span class="ok">' + line + span_s)
-            elif ' No HTTP' in line or ' No hay cabeceras' in line:
+            elif get_detail('[bcompat_n]') in line:
                 output.write('<span class="ko">' + line + span_s)
             elif ' Ref: ' in line:
                 output.write(line[:6] + ahref_s + line[6:] + '">' +
