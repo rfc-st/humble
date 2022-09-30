@@ -25,7 +25,6 @@
 # SOFTWARE.
 
 # INFO:
-# PEP8 compliant (http://pep8online.com/). Yay!
 # Recommended terminal width for best output: 152
 
 # TO-DO:
@@ -58,7 +57,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/09/24. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/09/30. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
