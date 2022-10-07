@@ -37,6 +37,9 @@
 [icsh_h]
  Content-Security-Policy (Insecure Schemes)
 
+[icsw_h]
+ Content-Security-Policy (Too Permissive Value)
+
 [ieta_h]
  Etag (Potentially Unsafe Header)
 
@@ -315,6 +318,10 @@ Articles that may be useful to secure servers/services and enable security HTTP 
  It is not recommended to allow content of insecure schemes ('http://').
  Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-implemented-with-insecure-scheme.html
  Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-allowing-media-to-be-loaded.html
+
+[icsw]
+ Limit the allowed sources in the directives. The value '*' allows any URL.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [ictp]
  The only valid value is 'nosniff'.

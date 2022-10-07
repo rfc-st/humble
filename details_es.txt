@@ -37,6 +37,9 @@
 [icsh_h]
  Content-Security-Policy (Esquemas inseguros)
 
+[icsw_h]
+ Content-Security-Policy (Valor muy permisivo)
+
 [ieta_h]
  Etag (Cabecera potencialmente insegura)
 
@@ -315,6 +318,10 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  No es recomendable permitir contenido de esquemas inseguros ('http://').
  Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-implemented-with-insecure-scheme.html
  Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-allowing-media-to-be-loaded.html
+
+[icsw]
+ Limite las fuentes permitidas en las directivas. El valor '*' permite cualquier URL.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [ictp]
  El único valor permitido es 'nosniff'.

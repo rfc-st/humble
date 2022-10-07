@@ -2,11 +2,12 @@ Access-Control-Allow-Methods: Insecure Methods
 Access-Control-Allow-Origin: Unsafe Values
 Allow: Insecure Methods
 Cache-Control: Recommended Values
-Content-Security-Policy: Unsafe Values
 Content-Security-Policy: No Valid Directives
 Content-Security-Policy: Deprecated Directives
 Content-Security-Policy: Incorrect values
 Content-Security-Policy: Insecure Schemes
+Content-Security-Policy: Too Permissive Value
+Content-Security-Policy: Unsafe Values
 Etag: Potentially Unsafe Header
 Expect-CT: Deprecated Header
 Feature-Policy: Deprecated Header

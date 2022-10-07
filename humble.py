@@ -57,7 +57,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/09/30. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/10/07. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -674,6 +674,12 @@ if 'Content-Security-Policy' in headers:
         print_detail_h('[icsh_h]')
         if not args.brief:
             print_detail_m("[icsh]")
+        i_cnt += 1
+    if '*' in headers['Content-Security-Policy'] and \
+       (('*.' or '.*') not in headers['Content-Security-Policy']):
+        print_detail_h('[icsw_h]')
+        if not args.brief:
+            print_detail_d("[icsw]")
         i_cnt += 1
 
 if 'Etag' in headers:
