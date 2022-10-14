@@ -855,16 +855,17 @@ if 'X-Download-Options' in headers:
         print_detail_m("[ixdow]")
     i_cnt += 1
 
-if 'X-Frame-Options' in headers and ',' in headers['X-Frame-Options']:
-    print_detail_h('[ixfo_h]')
-    if not args.brief:
-        print_detail_m("[ixfo]")
-    i_cnt += 1
-if 'allow-from' in headers['X-Frame-Options'].lower():
-    print_detail_h('[ixfod_h]')
-    if not args.brief:
-        print_detail_m("[ixfod]")
-    i_cnt += 1
+if 'X-Frame-Options' in headers:
+    if ',' in headers['X-Frame-Options']:
+        print_detail_h('[ixfo_h]')
+        if not args.brief:
+            print_detail_m("[ixfo]")
+        i_cnt += 1
+    if 'allow-from' in headers['X-Frame-Options'].lower():
+        print_detail_h('[ixfod_h]')
+        if not args.brief:
+            print_detail_m("[ixfod]")
+        i_cnt += 1
 
 if 'X-Pad' in headers:
     print_detail_h('[ixpad_h]')
