@@ -199,6 +199,7 @@ X-ORACLE-DMS-RID
 X-OWA-Version
 X-OWA-OWSVersion
 X-Page-Speed
+X-PHP-Version
 X-PHPFusion
 X-Plenty-Shop
 X-Powered-By
