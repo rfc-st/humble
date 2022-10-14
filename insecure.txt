@@ -30,6 +30,7 @@ X-Content-Type-Options: Duplicated Values
 X-Content-Type-Options: Incorrect Value
 X-DNS-Prefetch-Control: Potentially Unsafe Header
 X-Download-Options: Deprecated Header
+X-Frame-Options: Deprecated Values
 X-Frame-Options: Duplicated Values
 X-Pad: Deprecated Header
 X-Permitted-Cross-Domain-Policies: Unsafe Value

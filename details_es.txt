@@ -109,6 +109,9 @@
 [ixfo_h]
  X-Frame-Options (Valores duplicados)
 
+[ixfod_h]
+ X-Frame-Options (Valor obsoleto)
+
 [ixpad_h]
  X-Pad (Cabecera obsoleta)
 
@@ -428,8 +431,13 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://docs.microsoft.com/en-us/lifecycle/products/internet-explorer-8
 
 [ixfo]
- Revise la duplicidad de esta cabecera o su valores.
- Se recomienda reemplazarla por la cabecera "Content-Security-Policy".
+ Revise la duplicidad de esta cabecera o sus valores.
+ Mejor aún: sustituya esta cabecera por la directiva 'frame-ancestors' de Content-Security-Policy.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+
+[ixfod]
+ "ALLOW-FROM" no está soportado en los navegadores actuales.
+ Sustituya esta cabecera por la directiva 'frame-ancestors' de Content-Security-Policy.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
 [ixpad]

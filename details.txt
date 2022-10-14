@@ -109,6 +109,9 @@
 [ixfo_h]
  X-Frame-Options (Duplicated Values)
 
+[ixfod_h]
+ X-Frame-Options (Deprecated Values)
+
 [ixpad_h]
  X-Pad (Deprecated Header)
 
@@ -429,7 +432,12 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 
 [ixfo]
  This header, or its values, may be duplicated.
- Better yet: replace its functionality with the "Content-Security-Policy" header.
+ Replace this header with the Content-Security-Policy 'frame-ancestors' directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+
+[ixfod]
+ "ALLOW-FROM" no longer works in modern browsers.
+ Replace this header with the Content-Security-Policy 'frame-ancestors' directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
 [ixpad]

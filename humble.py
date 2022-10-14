@@ -57,7 +57,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/10/07. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/10/14. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -859,6 +859,11 @@ if 'X-Frame-Options' in headers and ',' in headers['X-Frame-Options']:
     print_detail_h('[ixfo_h]')
     if not args.brief:
         print_detail_m("[ixfo]")
+    i_cnt += 1
+if 'allow-from' in headers['X-Frame-Options'].lower():
+    print_detail_h('[ixfod_h]')
+    if not args.brief:
+        print_detail_m("[ixfod]")
     i_cnt += 1
 
 if 'X-Pad' in headers:
