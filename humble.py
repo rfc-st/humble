@@ -29,7 +29,7 @@
 
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
-# Show the application related to each fingerprint header
+# Show the application related to each fingerprint header (WIP)
 
 # ADVICE:
 # Use the information provided by this script *wisely*: there is far more
@@ -157,6 +157,18 @@ def print_ok():
 def print_header(header):
     if not args.output:
         print(Style.BRIGHT + Fore.RED + " " + header)
+    else:
+        print(" " + header)
+
+
+def print_header_fng(header):
+    if not args.output:
+        if '[' in header:
+            print(Style.BRIGHT + Fore.RED + " " +
+                  header.partition(' [')[0].strip() + Style.NORMAL +
+                  Fore.RESET + " [" + header.partition(' [')[2].strip())
+        else:
+            print(Style.BRIGHT + Fore.RED + " " + header)
     else:
         print(" " + header)
 
@@ -536,13 +548,16 @@ if not args.brief:
 
 with open('fingerprint.txt', 'r', encoding='utf8') as fn:
     list_fng = []
+    list_fng_ex = []
     for line in fn:
-        list_fng.append(line.strip())
+        list_fng.append(line.partition(' [')[0].strip())
+        list_fng_ex.append(line.strip())
 
 if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
         if key in headers and headers[key]:
-            print_header(key)
+            index_fng = list_fng.index(key)
+            print_header_fng(list_fng_ex[index_fng])
             if not args.brief:
                 print(" " + headers[key])
                 print("")

@@ -1,87 +1,87 @@
-Arastta
-Azure-AsyncOperation
-CMS-Version
-COMMERCE-SERVER-SOFTWARE
-Composed-By
-Generator
-Hummingbird-Cache
-IBM-Web2-Location
-ITX-Generated-Timestamp
-KBN-Name
-KBN-Version
-Liferay-Portal
-Magestack-Area
-Magestack-Cache
-Magestack-Cacheable
-Magestack-Cacheable-Reason
-Magestack-Cache-Hits
-Magestack-Cache-Lifetime
-Magestack-Cache-Status
-Magestack-Cache-Warning
-Magestack-Config
-Magestack-Debug
-Magestack-Last-Modified
-Magestack-Loadbalancer
-Magestack-Magento-Version
-Magestack-Pagespeed
-Magestack-Response-Ttl
-MageStack-Spdy
-Magestack-Tag
-Magestack-Web-Node
-MageStack-Whitelist-Debug
-MageStack-Whitelisted-Http-Host
-MageStack-Whitelisted-Ip
-MageStack-Whitelisted-Uri
-MageStack-Whitelisted-User-Agent
-MicrosoftOfficeWebServer
-MicrosoftSharePointTeamServices
-MS-ASProtocolCommands
-MS-ASProtocolVersions
-MS-Author-Via
-MS-Server-ActiveSync
-OracleCommerceCloud-Version
-Oracle-Mobile-Runtime-Version
-Platform
-Powered-By
-Processed-By
-Product
-Server
-Servlet-Engine
-SharePointHealthScore
-Simplycom-Server
-SPIisLatency
-SPRequestDuration
-SPRequestGuid
-SW-Context-Token
-SW-Invalidation-States
-SW-Language-ID
-SW-Version-ID
-Swift-Performance
-Via
+Arastta [Arastta eCommerce]
+Azure-AsyncOperation [Azure Resource Manager]
+CMS-Version [Generic Content Management System software]
+COMMERCE-SERVER-SOFTWARE [Microsoft Commerce Server]
+Composed-By [Generic Publishing Software]
+Generator [Generic Publishing Software]
+Hummingbird-Cache [Hummingbird Wordpress Plugin]
+IBM-Web2-Location [IBM WebSphere Commerce]
+ITX-Generated-Timestamp [IBM WebSphere Commerce]
+KBN-Name [Kibana]
+KBN-Version [Kibana]
+Liferay-Portal [Liferay Portal]
+Magestack-Area [MageStack eCommerce]
+Magestack-Cache [MageStack eCommerce]
+Magestack-Cacheable [MageStack eCommerce]
+Magestack-Cacheable-Reason [MageStack eCommerce]
+Magestack-Cache-Hits [MageStack eCommerce]
+Magestack-Cache-Lifetime [MageStack eCommerce]
+Magestack-Cache-Status [MageStack eCommerce]
+Magestack-Cache-Warning [MageStack eCommerce]
+Magestack-Config [MageStack eCommerce]
+Magestack-Debug [MageStack eCommerce]
+Magestack-Last-Modified [MageStack eCommerce]
+Magestack-Loadbalancer [MageStack eCommerce]
+Magestack-Magento-Version [MageStack eCommerce]
+Magestack-Pagespeed [MageStack eCommerce]
+Magestack-Response-Ttl [MageStack eCommerce]
+MageStack-Spdy [MageStack eCommerce]
+Magestack-Tag [MageStack eCommerce]
+Magestack-Web-Node [MageStack eCommerce]
+MageStack-Whitelist-Debug [MageStack eCommerce]
+MageStack-Whitelisted-Http-Host [MageStack eCommerce]
+MageStack-Whitelisted-Ip [MageStack eCommerce]
+MageStack-Whitelisted-Uri [MageStack eCommerce]
+MageStack-Whitelisted-User-Agent [MageStack eCommerce]
+MicrosoftOfficeWebServer [Microsoft Office Web Server]
+MicrosoftSharePointTeamServices [Microsoft SharePoint Team Services]
+MS-ASProtocolCommands [Microsoft Exchange Server]
+MS-ASProtocolVersions [Microsoft Exchange Server]
+MS-Author-Via [Microsoft WebDAV Server Extension]
+MS-Server-ActiveSync [Microsoft Exchange Server]
+OracleCommerceCloud-Version [Oracle Commerce Cloud]
+Oracle-Mobile-Runtime-Version [Oracle Mobile Cloud Service]
+Platform [Generic Publishing Software]
+Powered-By [Generic Scripting Technology]
+Processed-By [Generic Scripting Technology]
+Product [Generic Publishing Software]
+Server [Generic Web Server/Content Delivery Network]
+Servlet-Engine [Generic Servlet Engine Software]
+SharePointHealthScore [Microsoft SharePoint Services]
+Simplycom-Server [simply.com HTTP Server]
+SPIisLatency [Microsoft SharePoint Online]
+SPRequestDuration [Microsoft SharePoint Online]
+SPRequestGuid [Microsoft SharePoint Services]
+SW-Context-Token [Shopware]
+SW-Invalidation-States [Shopware]
+SW-Language-ID [Shopware]
+SW-Version-ID [Shopware]
+Swift-Performance [Swift Performance Wordpress Plugin]
+Via [Added by Proxy server]
 WebDevSrc
-Weglot-Translated
-WP-Super-Cache
-WPO-Cache-Status
-X-Accel-Buffering
-X-Accel-Redirect
-X-Accel-Charset
-X-Accel-Expires
-X-Accel-Limit-Rate
-X-Advertising-By
-X-AH-Environment
-X-Akaunting
-X-Application-Context
-X-Arastta
-X-AspNet-Version
-X-AspNetMvc-Version
-X-ATG-Version
-X-B3-Flags
-X-B3-ParentSpanId
-X-B3-Sampled
-X-B3-SpanId
-X-B3-TraceId
-X-Backend
-X-Backend-Server
+Weglot-Translated [Weglot Translate WordPress Plugin]
+WP-Super-Cache [WP Super Cache WordPress Plugin]
+WPO-Cache-Status [WP-Optimize Worpress Plugin]
+X-Accel-Buffering [NGINX Web Server]
+X-Accel-Redirect [NGINX Web Server]
+X-Accel-Charset [NGINX Web Server]
+X-Accel-Expires [NGINX Web Server]
+X-Accel-Limit-Rate [NGINX Web Server]
+X-Advertising-By [Generic Publishing Software]
+X-AH-Environment [Varnish HTTP accelerator]
+X-Akaunting [Akaunting software]
+X-Application-Context [Spring Boot]
+X-Arastta [Arastta eCommerce]
+X-AspNet-Version [Microsoft .NET Framework]
+X-AspNetMvc-Version [Microsoft .NET Framework]
+X-ATG-Version [Oracle ATG Web Commerce]
+X-B3-Flags [Zipkin Tracing]
+X-B3-ParentSpanId [Zipkin Tracing]
+X-B3-Sampled [Zipkin Tracing]
+X-B3-SpanId [Zipkin Tracing]
+X-B3-TraceId [Zipkin Tracing]
+X-Backend [Generic Backend Web Server]
+X-Backend-Server [Generic Backend Web Server]
 X-Backdrop-Cache
 X-Backside-Transport
 X-BEServer
@@ -153,12 +153,12 @@ X-JIVE-USER-ID
 X-JSL
 X-KoobooCMS-Version
 X-Lift-Version
-X-Litespeed-Alt-Svc
-X-Litespeed-Cache
-X-Litespeed-Cache-Control
-X-LiteSpeed-Purge
-X-LiteSpeed-Tag
-X-LiteSpeed-Vary
+X-Litespeed-Alt-Svc [LiteSpeed Web Server]
+X-Litespeed-Cache [LiteSpeed Web Server]
+X-Litespeed-Cache-Control [LiteSpeed Web Server] 
+X-LiteSpeed-Purge [LiteSpeed Web Server]
+X-LiteSpeed-Tag [LiteSpeed Web Server]
+X-LiteSpeed-Vary [LiteSpeed Web Server]
 X-Magento-Tags
 X-Magento-Cache-Control
 X-Magnolia-Registration
@@ -203,7 +203,7 @@ X-Page-Speed
 X-PHP-Version
 X-PHPFusion
 X-Plenty-Shop
-X-Powered-By
+X-Powered-By [Generic Web Server/Technology]
 X-Powered-By-Plesk
 X-Powered-CMS
 X-Powered-Framework
@@ -238,24 +238,24 @@ X-Supplied-By
 X-TEC-API-ORIGIN
 X-TEC-API-ROOT
 X-TEC-API-VERSION
-X-Tncms
-X-Trove-App-Name
-X-Trove-Country-Code
-X-Trove-Order-UUID
-X-Storefront-Renderer-Rendered
-X-Storefront-Renderer-Verified
-X-Turbo-Charged-By
-X-Umbraco-Version
-X-Using-Nginx-Controller
-X-Varnish
-X-Varnish-Cache
-X-Varnish-CC
-X-Vercel-Cache
-X-Vercel-ID
-X-Version
-X-Version-Id
-X-Wix-Renderer-Server
-X-Wix-Request-Id
-X-Wix-Server-Artifact-Id
-X-Yerdle-APP-Name
-X-Zendesk-User-ID
+X-Tncms [Generic Content Management System]
+X-Trove-App-Name [Trove Database as a Service]
+X-Trove-Country-Code [Trove Database as a Service]
+X-Trove-Order-UUID [Trove Database as a Service]
+X-Storefront-Renderer-Rendered [Shopify.com Platform]
+X-Storefront-Renderer-Verified [Shopify.com Platform]
+X-Turbo-Charged-By [Generic Web Server/Content Delivery Network]
+X-Umbraco-Version [Umbraco Content Management System]
+X-Using-Nginx-Controller [NGINX Web Server]
+X-Varnish [Varnish HTTP accelerator]
+X-Varnish-Cache [Varnish HTTP accelerator]
+X-Varnish-CC [Varnish HTTP accelerator]
+X-Vercel-Cache [Vercel.com Cache]
+X-Vercel-ID [Vercel.com Platform ID]
+X-Version [Generic Software Version ID]
+X-Version-Id [Generic Software Version ID]
+X-Wix-Renderer-Server [Wix.com Publishing Software]
+X-Wix-Request-Id [Wix.com Publishing Software]
+X-Wix-Server-Artifact-Id [Wix.com Publishing Software]
+X-Yerdle-APP-Name [Yerdle Software]
+X-Zendesk-User-ID [Zendesk Customer Relationship Management]

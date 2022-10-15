@@ -177,7 +177,7 @@ Any HTTP response header.
 ## To-do
 
 - [ ] Add more header/value checks (only security-oriented)
-- [ ] Show the application related to each fingerprint header
+- [ ] Show the application related to each fingerprint header (WIP)
 
 ## Further reading
 
