@@ -911,7 +911,7 @@ if 'X-XSS-Protection' in headers:
             print_detail_d("[ixxp]")
         i_cnt += 1
     if ',' in headers['X-XSS-Protection']:
-        print_detail_l('[ixxpd_h]')
+        print_detail_h('[ixxpd_h]')
         if not args.brief:
             print_detail_d("[ixxpd]")
         i_cnt += 1
