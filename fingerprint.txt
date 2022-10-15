@@ -95,6 +95,7 @@ X-Cluster
 X-CMS
 X-CMS-Version
 X-Cocoon-Version
+X-Commerce-Core
 X-Compressed-By
 X-Confluence-Request-Time
 X-Content-Encoded-By

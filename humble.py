@@ -57,7 +57,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/10/14. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/10/15. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -436,7 +436,7 @@ c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; \
 
 # Yes: Server certificates should be verified during SSL/TLS connections.
 # Despite this, I think 'verify=False' would benefit analysis of URLs with
-# self-signed certificates, associated with development environments, etc. ...
+# self-signed certificates, associated with development environments, etc.
 
 requests.packages.urllib3.disable_warnings()
 r = requests.get(URL, verify=False, headers=c_headers, timeout=60)
