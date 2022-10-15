@@ -82,15 +82,15 @@ X-B3-SpanId [Zipkin Tracing]
 X-B3-TraceId [Zipkin Tracing]
 X-Backend [Generic Backend Web Server]
 X-Backend-Server [Generic Backend Web Server]
-X-Backdrop-Cache
-X-Backside-Transport
-X-BEServer
-X-Bitrix-Composite
-X-Built-With
-X-Cache-Handler
-X-Cache-Only-Varnish
-X-Cache-Type
-X-CF-Powered-By
+X-Backdrop-Cache [Backdrop Content Management System]
+X-Backside-Transport [IBM WebSphere DataPower]
+X-BEServer [Microsof Exchange ActiveSync]
+X-Bitrix-Composite [Bitrix24 Customer Relationship Management]
+X-Built-With [Generic Publishing Software]
+X-Cache-Handler [Cache Enabler Wordpress Plugin]
+X-Cache-Only-Varnish [Varnish HTTP accelerator]
+X-Cache-Type [Generic Cache Software]
+X-CF-Powered-By [NGINX Web Server]
 X-Cluster
 X-CMS
 X-CMS-Version
@@ -171,16 +171,16 @@ X-MS-Credentials-Expire
 X-MS-Correlation-Id
 X-MS-InvokeApp
 X-MS-Location
-X-MS-Ratelimit-Remaining-Subscription-Deletes
-X-MS-Ratelimit-Remaining-Subscription-Reads
-X-MS-Ratelimit-Remaining-Subscription-Resource-Entities-Read
-X-MS-Ratelimit-Remaining-Subscription-Resource-Requests
-X-MS-Ratelimit-Remaining-Subscription-Writes
-X-MS-Ratelimit-Remaining-Resource
-X-MS-Ratelimit-Remaining-Tenant-Reads
-X-MS-Ratelimit-Remaining-Tenant-Resource-Entities-Read
-X-MS-Ratelimit-Remaining-Tenant-Resource-Requests
-X-MS-Ratelimit-Remaining-Tenant-Writes
+X-MS-Ratelimit-Remaining-Subscription-Deletes [Microsoft Azure Resource Manager]
+X-MS-Ratelimit-Remaining-Subscription-Reads [Microsoft Azure Resource Manager]
+X-MS-Ratelimit-Remaining-Subscription-Resource-Entities-Read [Microsoft Azure Resource Manager]
+X-MS-Ratelimit-Remaining-Subscription-Resource-Requests [Microsoft Azure Resource Manager]
+X-MS-Ratelimit-Remaining-Subscription-Writes [Microsoft Azure Resource Manager]
+X-MS-Ratelimit-Remaining-Resource [Microsoft Azure Resource Manager]
+X-MS-Ratelimit-Remaining-Tenant-Reads [Microsoft Azure Resource Manager]
+X-MS-Ratelimit-Remaining-Tenant-Resource-Entities-Read [Microsoft Azure Resource Manager]
+X-MS-Ratelimit-Remaining-Tenant-Resource-Requests [Microsoft Azure Resource Manager] 
+X-MS-Ratelimit-Remaining-Tenant-Writes [Microsoft Azure Resource Manager]
 X-MS-Request-Id
 X-MS-Routing-Request-Id
 X-MS-RP
@@ -197,47 +197,47 @@ X-Nitro-Expires
 X-Nitro-Rev
 X-ORACLE-DMS-ECID
 X-ORACLE-DMS-RID
-X-OWA-Version
-X-OWA-OWSVersion
-X-Page-Speed
-X-PHP-Version
-X-PHPFusion
+X-OWA-Version [Microsoft Outlook Web Access]
+X-OWA-OWSVersion [Microsoft Outlook Web Access]
+X-Page-Speed [NGINX Web Server]
+X-PHP-Version [PHP scripting version]
+X-PHPFusion [PHPFusion Content Management System]
 X-Plenty-Shop
 X-Powered-By [Generic Web Server/Technology]
-X-Powered-By-Plesk
-X-Powered-CMS
-X-Powered-Framework
-X-Powered-PublicCMS
-X-Protected-By
-X-Provided-By
-X-Rack-CacheX-Redirect-By
-X-Redirect-Powered-By
-X-Rebelmouse-Cache-Control
-X-Rebelmouse-Surrogate-Control
-X-Rocket-Nginx-Bypass
-X-Rocket-Nginx-Serving-Static
-X-Sanity-Shard
-X-ServedBy
-X-Server
-X-ServerName
-X-Server-Name
-X-Server-Powered-By
-X-ShardId
-X-SharePointHealthScore
-X-Shopery
-X-ShopId
-X-Shopify-Request-Trackable
-X-Shopify-Stage
-X-Sorting-Hat-PodId
-X-Sorting-Hat-ShopId
-X-Spip-Cache
-X-Spdwp-Ngx
-X-Streams-Distribution
-X-Supported-By
-X-Supplied-By
-X-TEC-API-ORIGIN
-X-TEC-API-ROOT
-X-TEC-API-VERSION
+X-Powered-By-Plesk [Plesk.com Platform]
+X-Powered-CMS [Generic Content Management System]
+X-Powered-Framework [Generic Scripting Technology]
+X-Powered-PublicCMS [Generic Content Management System]
+X-Protected-By [Generic Web Server/Content Delivery Network]
+X-Provided-By [Generic Web Server/Content Delivery Network]
+X-Rack-CacheX-Redirect-By [Rack::Cache Software]
+X-Redirect-Powered-By [Prettylinks.com Platform]
+X-Rebelmouse-Cache-Control [RebelMouse.com Platform]
+X-Rebelmouse-Surrogate-Control [RebelMouse.com Platform]
+X-Rocket-Nginx-Bypass [WP Rocket WordPress Plugin]
+X-Rocket-Nginx-Serving-Static [WP Rocket WordPress Plugin]
+X-Sanity-Shard [Shopify.com Platform]
+X-ServedBy [Generic Server Name]
+X-Server [Generic Web Server Name]
+X-ServerName [Generic Server Name]
+X-Server-Name [Generic Web Server]
+X-Server-Powered-By [Engintron.com Software]
+X-ShardId [Shopify.com Platform]
+X-SharePointHealthScore [Microsof SharePoint Services]
+X-Shopery [Shopery.com Platform]
+X-ShopId [Shopify.com Platform]
+X-Shopify-Request-Trackable [Shopify.com Platform]
+X-Shopify-Stage [Shopify.com Platform]
+X-Sorting-Hat-PodId [Shopify.com Platform]
+X-Sorting-Hat-ShopId [Shopify.com Platform]
+X-Spip-Cache [SPIP Publishing Software]
+X-Spdwp-Ngx [WP Rocket WordPress Plugin]
+X-Streams-Distribution [Generic Content Management System]
+X-Supported-By [Generic Web Server/Content Delivery Network]
+X-Supplied-By [Generic Web Server/Content Delivery Network]
+X-TEC-API-ORIGIN [The Events Calendar WordPress Plugin]
+X-TEC-API-ROOT [The Events Calendar WordPress Plugin]
+X-TEC-API-VERSION [The Events Calendar WordPress Plugin]
 X-Tncms [Generic Content Management System]
 X-Trove-App-Name [Trove Database as a Service]
 X-Trove-Country-Code [Trove Database as a Service]
@@ -251,7 +251,7 @@ X-Varnish [Varnish HTTP accelerator]
 X-Varnish-Cache [Varnish HTTP accelerator]
 X-Varnish-CC [Varnish HTTP accelerator]
 X-Vercel-Cache [Vercel.com Cache]
-X-Vercel-ID [Vercel.com Platform ID]
+X-Vercel-ID [Vercel.com Cache]
 X-Version [Generic Software Version ID]
 X-Version-Id [Generic Software Version ID]
 X-Wix-Renderer-Server [Wix.com Publishing Software]
