@@ -203,6 +203,8 @@ X-Page-Speed [NGINX Web Server]
 X-PHP-Version [PHP scripting version]
 X-PHPFusion [PHPFusion Content Management System]
 X-Plenty-Shop
+X-Plenty-Shop-Stage
+X-Plenty-Shop-Version
 X-Powered-By [Generic Web Server/Technology]
 X-Powered-By-Plesk [Plesk.com Platform]
 X-Powered-CMS [Generic Content Management System]
