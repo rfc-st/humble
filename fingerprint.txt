@@ -169,8 +169,8 @@ X-MS-Client-Request-Id
 X-MS-Credential-Service-Url
 X-MS-Credentials-Expire
 X-MS-Correlation-Id
-X-MS-InvokeApp
-X-MS-Location
+X-MS-InvokeApp [Microsof SharePoint Services]
+X-MS-Location [Microsoft Exchange Server]
 X-MS-Ratelimit-Remaining-Subscription-Deletes [Microsoft Azure Resource Manager]
 X-MS-Ratelimit-Remaining-Subscription-Reads [Microsoft Azure Resource Manager]
 X-MS-Ratelimit-Remaining-Subscription-Resource-Entities-Read [Microsoft Azure Resource Manager]
@@ -181,30 +181,30 @@ X-MS-Ratelimit-Remaining-Tenant-Reads [Microsoft Azure Resource Manager]
 X-MS-Ratelimit-Remaining-Tenant-Resource-Entities-Read [Microsoft Azure Resource Manager]
 X-MS-Ratelimit-Remaining-Tenant-Resource-Requests [Microsoft Azure Resource Manager] 
 X-MS-Ratelimit-Remaining-Tenant-Writes [Microsoft Azure Resource Manager]
-X-MS-Request-Id
-X-MS-Routing-Request-Id
-X-MS-RP
-X-MS-Version
-X-Nextjs-Cache
-X-Nginx-Cache
-X-Nginx-Cache-Status
-X-Nginx-Upstream-Cache-Status
-X-Nitro-Cache
-X-Nitro-Cache-From
-X-Nitro-Disabled
-X-Nitro-Disabled-Reason
-X-Nitro-Expires
-X-Nitro-Rev
-X-ORACLE-DMS-ECID
-X-ORACLE-DMS-RID
+X-MS-Request-Id [Microsoft Azure Storage]
+X-MS-Routing-Request-Id [Microsoft Azure Resource Manager]
+X-MS-RP [Microsof Exchange ActiveSync]
+X-MS-Version [Microsoft Azure Storage]
+X-Nextjs-Cache [Next.js Framework]
+X-Nginx-Cache [NGINX Web Server]
+X-Nginx-Cache-Status [NGINX Web Server]
+X-Nginx-Upstream-Cache-Status [NGINX Web Server]
+X-Nitro-Cache [NitroPack.io Platform]
+X-Nitro-Cache-From [NitroPack.io Platform]
+X-Nitro-Disabled [NitroPack.io Platform]
+X-Nitro-Disabled-Reason [NitroPack.io Platform]
+X-Nitro-Expires [NitroPack.io Platform]
+X-Nitro-Rev [NitroPack.io Platform]
+X-ORACLE-DMS-ECID [Oracle Identity Cloud Service]
+X-ORACLE-DMS-RID [Oracle Identity Cloud Service]
 X-OWA-Version [Microsoft Outlook Web Access]
 X-OWA-OWSVersion [Microsoft Outlook Web Access]
 X-Page-Speed [NGINX Web Server]
 X-PHP-Version [PHP scripting version]
 X-PHPFusion [PHPFusion Content Management System]
-X-Plenty-Shop
-X-Plenty-Shop-Stage
-X-Plenty-Shop-Version
+X-Plenty-Shop [plentymarkets.com Platform]
+X-Plenty-Shop-Stage [plentymarkets.com Platform]
+X-Plenty-Shop-Version [plentymarkets.com Platform]
 X-Powered-By [Generic Web Server/Technology]
 X-Powered-By-Plesk [Plesk.com Platform]
 X-Powered-CMS [Generic Content Management System]
