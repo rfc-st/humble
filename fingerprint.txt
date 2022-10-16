@@ -34,7 +34,7 @@ MageStack-Whitelisted-Ip [MageStack eCommerce]
 MageStack-Whitelisted-Uri [MageStack eCommerce]
 MageStack-Whitelisted-User-Agent [MageStack eCommerce]
 MicrosoftOfficeWebServer [Microsoft Office Web Server]
-MicrosoftSharePointTeamServices [Microsoft SharePoint Team Services]
+MicrosoftSharePointTeamServices [Microsoft SharePoint Services]
 MS-ASProtocolCommands [Microsoft Exchange Server]
 MS-ASProtocolVersions [Microsoft Exchange Server]
 MS-Author-Via [Microsoft WebDAV Server Extension]
@@ -47,7 +47,7 @@ Processed-By [Generic Scripting Technology]
 Product [Generic Publishing Software]
 Server [Generic Web Server/Content Delivery Network]
 Servlet-Engine [Generic Servlet Engine Software]
-SharePointError
+SharePointError [Microsoft SharePoint Services]
 SharePointHealthScore [Microsoft SharePoint Services]
 Simplycom-Server [simply.com HTTP Server]
 SPIisLatency [Microsoft SharePoint Online]
@@ -108,10 +108,10 @@ X-Debug-Token
 X-Debug-Token-Link
 X-DevSrv-CMS
 X-Dotclear-Static-Cache
-X-Drupal-Cache
-X-Drupal-Cache-Contexts
-X-Drupal-Cache-Tags
-X-Drupal-Dynamic-Cache
+X-Drupal-Cache [Drupal Content Management System]
+X-Drupal-Cache-Contexts [Drupal Content Management System]
+X-Drupal-Cache-Tags [Drupal Content Management System]
+X-Drupal-Dynamic-Cache [Drupal Content Management System]
 X-Elasticpress-Query
 X-FEServer
 X-Flex-Lang
@@ -153,29 +153,29 @@ X-Jenkins
 X-Jenkins-Session
 X-Jimdo-Instance
 X-Jimdo-Wid
-X-jive-chrome-wrapped
-X-Jive-Flow-Id
-X-Jive-Request-Id
-X-JIVE-USER-ID
+X-Jive-Chrome-Wrapped [Jive REST API]
+X-Jive-Flow-ID [Jive REST API]
+X-Jive-Request-ID [Jive REST API]
+X-Jive-User-ID [Jive REST API]
 X-JSL
-X-KoobooCMS-Version
-X-Lift-Version
+X-KoobooCMS-Version [Kooboo Content Management System]
+X-Lift-Version [Lift Framework]
 X-Litespeed-Alt-Svc [LiteSpeed Web Server]
 X-Litespeed-Cache [LiteSpeed Web Server]
 X-Litespeed-Cache-Control [LiteSpeed Web Server] 
 X-LiteSpeed-Purge [LiteSpeed Web Server]
 X-LiteSpeed-Tag [LiteSpeed Web Server]
 X-LiteSpeed-Vary [LiteSpeed Web Server]
-X-Magento-Tags
-X-Magento-Cache-Control
-X-Magnolia-Registration
-X-Magento-Cache-Debug
-X-Mod-Pagespeed
-X-MS-ASThrottle
-X-MS-Client-Request-Id
-X-MS-Credential-Service-Url
-X-MS-Credentials-Expire
-X-MS-Correlation-Id
+X-Magento-Tags [Adobe Commerce]
+X-Magento-Cache-Control [Adobe Commerce]
+X-Magnolia-Registration [Magnolia Content Management System]
+X-Magento-Cache-Debug [Adobe Commerce]
+X-Mod-Pagespeed [Apache Web Server]
+X-MS-ASThrottle [Microsoft Exchange Server]
+X-MS-Client-Request-Id [Microsoft Azure]
+X-MS-Credential-Service-Url [Microsoft Exchange Server]
+X-MS-Credentials-Expire [Microsoft Exchange Server]
+X-MS-Correlation-Id [Microsoft Power Platform]
 X-MS-InvokeApp [Microsof SharePoint Services]
 X-MS-Location [Microsoft Exchange Server]
 X-MS-Ratelimit-Remaining-Subscription-Deletes [Microsoft Azure Resource Manager]
@@ -263,7 +263,7 @@ X-Vercel-Cache [Vercel.com Cache]
 X-Vercel-ID [Vercel.com Cache]
 X-Version [Generic Software Version ID]
 X-Version-Id [Generic Software Version ID]
-X-Virus-Infected
+X-Virus-Infected [Microsoft SharePoint Services]
 X-Wix-Renderer-Server [Wix.com Publishing Software]
 X-Wix-Request-Id [Wix.com Publishing Software]
 X-Wix-Server-Artifact-Id [Wix.com Publishing Software]
