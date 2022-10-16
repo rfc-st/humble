@@ -29,7 +29,6 @@
 
 # TO-DO:
 # Add more checks (missing, fingerprint, insecure)
-# Show the application related to each fingerprint header (WIP)
 
 # ADVICE:
 # Use the information provided by this script *wisely*: there is far more
@@ -57,7 +56,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/10/15. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/10/16. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 

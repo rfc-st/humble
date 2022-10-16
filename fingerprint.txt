@@ -1,14 +1,14 @@
 Arastta [Arastta eCommerce]
 Azure-AsyncOperation [Azure Resource Manager]
-CMS-Version [Generic Content Management System software]
+CMS-Version [Generic Content Management System Software]
 COMMERCE-SERVER-SOFTWARE [Microsoft Commerce Server]
 Composed-By [Generic Publishing Software]
 Generator [Generic Publishing Software]
 Hummingbird-Cache [Hummingbird Wordpress Plugin]
 IBM-Web2-Location [IBM WebSphere Commerce]
 ITX-Generated-Timestamp [IBM WebSphere Commerce]
-KBN-Name [Kibana]
-KBN-Version [Kibana]
+KBN-Name [Kibana Data Visualization Dashboard]
+KBN-Version [Kibana Data Visualization Dashboard]
 Liferay-Portal [Liferay Portal]
 Magestack-Area [MageStack eCommerce]
 Magestack-Cache [MageStack eCommerce]
@@ -53,12 +53,12 @@ Simplycom-Server [simply.com HTTP Server]
 SPIisLatency [Microsoft SharePoint Online]
 SPRequestDuration [Microsoft SharePoint Online]
 SPRequestGuid [Microsoft SharePoint Services]
-SW-Context-Token [Shopware]
-SW-Invalidation-States [Shopware]
-SW-Language-ID [Shopware]
-SW-Version-ID [Shopware]
+SW-Context-Token [shopware.com Platform]
+SW-Invalidation-States [shopware.com Platform]
+SW-Language-ID [shopware.com Platform]
+SW-Version-ID [shopware.com Platform]
 Swift-Performance [Swift Performance Wordpress Plugin]
-Via [Added by Proxy server]
+Via [Generic Proxy server]
 WebDevSrc
 Weglot-Translated [Weglot Translate WordPress Plugin]
 WP-Super-Cache [WP Super Cache WordPress Plugin]
@@ -69,12 +69,12 @@ X-Accel-Charset [NGINX Web Server]
 X-Accel-Expires [NGINX Web Server]
 X-Accel-Limit-Rate [NGINX Web Server]
 X-Advertising-By [Generic Publishing Software]
-X-AH-Environment [Varnish HTTP accelerator]
-X-Akaunting [Akaunting software]
+X-AH-Environment [Varnish HTTP Accelerator]
+X-Akaunting [Akaunting Online Accounting]
 X-Application-Context [Spring Boot]
 X-Arastta [Arastta eCommerce]
-X-AspNet-Version [Microsoft .NET Framework]
-X-AspNetMvc-Version [Microsoft .NET Framework]
+X-AspNet-Version [Microsoft ASP.NET Framework]
+X-AspNetMvc-Version [Microsoft ASP.NET Framework]
 X-ATG-Version [Oracle ATG Web Commerce]
 X-B3-Flags [Zipkin Tracing]
 X-B3-ParentSpanId [Zipkin Tracing]
@@ -92,67 +92,67 @@ X-Cache-Handler [Cache Enabler Wordpress Plugin]
 X-Cache-Only-Varnish [Varnish HTTP accelerator]
 X-Cache-Type [Generic Cache Software]
 X-CF-Powered-By [NGINX Web Server]
-X-Cluster
-X-CMS
-X-CMS-Version
-X-Cocoon-Version
-X-Commerce-Core
-X-Compressed-By
-X-Confluence-Request-Time
-X-Content-Encoded-By
-X-Content-Powered-By
-X-Contentful-Request-ID
-X-DataDome
-X-DataDome-CID
-X-Debug-Token
-X-Debug-Token-Link
-X-DevSrv-CMS
-X-Dotclear-Static-Cache
+X-Cluster [Generic Cluster Software]
+X-CMS [Generic Content Management System Software]
+X-CMS-Version [Generic Content Management System Software]
+X-Cocoon-Version [Apache Cocoon Framework]
+X-Commerce-Core [Drupal Commerce Core Module]
+X-Compressed-By [Generic Compression Module]
+X-Confluence-Request-Time [Atlassian Confluence]
+X-Content-Encoded-By [Generic Publishing Software]
+X-Content-Powered-By [Joomla! K2 Module]
+X-Contentful-Request-ID [Contentful Content Delivery API]
+X-DataDome [Datadome.co Platform]
+X-DataDome-CID [Datadome.co Platform]
+X-Debug-Token [Symfony Profiler]
+X-Debug-Token-Link [Symfony Profiler]
+X-DevSrv-CMS [Bitrix Site Manager]
+X-Dotclear-Static-Cache [Dotclear Publishing Software]
 X-Drupal-Cache [Drupal Content Management System]
 X-Drupal-Cache-Contexts [Drupal Content Management System]
 X-Drupal-Cache-Tags [Drupal Content Management System]
 X-Drupal-Dynamic-Cache [Drupal Content Management System]
-X-Elasticpress-Query
-X-FEServer
-X-Flex-Lang
-X-Flow-Powered
-X-Foswikiaction
-X-Foswikiuri
-X-FW-Dynamic
-X-FW-Hash
-X-FW-Serve
-X-FW-Server
-X-FW-Static
-X-FW-Type
-X-FW-Version
-X-Garden-Version
-X-Generated-By
-X-Generator
+X-Elasticpress-Query [ElasticPress WordPress Plugin]
+X-FEServer [Microsoft Exchange Server]
+X-Flex-Lang [Flexcmp.com Platform]
+X-Flow-Powered [Neos Flow Framework]
+X-Foswikiaction [foswiki.org Platform]
+X-Foswikiuri [foswiki.org Platform]
+X-FW-Dynamic [getflywheel.com Platform]
+X-FW-Hash [getflywheel.com Platform]
+X-FW-Serve [getflywheel.com Platform]
+X-FW-Server [getflywheel.com Platform]
+X-FW-Static [getflywheel.com Platform]
+X-FW-Type [getflywheel.com Platform]
+X-FW-Version [getflywheel.com Platform]
+X-Garden-Version [Generic Web Server/Technology]
+X-Generated-By [Generic Publishing Software]
+X-Generator [Generic Publishing Software]
 X-Global-Transaction-ID
-X-Hiawatha-Cache
-X-Hiawatha-Cache-Remove 
-X-HS-Cache-Config
-X-HS-Cache-Control
-X-HS-CF-Cache-Status
-X-HS-Combine-CSS
-X-HS-Content-Id
-X-HS-Content-Group-Id
-X-Hs-Https-Only
-X-HS-Hub-Id
-X-HS-Prerendered
-X-HubSpot-Correlation-Id
-X-Hudson
-X-Includable-Version
-X-IRM-Cantdecrypt
-X-IRM-Crashed
-X-IRM-Notowner
-X-IRM-Rejected
-X-IRM-Timeout
-X-IRM-Unknown-Failure
-X-Jenkins
-X-Jenkins-Session
-X-Jimdo-Instance
-X-Jimdo-Wid
+X-Hiawatha-Cache [Hiawatha Web Server]
+X-Hiawatha-Cache-Remove [Hiawatha Web Server]
+X-HS-Cache-Config [Hubspot.com Platform]
+X-HS-Cache-Control [Hubspot.com Platform]
+X-HS-CF-Cache-Status [Hubspot.com Platform]
+X-HS-Combine-CSS [Hubspot.com Platform]
+X-HS-Content-Id [Hubspot.com Platform]
+X-HS-Content-Group-Id [Hubspot.com Platform]
+X-HS-Https-Only [Hubspot.com Platform]
+X-HS-Hub-Id [Hubspot.com Platform]
+X-HS-Prerendered [Hubspot.com Platform]
+X-HubSpot-Correlation-Id [Hubspot.com Platform]
+X-Hudson [Jenkins Automation Server]
+X-Includable-Version [Includable.com Platform]
+X-IRM-Cantdecrypt [Microsoft SharePoint Services]
+X-IRM-Crashed [Microsoft SharePoint Services]
+X-IRM-Notowner [Microsoft SharePoint Services]
+X-IRM-Rejected [Microsoft SharePoint Services]
+X-IRM-Timeout [Microsoft SharePoint Services]
+X-IRM-Unknown-Failure [Microsoft SharePoint Services]
+X-Jenkins [Jenkins Automation Server]
+X-Jenkins-Session [Jenkins Automation Server]
+X-Jimdo-Instance [Jimdo.com Platform]
+X-Jimdo-Wid [Jimdo.com Platform]
 X-Jive-Chrome-Wrapped [Jive REST API]
 X-Jive-Flow-ID [Jive REST API]
 X-Jive-Request-ID [Jive REST API]
@@ -207,7 +207,7 @@ X-ORACLE-DMS-RID [Oracle Identity Cloud Service]
 X-OWA-Version [Microsoft Outlook Web Access]
 X-OWA-OWSVersion [Microsoft Outlook Web Access]
 X-Page-Speed [NGINX Web Server]
-X-PHP-Version [PHP scripting version]
+X-PHP-Version [PHP Scripting Version]
 X-PHPFusion [PHPFusion Content Management System]
 X-Plenty-Shop [plentymarkets.com Platform]
 X-Plenty-Shop-Stage [plentymarkets.com Platform]
