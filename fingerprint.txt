@@ -47,6 +47,7 @@ Processed-By [Generic Scripting Technology]
 Product [Generic Publishing Software]
 Server [Generic Web Server/Content Delivery Network]
 Servlet-Engine [Generic Servlet Engine Software]
+SharePointError
 SharePointHealthScore [Microsoft SharePoint Services]
 Simplycom-Server [simply.com HTTP Server]
 SPIisLatency [Microsoft SharePoint Online]
@@ -142,6 +143,12 @@ X-HS-Prerendered
 X-HubSpot-Correlation-Id
 X-Hudson
 X-Includable-Version
+X-IRM-Cantdecrypt
+X-IRM-Crashed
+X-IRM-Notowner
+X-IRM-Rejected
+X-IRM-Timeout
+X-IRM-Unknown-Failure
 X-Jenkins
 X-Jenkins-Session
 X-Jimdo-Instance
@@ -256,6 +263,7 @@ X-Vercel-Cache [Vercel.com Cache]
 X-Vercel-ID [Vercel.com Cache]
 X-Version [Generic Software Version ID]
 X-Version-Id [Generic Software Version ID]
+X-Virus-Infected
 X-Wix-Renderer-Server [Wix.com Publishing Software]
 X-Wix-Request-Id [Wix.com Publishing Software]
 X-Wix-Server-Artifact-Id [Wix.com Publishing Software]
