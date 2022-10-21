@@ -318,7 +318,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icsh]
- It is not recommended to allow content of insecure schemes ('http://').
+ It is not recommended to allow content of insecure schemes ('http:' or 'http://').
  Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-implemented-with-insecure-scheme.html
  Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-allowing-media-to-be-loaded.html
 
@@ -352,7 +352,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpoli]
- 'none' is not a correct value; use '()' instead.
+ Use '=()' instead of 'none'.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
 [ihttp]

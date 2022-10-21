@@ -318,7 +318,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icsh]
- No es recomendable permitir contenido de esquemas inseguros ('http://').
+ No es recomendable permitir contenido de esquemas inseguros ('http:' o 'http://').
  Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-implemented-with-insecure-scheme.html
  Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-allowing-media-to-be-loaded.html
 
@@ -352,7 +352,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpoli]
- Utilice '()' en vez de 'none'.
+ Utilice '=()' en vez de 'none'.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
 [ihttp]
