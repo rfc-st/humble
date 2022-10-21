@@ -319,8 +319,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 
 [icsh]
  No es recomendable permitir contenido de esquemas inseguros ('http:' o 'http://').
- Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-implemented-with-insecure-scheme.html
- Ref: https://beaglesecurity.com/blog/vulnerability/content-security-policy-allowing-media-to-be-loaded.html
+ Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
 
 [icsw]
  Limite las fuentes permitidas en las directivas. El valor '*' permite cualquier URL.

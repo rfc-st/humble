@@ -687,7 +687,7 @@ if 'Content-Security-Policy' in headers:
             (URL[0:5] == 'https'):
         print_detail_h('[icsh_h]')
         if not args.brief:
-            print_detail_m("[icsh]")
+            print_detail_d("[icsh]")
         i_cnt += 1
     if '*' in headers['Content-Security-Policy'] and \
        (('*.' or '.*') not in headers['Content-Security-Policy']):
