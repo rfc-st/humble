@@ -184,9 +184,6 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 [e_invalid]
  Error: The URL is not valid. Check syntax and try again.
 
-[e_waf_gdpr]
- Error: Forbidden access to the URL. Perhaps caused by a WAF or IP block?.
-
 [e_proxy]
  Error: Proxy authentication required (not yet supported by this program).
 

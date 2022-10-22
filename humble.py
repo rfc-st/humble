@@ -332,12 +332,7 @@ def request_exceptions():
         print_detail_l('[e_invalid]')
         raise SystemExit
     except requests.exceptions.HTTPError:
-        if r.status_code == 403:
-            clean_output()
-            print("")
-            print_detail_l('[e_waf_gdpr]')
-            raise SystemExit
-        elif r.status_code == 407:
+        if r.status_code == 407:
             clean_output()
             print("")
             print_detail_l('[e_proxy]')

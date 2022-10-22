@@ -184,9 +184,6 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 [e_invalid]
  Error: La URL no resuelve. Revisa que sea correcta y prueba de nuevo.
 
-[e_waf_gdpr]
- Error: El servidor ha denegado el acceso a la URL: por un WAF, bloqueo de IP o protecciones adicionales.
-
 [e_proxy]
  Error: La URL requiere autentificación previa con proxy (este programa no lo contempla actualmente).
 
