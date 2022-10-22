@@ -421,6 +421,7 @@ if suffix[-2:] == "ru" or b'Russia' in country:
     print_detail_d("[bcnt]")
     sys.exit()
 elif suffix[-2:] == "ua" or b'Ukraine' in country:
+    print("")
     print_detail_a('[analysis_ua]')
 else:
     print("")
