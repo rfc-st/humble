@@ -794,7 +794,7 @@ if 'Server-Timing' in headers:
         print_detail_d("[itim]")
     i_cnt += 1
 
-if 'Set-Cookie' in headers:
+if ('Set-Cookie' in headers) and (URL[0:5] != insecure_s):
     list_cookie = ['secure', 'httponly']
     if not all(elem.lower() in headers["Set-Cookie"].lower() for elem in
        list_cookie):
@@ -819,7 +819,7 @@ if ('Strict-Transport-Security' in headers) and (URL[0:5] != insecure_s):
             print_detail_d("[istsd]")
         i_cnt += 1
 
-if (URL[0:5] == insecure_s) and ('Strict-Transport-Security' in headers):
+if ('Strict-Transport-Security' in headers) and (URL[0:5] == insecure_s):
     print_detail_h('[ihsts_h]')
     if not args.brief:
         print_detail_d("[ihsts]")
@@ -831,7 +831,7 @@ if 'Timing-Allow-Origin' in headers and '*' in headers['Timing-Allow-Origin']:
         print_detail_d("[itao]")
     i_cnt += 1
 
-if (URL[0:5] == insecure_s) and ('WWW-Authenticate' in headers) and\
+if ('WWW-Authenticate' in headers) and (URL[0:5] == insecure_s) and\
    ('Basic' in headers['WWW-Authenticate']):
     print_detail_h('[ihbas_h]')
     if not args.brief:
