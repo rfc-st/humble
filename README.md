@@ -67,19 +67,19 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="Brief analysis + retrieved headers" width=70% height=70%>
 </p>
 <br />
-.: Full analysis (Linux) in Spanish.<br />
+.: Detailed analysis (Linux) in Spanish.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="Full analysis" width=70% height=70%>
 </p>
 <br />
-.: Analysis exported to PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/facebook_headers_20220826.pdf">Example.</a><br />
+.: Detailed analysis exported to PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/facebook_headers_20220826.pdf">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="Export analysis to PDF" width=70% height=70%>
 </p>
 <br />
-.: Analysis exported to HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/facebook_headers_20220813.html">Example.</a><br />
+.: Detailed analysis exported to HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/facebook_headers_20220813.html">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Export analysis to HTML" width=70% height=70%>
@@ -128,11 +128,11 @@ humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 options:
   -h, --help         show this help message and exit
   -u URL             URL to analyze, including schema. E.g., https://google.com
-  -r                 show HTTP response headers and full analysis (with references and details)
-  -b                 show brief analysis (without references or details)
-  -o {html,pdf,txt}  save analysis to file (URL_yyyymmdd.ext)
-  -l {es}            Displays the analysis in the indicated language; if omitted, English will be used
-  -g                 show guidelines on securing most used web servers/services
+  -r                 show HTTP response headers and a detailed analysis.
+  -b                 show a brief analysis; if omitted, a detailed analysis will be shown.
+  -o {html,pdf,txt}  save analysis to file (URL_yyyymmdd.ext).
+  -l {es}            Displays the analysis in the indicated language; if omitted, English will be used.
+  -g                 show guidelines on securing most used web servers/services.
   -v, --version      show version
 ```
 
