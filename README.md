@@ -41,7 +41,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: 287 checks of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 42 checks of deprecated HTTP response headers/protocols or with values considered insecure.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
-:heavy_check_mark: Two types of analysis: brief and complete, along with HTTP response headers.<br />
+:heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
 :heavy_check_mark: i18n: analysis results in English or Spanish.<br />
@@ -55,19 +55,19 @@ HTTP Headers Analyzer<br />
 
 ## Screenshots
 
-.: Brief report (Windows)<br />
+.: Brief analysis (Windows)<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.PNG" alt="Brief Analysis">
 </p>
 <br />
-.: Brief report and retrieved headers (Linux)<br />
+.: Brief analysis and retrieved headers (Linux)<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="Brief analysis + retrieved headers" width=70% height=70%>
 </p>
 <br />
-.: Full report (Linux). Analysis in Spanish.<br />
+.: Full analysis (Linux) in Spanish.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="Full analysis" width=70% height=70%>

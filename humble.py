@@ -371,22 +371,22 @@ https://github.com/rfc-st/humble")
 optional = parser._action_groups.pop()
 required = parser.add_argument_group('required arguments')
 optional.add_argument('-u', type=str, dest='URL', required=False,
-                      help="URL to analyze, including schema. \
-                      E.g., https://google.com")
+                      help="URL to analyze, including schema. E.g., \
+https://google.com")
 optional.add_argument("-r", dest='retrieved', action="store_true",
-                      required=False, help="show HTTP response headers and \
-                          full analysis (with references and details)")
+                      required=False, help="show HTTP response headers and a \
+detailed analysis.")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
-                      help="show brief analysis (without references or \
-                          details)")
+                      help="show a brief analysis; if omitted, a detailed \
+analysis will be shown.")
 optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
-                      help="save analysis to file (URL_yyyymmdd.ext)")
+                      help="save analysis to file (URL_yyyymmdd.ext).")
 optional.add_argument("-l", dest='language', choices=['es'],
                       help="Displays the analysis in the indicated language; \
-                        if omitted, English will be used")
+if omitted, English will be used.")
 optional.add_argument("-g", dest='guides', action="store_true", required=False,
                       help="show guidelines on securing most used web servers/\
-services")
+services.")
 optional.add_argument("-v", "--version", action='version',
                       version=version, help="show version")
 parser._action_groups.append(optional)
@@ -552,10 +552,12 @@ if any(elem.lower() in headers for elem in list_fng):
     for key in list_fng:
         if key in headers and headers[key]:
             index_fng = list_fng.index(key)
-            print_header_fng(list_fng_ex[index_fng])
             if not args.brief:
+                print_header_fng(list_fng_ex[index_fng])
                 print(" " + headers[key])
                 print("")
+            else:
+                print_header_fng(list_fng_ex[index_fng].split(' [')[0])
             f_cnt += 1
 
 if args.brief and f_cnt != 0:
