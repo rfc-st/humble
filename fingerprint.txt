@@ -166,7 +166,7 @@ X-Jive-Chrome-Wrapped [Jive REST API]
 X-Jive-Flow-ID [Jive REST API]
 X-Jive-Request-ID [Jive REST API]
 X-Jive-User-ID [Jive REST API]
-X-JSL
+X-JSL [Jive REST API]
 X-KoobooCMS-Version [Kooboo Content Management System]
 X-Lift-Version [Lift Framework]
 X-Litespeed-Alt-Svc [LiteSpeed Web Server]
