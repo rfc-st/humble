@@ -344,7 +344,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
  Ref: https://csplite.com/fp/
 
 [ifpol]
- The value '*' allows the feature in this document, and iframes regardless of their origin.
+ The value '(*)' allows the feature in this document and iframes, regardless of their origin.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpoli]

@@ -327,7 +327,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
 [ictpd]
- Revise la duplicidad de esta cabecera o su valores.
+ Esta cabecera, o sus valores, pueden estar duplicados.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
 [ieta]
@@ -344,7 +344,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://csplite.com/fp/
 
 [ifpol]
- El valor '*' permite el uso de la funcionalidad independientemente de su origen.
+ El valor '(*)' permite el uso de la funcionalidad independientemente de su origen.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpoli]
@@ -381,7 +381,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://https.cio.gov/hsts/
 
 [istsd]
- Revise la duplicidad de esta cabecera o su valores.
+ Esta cabecera, o sus valores, pueden estar duplicados.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [ihsts]
@@ -427,7 +427,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://docs.microsoft.com/en-us/lifecycle/products/internet-explorer-8
 
 [ixfo]
- Revise la duplicidad de esta cabecera o sus valores.
+ Esta cabecera, o sus valores, pueden estar duplicados.
  Mejor aún: sustituya esta cabecera por la directiva 'frame-ancestors' de Content-Security-Policy.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
@@ -458,7 +458,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [ixxpd]
- Revise la duplicidad de esta cabecera o su valores.
+ Esta cabecera, o sus valores, pueden estar duplicados.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
 [aemp]

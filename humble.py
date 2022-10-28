@@ -981,8 +981,7 @@ if any(elem.lower() in headers for elem in list_sec):
     for key in list_sec:
         if key in headers:
             if not args.output:
-                print(" " + Fore.CYAN + key + Fore.RESET + ": " +
-                      compat_site +
+                print(" " + Fore.CYAN + key + Fore.RESET + ": " + compat_site +
                       key.replace("Content-Security-Policy", csp_replace))
             elif args.output != 'html':
                 print(" " + key + ": " + compat_site +
