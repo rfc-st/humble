@@ -4,7 +4,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/python-%3E=_3.6-green.svg"></a>
 <a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest Release"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release"></a>
-<a target="_blank" href="https://lgtm.com/projects/g/rfc-st/humble?mode=list" title="LGTM Analysis"><img src="https://img.shields.io/lgtm/grade/python/github/rfc-st/humble"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="CodeQL Analysis"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="OWASP Technical Resource"><img src="https://img.shields.io/badge/owasp-technical%20resource-brightgreen"></a>
 <img src="https://img.shields.io/badge/languages-en%20%7C%20es-brightgreen">
 <br />
