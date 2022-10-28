@@ -56,7 +56,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/10/21. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/10/28. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -557,7 +557,7 @@ if any(elem.lower() in headers for elem in list_fng):
                 print(" " + headers[key])
                 print("")
             else:
-                print_header_fng(list_fng_ex[index_fng].split(' [')[0])
+                print_header(key)
             f_cnt += 1
 
 if args.brief and f_cnt != 0:
