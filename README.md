@@ -1,12 +1,12 @@
 # humble
 
 <p align=center>
-<a target="_blank" href="https://www.python.org/downloads/" title="Python version"><img src="https://img.shields.io/badge/python-%3E=_3.6-green.svg"></a>
-<a target="_blank" href="LICENSE" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest Release"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="CodeQL Analysis"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
-<a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="OWASP Technical Resource"><img src="https://img.shields.io/badge/owasp-technical%20resource-brightgreen"></a>
-<img src="https://img.shields.io/badge/languages-en%20%7C%20es-brightgreen">
+<a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/python-%3E%3D3.6-brightgreen"></a>
+<a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
+<a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/owasp-technical%20resource-brightgreen"></a>
+<a href="#/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/languages-en%20%7C%20es-brightgreen" title="Languages in which this tool shows results">
 <br />
 <br />
 HTTP Headers Analyzer<br />
