@@ -1,4 +1,5 @@
 Arastta [Arastta eCommerce]
+Arr-Disable-Session-Affinity [Azure Web App]
 Azure-AsyncOperation [Azure Resource Manager]
 CMS-Version [Generic Content Management System Software]
 COMMERCE-SERVER-SOFTWARE [Microsoft Commerce Server]
