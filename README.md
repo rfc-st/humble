@@ -89,7 +89,7 @@ HTTP Headers Analyzer<br />
 
 ## Installation & Update
 
-**NOTE**: Python 3.6 or higher is required.
+**NOTE**: Python 3.6 or higher is required (<a target="_blank" href="https://github.com/netromdk/vermin" title="Tool used">Tool</a> used for this check).
 
 <p></p>
 <p align="left">
