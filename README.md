@@ -91,6 +91,11 @@ HTTP Headers Analyzer<br />
 
 **NOTE**: Python 3.6 or higher is required.
 
+<p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_python_version.PNG" alt="Minimum required Python version to run this tool" width=70% height=70%>
+</p>
+
 ```bash
 # install python3 and python3-pip if not exist
 (Windows) https://www.python.org/downloads/windows/
