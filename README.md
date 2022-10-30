@@ -93,7 +93,7 @@ HTTP Headers Analyzer<br />
 
 <p></p>
 <p align="left">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_python_version.PNG" alt="Minimum required Python version to run this tool" width=60% height=60%
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_python_version.PNG" alt="Minimum required Python version to run this tool" width=65% height=65%
 </p>
 
 ```bash
