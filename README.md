@@ -6,7 +6,7 @@
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/network/dependencies" title="Alerts enabled for vulnerabilities and updates of the dependencies required by this tool"><img src="https://badgen.net/github/dependabot/rfc-st/humble"></a>  
-<a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/owasp-technical%20resource-brightgreen"></a>
+<a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/owasp-resource-brightgreen"></a>
 <img src="https://img.shields.io/badge/languages-en%20%7C%20es-brightgreen" title="Languages in which this tool shows results">
 <br />
 <br />
