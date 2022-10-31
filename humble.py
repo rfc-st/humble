@@ -187,8 +187,7 @@ def print_summary():
         print(" (https://github.com/rfc-st/humble)")
     elif args.output != 'pdf':
         print(spacing)
-        print(" Humble HTTP headers analyzer" + "\n" +
-              " (https://github.com/rfc-st/humble)")
+        print_detail_d('[humble]')
     print(spacing)
     print_detail_s('[0section]')
     print_detail_l('[info]')

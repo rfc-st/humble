@@ -1,3 +1,7 @@
+[humble]
+ Analizador de cabeceras HTTP
+ (https://github.com/rfc-st/humble)
+
 [bcompat_n]
  No hay cabeceras de seguridad HTTP habilitadas.
 
