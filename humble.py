@@ -635,20 +635,21 @@ if 'Content-Security-Policy' in headers:
 
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
-    list_csp_directives = ['child-src', 'connect-src', 'default-src',
-                           'font-src', 'frame-src', 'img-src', 'manifest-src',
-                           'media-src', 'object-src', 'prefetch-src',
-                           'script-src', 'script-src-elem', 'script-src-attr',
-                           'style-src', 'style-src-elem', 'style-src-attr',
-                           'worker-src', 'base-uri', 'sandbox', 'form-action',
-                           'frame-ancestors', 'navigate-to', 'report-to',
-                           'upgrade-insecure-requests', 'require-sri-for',
-                           'require-trusted-types-for', 'trusted-types']
+    list_csp_directives = ['base-uri', 'child-src', 'connect-src',
+                           'default-src', 'font-src', 'form-action',
+                           'frame-ancestors', 'frame-src', 'img-src',
+                           'manifest-src', 'media-src', 'navigate-to',
+                           'object-src', 'prefetch-src', 'report-to',
+                           'require-trusted-types-for', 'sandbox',
+                           'script-src', 'script-src-elem',
+                           'script-src-attr', 'style-src', 'style-src-elem',
+                           'style-src-attr', 'trusted-types',
+                           'upgrade-insecure-requests', 'worker-src']
     list_csp_deprecated = ['block-all-mixed-content', 'plugin-types',
-                           'referrer', 'report-uri']
-    list_csp_insecure = ['unsafe-inline', 'unsafe-eval']
-    list_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-uri',
-                      'report-to']
+                           'referrer', 'report-uri', 'require-sri-for']
+    list_csp_insecure = ['unsafe-eval', 'unsafe-inline']
+    list_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to',
+                      'report-uri']
 
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp_insecure):
