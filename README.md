@@ -59,7 +59,7 @@ HTTP Headers Analyzer<br />
 .: Brief analysis (Windows)<br />
 <p></p>
 <p align="center">
-<img src="https://media.giphy.com/media/YyiBFQCHIykepU0WUW/giphy.gif" alt="Brief Analysis">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.PNG" alt="Brief Analysis">
 </p>
 <br />
 .: Brief analysis and retrieved headers (Linux)<br />
