@@ -56,13 +56,11 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/11/01. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022/11/02. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
 class PDF(FPDF, HTMLMixin):
-
-    # PDF Header & Footer
 
     def header(self):
         self.set_font('Courier', 'B', 10)
@@ -1029,10 +1027,31 @@ elif args.output == 'pdf':
     for x in f:
         if '[' in x:
             pdf_sections()
+
+        # FIX NEEDED (it's driving me crazy, seriously ...)
+
+        # The following code generates hyperlinks in the PDF (via '<a href=').
+        # If two consecutive lines contain generated hyperlinks the PDF will
+        # show the second line (and the following ones) without the
+        # leading blank character of the first one.
+
+        # Ex: https://postimg.cc/dL427tBQ
+
+        #  Cache-Control: https://xxx               --> Proper
+        # Content-Type: https://xxx                 --> Wrong
+        # Content-Security-Policy: https://xxx      --> Wrong
+        # Cross-Origin-Opener-Policy: https://xxx   --> Wrong
+
+        # All lines in the above example should keep the leading blank
+        # character (as in the first line).
+
         if 'https://' in x and 'content-security' not in x:
             x = (str(pdf.write_html(x.replace(x[x.index(secure_s):],
                  '<a href=' + x[x.index(secure_s):] + '">' +
                  x[x.index(secure_s):-1] + '</a>')))).replace('None', "")
+
+        # Any ideas or suggestions to fix the bug in the above code?
+
         if any(s in x for s in bold_strings):
             pdf.set_font(style="B")
         else:
