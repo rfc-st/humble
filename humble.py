@@ -56,7 +56,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022/11/02. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-11-03. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -106,6 +106,19 @@ def pdf_sections():
     for index, element in enumerate(list_secpos):
         if x.startswith(element):
             pdf.start_section(get_detail(list_sectxt[index]))
+
+
+def check_update():
+    cu = requests.get(
+        "https://api.github.com/repos/rfc-st/humble/commits?per_page=1")
+    last_commit = cu.json()[0]["commit"]
+    last_commit_date = str([val for key, val in last_commit.items() if
+                            "commit" in key]).split(":")[3][2:12]
+
+    if last_commit_date != version.strip()[:10]:
+        print(get_detail('[outdated]').replace('\n', ''))
+    else:
+        print(get_detail('[updated]').replace('\n', ''))
 
 
 def get_language():
@@ -188,6 +201,7 @@ def print_summary():
         print_detail_d('[humble]')
     print(spacing)
     print_detail_s('[0section]')
+    check_update()
     print_detail_l('[info]')
     print(" " + now)
     print(' URL  : ' + URL)
