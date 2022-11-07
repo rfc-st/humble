@@ -1,9 +1,3 @@
-[updated]
- Note : You are using the latest version of this tool. Nice!.
- 
-[outdated]
- Note : You are not using the latest version of this tool.
-
 [humble]
  Humble HTTP headers analyzer
  (https://github.com/rfc-st/humble)

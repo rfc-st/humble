@@ -1,9 +1,3 @@
-[updated]
- Nota : Estás usando la última versión de esta herramienta!.
- 
-[outdated]
- Nota : No estás usando la última versión de esta herramienta.
-
 [humble]
  Analizador de cabeceras HTTP
  (https://github.com/rfc-st/humble)
