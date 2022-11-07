@@ -1,5 +1,5 @@
 [updated]
- Note : You are using the latest available version of this tool. Nice!.
+ Note : You are using the latest version of this tool. Nice!.
  
 [outdated]
  Note : You are not using the latest version of this tool.

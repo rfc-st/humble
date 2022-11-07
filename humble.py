@@ -56,7 +56,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022-11-03. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-11-07. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -960,11 +960,9 @@ if not args.brief:
 for key in sorted(headers):
     if not headers[key]:
         print_header(key)
-        if not args.brief:
-            print(" " + headers[key])
         e_cnt += 1
 
-if args.brief and e_cnt != 0:
+if e_cnt != 0:
     print("")
 
 if e_cnt == 0:

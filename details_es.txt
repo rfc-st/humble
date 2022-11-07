@@ -1,8 +1,8 @@
 [updated]
- Nota : Estás usando la última versión disponible de esta herramienta!.
+ Nota : Estás usando la última versión de esta herramienta!.
  
 [outdated]
- Nota : No estás usando la última versión disponible de esta herramienta.
+ Nota : No estás usando la última versión de esta herramienta.
 
 [humble]
  Analizador de cabeceras HTTP
