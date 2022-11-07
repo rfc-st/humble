@@ -108,19 +108,6 @@ def pdf_sections():
             pdf.start_section(get_detail(list_sectxt[index]))
 
 
-def check_update():
-    cu = requests.get(
-        "https://api.github.com/repos/rfc-st/humble/commits?per_page=1")
-    last_commit = cu.json()[0]["commit"]
-    last_commit_date = str([val for key, val in last_commit.items() if
-                            "commit" in key]).split(":")[3][2:12]
-
-    if last_commit_date != version.strip()[:10]:
-        print(get_detail('[outdated]').replace('\n', ''))
-    else:
-        print(get_detail('[updated]').replace('\n', ''))
-
-
 def get_language():
     if args.language == 'es':
         details_file = 'details_es.txt'
@@ -201,7 +188,6 @@ def print_summary():
         print_detail_d('[humble]')
     print(spacing)
     print_detail_s('[0section]')
-    check_update()
     print_detail_l('[info]')
     print(" " + now)
     print(' URL  : ' + URL)

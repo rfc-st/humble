@@ -25,10 +25,11 @@ HTTP Headers Analyzer<br />
 [Screenshots](#screenshots)<br />
 [Installation & Update](#installation--update)<br />
 [Usage](#usage)<br />
-[Missing Headers Check](#missing-headers-check)<br />
-[Fingerprint Headers Check](#fingerprint-headers-check)<br />
-[Deprecated Headers and Insecure Values Checks](#deprecated-headersprotocols-and-insecure-values-checks)<br />
-[Empty Values Check](#empty-values-check)<br />
+[Advanced Usage](#advanced-usage)<br />
+[Checks: Missing Headers](#checks-missing-headers)<br />
+[Checks: Fingerprint Headers](#checks-fingerprint-headers)<br />
+[Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
+[Checks: Empty Values](#checks-empty-values)<br />
 [Guidelines included](#guidelines-included-to-enable-security-http-headers)<br />
 [To-Do](#to-do)<br />
 [Further Reading](#further-reading)<br />
@@ -142,7 +143,22 @@ options:
   -v, --version      show version
 ```
 
-## Missing headers check
+## Advanced Usage
+
+Show only the analysis summary (Linux)
+
+```
+$ python3 humble.py -u https://tesla.com | grep -A 6 "\!." | sed $'1i \n' 2> /dev/null
+```
+
+Show only analysis summary (Windows. PowerShell >= 7 required)
+
+```
+$ py humble.py -u https://tesla.com | Select-String -Pattern 'Analysis' -Context 1,6 -NoEmphasis
+```
+
+
+## Checks: Missing Headers
 <details>
 
 <br />
@@ -160,15 +176,15 @@ options:
 
 </details>
 
-## Fingerprint headers check
+## Checks: Fingerprint headers
 
 Check <a href="https://github.com/rfc-st/humble/blob/master/fingerprint.txt">this</a> file.
 
-## Deprecated headers/protocols and insecure values checks
+## Checks: Deprecated headers/protocols and insecure values
 
 Check <a href="https://github.com/rfc-st/humble/blob/master/insecure.txt">this</a> file.
 
-## Empty values check
+## Checks: Empty values
 
 Any HTTP response header.
 
