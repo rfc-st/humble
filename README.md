@@ -148,7 +148,7 @@ options:
 Show only the analysis summary (Linux)
 
 ```
-$ python3 humble.py -u https://tesla.com | grep -A 6 "\!." | sed $'1i \n' 2> /dev/null
+$ python3 humble.py -u https://tesla.com | grep -A 6 "\!." | sed $'1i \n'
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux.jpg" alt="Show only the analysis summary (Linux)">
 
@@ -163,7 +163,7 @@ $ py humble.py -u https://tesla.com -l es | Select-String -Pattern '!.' -Context
 
 Show URL, date and the analysis summary (Linux)
 ```
-python3 humble.py -u https://tesla.com | grep -A5 -E "0. Info|\!." | sed 's/[--]//g' | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' |sed $'1i \n' 2> /dev/null 
+$ python3 humble.py -u https://tesla.com | grep -A5 -E "0. Info|\!." | sed 's/[--]//g' | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' |sed $'1i \n'
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_2.jpg" alt="Show URL, date and the analysis summary (Linux)">
 
