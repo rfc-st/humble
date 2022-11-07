@@ -154,7 +154,7 @@ $ python3 humble.py -u https://tesla.com | grep -A 6 "\!." | sed $'1i \n' 2> /de
 Show only analysis summary (Windows. PowerShell >= 7 required)
 
 ```
-$ py humble.py -u https://tesla.com | Select-String -Pattern 'Analysis' -Context 1,6 -NoEmphasis
+$ py humble.py -u https://tesla.com | Select-String -Pattern '!.' -Context 1,6 -NoEmphasis
 ```
 
 
