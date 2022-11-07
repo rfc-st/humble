@@ -150,12 +150,15 @@ Show only the analysis summary (Linux)
 ```
 $ python3 humble.py -u https://tesla.com | grep -A 6 "\!." | sed $'1i \n' 2> /dev/null
 ```
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux.jpg" alt="Show only the analysis summary (Linux)">
 
-Show only analysis summary (Windows. PowerShell >= 7 required)
+
+Show only the analysis summary (Windows, in Spanish. PowerShell >= 7 required)
 
 ```
-$ py humble.py -u https://tesla.com | Select-String -Pattern '!.' -Context 1,6 -NoEmphasis
+$ py humble.py -u https://tesla.com -l es | Select-String -Pattern '!.' -Context 1,6 -NoEmphasis
 ```
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_windows.jpg" alt="Show only the analysis summary (Windows, in Spanish. PowerShell >= 7 required)">
 
 
 ## Checks: Missing Headers
