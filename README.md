@@ -48,7 +48,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
 :heavy_check_mark: i18n: analysis results in English or Spanish.<br />
 :heavy_check_mark: PEP8 compliant code.<br />
-:heavy_check_mark: Tested, one by one, on hundreds of URLs.<br />
+:heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Fully working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
 :heavy_check_mark: Permissive license (<a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>).<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
