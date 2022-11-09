@@ -426,8 +426,8 @@ Articles that may be useful to secure servers/services and enable security HTTP 
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
 [ixdow]
- This header is specific to Internet Explorer 8 (discontinued in 2016).
- Ref: https://www.nwebsec.com/HttpHeaders/SecurityHeaders/XDownloadOptions
+ This header is specific to Internet Explorer 8 (discontinued in 2020).
+ Ref: https://webtechsurvey.com/response-header/x-download-options
  Ref: https://docs.microsoft.com/en-us/lifecycle/products/internet-explorer-8
 
 [ixfo]

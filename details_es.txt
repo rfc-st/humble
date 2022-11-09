@@ -426,8 +426,8 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
 [ixdow]
- Esta cabecera es exclusiva de Internet Explorer 8 (obsoleto desde 2016).
- Ref: https://www.nwebsec.com/HttpHeaders/SecurityHeaders/XDownloadOptions
+ Esta cabecera es exclusiva de Internet Explorer 8 (obsoleto desde 2020).
+ Ref: https://webtechsurvey.com/response-header/x-download-options
  Ref: https://docs.microsoft.com/en-us/lifecycle/products/internet-explorer-8
 
 [ixfo]
