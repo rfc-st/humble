@@ -26,6 +26,10 @@ HTTP Headers Analyzer<br />
 [Installation & Update](#installation--update)<br />
 [Usage](#usage)<br />
 [Advanced Usage](#advanced-usage)<br />
+ [Linux: Show only the analysis summary](#linux-show-only-the-analysis-summary)<br />
+ [Windows: In spanish. Show only the analysis summary (PowerShell >= 7 required)](#windows-in-spanish-show-only-the-analysis-summary-powershell--7-required)<br />
+ [Linux: Show only the URL, date and analysis summary](#linux-show-only-the-url-date-and-analysis-summary)<br />
+ [Linux: Show only the deprecated headers/protocols and insecure values](#linux-show-only-the-deprecated-headersprotocols-and-insecure-values)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
 [Checks: Fingerprint Headers](#checks-fingerprint-headers)<br />
 [Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
@@ -145,7 +149,7 @@ options:
 
 ## Advanced Usage
 
-Show only the analysis summary (Linux)
+### Linux: Show only the analysis summary
 
 ```
 $ python3 humble.py -u https://tesla.com | grep -A 6 "\!." | sed $'1i \n'
@@ -153,7 +157,7 @@ $ python3 humble.py -u https://tesla.com | grep -A 6 "\!." | sed $'1i \n'
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux.jpg" alt="Show only the analysis summary (Linux)">
 
 
-Show only the analysis summary (Windows, in Spanish. PowerShell >= 7 required)
+### Windows: In Spanish; show only the analysis summary (PowerShell >= 7 required)
 
 ```
 $ py humble.py -u https://tesla.com -l es | Select-String -Pattern '!.' -Context 1,6 -NoEmphasis
@@ -161,14 +165,14 @@ $ py humble.py -u https://tesla.com -l es | Select-String -Pattern '!.' -Context
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_windows.jpg" alt="Show only the analysis summary (Windows, in Spanish. PowerShell >= 7 required)">
 
 
-Show only the URL, date and analysis summary (Linux)
+### Linux: Show only the URL, date and analysis summary
 ```
 $ python3 humble.py -u https://tesla.com | grep -A5 -E "0. Info|\!." | sed 's/[--]//g' | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' |sed $'1i \n'
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_2.jpg" alt="Show URL, date and the analysis summary (Linux)">
 
 
-Show only the deprecated headers/protocols and insecure values (Linux)
+### Linux: Show only the deprecated headers/protocols and insecure values
 ```
 $ python3 humble.py -u https://tesla.com | sed '/3. /,/4. /!d' | sed '$d' | sed $'1i \n' 
 ```
