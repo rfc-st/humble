@@ -44,7 +44,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 14 checks of missing HTTP response headers.<br />
-:heavy_check_mark: 339 checks of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 345 checks of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 42 checks of deprecated HTTP response headers/protocols or with values considered insecure.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
