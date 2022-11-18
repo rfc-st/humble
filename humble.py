@@ -56,7 +56,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022-11-12. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-11-18. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
