@@ -56,7 +56,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022-11-18. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-11-19. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -293,9 +293,25 @@ def print_guides():
                 print(line, end='')
 
 
-def get_location():
-    response = requests.get(f'https://ipapi.co/country_name/')
-    return response
+def ongoing_analysis():
+    suffix = tldextract.extract(URL).suffix
+    country = requests.get(f'https://ipapi.co/country_name/')
+    if suffix[-2:] == "ru" or b'Russia' in country:
+        print("")
+        print_detail_d("[bcnt]")
+        sys.exit()
+    elif suffix[-2:] == "ua" or b'Ukraine' in country:
+        print("")
+        if args.output:
+            print_detail_a('[analysis_ua_output]')
+        else:
+            print_detail_a('[analysis_ua]')
+    else:
+        print("")
+        if args.output:
+            print_detail_a('[analysis_output]')
+        else:
+            print_detail_a('[analysis]')
 
 
 def analysis_detail():
@@ -402,25 +418,12 @@ if args.guides:
     print_guides()
     sys.exit()
 
-# Peace
+# Peace!
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
-suffix = tldextract.extract(URL).suffix
-country = get_location()
+ongoing_analysis()
 
-if suffix[-2:] == "ru" or b'Russia' in country:
-    print("")
-    print_detail_d("[bcnt]")
-    sys.exit()
-elif suffix[-2:] == "ua" or b'Ukraine' in country:
-    print("")
-    print_detail_a('[analysis_ua]')
-else:
-    print("")
-    print_detail_a('[analysis]')
-
-# Regarding 'dh key too small' errors.
-# https://stackoverflow.com/a/41041028
+# Regarding 'dh key too small' errors: https://stackoverflow.com/a/41041028
 
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
 try:
@@ -1048,8 +1051,6 @@ elif args.output == 'pdf':
                  '<a href=' + x[x.index(secure_s):] + '">' +
                  x[x.index(secure_s):-1] + '</a>')))).replace('None', "")
 
-        # Any ideas or suggestions to fix the bug in the above code?
-
         if any(s in x for s in bold_strings):
             pdf.set_font(style="B")
         else:
@@ -1091,8 +1092,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
         for line in input:
 
-            # TO-DO: this is a mess ... simplify, use templates, etc
-            # Adapt it for i18n
+            # TO-DO: this is a mess ... simplify, use templates, i18n.
 
             ahref_s = '<a href="'
             span_s = '</span>'
