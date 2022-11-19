@@ -206,47 +206,47 @@ def print_headers():
     print('\n')
 
 
-def print_detail_a(id):
+def print_detail_a(id_mode):
     with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
-            if line.startswith(id):
+            if line.startswith(id_mode):
                 print(next(rf), end='')
                 print("")
 
 
-def print_detail_d(id):
+def print_detail_d(id_mode):
     with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
-            if line.startswith(id):
+            if line.startswith(id_mode):
                 print(next(rf), end='')
                 print(next(rf))
 
 
-def print_detail_l(id):
+def print_detail_l(id_mode):
     with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
-            if line.startswith(id):
+            if line.startswith(id_mode):
                 print(next(rf).replace('\n', ''), end='')
 
 
-def print_detail_m(id):
+def print_detail_m(id_mode):
     with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
-            if line.startswith(id):
+            if line.startswith(id_mode):
                 print(next(rf), end='')
                 print(next(rf), end='')
                 print(next(rf))
 
 
-def print_detail_s(id):
+def print_detail_s(id_mode):
     with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
-            if line.startswith(id):
+            if line.startswith(id_mode):
                 if not args.output:
                     print(Style.BRIGHT + next(rf), end='')
                     print("")
@@ -255,22 +255,22 @@ def print_detail_s(id):
                     print("")
 
 
-def print_detail_h(id):
+def print_detail_h(id_mode):
     with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
-            if line.startswith(id):
+            if line.startswith(id_mode):
                 if not args.output:
                     print(Style.BRIGHT + Fore.RED + next(rf), end='')
                 else:
                     print(next(rf), end='')
 
 
-def get_detail(id):
+def get_detail(id_mode):
     with open(details_file, encoding='utf8') as rf:
         for line in rf:
             line = line.strip()
-            if line.startswith(id):
+            if line.startswith(id_mode):
                 detail_line = next(rf)
     return detail_line
 
@@ -1085,12 +1085,12 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
     list_final = list_miss + list_fng + list_ins
     list_final.sort()
 
-    with open(name_e, 'r', encoding='utf8') as input,\
+    with open(name_e, 'r', encoding='utf8') as input_file,\
             open(name_p, 'w', encoding='utf8') as output:
         output.write(str(header))
         output.write(str(body))
 
-        for line in input:
+        for line in input_file:
 
             # TO-DO: this is a mess ... simplify, use templates, i18n.
 
