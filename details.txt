@@ -1,3 +1,38 @@
+[ixacl_h]
+ Accept-CH-Lifetime (Deprecated Header)
+
+[ixacld]
+ This header is deprecated.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH-Lifetime
+
+[ixcdpr_h]
+ Content-DPR (Deprecated Header)
+
+[ixcdprd]
+ This header is deprecated.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-DPR
+
+[ixlalloc_h]
+ Large-Allocation (Deprecated Header)
+
+[ixallocd]
+ This header is deprecated.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Large-Allocation
+
+[ixtk_h]
+ Tk (Deprecated Header)
+
+[ixtkd]
+ This header is deprecated.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Tk
+
+[ixwar_h]
+ Warning (Deprecated Header)
+
+[ixward]
+ This header is deprecated.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning
+
 [humble]
  Humble HTTP headers analyzer
  (https://github.com/rfc-st/humble)

@@ -589,6 +589,12 @@ list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
 
 insecure_s = 'http:'
 
+if 'Accept-CH-Lifetime' in headers:
+    print_detail_h('[ixacl_h]')
+    if not args.brief:
+        print_detail_d("[ixacld]")
+    i_cnt += 1
+
 if 'Access-Control-Allow-Methods' in headers and \
                                   any(elem.lower() in headers["Access-Control-\
 Allow-Methods"].lower() for elem in list_methods):
@@ -630,6 +636,12 @@ if 'Cache-Control' in headers:
         if not args.brief:
             print_detail_d("[icache]")
         i_cnt += 1
+
+if 'Content-DPR' in headers:
+    print_detail_h('[ixcdpr_h]')
+    if not args.brief:
+        print_detail_d("[ixcdprd]")
+    i_cnt += 1
 
 if 'Content-Security-Policy' in headers:
 
@@ -717,6 +729,12 @@ if URL[0:5] == insecure_s:
     print_detail_h('[ihttp_h]')
     if not args.brief:
         print_detail_d("[ihttp]")
+    i_cnt += 1
+
+if 'Large-Allocation' in headers:
+    print_detail_h('[ixlalloc_h]')
+    if not args.brief:
+        print_detail_d("[ixallocd]")
     i_cnt += 1
 
 if 'Permissions-Policy' in headers:
@@ -828,6 +846,18 @@ if 'Timing-Allow-Origin' in headers and '*' in headers['Timing-Allow-Origin']:
     print_detail_h('[itao_h]')
     if not args.brief:
         print_detail_d("[itao]")
+    i_cnt += 1
+
+if 'Tk' in headers:
+    print_detail_h('[ixtk_h]')
+    if not args.brief:
+        print_detail_d("[ixtkd]")
+    i_cnt += 1
+
+if 'Warning' in headers:
+    print_detail_h('[ixwar_h]')
+    if not args.brief:
+        print_detail_d("[ixward]")
     i_cnt += 1
 
 if ('WWW-Authenticate' in headers) and (URL[0:5] == insecure_s) and\

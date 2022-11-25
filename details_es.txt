@@ -1,3 +1,38 @@
+[ixacl_h]
+ Accept-CH-Lifetime (Cabecera obsoleta)
+
+[ixacld]
+ Esta cabecera está obsoleta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH-Lifetime
+
+[ixcdpr_h]
+ Content-DPR (Cabecera obsoleta)
+
+[ixcdprd]
+ Esta cabecera está obsoleta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-DPR
+
+[ixlalloc_h]
+ Large-Allocation (Cabecera obsoleta)
+
+[ixallocd]
+ Esta cabecera está obsoleta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Large-Allocation
+
+[ixtk_h]
+ Tk (Cabecera obsoleta)
+
+[ixtkd]
+ Esta cabecera está obsoleta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Tk
+
+[ixwar_h]
+ Warning (Cabecera obsoleta)
+
+[ixward]
+ Esta cabecera está obsoleta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning
+
 [humble]
  Analizador de cabeceras HTTP
  (https://github.com/rfc-st/humble)

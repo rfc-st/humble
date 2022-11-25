@@ -1,7 +1,9 @@
+Accept-CH-Lifetime: Deprecated Header
 Access-Control-Allow-Methods: Insecure Methods
 Access-Control-Allow-Origin: Unsafe Values
 Allow: Insecure Methods
 Cache-Control: Recommended Values
+Content-DPR: Deprecated Header
 Content-Security-Policy: No Valid Directives
 Content-Security-Policy: Deprecated Directives
 Content-Security-Policy: Incorrect values
@@ -12,6 +14,7 @@ Etag: Potentially Unsafe Header
 Expect-CT: Deprecated Header
 Feature-Policy: Deprecated Header
 HTTP: Domain Via Unsafe Scheme
+Large-Allocation: Deprecated Header
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value
 Permissions-Policy: Incorrect Values
@@ -24,6 +27,8 @@ Strict-Transport-Security: Duplicated Values
 Strict-Transport-Security: Recommended Values
 Strict-Transport-Security: Ignored Header via Unsafe Scheme
 Timing-Allow-Origin: Potentially Unsafe Header
+Tk: Deprecated Header
+Warning: Deprecated Header
 WWW-Authenticate: Unsafe Value
 X-Content-Security-Policy: Deprecated Header
 X-Content-Type-Options: Duplicated Values
