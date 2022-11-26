@@ -1,3 +1,11 @@
+[ictlg_h]
+ Content-Type (Valores obsoletos)
+
+[ictlg]
+ El contenido JavaScript debe servirse siempre utilizando el tipo MIME 'text/javascript'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+ Ref: https://www.rfc-editor.org/rfc/rfc9239.html
+
 [ixacl_h]
  Accept-CH-Lifetime (Cabecera obsoleta)
 

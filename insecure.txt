@@ -10,6 +10,7 @@ Content-Security-Policy: Incorrect values
 Content-Security-Policy: Insecure Schemes
 Content-Security-Policy: Too Permissive Value
 Content-Security-Policy: Unsafe Values
+Content-Type: Deprecated Values
 Etag: Potentially Unsafe Header
 Expect-CT: Deprecated Header
 Feature-Policy: Deprecated Header

@@ -56,7 +56,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022-11-25. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-11-26. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -578,11 +578,12 @@ if not args.brief:
     print_detail_a("[aisc]")
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
-            'Allow', 'Etag', 'Expect-CT', 'Feature-Policy', 'Public-Key-Pins',
-            'Set-Cookie', 'Server-Timing', 'Timing-Allow-Origin',
-            'X-Content-Security-Policy', 'X-DNS-Prefetch-Control',
-            'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
-            'X-Pingback', 'X-Runtime', 'X-Webkit-CSP', 'X-XSS-Protection']
+            'Allow', 'Content-Type', 'Etag', 'Expect-CT', 'Feature-Policy',
+            'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
+            'Timing-Allow-Origin', 'X-Content-Security-Policy',
+            'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad',
+            'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
+            'X-Webkit-CSP', 'X-XSS-Protection']
 
 list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
                 'DELETE', 'DEBUG', 'PATCH', '*']
@@ -705,6 +706,23 @@ if 'Content-Security-Policy' in headers:
         print_detail_h('[icsw_h]')
         if not args.brief:
             print_detail_d("[icsw]")
+        i_cnt += 1
+
+if 'Content-Type' in headers:
+
+    list_legacy = ['application/javascript', 'application/ecmascript',
+                   'application/x-ecmascript', 'application/x-javascript',
+                   'text/ecmascript', 'text/javascript1.0',
+                   'text/javascript1.1', 'text/javascript1.2',
+                   'text/javascript1.3', 'text/javascript1.4',
+                   'text/javascript1.5', 'text/jscript', 'text/livescript',
+                   'text/x-ecmascript', 'text/x-javascript']
+
+    if any(elem.lower() in headers["Content-Type"].lower() for elem in
+           list_legacy):
+        print_detail_h("[ictlg_h]")
+        if not args.brief:
+            print_detail_m("[ictlg]")
         i_cnt += 1
 
 if 'Etag' in headers:
