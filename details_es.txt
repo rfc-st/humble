@@ -448,6 +448,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 [iexct]
  Esta cabecera está obsoleta.
  Ref: https://chromestatus.com/feature/6244547273687040
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
 [ipkph]
  Esta cabecera debe enviarse mediante HTTPS.

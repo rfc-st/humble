@@ -448,6 +448,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 [iexct]
  This header is deprecated.
  Ref: https://chromestatus.com/feature/6244547273687040
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
 [ipkph]
  This header must be returned only in HTTPS connections.

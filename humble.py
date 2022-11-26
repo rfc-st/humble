@@ -734,7 +734,7 @@ if 'Etag' in headers:
 if 'Expect-CT' in headers:
     print_detail_h('[iexct_h]')
     if not args.brief:
-        print_detail_d("[iexct]")
+        print_detail_m("[iexct]")
     i_cnt += 1
 
 if 'Feature-Policy' in headers:
