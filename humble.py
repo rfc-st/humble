@@ -638,6 +638,12 @@ if 'Cache-Control' in headers:
             print_detail_d("[icache]")
         i_cnt += 1
 
+if ('Clear-Site-Data' in headers) and (URL[0:5] == insecure_s):
+    print_detail_h('[icsd_h]')
+    if not args.brief:
+        print_detail_d("[icsd]")
+    i_cnt += 1
+
 if 'Content-DPR' in headers:
     print_detail_h('[ixcdpr_h]')
     if not args.brief:

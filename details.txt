@@ -1,3 +1,10 @@
+[icsd_h]
+ Clear-Site-Data (Ignored Header)
+
+[icsd]
+ This header is ignored by the browser when accessing via HTTP.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
+
 [ictlg_h]
  Content-Type (Deprecated Values)
 

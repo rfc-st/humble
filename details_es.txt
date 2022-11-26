@@ -1,3 +1,10 @@
+[icsd_h]
+ Clear-Site-Data (Cabecera ignorada)
+
+[icsd]
+ Al acceder mediante HTTP los navegadores ignoran esta cabecera.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
+
 [ictlg_h]
  Content-Type (Valores obsoletos)
 
