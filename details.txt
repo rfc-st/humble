@@ -379,7 +379,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
  Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
 
 [icsw]
- Limit the allowed sources in the directives. The value '*' allows any URL.
+ Limit the allowed sources in the directives. The value ' * ' allows any URL.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [ictp]

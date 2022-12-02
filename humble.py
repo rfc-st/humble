@@ -707,8 +707,7 @@ if 'Content-Security-Policy' in headers:
         if not args.brief:
             print_detail_d("[icsh]")
         i_cnt += 1
-    if '*' in headers['Content-Security-Policy'] and \
-       (('*.' or '.*') not in headers['Content-Security-Policy']):
+    if ' * ' in headers['Content-Security-Policy']:
         print_detail_h('[icsw_h]')
         if not args.brief:
             print_detail_d("[icsw]")
