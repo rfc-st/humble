@@ -604,7 +604,7 @@ Allow-Methods"].lower() for elem in list_methods):
         methods_list = "".join(str(x) for x in
                                headers["Access-Control-Allow-Methods"])
         match_method = [x for x in list_methods if x in methods_list]
-        match_method_str = ','.join(match_method)
+        match_method_str = ', '.join(match_method)
         print_detail_l("[imethods_s]")
         print(match_method_str)
         print_detail_a("[imethods]")
