@@ -248,7 +248,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Error: No se encuentra la URL. Revisa que sea correcta y prueba de nuevo.
 
 [e_timeout]
- Error: Se ha superado el tiempo de espera. Espera unos minutos y prueba de nuevo.
+ Error: Se ha superado el tiempo de espera. Prueba en unos minutos.
 
 [report]
  Informe guardado en 
