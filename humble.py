@@ -38,6 +38,13 @@
 # Don't just be a 'script kiddie'. If you are interested in this world,
 # research, learn, and become a Security analyst. Good luck!.
 
+# GREETINGS (for the moments, and above all, for your wisdom!):
+# María Antonia, Fernando, Joanna, Eduardo, Ana, Iván, Luis Joaquín,
+# Juan Carlos, David, Carlos, Juán, Alejandro, Pablo, Íñigo, Naiara, Ricardo,
+# Gabriel, Miguel Angel, David (x2), Sergio, Marta, Alba, Montse & Eloy.
+#
+# You know who you are.
+
 from datetime import datetime
 from fpdf import FPDF
 from colorama import Fore, Style, init
