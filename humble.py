@@ -39,7 +39,7 @@
 # research, learn, and become a Security analyst. Good luck!.
 
 from datetime import datetime
-from fpdf import FPDF, HTMLMixin
+from fpdf import FPDF
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import os
@@ -56,11 +56,11 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022-12-03. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-12-06. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
-class PDF(FPDF, HTMLMixin):
+class PDF(FPDF):
 
     def header(self):
         self.set_font('Courier', 'B', 10)
@@ -1100,7 +1100,7 @@ elif args.output == 'pdf':
         # character (as in the first line).
 
         if 'https://' in x and 'content-security' not in x:
-            x = (str(pdf.write_html(x.replace(x[x.index(secure_s):],
+            x = (str(pdf.write_html('&nbsp;' + x.replace(x[x.index(secure_s):],
                  '<a href=' + x[x.index(secure_s):] + '">' +
                  x[x.index(secure_s):-1] + '</a>')))).replace('None', "")
 
