@@ -964,18 +964,18 @@ if 'X-Pingback' in headers and 'xmlrpc.php' in headers['X-Pingback']:
         print_detail_d("[ixpb]")
     i_cnt += 1
 
-if 'X-Robots-Tag' in headers and 'all' in headers['X-Robots-Tag']:
-    print_detail_h('[ixrob_h]')
-    if not args.brief:
-        print_detail_m("[ixrob]")
-    i_cnt += 1
-
-if not any(elem.lower() in headers["X-Robots-Tag"].lower() for
-           elem in list_robots):
-    print_detail_h('[ixrobv_h]')
-    if not args.brief:
-        print_detail_m("[ixrobv]")
-    i_cnt += 1
+if 'X-Robots-Tag' in headers:
+    if 'all' in headers['X-Robots-Tag']:
+        print_detail_h('[ixrob_h]')
+        if not args.brief:
+            print_detail_m("[ixrob]")
+        i_cnt += 1
+    elif not any(elem.lower() in headers["X-Robots-Tag"].lower() for
+                 elem in list_robots):
+        print_detail_h('[ixrobv_h]')
+        if not args.brief:
+            print_detail_m("[ixrobv]")
+        i_cnt += 1
 
 if 'X-Runtime' in headers:
     print_detail_h('[ixrun_h]')
