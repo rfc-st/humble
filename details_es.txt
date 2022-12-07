@@ -1,3 +1,11 @@
+[ixrobv_h]
+ X-Robots-Tag (Sin directivas adecuadas)
+
+[ixrobv]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
+ Ref: https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
+
 [icsd_h]
  Clear-Site-Data (Cabecera ignorada)
 

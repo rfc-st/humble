@@ -595,6 +595,11 @@ list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
 list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
                 'DELETE', 'DEBUG', 'PATCH', '*']
 
+list_robots = ['all', 'indexifembedded', 'max-image-preview', 'max-snippet',
+               'max-video-preview', 'noarchive', 'noodp', 'nofollow',
+               'noimageindex', 'noindex', 'none', 'nositelinkssearchbox',
+               'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
+
 insecure_s = 'http:'
 
 if 'Accept-CH-Lifetime' in headers:
@@ -963,6 +968,13 @@ if 'X-Robots-Tag' in headers and 'all' in headers['X-Robots-Tag']:
     print_detail_h('[ixrob_h]')
     if not args.brief:
         print_detail_m("[ixrob]")
+    i_cnt += 1
+
+if not any(elem.lower() in headers["X-Robots-Tag"].lower() for
+           elem in list_robots):
+    print_detail_h('[ixrobv_h]')
+    if not args.brief:
+        print_detail_m("[ixrobv]")
     i_cnt += 1
 
 if 'X-Runtime' in headers:
