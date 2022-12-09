@@ -1,3 +1,11 @@
+[ionloc_h]
+ Onion-Location (Cabecera potencialmente insegura)
+
+[ionloc]
+ Configura correctamente los dominios .onion y revisa sus limitaciones.
+ Ref: https://community.torproject.org/onion-services/advanced/onion-location/
+ Ref: https://forum.torproject.net/t/eventual-support-for-https-dns-records/4799
+
 [ixrobv_h]
  X-Robots-Tag (Sin directivas adecuadas)
 

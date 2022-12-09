@@ -17,6 +17,7 @@ Expect-CT: Deprecated Header
 Feature-Policy: Deprecated Header
 HTTP: Domain Via Unsafe Scheme
 Large-Allocation: Deprecated Header
+Onion-Location: Potentially Unsafe Header
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value
 Permissions-Policy: Incorrect Values

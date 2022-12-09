@@ -585,7 +585,7 @@ list_access = ['*', 'null']
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'Allow', 'Content-Type', 'Etag', 'Expect-CT', 'Feature-Policy',
-            'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
+            'Onion-Location', 'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
             'Timing-Allow-Origin', 'X-Content-Security-Policy',
             'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad',
             'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
@@ -830,6 +830,12 @@ if 'Permissions-Policy' in headers:
         if not args.brief:
             print_detail_d("[ifpoli]")
         i_cnt += 1
+
+if 'Onion-Location' in headers:
+    print_detail_h('[ionloc_h]')
+    if not args.brief:
+        print_detail_m("[ionloc]")
+    i_cnt += 1
 
 if 'Public-Key-Pins' in headers:
     print_detail_h('[ipkp_h]')
