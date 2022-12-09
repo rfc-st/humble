@@ -27,9 +27,6 @@
 # INFO:
 # Recommended terminal width for best output: 152
 
-# TO-DO:
-# Add more checks (missing, fingerprint, insecure)
-
 # ADVICE:
 # Use the information provided by this script *wisely*: there is far more
 # merit in teaching, learning and helping others than in taking shortcuts to
@@ -43,10 +40,10 @@
 # Juan Carlos, David, Carlos, Juán, Alejandro, Pablo, Íñigo, Naiara, Ricardo,
 # Gabriel, Miguel Angel, David (x2), Sergio, Marta, Alba, Montse & Eloy.
 #
-# You know who you are.
+# You know who you are!.
 
-from datetime import datetime
 from fpdf import FPDF
+from datetime import datetime
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import os
@@ -63,7 +60,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022-12-07. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-12-09. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 
@@ -584,6 +581,8 @@ print_detail_s('[3depinsecure]')
 if not args.brief:
     print_detail_a("[aisc]")
 
+list_access = ['*', 'null']
+
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'Allow', 'Content-Type', 'Etag', 'Expect-CT', 'Feature-Policy',
             'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
@@ -592,8 +591,79 @@ list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
             'X-Webkit-CSP', 'X-XSS-Protection']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+
 list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
                 'DELETE', 'DEBUG', 'PATCH', '*']
+
+list_cache = ['no-cache', 'no-store', 'must-revalidate']
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+
+list_csp_directives = ['base-uri', 'child-src', 'connect-src',
+                       'default-src', 'font-src', 'form-action',
+                       'frame-ancestors', 'frame-src', 'img-src',
+                       'manifest-src', 'media-src', 'navigate-to',
+                       'object-src', 'prefetch-src', 'report-to',
+                       'require-trusted-types-for', 'sandbox', 'script-src',
+                       'script-src-elem', 'script-src-attr', 'style-src',
+                       'style-src-elem', 'style-src-attr', 'trusted-types',
+                       'upgrade-insecure-requests', 'worker-src']
+
+list_csp_deprecated = ['block-all-mixed-content', 'plugin-types', 'referrer',
+                       'report-uri', 'require-sri-for']
+
+list_csp_insecure = ['unsafe-eval', 'unsafe-inline']
+
+list_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+
+list_legacy = ['application/javascript', 'application/ecmascript',
+               'application/x-ecmascript', 'application/x-javascript',
+               'text/ecmascript', 'text/javascript1.0',
+               'text/javascript1.1', 'text/javascript1.2',
+               'text/javascript1.3', 'text/javascript1.4',
+               'text/javascript1.5', 'text/jscript', 'text/livescript',
+               'text/x-ecmascript', 'text/x-javascript']
+
+# https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+# https://csplite.com/fp/
+
+list_per_features = ['accelerometer', 'ambient-light-sensor',
+                     'autoplay', 'battery', 'browsing-topics', 'camera',
+                     'clipboard-read', 'clipboard-write',
+                     'conversion-measurement', 'cross-origin-isolated',
+                     'display-capture', 'document-access',
+                     'document-domain', 'document-write',
+                     'encrypted-media', 'execution-while-not-rendered',
+                     'execution-while-out-of-viewport',
+                     'focus-without-user-activation',
+                     'font-display-late-swap', 'fullscreen', 'gamepad',
+                     'geolocation', 'gyroscope', 'hid', 'idle-detection',
+                     'interest-cohort', 'layout-animations', 'lazyload',
+                     'legacy-image-formats', 'loading-frame-default-eager',
+                     'magnetometer', 'microphone', 'midi',
+                     'navigation-override', 'oversized-images', 'payment',
+                     'picture-in-picture', 'publickey-credentials-get',
+                     'screen-wake-lock', 'serial', 'speaker',
+                     'speaker-selection', 'sync-script', 'sync-xhr',
+                     'trust-token-redemption', 'unload',
+                     'unoptimized-images', 'unoptimized-lossless-images',
+                     'unoptimized-lossless-images-strict',
+                     'unoptimized-lossy-images', 'unsized-media', 'usb',
+                     'vertical-scroll', 'vibrate', 'wake-lock', 'web-share',
+                     'window-placement', 'xr-spatial-tracking']
+
+list_ref = ['strict-origin', 'strict-origin-when-cross-origin',
+            'no-referrer-when-downgrade', 'no-referrer']
+
+list_sts = ['includeSubDomains', 'max-age']
+
+list_cookie = ['secure', 'httponly']
+
+# https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
+# https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
 
 list_robots = ['all', 'indexifembedded', 'max-image-preview', 'max-snippet',
                'max-video-preview', 'noarchive', 'noodp', 'nofollow',
@@ -622,33 +692,32 @@ Allow-Methods"].lower() for elem in list_methods):
         print_detail_a("[imethods]")
     i_cnt += 1
 
-if 'Access-Control-Allow-Origin' in headers:
-    list_access = ['*', 'null']
-    if any(elem.lower() in headers["Access-Control-Allow-Origin"].lower() for
-       elem in list_access):
-        if ('.*' and '*.') not in headers["Access-Control-Allow-Origin"]:
-            print_detail_h('[iaccess_h]')
-            if not args.brief:
-                print_detail_d("[iaccess]")
-            i_cnt += 1
+if ('Access-Control-Allow-Origin' in headers) and (any(elem.lower()
+                                                   in headers["Access-Control-\
+Allow-Origin"].lower() for elem in list_access)) and (('.*' and '*.') not in
+                                                      headers["Access-Control-\
+Allow-Origin"]):
+    print_detail_h('[iaccess_h]')
+    if not args.brief:
+        print_detail_d("[iaccess]")
+    i_cnt += 1
 
-if 'Allow' in headers:
-    if any(elem.lower() in headers["Allow"].lower() for elem in list_methods):
-        print_detail_h('[imethods_hh]')
-        if not args.brief:
-            print_detail_l("[imethods_s]")
-            print(headers["Allow"])
-            print_detail_a("[imethods]")
-        i_cnt += 1
+if ('Allow' in headers) and (any(elem.lower() in headers["Allow"].lower() for
+                             elem in list_methods)):
+    print_detail_h('[imethods_hh]')
+    if not args.brief:
+        print_detail_l("[imethods_s]")
+        print(headers["Allow"])
+        print_detail_a("[imethods]")
+    i_cnt += 1
 
-if 'Cache-Control' in headers:
-    list_cache = ['no-cache', 'no-store', 'must-revalidate']
-    if not all(elem.lower() in headers["Cache-Control"].lower() for elem in
-               list_cache):
-        print_detail_h('[icache_h]')
-        if not args.brief:
-            print_detail_d("[icache]")
-        i_cnt += 1
+if ('Cache-Control' in headers) and (not all(elem.lower() in
+                                     headers["Cache-Control"].lower() for elem
+                                     in list_cache)):
+    print_detail_h('[icache_h]')
+    if not args.brief:
+        print_detail_d("[icache]")
+    i_cnt += 1
 
 if ('Clear-Site-Data' in headers) and (URL[0:5] == insecure_s):
     print_detail_h('[icsd_h]')
@@ -663,25 +732,6 @@ if 'Content-DPR' in headers:
     i_cnt += 1
 
 if 'Content-Security-Policy' in headers:
-
-    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
-
-    list_csp_directives = ['base-uri', 'child-src', 'connect-src',
-                           'default-src', 'font-src', 'form-action',
-                           'frame-ancestors', 'frame-src', 'img-src',
-                           'manifest-src', 'media-src', 'navigate-to',
-                           'object-src', 'prefetch-src', 'report-to',
-                           'require-trusted-types-for', 'sandbox',
-                           'script-src', 'script-src-elem',
-                           'script-src-attr', 'style-src', 'style-src-elem',
-                           'style-src-attr', 'trusted-types',
-                           'upgrade-insecure-requests', 'worker-src']
-    list_csp_deprecated = ['block-all-mixed-content', 'plugin-types',
-                           'referrer', 'report-uri', 'require-sri-for']
-    list_csp_insecure = ['unsafe-eval', 'unsafe-inline']
-    list_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to',
-                      'report-uri']
-
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp_insecure):
         print_detail_h('[icsp_h]')
@@ -725,22 +775,13 @@ if 'Content-Security-Policy' in headers:
             print_detail_d("[icsw]")
         i_cnt += 1
 
-if 'Content-Type' in headers:
-
-    list_legacy = ['application/javascript', 'application/ecmascript',
-                   'application/x-ecmascript', 'application/x-javascript',
-                   'text/ecmascript', 'text/javascript1.0',
-                   'text/javascript1.1', 'text/javascript1.2',
-                   'text/javascript1.3', 'text/javascript1.4',
-                   'text/javascript1.5', 'text/jscript', 'text/livescript',
-                   'text/x-ecmascript', 'text/x-javascript']
-
-    if any(elem.lower() in headers["Content-Type"].lower() for elem in
-           list_legacy):
-        print_detail_h("[ictlg_h]")
-        if not args.brief:
-            print_detail_m("[ictlg]")
-        i_cnt += 1
+if ('Content-Type' in headers) and (any(elem.lower() in
+                                    headers["Content-Type"].lower() for elem in
+                                    list_legacy)):
+    print_detail_h("[ictlg_h]")
+    if not args.brief:
+        print_detail_m("[ictlg]")
+    i_cnt += 1
 
 if 'Etag' in headers:
     print_detail_h('[ieta_h]')
@@ -773,35 +814,6 @@ if 'Large-Allocation' in headers:
     i_cnt += 1
 
 if 'Permissions-Policy' in headers:
-
-    # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
-    # https://csplite.com/fp/
-
-    list_per_features = ['accelerometer', 'ambient-light-sensor',
-                         'autoplay', 'battery', 'browsing-topics', 'camera',
-                         'clipboard-read', 'clipboard-write',
-                         'conversion-measurement', 'cross-origin-isolated',
-                         'display-capture', 'document-access',
-                         'document-domain', 'document-write',
-                         'encrypted-media', 'execution-while-not-rendered',
-                         'execution-while-out-of-viewport',
-                         'focus-without-user-activation',
-                         'font-display-late-swap', 'fullscreen', 'gamepad',
-                         'geolocation', 'gyroscope', 'hid', 'idle-detection',
-                         'interest-cohort', 'layout-animations', 'lazyload',
-                         'legacy-image-formats', 'loading-frame-default-eager',
-                         'magnetometer', 'microphone', 'midi',
-                         'navigation-override', 'oversized-images', 'payment',
-                         'picture-in-picture', 'publickey-credentials-get',
-                         'screen-wake-lock', 'serial', 'speaker',
-                         'speaker-selection', 'sync-script', 'sync-xhr',
-                         'trust-token-redemption', 'unload',
-                         'unoptimized-images', 'unoptimized-lossless-images',
-                         'unoptimized-lossless-images-strict',
-                         'unoptimized-lossy-images', 'unsized-media', 'usb',
-                         'vertical-scroll', 'vibrate', 'wake-lock',
-                         'web-share', 'window-placement',
-                         'xr-spatial-tracking']
     if not any(elem.lower() in headers["Permissions-Policy"].lower() for
                elem in list_per_features):
         print_detail_h('[ifpoln_h]')
@@ -826,8 +838,6 @@ if 'Public-Key-Pins' in headers:
     i_cnt += 1
 
 if 'Referrer-Policy' in headers:
-    list_ref = ['strict-origin', 'strict-origin-when-cross-origin',
-                'no-referrer-when-downgrade', 'no-referrer']
     if not any(elem.lower() in headers["Referrer-Policy"].lower() for elem in
                list_ref):
         print_detail_h('[iref_h]')
@@ -846,17 +856,15 @@ if 'Server-Timing' in headers:
         print_detail_d("[itim]")
     i_cnt += 1
 
-if ('Set-Cookie' in headers) and (URL[0:5] != insecure_s):
-    list_cookie = ['secure', 'httponly']
-    if not all(elem.lower() in headers["Set-Cookie"].lower() for elem in
-       list_cookie):
-        print_detail_h('[iset_h]')
-        if not args.brief:
-            print_detail_d("[iset]")
-        i_cnt += 1
+if ('Set-Cookie' in headers) and (URL[0:5] != insecure_s) and \
+                (not all(elem.lower() in headers["Set-Cookie"].lower()
+                 for elem in list_cookie)):
+    print_detail_h('[iset_h]')
+    if not args.brief:
+        print_detail_d("[iset]")
+    i_cnt += 1
 
 if ('Strict-Transport-Security' in headers) and (URL[0:5] != insecure_s):
-    list_sts = ['includeSubDomains', 'max-age']
     age = int(''.join([n for n in headers["Strict-Transport-Security"] if
               n.isdigit()]))
     if not all(elem.lower() in headers["Strict-Transport-Security"].lower() for
@@ -895,7 +903,7 @@ if 'Warning' in headers:
         print_detail_d("[ixward]")
     i_cnt += 1
 
-if ('WWW-Authenticate' in headers) and (URL[0:5] == insecure_s) and\
+if ('WWW-Authenticate' in headers) and (URL[0:5] == insecure_s) and \
    ('Basic' in headers['WWW-Authenticate']):
     print_detail_h('[ihbas_h]')
     if not args.brief:
@@ -920,12 +928,12 @@ if 'X-Content-Type-Options' in headers:
             print_detail_d("[ictp]")
         i_cnt += 1
 
-if 'X-DNS-Prefetch-Control' in headers:
-    if 'on' in headers['X-DNS-Prefetch-Control']:
-        print_detail_h('[ixdp_h]')
-        if not args.brief:
-            print_detail_d("[ixdp]")
-        i_cnt += 1
+if ('X-DNS-Prefetch-Control' in headers) and \
+   ('on' in headers['X-DNS-Prefetch-Control']):
+    print_detail_h('[ixdp_h]')
+    if not args.brief:
+        print_detail_d("[ixdp]")
+    i_cnt += 1
 
 if 'X-Download-Options' in headers:
     print_detail_h('[ixdow_h]')
@@ -951,12 +959,12 @@ if 'X-Pad' in headers:
         print_detail_d("[ixpad]")
     i_cnt += 1
 
-if 'X-Permitted-Cross-Domain-Policies' in headers:
-    if 'all' in headers['X-Permitted-Cross-Domain-Policies']:
-        print_detail_h('[ixcd_h]')
-        if not args.brief:
-            print_detail_m("[ixcd]")
-        i_cnt += 1
+if ('X-Permitted-Cross-Domain-Policies' in headers) and \
+   ('all' in headers['X-Permitted-Cross-Domain-Policies']):
+    print_detail_h('[ixcd_h]')
+    if not args.brief:
+        print_detail_m("[ixcd]")
+    i_cnt += 1
 
 if 'X-Pingback' in headers and 'xmlrpc.php' in headers['X-Pingback']:
     print_detail_h('[ixpb_h]')
