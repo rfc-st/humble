@@ -922,6 +922,12 @@ if 'X-Content-Security-Policy' in headers:
         print_detail_d("[ixcsp]")
     i_cnt += 1
 
+if 'X-Content-Security-Policy-Report-Only' in headers:
+    print_detail_h('[ixcspr_h]')
+    if not args.brief:
+        print_detail_d("[ixcspr]")
+    i_cnt += 1
+
 if 'X-Content-Type-Options' in headers:
     if ',' in headers['X-Content-Type-Options']:
         print_detail_h('[ictpd_h]')
@@ -1001,6 +1007,12 @@ if 'X-Webkit-CSP' in headers:
     print_detail_h('[ixwcsp_h]')
     if not args.brief:
         print_detail_d("[ixcsp]")
+    i_cnt += 1
+
+if 'X-Webkit-CSP-Report-Only' in headers:
+    print_detail_h('[ixwcspr_h]')
+    if not args.brief:
+        print_detail_d("[ixcspr]")
     i_cnt += 1
 
 if 'X-XSS-Protection' in headers:

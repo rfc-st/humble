@@ -34,6 +34,7 @@ Tk: Deprecated Header
 Warning: Deprecated Header
 WWW-Authenticate: Unsafe Value
 X-Content-Security-Policy: Deprecated Header
+X-Content-Security-Policy-Report-Only: Deprecated Header
 X-Content-Type-Options: Duplicated Values
 X-Content-Type-Options: Incorrect Value
 X-DNS-Prefetch-Control: Potentially Unsafe Header
@@ -47,5 +48,6 @@ X-Robots-Tag: Unsafe Value
 X-Robots-Tag: No Valid Directives
 X-Runtime: Unsafe Value
 X-Webkit-CSP: Deprecated Header
+X-Webkit-CSP-Report-Only: Deprecated Header
 X-XSS-Protection: Unsafe Value
 X-XSS-Protection: Duplicated Values

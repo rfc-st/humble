@@ -1,3 +1,13 @@
+[ixcspr_h]
+ X-Content-Security-Policy-Report-Only (Cabecera obsoleta)
+
+[ixwcspr_h]
+ X-Webkit-CSP-Report-Only (Cabecera obsoleta)
+
+[ixcspr]
+ Esta cabecera está obsoleta; utilice la cabecera "Content-Security-Policy-Report-Only".
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
+
 [ionloc_h]
  Onion-Location (Cabecera potencialmente insegura)
 

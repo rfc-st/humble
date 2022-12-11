@@ -1,3 +1,13 @@
+[ixcspr_h]
+ X-Content-Security-Policy-Report-Only (Deprecated Header)
+
+[ixwcspr_h]
+ X-Webkit-CSP-Report-Only (Deprecated Header)
+
+[ixcspr]
+ This header is deprecated. Use instead "Content-Security-Policy-Report-Only".
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
+
 [ionloc_h]
  Onion-Location (Potentially Unsafe Header)
 
