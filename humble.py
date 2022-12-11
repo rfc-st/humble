@@ -587,9 +587,10 @@ list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'Allow', 'Content-Type', 'Etag', 'Expect-CT', 'Feature-Policy',
             'Onion-Location', 'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
             'Timing-Allow-Origin', 'X-Content-Security-Policy',
-            'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad',
-            'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
-            'X-Webkit-CSP', 'X-XSS-Protection']
+            'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
+            'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
+            'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
+            'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 
