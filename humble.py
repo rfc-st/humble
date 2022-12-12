@@ -601,15 +601,15 @@ list_cache = ['no-cache', 'no-store', 'must-revalidate']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
-list_csp_directives = ['base-uri', 'child-src', 'connect-src',
-                       'default-src', 'font-src', 'form-action',
-                       'frame-ancestors', 'frame-src', 'img-src',
-                       'manifest-src', 'media-src', 'navigate-to',
-                       'object-src', 'prefetch-src', 'report-to',
-                       'require-trusted-types-for', 'sandbox', 'script-src',
-                       'script-src-elem', 'script-src-attr', 'style-src',
-                       'style-src-elem', 'style-src-attr', 'trusted-types',
-                       'upgrade-insecure-requests', 'worker-src']
+list_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
+                       'font-src', 'form-action', 'frame-ancestors',
+                       'frame-src', 'img-src', 'manifest-src', 'media-src',
+                       'navigate-to', 'object-src', 'prefetch-src',
+                       'report-to', 'require-trusted-types-for', 'sandbox',
+                       'script-src', 'script-src-elem', 'script-src-attr',
+                       'style-src', 'style-src-elem', 'style-src-attr',
+                       'trusted-types', 'upgrade-insecure-requests',
+                       'worker-src']
 
 list_csp_deprecated = ['block-all-mixed-content', 'plugin-types', 'referrer',
                        'report-uri', 'require-sri-for']
@@ -631,12 +631,11 @@ list_legacy = ['application/javascript', 'application/ecmascript',
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://csplite.com/fp/
 
-list_per_features = ['accelerometer', 'ambient-light-sensor',
-                     'autoplay', 'battery', 'browsing-topics', 'camera',
-                     'clipboard-read', 'clipboard-write',
-                     'conversion-measurement', 'cross-origin-isolated',
-                     'display-capture', 'document-access',
-                     'document-domain', 'document-write',
+list_per_features = ['accelerometer', 'ambient-light-sensor', 'autoplay',
+                     'battery', 'browsing-topics', 'camera', 'clipboard-read',
+                     'clipboard-write', 'conversion-measurement',
+                     'cross-origin-isolated', 'display-capture',
+                     'document-access', 'document-domain', 'document-write',
                      'encrypted-media', 'execution-while-not-rendered',
                      'execution-while-out-of-viewport',
                      'focus-without-user-activation',
@@ -892,7 +891,8 @@ if ('Strict-Transport-Security' in headers) and (URL[0:5] == insecure_s):
         print_detail_d("[ihsts]")
     i_cnt += 1
 
-if 'Timing-Allow-Origin' in headers and '*' in headers['Timing-Allow-Origin']:
+if ('Timing-Allow-Origin' in headers) and ('*' in
+                                           headers['Timing-Allow-Origin']):
     print_detail_h('[itao_h]')
     if not args.brief:
         print_detail_d("[itao]")
