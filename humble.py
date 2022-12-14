@@ -63,6 +63,8 @@ else:
 version = '\r\n' + "2022-12-14. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
+git_url = "https://github.com/rfc-st/humble"
+
 
 class PDF(FPDF):
 
@@ -72,7 +74,7 @@ class PDF(FPDF):
         self.cell(0, 5, get_detail('[pdf_t]'), new_x="CENTER",
                   new_y="NEXT", align='C')
         self.ln(1)
-        self.cell(0, 5, "(https://github.com/rfc-st/humble)", align='C')
+        self.cell(0, 5, "(" + git_url + ")", align='C')
         if self.page_no() == 1:
             self.ln(9)
         else:
@@ -87,16 +89,15 @@ class PDF(FPDF):
 
 def pdf_metadata():
     title = (get_detail('[pdf_m]')).replace('\n', '') + URL
-    git_url = "https://github.com/rfc-st/humble" + " (v." + \
-              version.strip()[:10] + ")"
-    pdf.set_author(git_url)
+    git_urlc = git_url + " (v." + version.strip()[:10] + ")"
+    pdf.set_author(git_urlc)
     pdf.set_creation_date = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-    pdf.set_creator(git_url)
+    pdf.set_creator(git_urlc)
     pdf.set_keywords(get_detail('[pdf_k]').replace('\n', ''))
     pdf.set_lang(get_detail('[pdf_l]'))
     pdf.set_subject(get_detail('[pdf_s]').replace('\n', ''))
     pdf.set_title(title)
-    pdf.set_producer(git_url)
+    pdf.set_producer(git_urlc)
 
 
 def pdf_sections():
@@ -186,7 +187,7 @@ def print_summary():
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
         print(banner)
-        print(" (https://github.com/rfc-st/humble)")
+        print(" " + git_url)
     elif args.output != 'pdf':
         print(spacing)
         print_detail_d('[humble]')
@@ -383,8 +384,8 @@ def request_exceptions():
 init(autoreset=True)
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
-                        description="humble (HTTP Headers Analyzer) - \
-https://github.com/rfc-st/humble")
+                        description="humble (HTTP Headers Analyzer) - " +
+                        git_url)
 optional = parser._action_groups.pop()
 required = parser.add_argument_group('required arguments')
 optional.add_argument('-u', type=str, dest='URL', required=False,
