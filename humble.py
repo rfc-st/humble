@@ -1146,7 +1146,7 @@ elif args.output == 'pdf':
         # All lines in the above example should keep the leading blank
         # character (as in the first line).
 
-        if 'https://' in x and 'content-security' not in x:
+        if secure_s in x and 'content-security' not in x:
             x = (str(pdf.write_html('&nbsp;' + x.replace(x[x.index(secure_s):],
                  '<a href=' + x[x.index(secure_s):] + '">' +
                  x[x.index(secure_s):-1] + '</a>')))).replace('None', "")
