@@ -739,15 +739,11 @@ if 'Content-DPR' in headers:
 if 'Content-Security-Policy' in headers:
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
        elem in list_csp_insecure):
-        print_detail_h('[icsp_h]')
-        if not args.brief:
-            print_detail_m("[icsp]")
+        print_details('[icsp_h]', '[icsp]', 'm')
         i_cnt += 1
     elif not any(elem.lower() in headers["Content-Security-Policy"].lower() for
                  elem in list_csp_directives):
-        print_detail_h('[icsi_h]')
-        if not args.brief:
-            print_detail_d("[icsi]")
+        print_details('[icsi_h]', '[icsi]', 'd')
         i_cnt += 1
     if any(elem.lower() in headers["Content-Security-Policy"].lower() for
            elem in list_csp_deprecated):
@@ -764,20 +760,14 @@ if 'Content-Security-Policy' in headers:
     if '=' in headers['Content-Security-Policy']:
         if not any(elem.lower() in headers["Content-Security-Policy"].lower()
                    for elem in list_csp_equal):
-            print_detail_h('[icsn_h]')
-            if not args.brief:
-                print_detail_d("[icsn]")
+            print_details('[icsn_h]', '[icsn]', 'd')
             i_cnt += 1
     if (insecure_s in headers['Content-Security-Policy']) and \
             (URL[0:5] == 'https'):
-        print_detail_h('[icsh_h]')
-        if not args.brief:
-            print_detail_d("[icsh]")
+        print_details('[icsh_h]', '[icsh]', 'd')
         i_cnt += 1
     if ' * ' in headers['Content-Security-Policy']:
-        print_detail_h('[icsw_h]')
-        if not args.brief:
-            print_detail_d("[icsw]")
+        print_details('[icsw_h]', '[icsw]', 'd')
         i_cnt += 1
 
 if ('Content-Type' in headers) and (any(elem.lower() in
@@ -809,19 +799,13 @@ if 'Large-Allocation' in headers:
 if 'Permissions-Policy' in headers:
     if not any(elem.lower() in headers["Permissions-Policy"].lower() for
                elem in list_per_features):
-        print_detail_h('[ifpoln_h]')
-        if not args.brief:
-            print_detail_m("[ifpoln]")
+        print_details('[ifpoln_h]', '[ifpoln]', 'm')
         i_cnt += 1
     if '*' in headers['Permissions-Policy']:
-        print_detail_h('[ifpol_h]')
-        if not args.brief:
-            print_detail_d("[ifpol]")
+        print_details('[ifpol_h]', '[ifpol]', 'd')
         i_cnt += 1
     if 'none' in headers['Permissions-Policy']:
-        print_detail_h('[ifpoli_h]')
-        if not args.brief:
-            print_detail_d("[ifpoli]")
+        print_details('[ifpoli_h]', '[ifpoli]', 'd')
         i_cnt += 1
 
 if 'Onion-Location' in headers:
@@ -835,14 +819,10 @@ if 'Public-Key-Pins' in headers:
 if 'Referrer-Policy' in headers:
     if not any(elem.lower() in headers["Referrer-Policy"].lower() for elem in
                list_ref):
-        print_detail_h('[iref_h]')
-        if not args.brief:
-            print_detail_m("[iref]")
+        print_details('[iref_h]', '[iref]', 'm')
         i_cnt += 1
     if 'unsafe-url' in headers['Referrer-Policy']:
-        print_detail_h('[irefi_h]')
-        if not args.brief:
-            print_detail_d("[irefi]")
+        print_details('[irefi_h]', '[irefi]', 'd')
         i_cnt += 1
 
 if 'Server-Timing' in headers:
@@ -860,14 +840,10 @@ if ('Strict-Transport-Security' in headers) and (URL[0:5] != insecure_s):
               n.isdigit()]))
     if not all(elem.lower() in headers["Strict-Transport-Security"].lower() for
        elem in list_sts) or (age is None or age < 31536000):
-        print_detail_h('[ists_h]')
-        if not args.brief:
-            print_detail_m("[ists]")
+        print_details('[ists_h]', '[ists]', 'm')
         i_cnt += 1
     if ',' in headers['Strict-Transport-Security']:
-        print_detail_h('[istsd_h]')
-        if not args.brief:
-            print_detail_d("[istsd]")
+        print_details('[istsd_h]', '[istsd]', 'd')
         i_cnt += 1
 
 if ('Strict-Transport-Security' in headers) and (URL[0:5] == insecure_s):
@@ -902,14 +878,10 @@ if 'X-Content-Security-Policy-Report-Only' in headers:
 
 if 'X-Content-Type-Options' in headers:
     if ',' in headers['X-Content-Type-Options']:
-        print_detail_h('[ictpd_h]')
-        if not args.brief:
-            print_detail_d("[ictpd]")
+        print_details('[ictpd_h]', '[ictpd]', 'd')
         i_cnt += 1
     elif 'nosniff' not in headers['X-Content-Type-Options']:
-        print_detail_h('[ictp_h]')
-        if not args.brief:
-            print_detail_d("[ictp]")
+        print_details('[ictp_h]', '[ictp]', 'd')
         i_cnt += 1
 
 if ('X-DNS-Prefetch-Control' in headers) and \
@@ -923,14 +895,10 @@ if 'X-Download-Options' in headers:
 
 if 'X-Frame-Options' in headers:
     if ',' in headers['X-Frame-Options']:
-        print_detail_h('[ixfo_h]')
-        if not args.brief:
-            print_detail_m("[ixfo]")
+        print_details('[ixfo_h]', '[ixfo]', 'm')
         i_cnt += 1
     if 'allow-from' in headers['X-Frame-Options'].lower():
-        print_detail_h('[ixfod_h]')
-        if not args.brief:
-            print_detail_m("[ixfod]")
+        print_details('[ixfod_h]', '[ixfod]', 'm')
         i_cnt += 1
 
 if 'X-Pad' in headers:
@@ -948,15 +916,11 @@ if ('X-Pingback' in headers) and ('xmlrpc.php' in headers['X-Pingback']):
 
 if 'X-Robots-Tag' in headers:
     if 'all' in headers['X-Robots-Tag']:
-        print_detail_h('[ixrob_h]')
-        if not args.brief:
-            print_detail_m("[ixrob]")
+        print_details('[ixrob_h]', '[ixrob]', 'm')
         i_cnt += 1
     elif not any(elem.lower() in headers["X-Robots-Tag"].lower() for
                  elem in list_robots):
-        print_detail_h('[ixrobv_h]')
-        if not args.brief:
-            print_detail_m("[ixrobv]")
+        print_details('[ixrobv_h]', '[ixrobv]', 'm')
         i_cnt += 1
 
 if 'X-Runtime' in headers:
@@ -973,14 +937,10 @@ if 'X-Webkit-CSP-Report-Only' in headers:
 
 if 'X-XSS-Protection' in headers:
     if '0' not in headers["X-XSS-Protection"]:
-        print_detail_h('[ixxp_h]')
-        if not args.brief:
-            print_detail_d("[ixxp]")
+        print_details('[ixxp_h]', '[ixxp]', 'd')
         i_cnt += 1
     if ',' in headers['X-XSS-Protection']:
-        print_detail_h('[ixxpd_h]')
-        if not args.brief:
-            print_detail_d("[ixxpd]")
+        print_details('[ixxpd_h]', '[ixxpd]', 'd')
         i_cnt += 1
 
 if args.brief and i_cnt != 0:
