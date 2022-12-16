@@ -710,9 +710,7 @@ if ('Access-Control-Allow-Origin' in headers) and (any(elem.lower()
 Allow-Origin"].lower() for elem in list_access)) and (('.*' and '*.') not in
                                                       headers["Access-Control-\
 Allow-Origin"]):
-    print_detail_h('[iaccess_h]')
-    if not args.brief:
-        print_detail_d("[iaccess]")
+    print_details('[iaccess_h]', '[iaccess]', 'd')
     i_cnt += 1
 
 if ('Allow' in headers) and (any(elem.lower() in headers["Allow"].lower() for
@@ -727,15 +725,11 @@ if ('Allow' in headers) and (any(elem.lower() in headers["Allow"].lower() for
 if ('Cache-Control' in headers) and (not all(elem.lower() in
                                      headers["Cache-Control"].lower() for elem
                                      in list_cache)):
-    print_detail_h('[icache_h]')
-    if not args.brief:
-        print_detail_d("[icache]")
+    print_details('[icache_h]', '[icache]', 'd')
     i_cnt += 1
 
 if ('Clear-Site-Data' in headers) and (URL[0:5] == insecure_s):
-    print_detail_h('[icsd_h]')
-    if not args.brief:
-        print_detail_d("[icsd]")
+    print_details('[icsd_h]', '[icsd]', 'd')
     i_cnt += 1
 
 if 'Content-DPR' in headers:
@@ -789,9 +783,7 @@ if 'Content-Security-Policy' in headers:
 if ('Content-Type' in headers) and (any(elem.lower() in
                                     headers["Content-Type"].lower() for elem in
                                     list_legacy)):
-    print_detail_h("[ictlg_h]")
-    if not args.brief:
-        print_detail_m("[ictlg]")
+    print_details('[ictlg_h]', '[ictlg]', 'm')
     i_cnt += 1
 
 if 'Etag' in headers:
@@ -860,9 +852,7 @@ if 'Server-Timing' in headers:
 if ('Set-Cookie' in headers) and (URL[0:5] != insecure_s) and \
                 (not all(elem.lower() in headers["Set-Cookie"].lower()
                  for elem in list_cookie)):
-    print_detail_h('[iset_h]')
-    if not args.brief:
-        print_detail_d("[iset]")
+    print_details('[iset_h]', '[iset]', 'd')
     i_cnt += 1
 
 if ('Strict-Transport-Security' in headers) and (URL[0:5] != insecure_s):
@@ -881,16 +871,12 @@ if ('Strict-Transport-Security' in headers) and (URL[0:5] != insecure_s):
         i_cnt += 1
 
 if ('Strict-Transport-Security' in headers) and (URL[0:5] == insecure_s):
-    print_detail_h('[ihsts_h]')
-    if not args.brief:
-        print_detail_d("[ihsts]")
+    print_details('[ihsts_h]', '[ihsts]', 'd')
     i_cnt += 1
 
 if ('Timing-Allow-Origin' in headers) and ('*' in
                                            headers['Timing-Allow-Origin']):
-    print_detail_h('[itao_h]')
-    if not args.brief:
-        print_detail_d("[itao]")
+    print_details('[itao_h]', '[itao]', 'd')
     i_cnt += 1
 
 if 'Tk' in headers:
@@ -903,9 +889,7 @@ if 'Warning' in headers:
 
 if ('WWW-Authenticate' in headers) and (URL[0:5] == insecure_s) and \
    ('Basic' in headers['WWW-Authenticate']):
-    print_detail_h('[ihbas_h]')
-    if not args.brief:
-        print_detail_d("[ihbas]")
+    print_details('[ihbas_h]', '[ihbas]', 'd')
     i_cnt += 1
 
 if 'X-Content-Security-Policy' in headers:
@@ -930,9 +914,7 @@ if 'X-Content-Type-Options' in headers:
 
 if ('X-DNS-Prefetch-Control' in headers) and \
    ('on' in headers['X-DNS-Prefetch-Control']):
-    print_detail_h('[ixdp_h]')
-    if not args.brief:
-        print_detail_d("[ixdp]")
+    print_details('[ixdp_h]', '[ixdp]', 'd')
     i_cnt += 1
 
 if 'X-Download-Options' in headers:
@@ -957,15 +939,11 @@ if 'X-Pad' in headers:
 
 if ('X-Permitted-Cross-Domain-Policies' in headers) and \
    ('all' in headers['X-Permitted-Cross-Domain-Policies']):
-    print_detail_h('[ixcd_h]')
-    if not args.brief:
-        print_detail_m("[ixcd]")
+    print_details('[ixcd_h]', '[ixcd]', 'm')
     i_cnt += 1
 
-if 'X-Pingback' in headers and 'xmlrpc.php' in headers['X-Pingback']:
-    print_detail_h('[ixpb_h]')
-    if not args.brief:
-        print_detail_d("[ixpb]")
+if ('X-Pingback' in headers) and ('xmlrpc.php' in headers['X-Pingback']):
+    print_details('[ixpb_h]', '[ixpb]', 'd')
     i_cnt += 1
 
 if 'X-Robots-Tag' in headers:
