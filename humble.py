@@ -211,6 +211,15 @@ def print_headers():
     print('\n')
 
 
+def print_details(short_desc, long_desc, id_mode):
+    print_detail_h(short_desc)
+    if not args.brief:
+        if id_mode == 'd':
+            print_detail_d(long_desc)
+        elif id_mode == 'm':
+            print_detail_m(long_desc)
+
+
 def print_detail_a(id_mode):
     with open(details_file, encoding='utf8') as rf:
         for line in rf:
@@ -679,9 +688,7 @@ list_robots = ['all', 'indexifembedded', 'max-image-preview', 'max-snippet',
 insecure_s = 'http:'
 
 if 'Accept-CH-Lifetime' in headers:
-    print_detail_h('[ixacl_h]')
-    if not args.brief:
-        print_detail_d("[ixacld]")
+    print_details('[ixacl_h]', '[ixacld]', 'd')
     i_cnt += 1
 
 if 'Access-Control-Allow-Methods' in headers and \
@@ -732,9 +739,7 @@ if ('Clear-Site-Data' in headers) and (URL[0:5] == insecure_s):
     i_cnt += 1
 
 if 'Content-DPR' in headers:
-    print_detail_h('[ixcdpr_h]')
-    if not args.brief:
-        print_detail_d("[ixcdprd]")
+    print_details('[ixcdpr_h]', '[ixcdprd]', 'd')
     i_cnt += 1
 
 if 'Content-Security-Policy' in headers:
@@ -790,33 +795,23 @@ if ('Content-Type' in headers) and (any(elem.lower() in
     i_cnt += 1
 
 if 'Etag' in headers:
-    print_detail_h('[ieta_h]')
-    if not args.brief:
-        print_detail_d("[ieta]")
+    print_details('[ieta_h]', '[ieta]', 'd')
     i_cnt += 1
 
 if 'Expect-CT' in headers:
-    print_detail_h('[iexct_h]')
-    if not args.brief:
-        print_detail_m("[iexct]")
+    print_details('[iexct_h]', '[iexct]', 'm')
     i_cnt += 1
 
 if 'Feature-Policy' in headers:
-    print_detail_h('[iffea_h]')
-    if not args.brief:
-        print_detail_d("[iffea]")
+    print_details('[iffea_h]', '[iffea]', 'd')
     i_cnt += 1
 
 if URL[0:5] == insecure_s:
-    print_detail_h('[ihttp_h]')
-    if not args.brief:
-        print_detail_d("[ihttp]")
+    print_details('[ihttp_h]', '[ihttp]', 'd')
     i_cnt += 1
 
 if 'Large-Allocation' in headers:
-    print_detail_h('[ixlalloc_h]')
-    if not args.brief:
-        print_detail_d("[ixallocd]")
+    print_details('[ixlalloc_h]', '[ixallocd]', 'd')
     i_cnt += 1
 
 if 'Permissions-Policy' in headers:
@@ -838,15 +833,11 @@ if 'Permissions-Policy' in headers:
         i_cnt += 1
 
 if 'Onion-Location' in headers:
-    print_detail_h('[ionloc_h]')
-    if not args.brief:
-        print_detail_m("[ionloc]")
+    print_details('[ionloc_h]', '[ionloc]', 'm')
     i_cnt += 1
 
 if 'Public-Key-Pins' in headers:
-    print_detail_h('[ipkp_h]')
-    if not args.brief:
-        print_detail_d("[ipkp]")
+    print_details('[ipkp_h]', '[ipkp]', 'd')
     i_cnt += 1
 
 if 'Referrer-Policy' in headers:
@@ -863,9 +854,7 @@ if 'Referrer-Policy' in headers:
         i_cnt += 1
 
 if 'Server-Timing' in headers:
-    print_detail_h('[itim_h]')
-    if not args.brief:
-        print_detail_d("[itim]")
+    print_details('[itim_h]', '[itim]', 'd')
     i_cnt += 1
 
 if ('Set-Cookie' in headers) and (URL[0:5] != insecure_s) and \
@@ -905,15 +894,11 @@ if ('Timing-Allow-Origin' in headers) and ('*' in
     i_cnt += 1
 
 if 'Tk' in headers:
-    print_detail_h('[ixtk_h]')
-    if not args.brief:
-        print_detail_d("[ixtkd]")
+    print_details('[ixtk_h]', '[ixtkd]', 'd')
     i_cnt += 1
 
 if 'Warning' in headers:
-    print_detail_h('[ixwar_h]')
-    if not args.brief:
-        print_detail_d("[ixward]")
+    print_details('[ixwar_h]', '[ixward]', 'd')
     i_cnt += 1
 
 if ('WWW-Authenticate' in headers) and (URL[0:5] == insecure_s) and \
@@ -924,15 +909,11 @@ if ('WWW-Authenticate' in headers) and (URL[0:5] == insecure_s) and \
     i_cnt += 1
 
 if 'X-Content-Security-Policy' in headers:
-    print_detail_h('[ixcsp_h]')
-    if not args.brief:
-        print_detail_d("[ixcsp]")
+    print_details('[ixcsp_h]', '[ixcsp]', 'd')
     i_cnt += 1
 
 if 'X-Content-Security-Policy-Report-Only' in headers:
-    print_detail_h('[ixcspr_h]')
-    if not args.brief:
-        print_detail_d("[ixcspr]")
+    print_details('[ixcspr_h]', '[ixcspr]', 'd')
     i_cnt += 1
 
 if 'X-Content-Type-Options' in headers:
@@ -955,9 +936,7 @@ if ('X-DNS-Prefetch-Control' in headers) and \
     i_cnt += 1
 
 if 'X-Download-Options' in headers:
-    print_detail_h('[ixdow_h]')
-    if not args.brief:
-        print_detail_m("[ixdow]")
+    print_details('[ixdow_h]', '[ixdow]', 'm')
     i_cnt += 1
 
 if 'X-Frame-Options' in headers:
@@ -973,9 +952,7 @@ if 'X-Frame-Options' in headers:
         i_cnt += 1
 
 if 'X-Pad' in headers:
-    print_detail_h('[ixpad_h]')
-    if not args.brief:
-        print_detail_d("[ixpad]")
+    print_details('[ixpad_h]', '[ixpad]', 'd')
     i_cnt += 1
 
 if ('X-Permitted-Cross-Domain-Policies' in headers) and \
@@ -1005,21 +982,15 @@ if 'X-Robots-Tag' in headers:
         i_cnt += 1
 
 if 'X-Runtime' in headers:
-    print_detail_h('[ixrun_h]')
-    if not args.brief:
-        print_detail_d("[ixrun]")
-        i_cnt += 1
+    print_details('[ixrun_h]', '[ixrun]', 'd')
+    i_cnt += 1
 
 if 'X-Webkit-CSP' in headers:
-    print_detail_h('[ixwcsp_h]')
-    if not args.brief:
-        print_detail_d("[ixcsp]")
+    print_details('[ixwcsp_h]', '[ixcsp]', 'd')
     i_cnt += 1
 
 if 'X-Webkit-CSP-Report-Only' in headers:
-    print_detail_h('[ixwcspr_h]')
-    if not args.brief:
-        print_detail_d("[ixcspr]")
+    print_details('[ixwcspr_h]', '[ixcspr]', 'd')
     i_cnt += 1
 
 if 'X-XSS-Protection' in headers:
