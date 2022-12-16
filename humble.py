@@ -60,7 +60,7 @@ if platform.system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022-12-14. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-12-16. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
@@ -534,10 +534,15 @@ print("")
 
 # Report - 2. Fingerprinting through headers / values
 
-# Part of the content of the file 'fingerprint.txt' has been made possible
-# thanks to Wappalyzer, under MIT license.
+# Certain content of the file 'fingerprint.txt' has been made possible by:
+#
+# Wappalyzer, under MIT license.
 # https://github.com/wappalyzer/wappalyzer/tree/master/src/technologies
 # https://github.com/wappalyzer/wappalyzer/blob/master/LICENSE
+#
+# OWASP Secure Headers Project, under Apache 2.0 license.
+# https://github.com/OWASP/www-project-secure-headers/blob/master/tab_bestpractices.md
+# https://github.com/OWASP/www-project-secure-headers/blob/master/LICENSE.txt
 
 f_cnt = 0
 
