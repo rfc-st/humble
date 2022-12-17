@@ -43,24 +43,24 @@
 # You know who you are!.
 
 from fpdf import FPDF
+from time import time
+from os import path, remove
+from platform import system
 from datetime import datetime
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-import os
 import sys
-import time
-import platform
 import requests
 import tldextract
 
-start = time.time()
+start = time()
 
-if platform.system() == 'Windows':
+if system() == 'Windows':
     spacing = '\n'
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022-12-16. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-12-17. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
@@ -148,8 +148,8 @@ def print_path(filename):
     clean_output()
     print("")
     print_detail_l('[report]')
-    print('"' + os.path.normcase(os.path.dirname(os.path.realpath(filename)) +
-          '/' + filename + '"'))
+    print('"' + path.normcase(path.dirname(path.realpath(filename)) + '/' +
+          filename + '"'))
 
 
 def print_ok():
@@ -1012,7 +1012,7 @@ if not any(elem.lower() in headers for elem in list_miss):
 print("")
 print("")
 print("")
-end = time.time()
+end = time()
 analysis_time()
 
 # Export analysis
@@ -1074,7 +1074,7 @@ elif args.output == 'pdf':
     pdf.output(name_p)
     print_path(name_p)
     f.close()
-    os.remove(name_e)
+    remove(name_e)
 elif args.output == 'html':
     sys.stdout = orig_stdout
     f.close()
@@ -1152,4 +1152,4 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
         output.write(footer)
 
     print_path(name_p)
-    os.remove(name_e)
+    remove(name_e)
