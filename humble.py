@@ -60,7 +60,7 @@ if system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022-12-17. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-12-24. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
