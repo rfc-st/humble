@@ -60,7 +60,7 @@ if system() == 'Windows':
 else:
     spacing = '\r\n'
 
-version = '\r\n' + "2022-12-24. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-12-25. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
@@ -467,14 +467,14 @@ infix = "_headers_"
 
 # Save analysis to file
 
+date_now = datetime.now().strftime("%Y%m%d")
+
 if args.output is not None:
     orig_stdout = sys.stdout
     name_s = tldextract.extract(URL)
-    name_e = name_s.domain + infix + datetime.now().strftime("%Y%m%d")\
-        + ".txt"
-    if args.output == 'pdf' or args.output == 'html':
-        name_e = name_s.domain + infix +\
-         datetime.now().strftime("%Y%m%d") + "t.txt"
+    name_e = name_s.domain + infix + date_now + ".txt"
+    if (args.output == 'pdf') or (args.output == 'html'):
+        name_e = name_s.domain + infix + date_now + "t.txt"
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
