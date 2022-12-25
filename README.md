@@ -51,7 +51,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
 :heavy_check_mark: i18n: analysis results in English or Spanish.<br />
-:heavy_check_mark: PEP8 compliant code.<br />
+:heavy_check_mark: Code audited via <a href="https://pypi.org/project/pycodestyle/" target="_blank">pycodestyle<a> and <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Fully tested and working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
 :heavy_check_mark: All code under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
