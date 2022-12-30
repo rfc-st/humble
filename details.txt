@@ -1,3 +1,11 @@
+[ixuacom_h]
+ X-UA-compatible (Deprecated Header)
+
+[ixuacom]
+ Unless you need compatibility with very old versions of Internet Explorer (e.g. 6 to 8),
+ remove this header and declare correctly the doctype.
+ Ref: https://getoutofmyhead.dev/x-ua-compatible/
+
 [ixcspr_h]
  X-Content-Security-Policy-Report-Only (Deprecated Header)
 

@@ -47,6 +47,7 @@ X-Pingback: Unsafe Value
 X-Robots-Tag: Unsafe Value
 X-Robots-Tag: No Valid Directives
 X-Runtime: Unsafe Value
+X-UA-Compatible (Deprecated Header)
 X-Webkit-CSP: Deprecated Header
 X-Webkit-CSP-Report-Only: Deprecated Header
 X-XSS-Protection: Unsafe Value

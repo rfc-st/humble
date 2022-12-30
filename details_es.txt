@@ -1,3 +1,11 @@
+[ixuacom_h]
+ X-UA-compatible (Cabecera obsoleta)
+
+[ixuacom]
+ A menos que necesite compatibilidad con versiones muy antiguas de Internet Explorer 
+ (ej. de la 6 a la 8), elimine esta cabecera y declare correctamente el doctype.
+ Ref: https://getoutofmyhead.dev/x-ua-compatible/
+
 [ixcspr_h]
  X-Content-Security-Policy-Report-Only (Cabecera obsoleta)
 

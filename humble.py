@@ -658,8 +658,8 @@ list_per_features = ['accelerometer', 'ambient-light-sensor', 'autoplay',
                      'picture-in-picture', 'publickey-credentials-get',
                      'screen-wake-lock', 'serial', 'speaker',
                      'speaker-selection', 'sync-script', 'sync-xhr',
-                     'trust-token-redemption', 'unload',
-                     'unoptimized-images', 'unoptimized-lossless-images',
+                     'trust-token-redemption', 'unload', 'unoptimized-images',
+                     'unoptimized-lossless-images',
                      'unoptimized-lossless-images-strict',
                      'unoptimized-lossy-images', 'unsized-media', 'usb',
                      'vertical-scroll', 'vibrate', 'wake-lock', 'web-share',
@@ -922,6 +922,10 @@ if 'X-Runtime' in headers:
     print_details('[ixrun_h]', '[ixrun]', 'd')
     i_cnt += 1
 
+if 'X-UA-Compatible' in headers:
+    print_details('[ixuacom_h]', '[ixuacom]', 'm')
+    i_cnt += 1
+
 if 'X-Webkit-CSP' in headers:
     print_details('[ixwcsp_h]', '[ixcsp]', 'd')
     i_cnt += 1
@@ -1091,6 +1095,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
     list_miss.append('WWW-Authenticate')
     list_miss.append('X-Frame-Options')
+    list_miss.append('X-UA-compatible')
     list_final = list_miss + list_fng + list_ins
     list_final.sort()
 
