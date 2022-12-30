@@ -45,7 +45,6 @@
 from fpdf import FPDF
 from time import time
 from os import path, remove
-from platform import system
 from datetime import datetime
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -55,12 +54,7 @@ import tldextract
 
 start = time()
 
-if system() == 'Windows':
-    spacing = '\n'
-else:
-    spacing = '\r\n'
-
-version = '\r\n' + "2022-12-25. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2022-12-30. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
@@ -189,9 +183,10 @@ def print_summary():
         print(banner)
         print(" " + git_url)
     elif args.output != 'pdf':
-        print(spacing)
+        print("")
         print_detail_d('[humble]')
-    print(spacing)
+    print("")
+    print("")
     print_detail_s('[0section]')
     print_detail_l('[info]')
     print(" " + now)
