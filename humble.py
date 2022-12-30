@@ -1095,6 +1095,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
     list_miss.append('WWW-Authenticate')
     list_miss.append('X-Frame-Options')
+    list_miss.append('X-Robots-Tag')
     list_miss.append('X-UA-compatible')
     list_final = list_miss + list_fng + list_ins
     list_final.sort()

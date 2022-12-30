@@ -542,7 +542,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 [ixrob]
  El valor 'all' permite que se indexe, y sirva, todo el contenido del sitio web.
  Puede suponer un riesgo de seguridad, al indexar datos sensibles.
- Ref: https://semoladigital.com/robots-meta-tag-xrobots-tag-data-nosnippet-everything-you-need-to-know/
+ Ref: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 
 [ixrun]
  El valor de esta cabecera puede facilitar la identificación de usuarios activos.

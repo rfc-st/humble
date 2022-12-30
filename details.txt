@@ -542,7 +542,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 [ixrob]
  The value 'all' implies no restrictions for indexing or serving content, regarding search engines.
  Could pose a security risk: indexing of exposed administration panels, sensitive information, etc.
- Ref: https://semoladigital.com/robots-meta-tag-xrobots-tag-data-nosnippet-everything-you-need-to-know/
+ Ref: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 
 [ixrun]
  The value of this header could allow valid user harvesting attacks.
