@@ -1038,37 +1038,16 @@ elif args.output == 'pdf':
 
     pdf.set_font("Courier", size=9)
     f = open(name_e, "r", encoding='utf8')
+
     for x in f:
         if '[' in x:
             pdf_sections()
-
-        # FIX NEEDED (it's driving me crazy, seriously ...)
-
-        # The following code generates hyperlinks in the PDF (via '<a href=').
-        # If two consecutive lines contain generated hyperlinks the PDF will
-        # show the second line (and the following ones) without the
-        # leading blank character of the first one.
-
-        # Ex: https://postimg.cc/dL427tBQ
-
-        #  Cache-Control: https://xxx               --> Proper
-        # Content-Type: https://xxx                 --> Wrong
-        # Content-Security-Policy: https://xxx      --> Wrong
-        # Cross-Origin-Opener-Policy: https://xxx   --> Wrong
-
-        # All lines in the above example should keep the leading blank
-        # character (as in the first line).
-
-        if secure_s in x and 'content-security' not in x:
-            x = (str(pdf.write_html('&nbsp;' + x.replace(x[x.index(secure_s):],
-                 '<a href=' + x[x.index(secure_s):] + '">' +
-                 x[x.index(secure_s):-1] + '</a>')))).replace('None', "")
-
         if any(s in x for s in bold_strings):
             pdf.set_font(style="B")
         else:
             pdf.set_font(style="")
         pdf.multi_cell(197, 2.6, txt=x, align='L')
+
     name_p = name_e[:-5] + ".pdf"
     pdf.output(name_p)
     print_path(name_p)
