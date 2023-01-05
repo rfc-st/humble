@@ -1044,7 +1044,10 @@ elif args.output == 'pdf':
             pdf_sections()
         if any(s in x for s in bold_strings):
             pdf.set_font(style="B")
+        elif (' URL  : ' in x) or ('Ref: ' in x) or ('caniuse.com/?' in x):
+            pdf.set_text_color(0, 0, 255)
         else:
+            pdf.set_text_color(0, 0, 0)
             pdf.set_font(style="")
         pdf.multi_cell(197, 2.6, txt=x, align='L')
 
