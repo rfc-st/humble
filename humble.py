@@ -4,7 +4,7 @@
 #
 # MIT License
 #
-# Copyright (c) 2020-2022 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
+# Copyright (c) 2020-2023 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -54,7 +54,7 @@ import tldextract
 
 start = time()
 
-version = '\r\n' + "2022-12-30. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-01-05. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
