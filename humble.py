@@ -1039,13 +1039,26 @@ elif args.output == 'pdf':
     pdf.set_font("Courier", size=9)
     f = open(name_e, "r", encoding='utf8')
 
+    url_string = ' URL  : '
+    ref_string = 'Ref: '
+    can_string = ': https://caniuse.com/?search='
+
     for x in f:
         if '[' in x:
             pdf_sections()
         if any(s in x for s in bold_strings):
             pdf.set_font(style="B")
-        elif (' URL  : ' in x) or ('Ref: ' in x) or ('caniuse.com/?' in x):
+        if url_string in x:
             pdf.set_text_color(0, 0, 255)
+            pdf.cell(w=2000, h=2, txt=x, align="L", link=URL)
+        if ref_string in x:
+            link_hyper = x.partition(ref_string)[2]
+            pdf.set_text_color(0, 0, 255)
+            pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
+        if can_string in x:
+            link_hyper = x.partition(': ')[2]
+            pdf.set_text_color(0, 0, 255)
+            pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
         else:
             pdf.set_text_color(0, 0, 0)
             pdf.set_font(style="")
