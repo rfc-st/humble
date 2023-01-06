@@ -112,11 +112,11 @@ def pdf_links(pdfstring):
         pdf.set_text_color(0, 0, 255)
         pdf.cell(w=2000, h=2, txt=x, align="L", link=URL)
     elif pdfstring == ref_string:
-        link_hyper = x.partition(ref_string)[2]
+        link_hyper = x.partition(ref_string)[2].strip()
         pdf.set_text_color(0, 0, 255)
         pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
     elif pdfstring == can_string:
-        link_hyper = x.partition(': ')[2]
+        link_hyper = x.partition(': ')[2].strip()
         pdf.set_text_color(0, 0, 255)
         pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
 
