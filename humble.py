@@ -54,7 +54,7 @@ import tldextract
 
 start = time()
 
-version = '\r\n' + "2023-01-05. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-01-06. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
@@ -105,6 +105,20 @@ def pdf_sections():
     for index, element in enumerate(list_secpos):
         if x.startswith(element):
             pdf.start_section(get_detail(list_sectxt[index]))
+
+
+def pdf_links(pdfstring):
+    if pdfstring == url_string:
+        pdf.set_text_color(0, 0, 255)
+        pdf.cell(w=2000, h=2, txt=x, align="L", link=URL)
+    elif pdfstring == ref_string:
+        link_hyper = x.partition(ref_string)[2]
+        pdf.set_text_color(0, 0, 255)
+        pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
+    elif pdfstring == can_string:
+        link_hyper = x.partition(': ')[2]
+        pdf.set_text_color(0, 0, 255)
+        pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
 
 
 def get_language():
@@ -1048,20 +1062,15 @@ elif args.output == 'pdf':
             pdf_sections()
         if any(s in x for s in bold_strings):
             pdf.set_font(style="B")
-        if url_string in x:
-            pdf.set_text_color(0, 0, 255)
-            pdf.cell(w=2000, h=2, txt=x, align="L", link=URL)
-        if ref_string in x:
-            link_hyper = x.partition(ref_string)[2]
-            pdf.set_text_color(0, 0, 255)
-            pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
-        if can_string in x:
-            link_hyper = x.partition(': ')[2]
-            pdf.set_text_color(0, 0, 255)
-            pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
         else:
-            pdf.set_text_color(0, 0, 0)
             pdf.set_font(style="")
+        if url_string in x:
+            pdf_links(url_string)
+        if ref_string in x:
+            pdf_links(ref_string)
+        if can_string in x:
+            pdf_links(can_string)
+        pdf.set_text_color(0, 0, 0)
         pdf.multi_cell(197, 2.6, txt=x, align='L')
 
     name_p = name_e[:-5] + ".pdf"
