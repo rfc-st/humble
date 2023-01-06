@@ -44,8 +44,8 @@
 
 from fpdf import FPDF
 from time import time
-from os import path, remove
 from datetime import datetime
+from os import path, remove
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import sys
