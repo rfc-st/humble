@@ -65,6 +65,7 @@ class PDF(FPDF):
     def header(self):
         self.set_font('Courier', 'B', 10)
         self.set_y(15)
+        pdf.set_text_color(0, 0, 0)
         self.cell(0, 5, get_detail('[pdf_t]'), new_x="CENTER",
                   new_y="NEXT", align='C')
         self.ln(1)
@@ -77,8 +78,9 @@ class PDF(FPDF):
     def footer(self):
         self.set_y(-15)
         self.set_font('Helvetica', 'I', 8)
+        pdf.set_text_color(0, 0, 0)
         self.cell(0, 10, get_detail('[pdf_p]') + str(self.page_no()) +
-                  ' of {nb}', align='C')
+                  get_detail('[pdf_po') + '{nb}', align='C')
 
 
 def pdf_metadata():

@@ -228,7 +228,10 @@
 Analizador de cabeceras HTTP
 
 [pdf_p]
-P. 
+Página 
+
+[pdf_po]
+ de  
 
 [pdf_m]
 Informe de las cabeceras HTTP de 
