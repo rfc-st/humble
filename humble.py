@@ -54,7 +54,7 @@ import tldextract
 
 start = time()
 
-version = '\r\n' + "2023-01-06. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-01-07. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
@@ -108,16 +108,14 @@ def pdf_sections():
 
 
 def pdf_links(pdfstring):
+    pdf.set_text_color(0, 0, 255)
     if pdfstring == url_string:
-        pdf.set_text_color(0, 0, 255)
         pdf.cell(w=2000, h=2, txt=x, align="L", link=URL)
     elif pdfstring == ref_string:
         link_hyper = x.partition(ref_string)[2].strip()
-        pdf.set_text_color(0, 0, 255)
         pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
     elif pdfstring == can_string:
         link_hyper = x.partition(': ')[2].strip()
-        pdf.set_text_color(0, 0, 255)
         pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
 
 
