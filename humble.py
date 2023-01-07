@@ -299,7 +299,7 @@ def get_detail(id_mode):
 
 
 def python_ver():
-    if sys.version_info < (3, 6):
+    if sys.version_info < (3, 7):
         print("")
         print_detail_d('[python]')
         sys.exit()
@@ -318,7 +318,7 @@ def print_guides():
 
 def ongoing_analysis():
     suffix = tldextract.extract(URL).suffix
-    country = requests.get(f'https://ipapi.co/country_name/')
+    country = requests.get('https://ipapi.co/country_name/')
     if suffix[-2:] == "ru" or b'Russia' in country:
         print("")
         print_detail_d("[bcnt]")

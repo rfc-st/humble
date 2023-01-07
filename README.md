@@ -1,7 +1,7 @@
 # humble
 
 <p align=center>
-<a target="_blank" href="https://github.com/rfc-st/humble#installation--update" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/python-%3E%3D3.6-brightgreen"></a>
+<a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/python-%3E%3D3.7-brightgreen"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
@@ -94,12 +94,7 @@ HTTP Headers Analyzer<br />
 
 ## Installation & Update
 
-**NOTE**: Python 3.6 or higher is required (<a target="_blank" href="https://github.com/netromdk/vermin" title="Tool used">Tool</a> used for this check).
-
-<p></p>
-<p align="left">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_python_version.PNG" alt="Minimum required Python version to run this tool" width=65% height=65%
-</p>
+**NOTE**: Python 3.7 or higher is required.
 
 ```bash
 # install python3 and python3-pip if not exist
