@@ -348,7 +348,7 @@ def analysis_detail():
 def detail_exceptions(id_exception, exception_v):
     clean_output()
     print("")
-    print_detail_l(id_exception)
+    print_detail_a(id_exception)
     raise SystemExit from exception_v
 
 
