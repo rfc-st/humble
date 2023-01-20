@@ -97,16 +97,14 @@ def pdf_metadata():
 
 
 def pdf_sections():
+    section_dict = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
+                    '[1.': '[1missing_s]', '[2.': '[2fingerprint_s]',
+                    '[3.': '[3depinsecure_s]', '[4.': '[4empty_s]',
+                    '[5.': '[5compat_s]', '[Cabeceras': '[0headers_s]'}
 
-    list_secpos = ['[0.', '[HTTP R', '[1.', '[2.', '[3.', '[4.', '[5.',
-                   '[Cabeceras']
-    list_sectxt = ['[0section_s]', '[0headers_s]', '[1missing_s]',
-                   '[2fingerprint_s]', '[3depinsecure_s]', '[4empty_s]',
-                   '[5compat_s]', '[0headers_s]']
-
-    for index, element in enumerate(list_secpos):
-        if x.startswith(element):
-            pdf.start_section(get_detail(list_sectxt[index]))
+    match = next((i for i in section_dict if x.startswith(i)), None)
+    if match is not None:
+        pdf.start_section(get_detail(section_dict[match]))
 
 
 def pdf_links(pdfstring):
@@ -126,9 +124,9 @@ def get_language():
 
 
 def analysis_time():
+    seconds = end - start
     print(".:")
     print("")
-    seconds = end - start
     print_detail_l('[analysis_time]')
     print(round(seconds, 2), end='')
     print_detail_l('[analysis_time_sec]')
