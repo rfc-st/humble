@@ -122,11 +122,7 @@ def pdf_links(pdfstring):
 
 
 def get_language():
-    if args.language == 'es':
-        details_file = 'details_es.txt'
-    else:
-        details_file = 'details.txt'
-    return details_file
+    return 'details_es.txt' if args.language == 'es' else 'details.txt'
 
 
 def analysis_time():
@@ -171,15 +167,14 @@ def print_header(header):
 
 
 def print_header_fng(header):
-    if not args.output:
-        if '[' in header:
-            print(Style.BRIGHT + Fore.RED + " " +
-                  header.partition(' [')[0].strip() + Style.NORMAL +
-                  Fore.RESET + " [" + header.partition(' [')[2].strip())
-        else:
-            print(Style.BRIGHT + Fore.RED + " " + header)
+    if args.output:
+        print(f" {header}")
+    elif '[' in header:
+        print(Style.BRIGHT + Fore.RED + " " +
+              header.partition(' [')[0].strip() + Style.NORMAL +
+              Fore.RESET + " [" + header.partition(' [')[2].strip())
     else:
-        print(" " + header)
+        print(Style.BRIGHT + Fore.RED + " " + header)
 
 
 def print_summary():
@@ -271,10 +266,9 @@ def print_detail_s(id_mode):
             if line.startswith(id_mode):
                 if not args.output:
                     print(Style.BRIGHT + next(rf), end='')
-                    print("")
                 else:
                     print(next(rf), end='')
-                    print("")
+                print("")
 
 
 def print_detail_h(id_mode):
@@ -351,49 +345,38 @@ def analysis_detail():
     print("")
 
 
+def detail_exceptions(id_exception, exception_v):
+    clean_output()
+    print("")
+    print_detail_l(id_exception)
+    raise SystemExit from exception_v
+
+
 def request_exceptions():
     try:
         r = requests.get(URL, timeout=6)
         r.raise_for_status()
     except (requests.exceptions.MissingSchema,
-            requests.exceptions.InvalidSchema):
-        clean_output()
-        print("")
-        print_detail_l('[e_schema]')
-        raise SystemExit
-    except requests.exceptions.InvalidURL:
-        clean_output()
-        print("")
-        print_detail_l('[e_invalid]')
-        raise SystemExit
-    except requests.exceptions.HTTPError:
+            requests.exceptions.InvalidSchema) as e:
+        detail_exceptions('[e_schema]', e)
+    except requests.exceptions.InvalidURL as e:
+        detail_exceptions('[e_invalid]', e)
+    except requests.exceptions.HTTPError as e:
         if r.status_code == 407:
-            clean_output()
-            print("")
-            print_detail_l('[e_proxy]')
-            raise SystemExit
+            detail_exceptions('[e_proxy]', e)
         elif str(r.status_code).startswith("5"):
-            clean_output()
-            print("")
-            print_detail_l('[e_serror]')
-            raise SystemExit
+            detail_exceptions('[e_serror]', e)
 
     # Can be useful with self-signed certificates, development environments ...
 
     except requests.exceptions.SSLError:
         pass
-    except requests.exceptions.ConnectionError:
-        clean_output()
-        print("")
-        print_detail_l('[e_404]')
-        raise SystemExit
-    except requests.exceptions.Timeout:
-        clean_output()
-        print("")
-        print_detail_l('[e_timeout]')
-        raise SystemExit
+    except requests.exceptions.ConnectionError as e:
+        detail_exceptions('[e_404]', e)
+    except requests.exceptions.Timeout as e:
+        detail_exceptions('[e_timeout]', e)
     except requests.exceptions.RequestException as err:
-        raise SystemExit(err)
+        raise SystemExit from err
 
 
 # Arguments
