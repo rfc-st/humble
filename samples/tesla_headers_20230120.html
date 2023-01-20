@@ -1,14 +1,14 @@
 <!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8"/><title>HTTP headers analysis</title><style>pre {overflow-x: auto;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word; font-size: medium;}a {color: blue; text-decoration: none;} .ok {color: green;}.header {color: #660033;} .ko {color: red;} </style></head><body><pre>
-
  Humble HTTP headers analyzer
  (<a href="https://github.com/rfc-st/humble">https://github.com/rfc-st/humble)
 </a>
 
+
 <strong>[0. Info]
 </strong>
- Date : 2022/10/30 - 18:29:27
- URL  :<a href=" https://www.tesla.com/
-"> https://www.tesla.com/
+ Date : 2023/01/20 - 19:50:23
+ URL  :<a href=" https://tesla.com
+"> https://tesla.com
 </a>
 
 <strong>[1. Missing HTTP Security Headers]
@@ -68,7 +68,7 @@
 </span> Drupal 9 (https://www.drupal.org)
 
 <span class="ko"> X-Varnish [Varnish HTTP accelerator]
-</span> 719453901 721388018
+</span> 889464481 889495398
 
 
 <strong>[3. Deprecated HTTP Response Headers/Protocols and Insecure Values]
@@ -97,6 +97,12 @@
 </a> Ref: <a href="https://https.cio.gov/hsts/
 ">https://https.cio.gov/hsts/
 </a>
+<span class="ko"> X-UA-compatible (Deprecated Header)
+</span> Unless you need compatibility with very old versions of Internet Explorer (e.g. 6 to 8),
+ remove this header and declare correctly the doctype.
+ Ref: <a href="https://getoutofmyhead.dev/x-ua-compatible/
+">https://getoutofmyhead.dev/x-ua-compatible/
+</a>
 
 <strong>[4. Empty HTTP Response Headers Values]
 </strong>
@@ -124,11 +130,11 @@
 
 .:
 
-Analysis done in 0.75 seconds!.  
+Analysis done in 2.99 seconds!.  
  
   Missing headers:              8
   Fingerprint headers:          4
-  Deprecated/Insecure headers:  4
+  Deprecated/Insecure headers:  5
   Empty headers:                0
 
 .:
