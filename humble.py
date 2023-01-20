@@ -54,7 +54,7 @@ import tldextract
 
 start = time()
 
-version = '\r\n' + "2023-01-14. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-01-20. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
@@ -69,7 +69,7 @@ class PDF(FPDF):
         self.cell(0, 5, get_detail('[pdf_t]'), new_x="CENTER",
                   new_y="NEXT", align='C')
         self.ln(1)
-        self.cell(0, 5, "(" + git_url + ")", align='C')
+        self.cell(0, 5, f"({git_url})", align='C')
         if self.page_no() == 1:
             self.ln(9)
         else:
@@ -85,7 +85,7 @@ class PDF(FPDF):
 
 def pdf_metadata():
     title = (get_detail('[pdf_m]')).replace('\n', '') + URL
-    git_urlc = git_url + " (v." + version.strip()[:10] + ")"
+    git_urlc = f"{git_url} (v.{version.strip()[:10]})"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     pdf.set_creator(git_urlc)
@@ -134,7 +134,7 @@ def analysis_time():
     print("")
     seconds = end - start
     print_detail_l('[analysis_time]')
-    print(str(round(seconds, 2)), end='')
+    print(round(seconds, 2), end='')
     print_detail_l('[analysis_time_sec]')
     print("")
     analysis_detail()
@@ -156,8 +156,7 @@ def print_path(filename):
     clean_output()
     print("")
     print_detail_l('[report]')
-    print('"' + path.normcase(path.dirname(path.realpath(filename)) + '/' +
-          filename + '"'))
+    print(path.abspath(filename))
 
 
 def print_ok():
@@ -168,7 +167,7 @@ def print_header(header):
     if not args.output:
         print(Style.BRIGHT + Fore.RED + " " + header)
     else:
-        print(" " + header)
+        print(f" {header}")
 
 
 def print_header_fng(header):
@@ -195,7 +194,7 @@ def print_summary():
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
         print(banner)
-        print(" " + git_url)
+        print(f" ({git_url})")
     elif args.output != 'pdf':
         print("")
         print_detail_d('[humble]')
@@ -203,8 +202,8 @@ def print_summary():
     print("")
     print_detail_s('[0section]')
     print_detail_l('[info]')
-    print(" " + now)
-    print(' URL  : ' + URL)
+    print(f" {now}")
+    print(f' URL  : {URL}')
 
 
 def print_headers():
@@ -214,9 +213,9 @@ def print_headers():
         print_detail_s('[0headers]')
         for key, value in sorted(headers.items()):
             if not args.output:
-                print(" " + Fore.CYAN + key + ':', value)
+                print(f" {Fore.CYAN}{key}:", value)
             else:
-                print(" " + key + ':', value)
+                print(f" {key}:", value)
     print('\n')
 
 
@@ -340,13 +339,13 @@ def ongoing_analysis():
 def analysis_detail():
     print(" ")
     print_detail_l('[miss_cnt]')
-    print(str(m_cnt))
+    print(m_cnt)
     print_detail_l('[finger_cnt]')
-    print(str(f_cnt))
+    print(f_cnt)
     print_detail_l('[insecure_cnt]')
-    print(str(i_cnt))
+    print(i_cnt)
     print_detail_l('[empty_cnt]')
-    print(str(e_cnt))
+    print(e_cnt)
     print("")
     print(".:")
     print("")
