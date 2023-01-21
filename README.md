@@ -70,7 +70,7 @@ HTTP Headers Analyzer<br />
 .: Brief analysis and retrieved headers (Linux)<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="Brief analysis + retrieved headers" width=80% height=80%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="Brief analysis + retrieved headers">
 </p>
 <br />
 .: Detailed analysis (Linux) in Spanish.<br />
