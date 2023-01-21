@@ -54,7 +54,7 @@ import tldextract
 
 start = time()
 
-version = '\r\n' + "2023-01-20. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-01-21. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
@@ -109,14 +109,13 @@ def pdf_sections():
 
 def pdf_links(pdfstring):
     pdf.set_text_color(0, 0, 255)
-    if pdfstring == url_string:
-        pdf.cell(w=2000, h=2, txt=x, align="L", link=URL)
-    elif pdfstring == ref_string:
-        link_hyper = x.partition(ref_string)[2].strip()
-        pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
-    elif pdfstring == can_string:
-        link_hyper = x.partition(': ')[2].strip()
-        pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
+    links = {
+        url_string: URL,
+        ref_string: x.partition(ref_string)[2].strip(),
+        can_string: x.partition(': ')[2].strip(),
+    }
+    link_hyper = links.get(pdfstring)
+    pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
 
 
 def get_language():
@@ -138,12 +137,7 @@ def clean_output():
 
     # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
 
-    sys.stdout.write('\x1b[1A')
-    sys.stdout.write('\x1b[2K')
-    sys.stdout.write('\x1b[1A')
-    sys.stdout.write('\x1b[2K')
-    sys.stdout.write('\x1b[1A')
-    sys.stdout.write('\x1b[2K')
+    sys.stdout.write('\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K')
 
 
 def print_path(filename):
