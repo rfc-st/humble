@@ -319,17 +319,11 @@ def ongoing_analysis():
 
 def analysis_detail():
     print(" ")
-    print_detail_l('[miss_cnt]')
-    print(m_cnt)
-    print_detail_l('[finger_cnt]')
-    print(f_cnt)
-    print_detail_l('[insecure_cnt]')
-    print(i_cnt)
-    print_detail_l('[empty_cnt]')
-    print(e_cnt)
-    print("")
-    print(".:")
-    print("")
+    print_detail_l('[miss_cnt]'), print(f'{m_cnt}')
+    print_detail_l('[finger_cnt]'), print(f'{f_cnt}')
+    print_detail_l('[insecure_cnt]'), print(f'{i_cnt}')
+    print_detail_l('[empty_cnt]'), print(f'{e_cnt}')
+    print(""), print(".:"), print("")
 
 
 def detail_exceptions(id_exception, exception_v):
