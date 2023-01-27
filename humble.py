@@ -54,10 +54,12 @@ import tldextract
 
 start = time()
 
-version = '\r\n' + "2023-01-21. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-01-27. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
+
+bright_red = Style.BRIGHT + Fore.RED
 
 
 class PDF(FPDF):
@@ -122,6 +124,12 @@ def get_language():
     return 'details_es.txt' if args.language == 'es' else 'details.txt'
 
 
+def get_details_lines():
+    details_file = 'details_es.txt' if args.language == 'es' else 'details.txt'
+    with open(details_file, encoding='utf8') as rf:
+        return rf.readlines()
+
+
 def analysis_time():
     seconds = end - start
     print(".:")
@@ -153,7 +161,7 @@ def print_ok():
 
 def print_header(header):
     if not args.output:
-        print(Style.BRIGHT + Fore.RED + " " + header)
+        print(f"{bright_red} {header}")
     else:
         print(f" {header}")
 
@@ -162,11 +170,11 @@ def print_header_fng(header):
     if args.output:
         print(f" {header}")
     elif '[' in header:
-        print(Style.BRIGHT + Fore.RED + " " +
-              header.partition(' [')[0].strip() + Style.NORMAL +
-              Fore.RESET + " [" + header.partition(' [')[2].strip())
+        print((((f"{bright_red} " + header.partition(' [')[0].strip()
+                 + Style.NORMAL) + Fore.RESET) + " [")
+              + header.partition(' [')[2].strip())
     else:
-        print(Style.BRIGHT + Fore.RED + " " + header)
+        print(f"{bright_red} {header}")
 
 
 def print_summary():
@@ -216,51 +224,41 @@ def print_details(short_desc, long_desc, id_mode):
 
 
 def print_detail_a(id_mode):
-    with open(details_file, encoding='utf8') as rf:
-        for line in rf:
-            line = line.strip()
-            if line.startswith(id_mode):
-                print(next(rf), end='')
-                print("")
+    for i, line in enumerate(details_f):
+        if line.startswith(id_mode):
+            print(details_f[i+1], end='')
+            print("")
 
 
 def print_detail_d(id_mode):
-    with open(details_file, encoding='utf8') as rf:
-        for line in rf:
-            line = line.strip()
-            if line.startswith(id_mode):
-                print(next(rf), end='')
-                print(next(rf))
+    for i, line in enumerate(details_f):
+        if line.startswith(id_mode):
+            print(details_f[i+1], end='')
+            print(details_f[i+2])
 
 
 def print_detail_l(id_mode):
-    with open(details_file, encoding='utf8') as rf:
-        for line in rf:
-            line = line.strip()
-            if line.startswith(id_mode):
-                print(next(rf).replace('\n', ''), end='')
+    for i, line in enumerate(details_f):
+        if line.startswith(id_mode):
+            print(details_f[i+1].replace('\n', ''), end='')
 
 
 def print_detail_m(id_mode):
-    with open(details_file, encoding='utf8') as rf:
-        for line in rf:
-            line = line.strip()
-            if line.startswith(id_mode):
-                print(next(rf), end='')
-                print(next(rf), end='')
-                print(next(rf))
+    for i, line in enumerate(details_f):
+        if line.startswith(id_mode):
+            print(details_f[i+1], end='')
+            print(details_f[i+2], end='')
+            print(details_f[i+3])
 
 
 def print_detail_s(id_mode):
-    with open(details_file, encoding='utf8') as rf:
-        for line in rf:
-            line = line.strip()
-            if line.startswith(id_mode):
-                if not args.output:
-                    print(Style.BRIGHT + next(rf), end='')
-                else:
-                    print(next(rf), end='')
-                print("")
+    for i, line in enumerate(details_f):
+        if line.startswith(id_mode):
+            if not args.output:
+                print(Style.BRIGHT + details_f[i+1], end='')
+            else:
+                print(details_f[i+1], end='')
+            print("")
 
 
 def print_detail_h(id_mode):
@@ -269,18 +267,15 @@ def print_detail_h(id_mode):
             line = line.strip()
             if line.startswith(id_mode):
                 if not args.output:
-                    print(Style.BRIGHT + Fore.RED + next(rf), end='')
+                    print(bright_red + next(rf), end='')
                 else:
                     print(next(rf), end='')
 
 
 def get_detail(id_mode):
-    with open(details_file, encoding='utf8') as rf:
-        for line in rf:
-            line = line.strip()
-            if line.startswith(id_mode):
-                detail_line = next(rf)
-    return detail_line
+    for i, line in enumerate(details_f):
+        if line.startswith(id_mode):
+            return details_f[i+1]
 
 
 def python_ver():
@@ -406,6 +401,7 @@ args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 URL = args.URL
 
 details_file = get_language()
+details_f = get_details_lines()
 
 python_ver()
 
