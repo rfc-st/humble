@@ -12,6 +12,7 @@ Content-Security-Policy: Insecure Schemes
 Content-Security-Policy: Too Permissive Value
 Content-Security-Policy: Unsafe Values
 Content-Type: Deprecated Values
+Content-Type: Non-HTML MIME type
 Etag: Potentially Unsafe Header
 Expect-CT: Deprecated Header
 Feature-Policy: Deprecated Header

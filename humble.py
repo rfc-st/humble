@@ -743,11 +743,14 @@ if 'Content-Security-Policy' in headers:
         print_details('[icsw_h]', '[icsw]', 'd')
         i_cnt += 1
 
-if ('Content-Type' in headers) and (any(elem.lower() in
-                                    headers["Content-Type"].lower() for elem in
-                                    list_legacy)):
-    print_details('[ictlg_h]', '[ictlg]', 'm')
-    i_cnt += 1
+if 'Content-Type' in headers:
+    if (any(elem.lower() in headers["Content-Type"].lower() for elem in
+       list_legacy)):
+        print_details('[ictlg_h]', '[ictlg]', 'm')
+        i_cnt += 1
+    if 'html' not in headers['Content-Type'].lower():
+        print_details('[ictlhtml_h]', '[ictlhtml]', 'd')
+        i_cnt += 1
 
 if 'Etag' in headers:
     print_details('[ieta_h]', '[ieta]', 'd')

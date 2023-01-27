@@ -47,6 +47,13 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
  Ref: https://www.rfc-editor.org/rfc/rfc9239.html
 
+[ictlhtml_h]
+ Content-Type (Tipo MIME distinto de HTML)
+
+[ictlhtml]
+ La URL no es un documento HTML. Este análisis puede que no aplique en su totalidad.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+
 [ixacl_h]
  Accept-CH-Lifetime (Cabecera obsoleta)
 
