@@ -54,7 +54,7 @@ import tldextract
 
 start = time()
 
-version = '\r\n' + "2023-01-27. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-01-28. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 
 git_url = "https://github.com/rfc-st/humble"
@@ -317,6 +317,23 @@ def ongoing_analysis():
             print_detail_a('[analysis]')
 
 
+def fingerprint_headers(headers, list_fng, list_fng_ex, args):
+    f_cnt = 0
+    matching_headers = [header for header in headers if any(elem.lower() in
+                        headers for elem in list_fng)]
+    for key in matching_headers:
+        if key in list_fng:
+            index_fng = list_fng.index(key)
+            if not args.brief:
+                print_header_fng(list_fng_ex[index_fng])
+                print(f" {headers[key]}")
+                print("")
+            else:
+                print_header(key)
+            f_cnt += 1
+    return f_cnt
+
+
 def analysis_detail():
     print(" ")
     print_detail_l('[miss_cnt]'), print(f'{m_cnt}')
@@ -475,24 +492,22 @@ list_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
                '[mcsp]', '[mnel]', '[mpermission]', '[mpragma]', '[mreferrer]',
                '[msts]', '[mxcto]', '[mxfo]']
 
-if any(elem.lower() in headers for elem in list_miss):
-    for key in list_miss:
-        if key not in headers:
-            print_header(key)
-            if not args.brief:
-                idx_m = list_miss.index(key)
-                print_detail_d(list_detail[idx_m])
-            m_cnt += 1
+missing_headers_lower = {k.lower(): v for k, v in headers.items()}
 
-# 'frame-ancestors' directive obsoletes the 'X-Frame-Options' header
-# https://www.w3.org/TR/CSP2/#frame-ancestors-and-frame-options
-
-elif 'X-Frame-Options' not in headers and 'Content-Security-Policy' in headers:
-    if 'frame-ancestors' not in headers['Content-Security-Policy']:
-        print_header('X-Frame-Options')
+for i, key in enumerate(list_miss):
+    if key.lower() not in missing_headers_lower:
+        print_header(key)
         if not args.brief:
-            print_detail_d("[mxfo]")
+            print_detail_d(list_detail[i])
         m_cnt += 1
+
+if 'X-Frame-Options' not in headers and 'Content-Security-Policy' in \
+                                    headers and 'frame-ancestors' not in \
+                                    headers['Content-Security-Policy']:
+    print_header('X-Frame-Options')
+    if not args.brief:
+        print_detail_d("[mxfo]")
+    m_cnt += 1
 
 # Shame, shame on you!. Have you not enabled *any* security HTTP header?.
 
@@ -526,31 +541,20 @@ print("")
 # https://github.com/OWASP/www-project-secure-headers/blob/master/tab_bestpractices.md
 # https://github.com/OWASP/www-project-secure-headers/blob/master/LICENSE.txt
 
-f_cnt = 0
-
 print_detail_s('[2fingerprint]')
 
 if not args.brief:
     print_detail_a("[afgp]")
 
+list_fng = []
+list_fng_ex = []
+
 with open('fingerprint.txt', 'r', encoding='utf8') as fn:
-    list_fng = []
-    list_fng_ex = []
     for line in fn:
         list_fng.append(line.partition(' [')[0].strip())
         list_fng_ex.append(line.strip())
 
-if any(elem.lower() in headers for elem in list_fng):
-    for key in list_fng:
-        if key in headers and headers[key]:
-            index_fng = list_fng.index(key)
-            if not args.brief:
-                print_header_fng(list_fng_ex[index_fng])
-                print(" " + headers[key])
-                print("")
-            else:
-                print_header(key)
-            f_cnt += 1
+f_cnt = fingerprint_headers(headers, list_fng, list_fng_ex, args)
 
 if args.brief and f_cnt != 0:
     print("")
