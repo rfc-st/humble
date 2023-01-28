@@ -573,6 +573,12 @@ print_detail_s('[3depinsecure]')
 if not args.brief:
     print_detail_a("[aisc]")
 
+# https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_client_errors
+
+list_client_errors = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413,
+                      414, 415, 416, 417, 421, 422, 423, 424, 425, 426, 428,
+                      429, 431, 451]
+
 list_access = ['*', 'null']
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
@@ -770,6 +776,10 @@ if 'Feature-Policy' in headers:
 
 if URL[0:5] == insecure_s:
     print_details('[ihttp_h]', '[ihttp]', 'd')
+    i_cnt += 1
+
+if r.status_code in list_client_errors:
+    print_details('[ihttperr_h]', '[ihttrr]', 'd')
     i_cnt += 1
 
 if 'Large-Allocation' in headers:

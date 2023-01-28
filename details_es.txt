@@ -1,3 +1,10 @@
+[ihttperr_h]
+ HTTP (Error 4XX)
+
+[ihttrr]
+ La URL devuelve un error HTTP 4XX; revise la necesidad de habilitar las cabeceras requeridas: 
+ Ref: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+
 [ixuacom_h]
  X-UA-compatible (Cabecera obsoleta)
 
