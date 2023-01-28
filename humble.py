@@ -53,13 +53,11 @@ import requests
 import tldextract
 
 start = time()
-
 version = '\r\n' + "2023-01-28. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
-
 git_url = "https://github.com/rfc-st/humble"
-
 bright_red = Style.BRIGHT + Fore.RED
+html_ko = '<span class="ko">'
 
 
 class PDF(FPDF):
@@ -1108,7 +1106,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
             elif get_detail('[ok]') in line:
                 output.write('<span class="ok">' + line + span_s)
             elif get_detail('[bcompat_n]') in line:
-                output.write('<span class="ko">' + line + span_s)
+                output.write(html_ko + line + span_s)
             elif ' Ref: ' in line:
                 output.write(line[:6] + ahref_s + line[6:] + '">' +
                              line[6:] + '</a>')
@@ -1121,8 +1119,9 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                                     '''<a href="''' +
                                     line[line.index("https"):] + '''">''' +
                                     line[line.index("https"):] + '</a>')
+                output.write(line)
             elif 'HTTP Status Code (' in line or 'HTTP (E' in line:
-                line = line.replace(line, '<span class="ko">' + line + span_s)
+                line = line.replace(line, html_ko + line + span_s)
                 output.write(line)
             else:
                 for i in list(headers):
@@ -1133,8 +1132,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                                             span_s)
                 for i in list_final:
                     if (i in line) and (':' not in line) and ('"' not in line):
-                        line = line.replace(line, '<span class="ko">' + line +
-                                            span_s)
+                        line = line.replace(line, html_ko + line + span_s)
                 output.write(line)
 
         output.write(footer)
