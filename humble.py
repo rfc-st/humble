@@ -317,8 +317,8 @@ def ongoing_analysis():
 
 def fingerprint_headers(headers, list_fng, list_fng_ex, args):
     f_cnt = 0
-    matching_headers = [header for header in headers if any(elem.lower() in
-                        headers for elem in list_fng)]
+    matching_headers = sorted([header for header in headers if any(elem.lower()
+                               in headers for elem in list_fng)])
     for key in matching_headers:
         if key in list_fng:
             index_fng = list_fng.index(key)
