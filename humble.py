@@ -1121,6 +1121,8 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                                     '''<a href="''' +
                                     line[line.index("https"):] + '''">''' +
                                     line[line.index("https"):] + '</a>')
+            elif 'HTTP Status Code (' in line or 'HTTP (E' in line:
+                line = line.replace(line, '<span class="ko">' + line + span_s)
                 output.write(line)
             else:
                 for i in list(headers):
@@ -1130,7 +1132,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                                             line[0: line.index(":")] +
                                             span_s)
                 for i in list_final:
-                    if i in line and ':' not in line and '"' not in line:
+                    if (i in line) and (':' not in line) and ('"' not in line):
                         line = line.replace(line, '<span class="ko">' + line +
                                             span_s)
                 output.write(line)
