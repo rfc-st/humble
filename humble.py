@@ -53,7 +53,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-01-28. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-01-30. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
@@ -66,8 +66,8 @@ class PDF(FPDF):
         self.set_font('Courier', 'B', 10)
         self.set_y(15)
         pdf.set_text_color(0, 0, 0)
-        self.cell(0, 5, get_detail('[pdf_t]'), new_x="CENTER",
-                  new_y="NEXT", align='C')
+        self.cell(0, 5, get_detail('[pdf_t]'), new_x="CENTER", new_y="NEXT",
+                  align='C')
         self.ln(1)
         self.cell(0, 5, f"({git_url})", align='C')
         if self.page_no() == 1:
@@ -109,11 +109,8 @@ def pdf_sections():
 
 def pdf_links(pdfstring):
     pdf.set_text_color(0, 0, 255)
-    links = {
-        url_string: URL,
-        ref_string: x.partition(ref_string)[2].strip(),
-        can_string: x.partition(': ')[2].strip(),
-    }
+    links = {url_string: URL, ref_string: x.partition(ref_string)[2].strip(),
+             can_string: x.partition(': ')[2].strip()}
     link_hyper = links.get(pdfstring)
     pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
 
@@ -289,30 +286,25 @@ def print_guides():
     with open('guides.txt', 'r', encoding='utf8') as gd:
         for line in gd:
             if line.startswith('['):
-                print(Style.BRIGHT + line, end='')
+                print(f"{Style.BRIGHT}{line}", end='')
             else:
-                print(line, end='')
+                print(f"{line}", end='')
 
 
 def ongoing_analysis():
     suffix = tldextract.extract(URL).suffix
-    country = requests.get('https://ipapi.co/country_name/')
+    country = requests.get('https://ipapi.co/country_name/').content
     if suffix[-2:] == "ru" or b'Russia' in country:
         print("")
         print_detail_d("[bcnt]")
         sys.exit()
     elif suffix[-2:] == "ua" or b'Ukraine' in country:
         print("")
-        if args.output:
-            print_detail_a('[analysis_ua_output]')
-        else:
-            print_detail_a('[analysis_ua]')
+        print_detail_a('[analysis_ua_output]' if args.output else
+                       '[analysis_ua]')
     else:
         print("")
-        if args.output:
-            print_detail_a('[analysis_output]')
-        else:
-            print_detail_a('[analysis]')
+        print_detail_a('[analysis_output]' if args.output else '[analysis]')
 
 
 def fingerprint_headers(headers, list_fng, list_fng_ex, args):
@@ -449,20 +441,17 @@ c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; \
 
 requests.packages.urllib3.disable_warnings()
 r = requests.get(URL, verify=False, headers=c_headers, timeout=60)
-
 headers = r.headers
-infix = "_headers_"
 
 # Save analysis to file
 
 date_now = datetime.now().strftime("%Y%m%d")
+extension = "t.txt" if args.output in ['pdf', 'html'] else ".txt"
 
 if args.output is not None:
     orig_stdout = sys.stdout
     name_s = tldextract.extract(URL)
-    name_e = name_s.domain + infix + date_now + ".txt"
-    if (args.output == 'pdf') or (args.output == 'html'):
-        name_e = name_s.domain + infix + date_now + "t.txt"
+    name_e = name_s.domain + "_headers_" + date_now + extension
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
@@ -946,22 +935,18 @@ print("")
 # Report - 4. Empty HTTP Response Headers Values
 
 e_cnt = 0
-
+empty_s_headers = sorted(headers)
 print_detail_s('[4empty]')
 
 if not args.brief:
     print_detail_a("[aemp]")
 
-for key in sorted(headers):
+for key in empty_s_headers:
     if not headers[key]:
         print_header(key)
         e_cnt += 1
 
-if e_cnt != 0:
-    print("")
-
-if e_cnt == 0:
-    print_ok()
+print("") if e_cnt != 0 else print_ok()
 
 print("")
 
