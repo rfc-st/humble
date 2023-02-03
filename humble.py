@@ -24,23 +24,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# INFO:
-# Recommended terminal width for best output: 152
-
 # ADVICE:
-# Use the information provided by this script *wisely*: there is far more
-# merit in teaching, learning and helping others than in taking shortcuts to
-# harm, attack or take advantage.
-#
-# Don't just be a 'script kiddie'. If you are interested in this world,
-# research, learn, and become a Security analyst. Good luck!.
+# Use the information provided by this humble program wisely. There is *far*
+# more merit in teaching, learning and helping others than in harming,
+# attacking or taking advantage. Don't just be a 'script kiddie': if this
+# really interests you, learn, research and become a Security Analyst!.
 
 # GREETINGS (for the moments, and above all, for your wisdom!):
 # María Antonia, Fernando, Joanna, Eduardo, Ana, Iván, Luis Joaquín,
 # Juan Carlos, David, Carlos, Juán, Alejandro, Pablo, Íñigo, Naiara, Ricardo,
 # Gabriel, Miguel Angel, David (x2), Sergio, Marta, Alba, Montse & Eloy.
-#
-# You know who you are!.
 
 from fpdf import FPDF
 from time import time
@@ -432,8 +425,8 @@ request_exceptions()
 
 # Headers retrieval
 
-c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; \
- rv:100.0) Gecko/20100101 Firefox/100.0'}
+c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)\
+AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'}
 
 # Yes: Server certificates should be verified during SSL/TLS connections.
 # Despite this, I think 'verify=False' would benefit analysis of URLs with
@@ -520,7 +513,7 @@ print("")
 
 # Certain content of the file 'fingerprint.txt' has been made possible by:
 #
-# Wappalyzer, under MIT license.
+# Wappalyzer, under GNU General Public License v3.0 license.
 # https://github.com/wappalyzer/wappalyzer/tree/master/src/technologies
 # https://github.com/wappalyzer/wappalyzer/blob/master/LICENSE
 #
@@ -957,8 +950,6 @@ print("")
 
 print_detail_s('[5compat]')
 
-compat_site = "https://caniuse.com/?search="
-
 list_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
             'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
             'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy',
@@ -972,7 +963,7 @@ if header_matches:
     for key in header_matches:
         output_string = "  " if args.output == 'html' else " "
         key_string = Fore.CYAN + key + Fore.RESET if not args.output else key
-        print(f"{output_string}{key_string}: {compat_site}\
+        print(f"{output_string}{key_string}: https://caniuse.com/?search=\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 else:
     print_detail_h("[bcompat_n]") if not args.output else\
