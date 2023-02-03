@@ -53,7 +53,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-01-30. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-02-03. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
@@ -958,7 +958,6 @@ print("")
 print_detail_s('[5compat]')
 
 compat_site = "https://caniuse.com/?search="
-csp_replace = "contentsecuritypolicy2"
 
 list_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
             'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
@@ -967,24 +966,17 @@ list_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
             'Strict-Transport-Security', 'X-Content-Type-Options',
             'X-Frame-Options']
 
-if any(elem.lower() in headers for elem in list_sec):
-    for key in list_sec:
-        if key in headers:
-            if not args.output:
-                print(" " + Fore.CYAN + key + Fore.RESET + ": " + compat_site +
-                      key.replace("Content-Security-Policy", csp_replace))
-            elif args.output != 'html':
-                print(" " + key + ": " + compat_site +
-                      key.replace("Content-Security-Policy", csp_replace))
-            else:
-                print("  " + key + ": " + compat_site +
-                      key.replace("Content-Security-Policy", csp_replace))
+header_matches = [header for header in list_sec if header in headers]
 
-if not any(elem.lower() in headers for elem in list_miss):
-    if not args.output:
-        print_detail_h("[bcompat_n]")
-    else:
-        print_detail_l("[bcompat_n]")
+if header_matches:
+    for key in header_matches:
+        output_string = "  " if args.output == 'html' else " "
+        key_string = Fore.CYAN + key + Fore.RESET if not args.output else key
+        print(f"{output_string}{key_string}: {compat_site}\
+{key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
+else:
+    print_detail_h("[bcompat_n]") if not args.output else\
+                                  print_detail_l("[bcompat_n]")
 
 print("")
 print("")
@@ -1061,12 +1053,9 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
     name_p = name_e[:-5] + ".html"
 
-    list_miss.append('WWW-Authenticate')
-    list_miss.append('X-Frame-Options')
-    list_miss.append('X-Robots-Tag')
-    list_miss.append('X-UA-compatible')
-    list_final = list_miss + list_fng + list_ins
-    list_final.sort()
+    list_miss.extend(['WWW-Authenticate', 'X-Frame-Options', 'X-Robots-Tag',
+                      'X-UA-compatible'])
+    list_final = sorted(list_miss + list_fng + list_ins)
 
     with open(name_e, 'r', encoding='utf8') as input_file,\
             open(name_p, 'w', encoding='utf8') as output:
@@ -1096,14 +1085,10 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                 output.write(line[:6] + ahref_s + line[6:] + '">' +
                              line[6:] + '</a>')
             elif 'caniuse' in line:
-                line = line[1:]
-                line = line.replace(line[0: line.index(": ")],
-                                    '<span class="header">' +
-                                    line[0: line.index(": ")] + span_s)
-                line = line.replace(line[line.index("https"):],
-                                    '''<a href="''' +
-                                    line[line.index("https"):] + '''">''' +
-                                    line[line.index("https"):] + '</a>')
+                line = '<span class="header">' + line[1:line.index(": ")] +\
+                        ": " + span_s + '</span><a href="' +\
+                        line[line.index("https"):] + '">' +\
+                        line[line.index("https"):] + '</a>'
                 output.write(line)
             elif 'HTTP Status Code (' in line or 'HTTP (E' in line:
                 line = line.replace(line, html_ko + line + span_s)
