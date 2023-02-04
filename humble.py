@@ -316,10 +316,14 @@ def fingerprint_headers(headers, list_fng, list_fng_ex, args):
     f_cnt = 0
     matching_headers = sorted([header for header in headers if any(elem.lower()
                                in headers for elem in list_fng)])
+
+    list_fng = [x.title() for x in list_fng]
+    matching_headers = [x.title() for x in matching_headers]
+
     for key in matching_headers:
         if key in list_fng:
-            index_fng = list_fng.index(key)
             if not args.brief:
+                index_fng = list_fng.index(key)
                 print_header_fng(list_fng_ex[index_fng])
                 print(f" {headers[key]}")
                 print("")
