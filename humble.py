@@ -46,11 +46,15 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-02-03. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-02-04. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
 html_ko = '<span class="ko">'
+
+list_client_errors = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413,
+                      414, 415, 416, 417, 421, 422, 423, 424, 425, 426, 428,
+                      429, 431, 451]
 
 
 class PDF(FPDF):
@@ -187,6 +191,13 @@ def print_summary():
     print_detail_l('[info]')
     print(f" {now}")
     print(f' URL  : {URL}')
+    if r.status_code in list_client_errors:
+        print_http_e()
+
+
+def print_http_e():
+    id_mode = f"[http_{r.status_code}]"
+    print(f"{get_detail(id_mode)}")
 
 
 def print_headers():
@@ -553,12 +564,6 @@ print_detail_s('[3depinsecure]')
 if not args.brief:
     print_detail_a("[aisc]")
 
-# https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_client_errors
-
-list_client_errors = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413,
-                      414, 415, 416, 417, 421, 422, 423, 424, 425, 426, 428,
-                      429, 431, 451]
-
 list_access = ['*', 'null']
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
@@ -756,10 +761,6 @@ if 'Feature-Policy' in headers:
 
 if URL[0:5] == insecure_s:
     print_details('[ihttp_h]', '[ihttp]', 'd')
-    i_cnt += 1
-
-if r.status_code in list_client_errors:
-    print_details('[ihttperr_h]', '[ihttrr]', 'd')
     i_cnt += 1
 
 if 'Large-Allocation' in headers:

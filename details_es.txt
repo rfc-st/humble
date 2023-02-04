@@ -1,9 +1,77 @@
-[ihttperr_h]
- HTTP (Error 4XX)
+[http_400]
+ Nota : La URL devuelve un error (Código HTTP 400, 'Bad Request')
 
-[ihttrr]
- La URL devuelve un error HTTP 4XX; revise la necesidad de habilitar las cabeceras requeridas: 
- Ref: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+[http_401]
+ Nota : La URL devuelve un error (Código HTTP 401, 'Unauthorized')
+
+[http_402]
+ Nota : La URL devuelve un error (Código HTTP 402, 'Payment Required')
+
+[http_403]
+ Nota : La URL devuelve un error (Código HTTP 403, 'Forbidden')
+
+[http_405]
+ Nota : La URL devuelve un error (Código HTTP 405, 'Method Not Allowed')
+
+[http_406]
+ Nota : La URL devuelve un error (Código HTTP 406, 'Not Acceptable')
+
+[http_409]
+ Nota : La URL devuelve un error (Código HTTP 409, 'Conflict')
+
+[http_410]
+ Nota : La URL devuelve un error (Código HTTP 410, 'Gone')
+
+[http_411]
+ Nota : La URL devuelve un error (Código HTTP 411, 'Length Required')
+
+[http_412]
+ Nota : La URL devuelve un error (Código HTTP 412, 'Precondition Failed')
+
+[http_413]
+ Nota : La URL devuelve un error (Código HTTP 413, 'Payload Too Large')
+
+[http_414]
+ Nota : La URL devuelve un error (Código HTTP 414, 'URI Too Long')
+
+[http_415]
+ Nota : La URL devuelve un error (Código HTTP 415, 'Unsupported Media Type')
+
+[http_416]
+ Nota : La URL devuelve un error (Código HTTP 416, 'Range Not Satisfiable')
+
+[http_417]
+ Nota : La URL devuelve un error (Código HTTP 417, 'Expectation Failed')
+
+[http_421]
+ Nota : La URL devuelve un error (Código HTTP 421, 'Misdirected Request')
+
+[http_422]
+ Nota : La URL devuelve un error (Código HTTP 422, 'Unprocessable Entity')
+
+[http_423]
+ Nota : La URL devuelve un error (Código HTTP 423, 'Locked')
+
+[http_424]
+ Nota : La URL devuelve un error (Código HTTP 424, 'Failed Dependency')
+
+[http_425]
+ Nota : La URL devuelve un error (Código HTTP 425, 'Too Early')
+
+[http_426]
+ Nota : La URL devuelve un error (Código HTTP 426, 'Upgrade Required')
+
+[http_428]
+ Nota : La URL devuelve un error (Código HTTP 428, 'Precondition Required')
+
+[http_429]
+ Nota : La URL devuelve un error (Código HTTP 429, 'Too Many Requests')
+
+[http_431]
+ Nota : La URL devuelve un error (Código HTTP 431, 'Request Header Fields Too Large')
+
+[http_451]
+ Nota : La URL devuelve un error (Código HTTP 451, 'Unavailable For Legal Reasons')
 
 [ixuacom_h]
  X-UA-compatible (Cabecera obsoleta)

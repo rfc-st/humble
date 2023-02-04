@@ -17,7 +17,6 @@ Etag: Potentially Unsafe Header
 Expect-CT: Deprecated Header
 Feature-Policy: Deprecated Header
 HTTP: Domain Via Unsafe Scheme
-HTTP Status Code: Client Error
 Large-Allocation: Deprecated Header
 Onion-Location: Potentially Unsafe Header
 Permissions-Policy: No Valid Features

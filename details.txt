@@ -1,9 +1,77 @@
-[ihttperr_h]
- HTTP Status Code (Client Error)
+[http_400]
+ Note : The URL returns an error (HTTP code 400, 'Bad Request')
 
-[ihttrr]
- The URL returned an HTTP 4XX error; check the need to enable the required headers: 
- Ref: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+[http_401]
+ Note : The URL returns an error (HTTP code 401, 'Unauthorized')
+
+[http_402]
+ Note : The URL returns an error (HTTP code 402, 'Payment Required')
+
+[http_403]
+ Note : The URL returns an error (HTTP code 403, 'Forbidden')
+
+[http_405]
+ Note : The URL returns an error (HTTP code 405, 'Method Not Allowed')
+
+[http_406]
+ Note : The URL returns an error (HTTP code 406, 'Not Acceptable')
+
+[http_409]
+ Note : The URL returns an error (HTTP code 409, 'Conflict')
+
+[http_410]
+ Note : The URL returns an error (HTTP code 410, 'Gone')
+
+[http_411]
+ Note : The URL returns an error (HTTP code 411, 'Length Required')
+
+[http_412]
+ Note : The URL returns an error (HTTP code 412, 'Precondition Failed')
+
+[http_413]
+ Note : The URL returns an error (HTTP code 413, 'Payload Too Large')
+
+[http_414]
+ Note : The URL returns an error (HTTP code 414, 'URI Too Long')
+
+[http_415]
+ Note : The URL returns an error (HTTP code 415, 'Unsupported Media Type')
+
+[http_416]
+ Note : The URL returns an error (HTTP code 416, 'Range Not Satisfiable')
+
+[http_417]
+ Note : The URL returns an error (HTTP code 417, 'Expectation Failed')
+
+[http_421]
+ Note : The URL returns an error (HTTP code 421, 'Misdirected Request')
+
+[http_422]
+ Note : The URL returns an error (HTTP code 422, 'Unprocessable Entity')
+
+[http_423]
+ Note : The URL returns an error (HTTP code 423, 'Locked')
+
+[http_424]
+ Note : The URL returns an error (HTTP code 424, 'Failed Dependency')
+
+[http_425]
+ Note : The URL returns an error (HTTP code 425, 'Too Early')
+
+[http_426]
+ Note : The URL returns an error (HTTP code 426, 'Upgrade Required')
+
+[http_428]
+ Note : The URL returns an error (HTTP code 428, 'Precondition Required')
+
+[http_429]
+ Note : The URL returns an error (HTTP code 429, 'Too Many Requests')
+
+[http_431]
+ Note : The URL returns an error (HTTP code 431, 'Request Header Fields Too Large')
+
+[http_451]
+ Note : The URL returns an error (HTTP code 451, 'Unavailable For Legal Reasons')
 
 [ixuacom_h]
  X-UA-compatible (Deprecated Header)
