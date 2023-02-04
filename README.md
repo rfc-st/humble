@@ -174,6 +174,13 @@ $ python3 humble.py -u https://tesla.com | sed '/3. /,/4. /!d' | sed '$d' | sed 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_3.jpg" alt="Show only the deprecated headers/protocols and insecure values (Linux)">
 
 
+### Linux: Check for HTTP client errors (4XX)
+```
+$ python3 humble.py -u https://block.fiverr.com | grep -B5 'Note : \|Nota : ' --color=never 
+```
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_4.jpg" alt="Check for HTTP client errors (4XX) (Linux)">
+
+
 ## Checks: Missing Headers
 <details>
 
