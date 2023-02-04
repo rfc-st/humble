@@ -30,7 +30,7 @@
 # attacking or taking advantage. Don't just be a 'script kiddie': if this
 # really interests you, learn, research and become a Security Analyst!.
 
-# GREETINGS (for the moments, and above all, for your wisdom!):
+# GREETINGS:
 # María Antonia, Fernando, Joanna, Eduardo, Ana, Iván, Luis Joaquín,
 # Juan Carlos, David, Carlos, Juán, Alejandro, Pablo, Íñigo, Naiara, Ricardo,
 # Gabriel, Miguel Angel, David (x2), Sergio, Marta, Alba, Montse & Eloy.
@@ -125,11 +125,10 @@ def get_details_lines():
 
 
 def analysis_time():
-    seconds = end - start
     print(".:")
     print("")
     print_detail_l('[analysis_time]')
-    print(round(seconds, 2), end='')
+    print(round(end - start, 2), end="")
     print_detail_l('[analysis_time_sec]')
     print("")
     analysis_detail()
@@ -373,8 +372,6 @@ def request_exceptions():
         raise SystemExit from err
 
 
-# Arguments
-
 init(autoreset=True)
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
@@ -412,8 +409,6 @@ details_f = get_details_lines()
 
 python_ver()
 
-# Show guides
-
 if args.guides:
     print_guides()
     sys.exit()
@@ -432,11 +427,7 @@ try:
 except AttributeError:
     pass
 
-# Exception handling
-
 request_exceptions()
-
-# Headers retrieval
 
 c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)\
 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'}
@@ -449,7 +440,7 @@ requests.packages.urllib3.disable_warnings()
 r = requests.get(URL, verify=False, headers=c_headers, timeout=60)
 headers = r.headers
 
-# Save analysis to file
+# Export analysis
 
 date_now = datetime.now().strftime("%Y%m%d")
 extension = "t.txt" if args.output in ['pdf', 'html'] else ".txt"
@@ -461,12 +452,7 @@ if args.output is not None:
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
-# Date and URL
-
 print_summary()
-
-# Retrieved headers
-
 print_headers()
 
 # Report - 1. Missing HTTP Security Headers
@@ -522,16 +508,14 @@ if m_cnt == 0:
 
 print("")
 
-# Report - 2. Fingerprinting through headers / values
+# Report - 2. Fingerprinting through headers/values
 
 # Certain content of the file 'fingerprint.txt' has been made possible by:
 #
-# Wappalyzer, under GNU General Public License v3.0 license.
-# https://github.com/wappalyzer/wappalyzer/tree/master/src/technologies
+# Wappalyzer
 # https://github.com/wappalyzer/wappalyzer/blob/master/LICENSE
 #
-# OWASP Secure Headers Project, under Apache 2.0 license.
-# https://github.com/OWASP/www-project-secure-headers/blob/master/tab_bestpractices.md
+# OWASP Secure Headers Project
 # https://github.com/OWASP/www-project-secure-headers/blob/master/LICENSE.txt
 
 print_detail_s('[2fingerprint]')
@@ -577,14 +561,10 @@ list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
             'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
-
 list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
                 'DELETE', 'DEBUG', 'PATCH', '*']
 
 list_cache = ['no-cache', 'no-store', 'must-revalidate']
-
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 list_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                        'font-src', 'form-action', 'frame-ancestors',
@@ -602,8 +582,6 @@ list_csp_deprecated = ['block-all-mixed-content', 'plugin-types', 'referrer',
 list_csp_insecure = ['unsafe-eval', 'unsafe-inline']
 
 list_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
-
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
 
 list_legacy = ['application/javascript', 'application/ecmascript',
                'application/x-ecmascript', 'application/x-javascript',
@@ -945,9 +923,6 @@ print("") if e_cnt != 0 else print_ok()
 print("")
 
 # Report - 5. Browser Compatibility for Enabled HTTP Security Headers
-
-# caniuse.com support data contributions under CC-BY-4.0 license
-# https://github.com/Fyrd/caniuse/blob/main/LICENSE
 
 print_detail_s('[5compat]')
 
