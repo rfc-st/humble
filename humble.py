@@ -51,6 +51,8 @@ version = '\r\n' + "2023-02-04. Rafa 'Bluesman' Faura \
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
 html_ko = '<span class="ko">'
+bold_strings = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
+                "[Cabeceras")
 
 list_client_errors = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413,
                       414, 415, 416, 417, 421, 422, 423, 424, 425, 426, 428,
@@ -659,19 +661,17 @@ if 'Accept-CH-Lifetime' in headers:
     print_details('[ixacl_h]', '[ixacld]', 'd')
     i_cnt += 1
 
-if 'Access-Control-Allow-Methods' in headers and \
-                                  any(elem.lower() in headers["Access-Control-\
-Allow-Methods"].lower() for elem in list_methods):
-    print_detail_h('[imethods_h]')
-    if not args.brief:
-        methods_list = "".join(str(x) for x in
-                               headers["Access-Control-Allow-Methods"])
-        match_method = [x for x in list_methods if x in methods_list]
-        match_method_str = ', '.join(match_method)
-        print_detail_l("[imethods_s]")
-        print(match_method_str)
-        print_detail_a("[imethods]")
-    i_cnt += 1
+if 'Access-Control-Allow-Methods' in headers:
+    methods = headers["Access-Control-Allow-Methods"]
+    if any(method in methods for method in list_methods):
+        print_detail_h('[imethods_h]')
+        if not args.brief:
+            match_method = [x for x in list_methods if x in methods]
+            match_method_str = ', '.join(match_method)
+            print_detail_l("[imethods_s]")
+            print(match_method_str)
+            print_detail_a("[imethods]")
+        i_cnt += 1
 
 if ('Access-Control-Allow-Origin' in headers) and (any(elem.lower()
                                                    in headers["Access-Control-\
@@ -978,9 +978,6 @@ analysis_time()
 
 # Export analysis
 
-bold_strings = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
-                "[Cabeceras")
-
 if args.output == 'txt':
     sys.stdout = orig_stdout
     print_path(name_e)
@@ -1004,20 +1001,15 @@ elif args.output == 'pdf':
     url_string = ' URL  : '
     ref_string = 'Ref: '
     can_string = ': https://caniuse.com/?search='
+    links_strings = (url_string, ref_string, can_string)
 
     for x in f:
         if '[' in x:
             pdf_sections()
-        if any(s in x for s in bold_strings):
-            pdf.set_font(style="B")
-        else:
-            pdf.set_font(style="")
-        if url_string in x:
-            pdf_links(url_string)
-        if ref_string in x:
-            pdf_links(ref_string)
-        if can_string in x:
-            pdf_links(can_string)
+        pdf.set_font(style='B' if any(s in x for s in bold_strings) else '')
+        for string in links_strings:
+            if string in x:
+                pdf_links(string)
         pdf.set_text_color(0, 0, 0)
         pdf.multi_cell(197, 2.6, txt=x, align='L')
 
@@ -1056,17 +1048,21 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
         for line in input_file:
 
-            # TO-DO: this is a mess ... simplify, use templates, i18n.
+            # TO-DO: Keep improving this code!
 
             ahref_s = '<a href="'
+            span_h = '<span class="header">'
             span_s = '</span>'
+            ahref_f = '</a>'
+            secure_s = "https"
+            ctag_f = '">'
 
             if 'rfc-st' in line:
-                output.write(line[:2] + ahref_s + line[2:-2] + '">' +
-                             line[2:] + '</a>')
+                output.write(line[:2] + ahref_s + line[2:-2] + ctag_f +
+                             line[2:] + ahref_f)
             elif ' URL  : ' in line:
-                output.write(line[:7] + ahref_s + line[7:] + '">' +
-                             line[7:] + '</a>')
+                output.write(line[:7] + ahref_s + line[7:] + ctag_f +
+                             line[7:] + ahref_f)
             elif any(s in line for s in bold_strings):
                 output.write('<strong>' + line + '</strong>')
             elif get_detail('[ok]') in line:
@@ -1074,26 +1070,21 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
             elif get_detail('[bcompat_n]') in line:
                 output.write(html_ko + line + span_s)
             elif ' Ref: ' in line:
-                output.write(line[:6] + ahref_s + line[6:] + '">' +
-                             line[6:] + '</a>')
+                output.write(line[:6] + ahref_s + line[6:] + ctag_f +
+                             line[6:] + ahref_f)
             elif 'caniuse' in line:
-                line = '<span class="header">' + line[1:line.index(": ")] +\
+                line = span_h + line[1:line.index(": ")] +\
                         ": " + span_s + '</span><a href="' +\
-                        line[line.index("https"):] + '">' +\
-                        line[line.index("https"):] + '</a>'
-                output.write(line)
-            elif 'HTTP Status Code (' in line or 'HTTP (E' in line:
-                line = line.replace(line, html_ko + line + span_s)
+                        line[line.index(secure_s):] + ctag_f +\
+                        line[line.index(secure_s):] + ahref_f
                 output.write(line)
             else:
-                for i in list(headers):
-                    if str(i + ": ") in line and 'Date:   ' not in line:
-                        line = line.replace(line[0: line.index(":")],
-                                            '<span class="header">' +
-                                            line[0: line.index(":")] +
-                                            span_s)
+                for i in headers:
+                    if (str(i + ": ") in line) and ('Date:   ' not in line):
+                        line = line.replace(line[0: line.index(":")], span_h +
+                                            line[0: line.index(":")] + span_s)
                 for i in list_final:
-                    if (i in line) and (':' not in line) and ('"' not in line):
+                    if (i in line) and ('"' not in line):
                         line = line.replace(line, html_ko + line + span_s)
                 output.write(line)
 
