@@ -46,7 +46,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-02-04. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-02-07. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
@@ -515,9 +515,6 @@ print("")
 # Report - 2. Fingerprinting through headers/values
 
 # Certain content of the file 'fingerprint.txt' has been made possible by:
-#
-# Wappalyzer
-# https://github.com/wappalyzer/wappalyzer/blob/master/LICENSE
 #
 # OWASP Secure Headers Project
 # https://github.com/OWASP/www-project-secure-headers/blob/master/LICENSE.txt
