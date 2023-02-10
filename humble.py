@@ -160,12 +160,11 @@ def print_header(header):
 
 
 def print_header_fng(header):
+    prefix, _, suffix = [x.strip() for x in header.partition(' [')]
     if args.output:
         print(f" {header}")
     elif '[' in header:
-        print((((f"{bright_red} " + header.partition(' [')[0].strip()
-                 + Style.NORMAL) + Fore.RESET) + " [")
-              + header.partition(' [')[2].strip())
+        print(f"{bright_red} {prefix}{Style.NORMAL}{Fore.RESET} [{suffix}")
     else:
         print(f"{bright_red} {header}")
 
@@ -1001,7 +1000,7 @@ elif args.output == 'html':
     # HTML Template
 
     title = "HTTP headers analysis"
-    header = '<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8"/>\
+    header = '<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
 <title>' + title + '</title><style>pre {overflow-x: auto;\
 white-space: pre-wrap;white-space: -moz-pre-wrap;\
 white-space: -pre-wrap;white-space: -o-pre-wrap;\
@@ -1050,7 +1049,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                              line[6:] + ahref_f)
             elif 'caniuse' in line:
                 line = span_h + line[1:line.index(": ")] +\
-                        ": " + span_s + '</span><a href="' +\
+                        ": " + span_s + ahref_s +\
                         line[line.index(secure_s):] + ctag_f +\
                         line[line.index(secure_s):] + ahref_f
                 output.write(line)
