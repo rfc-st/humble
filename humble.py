@@ -46,7 +46,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-02-07. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-02-10. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
@@ -312,7 +312,7 @@ def ongoing_analysis():
         print_detail_a('[analysis_output]' if args.output else '[analysis]')
 
 
-def fingerprint_headers(headers, list_fng, list_fng_ex, args):
+def fingerprint_headers(headers, list_fng, list_fng_ex):
     f_cnt = 0
     matching_headers = sorted([header for header in headers if any(elem.lower()
                                in headers for elem in list_fng)])
@@ -532,7 +532,7 @@ with open('fingerprint.txt', 'r', encoding='utf8') as fn:
         list_fng.append(line.partition(' [')[0].strip())
         list_fng_ex.append(line.strip())
 
-f_cnt = fingerprint_headers(headers, list_fng, list_fng_ex, args)
+f_cnt = fingerprint_headers(headers, list_fng, list_fng_ex)
 
 if args.brief and f_cnt != 0:
     print("")
@@ -550,8 +550,6 @@ print_detail_s('[3depinsecure]')
 
 if not args.brief:
     print_detail_a("[aisc]")
-
-list_access = ['*', 'null']
 
 list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
             'Allow', 'Content-Type', 'Etag', 'Expect-CT', 'Feature-Policy',
@@ -652,26 +650,28 @@ if 'Access-Control-Allow-Methods' in headers:
             print_detail_a("[imethods]")
         i_cnt += 1
 
-if ('Access-Control-Allow-Origin' in headers) and (any(elem.lower()
-                                                   in headers["Access-Control-\
-Allow-Origin"].lower() for elem in list_access)) and (('.*' and '*.') not in
-                                                      headers["Access-Control-\
-Allow-Origin"]):
-    print_details('[iaccess_h]', '[iaccess]', 'd')
-    i_cnt += 1
+if "Access-Control-Allow-Origin" in headers:
+    access_origin = headers["Access-Control-Allow-Origin"].lower()
+    if access_origin in ['*', 'null'] and not any(val in access_origin for
+                                                  val in ['.*', '*.']):
+        print_details('[iaccess_h]', '[iaccess]', 'd')
+        i_cnt += 1
 
-if ('Allow' in headers) and (any(elem.lower() in headers["Allow"].lower() for
-                             elem in list_methods)):
-    print_detail_h('[imethods_hh]')
-    if not args.brief:
-        print_detail_l("[imethods_s]")
-        print(headers["Allow"])
-        print_detail_a("[imethods]")
-    i_cnt += 1
+if 'Allow' in headers:
+    methods = headers["Allow"]
+    if any(method in methods for method in list_methods):
+        print_detail_h('[imethods_hh]')
+        if not args.brief:
+            match_method = [x for x in list_methods if x in methods]
+            match_method_str = ', '.join(match_method)
+            print_detail_l("[imethods_s]")
+            print(match_method_str)
+            print_detail_a("[imethods]")
+        i_cnt += 1
 
-if ('Cache-Control' in headers) and (not all(elem.lower() in
-                                     headers["Cache-Control"].lower() for elem
-                                     in list_cache)):
+cache_header = headers.get("Cache-Control", "").lower()
+if not all(cache_control.lower() in cache_header for cache_control in
+           list_cache):
     print_details('[icache_h]', '[icache]', 'd')
     i_cnt += 1
 
