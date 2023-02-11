@@ -769,14 +769,13 @@ if 'Public-Key-Pins' in headers:
     print_details('[ipkp_h]', '[ipkp]', 'd')
     i_cnt += 1
 
-if 'Referrer-Policy' in headers:
-    if not any(elem.lower() in headers["Referrer-Policy"].lower() for elem in
-               list_ref):
-        print_details('[iref_h]', '[iref]', 'm')
-        i_cnt += 1
-    if 'unsafe-url' in headers['Referrer-Policy']:
-        print_details('[irefi_h]', '[irefi]', 'd')
-        i_cnt += 1
+referrer_policy = headers.get('Referrer-Policy', '').lower()
+if not any(elem in referrer_policy for elem in list_ref):
+    print_details('[iref_h]', '[iref]', 'm')
+    i_cnt += 1
+if 'unsafe-url' in referrer_policy:
+    print_details('[irefi_h]', '[irefi]', 'd')
+    i_cnt += 1
 
 if 'Server-Timing' in headers:
     print_details('[itim_h]', '[itim]', 'd')
@@ -803,8 +802,7 @@ if ('Strict-Transport-Security' in headers) and (URL[0:5] == insecure_s):
     print_details('[ihsts_h]', '[ihsts]', 'd')
     i_cnt += 1
 
-if ('Timing-Allow-Origin' in headers) and ('*' in
-                                           headers['Timing-Allow-Origin']):
+if headers.get('Timing-Allow-Origin', '') == '*':
     print_details('[itao_h]', '[itao]', 'd')
     i_cnt += 1
 
@@ -837,8 +835,7 @@ if 'X-Content-Type-Options' in headers:
         print_details('[ictp_h]', '[ictp]', 'd')
         i_cnt += 1
 
-if ('X-DNS-Prefetch-Control' in headers) and \
-   ('on' in headers['X-DNS-Prefetch-Control']):
+if headers.get('X-DNS-Prefetch-Control', '') == 'on':
     print_details('[ixdp_h]', '[ixdp]', 'd')
     i_cnt += 1
 
@@ -858,12 +855,11 @@ if 'X-Pad' in headers:
     print_details('[ixpad_h]', '[ixpad]', 'd')
     i_cnt += 1
 
-if ('X-Permitted-Cross-Domain-Policies' in headers) and \
-   ('all' in headers['X-Permitted-Cross-Domain-Policies']):
+if headers.get('X-Permitted-Cross-Domain-Policies', '') == 'all':
     print_details('[ixcd_h]', '[ixcd]', 'm')
     i_cnt += 1
 
-if ('X-Pingback' in headers) and ('xmlrpc.php' in headers['X-Pingback']):
+if headers.get('X-Pingback', '').endswith('xmlrpc.php'):
     print_details('[ixpb_h]', '[ixpb]', 'd')
     i_cnt += 1
 
