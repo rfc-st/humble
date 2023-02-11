@@ -386,23 +386,23 @@ parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
                         git_url)
 optional = parser._action_groups.pop()
 required = parser.add_argument_group('required arguments')
-optional.add_argument('-u', type=str, dest='URL', required=False,
-                      help="URL to analyze, including schema. E.g., \
-https://google.com")
-optional.add_argument("-r", dest='retrieved', action="store_true",
-                      required=False, help="show HTTP response headers and a \
-detailed analysis.")
 optional.add_argument("-b", dest='brief', action="store_true", required=False,
-                      help="show a brief analysis; if omitted, a detailed \
+                      help="Show a brief analysis; if omitted, a detailed \
 analysis will be shown.")
-optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
-                      help="save analysis to file (URL_yyyymmdd.ext).")
+optional.add_argument("-g", dest='guides', action="store_true", required=False,
+                      help="Show guidelines on securing most used web servers/\
+services.")
 optional.add_argument("-l", dest='language', choices=['es'],
                       help="Displays the analysis in the indicated language; \
 if omitted, English will be used.")
-optional.add_argument("-g", dest='guides', action="store_true", required=False,
-                      help="show guidelines on securing most used web servers/\
-services.")
+optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
+                      help="Save analysis to file (URL_yyyymmdd.ext).")
+optional.add_argument("-r", dest='retrieved', action="store_true",
+                      required=False, help="Show HTTP response headers and a \
+detailed analysis.")
+optional.add_argument('-u', type=str, dest='URL', required=False,
+                      help="URL to analyze, including schema. E.g., \
+https://google.com")
 optional.add_argument("-v", "--version", action='version',
                       version=version, help="show version")
 parser._action_groups.append(optional)
