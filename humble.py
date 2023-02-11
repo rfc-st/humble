@@ -58,6 +58,9 @@ list_client_errors = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413,
                       414, 415, 416, 417, 421, 422, 423, 424, 425, 426, 428,
                       429, 431, 451]
 
+# https://data.iana.org/TLD/tlds-alpha-by-domain.txt
+not_ru_tlds = ['CYMRU', 'GURU', 'PRU']
+
 
 class PDF(FPDF):
 
@@ -298,7 +301,8 @@ def print_guides():
 def ongoing_analysis():
     suffix = tldextract.extract(URL).suffix
     country = requests.get('https://ipapi.co/country_name/').content
-    if suffix[-2:] == "ru" or b'Russia' in country:
+    if ((suffix[-2:] == "ru" and suffix.upper() not in not_ru_tlds)
+            or b'Russia' in country):
         print("")
         print_detail_d("[bcnt]")
         sys.exit()
@@ -778,11 +782,11 @@ if 'Server-Timing' in headers:
     print_details('[itim_h]', '[itim]', 'd')
     i_cnt += 1
 
-if ('Set-Cookie' in headers) and (URL[0:5] != insecure_s) and \
-                (not all(elem.lower() in headers["Set-Cookie"].lower()
-                 for elem in list_cookie)):
-    print_details('[iset_h]', '[iset]', 'd')
-    i_cnt += 1
+if ('Set-Cookie' in headers) and URL[0:5] != insecure_s:
+    cookie_header = headers["Set-Cookie"]
+    if not all(elem.lower() in cookie_header.lower() for elem in list_cookie):
+        print_details("[iset_h]", "[iset]", "d")
+        i_cnt += 1
 
 if ('Strict-Transport-Security' in headers) and (URL[0:5] != insecure_s):
     age = int(''.join([n for n in headers["Strict-Transport-Security"] if
