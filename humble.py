@@ -46,7 +46,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-02-10. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-02-11. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
