@@ -657,12 +657,11 @@ if 'Access-Control-Allow-Methods' in headers:
             print_detail_a("[imethods]")
         i_cnt += 1
 
-if "Access-Control-Allow-Origin" in headers:
-    access_origin = headers["Access-Control-Allow-Origin"].lower()
-    if access_origin in ['*', 'null'] and not any(val in access_origin for
-                                                  val in ['.*', '*.']):
-        print_details('[iaccess_h]', '[iaccess]', 'd')
-        i_cnt += 1
+accesso_header = headers.get("Access-Control-Allow-Origin", '').lower()
+if (accesso_header in ['*', 'null']) and (not any(val in accesso_header for
+                                                  val in ['.*', '*.'])):
+    print_details('[iaccess_h]', '[iaccess]', 'd')
+    i_cnt += 1
 
 if 'Allow' in headers:
     methods = headers["Allow"]
@@ -676,7 +675,7 @@ if 'Allow' in headers:
             print_detail_a("[imethods]")
         i_cnt += 1
 
-cache_header = headers.get("Cache-Control", "").lower()
+cache_header = headers.get("Cache-Control", '').lower()
 if not all(cache_control.lower() in cache_header for cache_control in
            list_cache):
     print_details('[icache_h]', '[icache]', 'd')
@@ -724,14 +723,13 @@ if 'Content-Security-Policy' in headers:
         print_details('[icsw_h]', '[icsw]', 'd')
         i_cnt += 1
 
-if 'Content-Type' in headers:
-    if (any(elem.lower() in headers["Content-Type"].lower() for elem in
-       list_legacy)):
-        print_details('[ictlg_h]', '[ictlg]', 'm')
-        i_cnt += 1
-    if 'html' not in headers['Content-Type'].lower():
-        print_details('[ictlhtml_h]', '[ictlhtml]', 'd')
-        i_cnt += 1
+ctype_header = headers.get('Content-Type', '').lower()
+if any(elem in ctype_header for elem in list_legacy):
+    print_details('[ictlg_h]', '[ictlg]', 'm')
+    i_cnt += 1
+if 'html' not in ctype_header:
+    print_details('[ictlhtml_h]', '[ictlhtml]', 'd')
+    i_cnt += 1
 
 if 'Etag' in headers:
     print_details('[ieta_h]', '[ieta]', 'd')
@@ -753,14 +751,14 @@ if 'Large-Allocation' in headers:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd')
     i_cnt += 1
 
-permissions_policy = headers.get('Permissions-Policy', '').lower()
-if not any(elem in permissions_policy for elem in list_per_features):
+permissions_header = headers.get('Permissions-Policy', '').lower()
+if not any(elem in permissions_header for elem in list_per_features):
     print_details('[ifpoln_h]', '[ifpoln]', 'm')
     i_cnt += 1
-if '*' in permissions_policy:
+if '*' in permissions_header:
     print_details('[ifpol_h]', '[ifpol]', 'd')
     i_cnt += 1
-if 'none' in permissions_policy:
+if 'none' in permissions_header:
     print_details('[ifpoli_h]', '[ifpoli]', 'd')
     i_cnt += 1
 
@@ -772,11 +770,11 @@ if 'Public-Key-Pins' in headers:
     print_details('[ipkp_h]', '[ipkp]', 'd')
     i_cnt += 1
 
-referrer_policy = headers.get('Referrer-Policy', '').lower()
-if not any(elem in referrer_policy for elem in list_ref):
+referrer_header = headers.get('Referrer-Policy', '').lower()
+if not any(elem in referrer_header for elem in list_ref):
     print_details('[iref_h]', '[iref]', 'm')
     i_cnt += 1
-if 'unsafe-url' in referrer_policy:
+if 'unsafe-url' in referrer_header:
     print_details('[irefi_h]', '[irefi]', 'd')
     i_cnt += 1
 
@@ -846,13 +844,13 @@ if 'X-Download-Options' in headers:
     print_details('[ixdow_h]', '[ixdow]', 'm')
     i_cnt += 1
 
-if 'X-Frame-Options' in headers:
-    if ',' in headers['X-Frame-Options']:
-        print_details('[ixfo_h]', '[ixfo]', 'm')
-        i_cnt += 1
-    if 'allow-from' in headers['X-Frame-Options'].lower():
-        print_details('[ixfod_h]', '[ixfod]', 'm')
-        i_cnt += 1
+xfo_header = headers.get('X-Frame-Options', '').lower()
+if ',' in xfo_header:
+    print_details('[ixfo_h]', '[ixfo]', 'm')
+    i_cnt += 1
+if 'allow-from' in xfo_header:
+    print_details('[ixfod_h]', '[ixfod]', 'm')
+    i_cnt += 1
 
 if 'X-Pad' in headers:
     print_details('[ixpad_h]', '[ixpad]', 'd')
@@ -866,14 +864,13 @@ if headers.get('X-Pingback', '').endswith('xmlrpc.php'):
     print_details('[ixpb_h]', '[ixpb]', 'd')
     i_cnt += 1
 
-if 'X-Robots-Tag' in headers:
-    if 'all' in headers['X-Robots-Tag']:
-        print_details('[ixrob_h]', '[ixrob]', 'm')
-        i_cnt += 1
-    elif not any(elem.lower() in headers["X-Robots-Tag"].lower() for
-                 elem in list_robots):
-        print_details('[ixrobv_h]', '[ixrobv]', 'm')
-        i_cnt += 1
+robots_header = headers.get('X-Robots-Tag', '').lower()
+if not any(elem in robots_header for elem in list_robots):
+    print_details('[ixrobv_h]', '[ixrobv]', 'm')
+    i_cnt += 1
+if 'all' in robots_header:
+    print_details('[ixrob_h]', '[ixrob]', 'm')
+    i_cnt += 1
 
 if 'X-Runtime' in headers:
     print_details('[ixrun_h]', '[ixrun]', 'd')
