@@ -677,11 +677,9 @@ if 'Allow' in headers:
         i_cnt += 1
 
 cache_header = headers.get("Cache-Control", '').lower()
-if cache_header:
-    if not all(cache_control.lower() in cache_header for cache_control in
-               list_cache):
-        print_details('[icache_h]', '[icache]', 'd')
-        i_cnt += 1
+if cache_header and not all(elem in cache_header for elem in list_cache):
+    print_details('[icache_h]', '[icache]', 'd')
+    i_cnt += 1
 
 if ('Clear-Site-Data' in headers) and (URL[0:5] == insecure_s):
     print_details('[icsd_h]', '[icsd]', 'd')
@@ -787,9 +785,10 @@ if 'Server-Timing' in headers:
     print_details('[itim_h]', '[itim]', 'd')
     i_cnt += 1
 
-if ('Set-Cookie' in headers) and URL[0:5] != insecure_s:
-    cookie_header = headers["Set-Cookie"]
-    if not all(elem.lower() in cookie_header.lower() for elem in list_cookie):
+cookie_header = headers.get("Set-Cookie", '').lower()
+if cookie_header:
+    if not (URL.startswith(insecure_s)) and not (all(elem in cookie_header for
+                                                 elem in list_cookie)):
         print_details("[iset_h]", "[iset]", "d")
         i_cnt += 1
 
