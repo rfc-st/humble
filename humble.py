@@ -46,7 +46,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-02-11. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-02-16. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
@@ -338,10 +338,10 @@ def fingerprint_headers(headers, list_fng, list_fng_ex):
 
 def analysis_detail():
     print(" ")
-    print_detail_l('[miss_cnt]'), print(f'{m_cnt}')
-    print_detail_l('[finger_cnt]'), print(f'{f_cnt}')
-    print_detail_l('[insecure_cnt]'), print(f'{i_cnt}')
-    print_detail_l('[empty_cnt]'), print(f'{e_cnt}')
+    print((f'{print_detail_l("[miss_cnt]")}{m_cnt}').replace('None', ''))
+    print((f'{print_detail_l("[finger_cnt]")}{f_cnt}').replace('None', ''))
+    print((f'{print_detail_l("[insecure_cnt]")}{i_cnt}').replace('None', ''))
+    print((f'{print_detail_l("[empty_cnt]")}{e_cnt}').replace('None', ''))
     print(""), print(".:"), print("")
 
 
@@ -597,7 +597,11 @@ list_legacy = ['application/javascript', 'application/ecmascript',
 # https://csplite.com/fp/
 
 list_per_features = ['accelerometer', 'ambient-light-sensor', 'autoplay',
-                     'battery', 'browsing-topics', 'camera', 'clipboard-read',
+                     'battery', 'bluetooth', 'browsing-topics', 'camera',
+                     'ch-ua', 'ch-ua-arch', 'ch-ua-bitness',
+                     'ch-ua-full-version', 'ch-ua-full-version-list',
+                     'ch-ua-mobile', 'ch-ua-model', 'ch-ua-platform',
+                     'ch-ua-platform-version', 'ch-ua-wow64', 'clipboard-read',
                      'clipboard-write', 'conversion-measurement',
                      'cross-origin-isolated', 'display-capture',
                      'document-access', 'document-domain', 'document-write',
@@ -606,13 +610,13 @@ list_per_features = ['accelerometer', 'ambient-light-sensor', 'autoplay',
                      'focus-without-user-activation',
                      'font-display-late-swap', 'fullscreen', 'gamepad',
                      'geolocation', 'gyroscope', 'hid', 'idle-detection',
-                     'interest-cohort', 'layout-animations', 'lazyload',
-                     'legacy-image-formats', 'loading-frame-default-eager',
-                     'magnetometer', 'microphone', 'midi',
-                     'navigation-override', 'oversized-images', 'payment',
-                     'picture-in-picture', 'publickey-credentials-get',
-                     'screen-wake-lock', 'serial', 'speaker',
-                     'speaker-selection', 'sync-script', 'sync-xhr',
+                     'interest-cohort', 'keyboard-map', 'layout-animations',
+                     'lazyload', 'legacy-image-formats',
+                     'loading-frame-default-eager', 'magnetometer',
+                     'microphone', 'midi', 'navigation-override',
+                     'oversized-images', 'payment', 'picture-in-picture',
+                     'publickey-credentials-get', 'screen-wake-lock', 'serial',
+                     'speaker', 'speaker-selection', 'sync-script', 'sync-xhr',
                      'trust-token-redemption', 'unload', 'unoptimized-images',
                      'unoptimized-lossless-images',
                      'unoptimized-lossless-images-strict',
@@ -749,17 +753,16 @@ if 'Large-Allocation' in headers:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd')
     i_cnt += 1
 
-if 'Permissions-Policy' in headers:
-    if not any(elem.lower() in headers["Permissions-Policy"].lower() for
-               elem in list_per_features):
-        print_details('[ifpoln_h]', '[ifpoln]', 'm')
-        i_cnt += 1
-    if '*' in headers['Permissions-Policy']:
-        print_details('[ifpol_h]', '[ifpol]', 'd')
-        i_cnt += 1
-    if 'none' in headers['Permissions-Policy']:
-        print_details('[ifpoli_h]', '[ifpoli]', 'd')
-        i_cnt += 1
+permissions_policy = headers.get('Permissions-Policy', '').lower()
+if not any(elem in permissions_policy for elem in list_per_features):
+    print_details('[ifpoln_h]', '[ifpoln]', 'm')
+    i_cnt += 1
+if '*' in permissions_policy:
+    print_details('[ifpol_h]', '[ifpol]', 'd')
+    i_cnt += 1
+if 'none' in permissions_policy:
+    print_details('[ifpoli_h]', '[ifpoli]', 'd')
+    i_cnt += 1
 
 if 'Onion-Location' in headers:
     print_details('[ionloc_h]', '[ionloc]', 'm')
