@@ -46,7 +46,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-02-16. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-02-18. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
@@ -681,7 +681,7 @@ if cache_header and not all(elem in cache_header for elem in list_cache):
     print_details('[icache_h]', '[icache]', 'd')
     i_cnt += 1
 
-if ('Clear-Site-Data' in headers) and (URL[0:5] == insecure_s):
+if ('Clear-Site-Data' in headers) and (URL.startswith(insecure_s)):
     print_details('[icsd_h]', '[icsd]', 'd')
     i_cnt += 1
 
@@ -744,7 +744,7 @@ if 'Feature-Policy' in headers:
     print_details('[iffea_h]', '[iffea]', 'd')
     i_cnt += 1
 
-if URL[0:5] == insecure_s:
+if URL.startswith(insecure_s):
     print_details('[ihttp_h]', '[ihttp]', 'd')
     i_cnt += 1
 
@@ -792,18 +792,18 @@ if cookie_header:
         print_details("[iset_h]", "[iset]", "d")
         i_cnt += 1
 
-if ('Strict-Transport-Security' in headers) and (URL[0:5] != insecure_s):
-    age = int(''.join([n for n in headers["Strict-Transport-Security"] if
-              n.isdigit()]))
-    if not all(elem.lower() in headers["Strict-Transport-Security"].lower() for
-       elem in list_sts) or (age is None or age < 31536000):
+sts_header = headers.get('Strict-Transport-Security', '').lower()
+if (sts_header) and not (URL.startswith(insecure_s)):
+    age = int(''.join(filter(str.isdigit, sts_header)))
+    if not all(elem.lower() in sts_header for elem in list_sts) or\
+              (age is None or age < 31536000):
         print_details('[ists_h]', '[ists]', 'm')
         i_cnt += 1
-    if ',' in headers['Strict-Transport-Security']:
+    if ',' in sts_header:
         print_details('[istsd_h]', '[istsd]', 'd')
         i_cnt += 1
 
-if ('Strict-Transport-Security' in headers) and (URL[0:5] == insecure_s):
+if (sts_header) and (URL.startswith(insecure_s)):
     print_details('[ihsts_h]', '[ihsts]', 'd')
     i_cnt += 1
 
@@ -819,8 +819,8 @@ if 'Warning' in headers:
     print_details('[ixwar_h]', '[ixward]', 'd')
     i_cnt += 1
 
-if ('WWW-Authenticate' in headers) and (URL[0:5] == insecure_s) and \
-   ('Basic' in headers['WWW-Authenticate']):
+if ('WWW-Authenticate' in headers) and (URL.startswith(insecure_s)) and \
+ 'Basic' in headers.get('WWW-Authenticate', ''):
     print_details('[ihbas_h]', '[ihbas]', 'd')
     i_cnt += 1
 
