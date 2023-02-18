@@ -180,6 +180,9 @@
 [imethods_s]
  Make sure these enabled HTTP methods are needed: 
 
+[ifpold_s]
+ These values are deprecated: 
+
 [icsp_h]
  Content-Security-Policy (Unsafe Values)
 
@@ -230,6 +233,9 @@
 
 [ifpoli_h]
  Permissions-Policy (Incorrect Value)
+
+[ifpold_h]
+ Permissions-Policy (Deprecated Values)
 
 [ipkp_h]
  Public-Key-Pins (Deprecated Header)
@@ -530,6 +536,9 @@ Articles that may be useful to secure servers/services and enable security HTTP 
  Use '=()' instead of 'none'.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
+[ifpold]
+ Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+ 
 [ihttp]
  You are analyzing a domain via HTTP, in which the communications are not encrypted.
  Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/

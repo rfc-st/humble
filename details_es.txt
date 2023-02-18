@@ -180,6 +180,9 @@
 [imethods_s]
  Asegúrese de que estos métodos HTTP habilitados son necesarios: 
 
+[ifpold_s]
+ Estos valores están obsoletos: 
+
 [icsp_h]
  Content-Security-Policy (Valores inseguros)
 
@@ -230,6 +233,9 @@
 
 [ifpoli_h]
  Permissions-Policy (Valores incorrectos)
+
+[ifpold_h]
+ Permissions-Policy (Valores obsoletos)
 
 [ipkp_h]
  Public-Key-Pins (Cabecera obsoleta)
@@ -529,6 +535,9 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 [ifpoli]
  Utilice '=()' en vez de 'none'.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
+
+[ifpold]
+ Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 
 [ihttp]
  Uso de esquema inseguro HTTP, con comunicaciones sin cifrar.

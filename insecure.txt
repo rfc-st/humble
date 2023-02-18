@@ -19,9 +19,10 @@ Feature-Policy: Deprecated Header
 HTTP: Domain Via Unsafe Scheme
 Large-Allocation: Deprecated Header
 Onion-Location: Potentially Unsafe Header
+Permissions-Policy: Deprecated Values
+Permissions-Policy: Incorrect Values
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value
-Permissions-Policy: Incorrect Values
 Public-Key-Pins: Deprecated Header
 Referrer-Policy: Recommended Values
 Referrer-Policy: Unsafe Value

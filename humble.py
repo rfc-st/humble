@@ -596,6 +596,8 @@ list_legacy = ['application/javascript', 'application/ecmascript',
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://csplite.com/fp/
 
+list_per_deprecated = ['document-domain']
+
 list_per_features = ['accelerometer', 'ambient-light-sensor', 'autoplay',
                      'battery', 'bluetooth', 'browsing-topics', 'camera',
                      'ch-ua', 'ch-ua-arch', 'ch-ua-bitness',
@@ -604,18 +606,19 @@ list_per_features = ['accelerometer', 'ambient-light-sensor', 'autoplay',
                      'ch-ua-platform-version', 'ch-ua-wow64', 'clipboard-read',
                      'clipboard-write', 'conversion-measurement',
                      'cross-origin-isolated', 'display-capture',
-                     'document-access', 'document-domain', 'document-write',
-                     'encrypted-media', 'execution-while-not-rendered',
+                     'document-access', 'document-write', 'encrypted-media',
+                     'execution-while-not-rendered',
                      'execution-while-out-of-viewport',
                      'focus-without-user-activation',
                      'font-display-late-swap', 'fullscreen', 'gamepad',
                      'geolocation', 'gyroscope', 'hid', 'idle-detection',
                      'interest-cohort', 'keyboard-map', 'layout-animations',
                      'lazyload', 'legacy-image-formats',
-                     'loading-frame-default-eager', 'magnetometer',
-                     'microphone', 'midi', 'navigation-override',
-                     'oversized-images', 'payment', 'picture-in-picture',
-                     'publickey-credentials-get', 'screen-wake-lock', 'serial',
+                     'loading-frame-default-eager', 'local-fonts',
+                     'magnetometer', 'microphone', 'midi',
+                     'navigation-override', 'oversized-images', 'payment',
+                     'picture-in-picture', 'publickey-credentials-get',
+                     'screen-wake-lock', 'serial', 'shared-autofill',
                      'speaker', 'speaker-selection', 'sync-script', 'sync-xhr',
                      'trust-token-redemption', 'unload', 'unoptimized-images',
                      'unoptimized-lossless-images',
@@ -752,16 +755,25 @@ if 'Large-Allocation' in headers:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd')
     i_cnt += 1
 
-permissions_header = headers.get('Permissions-Policy', '').lower()
-if permissions_header:
-    if not any(elem in permissions_header for elem in list_per_features):
+perm_header = headers.get('Permissions-Policy', '').lower()
+if perm_header:
+    if not any(elem in perm_header for elem in list_per_features):
         print_details('[ifpoln_h]', '[ifpoln]', 'm')
         i_cnt += 1
-    if '*' in permissions_header:
+    if '*' in perm_header:
         print_details('[ifpol_h]', '[ifpol]', 'd')
         i_cnt += 1
-    if 'none' in permissions_header:
+    if 'none' in perm_header:
         print_details('[ifpoli_h]', '[ifpoli]', 'd')
+        i_cnt += 1
+    if any(elem in perm_header for elem in list_per_deprecated):
+        print_detail_h('[ifpold_h]')
+        if not args.brief:
+            match_perm = [x for x in list_per_deprecated if x in perm_header]
+            match_perm_str = ', '.join(match_perm)
+            print_detail_l('[ifpold_s]')
+            print(match_perm_str)
+            print_detail_a('[ifpold]')
         i_cnt += 1
 
 if 'Onion-Location' in headers:
