@@ -50,7 +50,6 @@ version = '\r\n' + "2023-02-18. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
-html_ko = '<span class="ko">'
 bold_strings = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
                 "[Cabeceras")
 
@@ -693,36 +692,27 @@ if 'Content-DPR' in headers:
     i_cnt += 1
 
 if 'Content-Security-Policy' in headers:
-    if any(elem.lower() in headers["Content-Security-Policy"].lower() for
-       elem in list_csp_insecure):
+    csp_h = headers['Content-Security-Policy'].lower()
+    if any(elem in csp_h for elem in list_csp_insecure):
         print_details('[icsp_h]', '[icsp]', 'm')
         i_cnt += 1
-    elif not any(elem.lower() in headers["Content-Security-Policy"].lower() for
-                 elem in list_csp_directives):
+    elif not any(elem in csp_h for elem in list_csp_directives):
         print_details('[icsi_h]', '[icsi]', 'd')
         i_cnt += 1
-    if any(elem.lower() in headers["Content-Security-Policy"].lower() for
-           elem in list_csp_deprecated):
+    if any(elem in csp_h for elem in list_csp_deprecated):
         print_detail_h('[icsi_d]')
         if not args.brief:
-            csp_list = "".join(str(x) for x in
-                               headers["Content-Security-Policy"])
-            match = [x for x in list_csp_deprecated if x in csp_list]
-            match_str = ', '.join(match)
+            matches_csp = [x for x in list_csp_deprecated if x in csp_h]
             print_detail_l("[icsi_d_s]")
-            print(match_str)
+            print(', '.join(matches_csp))
             print_detail_a("[icsi_d_r]")
         i_cnt += 1
-    if '=' in headers['Content-Security-Policy']:
-        if not any(elem.lower() in headers["Content-Security-Policy"].lower()
-                   for elem in list_csp_equal):
-            print_details('[icsn_h]', '[icsn]', 'd')
-            i_cnt += 1
-    if (insecure_s in headers['Content-Security-Policy']) and \
-            (URL[0:5] == 'https'):
+    if ('=' in csp_h) and not (any(elem in csp_h for elem in list_csp_equal)):
+        print_details('[icsn_h]', '[icsn]', 'd')
+    if (insecure_s in csp_h) and (URL.startswith('https')):
         print_details('[icsh_h]', '[icsh]', 'd')
         i_cnt += 1
-    if ' * ' in headers['Content-Security-Policy']:
+    if ' * ' in csp_h:
         print_details('[icsw_h]', '[icsw]', 'd')
         i_cnt += 1
 
@@ -1043,12 +1033,13 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
             # TO-DO: Keep improving this code!
 
+            ahref_f = '</a>'
             ahref_s = '<a href="'
+            ctag_f = '">'
+            html_ko = '<span class="ko">'
+            secure_s = "https"
             span_h = '<span class="header">'
             span_s = '</span>'
-            ahref_f = '</a>'
-            secure_s = "https"
-            ctag_f = '">'
 
             if 'rfc-st' in line:
                 output.write(line[:2] + ahref_s + line[2:-2] + ctag_f +
