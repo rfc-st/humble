@@ -46,7 +46,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-02-18. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-02-24. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
@@ -137,9 +137,7 @@ def analysis_time():
 
 
 def clean_output():
-
     # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
-
     sys.stdout.write('\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K')
 
 
@@ -367,7 +365,6 @@ def request_exceptions():
             detail_exceptions('[e_serror]', e)
 
     # Can be useful with self-signed certificates, development environments ...
-
     except requests.exceptions.SSLError:
         pass
     except requests.exceptions.ConnectionError as e:
@@ -419,13 +416,10 @@ if args.guides:
     print_guides()
     sys.exit()
 
-# Peace!
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
-
 ongoing_analysis()
 
 # Regarding 'dh key too small' errors: https://stackoverflow.com/a/41041028
-
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
 try:
     requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS \
@@ -441,13 +435,11 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'}
 # Yes: Server certificates should be verified during SSL/TLS connections.
 # Despite this, I think 'verify=False' would benefit analysis of URLs with
 # self-signed certificates, associated with development environments, etc.
-
 requests.packages.urllib3.disable_warnings()
 r = requests.get(URL, verify=False, headers=c_headers, timeout=60)
 headers = r.headers
 
 # Export analysis
-
 date_now = datetime.now().strftime("%Y%m%d")
 extension = "t.txt" if args.output in ['pdf', 'html'] else ".txt"
 
@@ -462,7 +454,6 @@ print_summary()
 print_headers()
 
 # Report - 1. Missing HTTP Security Headers
-
 m_cnt = 0
 
 print_detail_s('[1missing]')
@@ -495,7 +486,6 @@ if 'X-Frame-Options' not in headers and 'Content-Security-Policy' in \
     m_cnt += 1
 
 # Shame, shame on you!. Have you not enabled *any* security HTTP header?.
-
 list_miss.append('X-Frame-Options')
 
 if not any(elem.lower() in headers for elem in list_miss):
@@ -520,7 +510,6 @@ print("")
 #
 # OWASP Secure Headers Project
 # https://github.com/OWASP/www-project-secure-headers/blob/master/LICENSE.txt
-
 print_detail_s('[2fingerprint]')
 
 if not args.brief:
@@ -545,7 +534,6 @@ if f_cnt == 0:
 print("")
 
 # Report - 3. Deprecated HTTP Headers/Protocols and Insecure values
-
 i_cnt = 0
 
 print_detail_s('[3depinsecure]')
@@ -594,7 +582,6 @@ list_legacy = ['application/javascript', 'application/ecmascript',
 
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://csplite.com/fp/
-
 list_per_deprecated = ['document-domain']
 
 list_per_features = ['accelerometer', 'ambient-light-sensor', 'autoplay',
@@ -635,7 +622,6 @@ list_cookie = ['secure', 'httponly']
 
 # https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 # https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
-
 list_robots = ['all', 'indexifembedded', 'max-image-preview', 'max-snippet',
                'max-video-preview', 'noarchive', 'noodp', 'nofollow',
                'noimageindex', 'noindex', 'none', 'nositelinkssearchbox',
@@ -913,7 +899,6 @@ if i_cnt == 0:
 print("")
 
 # Report - 4. Empty HTTP Response Headers Values
-
 e_cnt = 0
 empty_s_headers = sorted(headers)
 print_detail_s('[4empty]')
@@ -931,7 +916,6 @@ print("") if e_cnt != 0 else print_ok()
 print("")
 
 # Report - 5. Browser Compatibility for Enabled HTTP Security Headers
-
 print_detail_s('[5compat]')
 
 list_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
@@ -960,7 +944,6 @@ end = time()
 analysis_time()
 
 # Export analysis
-
 if args.output == 'txt':
     sys.stdout = orig_stdout
     print_path(name_e)
@@ -975,7 +958,6 @@ elif args.output == 'pdf':
     pdf.add_page()
 
     # PDF Body
-
     secure_s = "https://"
 
     pdf.set_font("Courier", size=9)
@@ -1006,7 +988,6 @@ elif args.output == 'html':
     f.close()
 
     # HTML Template
-
     title = "HTTP headers analysis"
     header = '<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
 <title>' + title + '</title><style>pre {overflow-x: auto;\
@@ -1032,7 +1013,6 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
         for line in input_file:
 
             # TO-DO: Keep improving this code!
-
             ahref_f = '</a>'
             ahref_s = '<a href="'
             ctag_f = '">'
