@@ -38,7 +38,7 @@
 from fpdf import FPDF
 from time import time
 from datetime import datetime
-from os import path, remove
+from os import linesep, path, remove
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import sys
@@ -924,9 +924,7 @@ else:
     print_detail_h("[bcompat_n]") if not args.output else\
                                   print_detail_l("[bcompat_n]")
 
-print("")
-print("")
-print("")
+print(linesep.join(['']*3))
 end = time()
 analysis_time()
 
