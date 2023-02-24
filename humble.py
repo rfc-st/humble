@@ -924,7 +924,7 @@ else:
     print_detail_h("[bcompat_n]") if not args.output else\
                                   print_detail_l("[bcompat_n]")
 
-print(linesep.join(['']*3))
+print(linesep.join(['']*2))
 end = time()
 analysis_time()
 
