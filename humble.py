@@ -568,8 +568,6 @@ list_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
 list_csp_deprecated = ['block-all-mixed-content', 'plugin-types', 'referrer',
                        'report-uri', 'require-sri-for']
 
-list_csp_insecure = ['unsafe-eval', 'unsafe-inline']
-
 list_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
 
 list_legacy = ['application/javascript', 'application/ecmascript',
@@ -582,43 +580,34 @@ list_legacy = ['application/javascript', 'application/ecmascript',
 
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://csplite.com/fp/
-list_per_deprecated = ['document-domain']
-
-list_per_features = ['accelerometer', 'ambient-light-sensor', 'autoplay',
-                     'battery', 'bluetooth', 'browsing-topics', 'camera',
-                     'ch-ua', 'ch-ua-arch', 'ch-ua-bitness',
-                     'ch-ua-full-version', 'ch-ua-full-version-list',
-                     'ch-ua-mobile', 'ch-ua-model', 'ch-ua-platform',
-                     'ch-ua-platform-version', 'ch-ua-wow64', 'clipboard-read',
-                     'clipboard-write', 'conversion-measurement',
-                     'cross-origin-isolated', 'display-capture',
-                     'document-access', 'document-write', 'encrypted-media',
-                     'execution-while-not-rendered',
-                     'execution-while-out-of-viewport',
-                     'focus-without-user-activation',
-                     'font-display-late-swap', 'fullscreen', 'gamepad',
-                     'geolocation', 'gyroscope', 'hid', 'idle-detection',
-                     'interest-cohort', 'keyboard-map', 'layout-animations',
-                     'lazyload', 'legacy-image-formats',
-                     'loading-frame-default-eager', 'local-fonts',
-                     'magnetometer', 'microphone', 'midi',
-                     'navigation-override', 'oversized-images', 'payment',
-                     'picture-in-picture', 'publickey-credentials-get',
-                     'screen-wake-lock', 'serial', 'shared-autofill',
-                     'speaker', 'speaker-selection', 'sync-script', 'sync-xhr',
-                     'trust-token-redemption', 'unload', 'unoptimized-images',
-                     'unoptimized-lossless-images',
-                     'unoptimized-lossless-images-strict',
-                     'unoptimized-lossy-images', 'unsized-media', 'usb',
-                     'vertical-scroll', 'vibrate', 'wake-lock', 'web-share',
-                     'window-placement', 'xr-spatial-tracking']
+list_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay',
+                 'battery', 'bluetooth', 'browsing-topics', 'camera', 'ch-ua',
+                 'ch-ua-arch', 'ch-ua-bitness', 'ch-ua-full-version',
+                 'ch-ua-full-version-list', 'ch-ua-mobile', 'ch-ua-model',
+                 'ch-ua-platform', 'ch-ua-platform-version', 'ch-ua-wow64',
+                 'clipboard-read', 'clipboard-write', 'conversion-measurement',
+                 'cross-origin-isolated', 'display-capture', 'document-access',
+                 'document-write', 'encrypted-media',
+                 'execution-while-not-rendered',
+                 'execution-while-out-of-viewport',
+                 'focus-without-user-activation', 'font-display-late-swap',
+                 'fullscreen', 'gamepad', 'geolocation', 'gyroscope', 'hid',
+                 'idle-detection', 'interest-cohort', 'keyboard-map',
+                 'layout-animations', 'lazyload', 'legacy-image-formats',
+                 'loading-frame-default-eager', 'local-fonts',
+                 'magnetometer', 'microphone', 'midi', 'navigation-override',
+                 'oversized-images', 'payment', 'picture-in-picture',
+                 'publickey-credentials-get', 'screen-wake-lock', 'serial',
+                 'shared-autofill', 'speaker', 'speaker-selection',
+                 'sync-script', 'sync-xhr', 'trust-token-redemption', 'unload',
+                 'unoptimized-images', 'unoptimized-lossless-images',
+                 'unoptimized-lossless-images-strict',
+                 'unoptimized-lossy-images', 'unsized-media', 'usb',
+                 'vertical-scroll', 'vibrate', 'wake-lock', 'web-share',
+                 'window-placement', 'xr-spatial-tracking']
 
 list_ref = ['strict-origin', 'strict-origin-when-cross-origin',
             'no-referrer-when-downgrade', 'no-referrer']
-
-list_sts = ['includeSubDomains', 'max-age']
-
-list_cookie = ['secure', 'httponly']
 
 # https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 # https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
@@ -679,7 +668,7 @@ if 'Content-DPR' in headers:
 
 if 'Content-Security-Policy' in headers:
     csp_h = headers['Content-Security-Policy'].lower()
-    if any(elem in csp_h for elem in list_csp_insecure):
+    if any(elem in csp_h for elem in ['unsafe-eval', 'unsafe-inline']):
         print_details('[icsp_h]', '[icsp]', 'm')
         i_cnt += 1
     elif not any(elem in csp_h for elem in list_csp_directives):
@@ -733,7 +722,7 @@ if 'Large-Allocation' in headers:
 
 perm_header = headers.get('Permissions-Policy', '').lower()
 if perm_header:
-    if not any(elem in perm_header for elem in list_per_features):
+    if not any(elem in perm_header for elem in list_per_feat):
         print_details('[ifpoln_h]', '[ifpoln]', 'm')
         i_cnt += 1
     if '*' in perm_header:
@@ -742,13 +731,11 @@ if perm_header:
     if 'none' in perm_header:
         print_details('[ifpoli_h]', '[ifpoli]', 'd')
         i_cnt += 1
-    if any(elem in perm_header for elem in list_per_deprecated):
+    if 'document-domain' in perm_header:
         print_detail_h('[ifpold_h]')
         if not args.brief:
-            match_perm = [x for x in list_per_deprecated if x in perm_header]
-            match_perm_str = ', '.join(match_perm)
             print_detail_l('[ifpold_s]')
-            print(match_perm_str)
+            print('document-domain')
             print_detail_a('[ifpold]')
         i_cnt += 1
 
@@ -773,18 +760,18 @@ if 'Server-Timing' in headers:
     print_details('[itim_h]', '[itim]', 'd')
     i_cnt += 1
 
-cookie_header = headers.get("Set-Cookie", '').lower()
-if cookie_header:
-    if not (URL.startswith(insecure_s)) and not (all(elem in cookie_header for
-                                                 elem in list_cookie)):
+ck_header = headers.get("Set-Cookie", '').lower()
+if ck_header:
+    if not (URL.startswith(insecure_s)) and not all(elem in ck_header for elem
+                                                    in ('secure', 'httponly')):
         print_details("[iset_h]", "[iset]", "d")
         i_cnt += 1
 
 sts_header = headers.get('Strict-Transport-Security', '').lower()
 if (sts_header) and not (URL.startswith(insecure_s)):
     age = int(''.join(filter(str.isdigit, sts_header)))
-    if not all(elem.lower() in sts_header for elem in list_sts) or\
-              (age is None or age < 31536000):
+    if not all(elem in sts_header for elem in ('includesubdomains',
+       'max-age')) or (age is None or age < 31536000):
         print_details('[ists_h]', '[ists]', 'm')
         i_cnt += 1
     if ',' in sts_header:
@@ -807,8 +794,8 @@ if 'Warning' in headers:
     print_details('[ixwar_h]', '[ixward]', 'd')
     i_cnt += 1
 
-if ('WWW-Authenticate' in headers) and (URL.startswith(insecure_s)) and \
- 'Basic' in headers.get('WWW-Authenticate', ''):
+wwwa_header = headers.get('WWW-Authenticate', '').lower()
+if (wwwa_header) and (URL.startswith(insecure_s)) and ('basic' in wwwa_header):
     print_details('[ihbas_h]', '[ihbas]', 'd')
     i_cnt += 1
 
