@@ -46,7 +46,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-02-24. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-02-25. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
@@ -185,8 +185,7 @@ def print_summary():
     elif args.output != 'pdf':
         print("")
         print_detail_d('[humble]')
-    print("")
-    print("")
+    print(linesep.join(['']*2))
     print_detail_s('[0section]')
     print_detail_l('[info]')
     print(f" {now}")
@@ -261,14 +260,12 @@ def print_detail_s(id_mode):
 
 
 def print_detail_h(id_mode):
-    with open(details_file, encoding='utf8') as rf:
-        for line in rf:
-            line = line.strip()
-            if line.startswith(id_mode):
-                if not args.output:
-                    print(bright_red + next(rf), end='')
-                else:
-                    print(next(rf), end='')
+    for i, line in enumerate(details_f):
+        if line.startswith(id_mode):
+            if not args.output:
+                print(bright_red + details_f[i+1], end='')
+            else:
+                print(details_f[i+1], end='')
 
 
 def get_detail(id_mode):
