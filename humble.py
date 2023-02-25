@@ -102,7 +102,6 @@ def pdf_sections():
                     '[1.': '[1missing_s]', '[2.': '[2fingerprint_s]',
                     '[3.': '[3depinsecure_s]', '[4.': '[4empty_s]',
                     '[5.': '[5compat_s]', '[Cabeceras': '[0headers_s]'}
-
     match = next((i for i in section_dict if x.startswith(i)), None)
     if match is not None:
         pdf.start_section(get_detail(section_dict[match]))
@@ -201,8 +200,7 @@ def print_http_e():
 
 def print_headers():
     if args.retrieved:
-        print("")
-        print("")
+        print(linesep.join(['']*2))
         print_detail_s('[0headers]')
         for key, value in sorted(headers.items()):
             if not args.output:
@@ -359,7 +357,6 @@ def request_exceptions():
             detail_exceptions('[e_proxy]', e)
         elif str(r.status_code).startswith("5"):
             detail_exceptions('[e_serror]', e)
-
     # Can be useful with self-signed certificates, development environments ...
     except requests.exceptions.SSLError:
         pass
@@ -938,10 +935,8 @@ elif args.output == 'pdf':
 
     # PDF Body
     secure_s = "https://"
-
     pdf.set_font("Courier", size=9)
     f = open(name_e, "r", encoding='utf8')
-
     url_string = ' URL  : '
     ref_string = 'Ref: '
     can_string = ': https://caniuse.com/?search='
@@ -979,7 +974,6 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
     footer = '</pre></body></html>'
 
     name_p = name_e[:-5] + ".html"
-
     l_miss.extend(['WWW-Authenticate', 'X-Frame-Options', 'X-Robots-Tag',
                    'X-UA-compatible'])
     l_final = sorted(l_miss + l_fng + l_ins)
@@ -990,7 +984,6 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
         output.write(str(body))
 
         for line in input_file:
-
             # TO-DO: Keep improving this code!
             ahref_f = '</a>'
             ahref_s = '<a href="'
