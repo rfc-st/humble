@@ -252,6 +252,9 @@
 [iset_h]
  Set-Cookie (Insecure Attributes)
 
+[iseti_h]
+ Set-Cookie (Insecure Scheme)
+
 [ists_h]
  Strict-Transport-Security (Recommended Values)
 
@@ -561,6 +564,10 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 
 [iset]
  Enable 'secure' and 'httponly': to send it via HTTPS and not be accessed by client APIs.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+
+[iseti]
+ 'secure' cookies should be sent via HTTPS (except on localhost).
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [ists]

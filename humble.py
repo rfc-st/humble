@@ -757,6 +757,9 @@ if ck_header:
                                                     in ('secure', 'httponly')):
         print_details("[iset_h]", "[iset]", "d")
         i_cnt += 1
+    if (URL.startswith(insecure_s)) and ('secure' in ck_header):
+        print_details("[iseti_h]", "[iseti]", "d")
+        i_cnt += 1
 
 sts_header = headers.get('Strict-Transport-Security', '').lower()
 if (sts_header) and not (URL.startswith(insecure_s)):
