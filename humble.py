@@ -1023,7 +1023,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                         line = line.replace(line[0: line.index(":")], span_h +
                                             line[0: line.index(":")] + span_s)
                 for i in l_final:
-                    if (i in line) and ('"' not in line):
+                    if (i in line) and ('"' not in line) or ('HTTP (' in line):
                         line = line.replace(line, html_ko + line + span_s)
                 output.write(line)
 
