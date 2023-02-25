@@ -53,9 +53,9 @@ bright_red = Style.BRIGHT + Fore.RED
 bold_strings = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
                 "[Cabeceras")
 
-list_client_errors = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413,
-                      414, 415, 416, 417, 421, 422, 423, 424, 425, 426, 428,
-                      429, 431, 451]
+l_client_errors = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414,
+                   415, 416, 417, 421, 422, 423, 424, 425, 426, 428, 429, 431,
+                   451]
 
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 not_ru_tlds = ['CYMRU', 'GURU', 'PRU']
@@ -190,7 +190,7 @@ def print_summary():
     print_detail_l('[info]')
     print(f" {now}")
     print(f' URL  : {URL}')
-    if r.status_code in list_client_errors:
+    if r.status_code in l_client_errors:
         print_http_e()
 
 
@@ -293,14 +293,13 @@ def print_guides():
 
 
 def ongoing_analysis():
-    suffix = tldextract.extract(URL).suffix
+    sfx_u = tldextract.extract(URL).suffix[-2:].upper()
     country = requests.get('https://ipapi.co/country_name/').content
-    if ((suffix[-2:] == "ru" and suffix.upper() not in not_ru_tlds)
-            or b'Russia' in country):
+    if ((sfx_u == "RU" and sfx_u not in not_ru_tlds) or b'Russia' in country):
         print("")
         print_detail_d("[bcnt]")
         sys.exit()
-    elif suffix[-2:] == "ua" or b'Ukraine' in country:
+    elif sfx_u == "UA" or b'Ukraine' in country:
         print("")
         print_detail_a('[analysis_ua_output]' if args.output else
                        '[analysis_ua]')
@@ -309,19 +308,19 @@ def ongoing_analysis():
         print_detail_a('[analysis_output]' if args.output else '[analysis]')
 
 
-def fingerprint_headers(headers, list_fng, list_fng_ex):
+def fingerprint_headers(headers, l_fng, l_fng_ex):
     f_cnt = 0
     matching_headers = sorted([header for header in headers if any(elem.lower()
-                               in headers for elem in list_fng)])
+                               in headers for elem in l_fng)])
 
-    list_fng = [x.title() for x in list_fng]
+    l_fng = [x.title() for x in l_fng]
     matching_headers = [x.title() for x in matching_headers]
 
     for key in matching_headers:
-        if key in list_fng:
+        if key in l_fng:
             if not args.brief:
-                index_fng = list_fng.index(key)
-                print_header_fng(list_fng_ex[index_fng])
+                index_fng = l_fng.index(key)
+                print_header_fng(l_fng_ex[index_fng])
                 print(f" {headers[key]}")
                 print("")
             else:
@@ -455,23 +454,23 @@ m_cnt = 0
 
 print_detail_s('[1missing]')
 
-list_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
-             'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
-             'Cross-Origin-Resource-Policy', 'Content-Security-Policy',
-             'NEL', 'Permissions-Policy', 'Pragma', 'Referrer-Policy',
-             'Strict-Transport-Security', 'X-Content-Type-Options']
+l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
+          'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
+          'Cross-Origin-Resource-Policy', 'Content-Security-Policy', 'NEL',
+          'Permissions-Policy', 'Pragma', 'Referrer-Policy',
+          'Strict-Transport-Security', 'X-Content-Type-Options']
 
-list_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
-               '[mcsp]', '[mnel]', '[mpermission]', '[mpragma]', '[mreferrer]',
-               '[msts]', '[mxcto]', '[mxfo]']
+l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
+            '[mcsp]', '[mnel]', '[mpermission]', '[mpragma]', '[mreferrer]',
+            '[msts]', '[mxcto]', '[mxfo]']
 
 missing_headers_lower = {k.lower(): v for k, v in headers.items()}
 
-for i, key in enumerate(list_miss):
+for i, key in enumerate(l_miss):
     if key.lower() not in missing_headers_lower:
         print_header(key)
         if not args.brief:
-            print_detail_d(list_detail[i])
+            print_detail_d(l_detail[i])
         m_cnt += 1
 
 if 'X-Frame-Options' not in headers and 'Content-Security-Policy' in \
@@ -483,14 +482,14 @@ if 'X-Frame-Options' not in headers and 'Content-Security-Policy' in \
     m_cnt += 1
 
 # Shame, shame on you!. Have you not enabled *any* security HTTP header?.
-list_miss.append('X-Frame-Options')
+l_miss.append('X-Frame-Options')
 
-if not any(elem.lower() in headers for elem in list_miss):
-    for key in list_miss:
+if not any(elem.lower() in headers for elem in l_miss):
+    for key in l_miss:
         print_header(key)
         if not args.brief:
-            idx_m = list_miss.index(key)
-            print_detail_d(list_detail[idx_m])
+            idx_m = l_miss.index(key)
+            print_detail_d(l_detail[idx_m])
         m_cnt += 1
 
 if args.brief and m_cnt != 0:
@@ -512,15 +511,15 @@ print_detail_s('[2fingerprint]')
 if not args.brief:
     print_detail_a("[afgp]")
 
-list_fng = []
-list_fng_ex = []
+l_fng = []
+l_fng_ex = []
 
 with open('fingerprint.txt', 'r', encoding='utf8') as fn:
     for line in fn:
-        list_fng.append(line.partition(' [')[0].strip())
-        list_fng_ex.append(line.strip())
+        l_fng.append(line.partition(' [')[0].strip())
+        l_fng_ex.append(line.strip())
 
-f_cnt = fingerprint_headers(headers, list_fng, list_fng_ex)
+f_cnt = fingerprint_headers(headers, l_fng, l_fng_ex)
 
 if args.brief and f_cnt != 0:
     print("")
@@ -538,80 +537,78 @@ print_detail_s('[3depinsecure]')
 if not args.brief:
     print_detail_a("[aisc]")
 
-list_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
-            'Allow', 'Content-Type', 'Etag', 'Expect-CT', 'Feature-Policy',
-            'Onion-Location', 'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
-            'Timing-Allow-Origin', 'X-Content-Security-Policy',
-            'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
-            'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
-            'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
-            'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
+l_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
+         'Allow', 'Content-Type', 'Etag', 'Expect-CT', 'Feature-Policy',
+         'Onion-Location', 'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
+         'Timing-Allow-Origin', 'X-Content-Security-Policy',
+         'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
+         'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
+         'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
+         'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
-list_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK',
-                'DELETE', 'DEBUG', 'PATCH', '*']
+l_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK', 'DELETE',
+             'DEBUG', 'PATCH', '*']
 
-list_cache = ['no-cache', 'no-store', 'must-revalidate']
+l_cache = ['no-cache', 'no-store', 'must-revalidate']
 
-list_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
-                       'font-src', 'form-action', 'frame-ancestors',
-                       'frame-src', 'img-src', 'manifest-src', 'media-src',
-                       'navigate-to', 'object-src', 'prefetch-src',
-                       'report-to', 'require-trusted-types-for', 'sandbox',
-                       'script-src', 'script-src-elem', 'script-src-attr',
-                       'style-src', 'style-src-elem', 'style-src-attr',
-                       'trusted-types', 'upgrade-insecure-requests',
-                       'worker-src']
+l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
+                    'font-src', 'form-action', 'frame-ancestors', 'frame-src',
+                    'img-src', 'manifest-src', 'media-src', 'navigate-to',
+                    'object-src', 'prefetch-src', 'report-to',
+                    'require-trusted-types-for', 'sandbox', 'script-src',
+                    'script-src-elem', 'script-src-attr', 'style-src',
+                    'style-src-elem', 'style-src-attr', 'trusted-types',
+                    'upgrade-insecure-requests', 'worker-src']
 
-list_csp_deprecated = ['block-all-mixed-content', 'plugin-types', 'referrer',
-                       'report-uri', 'require-sri-for']
+l_csp_deprecated = ['block-all-mixed-content', 'plugin-types', 'referrer',
+                    'report-uri', 'require-sri-for']
 
-list_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
+l_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
 
-list_legacy = ['application/javascript', 'application/ecmascript',
-               'application/x-ecmascript', 'application/x-javascript',
-               'text/ecmascript', 'text/javascript1.0',
-               'text/javascript1.1', 'text/javascript1.2',
-               'text/javascript1.3', 'text/javascript1.4',
-               'text/javascript1.5', 'text/jscript', 'text/livescript',
-               'text/x-ecmascript', 'text/x-javascript']
+l_legacy = ['application/javascript', 'application/ecmascript',
+            'application/x-ecmascript', 'application/x-javascript',
+            'text/ecmascript', 'text/javascript1.0', 'text/javascript1.1',
+            'text/javascript1.2', 'text/javascript1.3', 'text/javascript1.4',
+            'text/javascript1.5', 'text/jscript', 'text/livescript',
+            'text/x-ecmascript', 'text/x-javascript']
 
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://csplite.com/fp/
-list_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay',
-                 'battery', 'bluetooth', 'browsing-topics', 'camera', 'ch-ua',
-                 'ch-ua-arch', 'ch-ua-bitness', 'ch-ua-full-version',
-                 'ch-ua-full-version-list', 'ch-ua-mobile', 'ch-ua-model',
-                 'ch-ua-platform', 'ch-ua-platform-version', 'ch-ua-wow64',
-                 'clipboard-read', 'clipboard-write', 'conversion-measurement',
-                 'cross-origin-isolated', 'display-capture', 'document-access',
-                 'document-write', 'encrypted-media',
-                 'execution-while-not-rendered',
-                 'execution-while-out-of-viewport',
-                 'focus-without-user-activation', 'font-display-late-swap',
-                 'fullscreen', 'gamepad', 'geolocation', 'gyroscope', 'hid',
-                 'idle-detection', 'interest-cohort', 'keyboard-map',
-                 'layout-animations', 'lazyload', 'legacy-image-formats',
-                 'loading-frame-default-eager', 'local-fonts',
-                 'magnetometer', 'microphone', 'midi', 'navigation-override',
-                 'oversized-images', 'payment', 'picture-in-picture',
-                 'publickey-credentials-get', 'screen-wake-lock', 'serial',
-                 'shared-autofill', 'speaker', 'speaker-selection',
-                 'sync-script', 'sync-xhr', 'trust-token-redemption', 'unload',
-                 'unoptimized-images', 'unoptimized-lossless-images',
-                 'unoptimized-lossless-images-strict',
-                 'unoptimized-lossy-images', 'unsized-media', 'usb',
-                 'vertical-scroll', 'vibrate', 'wake-lock', 'web-share',
-                 'window-placement', 'xr-spatial-tracking']
+l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay',
+              'battery', 'bluetooth', 'browsing-topics', 'camera', 'ch-ua',
+              'ch-ua-arch', 'ch-ua-bitness', 'ch-ua-full-version',
+              'ch-ua-full-version-list', 'ch-ua-mobile', 'ch-ua-model',
+              'ch-ua-platform', 'ch-ua-platform-version', 'ch-ua-wow64',
+              'clipboard-read', 'clipboard-write', 'conversion-measurement',
+              'cross-origin-isolated', 'display-capture', 'document-access',
+              'document-write', 'encrypted-media',
+              'execution-while-not-rendered',
+              'execution-while-out-of-viewport',
+              'focus-without-user-activation', 'font-display-late-swap',
+              'fullscreen', 'gamepad', 'geolocation', 'gyroscope', 'hid',
+              'idle-detection', 'interest-cohort', 'keyboard-map',
+              'layout-animations', 'lazyload', 'legacy-image-formats',
+              'loading-frame-default-eager', 'local-fonts', 'magnetometer',
+              'microphone', 'midi', 'navigation-override', 'oversized-images',
+              'payment', 'picture-in-picture', 'publickey-credentials-get',
+              'screen-wake-lock', 'serial', 'shared-autofill', 'speaker',
+              'speaker-selection', 'sync-script', 'sync-xhr',
+              'trust-token-redemption', 'unload', 'unoptimized-images',
+              'unoptimized-lossless-images',
+              'unoptimized-lossless-images-strict',
+              'unoptimized-lossy-images', 'unsized-media', 'usb',
+              'vertical-scroll', 'vibrate', 'wake-lock', 'web-share',
+              'window-placement', 'xr-spatial-tracking']
 
-list_ref = ['strict-origin', 'strict-origin-when-cross-origin',
-            'no-referrer-when-downgrade', 'no-referrer']
+l_ref = ['strict-origin', 'strict-origin-when-cross-origin',
+         'no-referrer-when-downgrade', 'no-referrer']
 
 # https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 # https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
-list_robots = ['all', 'indexifembedded', 'max-image-preview', 'max-snippet',
-               'max-video-preview', 'noarchive', 'noodp', 'nofollow',
-               'noimageindex', 'noindex', 'none', 'nositelinkssearchbox',
-               'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
+l_robots = ['all', 'indexifembedded', 'max-image-preview', 'max-snippet',
+            'max-video-preview', 'noarchive', 'noodp', 'nofollow',
+            'noimageindex', 'noindex', 'none', 'nositelinkssearchbox',
+            'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
 insecure_s = 'http:'
 
@@ -621,10 +618,10 @@ if 'Accept-CH-Lifetime' in headers:
 
 if 'Access-Control-Allow-Methods' in headers:
     methods = headers["Access-Control-Allow-Methods"]
-    if any(method in methods for method in list_methods):
+    if any(method in methods for method in l_methods):
         print_detail_h('[imethods_h]')
         if not args.brief:
-            match_method = [x for x in list_methods if x in methods]
+            match_method = [x for x in l_methods if x in methods]
             match_method_str = ', '.join(match_method)
             print_detail_l("[imethods_s]")
             print(match_method_str)
@@ -640,10 +637,10 @@ if accesso_header:
 
 if 'Allow' in headers:
     methods = headers["Allow"]
-    if any(method in methods for method in list_methods):
+    if any(method in methods for method in l_methods):
         print_detail_h('[imethods_hh]')
         if not args.brief:
-            match_method = [x for x in list_methods if x in methods]
+            match_method = [x for x in l_methods if x in methods]
             match_method_str = ', '.join(match_method)
             print_detail_l("[imethods_s]")
             print(match_method_str)
@@ -651,7 +648,7 @@ if 'Allow' in headers:
         i_cnt += 1
 
 cache_header = headers.get("Cache-Control", '').lower()
-if cache_header and not all(elem in cache_header for elem in list_cache):
+if cache_header and not all(elem in cache_header for elem in l_cache):
     print_details('[icache_h]', '[icache]', 'd')
     i_cnt += 1
 
@@ -668,18 +665,18 @@ if 'Content-Security-Policy' in headers:
     if any(elem in csp_h for elem in ['unsafe-eval', 'unsafe-inline']):
         print_details('[icsp_h]', '[icsp]', 'm')
         i_cnt += 1
-    elif not any(elem in csp_h for elem in list_csp_directives):
+    elif not any(elem in csp_h for elem in l_csp_directives):
         print_details('[icsi_h]', '[icsi]', 'd')
         i_cnt += 1
-    if any(elem in csp_h for elem in list_csp_deprecated):
+    if any(elem in csp_h for elem in l_csp_deprecated):
         print_detail_h('[icsi_d]')
         if not args.brief:
-            matches_csp = [x for x in list_csp_deprecated if x in csp_h]
+            matches_csp = [x for x in l_csp_deprecated if x in csp_h]
             print_detail_l("[icsi_d_s]")
             print(', '.join(matches_csp))
             print_detail_a("[icsi_d_r]")
         i_cnt += 1
-    if ('=' in csp_h) and not (any(elem in csp_h for elem in list_csp_equal)):
+    if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd')
     if (insecure_s in csp_h) and (URL.startswith('https')):
         print_details('[icsh_h]', '[icsh]', 'd')
@@ -690,7 +687,7 @@ if 'Content-Security-Policy' in headers:
 
 ctype_header = headers.get('Content-Type', '').lower()
 if ctype_header:
-    if any(elem in ctype_header for elem in list_legacy):
+    if any(elem in ctype_header for elem in l_legacy):
         print_details('[ictlg_h]', '[ictlg]', 'm')
         i_cnt += 1
     if 'html' not in ctype_header:
@@ -719,7 +716,7 @@ if 'Large-Allocation' in headers:
 
 perm_header = headers.get('Permissions-Policy', '').lower()
 if perm_header:
-    if not any(elem in perm_header for elem in list_per_feat):
+    if not any(elem in perm_header for elem in l_per_feat):
         print_details('[ifpoln_h]', '[ifpoln]', 'm')
         i_cnt += 1
     if '*' in perm_header:
@@ -746,7 +743,7 @@ if 'Public-Key-Pins' in headers:
 
 referrer_header = headers.get('Referrer-Policy', '').lower()
 if referrer_header:
-    if not any(elem in referrer_header for elem in list_ref):
+    if not any(elem in referrer_header for elem in l_ref):
         print_details('[iref_h]', '[iref]', 'm')
         i_cnt += 1
     if 'unsafe-url' in referrer_header:
@@ -843,7 +840,7 @@ if headers.get('X-Pingback', '').endswith('xmlrpc.php'):
 
 robots_header = headers.get('X-Robots-Tag', '').lower()
 if robots_header:
-    if not any(elem in robots_header for elem in list_robots):
+    if not any(elem in robots_header for elem in l_robots):
         print_details('[ixrobv_h]', '[ixrobv]', 'm')
         i_cnt += 1
     if 'all' in robots_header:
@@ -902,14 +899,14 @@ print("")
 # Report - 5. Browser Compatibility for Enabled HTTP Security Headers
 print_detail_s('[5compat]')
 
-list_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
-            'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
-            'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy',
-            'NEL', 'Permissions-Policy', 'Pragma', 'Referrer-Policy',
-            'Strict-Transport-Security', 'X-Content-Type-Options',
-            'X-Frame-Options']
+l_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
+         'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
+         'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy', 'NEL',
+         'Permissions-Policy', 'Pragma', 'Referrer-Policy',
+         'Strict-Transport-Security', 'X-Content-Type-Options',
+         'X-Frame-Options']
 
-header_matches = [header for header in list_sec if header in headers]
+header_matches = [header for header in l_sec if header in headers]
 
 if header_matches:
     for key in header_matches:
@@ -983,9 +980,9 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
 
     name_p = name_e[:-5] + ".html"
 
-    list_miss.extend(['WWW-Authenticate', 'X-Frame-Options', 'X-Robots-Tag',
-                      'X-UA-compatible'])
-    list_final = sorted(list_miss + list_fng + list_ins)
+    l_miss.extend(['WWW-Authenticate', 'X-Frame-Options', 'X-Robots-Tag',
+                   'X-UA-compatible'])
+    l_final = sorted(l_miss + l_fng + l_ins)
 
     with open(name_e, 'r', encoding='utf8') as input_file,\
             open(name_p, 'w', encoding='utf8') as output:
@@ -1029,7 +1026,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                     if (str(i + ": ") in line) and ('Date:   ' not in line):
                         line = line.replace(line[0: line.index(":")], span_h +
                                             line[0: line.index(":")] + span_s)
-                for i in list_final:
+                for i in l_final:
                     if (i in line) and ('"' not in line):
                         line = line.replace(line, html_ko + line + span_s)
                 output.write(line)
