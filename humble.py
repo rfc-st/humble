@@ -46,7 +46,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-02-25. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-03-03. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
@@ -470,24 +470,20 @@ for i, key in enumerate(l_miss):
             print_detail_d(l_detail[i])
         m_cnt += 1
 
-if 'X-Frame-Options' not in headers and 'Content-Security-Policy' in \
-                                    headers and 'frame-ancestors' not in \
-                                    headers['Content-Security-Policy']:
+if not (headers.get('X-Frame-Options') or 'frame-ancestors' in
+        headers.get('Content-Security-Policy', '')):
     print_header('X-Frame-Options')
     if not args.brief:
         print_detail_d("[mxfo]")
     m_cnt += 1
 
-# Shame, shame on you!. Have you not enabled *any* security HTTP header?.
-l_miss.append('X-Frame-Options')
-
 if not any(elem.lower() in headers for elem in l_miss):
-    for key in l_miss:
-        print_header(key)
-        if not args.brief:
-            idx_m = l_miss.index(key)
-            print_detail_d(l_detail[idx_m])
-        m_cnt += 1
+    print_header('X-Frame-Options')
+    if not args.brief:
+        print_detail_d("[mxfo]")
+    m_cnt += 1
+
+l_miss.append('X-Frame-Options')
 
 if args.brief and m_cnt != 0:
     print("")
