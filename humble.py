@@ -1022,10 +1022,13 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                 for i in l_fng_final:
                     if i in line:
                         if not args.brief:
-                            line = line.replace(line, html_ko +
-                                                line[:line.index(" [")] +
-                                                span_s +
-                                                line[line.index(" ["):])
+                            try:
+                                line = line.replace(line, html_ko +
+                                                    line[:line.index(" [")] +
+                                                    span_s +
+                                                    line[line.index(" ["):])
+                            except Exception:
+                                continue
                         else:
                             line = line.replace(line, html_ko + line + span_s)
                 for i in l_final:
