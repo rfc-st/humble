@@ -1020,17 +1020,14 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                         line = line.replace(line[0: line.index(":")], span_h +
                                             line[0: line.index(":")] + span_s)
                 for i in l_fng_final:
-                    if i in line:
-                        if not args.brief:
-                            try:
-                                line = line.replace(line, html_ko +
-                                                    line[:line.index(" [")] +
-                                                    span_s +
-                                                    line[line.index(" ["):])
-                            except Exception:
-                                continue
-                        else:
-                            line = line.replace(line, html_ko + line + span_s)
+                    if i in line and not args.brief:
+                        try:
+                            idx = line.index(' [')
+                        except ValueError:
+                            continue
+                        line = f"{html_ko}{line[:idx]}{span_s}{line[idx:]}"
+                    elif i in line and args.brief:
+                        line = f"{html_ko}{line}{span_s}"
                 for i in l_final:
                     if (i in line) and ('"' not in line) or ('HTTP (' in line):
                         line = line.replace(line, html_ko + line + span_s)
