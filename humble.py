@@ -975,7 +975,8 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
     name_p = name_e[:-5] + ".html"
     l_miss.extend(['WWW-Authenticate', 'X-Frame-Options', 'X-Robots-Tag',
                    'X-UA-compatible'])
-    l_final = sorted(l_miss + l_fng + l_ins)
+    l_final = sorted(l_miss + l_ins)
+    l_fng_final = sorted(l_fng)
 
     with open(name_e, 'r', encoding='utf8') as input_file,\
             open(name_p, 'w', encoding='utf8') as output:
@@ -1018,11 +1019,19 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
                     if (str(i + ": ") in line) and ('Date:   ' not in line):
                         line = line.replace(line[0: line.index(":")], span_h +
                                             line[0: line.index(":")] + span_s)
+                for i in l_fng_final:
+                    if i in line:
+                        if not args.brief:
+                            line = line.replace(line, html_ko +
+                                                line[:line.index(" [")] +
+                                                span_s +
+                                                line[line.index(" ["):])
+                        else:
+                            line = line.replace(line, html_ko + line + span_s)
                 for i in l_final:
                     if (i in line) and ('"' not in line) or ('HTTP (' in line):
                         line = line.replace(line, html_ko + line + span_s)
                 output.write(line)
-
         output.write(footer)
 
     print_path(name_p)
