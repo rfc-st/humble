@@ -930,55 +930,48 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
         output.write(str(header))
         output.write(str(body))
 
-        for line in input_file:
-            # TO-DO: Keep improving this code!
-            ahref_f = '</a>'
-            ahref_s = '<a href="'
-            ctag_f = '">'
-            html_ko = '<span class="ko">'
-            secure_s = "https"
-            span_h = '<span class="header">'
-            span_s = '</span>'
-
-            if 'rfc-st' in line:
-                output.write(line[:2] + ahref_s + line[2:-2] + ctag_f +
-                             line[2:] + ahref_f)
-            elif ' URL  : ' in line:
-                output.write(line[:7] + ahref_s + line[7:] + ctag_f +
-                             line[7:] + ahref_f)
-            elif any(s in line for s in bold_strings):
-                output.write('<strong>' + line + '</strong>')
-            elif get_detail('[ok]') in line:
-                output.write('<span class="ok">' + line + span_s)
-            elif get_detail('[bcompat_n]') in line:
-                output.write(html_ko + line + span_s)
-            elif ' Ref: ' in line:
-                output.write(line[:6] + ahref_s + line[6:] + ctag_f +
-                             line[6:] + ahref_f)
-            elif 'caniuse' in line:
-                line = span_h + line[1:line.index(": ")] +\
-                        ": " + span_s + ahref_s +\
-                        line[line.index(secure_s):] + ctag_f +\
-                        line[line.index(secure_s):] + ahref_f
-                output.write(line)
+        for ln in input_file:
+            h_d = {'ah_f': '</a>', 'ah_s': '<a href="', 'c_f': '">',
+                   'h_k': '<span class="ko">', 's_h': 'https://',
+                   'sp_h': '<span class="header">', 'sp_s': '</span>'}
+            if 'rfc-st' in ln:
+                output.write(ln[:2] + h_d['ah_s'] + ln[2:-2] + h_d['c_f'] +
+                             ln[2:] + h_d['ah_f'])
+            elif ' URL  : ' in ln:
+                output.write(ln[:7] + h_d['ah_s'] + ln[7:] + h_d['c_f'] +
+                             ln[7:] + h_d['ah_f'])
+            elif any(s in ln for s in bold_strings):
+                output.write('<strong>' + ln + '</strong>')
+            elif get_detail('[ok]') in ln:
+                output.write('<span class="ok">' + ln + h_d['sp_s'])
+            elif get_detail('[bcompat_n]') in ln:
+                output.write(h_d['h_k'] + ln + h_d['sp_s'])
+            elif ' Ref: ' in ln:
+                output.write(ln[:6] + h_d['ah_s'] + ln[6:] + h_d['c_f'] +
+                             ln[6:] + h_d['ah_f'])
+            elif 'caniuse' in ln:
+                ln = h_d['sp_h'] + ln[1:ln.index(": ")] + ": " + h_d['sp_s'] +\
+                    h_d['ah_s'] + ln[ln.index(h_d['s_h']):] + h_d['c_f'] +\
+                    ln[ln.index(h_d['s_h']):] + h_d['ah_f']
+                output.write(ln)
             else:
                 for i in headers:
-                    if (str(i + ": ") in line) and ('Date:   ' not in line):
-                        line = line.replace(line[0: line.index(":")], span_h +
-                                            line[0: line.index(":")] + span_s)
+                    if (str(i + ": ") in ln) and ('Date:   ' not in ln):
+                        ln = ln.replace(ln[0: ln.index(":")], h_d['sp_h'] +
+                                        ln[0: ln.index(":")] + h_d['sp_s'])
                 for i in l_fng_final:
-                    if i in line and not args.brief:
+                    if i in ln and not args.brief:
                         try:
-                            idx = line.index(' [')
+                            idx = ln.index(' [')
                         except ValueError:
                             continue
-                        line = f"{html_ko}{line[:idx]}{span_s}{line[idx:]}"
-                    elif i in line and args.brief:
-                        line = f"{html_ko}{line}{span_s}"
+                        ln = f"{h_d['h_k']}{ln[:idx]}{h_d['sp_s']}{ln[idx:]}"
+                    elif i in ln and args.brief:
+                        ln = f"{h_d['h_k']}{ln}{h_d['sp_s']}"
                 for i in l_final:
-                    if (i in line) and ('"' not in line) or ('HTTP (' in line):
-                        line = line.replace(line, html_ko + line + span_s)
-                output.write(line)
+                    if (i in ln) and ('"' not in ln) or ('HTTP (' in ln):
+                        ln = ln.replace(ln, h_d['h_k'] + ln + h_d['sp_s'])
+                output.write(ln)
         output.write(footer)
 
     print_path(name_p)
