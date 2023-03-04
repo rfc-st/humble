@@ -46,7 +46,7 @@ import requests
 import tldextract
 
 start = time()
-version = '\r\n' + "2023-03-03. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-03-04. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 git_url = "https://github.com/rfc-st/humble"
 bright_red = Style.BRIGHT + Fore.RED
@@ -210,13 +210,12 @@ def print_headers():
     print('\n')
 
 
-def print_details(short_desc, long_desc, id_mode):
-    print_detail_h(short_desc)
+def print_details(short_d, long_d, id_mode, i_cnt):
+    print_detail_h(short_d)
     if not args.brief:
-        if id_mode == 'd':
-            print_detail_d(long_desc)
-        elif id_mode == 'm':
-            print_detail_m(long_desc)
+        print_detail_d(long_d) if id_mode == 'd' else print_detail_m(long_d)
+    i_cnt[0] += 1
+    return i_cnt
 
 
 def print_detail_a(id_mode):
@@ -331,7 +330,7 @@ def analysis_detail():
     print(" ")
     print((f'{print_detail_l("[miss_cnt]")}{m_cnt}').replace('None', ''))
     print((f'{print_detail_l("[finger_cnt]")}{f_cnt}').replace('None', ''))
-    print((f'{print_detail_l("[insecure_cnt]")}{i_cnt}').replace('None', ''))
+    print(f'{print_detail_l("[ins_cnt]")}{i_cnt}'.split('[')[1].split(']')[0])
     print((f'{print_detail_l("[empty_cnt]")}{e_cnt}').replace('None', ''))
     print(""), print(".:"), print("")
 
@@ -523,7 +522,7 @@ if f_cnt == 0:
 print("")
 
 # Report - 3. Deprecated HTTP Headers/Protocols and Insecure values
-i_cnt = 0
+i_cnt = [0]
 
 print_detail_s('[3depinsecure]')
 
@@ -606,8 +605,7 @@ l_robots = ['all', 'indexifembedded', 'max-image-preview', 'max-snippet',
 insecure_s = 'http:'
 
 if 'Accept-CH-Lifetime' in headers:
-    print_details('[ixacl_h]', '[ixacld]', 'd')
-    i_cnt += 1
+    print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
 
 if 'Access-Control-Allow-Methods' in headers:
     methods = headers["Access-Control-Allow-Methods"]
@@ -619,14 +617,13 @@ if 'Access-Control-Allow-Methods' in headers:
             print_detail_l("[imethods_s]")
             print(match_method_str)
             print_detail_a("[imethods]")
-        i_cnt += 1
+        i_cnt[0] += 1
 
 accesso_header = headers.get("Access-Control-Allow-Origin", '').lower()
 if accesso_header:
     if (accesso_header in ['*', 'null']) and (not any(val in accesso_header for
                                                       val in ['.*', '*.'])):
-        print_details('[iaccess_h]', '[iaccess]', 'd')
-        i_cnt += 1
+        print_details('[iaccess_h]', '[iaccess]', 'd', i_cnt)
 
 if 'Allow' in headers:
     methods = headers["Allow"]
@@ -638,29 +635,24 @@ if 'Allow' in headers:
             print_detail_l("[imethods_s]")
             print(match_method_str)
             print_detail_a("[imethods]")
-        i_cnt += 1
+        i_cnt[0] += 1
 
 cache_header = headers.get("Cache-Control", '').lower()
 if cache_header and not all(elem in cache_header for elem in l_cache):
-    print_details('[icache_h]', '[icache]', 'd')
-    i_cnt += 1
+    print_details('[icache_h]', '[icache]', 'd', i_cnt)
 
 if ('Clear-Site-Data' in headers) and (URL.startswith(insecure_s)):
-    print_details('[icsd_h]', '[icsd]', 'd')
-    i_cnt += 1
+    print_details('[icsd_h]', '[icsd]', 'd', i_cnt)
 
 if 'Content-DPR' in headers:
-    print_details('[ixcdpr_h]', '[ixcdprd]', 'd')
-    i_cnt += 1
+    print_details('[ixcdpr_h]', '[ixcdprd]', 'd', i_cnt)
 
 if 'Content-Security-Policy' in headers:
     csp_h = headers['Content-Security-Policy'].lower()
     if any(elem in csp_h for elem in ['unsafe-eval', 'unsafe-inline']):
-        print_details('[icsp_h]', '[icsp]', 'm')
-        i_cnt += 1
+        print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
     elif not any(elem in csp_h for elem in l_csp_directives):
-        print_details('[icsi_h]', '[icsi]', 'd')
-        i_cnt += 1
+        print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
     if any(elem in csp_h for elem in l_csp_deprecated):
         print_detail_h('[icsi_d]')
         if not args.brief:
@@ -668,209 +660,164 @@ if 'Content-Security-Policy' in headers:
             print_detail_l("[icsi_d_s]")
             print(', '.join(matches_csp))
             print_detail_a("[icsi_d_r]")
-        i_cnt += 1
+        i_cnt[0] += 1
     if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
-        print_details('[icsn_h]', '[icsn]', 'd')
+        print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
     if (insecure_s in csp_h) and (URL.startswith('https')):
-        print_details('[icsh_h]', '[icsh]', 'd')
-        i_cnt += 1
+        print_details('[icsh_h]', '[icsh]', 'd', i_cnt)
     if ' * ' in csp_h:
-        print_details('[icsw_h]', '[icsw]', 'd')
-        i_cnt += 1
+        print_details('[icsw_h]', '[icsw]', 'd', i_cnt)
 
 ctype_header = headers.get('Content-Type', '').lower()
 if ctype_header:
     if any(elem in ctype_header for elem in l_legacy):
-        print_details('[ictlg_h]', '[ictlg]', 'm')
-        i_cnt += 1
+        print_details('[ictlg_h]', '[ictlg]', 'm', i_cnt)
     if 'html' not in ctype_header:
-        print_details('[ictlhtml_h]', '[ictlhtml]', 'd')
-        i_cnt += 1
+        print_details('[ictlhtml_h]', '[ictlhtml]', 'd', i_cnt)
 
 if 'Etag' in headers:
-    print_details('[ieta_h]', '[ieta]', 'd')
-    i_cnt += 1
+    print_details('[ieta_h]', '[ieta]', 'd', i_cnt)
 
 if 'Expect-CT' in headers:
-    print_details('[iexct_h]', '[iexct]', 'm')
-    i_cnt += 1
+    print_details('[iexct_h]', '[iexct]', 'm', i_cnt)
 
 if 'Feature-Policy' in headers:
-    print_details('[iffea_h]', '[iffea]', 'd')
-    i_cnt += 1
+    print_details('[iffea_h]', '[iffea]', 'd', i_cnt)
 
 if URL.startswith(insecure_s):
-    print_details('[ihttp_h]', '[ihttp]', 'd')
-    i_cnt += 1
+    print_details('[ihttp_h]', '[ihttp]', 'd', i_cnt)
 
 if 'Large-Allocation' in headers:
-    print_details('[ixlalloc_h]', '[ixallocd]', 'd')
-    i_cnt += 1
+    print_details('[ixlalloc_h]', '[ixallocd]', 'd', i_cnt)
 
 perm_header = headers.get('Permissions-Policy', '').lower()
 if perm_header:
     if not any(elem in perm_header for elem in l_per_feat):
-        print_details('[ifpoln_h]', '[ifpoln]', 'm')
-        i_cnt += 1
+        print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
     if '*' in perm_header:
-        print_details('[ifpol_h]', '[ifpol]', 'd')
-        i_cnt += 1
+        print_details('[ifpol_h]', '[ifpol]', 'd', i_cnt)
     if 'none' in perm_header:
-        print_details('[ifpoli_h]', '[ifpoli]', 'd')
-        i_cnt += 1
+        print_details('[ifpoli_h]', '[ifpoli]', 'd', i_cnt)
     if 'document-domain' in perm_header:
         print_detail_h('[ifpold_h]')
         if not args.brief:
             print_detail_l('[ifpold_s]')
             print('document-domain')
             print_detail_a('[ifpold]')
-        i_cnt += 1
+        i_cnt[0] += 1
 
 if 'Onion-Location' in headers:
-    print_details('[ionloc_h]', '[ionloc]', 'm')
-    i_cnt += 1
+    print_details('[ionloc_h]', '[ionloc]', 'm', i_cnt)
 
 if 'Public-Key-Pins' in headers:
-    print_details('[ipkp_h]', '[ipkp]', 'd')
-    i_cnt += 1
+    print_details('[ipkp_h]', '[ipkp]', 'd', i_cnt)
 
 referrer_header = headers.get('Referrer-Policy', '').lower()
 if referrer_header:
     if not any(elem in referrer_header for elem in l_ref):
-        print_details('[iref_h]', '[iref]', 'm')
-        i_cnt += 1
+        print_details('[iref_h]', '[iref]', 'm', i_cnt)
     if 'unsafe-url' in referrer_header:
-        print_details('[irefi_h]', '[irefi]', 'd')
-        i_cnt += 1
+        print_details('[irefi_h]', '[irefi]', 'd', i_cnt)
 
 if 'Server-Timing' in headers:
-    print_details('[itim_h]', '[itim]', 'd')
-    i_cnt += 1
+    print_details('[itim_h]', '[itim]', 'd', i_cnt)
 
 ck_header = headers.get("Set-Cookie", '').lower()
 if ck_header:
     if not (URL.startswith(insecure_s)) and not all(elem in ck_header for elem
                                                     in ('secure', 'httponly')):
-        print_details("[iset_h]", "[iset]", "d")
-        i_cnt += 1
+        print_details("[iset_h]", "[iset]", "d", i_cnt)
     if (URL.startswith(insecure_s)) and ('secure' in ck_header):
-        print_details("[iseti_h]", "[iseti]", "d")
-        i_cnt += 1
+        print_details("[iseti_h]", "[iseti]", "d", i_cnt)
 
 sts_header = headers.get('Strict-Transport-Security', '').lower()
 if (sts_header) and not (URL.startswith(insecure_s)):
     age = int(''.join(filter(str.isdigit, sts_header)))
     if not all(elem in sts_header for elem in ('includesubdomains',
        'max-age')) or (age is None or age < 31536000):
-        print_details('[ists_h]', '[ists]', 'm')
-        i_cnt += 1
+        print_details('[ists_h]', '[ists]', 'm', i_cnt)
     if ',' in sts_header:
-        print_details('[istsd_h]', '[istsd]', 'd')
-        i_cnt += 1
+        print_details('[istsd_h]', '[istsd]', 'd', i_cnt)
 
 if (sts_header) and (URL.startswith(insecure_s)):
-    print_details('[ihsts_h]', '[ihsts]', 'd')
-    i_cnt += 1
+    print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
 
 if headers.get('Timing-Allow-Origin', '') == '*':
-    print_details('[itao_h]', '[itao]', 'd')
-    i_cnt += 1
+    print_details('[itao_h]', '[itao]', 'd', i_cnt)
 
 if 'Tk' in headers:
-    print_details('[ixtk_h]', '[ixtkd]', 'd')
-    i_cnt += 1
+    print_details('[ixtk_h]', '[ixtkd]', 'd', i_cnt)
 
 if 'Warning' in headers:
-    print_details('[ixwar_h]', '[ixward]', 'd')
-    i_cnt += 1
+    print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
 
 wwwa_header = headers.get('WWW-Authenticate', '').lower()
 if (wwwa_header) and (URL.startswith(insecure_s)) and ('basic' in wwwa_header):
-    print_details('[ihbas_h]', '[ihbas]', 'd')
-    i_cnt += 1
+    print_details('[ihbas_h]', '[ihbas]', 'd', i_cnt)
 
 if 'X-Content-Security-Policy' in headers:
-    print_details('[ixcsp_h]', '[ixcsp]', 'd')
-    i_cnt += 1
+    print_details('[ixcsp_h]', '[ixcsp]', 'd', i_cnt)
 
 if 'X-Content-Security-Policy-Report-Only' in headers:
-    print_details('[ixcspr_h]', '[ixcspr]', 'd')
-    i_cnt += 1
+    print_details('[ixcspr_h]', '[ixcspr]', 'd', i_cnt)
 
 if 'X-Content-Type-Options' in headers:
     if ',' in headers['X-Content-Type-Options']:
-        print_details('[ictpd_h]', '[ictpd]', 'd')
-        i_cnt += 1
+        print_details('[ictpd_h]', '[ictpd]', 'd', i_cnt)
     elif 'nosniff' not in headers['X-Content-Type-Options']:
-        print_details('[ictp_h]', '[ictp]', 'd')
-        i_cnt += 1
+        print_details('[ictp_h]', '[ictp]', 'd', i_cnt)
 
 if headers.get('X-DNS-Prefetch-Control', '') == 'on':
-    print_details('[ixdp_h]', '[ixdp]', 'd')
-    i_cnt += 1
+    print_details('[ixdp_h]', '[ixdp]', 'd', i_cnt)
 
 if 'X-Download-Options' in headers:
-    print_details('[ixdow_h]', '[ixdow]', 'm')
-    i_cnt += 1
+    print_details('[ixdow_h]', '[ixdow]', 'm', i_cnt)
 
 xfo_header = headers.get('X-Frame-Options', '').lower()
 if xfo_header:
     if ',' in xfo_header:
-        print_details('[ixfo_h]', '[ixfo]', 'm')
-        i_cnt += 1
+        print_details('[ixfo_h]', '[ixfo]', 'm', i_cnt)
     if 'allow-from' in xfo_header:
-        print_details('[ixfod_h]', '[ixfod]', 'm')
-        i_cnt += 1
+        print_details('[ixfod_h]', '[ixfod]', 'm', i_cnt)
 
 if 'X-Pad' in headers:
-    print_details('[ixpad_h]', '[ixpad]', 'd')
-    i_cnt += 1
+    print_details('[ixpad_h]', '[ixpad]', 'd', i_cnt)
 
 if headers.get('X-Permitted-Cross-Domain-Policies', '') == 'all':
-    print_details('[ixcd_h]', '[ixcd]', 'm')
-    i_cnt += 1
+    print_details('[ixcd_h]', '[ixcd]', 'm', i_cnt)
 
 if headers.get('X-Pingback', '').endswith('xmlrpc.php'):
-    print_details('[ixpb_h]', '[ixpb]', 'd')
-    i_cnt += 1
+    print_details('[ixpb_h]', '[ixpb]', 'd', i_cnt)
 
 robots_header = headers.get('X-Robots-Tag', '').lower()
 if robots_header:
     if not any(elem in robots_header for elem in l_robots):
-        print_details('[ixrobv_h]', '[ixrobv]', 'm')
-        i_cnt += 1
+        print_details('[ixrobv_h]', '[ixrobv]', 'm', i_cnt)
     if 'all' in robots_header:
-        print_details('[ixrob_h]', '[ixrob]', 'm')
-        i_cnt += 1
+        print_details('[ixrob_h]', '[ixrob]', 'm', i_cnt)
 
 if 'X-Runtime' in headers:
-    print_details('[ixrun_h]', '[ixrun]', 'd')
-    i_cnt += 1
+    print_details('[ixrun_h]', '[ixrun]', 'd', i_cnt)
 
 if 'X-UA-Compatible' in headers:
-    print_details('[ixuacom_h]', '[ixuacom]', 'm')
-    i_cnt += 1
+    print_details('[ixuacom_h]', '[ixuacom]', 'm', i_cnt)
 
 if 'X-Webkit-CSP' in headers:
-    print_details('[ixwcsp_h]', '[ixcsp]', 'd')
-    i_cnt += 1
+    print_details('[ixwcsp_h]', '[ixcsp]', 'd', i_cnt)
 
 if 'X-Webkit-CSP-Report-Only' in headers:
-    print_details('[ixwcspr_h]', '[ixcspr]', 'd')
-    i_cnt += 1
+    print_details('[ixwcspr_h]', '[ixcspr]', 'd', i_cnt)
 
 if 'X-XSS-Protection' in headers:
     if '0' not in headers["X-XSS-Protection"]:
-        print_details('[ixxp_h]', '[ixxp]', 'd')
-        i_cnt += 1
+        print_details('[ixxp_h]', '[ixxp]', 'd', i_cnt)
     if ',' in headers['X-XSS-Protection']:
-        print_details('[ixxpd_h]', '[ixxpd]', 'd')
-        i_cnt += 1
+        print_details('[ixxpd_h]', '[ixxpd]', 'd', i_cnt)
 
-if args.brief and i_cnt != 0:
+if args.brief and i_cnt[0] != 0:
     print("")
 
-if i_cnt == 0:
+if i_cnt[0] == 0:
     print_ok()
 
 print("")

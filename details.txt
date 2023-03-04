@@ -676,7 +676,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 [finger_cnt]
   Fingerprint headers:          
 
-[insecure_cnt]
+[ins_cnt]
   Deprecated/Insecure headers:  
 
 [empty_cnt]
