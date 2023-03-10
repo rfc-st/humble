@@ -45,14 +45,15 @@ import sys
 import requests
 import tldextract
 
+BRIGHT_RED = Style.BRIGHT + Fore.RED
+GIT_URL = "https://github.com/rfc-st/humble"
+PROG_H = 'humble (HTTP Headers Analyzer) - '
+
 start = time()
-version = '\r\n' + "2023-03-04. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-03-10. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
-git_url = "https://github.com/rfc-st/humble"
-bright_red = Style.BRIGHT + Fore.RED
 bold_strings = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
                 "[Cabeceras")
-
 l_client_errors = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414,
                    415, 416, 417, 421, 422, 423, 424, 425, 426, 428, 429, 431,
                    451]
@@ -70,7 +71,7 @@ class PDF(FPDF):
         self.cell(0, 5, get_detail('[pdf_t]'), new_x="CENTER", new_y="NEXT",
                   align='C')
         self.ln(1)
-        self.cell(0, 5, f"({git_url})", align='C')
+        self.cell(0, 5, f"({GIT_URL})", align='C')
         if self.page_no() == 1:
             self.ln(9)
         else:
@@ -86,7 +87,7 @@ class PDF(FPDF):
 
 def pdf_metadata():
     title = (get_detail('[pdf_m]')).replace('\n', '') + URL
-    git_urlc = f"{git_url} (v.{version.strip()[:10]})"
+    git_urlc = f"{GIT_URL} (v.{version.strip()[:10]})"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     pdf.set_creator(git_urlc)
@@ -153,7 +154,7 @@ def print_ok():
 
 def print_header(header):
     if not args.output:
-        print(f"{bright_red} {header}")
+        print(f"{BRIGHT_RED} {header}")
     else:
         print(f" {header}")
 
@@ -163,9 +164,9 @@ def print_header_fng(header):
     if args.output:
         print(f" {header}")
     elif '[' in header:
-        print(f"{bright_red} {prefix}{Style.NORMAL}{Fore.RESET} [{suffix}")
+        print(f"{BRIGHT_RED} {prefix}{Style.NORMAL}{Fore.RESET} [{suffix}")
     else:
-        print(f"{bright_red} {header}")
+        print(f"{BRIGHT_RED} {header}")
 
 
 def print_summary():
@@ -180,7 +181,7 @@ def print_summary():
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
         print(banner)
-        print(f" ({git_url})")
+        print(f" ({GIT_URL})")
     elif args.output != 'pdf':
         print("")
         print_detail_d('[humble]')
@@ -260,7 +261,7 @@ def print_detail_h(id_mode):
     for i, line in enumerate(details_f):
         if line.startswith(id_mode):
             if not args.output:
-                print(bright_red + details_f[i+1], end='')
+                print(BRIGHT_RED + details_f[i+1], end='')
             else:
                 print(details_f[i+1], end='')
 
@@ -370,32 +371,27 @@ def request_exceptions():
 init(autoreset=True)
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
-                        description="humble (HTTP Headers Analyzer) - " +
-                        git_url)
-optional = parser._action_groups.pop()
-required = parser.add_argument_group('required arguments')
-optional.add_argument("-b", dest='brief', action="store_true", required=False,
-                      help="Show a brief analysis; if omitted, a detailed \
-analysis will be shown.")
-optional.add_argument("-g", dest='guides', action="store_true", required=False,
-                      help="Show guidelines on securing most used web servers/\
-services.")
-optional.add_argument("-l", dest='language', choices=['es'],
-                      help="Displays the analysis in the indicated language; \
-if omitted, English will be used.")
-optional.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
-                      help="Save analysis to file (URL_yyyymmdd.ext).")
-optional.add_argument("-r", dest='retrieved', action="store_true",
-                      required=False, help="Show HTTP response headers and a \
-detailed analysis.")
-optional.add_argument('-u', type=str, dest='URL', required=False,
-                      help="URL to analyze, including schema. E.g., \
-https://google.com")
-optional.add_argument("-v", "--version", action='version',
-                      version=version, help="show version")
-parser._action_groups.append(optional)
+                        description=PROG_H + GIT_URL)
+parser.add_argument("-b", dest='brief', action="store_true", help="Show a \
+brief analysis; if omitted, a detailed analysis will be shown.")
+parser.add_argument("-g", dest='guides', action="store_true", help="Show \
+guidelines on securing most used web servers/services.")
+parser.add_argument("-l", dest='language', choices=['es'], help="Displays the \
+analysis in the indicated language; if omitted, English will be used.")
+parser.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
+                    help="Save analysis to file (URL_yyyymmdd.ext).")
+parser.add_argument("-r", dest='retrieved', action="store_true", help="Show \
+HTTP response headers and a detailed analysis.")
+parser.add_argument('-u', type=str, dest='URL', help="URL to analyze, \
+including schema. E.g., https://google.com")
+parser.add_argument("-v", "--version", action='version', version=version,
+                    help="show version")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+
+if any([args.brief, args.language, args.output, args.retrieved]) and args.URL \
+                                                                     is None:
+    parser.error("The '-u' option is required.")
 
 URL = args.URL
 
