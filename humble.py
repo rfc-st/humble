@@ -927,46 +927,50 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
         output.write(str(body))
 
         for ln in input_file:
-            h_d = {'ah_f': '</a>', 'ah_s': '<a href="', 'c_f': '">',
-                   'h_k': '<span class="ko">', 's_h': 'https://',
-                   'sp_h': '<span class="header">', 'sp_s': '</span>'}
+            sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="',
+                     'close_t': '">', 'span_ko': '<span class="ko">',
+                     'secure_h': 'https://', 'span_h': '<span class="header">',
+                     'span_f': '</span>'}
             if 'rfc-st' in ln:
-                output.write(ln[:2] + h_d['ah_s'] + ln[2:-2] + h_d['c_f'] +
-                             ln[2:] + h_d['ah_f'])
+                output.write(ln[:2] + sub_d['ahref_s'] + ln[2:-2] +
+                             sub_d['close_t'] + ln[2:] + sub_d['ahref_f'])
             elif ' URL  : ' in ln:
-                output.write(ln[:7] + h_d['ah_s'] + ln[7:] + h_d['c_f'] +
-                             ln[7:] + h_d['ah_f'])
+                output.write(ln[:7] + sub_d['ahref_s'] + ln[7:] +
+                             sub_d['close_t'] + ln[7:] + sub_d['ahref_f'])
             elif any(s in ln for s in bold_strings):
                 output.write('<strong>' + ln + '</strong>')
             elif get_detail('[ok]') in ln:
-                output.write('<span class="ok">' + ln + h_d['sp_s'])
+                output.write('<span class="ok">' + ln + sub_d['span_f'])
             elif get_detail('[bcompat_n]') in ln:
-                output.write(h_d['h_k'] + ln + h_d['sp_s'])
+                output.write(sub_d['span_ko'] + ln + sub_d['span_f'])
             elif ' Ref: ' in ln:
-                output.write(ln[:6] + h_d['ah_s'] + ln[6:] + h_d['c_f'] +
-                             ln[6:] + h_d['ah_f'])
+                output.write(ln[:6] + sub_d['ahref_s'] + ln[6:] +
+                             sub_d['close_t'] + ln[6:] + sub_d['ahref_f'])
             elif 'caniuse' in ln:
-                ln = h_d['sp_h'] + ln[1:ln.index(": ")] + ": " + h_d['sp_s'] +\
-                    h_d['ah_s'] + ln[ln.index(h_d['s_h']):] + h_d['c_f'] +\
-                    ln[ln.index(h_d['s_h']):] + h_d['ah_f']
+                ln = sub_d['span_h'] + ln[1:ln.index(": ")] + ": " +\
+                     sub_d['span_f'] + sub_d['ahref_s'] +\
+                     ln[ln.index(sub_d['secure_h']):] + sub_d['close_t'] +\
+                     ln[ln.index(sub_d['secure_h']):] + sub_d['ahref_f']
                 output.write(ln)
             else:
                 for i in headers:
                     if (str(i + ": ") in ln) and ('Date:   ' not in ln):
-                        ln = ln.replace(ln[0: ln.index(":")], h_d['sp_h'] +
-                                        ln[0: ln.index(":")] + h_d['sp_s'])
+                        ln = ln.replace(ln[0: ln.index(":")], sub_d['span_h'] +
+                                        ln[0: ln.index(":")] + sub_d['span_f'])
                 for i in l_fng_final:
                     if i in ln and not args.brief:
                         try:
                             idx = ln.index(' [')
                         except ValueError:
                             continue
-                        ln = f"{h_d['h_k']}{ln[:idx]}{h_d['sp_s']}{ln[idx:]}"
+                        ln = f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}\
+{ln[idx:]}"
                     elif i in ln and args.brief:
-                        ln = f"{h_d['h_k']}{ln}{h_d['sp_s']}"
+                        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
                 for i in l_final:
                     if (i in ln) and ('"' not in ln) or ('HTTP (' in ln):
-                        ln = ln.replace(ln, h_d['h_k'] + ln + h_d['sp_s'])
+                        ln = ln.replace(ln, sub_d['span_ko'] +
+                                        ln + sub_d['span_f'])
                 output.write(ln)
         output.write(footer)
 
