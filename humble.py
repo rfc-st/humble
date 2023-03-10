@@ -48,6 +48,8 @@ import tldextract
 BRIGHT_RED = Style.BRIGHT + Fore.RED
 GIT_URL = "https://github.com/rfc-st/humble"
 PROG_H = 'humble (HTTP Headers Analyzer) - '
+INSECURE_S = 'http:'
+SECURE_S = "https://"
 
 start = time()
 version = '\r\n' + "2023-03-10. Rafa 'Bluesman' Faura \
@@ -598,8 +600,6 @@ l_robots = ['all', 'indexifembedded', 'max-image-preview', 'max-snippet',
             'noimageindex', 'noindex', 'none', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
-insecure_s = 'http:'
-
 if 'Accept-CH-Lifetime' in headers:
     print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
 
@@ -637,7 +637,7 @@ cache_header = headers.get("Cache-Control", '').lower()
 if cache_header and not all(elem in cache_header for elem in l_cache):
     print_details('[icache_h]', '[icache]', 'd', i_cnt)
 
-if ('Clear-Site-Data' in headers) and (URL.startswith(insecure_s)):
+if ('Clear-Site-Data' in headers) and (URL.startswith(INSECURE_S)):
     print_details('[icsd_h]', '[icsd]', 'd', i_cnt)
 
 if 'Content-DPR' in headers:
@@ -659,7 +659,7 @@ if 'Content-Security-Policy' in headers:
         i_cnt[0] += 1
     if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
-    if (insecure_s in csp_h) and (URL.startswith('https')):
+    if (INSECURE_S in csp_h) and (URL.startswith('https')):
         print_details('[icsh_h]', '[icsh]', 'd', i_cnt)
     if ' * ' in csp_h:
         print_details('[icsw_h]', '[icsw]', 'd', i_cnt)
@@ -680,7 +680,7 @@ if 'Expect-CT' in headers:
 if 'Feature-Policy' in headers:
     print_details('[iffea_h]', '[iffea]', 'd', i_cnt)
 
-if URL.startswith(insecure_s):
+if URL.startswith(INSECURE_S):
     print_details('[ihttp_h]', '[ihttp]', 'd', i_cnt)
 
 if 'Large-Allocation' in headers:
@@ -720,14 +720,14 @@ if 'Server-Timing' in headers:
 
 ck_header = headers.get("Set-Cookie", '').lower()
 if ck_header:
-    if not (URL.startswith(insecure_s)) and not all(elem in ck_header for elem
+    if not (URL.startswith(INSECURE_S)) and not all(elem in ck_header for elem
                                                     in ('secure', 'httponly')):
         print_details("[iset_h]", "[iset]", "d", i_cnt)
-    if (URL.startswith(insecure_s)) and ('secure' in ck_header):
+    if (URL.startswith(INSECURE_S)) and ('secure' in ck_header):
         print_details("[iseti_h]", "[iseti]", "d", i_cnt)
 
 sts_header = headers.get('Strict-Transport-Security', '').lower()
-if (sts_header) and not (URL.startswith(insecure_s)):
+if (sts_header) and not (URL.startswith(INSECURE_S)):
     age = int(''.join(filter(str.isdigit, sts_header)))
     if not all(elem in sts_header for elem in ('includesubdomains',
        'max-age')) or (age is None or age < 31536000):
@@ -735,7 +735,7 @@ if (sts_header) and not (URL.startswith(insecure_s)):
     if ',' in sts_header:
         print_details('[istsd_h]', '[istsd]', 'd', i_cnt)
 
-if (sts_header) and (URL.startswith(insecure_s)):
+if (sts_header) and (URL.startswith(INSECURE_S)):
     print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
 
 if headers.get('Timing-Allow-Origin', '') == '*':
@@ -748,7 +748,7 @@ if 'Warning' in headers:
     print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
 
 wwwa_header = headers.get('WWW-Authenticate', '').lower()
-if (wwwa_header) and (URL.startswith(insecure_s)) and ('basic' in wwwa_header):
+if (wwwa_header) and (URL.startswith(INSECURE_S)) and ('basic' in wwwa_header):
     print_details('[ihbas_h]', '[ihbas]', 'd', i_cnt)
 
 if 'X-Content-Security-Policy' in headers:
@@ -876,7 +876,6 @@ elif args.output == 'pdf':
     pdf.add_page()
 
     # PDF Body
-    secure_s = "https://"
     pdf.set_font("Courier", size=9)
     f = open(name_e, "r", encoding='utf8')
     url_string = ' URL  : '
@@ -929,8 +928,7 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
         for ln in input_file:
             sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="',
                      'close_t': '">', 'span_ko': '<span class="ko">',
-                     'secure_h': 'https://', 'span_h': '<span class="header">',
-                     'span_f': '</span>'}
+                     'span_h': '<span class="header">', 'span_f': '</span>'}
             if 'rfc-st' in ln:
                 output.write(ln[:2] + sub_d['ahref_s'] + ln[2:-2] +
                              sub_d['close_t'] + ln[2:] + sub_d['ahref_f'])
@@ -949,8 +947,8 @@ a {color: blue; text-decoration: none;} .ok {color: green;}\
             elif 'caniuse' in ln:
                 ln = sub_d['span_h'] + ln[1:ln.index(": ")] + ": " +\
                      sub_d['span_f'] + sub_d['ahref_s'] +\
-                     ln[ln.index(sub_d['secure_h']):] + sub_d['close_t'] +\
-                     ln[ln.index(sub_d['secure_h']):] + sub_d['ahref_f']
+                     ln[ln.index(SECURE_S):] + sub_d['close_t'] +\
+                     ln[ln.index(SECURE_S):] + sub_d['ahref_f']
                 output.write(ln)
             else:
                 for i in headers:
