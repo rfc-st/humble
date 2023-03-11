@@ -45,23 +45,24 @@ import sys
 import requests
 import tldextract
 
-BRIGHT_RED = Style.BRIGHT + Fore.RED
-GIT_URL = "https://github.com/rfc-st/humble"
-PROG_H = 'humble (HTTP Headers Analyzer) - '
-INSECURE_S = 'http:'
-SECURE_S = "https://"
+BRI_R = Style.BRIGHT + Fore.RED
+CAN_S = ': https://caniuse.com/?search='
+GIT_U = "https://github.com/rfc-st/humble"
+INS_S = 'http:'
+# https://data.iana.org/TLD/tlds-alpha-by-domain.txt
+NON_RU_TLDS = ['CYMRU', 'GURU', 'PRU']
+PRG_N = 'humble (HTTP Headers Analyzer) - '
+REF_S = 'Ref: '
+SEC_S = "https://"
+URL_S = ' URL  : '
+CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
+         417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
 
 start = time()
 version = '\r\n' + "2023-03-11. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 bold_strings = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
                 "[Cabeceras")
-l_client_errors = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414,
-                   415, 416, 417, 421, 422, 423, 424, 425, 426, 428, 429, 431,
-                   451]
-
-# https://data.iana.org/TLD/tlds-alpha-by-domain.txt
-not_ru_tlds = ['CYMRU', 'GURU', 'PRU']
 
 
 class PDF(FPDF):
@@ -73,7 +74,7 @@ class PDF(FPDF):
         self.cell(0, 5, get_detail('[pdf_t]'), new_x="CENTER", new_y="NEXT",
                   align='C')
         self.ln(1)
-        self.cell(0, 5, f"({GIT_URL})", align='C')
+        self.cell(0, 5, f"({GIT_U})", align='C')
         if self.page_no() == 1:
             self.ln(9)
         else:
@@ -89,7 +90,7 @@ class PDF(FPDF):
 
 def pdf_metadata():
     title = (get_detail('[pdf_m]')).replace('\n', '') + URL
-    git_urlc = f"{GIT_URL} (v.{version.strip()[:10]})"
+    git_urlc = f"{GIT_U} (v.{version.strip()[:10]})"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     pdf.set_creator(git_urlc)
@@ -112,8 +113,8 @@ def pdf_sections():
 
 def pdf_links(pdfstring):
     pdf.set_text_color(0, 0, 255)
-    links = {url_string: URL, ref_string: x.partition(ref_string)[2].strip(),
-             can_string: x.partition(': ')[2].strip()}
+    links = {URL_S: URL, REF_S: x.partition(REF_S)[2].strip(),
+             CAN_S: x.partition(': ')[2].strip()}
     link_hyper = links.get(pdfstring)
     pdf.cell(w=2000, h=2, txt=x, align="L", link=link_hyper)
 
@@ -156,7 +157,7 @@ def print_ok():
 
 def print_header(header):
     if not args.output:
-        print(f"{BRIGHT_RED} {header}")
+        print(f"{BRI_R} {header}")
     else:
         print(f" {header}")
 
@@ -166,9 +167,9 @@ def print_header_fng(header):
     if args.output:
         print(f" {header}")
     elif '[' in header:
-        print(f"{BRIGHT_RED} {prefix}{Style.NORMAL}{Fore.RESET} [{suffix}")
+        print(f"{BRI_R} {prefix}{Style.NORMAL}{Fore.RESET} [{suffix}")
     else:
-        print(f"{BRIGHT_RED} {header}")
+        print(f"{BRI_R} {header}")
 
 
 def print_summary():
@@ -183,7 +184,7 @@ def print_summary():
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
         print(banner)
-        print(f" ({GIT_URL})")
+        print(f" ({GIT_U})")
     elif args.output != 'pdf':
         print("")
         print_detail_d('[humble]')
@@ -192,7 +193,7 @@ def print_summary():
     print_detail_l('[info]')
     print(f" {now}")
     print(f' URL  : {URL}')
-    if r.status_code in l_client_errors:
+    if r.status_code in CLI_E:
         print_http_e()
 
 
@@ -263,7 +264,7 @@ def print_detail_h(id_mode):
     for i, line in enumerate(details_f):
         if line.startswith(id_mode):
             if not args.output:
-                print(BRIGHT_RED + details_f[i+1], end='')
+                print(BRI_R + details_f[i+1], end='')
             else:
                 print(details_f[i+1], end='')
 
@@ -293,7 +294,7 @@ def print_guides():
 
 
 def ongoing_analysis(suffix, country):
-    if ((suffix == "RU" and sffx not in not_ru_tlds) or b'Russia' in country):
+    if ((suffix == "RU" and sffx not in NON_RU_TLDS) or b'Russia' in country):
         print("")
         print_detail_d("[bcnt]")
         sys.exit()
@@ -358,7 +359,7 @@ def request_exceptions():
 init(autoreset=True)
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
-                        description=PROG_H + GIT_URL)
+                        description=PRG_N + GIT_U)
 parser.add_argument("-b", dest='brief', action="store_true", help="Show a \
 brief analysis; if omitted, a detailed analysis will be shown.")
 parser.add_argument("-g", dest='guides', action="store_true", help="Show \
@@ -636,7 +637,7 @@ cache_header = headers.get("Cache-Control", '').lower()
 if cache_header and not all(elem in cache_header for elem in l_cache):
     print_details('[icache_h]', '[icache]', 'd', i_cnt)
 
-if ('Clear-Site-Data' in headers) and (URL.startswith(INSECURE_S)):
+if ('Clear-Site-Data' in headers) and (URL.startswith(INS_S)):
     print_details('[icsd_h]', '[icsd]', 'd', i_cnt)
 
 if 'Content-DPR' in headers:
@@ -658,7 +659,7 @@ if 'Content-Security-Policy' in headers:
         i_cnt[0] += 1
     if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
-    if (INSECURE_S in csp_h) and (URL.startswith('https')):
+    if (INS_S in csp_h) and (URL.startswith('https')):
         print_details('[icsh_h]', '[icsh]', 'd', i_cnt)
     if ' * ' in csp_h:
         print_details('[icsw_h]', '[icsw]', 'd', i_cnt)
@@ -679,7 +680,7 @@ if 'Expect-CT' in headers:
 if 'Feature-Policy' in headers:
     print_details('[iffea_h]', '[iffea]', 'd', i_cnt)
 
-if URL.startswith(INSECURE_S):
+if URL.startswith(INS_S):
     print_details('[ihttp_h]', '[ihttp]', 'd', i_cnt)
 
 if 'Large-Allocation' in headers:
@@ -719,14 +720,14 @@ if 'Server-Timing' in headers:
 
 ck_header = headers.get("Set-Cookie", '').lower()
 if ck_header:
-    if not (URL.startswith(INSECURE_S)) and not all(elem in ck_header for elem
-                                                    in ('secure', 'httponly')):
+    if not (URL.startswith(INS_S)) and not all(elem in ck_header for elem in
+                                               ('secure', 'httponly')):
         print_details("[iset_h]", "[iset]", "d", i_cnt)
-    if (URL.startswith(INSECURE_S)) and ('secure' in ck_header):
+    if (URL.startswith(INS_S)) and ('secure' in ck_header):
         print_details("[iseti_h]", "[iseti]", "d", i_cnt)
 
 sts_header = headers.get('Strict-Transport-Security', '').lower()
-if (sts_header) and not (URL.startswith(INSECURE_S)):
+if (sts_header) and not (URL.startswith(INS_S)):
     age = int(''.join(filter(str.isdigit, sts_header)))
     if not all(elem in sts_header for elem in ('includesubdomains',
        'max-age')) or (age is None or age < 31536000):
@@ -734,7 +735,7 @@ if (sts_header) and not (URL.startswith(INSECURE_S)):
     if ',' in sts_header:
         print_details('[istsd_h]', '[istsd]', 'd', i_cnt)
 
-if (sts_header) and (URL.startswith(INSECURE_S)):
+if (sts_header) and (URL.startswith(INS_S)):
     print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
 
 if headers.get('Timing-Allow-Origin', '') == '*':
@@ -747,7 +748,7 @@ if 'Warning' in headers:
     print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
 
 wwwa_header = headers.get('WWW-Authenticate', '').lower()
-if (wwwa_header) and (URL.startswith(INSECURE_S)) and ('basic' in wwwa_header):
+if (wwwa_header) and (URL.startswith(INS_S)) and ('basic' in wwwa_header):
     print_details('[ihbas_h]', '[ihbas]', 'd', i_cnt)
 
 if 'X-Content-Security-Policy' in headers:
@@ -850,7 +851,7 @@ if header_matches:
     for key in header_matches:
         output_string = "  " if args.output == 'html' else " "
         key_string = Fore.CYAN + key + Fore.RESET if not args.output else key
-        print(f"{output_string}{key_string}: https://caniuse.com/?search=\
+        print(f"{output_string}{key_string}{CAN_S}\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 else:
     print_detail_h("[bcompat_n]") if not args.output else\
@@ -877,10 +878,7 @@ elif args.output == 'pdf':
     # PDF Body
     pdf.set_font("Courier", size=9)
     f = open(name_e, "r", encoding='utf8')
-    url_string = ' URL  : '
-    ref_string = 'Ref: '
-    can_string = ': https://caniuse.com/?search='
-    links_strings = (url_string, ref_string, can_string)
+    links_strings = (URL_S, REF_S, CAN_S)
 
     for x in f:
         if '[' in x:
@@ -945,8 +943,8 @@ text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko \
             elif 'caniuse' in ln:
                 ln = sub_d['span_h'] + ln[1:ln.index(": ")] + ": " +\
                      sub_d['span_f'] + sub_d['ahref_s'] +\
-                     ln[ln.index(SECURE_S):] + sub_d['close_t'] +\
-                     ln[ln.index(SECURE_S):] + sub_d['ahref_f']
+                     ln[ln.index(SEC_S):] + sub_d['close_t'] +\
+                     ln[ln.index(SEC_S):] + sub_d['ahref_f']
                 output.write(ln)
             else:
                 for i in headers:
