@@ -52,7 +52,7 @@ INSECURE_S = 'http:'
 SECURE_S = "https://"
 
 start = time()
-version = '\r\n' + "2023-03-10. Rafa 'Bluesman' Faura \
+version = '\r\n' + "2023-03-11. Rafa 'Bluesman' Faura \
 (rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
 bold_strings = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
                 "[Cabeceras")
@@ -292,14 +292,12 @@ def print_guides():
                 print(f"{line}", end='')
 
 
-def ongoing_analysis():
-    sfx_u = tldextract.extract(URL).suffix[-2:].upper()
-    country = requests.get('https://ipapi.co/country_name/').content
-    if ((sfx_u == "RU" and sfx_u not in not_ru_tlds) or b'Russia' in country):
+def ongoing_analysis(suffix, country):
+    if ((suffix == "RU" and sffx not in not_ru_tlds) or b'Russia' in country):
         print("")
         print_detail_d("[bcnt]")
         sys.exit()
-    elif sfx_u == "UA" or b'Ukraine' in country:
+    elif suffix == "UA" or b'Ukraine' in country:
         print("")
         print_detail_a('[analysis_ua_output]' if args.output else
                        '[analysis_ua]')
@@ -347,25 +345,12 @@ def detail_exceptions(id_exception, exception_v):
 
 def request_exceptions():
     try:
-        r = requests.get(URL, timeout=6)
+        r = requests.get(URL, timeout=15)
         r.raise_for_status()
-    except (requests.exceptions.MissingSchema,
-            requests.exceptions.InvalidSchema) as e:
-        detail_exceptions('[e_schema]', e)
-    except requests.exceptions.InvalidURL as e:
-        detail_exceptions('[e_invalid]', e)
-    except requests.exceptions.HTTPError as e:
-        if r.status_code == 407:
-            detail_exceptions('[e_proxy]', e)
-        elif str(r.status_code).startswith("5"):
-            detail_exceptions('[e_serror]', e)
-    # Can be useful with self-signed certificates, development environments ...
-    except requests.exceptions.SSLError:
-        pass
-    except requests.exceptions.ConnectionError as e:
-        detail_exceptions('[e_404]', e)
-    except requests.exceptions.Timeout as e:
-        detail_exceptions('[e_timeout]', e)
+    except tuple(exception_d.keys()) as e:
+        ex = exception_d.get(type(e))
+        if ex is not None and (not callable(ex) or ex(e) is not None):
+            detail_exceptions(ex, e)
     except requests.exceptions.RequestException as err:
         raise SystemExit from err
 
@@ -407,7 +392,9 @@ if args.guides:
     sys.exit()
 
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
-ongoing_analysis()
+sffx = tldextract.extract(URL).suffix[-2:].upper()
+cnty = requests.get('https://ipapi.co/country_name/').content
+ongoing_analysis(sffx, cnty)
 
 # Regarding 'dh key too small' errors: https://stackoverflow.com/a/41041028
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
@@ -417,16 +404,28 @@ try:
 except AttributeError:
     pass
 
+exception_d = {
+    requests.exceptions.MissingSchema: '[e_schema]',
+    requests.exceptions.InvalidSchema: '[e_schema]',
+    requests.exceptions.InvalidURL: '[e_invalid]',
+    requests.exceptions.HTTPError: {
+        407: '[e_proxy]',
+        lambda e: str(e.response.status_code).startswith('5'): '[e_serror]',
+    },
+    requests.exceptions.SSLError: None,
+    requests.exceptions.ConnectionError: '[e_404]',
+    requests.exceptions.Timeout: '[e_timeout]',
+}
 request_exceptions()
 
-c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)\
-AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'}
+c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
+AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
 
 # Yes: Server certificates should be verified during SSL/TLS connections.
 # Despite this, I think 'verify=False' would benefit analysis of URLs with
 # self-signed certificates, associated with development environments, etc.
 requests.packages.urllib3.disable_warnings()
-r = requests.get(URL, verify=False, headers=c_headers, timeout=60)
+r = requests.get(URL, verify=False, headers=c_headers, timeout=15)
 headers = r.headers
 
 # Export analysis
@@ -905,12 +904,11 @@ elif args.output == 'html':
     # HTML Template
     title = "HTTP headers analysis"
     header = '<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
-<title>' + title + '</title><style>pre {overflow-x: auto;\
-white-space: pre-wrap;white-space: -moz-pre-wrap;\
-white-space: -pre-wrap;white-space: -o-pre-wrap;\
-word-wrap: break-word; font-size: medium;}\
-a {color: blue; text-decoration: none;} .ok {color: green;}\
-.header {color: #660033;} .ko {color: red;} </style></head>'
+<title>' + title + '</title><style>pre {overflow-x: auto; white-space: \
+pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: \
+-o-pre-wrap; word-wrap: break-word; font-size: medium;} a {color: blue; \
+text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko \
+{color: red;} </style></head>'
     body = '<body><pre>'
     footer = '</pre></body></html>'
 
