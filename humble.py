@@ -45,8 +45,11 @@ import sys
 import requests
 import tldextract
 
+BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRI_R = Style.BRIGHT + Fore.RED
 CAN_S = ': https://caniuse.com/?search='
+CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
+         417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
 GIT_U = "https://github.com/rfc-st/humble"
 INS_S = 'http:'
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
@@ -55,14 +58,8 @@ PRG_N = 'humble (HTTP Headers Analyzer) - '
 REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
-CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
-         417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
 
-start = time()
-version = '\r\n' + "2023-03-11. Rafa 'Bluesman' Faura \
-(rafael.fcucalon@gmail.com)" + '\r\n' + '\r\n'
-bold_strings = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
-                "[Cabeceras")
+version = '\r\n' + '(ver. 2023-03-11)' + '\r\n'
 
 
 class PDF(FPDF):
@@ -90,7 +87,7 @@ class PDF(FPDF):
 
 def pdf_metadata():
     title = (get_detail('[pdf_m]')).replace('\n', '') + URL
-    git_urlc = f"{GIT_U} (v.{version.strip()[:10]})"
+    git_urlc = f"{GIT_U} {version.strip()}"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     pdf.set_creator(git_urlc)
@@ -120,11 +117,11 @@ def pdf_links(pdfstring):
 
 
 def get_language():
-    return 'details_es.txt' if args.language == 'es' else 'details.txt'
+    return 'details_es.txt' if args.lang == 'es' else 'details.txt'
 
 
 def get_details_lines():
-    details_file = 'details_es.txt' if args.language == 'es' else 'details.txt'
+    details_file = 'details_es.txt' if args.lang == 'es' else 'details.txt'
     with open(details_file, encoding='utf8') as rf:
         return rf.readlines()
 
@@ -203,7 +200,7 @@ def print_http_e():
 
 
 def print_headers():
-    if args.retrieved:
+    if args.ret:
         print(linesep.join(['']*2))
         print_detail_s('[0headers]')
         for key, value in sorted(headers.items()):
@@ -364,21 +361,20 @@ parser.add_argument("-b", dest='brief', action="store_true", help="Show a \
 brief analysis; if omitted, a detailed analysis will be shown.")
 parser.add_argument("-g", dest='guides', action="store_true", help="Show \
 guidelines on securing most used web servers/services.")
-parser.add_argument("-l", dest='language', choices=['es'], help="Displays the \
+parser.add_argument("-l", dest='lang', choices=['es'], help="Displays the \
 analysis in the indicated language; if omitted, English will be used.")
 parser.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
                     help="Save analysis to file (URL_yyyymmdd.ext).")
-parser.add_argument("-r", dest='retrieved', action="store_true", help="Show \
-HTTP response headers and a detailed analysis.")
-parser.add_argument('-u', type=str, dest='URL', help="URL to analyze, \
-including schema. E.g., https://google.com")
+parser.add_argument("-r", dest='ret', action="store_true", help="Show HTTP \
+response headers and a detailed analysis.")
+parser.add_argument('-u', type=str, dest='URL', help="URL to analyze, with \
+schema. E.g., https://google.com")
 parser.add_argument("-v", "--version", action='version', version=version,
                     help="show version")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
-if any([args.brief, args.language, args.output, args.retrieved]) and args.URL \
-                                                                     is None:
+if any([args.brief, args.lang, args.output, args.ret]) and args.URL is None:
     parser.error("The '-u' option is required.")
 
 URL = args.URL
@@ -391,6 +387,8 @@ python_ver()
 if args.guides:
     print_guides()
     sys.exit()
+
+start = time()
 
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 sffx = tldextract.extract(URL).suffix[-2:].upper()
@@ -883,7 +881,7 @@ elif args.output == 'pdf':
     for x in f:
         if '[' in x:
             pdf_sections()
-        pdf.set_font(style='B' if any(s in x for s in bold_strings) else '')
+        pdf.set_font(style='B' if any(s in x for s in BOLD_S) else '')
         for string in links_strings:
             if string in x:
                 pdf_links(string)
@@ -931,7 +929,7 @@ text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko \
             elif ' URL  : ' in ln:
                 output.write(ln[:7] + sub_d['ahref_s'] + ln[7:] +
                              sub_d['close_t'] + ln[7:] + sub_d['ahref_f'])
-            elif any(s in ln for s in bold_strings):
+            elif any(s in ln for s in BOLD_S):
                 output.write('<strong>' + ln + '</strong>')
             elif get_detail('[ok]') in ln:
                 output.write('<span class="ok">' + ln + sub_d['span_f'])
