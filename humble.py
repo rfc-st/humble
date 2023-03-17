@@ -357,6 +357,10 @@ def request_exceptions():
     try:
         r = requests.get(URL, timeout=15)
         r.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        if err.response.status_code == 403:
+            # Quick hack until I properly catch '403' errors
+            pass
     except tuple(exception_d.keys()) as e:
         ex = exception_d.get(type(e))
         if ex is not None and (not callable(ex) or ex(e) is not None):
