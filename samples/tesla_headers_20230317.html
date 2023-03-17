@@ -1,4 +1,5 @@
-<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8"/><title>HTTP headers analysis</title><style>pre {overflow-x: auto;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word; font-size: medium;}a {color: blue; text-decoration: none;} .ok {color: green;}.header {color: #660033;} .ko {color: red;} </style></head><body><pre>
+<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8"><title>HTTP headers analysis
+</title><style>pre {overflow-x: auto; white-space: pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word; font-size: medium;} a {color: blue; text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko {color: red;} </style></head><body><pre>
  Humble HTTP headers analyzer
  (<a href="https://github.com/rfc-st/humble">https://github.com/rfc-st/humble)
 </a>
@@ -6,7 +7,7 @@
 
 <strong>[0. Info]
 </strong>
- Date : 2023/01/20 - 19:50:23
+ Date : 2023/03/17 - 18:42:11
  URL  :<a href=" https://tesla.com
 "> https://tesla.com
 </a>
@@ -58,17 +59,20 @@
 </strong>
  These headers can leak information about software, versions, hostnames or IP addresses:
 
-<span class="ko"> X-Drupal-Cache [Drupal Content Management System]
-</span> MISS
+<span class="ko"> X-Akamai-Transformed</span> [Akamai Edge]
+ 9 - 0 pmb=mTOE,2
 
-<span class="ko"> X-Drupal-Dynamic-Cache [Drupal Content Management System]
-</span> MISS
+<span class="ko"> X-Drupal-Cache</span> [Drupal Content Management System]
+ HIT
 
-<span class="ko"> X-Generator [Generic Publishing Software]
-</span> Drupal 9 (https://www.drupal.org)
+<span class="ko"> X-Drupal-Dynamic-Cache</span> [Drupal Content Management System]
+ MISS
 
-<span class="ko"> X-Varnish [Varnish HTTP accelerator]
-</span> 889464481 889495398
+<span class="ko"><span class="ko"> X-Generator</span></span> [Generic Publishing Software]
+ Drupal 9 (https://www.drupal.org)
+
+<span class="ko"> X-Varnish</span> [Varnish HTTP accelerator]
+ 390553189
 
 
 <strong>[3. Deprecated HTTP Response Headers/Protocols and Insecure Values]
@@ -84,11 +88,6 @@
 </span> Although unlikely to be exploited, this header should not include inode information.
  Ref: <a href="https://www.pentestpartners.com/security-blog/vulnerabilities-that-arent-etag-headers/
 ">https://www.pentestpartners.com/security-blog/vulnerabilities-that-arent-etag-headers/
-</a>
-<span class="ko"> Set-Cookie (Insecure Attributes)
-</span> Enable 'secure' and 'httponly': to send it via HTTPS and not be accessed by client APIs.
- Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
-">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 </a>
 <span class="ko"> Strict-Transport-Security (Recommended Values)
 </span> Add 'includeSubDomains' and set 'max-age' to at least 31536000 (one year).
@@ -108,34 +107,33 @@
 </strong>
  The following headers have no value (could be equivalent to as if they were not enabled):
 
-<span class="ok"> Nothing to report, all seems OK!
-</span>
+ X-TZLA-EDGE-Cache-Hit
+
 
 <strong>[5. Browser Compatibility for Enabled HTTP Security Headers]
 </strong>
-<span class="header"> Cache-Control</span>: <a href="https://caniuse.com/?search=Cache-Control
+<span class="header"> Cache-Control: </span><a href="https://caniuse.com/?search=Cache-Control
 ">https://caniuse.com/?search=Cache-Control
-</a><span class="header"> Content-Type</span>: <a href="https://caniuse.com/?search=Content-Type
+</a><span class="header"> Content-Type: </span><a href="https://caniuse.com/?search=Content-Type
 ">https://caniuse.com/?search=Content-Type
-</a><span class="header"> Permissions-Policy</span>: <a href="https://caniuse.com/?search=Permissions-Policy
+</a><span class="header"> Permissions-Policy: </span><a href="https://caniuse.com/?search=Permissions-Policy
 ">https://caniuse.com/?search=Permissions-Policy
-</a><span class="header"> Strict-Transport-Security</span>: <a href="https://caniuse.com/?search=Strict-Transport-Security
+</a><span class="header"> Strict-Transport-Security: </span><a href="https://caniuse.com/?search=Strict-Transport-Security
 ">https://caniuse.com/?search=Strict-Transport-Security
-</a><span class="header"> X-Content-Type-Options</span>: <a href="https://caniuse.com/?search=X-Content-Type-Options
+</a><span class="header"> X-Content-Type-Options: </span><a href="https://caniuse.com/?search=X-Content-Type-Options
 ">https://caniuse.com/?search=X-Content-Type-Options
-</a><span class="header"> X-Frame-Options</span>: <a href="https://caniuse.com/?search=X-Frame-Options
+</a><span class="header"> X-Frame-Options: </span><a href="https://caniuse.com/?search=X-Frame-Options
 ">https://caniuse.com/?search=X-Frame-Options
 </a>
 
-
 .:
 
-Analysis done in 2.99 seconds!.  
+Analysis done in 2.61 seconds!.  
  
   Missing headers:              8
-  Fingerprint headers:          4
-  Deprecated/Insecure headers:  5
-  Empty headers:                0
+  Fingerprint headers:          5
+  Deprecated/Insecure headers:  4
+  Empty headers:                1
 
 .:
 
