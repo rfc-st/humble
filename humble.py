@@ -59,7 +59,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-03-11)' + '\r\n'
+version = '\r\n' + '(ver. 2023-03-17)' + '\r\n'
 
 
 class PDF(FPDF):
@@ -562,12 +562,12 @@ l_legacy = ['application/javascript', 'application/ecmascript',
 
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://csplite.com/fp/
-l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay',
-              'battery', 'bluetooth', 'browsing-topics', 'camera', 'ch-ua',
-              'ch-ua-arch', 'ch-ua-bitness', 'ch-ua-full-version',
-              'ch-ua-full-version-list', 'ch-ua-mobile', 'ch-ua-model',
-              'ch-ua-platform', 'ch-ua-platform-version', 'ch-ua-wow64',
-              'clipboard-read', 'clipboard-write', 'conversion-measurement',
+l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
+              'bluetooth', 'browsing-topics', 'camera', 'ch-ua', 'ch-ua-arch',
+              'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
+              'ch-ua-mobile', 'ch-ua-model', 'ch-ua-platform',
+              'ch-ua-platform-version', 'ch-ua-wow64', 'clipboard-read',
+              'clipboard-write', 'conversion-measurement',
               'cross-origin-isolated', 'display-capture', 'document-access',
               'document-write', 'encrypted-media',
               'execution-while-not-rendered',
@@ -898,7 +898,7 @@ elif args.output == 'html':
     f.close()
 
     # HTML Template
-    title = "HTTP headers analysis"
+    title = get_detail('[pdf_s]')
     header = '<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
 <title>' + title + '</title><style>pre {overflow-x: auto; white-space: \
 pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: \
