@@ -318,10 +318,10 @@ def fingerprint_headers(headers, l_fng, l_fng_ex):
 
 def analysis_detail():
     print(" ")
-    print((f'{print_detail_l("[miss_cnt]")}{m_cnt}').replace('None', ''))
-    print((f'{print_detail_l("[finger_cnt]")}{f_cnt}').replace('None', ''))
+    print(f"{(print_detail_l('[miss_cnt]') or '')[:-1]}{m_cnt}")
+    print(f"{(print_detail_l('[finger_cnt]') or '')[:-1]}{f_cnt}")
     print(f'{print_detail_l("[ins_cnt]")}{i_cnt}'.split('[')[1].split(']')[0])
-    print((f'{print_detail_l("[empty_cnt]")}{e_cnt}').replace('None', ''))
+    print(f"{(print_detail_l('[empty_cnt]') or '')[:-1]}{e_cnt}")
     print(""), print(".:"), print("")
 
 
