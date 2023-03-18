@@ -418,7 +418,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
  Date :
 
 [python]
- This tool requires, at least, Python 3.6.
+ This tool requires, at least, Python 3.7.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [ok]

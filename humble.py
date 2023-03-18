@@ -266,7 +266,7 @@ def get_detail(id_mode):
 def python_ver():
     if sys.version_info < (3, 7):
         print("")
-        print_detail_d('[python]')
+        print_detail('[python]', 2)
         sys.exit()
 
 
