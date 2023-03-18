@@ -59,7 +59,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-03-17)' + '\r\n'
+version = '\r\n' + '(ver. 2023-03-18)' + '\r\n'
 
 
 class PDF(FPDF):
@@ -357,10 +357,11 @@ def request_exceptions():
     try:
         r = requests.get(URL, timeout=15)
         r.raise_for_status()
-    except requests.exceptions.HTTPError as err:
-        if err.response.status_code == 403:
-            # Quick hack until I properly catch '403' errors
-            pass
+    except requests.exceptions.HTTPError as err_http:
+        if err_http.response.status_code == 407:
+            detail_exceptions('[e_proxy]', err_http)
+        if str(err_http.response.status_code).startswith('5'):
+            detail_exceptions('[e_serror]', err_http)
     except tuple(exception_d.keys()) as e:
         ex = exception_d.get(type(e))
         if ex is not None and (not callable(ex) or ex(e) is not None):
@@ -420,15 +421,11 @@ except AttributeError:
     pass
 
 exception_d = {
-    requests.exceptions.MissingSchema: '[e_schema]',
+    requests.exceptions.ConnectionError: '[e_404]',
     requests.exceptions.InvalidSchema: '[e_schema]',
     requests.exceptions.InvalidURL: '[e_invalid]',
-    requests.exceptions.HTTPError: {
-        407: '[e_proxy]',
-        lambda e: str(e.response.status_code).startswith('5'): '[e_serror]',
-    },
+    requests.exceptions.MissingSchema: '[e_schema]',
     requests.exceptions.SSLError: None,
-    requests.exceptions.ConnectionError: '[e_404]',
     requests.exceptions.Timeout: '[e_timeout]',
 }
 request_exceptions()
