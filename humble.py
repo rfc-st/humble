@@ -154,7 +154,7 @@ def print_path(filename):
 
 
 def print_ok():
-    print_detail_a('[ok]')
+    print_detail('[ok]')
 
 
 def print_header(header):
@@ -189,7 +189,7 @@ def print_summary():
         print(f" ({GIT_U})")
     elif args.output != 'pdf':
         print("")
-        print_detail_d('[humble]')
+        print_detail('[humble]', 2)
     print(linesep.join(['']*2))
     print_detail_s('[0section]')
     print_detail_l('[info]')
@@ -219,37 +219,23 @@ def print_headers():
 def print_details(short_d, long_d, id_mode, i_cnt):
     print_detail_h(short_d)
     if not args.brief:
-        print_detail_d(long_d) if id_mode == 'd' else print_detail_m(long_d)
+        print_detail(long_d, 2) if id_mode == 'd' else print_detail(long_d, 3)
     i_cnt[0] += 1
     return i_cnt
 
 
-def print_detail_a(id_mode):
-    for i, line in enumerate(details_f):
-        if line.startswith(id_mode):
-            print(details_f[i+1], end='')
-            print("")
-
-
-def print_detail_d(id_mode):
-    for i, line in enumerate(details_f):
-        if line.startswith(id_mode):
-            print(details_f[i+1], end='')
-            print(details_f[i+2])
+def print_detail(id_mode, num_lines=1):
+    idx = details_f.index(id_mode + '\n')
+    print(details_f[idx+1], end='')
+    for i in range(1, num_lines+1):
+        if idx+i+1 < len(details_f):
+            print(details_f[idx+i+1], end='')
 
 
 def print_detail_l(id_mode):
     for i, line in enumerate(details_f):
         if line.startswith(id_mode):
             print(details_f[i+1].replace('\n', ''), end='')
-
-
-def print_detail_m(id_mode):
-    for i, line in enumerate(details_f):
-        if line.startswith(id_mode):
-            print(details_f[i+1], end='')
-            print(details_f[i+2], end='')
-            print(details_f[i+3])
 
 
 def print_detail_s(id_mode):
@@ -286,7 +272,7 @@ def python_ver():
 
 def print_guides():
     print("")
-    print_detail_a('[guides]')
+    print_detail('[guides]')
     with open('guides.txt', 'r', encoding='utf8') as gd:
         for line in gd:
             if line.startswith('['):
@@ -298,15 +284,15 @@ def print_guides():
 def ongoing_analysis(suffix, country):
     if ((suffix == "RU" and sffx not in NON_RU_TLDS) or b'Russia' in country):
         print("")
-        print_detail_d("[bcnt]")
+        print_detail("[bcnt]", 2)
         sys.exit()
     elif suffix == "UA" or b'Ukraine' in country:
         print("")
-        print_detail_a('[analysis_ua_output]' if args.output else
-                       '[analysis_ua]')
+        print_detail('[analysis_ua_output]' if args.output else
+                     '[analysis_ua]')
     else:
         print("")
-        print_detail_a('[analysis_output]' if args.output else '[analysis]')
+        print_detail('[analysis_output]' if args.output else '[analysis]')
 
 
 def fingerprint_headers(headers, l_fng, l_fng_ex):
@@ -342,7 +328,7 @@ def analysis_detail():
 def detail_exceptions(id_exception, exception_v):
     clean_output()
     print("")
-    print_detail_a(id_exception)
+    print_detail(id_exception)
     raise SystemExit from exception_v
 
 
@@ -468,20 +454,20 @@ for i, key in enumerate(l_miss):
     if key.lower() not in missing_headers_lower:
         print_header(key)
         if not args.brief:
-            print_detail_d(l_detail[i])
+            print_detail(l_detail[i], 2)
         m_cnt += 1
 
 if not (headers.get('X-Frame-Options') or 'frame-ancestors' in
         headers.get('Content-Security-Policy', '')):
     print_header('X-Frame-Options')
     if not args.brief:
-        print_detail_d("[mxfo]")
+        print_detail("[mxfo]", 2)
     m_cnt += 1
 
 if not any(elem.lower() in headers for elem in l_miss):
     print_header('X-Frame-Options')
     if not args.brief:
-        print_detail_d("[mxfo]")
+        print_detail("[mxfo]", 2)
     m_cnt += 1
 
 l_miss.append('X-Frame-Options')
@@ -503,7 +489,7 @@ print("")
 print_detail_s('[2fingerprint]')
 
 if not args.brief:
-    print_detail_a("[afgp]")
+    print_detail("[afgp]")
 
 l_fng = []
 l_fng_ex = []
@@ -529,7 +515,7 @@ i_cnt = [0]
 print_detail_s('[3depinsecure]')
 
 if not args.brief:
-    print_detail_a("[aisc]")
+    print_detail("[aisc]")
 
 l_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
          'Allow', 'Content-Type', 'Etag', 'Expect-CT', 'Feature-Policy',
@@ -616,7 +602,7 @@ if 'Access-Control-Allow-Methods' in headers:
             match_method_str = ', '.join(match_method)
             print_detail_l("[imethods_s]")
             print(match_method_str)
-            print_detail_a("[imethods]")
+            print_detail("[imethods]")
         i_cnt[0] += 1
 
 accesso_header = headers.get("Access-Control-Allow-Origin", '').lower()
@@ -634,7 +620,7 @@ if 'Allow' in headers:
             match_method_str = ', '.join(match_method)
             print_detail_l("[imethods_s]")
             print(match_method_str)
-            print_detail_a("[imethods]")
+            print_detail("[imethods]")
         i_cnt[0] += 1
 
 cache_header = headers.get("Cache-Control", '').lower()
@@ -659,7 +645,7 @@ if 'Content-Security-Policy' in headers:
             matches_csp = [x for x in l_csp_deprecated if x in csp_h]
             print_detail_l("[icsi_d_s]")
             print(', '.join(matches_csp))
-            print_detail_a("[icsi_d_r]")
+            print_detail("[icsi_d_r]")
         i_cnt[0] += 1
     if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
@@ -703,7 +689,7 @@ if perm_header:
         if not args.brief:
             print_detail_l('[ifpold_s]')
             print('document-domain')
-            print_detail_a('[ifpold]')
+            print_detail('[ifpold]')
         i_cnt[0] += 1
 
 if 'Onion-Location' in headers:
@@ -828,7 +814,7 @@ empty_s_headers = sorted(headers)
 print_detail_s('[4empty]')
 
 if not args.brief:
-    print_detail_a("[aemp]")
+    print_detail("[aemp]")
 
 for key in empty_s_headers:
     if not headers[key]:
