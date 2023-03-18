@@ -108,24 +108,17 @@ def pdf_sections():
         pdf.start_section(get_detail(section_dict[match]))
 
 
-def pdf_links_preffix(txt, link_h):
-    pdf.write(h=3, txt=txt)
-    pdf.set_text_color(0, 0, 255)
-    pdf.cell(w=2000, h=3, txt=x[x.index(": ")+2:], align="L", link=link_h)
-
-
 def pdf_links(pdfstring):
     links = {URL_S: URL, REF_S: x.partition(REF_S)[2].strip(),
              CAN_S: x.partition(': ')[2].strip()}
     link_h = links.get(pdfstring)
-    if pdfstring == URL_S:
-        pdf_links_preffix(URL_S, link_h)
-    elif pdfstring == REF_S:
-        pdf_links_preffix(' Ref: ', link_h)
+    if pdfstring in (URL_S, REF_S):
+        prefix = ' Ref: ' if pdfstring == REF_S else pdfstring
+        pdf.write(h=3, txt=prefix)
     else:
         pdf.write(h=3, txt=x[:x.index(": ")+2])
-        pdf.set_text_color(0, 0, 255)
-        pdf.cell(w=2000, h=3, txt=x[x.index(": ")+2:], align="L", link=link_h)
+    pdf.set_text_color(0, 0, 255)
+    pdf.cell(w=2000, h=3, txt=x[x.index(": ")+2:], align="L", link=link_h)
 
 
 def get_language():
