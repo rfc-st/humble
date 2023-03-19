@@ -59,7 +59,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-03-18)' + '\r\n'
+version = '\r\n' + '(ver. 2023-03-19)' + '\r\n'
 
 
 class PDF(FPDF):
@@ -320,7 +320,7 @@ def analysis_detail():
     print(" ")
     print(f"{(print_detail_l('[miss_cnt]') or '')[:-1]}{m_cnt}")
     print(f"{(print_detail_l('[finger_cnt]') or '')[:-1]}{f_cnt}")
-    print(f'{print_detail_l("[ins_cnt]")}{i_cnt}'.split('[')[1].split(']')[0])
+    print(f"{(print_detail_l('[ins_cnt]') or '')[:-1]}{i_cnt[0]}")
     print(f"{(print_detail_l('[empty_cnt]') or '')[:-1]}{e_cnt}")
     print(""), print(".:"), print("")
 
