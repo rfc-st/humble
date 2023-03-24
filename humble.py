@@ -904,8 +904,8 @@ text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko \
     footer = '</pre></body></html>'
 
     name_p = name_e[:-5] + ".html"
-    l_miss.extend(['WWW-Authenticate', 'X-Frame-Options', 'X-Robots-Tag',
-                   'X-UA-compatible'])
+    l_miss.extend(['Pragma', 'WWW-Authenticate', 'X-Frame-Options',
+                   'X-Robots-Tag', 'X-UA-compatible'])
     l_final = sorted(l_miss + l_ins)
     l_fng_final = sorted(l_fng)
 
