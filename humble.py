@@ -31,8 +31,8 @@
 # really interests you, learn, research and become a Security Analyst!.
 
 # GREETINGS:
-# María Antonia, Fernando, Joanna, Eduardo, Ana, Iván, Luis Joaquín,
-# Juan Carlos, David, Carlos, Juán, Alejandro, Pablo, Íñigo, Naiara, Ricardo,
+# María Antonia, Fernando, Joanna, Eduardo, Ana, Iván, Luis Joaquín, Juan
+# Carlos, David, Carlos, Juán, Alejandro, Pablo, Íñigo, Naiara, Ricardo,
 # Gabriel, Miguel Angel, David (x2), Sergio, Marta, Alba, Montse & Eloy.
 
 from fpdf import FPDF
@@ -59,7 +59,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-03-19)' + '\r\n'
+version = '\r\n' + '(ver. 2023-03-24)' + '\r\n'
 
 
 class PDF(FPDF):
