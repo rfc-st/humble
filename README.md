@@ -1,13 +1,13 @@
 # humble
 
 <p align=center>
-<a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/python-%3E%3D3.7-brightgreen"></a>
-<a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release"></a>
-<a target="_blank" href="https://github.com/rfc-st" title="rfc-st Dashboard"><img src="https://img.shields.io/github/commit-activity/m/rfc-st/humble"></a>
+<a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/python-%3E%3D3.7-blue?labelColor=343b41"></a>
+<a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release&labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st" title="rfc-st Dashboard"><img src="https://img.shields.io/github/commit-activity/m/rfc-st/humble?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_dependabot.jpg" title="Alerts enabled for vulnerabilities of the dependencies required by this tool"><img src="https://badgen.net/github/dependabot/rfc-st/humble"></a>  
-<a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/owasp-resource-brightgreen"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_dependabot.jpg" title="Alerts enabled for vulnerabilities of the dependencies required by this tool"><img src="https://img.shields.io/badge/dependabot-Active-blue?labelColor=343b41"></a>  
+<a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/owasp-resource-blue?labelColor=343b41"></a>
 <br />
 <br />
 HTTP Headers Analyzer<br />
