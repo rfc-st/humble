@@ -237,6 +237,9 @@
 [ifpold_h]
  Permissions-Policy (Valores obsoletos)
 
+[iprag_h]
+ Pragma (Cabecera obsoleta)
+
 [ipkp_h]
  Public-Key-Pins (Cabecera obsoleta)
 
@@ -461,10 +464,6 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Permite declarar directivas para notificar errores.
  Ref: https://scotthelme.co.uk/network-error-logging-deep-dive/
 
-[mpragma]
- Garantiza la compatibilidad con clientes HTTP/1.0.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
-
 [mreferrer]
  Controla los datos del referrer que deben incluirse en las solicitudes.
  Ref: https://scotthelme.co.uk/a-new-security-header-referrer-policy/
@@ -548,6 +547,10 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 
 [imethods]
  Ref: https://appcheck-ng.com/http-verbs-security-risks/
+
+[iprag]
+ Esta cabecera está obsoleta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
 
 [ipkp]
  Esta cabecera está obsoleta.

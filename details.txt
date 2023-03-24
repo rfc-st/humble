@@ -237,6 +237,9 @@
 [ifpold_h]
  Permissions-Policy (Deprecated Values)
 
+[iprag_h]
+ Pragma (Deprecated Header)
+
 [ipkp_h]
  Public-Key-Pins (Deprecated Header)
 
@@ -461,10 +464,6 @@ Articles that may be useful to secure servers/services and enable security HTTP 
  Enables web applications to declare a reporting policy to report errors.
  Ref: https://scotthelme.co.uk/network-error-logging-deep-dive/
 
-[mpragma]
- Used for backwards compatibility with HTTP/1.0 clients.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
-
 [mreferrer]
  Controls how much referrer information should be included with requests.
  Ref: https://scotthelme.co.uk/a-new-security-header-referrer-policy/
@@ -548,6 +547,10 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 
 [imethods]
  Ref: https://appcheck-ng.com/http-verbs-security-risks/
+
+[iprag]
+ This header is deprecated.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
 
 [ipkp]
  This header is deprecated.

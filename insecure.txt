@@ -23,6 +23,7 @@ Permissions-Policy: Deprecated Values
 Permissions-Policy: Incorrect Values
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value
+Pragma: Deprecated Header
 Public-Key-Pins: Deprecated Header
 Referrer-Policy: Recommended Values
 Referrer-Policy: Unsafe Value

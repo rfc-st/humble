@@ -441,12 +441,12 @@ print_detail_s('[1missing]')
 l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
           'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
           'Cross-Origin-Resource-Policy', 'Content-Security-Policy', 'NEL',
-          'Permissions-Policy', 'Pragma', 'Referrer-Policy',
-          'Strict-Transport-Security', 'X-Content-Type-Options']
+          'Permissions-Policy', 'Referrer-Policy', 'Strict-Transport-Security',
+          'X-Content-Type-Options']
 
 l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
-            '[mcsp]', '[mnel]', '[mpermission]', '[mpragma]', '[mreferrer]',
-            '[msts]', '[mxcto]', '[mxfo]']
+            '[mcsp]', '[mnel]', '[mpermission]', '[mreferrer]', '[msts]',
+            '[mxcto]', '[mxfo]']
 
 missing_headers_lower = {k.lower(): v for k, v in headers.items()}
 
@@ -694,6 +694,9 @@ if perm_header:
 
 if 'Onion-Location' in headers:
     print_details('[ionloc_h]', '[ionloc]', 'm', i_cnt)
+
+if 'Pragma' in headers:
+    print_details('[iprag_h]', '[iprag]', 'd', i_cnt)
 
 if 'Public-Key-Pins' in headers:
     print_details('[ipkp_h]', '[ipkp]', 'd', i_cnt)

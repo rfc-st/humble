@@ -44,9 +44,9 @@ HTTP Headers Analyzer<br />
 
 ## Features
 
-:heavy_check_mark: 14 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
+:heavy_check_mark: 13 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
 :heavy_check_mark: 729 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 57 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with values considered insecure.<br />
+:heavy_check_mark: 58 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with values considered insecure.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
@@ -194,8 +194,8 @@ $ python3 humble.py -u https://block.fiverr.com | grep -B5 'Note : \|Nota : ' --
 | `Cache-Control` | `Clear-Site-Data` | `Content-Type` |
 | `Content-Security-Policy` | `Cross-Origin-Embedder-Policy` | `Cross-Origin-Opener-Policy` |
 | `Cross-Origin-Resource-Policy` | `NEL` | `Permissions-Policy` |
-| `Pragma` | `Referrer-Policy` | `Strict-Transport-Security` |
-| `X-Content-Type-Options` | `X-Frame-Options` ||
+| `Referrer-Policy` | `Strict-Transport-Security` | `X-Content-Type-Options` | 
+| `X-Frame-Options` |||
 ||||
 
 </details>
