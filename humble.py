@@ -59,7 +59,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-03-24)' + '\r\n'
+version = '\r\n' + '(ver. 2023-03-25)' + '\r\n'
 
 
 class PDF(FPDF):
@@ -834,9 +834,8 @@ print_detail_s('[5compat]')
 l_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
          'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
          'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy', 'NEL',
-         'Permissions-Policy', 'Pragma', 'Referrer-Policy',
-         'Strict-Transport-Security', 'X-Content-Type-Options',
-         'X-Frame-Options']
+         'Permissions-Policy', 'Referrer-Policy', 'Strict-Transport-Security',
+         'X-Content-Type-Options', 'X-Frame-Options']
 
 header_matches = [header for header in l_sec if header in headers]
 
