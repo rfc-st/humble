@@ -905,10 +905,11 @@ text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko \
         output.write(str(header))
         output.write(str(body))
 
+        sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
+                 'span_ko': '<span class="ko">', 'span_h':
+                 '<span class="header">', 'span_f': '</span>'}
+
         for ln in input_file:
-            sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="',
-                     'close_t': '">', 'span_ko': '<span class="ko">',
-                     'span_h': '<span class="header">', 'span_f': '</span>'}
             if 'rfc-st' in ln:
                 output.write(ln[:2] + sub_d['ahref_s'] + ln[2:-2] +
                              sub_d['close_t'] + ln[2:] + sub_d['ahref_f'])
