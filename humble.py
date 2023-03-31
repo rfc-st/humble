@@ -103,8 +103,7 @@ def pdf_sections():
                     '[1.': '[1missing_s]', '[2.': '[2fingerprint_s]',
                     '[3.': '[3depinsecure_s]', '[4.': '[4empty_s]',
                     '[5.': '[5compat_s]', '[Cabeceras': '[0headers_s]'}
-    match = next((i for i in section_dict if x.startswith(i)), None)
-    if match is not None:
+    if match := next((i for i in section_dict if x.startswith(i)), None):
         pdf.start_section(get_detail(section_dict[match]))
 
 
@@ -264,7 +263,7 @@ def get_detail(id_mode):
 
 
 def python_ver():
-    if sys.version_info < (3, 7):
+    if sys.version_info < (3, 8):
         print("")
         print_detail('[python]', 2)
         sys.exit()
@@ -343,7 +342,7 @@ def request_exceptions():
             detail_exceptions('[e_serror]', err_http)
     except tuple(exception_d.keys()) as e:
         ex = exception_d.get(type(e))
-        if ex is not None and (not callable(ex) or ex(e) is not None):
+        if ex and (not callable(ex) or ex(e)):
             detail_exceptions(ex, e)
     except requests.exceptions.RequestException as err:
         raise SystemExit from err
@@ -423,7 +422,7 @@ headers = r.headers
 date_now = datetime.now().strftime("%Y%m%d")
 extension = "t.txt" if args.output in ['pdf', 'html'] else ".txt"
 
-if args.output is not None:
+if args.output:
     orig_stdout = sys.stdout
     name_s = tldextract.extract(URL)
     name_e = name_s.domain + "_headers_" + date_now + extension

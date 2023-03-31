@@ -1,7 +1,7 @@
 # humble
 
 <p align=center>
-<a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/python-%3E%3D3.7-blue?labelColor=343b41"></a>
+<a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/python-%3E%3D3.8-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release&labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st" title="rfc-st Dashboard"><img src="https://img.shields.io/github/commit-activity/m/rfc-st/humble?labelColor=343b41"></a>
@@ -95,7 +95,7 @@ HTTP Headers Analyzer<br />
 
 ## Installation & Update
 
-**NOTE**: Python 3.7 or higher is required.
+**NOTE**: Python 3.8 or higher is required.
 
 ```bash
 # install python3 and python3-pip if not exist
