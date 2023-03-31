@@ -59,7 +59,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-03-25)' + '\r\n'
+version = '\r\n' + '(ver. 2023-03-31)' + '\r\n'
 
 
 class PDF(FPDF):

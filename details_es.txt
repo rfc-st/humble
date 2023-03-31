@@ -352,7 +352,7 @@ Cabeceras de respuesta HTTP
 2.- Huella digital por cabeceras
 
 [3depinsecure_s]
-3.- Protocolos/Cabeceras deprecadas o inseguras
+3.- Protocolos/Cabeceras obsoletas o inseguras
 
 [4empty_s]
 4.- Cabeceras sin valor
@@ -397,7 +397,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 [2. Huella digital por cabeceras de respuesta HTTP]
 
 [3depinsecure]
-[3. Protocolos/Cabeceras de respuesta HTTP deprecadas o con valores inseguros]
+[3. Protocolos/Cabeceras de respuesta HTTP obsoletas o con valores inseguros]
 
 [4empty]
 [4. Cabeceras de respuesta HTTP sin valor]
@@ -674,16 +674,16 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
 [miss_cnt]
-  Cabeceras no habilitadas:                     
+  Cabeceras no habilitadas:                    
 
 [finger_cnt]
-  Huella digital por cabeceras:                 
+  Huella digital por cabeceras:                
 
 [ins_cnt]
-  Protocolos/Cabeceras deprecadas o inseguras:  
+  Protocolos/Cabeceras obsoletas o inseguras:  
 
 [empty_cnt]
-  Cabeceras sin valor:                          
+  Cabeceras sin valor:                         
 
 [analysis_time]
 Analisis realizado en 
