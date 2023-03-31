@@ -190,7 +190,7 @@ def print_summary():
         print("")
         print_detail('[humble]', 2)
     print(linesep.join(['']*2))
-    print_detail_s('[0section]')
+    print_detail_r('[0section]')
     print_detail_l('[info]')
     print(f" {now}")
     print(f' URL  : {URL}')
@@ -206,7 +206,7 @@ def print_http_e():
 def print_headers():
     if args.ret:
         print(linesep.join(['']*2))
-        print_detail_s('[0headers]')
+        print_detail_r('[0headers]')
         for key, value in sorted(headers.items()):
             if not args.output:
                 print(f" {Fore.CYAN}{key}:", value)
@@ -216,7 +216,7 @@ def print_headers():
 
 
 def print_details(short_d, long_d, id_mode, i_cnt):
-    print_detail_h(short_d)
+    print_detail_r(short_d, is_red=True)
     if not args.brief:
         print_detail(long_d, 2) if id_mode == 'd' else print_detail(long_d, 3)
     i_cnt[0] += 1
@@ -237,23 +237,16 @@ def print_detail_l(id_mode):
             print(details_f[i+1].replace('\n', ''), end='')
 
 
-def print_detail_s(id_mode):
+def print_detail_r(id_mode, is_red=False):
+    style_str = BRI_R if is_red else Style.BRIGHT
     for i, line in enumerate(details_f):
         if line.startswith(id_mode):
             if not args.output:
-                print(Style.BRIGHT + details_f[i+1], end='')
+                print(style_str + details_f[i+1], end='')
             else:
                 print(details_f[i+1], end='')
-            print("")
-
-
-def print_detail_h(id_mode):
-    for i, line in enumerate(details_f):
-        if line.startswith(id_mode):
-            if not args.output:
-                print(BRI_R + details_f[i+1], end='')
-            else:
-                print(details_f[i+1], end='')
+            if not is_red:
+                print("")
 
 
 def get_detail(id_mode):
@@ -435,7 +428,7 @@ print_headers()
 # Report - 1. Missing HTTP Security Headers
 m_cnt = 0
 
-print_detail_s('[1missing]')
+print_detail_r('[1missing]')
 
 l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
           'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
@@ -485,7 +478,7 @@ print("")
 #
 # OWASP Secure Headers Project
 # https://github.com/OWASP/www-project-secure-headers/blob/master/LICENSE.txt
-print_detail_s('[2fingerprint]')
+print_detail_r('[2fingerprint]')
 
 if not args.brief:
     print_detail("[afgp]")
@@ -511,7 +504,7 @@ print("")
 # Report - 3. Deprecated HTTP Headers/Protocols and Insecure values
 i_cnt = [0]
 
-print_detail_s('[3depinsecure]')
+print_detail_r('[3depinsecure]')
 
 if not args.brief:
     print_detail("[aisc]")
@@ -595,7 +588,7 @@ if 'Accept-CH-Lifetime' in headers:
 if 'Access-Control-Allow-Methods' in headers:
     methods = headers["Access-Control-Allow-Methods"]
     if any(method in methods for method in l_methods):
-        print_detail_h('[imethods_h]')
+        print_detail_r('[imethods_h]', is_red=True)
         if not args.brief:
             match_method = [x for x in l_methods if x in methods]
             match_method_str = ', '.join(match_method)
@@ -613,7 +606,7 @@ if accesso_header:
 if 'Allow' in headers:
     methods = headers["Allow"]
     if any(method in methods for method in l_methods):
-        print_detail_h('[imethods_hh]')
+        print_detail_r('[imethods_hh]', is_red=True)
         if not args.brief:
             match_method = [x for x in l_methods if x in methods]
             match_method_str = ', '.join(match_method)
@@ -639,7 +632,7 @@ if 'Content-Security-Policy' in headers:
     elif not any(elem in csp_h for elem in l_csp_directives):
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
     if any(elem in csp_h for elem in l_csp_deprecated):
-        print_detail_h('[icsi_d]')
+        print_detail_r('[icsi_d]', is_red=True)
         if not args.brief:
             matches_csp = [x for x in l_csp_deprecated if x in csp_h]
             print_detail_l("[icsi_d_s]")
@@ -684,7 +677,7 @@ if perm_header:
     if 'none' in perm_header:
         print_details('[ifpoli_h]', '[ifpoli]', 'd', i_cnt)
     if 'document-domain' in perm_header:
-        print_detail_h('[ifpold_h]')
+        print_detail_r('[ifpold_h]', is_red=True)
         if not args.brief:
             print_detail_l('[ifpold_s]')
             print('document-domain')
@@ -813,7 +806,7 @@ print("")
 # Report - 4. Empty HTTP Response Headers Values
 e_cnt = 0
 empty_s_headers = sorted(headers)
-print_detail_s('[4empty]')
+print_detail_r('[4empty]')
 
 if not args.brief:
     print_detail("[aemp]")
@@ -828,7 +821,7 @@ print("") if e_cnt != 0 else print_ok()
 print("")
 
 # Report - 5. Browser Compatibility for Enabled HTTP Security Headers
-print_detail_s('[5compat]')
+print_detail_r('[5compat]')
 
 l_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
          'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
@@ -845,7 +838,7 @@ if header_matches:
         print(f"{output_string}{key_string}{CAN_S}\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 else:
-    print_detail_h("[bcompat_n]") if not args.output else\
+    print_detail_r("[bcompat_n]", is_red=True) if not args.output else\
                                   print_detail_l("[bcompat_n]")
 
 print(linesep.join(['']*2))
