@@ -182,6 +182,34 @@ $ python3 humble.py -u https://block.fiverr.com | grep -B5 'Note : \|Nota : ' --
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_4.jpg" alt="Check for HTTP client errors (4XX) (Linux)">
 
 
+## Caveats
+
+### Country and suffix errors (TLDs)
+
+These <a href="https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326">checks</a> may generate errors in internal networks, or development environments, that do not have connectivity to https://ipapi.co. 
+
+To avoid them you can replace the following code <a href="https://github.com/rfc-st/humble/blob/master/humble.py">here</a>:
+
+```
+sffx = tldextract.extract(URL).suffix[-2:].upper()
+cnty = requests.get('https://ipapi.co/country_name/').text.strip()
+if (sffx in ("UA", 'RU') and sffx not in NON_RU_TLDS) or cnty in ('Ukraine',
+                                                                  'Russia'):
+    ua_ru_analysis(sffx, cnty)
+else:
+    detail = '[analysis_output]' if args.output else '[analysis]'
+    print("")
+    print_detail(detail)
+```
+
+With this code:
+
+```
+detail = '[analysis_output]' if args.output else '[analysis]'
+print("")
+print_detail(detail)
+```
+
 ## Checks: Missing Headers
 <details>
 
