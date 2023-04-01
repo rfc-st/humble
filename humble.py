@@ -54,12 +54,13 @@ GIT_U = "https://github.com/rfc-st/humble"
 INS_S = 'http:'
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLDS = ['CYMRU', 'GURU', 'PRU']
+RU_DESC = '[bcnt]'
 PRG_N = 'humble (HTTP Headers Analyzer) - '
 REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-03-31)' + '\r\n'
+version = '\r\n' + '(ver. 2023-04-01)' + '\r\n'
 
 
 class PDF(FPDF):
@@ -273,18 +274,15 @@ def print_guides():
                 print(f"{line}", end='')
 
 
-def ongoing_analysis(suffix, country):
-    if ((suffix == "RU" and sffx not in NON_RU_TLDS) or b'Russia' in country):
-        print("")
-        print_detail("[bcnt]", 2)
+def ua_ru_analysis(suffix, country):
+    print("")
+    if suffix == "UA" or country == 'Ukraine':
+        detail = '[analysis_ua_output]' if args.output else '[analysis_ua]'
+    elif suffix == "RU" and suffix not in NON_RU_TLDS or country == 'Russia':
+        detail = RU_DESC
+    print_detail(detail, 2) if detail == RU_DESC else print_detail(detail)
+    if detail == RU_DESC:
         sys.exit()
-    elif suffix == "UA" or b'Ukraine' in country:
-        print("")
-        print_detail('[analysis_ua_output]' if args.output else
-                     '[analysis_ua]')
-    else:
-        print("")
-        print_detail('[analysis_output]' if args.output else '[analysis]')
 
 
 def fingerprint_headers(headers, l_fng, l_fng_ex):
@@ -380,8 +378,14 @@ start = time()
 
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 sffx = tldextract.extract(URL).suffix[-2:].upper()
-cnty = requests.get('https://ipapi.co/country_name/').content
-ongoing_analysis(sffx, cnty)
+cnty = requests.get('https://ipapi.co/country_name/').text.strip()
+if (sffx in ("UA", 'RU') and sffx not in NON_RU_TLDS) or cnty in ('Ukraine',
+                                                                  'Russia'):
+    ua_ru_analysis(sffx, cnty)
+else:
+    detail = '[analysis_output]' if args.output else '[analysis]'
+    print("")
+    print_detail(detail)
 
 # Regarding 'dh key too small' errors: https://stackoverflow.com/a/41041028
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
