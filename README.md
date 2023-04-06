@@ -1,7 +1,7 @@
 # humble
 
 <p align=center>
-<a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/python-%3E%3D3.8-blue?labelColor=343b41"></a>
+<a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release&labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/graphs/contributors" title="Commit activity for this tool"><img src="https://img.shields.io/github/commit-activity/m/rfc-st/humble?labelColor=343b41"></a>
@@ -53,6 +53,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
 :heavy_check_mark: i18n: analysis results in English or Spanish.<br />
+:heavy_check_mark: Saves (in "analysis_h.txt") each analysis; showing, at the end, the improvements or deficiencies in relation to the last one.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/pycodestyle/" target="_blank">pycodestyle<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Fully tested and working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />

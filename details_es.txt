@@ -421,7 +421,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Fecha:
 
 [python]
- Este programa requiere, al menos, Python 3.8.
+ Este programa requiere, al menos, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [ok]
@@ -689,4 +689,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 Analisis realizado en 
 
 [analysis_time_sec]
- segundos!.  
+ segundos! (cambios con respecto al último análisis entre paréntesis)
+
+[first_analysis]
+Primer análisis

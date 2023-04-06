@@ -60,7 +60,9 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-04-01)' + '\r\n'
+version = '\r\n' + '(ver. 2023-04-06)' + '\r\n'
+now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
+analysis_h_file = 'analysis_h.txt'
 
 
 class PDF(FPDF):
@@ -90,7 +92,7 @@ def pdf_metadata():
     title = (get_detail('[pdf_m]')).replace('\n', '') + URL
     git_urlc = f"{GIT_U} {version.strip()}"
     pdf.set_author(git_urlc)
-    pdf.set_creation_date = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
+    pdf.set_creation_date = now
     pdf.set_creator(git_urlc)
     pdf.set_keywords(get_detail('[pdf_k]').replace('\n', ''))
     pdf.set_lang(get_detail('[pdf_l]'))
@@ -131,14 +133,47 @@ def get_details_lines():
         return rf.readlines()
 
 
+def save_extract_totals():
+    with (open(analysis_h_file, 'a+', encoding='utf8') as a_history,
+          open(analysis_h_file, 'r', encoding='utf8') as c_history):
+        a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
+{e_cnt}\n")
+        ln_history = c_history.readlines()
+        url_occurr = [line for line in ln_history if URL in line]
+        if not url_occurr:
+            return ("First",) * 4
+        date_var = max(line.split(" ; ")[0] for line in url_occurr)
+        for line in ln_history:
+            if date_var in line:
+                _, _, mh_cnt, fh_cnt, ih_cnt, eh_cnt = line.strip().split(' ; \
+')
+                break
+        return mh_cnt, fh_cnt, ih_cnt, eh_cnt
+
+
+def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt):
+    if mh_cnt == fh_cnt == ih_cnt == eh_cnt == "First":
+        return [get_detail('[first_analysis]')] * 4
+    mhr_cnt = int(m_cnt) - int(mh_cnt)
+    fhr_cnt = int(f_cnt) - int(fh_cnt)
+    ihr_cnt = int(i_cnt[0]) - int(ih_cnt)
+    ehr_cnt = int(e_cnt) - int(eh_cnt)
+    return [f'+{n}' if n > 0 else str(n) for n in [mhr_cnt, fhr_cnt,
+                                                   ihr_cnt, ehr_cnt]]
+
+
 def analysis_time():
     print(".:")
     print("")
     print_detail_l('[analysis_time]')
     print(round(end - start, 2), end="")
     print_detail_l('[analysis_time_sec]')
+    mh_cnt, fh_cnt, ih_cnt, eh_cnt = save_extract_totals()
+    mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt = compare_totals(mh_cnt, m_cnt, fh_cnt,
+                                                        f_cnt, ih_cnt, i_cnt,
+                                                        eh_cnt, e_cnt)
     print("")
-    analysis_detail()
+    analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt)
 
 
 def clean_output():
@@ -175,7 +210,6 @@ def print_header_fng(header):
 
 
 def print_summary():
-    now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     if not args.output:
         clean_output()
         print("")
@@ -257,7 +291,7 @@ def get_detail(id_mode):
 
 
 def python_ver():
-    if sys.version_info < (3, 8):
+    if sys.version_info < (3, 9):
         print("")
         print_detail('[python]', 2)
         sys.exit()
@@ -306,12 +340,12 @@ def fingerprint_headers(headers, l_fng, l_fng_ex):
     return f_cnt
 
 
-def analysis_detail():
+def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt):
     print(" ")
-    print(f"{(print_detail_l('[miss_cnt]') or '')[:-1]}{m_cnt}")
-    print(f"{(print_detail_l('[finger_cnt]') or '')[:-1]}{f_cnt}")
-    print(f"{(print_detail_l('[ins_cnt]') or '')[:-1]}{i_cnt[0]}")
-    print(f"{(print_detail_l('[empty_cnt]') or '')[:-1]}{e_cnt}")
+    print(f"{(print_detail_l('[miss_cnt]') or '')[:-1]}{m_cnt} ({mhr_cnt})")
+    print(f"{(print_detail_l('[finger_cnt]') or '')[:-1]}{f_cnt} ({fhr_cnt})")
+    print(f"{(print_detail_l('[ins_cnt]') or '')[:-1]}{i_cnt[0]} ({ihr_cnt})")
+    print(f"{(print_detail_l('[empty_cnt]') or '')[:-1]}{e_cnt} ({ehr_cnt})")
     print(""), print(".:"), print("")
 
 

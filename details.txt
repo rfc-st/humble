@@ -421,7 +421,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
  Date :
 
 [python]
- This tool requires, at least, Python 3.8.
+ This tool requires, at least, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [ok]
@@ -689,4 +689,7 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 Analysis done in 
 
 [analysis_time_sec]
- seconds!.  
+ seconds! (changes with respect to the last analysis in parentheses)
+
+[first_analysis]
+First Analysis
