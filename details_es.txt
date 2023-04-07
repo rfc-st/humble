@@ -689,7 +689,7 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 Analisis realizado en 
 
 [analysis_time_sec]
- segundos! (cambios con respecto al último análisis entre paréntesis)
+ segundos! (cambios con respecto al ultimo analisis entre parentesis)
 
 [first_analysis]
-Primer análisis
+Primer analisis
