@@ -60,7 +60,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-04-06)' + '\r\n'
+version = '\r\n' + '(ver. 2023-04-07)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 analysis_h_file = 'analysis_h.txt'
 
@@ -138,21 +138,20 @@ def save_extract_totals():
           open(analysis_h_file, 'r', encoding='utf8') as c_history):
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
 {e_cnt}\n")
-        ln_history = c_history.readlines()
-        url_occurr = [line for line in ln_history if URL in line]
-        if not url_occurr:
+        url_lines = [line for line in c_history if URL in line]
+        if not url_lines:
             return ("First",) * 4
-        date_var = max(line.split(" ; ")[0] for line in url_occurr)
-        for line in ln_history:
+        date_var = max(line.split(" ; ")[0] for line in url_lines)
+        for line in url_lines:
             if date_var in line:
-                _, _, mh_cnt, fh_cnt, ih_cnt, eh_cnt = line.strip().split(' ; \
-')
+                _, _, mh_cnt, fh_cnt, ih_cnt, eh_cnt = \
+                 line.strip().split(' ; ')
                 break
         return mh_cnt, fh_cnt, ih_cnt, eh_cnt
 
 
 def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt):
-    if mh_cnt == fh_cnt == ih_cnt == eh_cnt == "First":
+    if mh_cnt == "First":
         return [get_detail('[first_analysis]')] * 4
     mhr_cnt = int(m_cnt) - int(mh_cnt)
     fhr_cnt = int(f_cnt) - int(fh_cnt)
