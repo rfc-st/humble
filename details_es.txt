@@ -685,6 +685,9 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 [empty_cnt]
   Cabeceras sin valor:                         
 
+[total_cnt]
+  Advertencias a revisar:                      
+
 [analysis_time]
 Analisis realizado en 
 

@@ -685,6 +685,9 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 [empty_cnt]
   Empty headers:                
 
+[total_cnt]
+  Warnings to review:           
+
 [analysis_time]
 Analysis done in 
 

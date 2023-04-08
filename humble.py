@@ -133,32 +133,34 @@ def get_details_lines():
         return rf.readlines()
 
 
-def save_extract_totals():
+def save_extract_totals(t_cnt):
     with (open(analysis_h_file, 'a+', encoding='utf8') as a_history,
           open(analysis_h_file, 'r', encoding='utf8') as c_history):
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
-{e_cnt}\n")
+{e_cnt} ; {t_cnt}\n")
         url_lines = [line for line in c_history if URL in line]
         if not url_lines:
-            return ("First",) * 4
+            return ("First",) * 5
         date_var = max(line.split(" ; ")[0] for line in url_lines)
         for line in url_lines:
             if date_var in line:
-                _, _, mh_cnt, fh_cnt, ih_cnt, eh_cnt = \
-                 line.strip().split(' ; ')
+                _, _, mh_cnt, fh_cnt, ih_cnt, eh_cnt, \
+                    th_cnt = line.strip().split(' ; ')
                 break
-        return mh_cnt, fh_cnt, ih_cnt, eh_cnt
+        return mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt
 
 
-def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt):
+def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
+                   th_cnt, t_cnt):
     if mh_cnt == "First":
-        return [get_detail('[first_analysis]')] * 4
+        return [get_detail('[first_analysis]')] * 5
     mhr_cnt = int(m_cnt) - int(mh_cnt)
     fhr_cnt = int(f_cnt) - int(fh_cnt)
     ihr_cnt = int(i_cnt[0]) - int(ih_cnt)
     ehr_cnt = int(e_cnt) - int(eh_cnt)
-    return [f'+{n}' if n > 0 else str(n) for n in [mhr_cnt, fhr_cnt,
-                                                   ihr_cnt, ehr_cnt]]
+    thr_cnt = int(t_cnt) - int(th_cnt)
+    return [f'+{n}' if n > 0 else str(n) for n in [mhr_cnt, fhr_cnt, ihr_cnt,
+                                                   ehr_cnt, thr_cnt]]
 
 
 def analysis_time():
@@ -167,12 +169,13 @@ def analysis_time():
     print_detail_l('[analysis_time]')
     print(round(end - start, 2), end="")
     print_detail_l('[analysis_time_sec]')
-    mh_cnt, fh_cnt, ih_cnt, eh_cnt = save_extract_totals()
-    mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt = compare_totals(mh_cnt, m_cnt, fh_cnt,
-                                                        f_cnt, ih_cnt, i_cnt,
-                                                        eh_cnt, e_cnt)
+    t_cnt = m_cnt + f_cnt + i_cnt[0] + e_cnt
+    mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = save_extract_totals(t_cnt)
+    mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt,\
+        thr_cnt = compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt,
+                                 eh_cnt, e_cnt, th_cnt, t_cnt)
     print("")
-    analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt)
+    analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt)
 
 
 def clean_output():
@@ -339,12 +342,14 @@ def fingerprint_headers(headers, l_fng, l_fng_ex):
     return f_cnt
 
 
-def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt):
+def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt):
     print(" ")
     print(f"{(print_detail_l('[miss_cnt]') or '')[:-1]}{m_cnt} ({mhr_cnt})")
     print(f"{(print_detail_l('[finger_cnt]') or '')[:-1]}{f_cnt} ({fhr_cnt})")
     print(f"{(print_detail_l('[ins_cnt]') or '')[:-1]}{i_cnt[0]} ({ihr_cnt})")
     print(f"{(print_detail_l('[empty_cnt]') or '')[:-1]}{e_cnt} ({ehr_cnt})")
+    print("")
+    print(f"{(print_detail_l('[total_cnt]') or '')[:-1]}{t_cnt} ({thr_cnt})")
     print(""), print(".:"), print("")
 
 
