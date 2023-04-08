@@ -44,6 +44,9 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import sys
 import requests
 import tldextract
+from rich.console import Console
+from rich.table import Table
+from rich import box
 
 BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRI_R = Style.BRIGHT + Fore.RED
@@ -60,7 +63,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-04-07)' + '\r\n'
+version = '\r\n' + '(ver. 2023-04-08)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 analysis_h_file = 'analysis_h.txt'
 
@@ -159,6 +162,34 @@ def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt):
     ehr_cnt = int(e_cnt) - int(eh_cnt)
     return [f'+{n}' if n > 0 else str(n) for n in [mhr_cnt, fhr_cnt,
                                                    ihr_cnt, ehr_cnt]]
+
+
+def analyze_urls(filepath, url):
+    console = Console()
+
+    table = Table(show_header=True, header_style="white", box=box.ASCII)
+    table.add_column("Date", style="dim", width=22, justify="center")
+    table.add_column("URL", justify="center")
+    table.add_column("Missing", justify="center")
+    table.add_column("Fingerprint", justify="center")
+    table.add_column("Insecure/Deprecated", justify="center")
+    table.add_column("Empty", justify="center")
+
+    with open(filepath, mode='r', encoding='utf-8') as f:
+        for line in f:
+            data = line.strip().split(" ; ")
+            if data[1] == url:
+                date = datetime.strptime(data[0], '%Y/%m/%d - %H:%M:%S')
+                table.add_row(
+                    date.strftime("%Y-%m-%d %H:%M:%S"),
+                    data[1],
+                    data[2],
+                    data[3],
+                    data[4],
+                    data[5]
+                )
+
+    console.print(table)
 
 
 def analysis_time():
@@ -346,6 +377,9 @@ def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt):
     print(f"{(print_detail_l('[ins_cnt]') or '')[:-1]}{i_cnt[0]} ({ihr_cnt})")
     print(f"{(print_detail_l('[empty_cnt]') or '')[:-1]}{e_cnt} ({ehr_cnt})")
     print(""), print(".:"), print("")
+    print("")
+    print("")
+    analyze_urls(analysis_h_file, URL)
 
 
 def detail_exceptions(id_exception, exception_v):
