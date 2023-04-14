@@ -134,8 +134,8 @@ def get_details_lines():
 
 
 def save_extract_totals(t_cnt):
-    with (open(analysis_h_file, 'a+', encoding='utf8') as a_history,
-          open(analysis_h_file, 'r', encoding='utf8') as c_history):
+    with open(analysis_h_file, 'a+', encoding='utf8') as a_history, \
+         open(analysis_h_file, 'r', encoding='utf8') as c_history:
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
 {e_cnt} ; {t_cnt}\n")
         url_lines = [line for line in c_history if URL in line]
