@@ -694,5 +694,29 @@ Analisis realizado en
 [analysis_time_sec]
  segundos! (cambios con respecto al ultimo analisis entre parentesis)
 
-[first_analysis]
+[first_one]
 Primer analisis
+
+[stats_analysis]
+Estadísticas de 
+
+[total_analysis]
+Análisis realizados 
+
+[first_analysis_a]
+Primer análisis     
+
+[latest_analysis]
+Último análisis     
+
+[best_analysis]
+Mejor análisis      
+
+[worst_analysis]
+Peor análisis       
+
+[total_warnings]
+(Avisos: 
+
+[no_analysis]
+Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análisis contra esa URL.

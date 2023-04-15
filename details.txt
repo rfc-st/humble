@@ -694,5 +694,29 @@ Analysis done in
 [analysis_time_sec]
  seconds! (changes with respect to the last analysis in parentheses)
 
-[first_analysis]
+[first_one]
 First Analysis
+
+[stats_analysis]
+Statistics of 
+
+[total_analysis]
+Total analysis  
+
+[first_analysis_a]
+First analysis  
+
+[latest_analysis]
+Latest analysis 
+
+[best_analysis]
+Best analysis   
+
+[worst_analysis]
+Worst analysis  
+
+[total_warnings]
+(Warnings: 
+
+[no_analysis]
+To use this option ('-a') you must have run at least one scan against that URL.

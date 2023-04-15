@@ -60,7 +60,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-04-08)' + '\r\n'
+version = '\r\n' + '(ver. 2023-04-15)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 analysis_h_file = 'analysis_h.txt'
 
@@ -153,7 +153,7 @@ def save_extract_totals(t_cnt):
 def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
                    th_cnt, t_cnt):
     if mh_cnt == "First":
-        return [get_detail('[first_analysis]')] * 5
+        return [get_detail('[first_one]').replace("\n", "")] * 5
     mhr_cnt = int(m_cnt) - int(mh_cnt)
     fhr_cnt = int(f_cnt) - int(fh_cnt)
     ihr_cnt = int(i_cnt[0]) - int(ih_cnt)
@@ -161,6 +161,57 @@ def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
     thr_cnt = int(t_cnt) - int(th_cnt)
     return [f'+{n}' if n > 0 else str(n) for n in [mhr_cnt, fhr_cnt, ihr_cnt,
                                                    ehr_cnt, thr_cnt]]
+
+
+def file_exists(filepath):
+    if not path.exists(filepath):
+        print("")
+        print(get_detail('[no_analysis]'))
+        print("")
+        sys.exit()
+
+
+def url_analytics():
+    file_exists(analysis_h_file)
+    with open(analysis_h_file, 'r', encoding='utf8') as c_history:
+        analysis_stats = url_anayltics_extract(c_history)
+    print("")
+    print(f"{get_detail('[stats_analysis]')}{URL}".replace("\n", ""))
+    print("")
+    for key, value in analysis_stats.items():
+        print(f"{key}: {value}")
+    print("")
+
+
+def url_anayltics_extract(c_history):
+    url_lines = [line for line in c_history if URL in line]
+    total_a = len(url_lines)
+    first_a = min(f"{line.split(' ; ')[0].replace(' -', '')}" for line in
+                  url_lines)
+    latest_a = max(f"{line.split(' ; ')[0].replace(' -', '')}" for line in
+                   url_lines)
+    date_warning = [(datetime.strptime(line.strip().split(" ; ")
+                                       [0].replace('-', '/').
+                                       replace(' / ', ' '),
+                                       '%Y/%m/%d %H:%M:%S'),
+                    int(line.strip().split(" ; ")[-1])) for line in
+                    url_lines]
+    best_date, best_w = min(date_warning, key=lambda x: x[1])
+    worst_date, worst_w = max(date_warning, key=lambda x: x[1])
+    return {
+        get_detail('[total_analysis]').replace("\n", ""): total_a,
+        get_detail('[first_analysis_a]').replace("\n", ""): first_a,
+        get_detail('[latest_analysis]').replace("\n", ""): latest_a,
+        get_detail('[best_analysis]').replace(
+            "\n", ""
+        ): f"{best_date.strftime('%Y/%m/%d %H:%M:%S')} "
+        + get_detail('[total_warnings]').replace("\n", "") + str(best_w) + ")",
+        get_detail('[worst_analysis]').replace(
+            "\n", ""
+        ): f"{worst_date.strftime('%Y/%m/%d %H:%M:%S')} "
+        + get_detail('[total_warnings]').replace("\n", "") +
+        str(worst_w) + ")",
+    }
 
 
 def analysis_time():
@@ -381,6 +432,8 @@ init(autoreset=True)
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
                         description=PRG_N + GIT_U)
+parser.add_argument("-a", dest='URL_A', action="store_true", help="Displays \
+statistics of the analysis performed on the specified URL.")
 parser.add_argument("-b", dest='brief', action="store_true", help="Show a \
 brief analysis; if omitted, a detailed analysis will be shown.")
 parser.add_argument("-g", dest='guides', action="store_true", help="Show \
@@ -421,9 +474,10 @@ if (sffx in ("UA", 'RU') and sffx not in NON_RU_TLDS) or cnty in ('Ukraine',
                                                                   'Russia'):
     ua_ru_analysis(sffx, cnty)
 else:
-    detail = '[analysis_output]' if args.output else '[analysis]'
-    print("")
-    print_detail(detail)
+    if not args.URL_A:
+        detail = '[analysis_output]' if args.output else '[analysis]'
+        print("")
+        print_detail(detail)
 
 # Regarding 'dh key too small' errors: https://stackoverflow.com/a/41041028
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
@@ -452,6 +506,10 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
 requests.packages.urllib3.disable_warnings()
 r = requests.get(URL, verify=False, headers=c_headers, timeout=15)
 headers = r.headers
+
+if args.URL_A:
+    url_analytics()
+    sys.exit()
 
 # Export analysis
 date_now = datetime.now().strftime("%Y%m%d")
