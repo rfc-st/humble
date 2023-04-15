@@ -104,7 +104,7 @@ HTTP Headers Analyzer<br />
 .: Statistics of the analyses performed.<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_analytics.PNG" alt="Statistics of the analysis performed against a URL">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_analytics.jpg" alt="Statistics of the analysis performed against a URL">
 </p>
 <br />
 
