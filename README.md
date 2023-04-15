@@ -54,6 +54,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
 :heavy_check_mark: i18n: analysis results in English or Spanish.<br />
 :heavy_check_mark: Saves each analysis, showing (at the end) the improvements or deficiencies in relation to the last one.<br />
+:heavy_check_mark: Shows statistics of scans performed against a URL.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/pycodestyle/" target="_blank">pycodestyle<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Fully tested and working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
@@ -100,6 +101,12 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_ah.PNG" alt="History of analysis performed">
 </p>
 <br />
+.: Statistics of the analyses performed.<br />
+<p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_analytics.PNG" alt="Statistics of the analysis performed against a URL">
+</p>
+<br />
 
 ## Installation & Update
 
@@ -136,12 +143,13 @@ https://github.com/rfc-st/humble/releases
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
-usage: humble.py [-h] [-b] [-g] [-l {es}] [-o {html,pdf,txt}] [-r] [-u URL] [-v]
+usage: humble.py [-h] [-a] [-b] [-g] [-l {es}] [-o {html,pdf,txt}] [-r] [-u URL] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 options:
   -h, --help         show this help message and exit
+  -a                 Show statistics of the analysis performed on the specified URL.
   -b                 Show a brief analysis; if omitted, a detailed analysis will be shown.
   -g                 Show guidelines on securing most used web servers/services.
   -l {es}            Displays the analysis in the indicated language; if omitted, English will be used.
