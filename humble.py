@@ -60,7 +60,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-04-15)' + '\r\n'
+version = '\r\n' + '(ver. 2023-04-22)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 analysis_h_file = 'analysis_h.txt'
 
