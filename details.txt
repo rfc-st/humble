@@ -732,3 +732,9 @@ Analysis without insecure/deprecated headers/protocols
 
 [no_empty]
 Analysis without empty headers                         
+
+[analysis_year]
+Analysis by year
+
+[analysis_y]
+Analysis

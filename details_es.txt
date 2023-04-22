@@ -732,3 +732,9 @@ Análisis sin valores o protocolos inseguros/obsoletos
 
 [no_empty]
 Análisis sin cabeceras vacías                         
+
+[analysis_year]
+Análisis por año
+
+[analysis_y]
+Análisis

@@ -202,10 +202,26 @@ def extract_second_metrics(url_lines, index, total_a):
 {get_history_detail('[pdf_po]')}{total_a})"
 
 
+def extract_years_metrics(url_lines):
+    year_counts = {}
+    for line in url_lines:
+        year = int(line.split(' ; ')[0][:4])
+        if year not in year_counts:
+            year_counts[year] = 1
+        else:
+            year_counts[year] += 1
+    sorted_years = sorted(year_counts.keys())
+    analysis_by_year = [f" {year}: {year_counts[year]}\
+ {get_detail('[analysis_y]')}" for
+                        year in sorted_years]
+    return "\n".join(analysis_by_year)
+
+
 def extract_metrics(c_history):
     url_lines = [line for line in c_history if URL in line]
     total_a = len(url_lines)
     if url_lines:
+        analysis_by_year = extract_years_metrics(url_lines)
         first_a, latest_a, best_date, best_w, worst_date, worst_w = \
             extract_first_metrics(url_lines)
         no_miss_t, no_fng_t, no_ins_t, no_ety_t = \
@@ -228,6 +244,7 @@ def extract_metrics(c_history):
         get_history_detail('[no_fingerprint]'): no_fng_t,
         get_history_detail('[no_ins_deprecated]'): no_ins_t,
         get_history_detail('[no_empty]'): no_ety_t + "\n",
+        get_history_detail('[analysis_year]'): f"\n{analysis_by_year}"
     }
 
 
