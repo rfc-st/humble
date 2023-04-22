@@ -95,7 +95,7 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Export analysis to HTML" width=70% height=70%>
 </p>
 <br />
-.: Analysis history file: Date + URL + Checks (Missing, Fingerprint, Deprecated/Insecure and Empty headers) + Total warnings.<br />
+.: History file: Date + URL + Missing + Fingerprint + Deprecated/Insecure + Empty headers + Total warnings.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_ah.PNG" alt="History of analysis performed">
@@ -164,7 +164,7 @@ options:
 ### Linux: Show only the analysis summary
 
 ```
-$ python3 humble.py -u https://tesla.com | grep -A 6 "\!." | sed $'1i \n'
+$ python3 humble.py -u https://tesla.com | grep -A 8 "\!." | sed $'1i \n'
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux.jpg" alt="Show only the analysis summary (Linux)">
 
