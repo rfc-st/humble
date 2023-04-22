@@ -176,7 +176,7 @@ def url_analytics():
     with open(analysis_h_file, 'r', encoding='utf8') as c_history:
         analysis_stats = url_anayltics_extract(c_history)
     print("")
-    print(f"{get_detail('[stats_analysis]')}{URL}".replace("\n", ""))
+    print(f"{get_history_detail('[stats_analysis]')}{URL}")
     print("")
     for key, value in analysis_stats.items():
         print(f"{key}: {value}")
@@ -186,32 +186,27 @@ def url_analytics():
 def url_anayltics_extract(c_history):
     url_lines = [line for line in c_history if URL in line]
     total_a = len(url_lines)
-    first_a = min(f"{line.split(' ; ')[0].replace(' -', '')}" for line in
-                  url_lines)
-    latest_a = max(f"{line.split(' ; ')[0].replace(' -', '')}" for line in
-                   url_lines)
-    date_warning = [(datetime.strptime(line.strip().split(" ; ")
-                                       [0].replace('-', '/').
-                                       replace(' / ', ' '),
-                                       '%Y/%m/%d %H:%M:%S'),
-                    int(line.strip().split(" ; ")[-1])) for line in
-                    url_lines]
-    best_date, best_w = min(date_warning, key=lambda x: x[1])
-    worst_date, worst_w = max(date_warning, key=lambda x: x[1])
+    if url_lines:
+        first_a = min(f"{line.split(' ; ')[0]}" for line in url_lines)
+        latest_a = max(f"{line.split(' ; ')[0]}" for line in url_lines)
+        date_warning = [(line.split(" ; ")[0],
+                         int(line.strip().split(" ; ")[-1])) for line in
+                        url_lines]
+        best_date, best_w = min(date_warning, key=lambda x: x[1])
+        worst_date, worst_w = max(date_warning, key=lambda x: x[1])
+    else:
+        print("")
+        print(get_detail('[no_analysis]'))
+        print("")
+        sys.exit()
     return {
-        get_detail('[total_analysis]').replace("\n", ""): total_a,
-        get_detail('[first_analysis_a]').replace("\n", ""): first_a,
-        get_detail('[latest_analysis]').replace("\n", ""): latest_a,
-        get_detail('[best_analysis]').replace(
-            "\n", ""
-        ): f"{best_date.strftime('%Y/%m/%d %H:%M:%S')} "
-        + get_detail('[total_warnings]').replace("\n", "") + str(best_w) + ")",
-        get_detail('[worst_analysis]').replace(
-            "\n", ""
-        ): f"{worst_date.strftime('%Y/%m/%d %H:%M:%S')} "
-        + get_detail('[total_warnings]').replace("\n", "") +
-        str(worst_w) + ")",
-    }
+        get_history_detail('[total_analysis]'): total_a,
+        get_history_detail('[first_analysis_a]'): first_a,
+        get_history_detail('[latest_analysis]'): latest_a,
+        get_history_detail('[best_analysis]'): f"{best_date} "
+        + get_history_detail('[total_warnings]') + str(best_w) + ")",
+        get_history_detail('[worst_analysis]'): f"{worst_date} "
+        + get_history_detail('[total_warnings]') + str(worst_w) + ")", }
 
 
 def analysis_time():
@@ -343,6 +338,12 @@ def get_detail(id_mode):
             return details_f[i+1]
 
 
+def get_history_detail(id_mode):
+    for i, line in enumerate(details_f):
+        if line.startswith(id_mode):
+            return (details_f[i+1].replace('\n', ''))
+
+
 def python_ver():
     if sys.version_info < (3, 9):
         print("")
@@ -465,6 +466,10 @@ if args.guides:
     print_guides()
     sys.exit()
 
+if args.URL_A:
+    url_analytics()
+    sys.exit()
+
 start = time()
 
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
@@ -506,10 +511,6 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
 requests.packages.urllib3.disable_warnings()
 r = requests.get(URL, verify=False, headers=c_headers, timeout=15)
 headers = r.headers
-
-if args.URL_A:
-    url_analytics()
-    sys.exit()
 
 # Export analysis
 date_now = datetime.now().strftime("%Y%m%d")
