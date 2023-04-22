@@ -169,17 +169,17 @@ $ python3 humble.py -u https://tesla.com | grep -A 8 "\!." | sed $'1i \n'
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux.jpg" alt="Show only the analysis summary (Linux)">
 
 
-### Windows: In Spanish; show only the analysis summary (PowerShell >= 7 required)
+### Windows (in Spanish): show only the analysis summary (PowerShell >= 7 required)
 
 ```
-$ py humble.py -u https://tesla.com -l es | Select-String -Pattern '!.' -Context 1,6 -NoEmphasis
+$ py humble.py -u https://tesla.com -l es | Select-String -Pattern '!.' -Context 1,8 -NoEmphasis
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_windows.jpg" alt="Show only the analysis summary (Windows, in Spanish. PowerShell >= 7 required)">
 
 
 ### Linux: Show only the URL, date and analysis summary
 ```
-$ python3 humble.py -u https://tesla.com | grep -A5 -E "0. Info|\!." | sed 's/[--]//g' | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' |sed $'1i \n'
+$ python3 humble.py -u https://tesla.com | grep -A7 -E "0. Info|\!." | grep -v "^\[1\." | sed 's/[--]//g' | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' | sed $'1i \n'
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_2.jpg" alt="Show URL, date and the analysis summary (Linux)">
 
