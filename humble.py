@@ -42,6 +42,7 @@ from os import linesep, path, remove
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import sys
+import math
 import requests
 import tldextract
 
@@ -174,7 +175,7 @@ def file_exists(filepath):
 def url_analytics():
     file_exists(analysis_h_file)
     with open(analysis_h_file, 'r', encoding='utf8') as c_history:
-        analysis_stats = url_anayltics_extract(c_history)
+        analysis_stats = extract_metrics(c_history)
     print("")
     print(f"{get_history_detail('[stats_analysis]')}{URL}")
     print("")
@@ -183,17 +184,34 @@ def url_analytics():
     print("")
 
 
-def url_anayltics_extract(c_history):
+def extract_first_metrics(url_lines):
+    first_a = min(f"{line.split(' ; ')[0]}" for line in url_lines)
+    latest_a = max(f"{line.split(' ; ')[0]}" for line in url_lines)
+    date_warning = [(line.split(" ; ")[0],
+                     int(line.strip().split(" ; ")[-1])) for line in
+                    url_lines]
+    best_date, best_w = min(date_warning, key=lambda x: x[1])
+    worst_date, worst_w = max(date_warning, key=lambda x: x[1])
+    return first_a, latest_a, best_date, best_w, worst_date, worst_w
+
+
+def extract_second_metrics(url_lines, index, total_a):
+    metric_c = len([line for line in url_lines if int(line.split(' ; ')
+                                                      [index]) == 0])
+    return f"{math.ceil(metric_c / total_a * 100)}% ({metric_c}\
+{get_history_detail('[pdf_po]')}{total_a})"
+
+
+def extract_metrics(c_history):
     url_lines = [line for line in c_history if URL in line]
     total_a = len(url_lines)
     if url_lines:
-        first_a = min(f"{line.split(' ; ')[0]}" for line in url_lines)
-        latest_a = max(f"{line.split(' ; ')[0]}" for line in url_lines)
-        date_warning = [(line.split(" ; ")[0],
-                         int(line.strip().split(" ; ")[-1])) for line in
-                        url_lines]
-        best_date, best_w = min(date_warning, key=lambda x: x[1])
-        worst_date, worst_w = max(date_warning, key=lambda x: x[1])
+        first_a, latest_a, best_date, best_w, worst_date, worst_w = \
+            extract_first_metrics(url_lines)
+        no_miss_t = extract_second_metrics(url_lines, 2, total_a)
+        no_fng_t = extract_second_metrics(url_lines, 3, total_a)
+        no_ins_t = extract_second_metrics(url_lines, 4, total_a)
+        no_ety_t = extract_second_metrics(url_lines, 5, total_a)
     else:
         print("")
         print(get_detail('[no_analysis]'))
@@ -203,10 +221,15 @@ def url_anayltics_extract(c_history):
         get_history_detail('[total_analysis]'): total_a,
         get_history_detail('[first_analysis_a]'): first_a,
         get_history_detail('[latest_analysis]'): latest_a,
-        get_history_detail('[best_analysis]'): f"{best_date} "
-        + get_history_detail('[total_warnings]') + str(best_w) + ")",
-        get_history_detail('[worst_analysis]'): f"{worst_date} "
-        + get_history_detail('[total_warnings]') + str(worst_w) + ")", }
+        get_history_detail('[best_analysis]'): f"{best_date} " +
+        get_history_detail('[total_warnings]') + str(best_w) + ")",
+        get_history_detail('[worst_analysis]'): f"{worst_date} " +
+        get_history_detail('[total_warnings]') + str(worst_w) + ")\n",
+        get_history_detail('[no_missing]'): no_miss_t,
+        get_history_detail('[no_fingerprint]'): no_fng_t,
+        get_history_detail('[no_ins_deprecated]'): no_ins_t,
+        get_history_detail('[no_empty]'): no_ety_t + "\n",
+    }
 
 
 def analysis_time():

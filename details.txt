@@ -720,3 +720,15 @@ Worst analysis
 
 [no_analysis]
 To use this option ('-a') you must have run at least one scan against that URL.
+
+[no_missing]
+Analysis without missing headers                       
+
+[no_fingerprint]
+Analysis without fingerprint headers                   
+
+[no_ins_deprecated]
+Analysis without insecure/deprecated headers/protocols 
+
+[no_empty]
+Analysis without empty headers                         

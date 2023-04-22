@@ -325,7 +325,7 @@ Analizador de cabeceras HTTP
 Página 
 
 [pdf_po]
- de  
+ de 
 
 [pdf_m]
 Informe de las cabeceras HTTP de 
@@ -720,3 +720,15 @@ Peor análisis
 
 [no_analysis]
 Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análisis contra esa URL.
+
+[no_missing]
+Análisis sin cabeceras por habilitar                  
+
+[no_fingerprint]
+Análisis sin huellas digitales                        
+
+[no_ins_deprecated]
+Análisis sin valores o protocolos inseguros/obsoletos 
+
+[no_empty]
+Análisis sin cabeceras vacías                         
