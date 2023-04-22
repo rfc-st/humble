@@ -208,10 +208,9 @@ def extract_metrics(c_history):
     if url_lines:
         first_a, latest_a, best_date, best_w, worst_date, worst_w = \
             extract_first_metrics(url_lines)
-        no_miss_t = extract_second_metrics(url_lines, 2, total_a)
-        no_fng_t = extract_second_metrics(url_lines, 3, total_a)
-        no_ins_t = extract_second_metrics(url_lines, 4, total_a)
-        no_ety_t = extract_second_metrics(url_lines, 5, total_a)
+        no_miss_t, no_fng_t, no_ins_t, no_ety_t = \
+            [extract_second_metrics(url_lines, i, total_a) for i in
+             range(2, 6)]
     else:
         print("")
         print(get_detail('[no_analysis]'))
