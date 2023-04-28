@@ -200,6 +200,11 @@ def extract_second_metrics(url_ln, index, total_a):
 {get_history_detail('[pdf_po]')}{total_a})"
 
 
+def extract_third_metrics(url_ln):
+    return int(sum(int(line.split(' ; ')[-1]) for line in url_ln) /
+               len(url_ln))
+
+
 def extract_years_metrics(url_ln):
     year_cnt = {}
     for line in url_ln:
@@ -211,7 +216,7 @@ def extract_years_metrics(url_ln):
     years_srt = sorted(year_cnt.keys())
     years_a = [f" {year}: {year_cnt[year]} {get_detail('[analysis_y]')}" for
                year in years_srt]
-    return "\n".join(years_a)
+    return "".join(years_a)
 
 
 def extract_metrics(c_history):
@@ -226,14 +231,15 @@ def extract_metrics(c_history):
         extract_first_metrics(url_ln)
     no_miss_t, no_fng_t, no_ins_t, no_ety_t = \
         [extract_second_metrics(url_ln, i, total_a) for i in range(2, 6)]
+    avg_w = extract_third_metrics(url_ln)
     year_a = extract_years_metrics(url_ln)
     return print_metrics(total_a, first_a, latest_a, best_d, best_w, worst_d,
                          worst_w, no_miss_t, no_fng_t, no_ins_t, no_ety_t,
-                         year_a)
+                         year_a, avg_w)
 
 
 def print_metrics(total_a, first_a, latest_a, best_d, best_w, worst_d, worst_w,
-                  no_miss_t, no_fng_t, no_ins_t, no_ety_t, year_a):
+                  no_miss_t, no_fng_t, no_ins_t, no_ety_t, year_a, avg_w):
     totals_m = {'[total_analysis]': total_a, '[first_analysis_a]': first_a,
                 '[latest_analysis]': latest_a, '[best_analysis]':
                 f"{best_d} {get_history_detail('[total_warnings]')}{best_w})",
@@ -241,7 +247,8 @@ def print_metrics(total_a, first_a, latest_a, best_d, best_w, worst_d, worst_w,
 {get_history_detail('[total_warnings]')}{worst_w})\n",
                 '[no_missing]': no_miss_t, '[no_fingerprint]': no_fng_t,
                 '[no_ins_deprecated]': no_ins_t, '[no_empty]': no_ety_t + "\n",
-                '[analysis_year]': f"\n{year_a}"}
+                '[average_warnings]': f"{avg_w}\n", '[analysis_year]':
+                f"\n{year_a}"}
     return {get_history_detail(key): totals_m[key] for key in totals_m}
 
 

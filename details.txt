@@ -738,3 +738,6 @@ Analysis by year
 
 [analysis_y]
 Analysis
+
+[average_warnings]
+Warnings per analysis (Average)
