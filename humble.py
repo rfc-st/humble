@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-04-22)' + '\r\n'
+version = '\r\n' + '(ver. 2023-04-28)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 analysis_h_file = 'analysis_h.txt'
 
@@ -139,11 +139,11 @@ def save_extract_totals(t_cnt):
          open(analysis_h_file, 'r', encoding='utf8') as c_history:
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
 {e_cnt} ; {t_cnt}\n")
-        url_lines = [line for line in c_history if URL in line]
-        if not url_lines:
+        url_ln = [line for line in c_history if URL in line]
+        if not url_ln:
             return ("First",) * 5
-        date_var = max(line.split(" ; ")[0] for line in url_lines)
-        for line in url_lines:
+        date_var = max(line.split(" ; ")[0] for line in url_ln)
+        for line in url_ln:
             if date_var in line:
                 _, _, mh_cnt, fh_cnt, ih_cnt, eh_cnt, \
                     th_cnt = line.strip().split(' ; ')
@@ -184,68 +184,66 @@ def url_analytics():
     print("")
 
 
-def extract_first_metrics(url_lines):
-    first_a = min(f"{line.split(' ; ')[0]}" for line in url_lines)
-    latest_a = max(f"{line.split(' ; ')[0]}" for line in url_lines)
-    date_warning = [(line.split(" ; ")[0],
-                     int(line.strip().split(" ; ")[-1])) for line in
-                    url_lines]
-    best_date, best_w = min(date_warning, key=lambda x: x[1])
-    worst_date, worst_w = max(date_warning, key=lambda x: x[1])
-    return first_a, latest_a, best_date, best_w, worst_date, worst_w
+def extract_first_metrics(url_ln):
+    first_a = min(f"{line.split(' ; ')[0]}" for line in url_ln)
+    latest_a = max(f"{line.split(' ; ')[0]}" for line in url_ln)
+    date_w = [(line.split(" ; ")[0],
+               int(line.strip().split(" ; ")[-1])) for line in url_ln]
+    best_d, best_w = min(date_w, key=lambda x: x[1])
+    worst_d, worst_w = max(date_w, key=lambda x: x[1])
+    return first_a, latest_a, best_d, best_w, worst_d, worst_w
 
 
-def extract_second_metrics(url_lines, index, total_a):
-    metric_c = len([line for line in url_lines if int(line.split(' ; ')
-                                                      [index]) == 0])
+def extract_second_metrics(url_ln, index, total_a):
+    metric_c = len([line for line in url_ln if int(line.split(' ; ')[index])
+                    == 0])
     return f"{math.ceil(metric_c / total_a * 100)}% ({metric_c}\
 {get_history_detail('[pdf_po]')}{total_a})"
 
 
-def extract_years_metrics(url_lines):
-    year_counts = {}
-    for line in url_lines:
+def extract_years_metrics(url_ln):
+    year_cnt = {}
+    for line in url_ln:
         year = int(line.split(' ; ')[0][:4])
-        if year not in year_counts:
-            year_counts[year] = 1
+        if year not in year_cnt:
+            year_cnt[year] = 1
         else:
-            year_counts[year] += 1
-    sorted_years = sorted(year_counts.keys())
-    analysis_by_year = [f" {year}: {year_counts[year]}\
- {get_detail('[analysis_y]')}" for
-                        year in sorted_years]
-    return "\n".join(analysis_by_year)
+            year_cnt[year] += 1
+    years_srt = sorted(year_cnt.keys())
+    years_a = [f" {year}: {year_cnt[year]} {get_detail('[analysis_y]')}" for
+               year in years_srt]
+    return "\n".join(years_a)
 
 
 def extract_metrics(c_history):
-    url_lines = [line for line in c_history if URL in line]
-    total_a = len(url_lines)
-    if url_lines:
-        analysis_by_year = extract_years_metrics(url_lines)
-        first_a, latest_a, best_date, best_w, worst_date, worst_w = \
-            extract_first_metrics(url_lines)
-        no_miss_t, no_fng_t, no_ins_t, no_ety_t = \
-            [extract_second_metrics(url_lines, i, total_a) for i in
-             range(2, 6)]
-    else:
+    url_ln = [line for line in c_history if URL in line]
+    if not url_ln:
         print("")
         print(get_detail('[no_analysis]'))
         print("")
         sys.exit()
-    return {
-        get_history_detail('[total_analysis]'): total_a,
-        get_history_detail('[first_analysis_a]'): first_a,
-        get_history_detail('[latest_analysis]'): latest_a,
-        get_history_detail('[best_analysis]'): f"{best_date} " +
-        get_history_detail('[total_warnings]') + str(best_w) + ")",
-        get_history_detail('[worst_analysis]'): f"{worst_date} " +
-        get_history_detail('[total_warnings]') + str(worst_w) + ")\n",
-        get_history_detail('[no_missing]'): no_miss_t,
-        get_history_detail('[no_fingerprint]'): no_fng_t,
-        get_history_detail('[no_ins_deprecated]'): no_ins_t,
-        get_history_detail('[no_empty]'): no_ety_t + "\n",
-        get_history_detail('[analysis_year]'): f"\n{analysis_by_year}"
-    }
+    total_a = len(url_ln)
+    first_a, latest_a, best_d, best_w, worst_d, worst_w = \
+        extract_first_metrics(url_ln)
+    no_miss_t, no_fng_t, no_ins_t, no_ety_t = \
+        [extract_second_metrics(url_ln, i, total_a) for i in range(2, 6)]
+    year_a = extract_years_metrics(url_ln)
+    return print_metrics(total_a, first_a, latest_a, best_d, best_w, worst_d,
+                         worst_w, no_miss_t, no_fng_t, no_ins_t, no_ety_t,
+                         year_a)
+
+
+def print_metrics(total_a, first_a, latest_a, best_d, best_w, worst_d, worst_w,
+                  no_miss_t, no_fng_t, no_ins_t, no_ety_t, year_a):
+    totals_m = {'[total_analysis]': total_a, '[first_analysis_a]': first_a,
+                '[latest_analysis]': latest_a, '[best_analysis]':
+                f"{best_d} {get_history_detail('[total_warnings]')}{best_w})",
+                '[worst_analysis]': f"{worst_d} \
+{get_history_detail('[total_warnings]')}{worst_w})\n",
+                '[no_missing]': no_miss_t, '[no_fingerprint]': no_fng_t,
+                '[no_ins_deprecated]': no_ins_t, '[no_empty]': no_ety_t + "\n",
+                '[analysis_year]': f"\n{year_a}"}
+    return {get_history_detail(key): totals_m[key] for key in totals_m}
 
 
 def analysis_time():
