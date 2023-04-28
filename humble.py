@@ -42,7 +42,6 @@ from os import linesep, path, remove
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import sys
-import math
 import requests
 import tldextract
 
@@ -197,7 +196,7 @@ def extract_first_metrics(url_ln):
 def extract_second_metrics(url_ln, index, total_a):
     metric_c = len([line for line in url_ln if int(line.split(' ; ')[index])
                     == 0])
-    return f"{math.ceil(metric_c / total_a * 100)}% ({metric_c}\
+    return f"{metric_c / total_a * 100:.0f}% ({metric_c}\
 {get_history_detail('[pdf_po]')}{total_a})"
 
 
