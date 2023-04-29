@@ -60,7 +60,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-04-28)' + '\r\n'
+version = '\r\n' + '(ver. 2023-04-29)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 analysis_h_file = 'analysis_h.txt'
 
@@ -180,7 +180,6 @@ def url_analytics():
     print("")
     for key, value in analysis_stats.items():
         print(f"{key}: {value}")
-    print("")
 
 
 def extract_first_metrics(url_ln):

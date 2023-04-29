@@ -46,7 +46,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 13 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
-:heavy_check_mark: 734 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 742 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 58 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with values considered insecure.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
