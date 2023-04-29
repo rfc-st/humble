@@ -45,6 +45,7 @@ import sys
 import requests
 import tldextract
 
+A_FILE = 'analysis_h.txt'
 BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRI_R = Style.BRIGHT + Fore.RED
 CAN_S = ': https://caniuse.com/?search='
@@ -60,9 +61,8 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(ver. 2023-04-29)' + '\r\n'
+version = '\r\n' + '(v. 2023-04-29)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-analysis_h_file = 'analysis_h.txt'
 
 
 class PDF(FPDF):
@@ -134,8 +134,8 @@ def get_details_lines():
 
 
 def save_extract_totals(t_cnt):
-    with open(analysis_h_file, 'a+', encoding='utf8') as a_history, \
-         open(analysis_h_file, 'r', encoding='utf8') as c_history:
+    with open(A_FILE, 'a+', encoding='utf8') as a_history, \
+         open(A_FILE, 'r', encoding='utf8') as c_history:
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
 {e_cnt} ; {t_cnt}\n")
         url_ln = [line for line in c_history if URL in line]
@@ -172,8 +172,8 @@ def file_exists(filepath):
 
 
 def url_analytics():
-    file_exists(analysis_h_file)
-    with open(analysis_h_file, 'r', encoding='utf8') as c_history:
+    file_exists(A_FILE)
+    with open(A_FILE, 'r', encoding='utf8') as c_history:
         analysis_stats = extract_metrics(c_history)
     print("")
     print(f"{get_history_detail('[stats_analysis]')}{URL}")
