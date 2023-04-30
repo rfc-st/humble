@@ -189,7 +189,7 @@ def extract_first_metrics(url_ln):
                int(line.strip().split(" ; ")[-1])) for line in url_ln]
     best_d, best_w = min(date_w, key=lambda x: x[1])
     worst_d, worst_w = max(date_w, key=lambda x: x[1])
-    return first_a, latest_a, best_d, best_w, worst_d, worst_w
+    return (first_a, latest_a, best_d, best_w, worst_d, worst_w)
 
 
 def extract_second_metrics(url_ln, index, total_a):
@@ -226,29 +226,31 @@ def extract_metrics(c_history):
         print("")
         sys.exit()
     total_a = len(url_ln)
-    first_a, latest_a, best_d, best_w, worst_d, worst_w = \
-        extract_first_metrics(url_ln)
-    no_miss_t, no_fng_t, no_ins_t, no_ety_t = \
-        [extract_second_metrics(url_ln, i, total_a) for i in range(2, 6)]
+    first_metrics = extract_first_metrics(url_ln)
+    second_metrics = [extract_second_metrics(url_ln, i, total_a) for i in
+                      range(2, 6)]
     avg_w = extract_third_metrics(url_ln)
     year_a = extract_years_metrics(url_ln)
-    return print_metrics(total_a, first_a, latest_a, best_d, best_w, worst_d,
-                         worst_w, no_miss_t, no_fng_t, no_ins_t, no_ety_t,
-                         year_a, avg_w)
+    return print_metrics(total_a, first_metrics, second_metrics, year_a, avg_w)
 
 
-def print_metrics(total_a, first_a, latest_a, best_d, best_w, worst_d, worst_w,
-                  no_miss_t, no_fng_t, no_ins_t, no_ety_t, year_a, avg_w):
-    totals_m = {'[total_analysis]': total_a, '[first_analysis_a]': first_a,
-                '[latest_analysis]': latest_a, '[best_analysis]':
-                f"{best_d} {get_history_detail('[total_warnings]')}{best_w})",
-                '[worst_analysis]': f"{worst_d} \
-{get_history_detail('[total_warnings]')}{worst_w})\n",
-                '[no_missing]': no_miss_t, '[no_fingerprint]': no_fng_t,
-                '[no_ins_deprecated]': no_ins_t, '[no_empty]': no_ety_t + "\n",
-                '[average_warnings]': f"{avg_w}\n", '[analysis_year]':
-                f"\n{year_a}"}
-    return {get_history_detail(key): totals_m[key] for key in totals_m}
+def print_metrics(total_a, first_metrics, second_metrics, year_a, avg_w):
+    basic_metrics = {'[total_analysis]': total_a,
+                     '[first_analysis_a]': first_metrics[0],
+                     '[latest_analysis]': first_metrics[1]}
+    warning_metrics = {'[best_analysis]': f"{first_metrics[2]} \
+{get_history_detail('[total_warnings]')}{first_metrics[3]})",
+                       '[worst_analysis]': f"{first_metrics[4]} \
+{get_history_detail('[total_warnings]')}{first_metrics[5]})\n",
+                       '[average_warnings]': f"{avg_w}\n"}
+    error_metrics = {'[no_missing]': second_metrics[0],
+                     '[no_fingerprint]': second_metrics[1],
+                     '[no_ins_deprecated]': second_metrics[2],
+                     '[no_empty]': second_metrics[3] + "\n"}
+    analysis_year_metrics = {'[analysis_year]': f"\n{year_a}"}
+    totals_m = basic_metrics | warning_metrics | error_metrics | \
+        analysis_year_metrics
+    return {get_history_detail(key): value for key, value in totals_m.items()}
 
 
 def analysis_time():
