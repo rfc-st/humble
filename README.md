@@ -4,10 +4,11 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=latest%20release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/graphs/contributors" title="Commit activity for this tool"><img src="https://img.shields.io/github/commit-activity/m/rfc-st/humble?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_dependabot.jpg" title="Alerts enabled for vulnerabilities of the dependencies required by this tool"><img src="https://img.shields.io/badge/dependabot-Active-blue?labelColor=343b41"></a>  
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/owasp-resource-blue?labelColor=343b41"></a>
+<a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Tool accepted in Kali"><img src="https://user-content.gitlab-static.net/685f5ed7f1621fa5348b9f4e04788b84d6cdbf2f/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4b616c692d546f6f6c732d626c7565"></a>
+
 <br />
 <br />
 HTTP Headers Analyzer<br />
@@ -60,7 +61,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Fully tested and working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
 :heavy_check_mark: All code under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
-:heavy_check_mark: Technical resource accepted in the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">Secure Headers</a> Project.<br />
+:heavy_check_mark: Technical resource accepted in the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">Secure Headers</a> Project and <a href="https://pkg.kali.org/pkg/humble" target="_blank">Kali</a>.<br />
 <br />
 
 ## Screenshots
