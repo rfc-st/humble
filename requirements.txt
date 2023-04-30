@@ -1,4 +1,4 @@
 colorama>=0.4.6
-fpdf2>=2.6.0
-requests>=2.28.1
-tldextract>=3.4.0
+fpdf2>=2.7.3
+requests>=2.29.0
+tldextract>=3.4.1
