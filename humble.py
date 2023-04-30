@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-04-29)' + '\r\n'
+version = '\r\n' + '(v. 2023-04-30)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
