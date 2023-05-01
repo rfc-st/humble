@@ -701,7 +701,7 @@ First Analysis
 Statistics of 
 
 [total_analysis]
-Total analysis  
+Analyses done   
 
 [first_analysis_a]
 First analysis  
@@ -741,3 +741,6 @@ Analysis
 
 [average_warnings]
 Warnings per analysis (Average)
+
+[average_warnings_year]
+Warnings per year (Average)

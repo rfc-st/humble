@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-04-30)' + '\r\n'
+version = '\r\n' + '(v. 2023-05-01)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -199,25 +199,26 @@ def extract_second_metrics(url_ln, index, total_a):
 {get_history_detail('[pdf_po]')}{total_a})"
 
 
-def extract_years_metrics(url_ln):
+def extract_year_metrics(url_ln):
     year_cnt = {}
     for line in url_ln:
         year = int(line.split(' ; ')[0][:4])
         if year not in year_cnt:
-            year_cnt[year] = 1
+            year_cnt[year] = (1, int(line.split(' ; ')[-1]))
         else:
-            year_cnt[year] += 1
-    years_srt = sorted(year_cnt.keys())
-    years_a = [f" {year}: {year_cnt[year]} {get_detail('[analysis_y]')}" for
-               year in years_srt]
-    return "".join(years_a)
+            year_cnt[year] = (year_cnt[year][0] + 1,
+                              year_cnt[year][1] + int(line.split(' ; ')[-1]))
+    years_str = [f" {year}: {year_cnt[year][0]} {get_detail('[analysis_y]')}"
+                 for year in sorted(year_cnt.keys())]
+    avg_w_y = (sum(count[1] for count in year_cnt.values()) // len(year_cnt))
+    return "".join(years_str), avg_w_y
 
 
 def extract_additional_metrics(url_ln):
     avg_w = int(sum(int(line.split(' ; ')[-1]) for line in url_ln) /
                 len(url_ln))
-    year_a = extract_years_metrics(url_ln)
-    return avg_w, year_a
+    year_a, avg_w_y = extract_year_metrics(url_ln)
+    return (avg_w, year_a, avg_w_y)
 
 
 def extract_metrics(c_history):
@@ -237,17 +238,18 @@ def extract_metrics(c_history):
 
 def print_metrics(total_a, first_m, second_m, additional_m):
     basic_m = {'[total_analysis]': total_a, '[first_analysis_a]': first_m[0],
-               '[latest_analysis]': first_m[1]}
-    warning_m = {'[best_analysis]': f"{first_m[2]} \
+               '[latest_analysis]': first_m[1], '[best_analysis]':
+               f"{first_m[2]} \
 {get_history_detail('[total_warnings]')}{first_m[3]})",
-                 '[worst_analysis]': f"{first_m[4]} \
-{get_history_detail('[total_warnings]')}{first_m[5]})\n",
-                 '[average_warnings]': f"{additional_m[0]}\n"}
+               '[worst_analysis]': f"{first_m[4]} \
+{get_history_detail('[total_warnings]')}{first_m[5]})\n"}
     error_m = {'[no_missing]': second_m[0], '[no_fingerprint]': second_m[1],
                '[no_ins_deprecated]': second_m[2],
                '[no_empty]': second_m[3] + "\n"}
+    warning_m = {'[average_warnings]': f"{additional_m[0]}",
+                 '[average_warnings_year]': f"{additional_m[2]}\n"}
     analysis_year_m = {'[analysis_year]': f"\n{additional_m[1]}"}
-    totals_m = basic_m | warning_m | error_m | analysis_year_m
+    totals_m = basic_m | error_m | warning_m | analysis_year_m
     return {get_history_detail(key): value for key, value in totals_m.items()}
 
 

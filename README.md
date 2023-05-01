@@ -96,13 +96,13 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Export analysis to HTML" width=70% height=70%>
 </p>
 <br />
-.: History file: Date + URL + Missing + Fingerprint + Deprecated/Insecure + Empty headers + Total warnings.<br />
+.: Example of history file: Date, URL, Missing, Fingerprint, Deprecated/Insecure, Empty headers and Total warnings.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_ah.PNG" alt="History of analysis performed">
 </p>
 <br />
-.: Statistics of the analyses performed.<br />
+.: Example of statistics of the analyses performed.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_analytics.jpg" alt="Statistics of the analysis performed against a URL">

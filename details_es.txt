@@ -741,3 +741,6 @@ Análisis
 
 [average_warnings]
 Promedio de advertencias por análisis
+
+[average_warnings_year]
+Promedio de advertencias por año
