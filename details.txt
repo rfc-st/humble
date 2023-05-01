@@ -740,7 +740,22 @@ Analysis by year
 Analysis
 
 [average_warnings]
-Warnings per analysis (Average)
+ Warnings per analysis                               
 
 [average_warnings_year]
-Warnings per year (Average)
+ Warnings per year                                   
+
+[average_miss]
+ Missing headers per analysis                        
+
+[average_fng]
+ Fingerprint headers per analysis                    
+
+[average_dep]
+ Insecure/deprecated headers/protocols per analysis  
+
+[average_ety]
+ Empty headers per analysis                          
+
+[averages]
+Averages

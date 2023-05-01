@@ -740,7 +740,22 @@ Análisis por año
 Análisis
 
 [average_warnings]
-Promedio de advertencias por análisis
+ Advertencias por análisis                                          
 
 [average_warnings_year]
-Promedio de advertencias por año
+ Advertencias por año                                               
+
+[average_miss]
+ Cabeceras sin habilitar por análisis                               
+
+[average_fng]
+ Cabeceras con huella digital por análisis                          
+
+[average_dep]
+ Cabeceras/protocolos con valores inseguros/deprecados por análisis 
+
+[average_ety]
+ Cabeceras vacías por análisis                                      
+
+[averages]
+Promedios

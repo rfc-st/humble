@@ -199,6 +199,16 @@ def extract_second_metrics(url_ln, index, total_a):
 {get_history_detail('[pdf_po]')}{total_a})"
 
 
+def extract_third_metrics(url_ln):
+    fields = [line.strip().split(';') for line in url_ln]
+    total_miss, total_fng, total_dep, total_ety = \
+        [sum(int(f[i]) for f in fields) for i in range(2, 6)]
+    num_a = len(url_ln)
+    avg_miss, avg_fng, avg_dep, avg_ety = \
+        [t // num_a for t in (total_miss, total_fng, total_dep, total_ety)]
+    return (avg_miss, avg_fng, avg_dep, avg_ety)
+
+
 def extract_year_metrics(url_ln):
     year_cnt = {}
     for line in url_ln:
@@ -232,11 +242,12 @@ def extract_metrics(c_history):
     first_m = extract_first_metrics(url_ln)
     second_m = [extract_second_metrics(url_ln, i, total_a) for i in
                 range(2, 6)]
+    third_m = extract_third_metrics(url_ln)
     additional_m = extract_additional_metrics(url_ln)
-    return print_metrics(total_a, first_m, second_m, additional_m)
+    return print_metrics(total_a, first_m, second_m, third_m, additional_m)
 
 
-def print_metrics(total_a, first_m, second_m, additional_m):
+def print_metrics(total_a, first_m, second_m, third_m, additional_m):
     basic_m = {'[total_analysis]': total_a, '[first_analysis_a]': first_m[0],
                '[latest_analysis]': first_m[1], '[best_analysis]':
                f"{first_m[2]} \
@@ -246,10 +257,13 @@ def print_metrics(total_a, first_m, second_m, additional_m):
     error_m = {'[no_missing]': second_m[0], '[no_fingerprint]': second_m[1],
                '[no_ins_deprecated]': second_m[2],
                '[no_empty]': second_m[3] + "\n"}
-    warning_m = {'[average_warnings]': f"{additional_m[0]}",
-                 '[average_warnings_year]': f"{additional_m[2]}\n"}
+    warning_m = {'[averages]': "", '[average_warnings]': f"{additional_m[0]}",
+                 '[average_warnings_year]': f"{additional_m[2]}"}
+    averages_m = {'[average_miss]': f"{third_m[0]}", '[average_fng]':
+                  f"{third_m[1]}", '[average_dep]': f"{third_m[2]}",
+                  '[average_ety]': f"{third_m[3]}\n"}
     analysis_year_m = {'[analysis_year]': f"\n{additional_m[1]}"}
-    totals_m = basic_m | error_m | warning_m | analysis_year_m
+    totals_m = basic_m | error_m | warning_m | averages_m | analysis_year_m
     return {get_history_detail(key): value for key, value in totals_m.items()}
 
 
