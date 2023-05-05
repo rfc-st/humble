@@ -258,6 +258,9 @@
 [iseti_h]
  Set-Cookie (Esquema inseguro)
 
+[iseti_m]
+ Set-Cookie (Atributo ausente)
+
 [ists_h]
  Strict-Transport-Security (Valores recomendados)
 
@@ -566,11 +569,15 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 
 [iset]
- Habilite 'secure' y 'httponly': para enviarla mediante HTTPS y evitar que sea accedida por APIs.
+ Habilite 'Secure' y 'HttpOnly': para enviarla mediante HTTPS y evitar que sea accedida por APIs.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [iseti]
- Las cookies con atributos 'secure' deben enviarse vía HTTPS (excepto en localhost).
+ Las cookies con atributos 'Secure' deben enviarse vía HTTPS (excepto en localhost).
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+
+[isetm]
+ Las cookies 'SameSite=None' también deben establecerse con el atributo 'Secure'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [ists]

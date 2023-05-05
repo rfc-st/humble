@@ -868,6 +868,8 @@ if ck_header:
         print_details("[iset_h]", "[iset]", "d", i_cnt)
     if (URL.startswith(INS_S)) and ('secure' in ck_header):
         print_details("[iseti_h]", "[iseti]", "d", i_cnt)
+    if "samesite=none" in ck_header and "secure" not in ck_header:
+        print_details("[iseti_m]", "[isetm]", "d", i_cnt)
 
 sts_header = headers.get('Strict-Transport-Security', '').lower()
 if (sts_header) and not (URL.startswith(INS_S)):
