@@ -474,8 +474,8 @@ def request_exceptions():
         # development environments, etc.
         r = requests.get(URL, verify=False, headers=c_headers, timeout=15)
         status_c = r.status_code
-        r.raise_for_status()
         headers = r.headers
+        r.raise_for_status()
     except requests.exceptions.HTTPError as err_http:
         if err_http.response.status_code == 407:
             detail_exceptions('[e_proxy]', err_http)
