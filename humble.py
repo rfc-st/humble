@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-01)' + '\r\n'
+version = '\r\n' + '(v. 2023-05-05)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -335,13 +335,9 @@ def print_summary():
     print_detail_l('[info]')
     print(f" {now}")
     print(f' URL  : {URL}')
-    if r.status_code in CLI_E:
-        print_http_e()
-
-
-def print_http_e():
-    id_mode = f"[http_{r.status_code}]"
-    print(f"{get_detail(id_mode)}")
+    if status_code in CLI_E:
+        id_mode = f"[http_{status_code}]"
+        print(f"{get_history_detail(id_mode)}")
 
 
 def print_headers():
@@ -435,10 +431,8 @@ def fingerprint_headers(headers, l_fng, l_fng_ex):
     f_cnt = 0
     matching_headers = sorted([header for header in headers if any(elem.lower()
                                in headers for elem in l_fng)])
-
     l_fng = [x.title() for x in l_fng]
     matching_headers = [x.title() for x in matching_headers]
-
     for key in matching_headers:
         if key in l_fng:
             if not args.brief:
@@ -471,9 +465,17 @@ def detail_exceptions(id_exception, exception_v):
 
 
 def request_exceptions():
+    headers = {}
+    status_c = None
     try:
-        r = requests.get(URL, timeout=15)
+        # Yes: Server certificates should be verified during SSL/TLS
+        # connections. Despite this, I think 'verify=False' would benefit
+        # analysis of URLs with self-signed certificates, associated with
+        # development environments, etc.
+        r = requests.get(URL, verify=False, headers=c_headers, timeout=15)
+        status_c = r.status_code
         r.raise_for_status()
+        headers = r.headers
     except requests.exceptions.HTTPError as err_http:
         if err_http.response.status_code == 407:
             detail_exceptions('[e_proxy]', err_http)
@@ -485,6 +487,7 @@ def request_exceptions():
             detail_exceptions(ex, e)
     except requests.exceptions.RequestException as err:
         raise SystemExit from err
+    return headers, status_c
 
 
 init(autoreset=True)
@@ -558,17 +561,12 @@ exception_d = {
     requests.exceptions.SSLError: None,
     requests.exceptions.Timeout: '[e_timeout]',
 }
-request_exceptions()
+requests.packages.urllib3.disable_warnings()
 
 c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
 
-# Yes: Server certificates should be verified during SSL/TLS connections.
-# Despite this, I think 'verify=False' would benefit analysis of URLs with
-# self-signed certificates, associated with development environments, etc.
-requests.packages.urllib3.disable_warnings()
-r = requests.get(URL, verify=False, headers=c_headers, timeout=15)
-headers = r.headers
+headers, status_code = request_exceptions()
 
 # Export analysis
 date_now = datetime.now().strftime("%Y%m%d")
