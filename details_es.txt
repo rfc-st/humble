@@ -722,16 +722,16 @@ Peor análisis
 Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análisis contra esa URL.
 
 [no_missing]
-Análisis sin cabeceras por habilitar                  
+ Sin cabeceras por habilitar                            
 
 [no_fingerprint]
-Análisis sin huellas digitales                        
+ Sin huellas digitales                                  
 
 [no_ins_deprecated]
-Análisis sin valores o protocolos inseguros/obsoletos 
+ Sin cabeceras/protocolos inseguros/obsoletos           
 
 [no_empty]
-Análisis sin cabeceras vacías                         
+ Sin cabeceras vacías                                   
 
 [analysis_year]
 Análisis por año
@@ -740,22 +740,22 @@ Análisis por año
 Análisis
 
 [average_warnings]
- Advertencias por análisis                                          
+ Advertencias por análisis                              
 
 [average_warnings_year]
- Advertencias por año                                               
+ Advertencias por año                                   
 
 [average_miss]
- Cabeceras sin habilitar por análisis                               
+ Cabeceras sin habilitar por análisis                   
 
 [average_fng]
- Cabeceras con huella digital por análisis                          
+ Cabeceras con huella digital por análisis              
 
 [average_dep]
- Cabeceras/protocolos con valores inseguros/deprecados por análisis 
+ Cabeceras/protocolos inseguros/obsoletos por análisis  
 
 [average_ety]
- Cabeceras vacías por análisis                                      
+ Cabeceras vacías por análisis                          
 
 [averages]
 Promedios

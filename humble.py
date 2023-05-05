@@ -254,8 +254,9 @@ def print_metrics(total_a, first_m, second_m, third_m, additional_m):
 {get_history_detail('[total_warnings]')}{first_m[3]})",
                '[worst_analysis]': f"{first_m[4]} \
 {get_history_detail('[total_warnings]')}{first_m[5]})\n"}
-    error_m = {'[no_missing]': second_m[0], '[no_fingerprint]': second_m[1],
-               '[no_ins_deprecated]': second_m[2],
+    error_m = {'[analysis_y]': "", '[no_missing]': second_m[0],
+               '[no_fingerprint]': second_m[1], '[no_ins_deprecated]':
+               second_m[2],
                '[no_empty]': second_m[3] + "\n"}
     warning_m = {'[averages]': "", '[average_warnings]': f"{additional_m[0]}",
                  '[average_warnings_year]': f"{additional_m[2]}"}
