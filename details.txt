@@ -708,19 +708,19 @@ First Analysis
 Statistics of 
 
 [total_analysis]
-Analyses done   
+ Analyses done   
 
 [first_analysis_a]
-First analysis  
+ First analysis  
 
 [latest_analysis]
-Latest analysis 
+ Latest analysis 
 
 [best_analysis]
-Best analysis   
+ Best analysis   
 
 [worst_analysis]
-Worst analysis  
+ Worst analysis  
 
 [total_warnings]
 (Warnings: 
@@ -741,7 +741,7 @@ To use this option ('-a') you must have run at least one scan against that URL.
  Without empty headers                               
 
 [analysis_year]
-Analysis by year
+Per year
 
 [analysis_y]
 Analysis
@@ -766,3 +766,6 @@ Analysis
 
 [averages]
 Averages
+
+[main]
+Main

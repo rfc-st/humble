@@ -708,19 +708,19 @@ Primer analisis
 Estadísticas de 
 
 [total_analysis]
-Análisis realizados 
+ Análisis realizados 
 
 [first_analysis_a]
-Primer análisis     
+ Primer análisis     
 
 [latest_analysis]
-Último análisis     
+ Último análisis     
 
 [best_analysis]
-Mejor análisis      
+ Mejor análisis      
 
 [worst_analysis]
-Peor análisis       
+ Peor análisis       
 
 [total_warnings]
 (Advertencias: 
@@ -741,7 +741,7 @@ Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análi
  Sin cabeceras vacías                                   
 
 [analysis_year]
-Análisis por año
+Por año
 
 [analysis_y]
 Análisis
@@ -766,3 +766,6 @@ Análisis
 
 [averages]
 Promedios
+
+[main]
+Principales

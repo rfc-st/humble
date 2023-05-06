@@ -179,6 +179,9 @@ def url_analytics():
     print(f"{get_detail('[stats_analysis]', replace=True)}{URL}")
     print("")
     for key, value in analysis_stats.items():
+        if key in ('Main', 'Analysis', 'Averages', 'Per year', 'Principales',
+                   'Análisis', 'Promedios', 'Por año'):
+            key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}"
         print(f"{key}: {value}")
 
 
@@ -248,9 +251,9 @@ def extract_metrics(c_history):
 
 
 def print_metrics(total_a, first_m, second_m, third_m, additional_m):
-    basic_m = {'[total_analysis]': total_a, '[first_analysis_a]': first_m[0],
-               '[latest_analysis]': first_m[1], '[best_analysis]':
-               f"{first_m[2]} \
+    basic_m = {'[main]': "", '[total_analysis]': total_a,
+               '[first_analysis_a]': first_m[0], '[latest_analysis]':
+               first_m[1], '[best_analysis]': f"{first_m[2]} \
 {get_detail('[total_warnings]', replace=True)}{first_m[3]})",
                '[worst_analysis]': f"{first_m[4]} \
 {get_detail('[total_warnings]', replace=True)}{first_m[5]})\n"}
