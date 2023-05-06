@@ -181,7 +181,9 @@ def url_analytics():
     for key, value in analysis_stats.items():
         if not value or key in ('Per year', 'Por año'):
             key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}"
-        print(f"{key}: {value}")
+            print(f"{key}{value}")
+        else:
+            print(f"{key}: {value}")
 
 
 def extract_first_metrics(url_ln):
