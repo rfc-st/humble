@@ -179,8 +179,7 @@ def url_analytics():
     print(f"{get_detail('[stats_analysis]', replace=True)}{URL}")
     print("")
     for key, value in analysis_stats.items():
-        if key in ('Main', 'Analysis', 'Averages', 'Per year', 'Principales',
-                   'Análisis', 'Promedios', 'Por año'):
+        if not value or key in ('Per year', 'Por año'):
             key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}"
         print(f"{key}: {value}")
 
