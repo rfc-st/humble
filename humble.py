@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-05)' + '\r\n'
+version = '\r\n' + '(v. 2023-05-06)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -176,7 +176,7 @@ def url_analytics():
     with open(A_FILE, 'r', encoding='utf8') as c_history:
         analysis_stats = extract_metrics(c_history)
     print("")
-    print(f"{get_history_detail('[stats_analysis]')}{URL}")
+    print(f"{get_detail('[stats_analysis]', replace=True)}{URL}")
     print("")
     for key, value in analysis_stats.items():
         print(f"{key}: {value}")
@@ -196,7 +196,7 @@ def extract_second_metrics(url_ln, index, total_a):
     metric_c = len([line for line in url_ln if int(line.split(' ; ')[index])
                     == 0])
     return f"{metric_c / total_a * 100:.0f}% ({metric_c}\
-{get_history_detail('[pdf_po]')}{total_a})"
+{get_detail('[pdf_po]', replace=True)}{total_a})"
 
 
 def extract_third_metrics(url_ln):
@@ -251,9 +251,9 @@ def print_metrics(total_a, first_m, second_m, third_m, additional_m):
     basic_m = {'[total_analysis]': total_a, '[first_analysis_a]': first_m[0],
                '[latest_analysis]': first_m[1], '[best_analysis]':
                f"{first_m[2]} \
-{get_history_detail('[total_warnings]')}{first_m[3]})",
+{get_detail('[total_warnings]', replace=True)}{first_m[3]})",
                '[worst_analysis]': f"{first_m[4]} \
-{get_history_detail('[total_warnings]')}{first_m[5]})\n"}
+{get_detail('[total_warnings]', replace=True)}{first_m[5]})\n"}
     error_m = {'[analysis_y]': "", '[no_missing]': second_m[0],
                '[no_fingerprint]': second_m[1], '[no_ins_deprecated]':
                second_m[2],
@@ -265,7 +265,8 @@ def print_metrics(total_a, first_m, second_m, third_m, additional_m):
                   '[average_ety]': f"{third_m[3]}\n"}
     analysis_year_m = {'[analysis_year]': f"\n{additional_m[1]}"}
     totals_m = basic_m | error_m | warning_m | averages_m | analysis_year_m
-    return {get_history_detail(key): value for key, value in totals_m.items()}
+    return {get_detail(key, replace=True): value for key, value in
+            totals_m.items()}
 
 
 def analysis_time():
@@ -338,7 +339,7 @@ def print_summary():
     print(f' URL  : {URL}')
     if status_code in CLI_E:
         id_mode = f"[http_{status_code}]"
-        print(f"{get_history_detail(id_mode)}")
+        print(f"{get_detail(id_mode, replace=True)}")
 
 
 def print_headers():
@@ -387,16 +388,11 @@ def print_detail_r(id_mode, is_red=False):
                 print("")
 
 
-def get_detail(id_mode):
+def get_detail(id_mode, replace=False):
     for i, line in enumerate(details_f):
         if line.startswith(id_mode):
-            return details_f[i+1]
-
-
-def get_history_detail(id_mode):
-    for i, line in enumerate(details_f):
-        if line.startswith(id_mode):
-            return (details_f[i+1].replace('\n', ''))
+            return (details_f[i+1].replace('\n', '')) if replace else \
+                details_f[i+1]
 
 
 def python_ver():
