@@ -260,8 +260,7 @@ def print_metrics(total_a, first_m, second_m, third_m, additional_m):
 {get_detail('[total_warnings]', replace=True)}{first_m[5]})\n"}
     error_m = {'[analysis_y]': "", '[no_missing]': second_m[0],
                '[no_fingerprint]': second_m[1], '[no_ins_deprecated]':
-               second_m[2],
-               '[no_empty]': second_m[3] + "\n"}
+               second_m[2], '[no_empty]': second_m[3] + "\n"}
     warning_m = {'[averages]': "", '[average_warnings]': f"{additional_m[0]}",
                  '[average_warnings_year]': f"{additional_m[2]}"}
     averages_m = {'[average_miss]': f"{third_m[0]}", '[average_fng]':
@@ -1073,25 +1072,24 @@ text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko \
 
         for ln in input_file:
             if 'rfc-st' in ln:
-                output.write(ln[:2] + sub_d['ahref_s'] + ln[2:-2] +
-                             sub_d['close_t'] + ln[2:] + sub_d['ahref_f'])
+                output.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-2]}\
+                             {sub_d['close_t']}{ln[2:]}{sub_d['ahref_f']}")
             elif ' URL  : ' in ln:
-                output.write(ln[:7] + sub_d['ahref_s'] + ln[7:] +
-                             sub_d['close_t'] + ln[7:] + sub_d['ahref_f'])
+                output.write(f"{ln[:7]}{sub_d['ahref_s']}{ln[7:]}\
+                             {sub_d['close_t']}{ln[7:]}{sub_d['ahref_f']}")
             elif any(s in ln for s in BOLD_S):
-                output.write('<strong>' + ln + '</strong>')
+                output.write(f'<strong>{ln}</strong>')
             elif get_detail('[ok]') in ln:
-                output.write('<span class="ok">' + ln + sub_d['span_f'])
+                output.write(f'<span class="ok">{ln}{sub_d["span_f"]}')
             elif get_detail('[bcompat_n]') in ln:
-                output.write(sub_d['span_ko'] + ln + sub_d['span_f'])
+                output.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}")
             elif ' Ref: ' in ln:
-                output.write(ln[:6] + sub_d['ahref_s'] + ln[6:] +
-                             sub_d['close_t'] + ln[6:] + sub_d['ahref_f'])
+                output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}\
+                             {sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}")
             elif 'caniuse' in ln:
-                ln = sub_d['span_h'] + ln[1:ln.index(": ")] + ": " +\
-                     sub_d['span_f'] + sub_d['ahref_s'] +\
-                     ln[ln.index(SEC_S):] + sub_d['close_t'] +\
-                     ln[ln.index(SEC_S):] + sub_d['ahref_f']
+                ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: \
+{sub_d['span_f']}{sub_d['ahref_s']}{ln[ln.index(SEC_S):]}{sub_d['close_t']}\
+{ln[ln.index(SEC_S):]}{sub_d['ahref_f']}"
                 output.write(ln)
             else:
                 for i in headers:
