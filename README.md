@@ -41,6 +41,7 @@ HTTP Headers Analyzer<br />
 [To-Do](#to-do)<br />
 [Further Reading](#further-reading)<br />
 [Contribute](#contribute)<br />
+[Acknowledgements](#acknowledgements)<br />
 [License](#license)<br />
 <br />
 
@@ -291,6 +292,10 @@ https://www.w3.org<br />
 * Send me an email with your suggestions!: rafael.fcucalon@gmail.com
 
 Thanks for your time!! :).
+
+## Acknowledgements
+* <a href="https://github.com/Azathothas">Azathothas</a> for reporting this <a href="https://github.com/rfc-st/humble/issues/4">bug</a>.
+* İDRİS BUDAK for reporting the need to <a href="https://github.com/rfc-st/humble/commit/f85dd7811859fd2e403a0ecd848b21db20949841">this</a> check.
 
 ## License
 
