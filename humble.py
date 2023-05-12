@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-06)' + '\r\n'
+version = '\r\n' + '(v. 2023-05-12)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -920,6 +920,8 @@ if xfo_header:
         print_details('[ixfo_h]', '[ixfo]', 'm', i_cnt)
     if 'allow-from' in xfo_header:
         print_details('[ixfod_h]', '[ixfod]', 'm', i_cnt)
+    if xfo_header not in ['deny', 'sameorigin']:
+        print_details('[ixfoi_h]', '[ixfodi]', 'm', i_cnt)
 
 if 'X-Pad' in headers:
     print_details('[ixpad_h]', '[ixpad]', 'd', i_cnt)

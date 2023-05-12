@@ -297,6 +297,9 @@
 [ixfod_h]
  X-Frame-Options (Deprecated Values)
 
+[ixfoi_h]
+ X-Frame-Options (Incorrect Values)
+
 [ixpad_h]
  X-Pad (Deprecated Header)
 
@@ -639,6 +642,11 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 
 [ixfod]
  "ALLOW-FROM" no longer works in modern browsers.
+ Replace this header with the Content-Security-Policy 'frame-ancestors' directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+
+[ixfodi]
+ The only values allowed for this header are "DENY" or "SAMEORIGIN".
  Replace this header with the Content-Security-Policy 'frame-ancestors' directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
