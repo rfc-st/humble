@@ -575,7 +575,7 @@ extension = "t.txt" if args.output in ['pdf', 'html'] else ".txt"
 if args.output:
     orig_stdout = sys.stdout
     name_s = tldextract.extract(URL)
-    name_e = name_s.domain + "_headers_" + date_now + extension
+    name_e = f"{name_s.domain}_headers_{date_now}{extension}"
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
@@ -1035,7 +1035,7 @@ elif args.output == 'pdf':
         pdf.set_text_color(0, 0, 0)
         pdf.multi_cell(197, 2.6, txt=x, align='L')
 
-    name_p = name_e[:-5] + ".pdf"
+    name_p = f"{name_e[:-5]}.pdf"
     pdf.output(name_p)
     print_path(name_p)
     f.close()
@@ -1046,16 +1046,16 @@ elif args.output == 'html':
 
     # HTML Template
     title = get_detail('[pdf_s]')
-    header = '<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
-<title>' + title + '</title><style>pre {overflow-x: auto; white-space: \
+    header = f'<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
+<title>{title}</title><style>pre {{overflow-x: auto; white-space: \
 pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: \
--o-pre-wrap; word-wrap: break-word; font-size: medium;} a {color: blue; \
-text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko \
-{color: red;} </style></head>'
+-o-pre-wrap; word-wrap: break-word; font-size: medium;}} a {{color: blue; \
+text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
+.ko {{color: red;}} </style></head>'
     body = '<body><pre>'
     footer = '</pre></body></html>'
 
-    name_p = name_e[:-5] + ".html"
+    name_p = f"{name_e[:-5]}.html"
     l_miss.extend(['Pragma', 'WWW-Authenticate', 'X-Frame-Options',
                    'X-Robots-Tag', 'X-UA-compatible'])
     l_final = sorted(l_miss + l_ins)
