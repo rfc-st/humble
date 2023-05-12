@@ -294,7 +294,7 @@ https://www.w3.org<br />
 Thanks for your time!! :).
 
 ## Acknowledgements
-* <a href="https://github.com/Azathothas">Azathothas</a> for reporting this <a href="https://github.com/rfc-st/humble/issues/4">bug</a>.
+* <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
 * İDRİS BUDAK for reporting the need to <a href="https://github.com/rfc-st/humble/commit/f85dd7811859fd2e403a0ecd848b21db20949841">this</a> check.
 
 ## License
