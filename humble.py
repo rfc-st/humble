@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-12)' + '\r\n'
+version = '\r\n' + '(v. 2023-05-13)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -89,14 +89,14 @@ class PDF(FPDF):
 
 
 def pdf_metadata():
-    title = (get_detail('[pdf_m]')).replace('\n', '') + URL
+    title = get_detail('[pdf_m]', replace=True) + URL
     git_urlc = f"{GIT_U} {version.strip()}"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
     pdf.set_creator(git_urlc)
-    pdf.set_keywords(get_detail('[pdf_k]').replace('\n', ''))
+    pdf.set_keywords(get_detail('[pdf_k]', replace=True))
     pdf.set_lang(get_detail('[pdf_l]'))
-    pdf.set_subject(get_detail('[pdf_s]').replace('\n', ''))
+    pdf.set_subject(get_detail('[pdf_s]', replace=True))
     pdf.set_title(title)
     pdf.set_producer(git_urlc)
 
@@ -153,7 +153,7 @@ def save_extract_totals(t_cnt):
 def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
                    th_cnt, t_cnt):
     if mh_cnt == "First":
-        return [get_detail('[first_one]').replace("\n", "")] * 5
+        return [get_detail('[first_one]', replace=True)] * 5
     mhr_cnt = int(m_cnt) - int(mh_cnt)
     fhr_cnt = int(f_cnt) - int(fh_cnt)
     ihr_cnt = int(i_cnt[0]) - int(ih_cnt)
