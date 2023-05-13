@@ -249,6 +249,9 @@
 [irefi_h]
  Referrer-Policy (Unsafe Value)
 
+[irefn_h]
+ Referrer-Policy (Incorrect Value)
+
 [itim_h]
  Server-Timing (Potentially Unsafe Header)
 
@@ -569,6 +572,10 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 
 [irefi]
  'unsafe-url' will leak potentially-private information from HTTPS URLs to insecure origins.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
+[irefn]
+ Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 
 [iset]

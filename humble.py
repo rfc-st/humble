@@ -701,8 +701,6 @@ l_legacy = ['application/javascript', 'application/ecmascript',
             'text/javascript1.5', 'text/jscript', 'text/livescript',
             'text/x-ecmascript', 'text/x-javascript']
 
-# https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
-# https://csplite.com/fp/
 l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'bluetooth', 'browsing-topics', 'camera', 'ch-ua', 'ch-ua-arch',
               'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
@@ -722,19 +720,21 @@ l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'navigation-override', 'oversized-images', 'payment',
               'picture-in-picture', 'publickey-credentials-get',
               'run-ad-auction', 'screen-wake-lock', 'serial',
-              'shared-autofill', 'speaker', 'speaker-selection',
-              'sync-script', 'sync-xhr', 'trust-token-redemption', 'unload',
+              'shared-autofill', 'speaker', 'speaker-selection', 'sync-script',
+              'sync-xhr', 'trust-token-redemption', 'unload',
               'unoptimized-images', 'unoptimized-lossless-images',
-              'unoptimized-lossless-images-strict',
-              'unoptimized-lossy-images', 'unsized-media', 'usb',
-              'vertical-scroll', 'vibrate', 'wake-lock', 'web-share',
-              'window-placement', 'xr-spatial-tracking']
+              'unoptimized-lossless-images-strict', 'unoptimized-lossy-images',
+              'unsized-media', 'usb', 'vertical-scroll', 'vibrate',
+              'wake-lock', 'web-share', 'window-placement',
+              'xr-spatial-tracking']
 
-l_ref = ['strict-origin', 'strict-origin-when-cross-origin',
-         'no-referrer-when-downgrade', 'no-referrer']
+l_ref_secure = ['strict-origin', 'strict-origin-when-cross-origin',
+                'no-referrer-when-downgrade', 'no-referrer']
 
-# https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
-# https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
+l_ref_values = ['no-referrer', 'no-referrer-when-downgrade', 'origin',
+                'origin-when-cross-origin', 'same-origin', 'strict-origin',
+                'strict-origin-when-cross-origin', 'unsafe-url']
+
 l_robots = ['all', 'indexifembedded', 'max-image-preview', 'max-snippet',
             'max-video-preview', 'noarchive', 'noodp', 'nofollow',
             'noimageindex', 'noindex', 'none', 'nositelinkssearchbox',
@@ -826,6 +826,8 @@ if URL.startswith(INS_S):
 if 'Large-Allocation' in headers:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd', i_cnt)
 
+# https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+# https://csplite.com/fp/
 perm_header = headers.get('Permissions-Policy', '').lower()
 if perm_header:
     if not any(elem in perm_header for elem in l_per_feat):
@@ -851,12 +853,15 @@ if 'Pragma' in headers:
 if 'Public-Key-Pins' in headers:
     print_details('[ipkp_h]', '[ipkp]', 'd', i_cnt)
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 referrer_header = headers.get('Referrer-Policy', '').lower()
 if referrer_header:
-    if not any(elem in referrer_header for elem in l_ref):
+    if not any(elem in referrer_header for elem in l_ref_secure):
         print_details('[iref_h]', '[iref]', 'm', i_cnt)
     if 'unsafe-url' in referrer_header:
         print_details('[irefi_h]', '[irefi]', 'd', i_cnt)
+    if not any(elem in referrer_header for elem in l_ref_values):
+        print_details('[irefn_h]', '[irefn]', 'd', i_cnt)
 
 if 'Server-Timing' in headers:
     print_details('[itim_h]', '[itim]', 'd', i_cnt)
@@ -932,6 +937,8 @@ if headers.get('X-Permitted-Cross-Domain-Policies', '') == 'all':
 if headers.get('X-Pingback', '').endswith('xmlrpc.php'):
     print_details('[ixpb_h]', '[ixpb]', 'd', i_cnt)
 
+# https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
+# https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
 robots_header = headers.get('X-Robots-Tag', '').lower()
 if robots_header:
     if not any(elem in robots_header for elem in l_robots):

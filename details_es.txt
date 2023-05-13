@@ -249,6 +249,9 @@
 [irefi_h]
  Referrer-Policy (Valor inseguro)
 
+[irefn_h]
+ Referrer-Policy (Valor incorrecto)
+
 [itim_h]
  Server-Timing (Cabecera potencialmente insegura)
 
@@ -569,6 +572,10 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 
 [irefi]
  'unsafe-url' filtra datos potencialmente privados de las URLs HTTPS a fuentes inseguras.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
+[irefn]
+ Incluya, al menos, una directiva correcta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 
 [iset]
