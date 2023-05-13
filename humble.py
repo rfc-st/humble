@@ -683,14 +683,14 @@ l_cache = ['no-cache', 'no-store', 'must-revalidate']
 l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                     'font-src', 'form-action', 'frame-ancestors', 'frame-src',
                     'img-src', 'manifest-src', 'media-src', 'navigate-to',
-                    'object-src', 'prefetch-src', 'report-to',
-                    'require-trusted-types-for', 'sandbox', 'script-src',
-                    'script-src-elem', 'script-src-attr', 'style-src',
-                    'style-src-elem', 'style-src-attr', 'trusted-types',
+                    'object-src', 'report-to', 'require-trusted-types-for',
+                    'sandbox', 'script-src', 'script-src-elem',
+                    'script-src-attr', 'style-src', 'style-src-elem',
+                    'style-src-attr', 'trusted-types',
                     'upgrade-insecure-requests', 'worker-src']
 
-l_csp_deprecated = ['block-all-mixed-content', 'plugin-types', 'referrer',
-                    'report-uri', 'require-sri-for']
+l_csp_deprecated = ['block-all-mixed-content', 'plugin-types', 'prefetch-src',
+                    'referrer', 'report-uri', 'require-sri-for']
 
 l_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
 
