@@ -199,7 +199,7 @@ def extract_first_metrics(url_ln):
 def extract_second_metrics(url_ln, index, total_a):
     metric_c = len([line for line in url_ln if int(line.split(' ; ')[index])
                     == 0])
-    return f"{metric_c / total_a * 100:.0f}% ({metric_c}\
+    return f"{metric_c / total_a:.0%} ({metric_c}\
 {get_detail('[pdf_po]', replace=True)}{total_a})"
 
 
