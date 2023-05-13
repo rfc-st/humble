@@ -154,11 +154,11 @@ def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
                    th_cnt, t_cnt):
     if mh_cnt == "First":
         return [get_detail('[first_one]', replace=True)] * 5
-    mhr_cnt = int(m_cnt) - int(mh_cnt)
-    fhr_cnt = int(f_cnt) - int(fh_cnt)
-    ihr_cnt = int(i_cnt[0]) - int(ih_cnt)
-    ehr_cnt = int(e_cnt) - int(eh_cnt)
-    thr_cnt = int(t_cnt) - int(th_cnt)
+    mhr_cnt = m_cnt - int(mh_cnt)
+    fhr_cnt = f_cnt - int(fh_cnt)
+    ihr_cnt = i_cnt[0] - int(ih_cnt)
+    ehr_cnt = e_cnt - int(eh_cnt)
+    thr_cnt = t_cnt - int(th_cnt)
     return [f'+{n}' if n > 0 else str(n) for n in [mhr_cnt, fhr_cnt, ihr_cnt,
                                                    ehr_cnt, thr_cnt]]
 
