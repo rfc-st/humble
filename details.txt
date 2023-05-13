@@ -784,3 +784,6 @@ Averages
 
 [main]
 Main
+
+[empty_fng]
+ (No value)

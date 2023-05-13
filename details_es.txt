@@ -784,3 +784,6 @@ Promedios
 
 [main]
 Principales
+
+[empty_fng]
+ (Sin valor)

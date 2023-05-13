@@ -438,7 +438,10 @@ def fingerprint_headers(headers, l_fng, l_fng_ex):
             if not args.brief:
                 index_fng = l_fng.index(key)
                 print_header_fng(l_fng_ex[index_fng])
-                print(f" {headers[key]}")
+                if not headers[key]:
+                    print(get_detail('[empty_fng]'))
+                else:
+                    print(f" {headers[key]}")
                 print("")
             else:
                 print_header(key)
