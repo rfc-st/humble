@@ -782,6 +782,9 @@ Análisis
 [averages]
 Promedios
 
+[average_time]
+ Segundos por análisis                                  
+
 [main]
 Principales
 

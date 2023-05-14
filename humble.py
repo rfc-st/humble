@@ -133,11 +133,11 @@ def get_details_lines():
         return rf.readlines()
 
 
-def save_extract_totals(t_cnt):
+def save_extract_totals(t_cnt, a_time):
     with open(A_FILE, 'a+', encoding='utf8') as a_history, \
          open(A_FILE, 'r', encoding='utf8') as c_history:
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
-{e_cnt} ; {t_cnt}\n")
+{e_cnt} ; {t_cnt} ; {a_time}\n")
         url_ln = [line for line in c_history if URL in line]
         if not url_ln:
             return ("First",) * 5
@@ -145,7 +145,7 @@ def save_extract_totals(t_cnt):
         for line in url_ln:
             if date_var in line:
                 _, _, mh_cnt, fh_cnt, ih_cnt, eh_cnt, \
-                    th_cnt = line.strip().split(' ; ')
+                    th_cnt, a_time = line.strip().split(' ; ')
                 break
         return mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt
 
@@ -190,7 +190,7 @@ def extract_first_metrics(url_ln):
     first_a = min(f"{line.split(' ; ')[0]}" for line in url_ln)
     latest_a = max(f"{line.split(' ; ')[0]}" for line in url_ln)
     date_w = [(line.split(" ; ")[0],
-               int(line.strip().split(" ; ")[-1])) for line in url_ln]
+               int(line.strip().split(" ; ")[-2])) for line in url_ln]
     best_d, best_w = min(date_w, key=lambda x: x[1])
     worst_d, worst_w = max(date_w, key=lambda x: x[1])
     return (first_a, latest_a, best_d, best_w, worst_d, worst_w)
@@ -205,12 +205,15 @@ def extract_second_metrics(url_ln, index, total_a):
 
 def extract_third_metrics(url_ln):
     fields = [line.strip().split(';') for line in url_ln]
-    total_miss, total_fng, total_dep, total_ety = \
-        [sum(int(f[i]) for f in fields) for i in range(2, 6)]
+    total_miss, total_fng, total_dep, total_ety, total_time = \
+        [sum(int(f[i]) for f in fields) for i in range(2, 6)] + \
+        [sum(float(f[i].replace(',', '.')) for f in fields) for i in
+         range(7, 8)]
     num_a = len(url_ln)
     avg_miss, avg_fng, avg_dep, avg_ety = \
         [t // num_a for t in (total_miss, total_fng, total_dep, total_ety)]
-    return (avg_miss, avg_fng, avg_dep, avg_ety)
+    avg_time = round(total_time / num_a, 2)
+    return (avg_miss, avg_fng, avg_dep, avg_ety, avg_time)
 
 
 def extract_year_metrics(url_ln):
@@ -218,10 +221,10 @@ def extract_year_metrics(url_ln):
     for line in url_ln:
         year = int(line.split(' ; ')[0][:4])
         if year not in year_cnt:
-            year_cnt[year] = (1, int(line.split(' ; ')[-1]))
+            year_cnt[year] = (1, round(float(line.split(' ; ')[-1])))
         else:
             year_cnt[year] = (year_cnt[year][0] + 1,
-                              year_cnt[year][1] + int(line.split(' ; ')[-1]))
+                              year_cnt[year][1] + int(line.split(' ; ')[-2]))
     years_str = [f" {year}: {year_cnt[year][0]} {get_detail('[analysis_y]')}"
                  for year in sorted(year_cnt.keys())]
     avg_w_y = (sum(count[1] for count in year_cnt.values()) // len(year_cnt))
@@ -229,7 +232,7 @@ def extract_year_metrics(url_ln):
 
 
 def extract_additional_metrics(url_ln):
-    avg_w = int(sum(int(line.split(' ; ')[-1]) for line in url_ln) /
+    avg_w = int(sum(int(line.split(' ; ')[-2]) for line in url_ln) /
                 len(url_ln))
     year_a, avg_w_y = extract_year_metrics(url_ln)
     return (avg_w, year_a, avg_w_y)
@@ -265,7 +268,8 @@ def print_metrics(total_a, first_m, second_m, third_m, additional_m):
                  '[average_warnings_year]': f"{additional_m[2]}"}
     averages_m = {'[average_miss]': f"{third_m[0]}", '[average_fng]':
                   f"{third_m[1]}", '[average_dep]': f"{third_m[2]}",
-                  '[average_ety]': f"{third_m[3]}\n"}
+                  '[average_ety]': f"{third_m[3]}",
+                  '[average_time]': f"{third_m[4]}\n"}
     analysis_year_m = {'[analysis_year]': f"\n{additional_m[1]}"}
     totals_m = basic_m | error_m | warning_m | averages_m | analysis_year_m
     return {get_detail(key, replace=True): value for key, value in
@@ -276,10 +280,11 @@ def analysis_time():
     print(".:")
     print("")
     print_detail_l('[analysis_time]')
-    print(round(end - start, 2), end="")
+    a_time = round(end - start, 2)
+    print(a_time, end="")
     print_detail_l('[analysis_time_sec]')
     t_cnt = m_cnt + f_cnt + i_cnt[0] + e_cnt
-    mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = save_extract_totals(t_cnt)
+    mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = save_extract_totals(t_cnt, a_time)
     mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt,\
         thr_cnt = compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt,
                                  eh_cnt, e_cnt, th_cnt, t_cnt)

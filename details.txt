@@ -779,6 +779,9 @@ Analysis
 [average_ety]
  Empty headers per analysis                          
 
+[average_time]
+ Seconds per analysis                                
+
 [averages]
 Averages
 
