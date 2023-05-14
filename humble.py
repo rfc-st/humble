@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-13)' + '\r\n'
+version = '\r\n' + '(v. 2023-05-14)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -978,6 +978,7 @@ print("")
 # Report - 4. Empty HTTP Response Headers Values
 e_cnt = 0
 empty_s_headers = sorted(headers)
+l_empty = []
 print_detail_r('[4empty]')
 
 if not args.brief:
@@ -985,6 +986,7 @@ if not args.brief:
 
 for key in empty_s_headers:
     if not headers[key]:
+        l_empty.append("_" + key)
         print_header(key)
         e_cnt += 1
 
@@ -1121,6 +1123,9 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                     if (i in ln) and ('"' not in ln) or ('HTTP (' in ln):
                         ln = ln.replace(ln, sub_d['span_ko'] +
                                         ln + sub_d['span_f'])
+                for i in l_empty:
+                    if i[1:] in ln:
+                        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
                 output.write(ln)
         output.write(footer)
 

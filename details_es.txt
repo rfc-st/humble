@@ -644,17 +644,17 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 
 [ixfo]
  Esta cabecera, o sus valores, pueden estar duplicados.
- Consejo: sustituya esta cabecera por la directiva 'frame-ancestors' de Content-Security-Policy.
+ Consejo: sustituya esta cabecera por la directiva 'frame-ancestors' de CSP.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
 [ixfod]
  "ALLOW-FROM" no está soportado en los navegadores actuales.
- Consejo: sustituya esta cabecera por la directiva 'frame-ancestors' de Content-Security-Policy.
+ Consejo: sustituya esta cabecera por la directiva 'frame-ancestors' de CSP.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
 [ixfodi]
  Los únicos valores permitidos en esta cabeceras son "DENY" o "SAMEORIGIN".
- Consejo: sustituya esta cabecera por la directiva 'frame-ancestors' de Content-Security-Policy.
+ Consejo: sustituya esta cabecera por la directiva 'frame-ancestors' de CSP.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
 [ixpad]
