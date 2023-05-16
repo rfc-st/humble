@@ -97,7 +97,7 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Export analysis to HTML" width=70% height=70%>
 </p>
 <br />
-.: Example of history file: Date, URL, Missing, Fingerprint, Deprecated/Insecure & Empty headers, Total warnings (the four previous totals) and seconds per analysis.<br />
+.: Example of history file: Date, URL, Missing, Fingerprint, Deprecated/Insecure, Empty headers & Total warnings (the four previous totals).<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_ah.PNG" alt="History of analysis performed">
