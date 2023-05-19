@@ -787,3 +787,6 @@ Main
 
 [empty_fng]
  (No value)
+
+[highlights]
+Highlights

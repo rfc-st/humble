@@ -787,3 +787,6 @@ Principales
 
 [empty_fng]
  (Sin valor)
+
+[highlights]
+A destacar

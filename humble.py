@@ -248,10 +248,31 @@ def extract_metrics(c_history):
                 range(2, 6)]
     third_m = extract_third_metrics(url_ln)
     additional_m = extract_additional_metrics(url_ln)
-    return print_metrics(total_a, first_m, second_m, third_m, additional_m)
+    fourth_m = extract_highlights_metrics(url_ln)
+    return print_metrics(total_a, first_m, second_m, third_m, additional_m,
+                         fourth_m)
 
 
-def print_metrics(total_a, first_m, second_m, third_m, additional_m):
+def extract_highlights_metrics(url_ln):
+    sections = ['[miss_cnt]', '[finger_cnt]', '[ins_cnt]', '[empty_cnt]']
+    fields_h = [2, 3, 4, 5]
+    output = []
+
+    for i, field in enumerate(fields_h):
+        values = [int(line.split(';')[field].strip()) for line in url_ln]
+        max_index = max(range(len(values)), key=values.__getitem__)
+        min_index = min(range(len(values)), key=values.__getitem__)
+
+        max_date = url_ln[max_index].split(';')[0].strip()
+        min_date = url_ln[min_index].split(';')[0].strip()
+
+        output.extend([f"{print_detail_h(sections[i])}"[1:].replace(':', ''),
+                       f"  {print_detail_h('[best_analysis]')[1:]}: \
+{min_date}", f"  {print_detail_h('[worst_analysis]')[1:]}: {max_date}", ""])
+    return output
+
+
+def print_metrics(total_a, first_m, second_m, third_m, additional_m, fourth_m):
     basic_m = {'[main]': "", '[total_analysis]': total_a,
                '[first_analysis_a]': first_m[0], '[latest_analysis]':
                first_m[1], '[best_analysis]': f"{first_m[2]} \
@@ -267,7 +288,9 @@ def print_metrics(total_a, first_m, second_m, third_m, additional_m):
                   f"{third_m[1]}", '[average_dep]': f"{third_m[2]}",
                   '[average_ety]': f"{third_m[3]}\n"}
     analysis_year_m = {'[analysis_year]': f"\n{additional_m[1]}"}
-    totals_m = basic_m | error_m | warning_m | averages_m | analysis_year_m
+    fourth_m = {'[highlights]': "\n" + "\n".join(fourth_m)}
+    totals_m = basic_m | error_m | warning_m | averages_m | analysis_year_m |\
+        fourth_m
     return {get_detail(key, replace=True): value for key, value in
             totals_m.items()}
 
@@ -377,6 +400,12 @@ def print_detail_l(id_mode):
     for i, line in enumerate(details_f):
         if line.startswith(id_mode):
             print(details_f[i+1].replace('\n', ''), end='')
+
+
+def print_detail_h(id_mode):
+    for i, line in enumerate(details_f):
+        if line.startswith(id_mode):
+            return details_f[i+1].replace('\n', '')
 
 
 def print_detail_r(id_mode, is_red=False):
@@ -532,6 +561,8 @@ if args.guides:
 
 if args.URL_A:
     url_analytics()
+    with open(A_FILE, 'r', encoding='utf8') as c_history:
+        url_ln = [line for line in c_history if URL in line]
     sys.exit()
 
 start = time()
