@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-16)' + '\r\n'
+version = '\r\n' + '(v. 2023-05-19)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -759,10 +759,10 @@ if 'Access-Control-Allow-Methods' in headers:
         i_cnt[0] += 1
 
 accesso_header = headers.get("Access-Control-Allow-Origin", '').lower()
-if accesso_header:
-    if (accesso_header in ['*', 'null']) and (not any(val in accesso_header for
-                                                      val in ['.*', '*.'])):
-        print_details('[iaccess_h]', '[iaccess]', 'd', i_cnt)
+if accesso_header and ((accesso_header in ['*', 'null']) and
+                       (not any(val in accesso_header for
+                                val in ['.*', '*.']))):
+    print_details('[iaccess_h]', '[iaccess]', 'd', i_cnt)
 
 if 'Allow' in headers:
     methods = headers["Allow"]
@@ -1008,12 +1008,12 @@ header_matches = [header for header in l_sec if header in headers]
 if header_matches:
     for key in header_matches:
         output_string = "  " if args.output == 'html' else " "
-        key_string = Fore.CYAN + key + Fore.RESET if not args.output else key
+        key_string = key if args.output else Fore.CYAN + key + Fore.RESET
         print(f"{output_string}{key_string}{CAN_S}\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 else:
-    print_detail_r("[bcompat_n]", is_red=True) if not args.output else\
-                                  print_detail_l("[bcompat_n]")
+    print_detail_l("[bcompat_n]") if args.output else \
+        print_detail_r("[bcompat_n]", is_red=True)
 
 print(linesep.join(['']*2))
 end = time()
