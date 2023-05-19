@@ -561,8 +561,6 @@ if args.guides:
 
 if args.URL_A:
     url_analytics()
-    with open(A_FILE, 'r', encoding='utf8') as c_history:
-        url_ln = [line for line in c_history if URL in line]
     sys.exit()
 
 start = time()
