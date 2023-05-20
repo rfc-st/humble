@@ -123,10 +123,6 @@ def pdf_links(pdfstring):
     pdf.cell(w=2000, h=3, txt=x[x.index(": ")+2:], align="L", link=link_h)
 
 
-def get_language():
-    return 'details_es.txt' if args.lang == 'es' else 'details.txt'
-
-
 def get_details_lines():
     return open(path.join('i10n', 'details_es.txt' if args.lang == 'es'
                           else 'details.txt'), encoding='utf8').readlines()
@@ -548,10 +544,7 @@ if any([args.brief, args.lang, args.output, args.ret]) and args.URL is None:
     parser.error("The '-u' option is required.")
 
 URL = args.URL
-
-details_file = get_language()
 details_f = get_details_lines()
-
 python_ver()
 
 if args.guides:
@@ -674,7 +667,8 @@ if not args.brief:
 l_fng = []
 l_fng_ex = []
 
-with open('fingerprint.txt', 'r', encoding='utf8') as fn:
+with open(path.join('additional', 'fingerprint.txt'), 'r', encoding='utf8') \
+          as fn:
     for line in fn:
         l_fng.append(line.partition(' [')[0].strip())
         l_fng_ex.append(line.strip())
