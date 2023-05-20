@@ -540,8 +540,10 @@ parser.add_argument("-v", "--version", action='version', version=version,
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
-if any([args.brief, args.lang, args.output, args.ret]) and args.URL is None:
+if any([args.brief, args.lang, args.output, args.ret]) \
+        and (args.URL is None and not args.guides):
     parser.error("The '-u' option is required.")
+
 
 URL = args.URL
 details_f = get_details_lines()
