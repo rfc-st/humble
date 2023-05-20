@@ -128,9 +128,8 @@ def get_language():
 
 
 def get_details_lines():
-    details_file = 'details_es.txt' if args.lang == 'es' else 'details.txt'
-    with open(details_file, encoding='utf8') as rf:
-        return rf.readlines()
+    return open(path.join('i10n', 'details_es.txt' if args.lang == 'es'
+                          else 'details.txt'), encoding='utf8').readlines()
 
 
 def save_extract_totals(t_cnt):
