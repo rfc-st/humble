@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-19)' + '\r\n'
+version = '\r\n' + '(v. 2023-05-20)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -257,18 +257,17 @@ def extract_highlights_metrics(url_ln):
     sections = ['[miss_cnt]', '[finger_cnt]', '[ins_cnt]', '[empty_cnt]']
     fields_h = [2, 3, 4, 5]
     output = []
-
-    for i, field in enumerate(fields_h):
-        values = [int(line.split(';')[field].strip()) for line in url_ln]
-        max_index = max(range(len(values)), key=values.__getitem__)
-        min_index = min(range(len(values)), key=values.__getitem__)
-
-        max_date = url_ln[max_index].split(';')[0].strip()
-        min_date = url_ln[min_index].split(';')[0].strip()
-
-        output.extend([f"{print_detail_h(sections[i])}"[1:].replace(':', ''),
-                       f"  {print_detail_h('[best_analysis]')[1:]}: \
-{min_date}", f"  {print_detail_h('[worst_analysis]')[1:]}: {max_date}", ""])
+    values = [[int(line.split(';')[fields_h[i]].strip()) for line in url_ln]
+              for i in range(len(fields_h))]
+    for i in range(len(fields_h)):
+        max_idx = max(range(len(values[i])), key=values[i].__getitem__)
+        min_idx = min(range(len(values[i])), key=values[i].__getitem__)
+        max_date = url_ln[max_idx].split(';')[0].strip()
+        min_date = url_ln[min_idx].split(';')[0].strip()
+        output.extend([f"{print_detail_h(sections[i])}",
+                       f"  {print_detail_h('[best_analysis]')}: {min_date}",
+                       f"  {print_detail_h('[worst_analysis]')}: {max_date}",
+                       ""])
     return output
 
 
@@ -405,7 +404,7 @@ def print_detail_l(id_mode):
 def print_detail_h(id_mode):
     for i, line in enumerate(details_f):
         if line.startswith(id_mode):
-            return details_f[i+1].replace('\n', '')
+            return details_f[i+1].replace('\n', '').replace(':', '')[1:]
 
 
 def print_detail_r(id_mode, is_red=False):
