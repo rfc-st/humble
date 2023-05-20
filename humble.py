@@ -435,7 +435,8 @@ def python_ver():
 def print_guides():
     print("")
     print_detail('[guides]')
-    with open('guides.txt', 'r', encoding='utf8') as gd:
+    with open(path.join('additional', 'guides.txt'), 'r', encoding='utf8') as \
+            gd:
         for line in gd:
             if line.startswith('['):
                 print(f"{Style.BRIGHT}{line}", end='')
