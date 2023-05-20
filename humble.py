@@ -766,9 +766,10 @@ l_ref_values = ['no-referrer', 'no-referrer-when-downgrade', 'origin',
                 'origin-when-cross-origin', 'same-origin', 'strict-origin',
                 'strict-origin-when-cross-origin', 'unsafe-url']
 
-l_robots = ['all', 'indexifembedded', 'max-image-preview', 'max-snippet',
-            'max-video-preview', 'noarchive', 'noodp', 'nofollow',
-            'noimageindex', 'noindex', 'none', 'nositelinkssearchbox',
+l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
+            'max-image-preview', 'max-snippet', 'max-video-preview',
+            'noarchive', 'nocache', 'noodp', 'nofollow', 'noimageindex',
+            'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
 if 'Accept-CH-Lifetime' in headers:
@@ -970,6 +971,7 @@ if headers.get('X-Pingback', '').endswith('xmlrpc.php'):
 
 # https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 # https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
+# https://seranking.com/blog/guide-meta-tag-robots-x-robots-tag/
 robots_header = headers.get('X-Robots-Tag', '').lower()
 if robots_header:
     if not any(elem in robots_header for elem in l_robots):
