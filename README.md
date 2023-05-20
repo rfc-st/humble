@@ -250,11 +250,11 @@ if not args.URL_A:
 
 ## Checks: Fingerprint headers
 
-Check <a href="https://github.com/rfc-st/humble/blob/master/fingerprint.txt">this</a> file.
+Check <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt">this</a> file.
 
 ## Checks: Deprecated headers/protocols and insecure values
 
-Check <a href="https://github.com/rfc-st/humble/blob/master/insecure.txt">this</a> file.
+Check <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt">this</a> file.
 
 ## Checks: Empty values
 
