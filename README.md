@@ -54,7 +54,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
-:heavy_check_mark: i18n: analysis results in English or Spanish.<br />
+:heavy_check_mark: i10n: analysis results in English or Spanish.<br />
 :heavy_check_mark: Saves each analysis, showing (at the end) the improvements or deficiencies in relation to the last one.<br />
 :heavy_check_mark: Shows statistics of scans performed against a URL.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/pycodestyle/" target="_blank">pycodestyle<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />

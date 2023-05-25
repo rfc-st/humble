@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-20)' + '\r\n'
+version = '\r\n' + '(v. 2023-05-25)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -124,8 +124,10 @@ def pdf_links(pdfstring):
 
 
 def get_details_lines():
-    return open(path.join('i10n', 'details_es.txt' if args.lang == 'es'
-                          else 'details.txt'), encoding='utf8').readlines()
+    file_path = path.join('i10n', 'details_es.txt' if args.lang == 'es' else
+                          'details.txt')
+    with open(file_path, encoding='utf8') as file:
+        return file.readlines()
 
 
 def save_extract_totals(t_cnt):
