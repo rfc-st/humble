@@ -61,7 +61,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-25)' + '\r\n'
+humble_h = 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -90,7 +90,7 @@ class PDF(FPDF):
 
 def pdf_metadata():
     title = get_detail('[pdf_m]', replace=True) + URL
-    git_urlc = f"{GIT_U} {version.strip()}"
+    git_urlc = f"{GIT_U} {c_version().strip()}"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
     pdf.set_creator(git_urlc)
@@ -121,6 +121,13 @@ def pdf_links(pdfstring):
         pdf.write(h=3, txt=x[:x.index(": ")+2])
     pdf.set_text_color(0, 0, 255)
     pdf.cell(w=2000, h=3, txt=x[x.index(": ")+2:], align="L", link=link_h)
+
+
+def c_version():
+    version_pdf = '\r\n' + '(v. 2023-05-26)' + '\r\n'
+    git_v = requests.get(humble_h).text
+    git_v = git_v[git_v.find(version_pdf) + 1:git_v.find(version_pdf) + 11]
+    return version_pdf
 
 
 def get_details_lines():
@@ -537,7 +544,7 @@ parser.add_argument("-r", dest='ret', action="store_true", help="Show HTTP \
 response headers and a detailed analysis.")
 parser.add_argument('-u', type=str, dest='URL', help="URL to analyze, with \
 schema. E.g., https://google.com")
-parser.add_argument("-v", "--version", action='version', version=version,
+parser.add_argument("-v", "--version", action='version', version=c_version(),
                     help="show version")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
