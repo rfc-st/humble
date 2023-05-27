@@ -826,3 +826,12 @@ Highlights
 
 [month_12]
  December
+
+[not_latest]
+ (latest version is v.
+
+[latest]
+ You are using the latest version, nice! :)
+
+[home]
+Check https://github.com/rfc-st/humble/ for updates!

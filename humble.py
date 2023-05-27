@@ -42,6 +42,7 @@ from collections import defaultdict
 from os import linesep, path, remove
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+import re
 import sys
 import requests
 import tldextract
@@ -541,6 +542,18 @@ def request_exceptions():
     return headers, status_c
 
 
+def check_updates(version):
+    r_url = 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py'
+    response_t = requests.get(r_url).text
+    remote_v = re.search(r'\(v\. (\d{4}-\d{2}-\d{2})\)', response_t)[1]
+    local_v = re.search(r'(\d{4}-\d{2}-\d{2})', version)[1]
+    if remote_v > local_v:
+        print(f"\nv.{local_v}{get_detail('[not_latest]')[:-1]}{remote_v})\n\
+{get_detail('[home]')}")
+    else:
+        print(f"\n{get_detail('[latest]')}")
+
+
 init(autoreset=True)
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
@@ -559,15 +572,19 @@ parser.add_argument("-r", dest='ret', action="store_true", help="Show HTTP \
 response headers and a detailed analysis.")
 parser.add_argument('-u', type=str, dest='URL', help="URL to analyze, with \
 schema. E.g., https://google.com")
-parser.add_argument("-v", "--version", action='version', version=version,
-                    help="show version")
+parser.add_argument("-v", "--version", action="store_true",
+                    help="Show version (requires Internet connection!)")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+
+if args.version and args.lang:
+    details_f = get_details_lines()
+    check_updates(version)
+    sys.exit()
 
 if any([args.brief, args.lang, args.output, args.ret]) \
         and (args.URL is None and not args.guides):
     parser.error("The '-u' option is required.")
-
 
 URL = args.URL
 details_f = get_details_lines()
@@ -579,6 +596,10 @@ if args.guides:
 
 if args.URL_A:
     url_analytics()
+    sys.exit()
+
+if args.version:
+    check_updates(version)
     sys.exit()
 
 start = time()

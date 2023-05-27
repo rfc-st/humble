@@ -826,3 +826,12 @@ A destacar
 
 [month_12]
  Diciembre
+
+[not_latest]
+ (la última versión es v.
+
+[latest]
+ Tienes la última versión! :)
+
+[home]
+Revisa las novedades en https://github.com/rfc-st/humble/
