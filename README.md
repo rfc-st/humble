@@ -158,7 +158,7 @@ options:
   -o {html,pdf,txt}  Save analysis to file (URL_yyyymmdd.ext).
   -r                 Show HTTP response headers and a detailed analysis.
   -u URL             URL to analyze, with schema. E.g., https://google.com
-  -v, --version      show version
+  -v, --version      Show version (requires Internet connection!)
 ```
 
 ## Advanced Usage
