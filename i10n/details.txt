@@ -755,8 +755,8 @@ To use this option ('-a') you must have run at least one scan against that URL.
 [no_empty]
  Without empty headers                               
 
-[analysis_year]
-Per year
+[analysis_year_month]
+Chronologically
 
 [analysis_y]
 Analysis
@@ -790,3 +790,39 @@ Main
 
 [highlights]
 Highlights
+
+[month_01]
+ January
+
+[month_02]
+ February
+
+[month_03]
+ March
+
+[month_04]
+ April
+
+[month_05]
+ May
+
+[month_06]
+ June
+
+[month_07]
+ July
+
+[month_08]
+ August
+
+[month_09]
+ September
+
+[month_10]
+ October
+
+[month_11]
+ November
+
+[month_12]
+ December

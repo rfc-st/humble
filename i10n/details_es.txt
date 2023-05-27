@@ -755,8 +755,8 @@ Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análi
 [no_empty]
  Sin cabeceras vacías                                   
 
-[analysis_year]
-Por año
+[analysis_year_month]
+Cronológicamente
 
 [analysis_y]
 Análisis
@@ -790,3 +790,39 @@ Principales
 
 [highlights]
 A destacar
+
+[month_01]
+ Enero
+
+[month_02]
+ Febrero
+
+[month_03]
+ Marzo
+
+[month_04]
+ Abril
+
+[month_05]
+ Mayo
+
+[month_06]
+ Junio
+
+[month_07]
+ Julio
+
+[month_08]
+ Agosto
+
+[month_09]
+ Septiembre
+
+[month_10]
+ Octubre
+
+[month_11]
+ Noviembre
+
+[month_12]
+ Diciembre

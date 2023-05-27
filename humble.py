@@ -38,6 +38,7 @@
 from fpdf import FPDF
 from time import time
 from datetime import datetime
+from collections import defaultdict
 from os import linesep, path, remove
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -61,7 +62,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-26)' + '\r\n'
+version = '\r\n' + '(v. 2023-05-27)' + '\r\n'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -210,26 +211,47 @@ def extract_third_metrics(url_ln):
     return (avg_miss, avg_fng, avg_dep, avg_ety)
 
 
-def extract_year_metrics(url_ln):
-    year_cnt = {}
+def extract_year_month_metrics(url_ln):
+    year_cnt = defaultdict(int)
+    year_wng = defaultdict(int)
     for line in url_ln:
-        year = int(line.split(' ; ')[0][:4])
-        if year not in year_cnt:
-            year_cnt[year] = (1, int(line.split(' ; ')[-1]))
-        else:
-            year_cnt[year] = (year_cnt[year][0] + 1,
-                              year_cnt[year][1] + int(line.split(' ; ')[-1]))
-    years_str = [f" {year}: {year_cnt[year][0]} {get_detail('[analysis_y]')}"
-                 for year in sorted(year_cnt.keys())]
-    avg_w_y = (sum(count[1] for count in year_cnt.values()) // len(year_cnt))
-    return "".join(years_str), avg_w_y
+        date_str = line.split(' ; ')[0].split()[0]
+        year, _, _ = map(int, date_str.split('/'))
+        year_cnt[year] += 1
+        year_wng[year] += int(line.split(' ; ')[-1])
+    year_month_p = [(int(line.split(' ; ')[0].split('/')[0]),
+                     int(line.split(' ; ')[0].split('/')[1])) for line in
+                    url_ln]
+    year_month_p = sorted(set(year_month_p))
+    years_str = generate_year_month_group(year_cnt, url_ln)
+    avg_w_y = sum(year_wng.values()) // len(year_wng)
+    return years_str, avg_w_y, year_wng
+
+
+def generate_year_month_group(year_cnt, url_ln):
+    years_str = []
+    for year in sorted(year_cnt.keys()):
+        year_str = f" {year}: {year_cnt[year]} \
+{get_detail('[analysis_y]').rstrip()}"
+        month_counts = defaultdict(int)
+        for line in url_ln:
+            date_str = line.split(' ; ')[0].split()[0]
+            line_year, line_month, _ = map(int, date_str.split('/'))
+            if line_year == year:
+                month_name = get_detail(f'[month_{line_month:02d}]')
+                month_counts[month_name] += 1
+        months_str = '\n'.join([f" {month_name.rstrip()} ({count})" for
+                                month_name, count in month_counts.items()])
+        year_str += '\n' + months_str + '\n'
+        years_str.append(year_str)
+    return '\n'.join(years_str)
 
 
 def extract_additional_metrics(url_ln):
     avg_w = int(sum(int(line.split(' ; ')[-1]) for line in url_ln) /
                 len(url_ln))
-    year_a, avg_w_y = extract_year_metrics(url_ln)
-    return (avg_w, year_a, avg_w_y)
+    year_a, avg_w_y, month_a = extract_year_month_metrics(url_ln)
+    return (avg_w, year_a, avg_w_y, month_a)
 
 
 def extract_metrics(c_history):
@@ -283,10 +305,10 @@ def print_metrics(total_a, first_m, second_m, third_m, additional_m, fourth_m):
     averages_m = {'[average_miss]': f"{third_m[0]}", '[average_fng]':
                   f"{third_m[1]}", '[average_dep]': f"{third_m[2]}",
                   '[average_ety]': f"{third_m[3]}\n"}
-    analysis_year_m = {'[analysis_year]': f"\n{additional_m[1]}"}
+    analysis_year_m = {'[analysis_year_month]': f"\n{additional_m[1]}"}
     fourth_m = {'[highlights]': "\n" + "\n".join(fourth_m)}
-    totals_m = basic_m | error_m | warning_m | averages_m | analysis_year_m |\
-        fourth_m
+    totals_m = basic_m | error_m | warning_m | averages_m | fourth_m |\
+        analysis_year_m
     return {get_detail(key, replace=True): value for key, value in
             totals_m.items()}
 
