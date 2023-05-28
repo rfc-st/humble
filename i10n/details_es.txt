@@ -756,7 +756,7 @@ Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análi
  Sin cabeceras vacías                                   
 
 [analysis_year_month]
-Cronológicamente
+Cronología
 
 [analysis_y]
 Análisis

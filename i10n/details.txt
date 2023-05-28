@@ -756,7 +756,7 @@ To use this option ('-a') you must have run at least one scan against that URL.
  Without empty headers                               
 
 [analysis_year_month]
-Chronologically
+Timeline
 
 [analysis_y]
 Analysis
