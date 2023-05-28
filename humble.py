@@ -580,8 +580,10 @@ parser.add_argument("-v", "--version", action="store_true",
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
-if args.version and args.lang:
+if args.version:
     details_f = get_details_lines()
+    if args.lang:
+        details_f = get_details_lines()
     check_updates(version)
     sys.exit()
 
@@ -599,10 +601,6 @@ if args.guides:
 
 if args.URL_A:
     url_analytics()
-    sys.exit()
-
-if args.version:
-    check_updates(version)
     sys.exit()
 
 start = time()
