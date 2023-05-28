@@ -63,7 +63,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = '\r\n' + '(v. 2023-05-27)' + '\r\n'
+version = 'v.2023-05-28'
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -92,7 +92,7 @@ class PDF(FPDF):
 
 def pdf_metadata():
     title = get_detail('[pdf_m]', replace=True) + URL
-    git_urlc = f"{GIT_U} {version.strip()}"
+    git_urlc = f"{GIT_U} ({version.strip()})"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
     pdf.set_creator(git_urlc)
@@ -544,14 +544,17 @@ def request_exceptions():
 
 def check_updates(version):
     r_url = 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py'
-    response_t = requests.get(r_url).text
-    remote_v = re.search(r'\(v\. (\d{4}-\d{2}-\d{2})\)', response_t)[1]
-    local_v = re.search(r'(\d{4}-\d{2}-\d{2})', version)[1]
-    if remote_v > local_v:
-        print(f"\nv.{local_v}{get_detail('[not_latest]')[:-1]}{remote_v})\n\
+    try:
+        response_t = requests.get(r_url, timeout=10).text
+        remote_v = re.search(r'(\d{4}-\d{2}-\d{2})', response_t)[1]
+        local_v = re.search(r'(\d{4}-\d{2}-\d{2})', version)[1]
+        if remote_v > local_v:
+            print(f"\n {version}{get_detail('[not_latest]')[:-1]}{remote_v})\n\
 {get_detail('[home]')}")
-    else:
-        print(f"\n{get_detail('[latest]')}")
+        else:
+            print(f"\n {version}{get_detail('[latest]')}")
+    except requests.exceptions.RequestException:
+        print(f"\n{get_detail('[update_error]')}")
 
 
 init(autoreset=True)
@@ -573,7 +576,7 @@ response headers and a detailed analysis.")
 parser.add_argument('-u', type=str, dest='URL', help="URL to analyze, with \
 schema. E.g., https://google.com")
 parser.add_argument("-v", "--version", action="store_true",
-                    help="Show version (requires Internet connection!)")
+                    help="Show version and checks for updates")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 

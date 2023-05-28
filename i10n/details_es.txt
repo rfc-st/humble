@@ -828,10 +828,13 @@ A destacar
  Diciembre
 
 [not_latest]
- (la última versión es v.
+ (la versión más reciente es v.
 
 [latest]
- Tienes la última versión! :)
+ (estás usando una versión reciente)
 
 [home]
-Revisa las novedades en https://github.com/rfc-st/humble/
+ Revisa las novedades en https://github.com/rfc-st/humble/
+
+[update_error]
+ Hubo un error al comprobar si usas la versión más reciente. Por favor, espera unos minutos y vuelve a intentarlo.
