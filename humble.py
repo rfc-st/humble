@@ -42,7 +42,6 @@ from collections import defaultdict
 from os import linesep, path, remove
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-import re
 import sys
 import requests
 import tldextract
@@ -63,7 +62,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = 'v.2023-05-28'
+version = datetime.strptime('2023-06-02', '%Y-%m-%d').date()
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -92,7 +91,7 @@ class PDF(FPDF):
 
 def pdf_metadata():
     title = get_detail('[pdf_m]', replace=True) + URL
-    git_urlc = f"{GIT_U} ({version.strip()})"
+    git_urlc = f"{GIT_U} (v.{version})"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
     pdf.set_creator(git_urlc)
@@ -220,10 +219,6 @@ def extract_year_month_metrics(url_ln):
         year, _, _ = map(int, date_str.split('/'))
         year_cnt[year] += 1
         year_wng[year] += int(line.split(' ; ')[-1])
-    year_month_p = [(int(line.split(' ; ')[0].split('/')[0]),
-                     int(line.split(' ; ')[0].split('/')[1])) for line in
-                    url_ln]
-    year_month_p = sorted(set(year_month_p))
     years_str = generate_year_month_group(year_cnt, url_ln)
     avg_w_y = sum(year_wng.values()) // len(year_wng)
     return years_str, avg_w_y, year_wng
@@ -546,13 +541,13 @@ def check_updates(version):
     r_url = 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py'
     try:
         response_t = requests.get(r_url, timeout=10).text
-        remote_v = re.search(r'(\d{4}-\d{2}-\d{2})', response_t)[1]
-        local_v = re.search(r'(\d{4}-\d{2}-\d{2})', version)[1]
-        if remote_v > local_v:
-            print(f"\n {version}{get_detail('[not_latest]')[:-1]}{remote_v})\n\
-{get_detail('[home]')}")
+        remote_v = response_t.split("version = '")[1].split("'")[0]
+        remote_v_date = datetime.strptime(remote_v, '%Y-%m-%d').date()
+        if remote_v_date > version:
+            print(f"\n v.{version}{get_detail('[not_latest]')[:-1]}{remote_v})\
+                  \n{get_detail('[home]')}")
         else:
-            print(f"\n {version}{get_detail('[latest]')}")
+            print(f"\n v.{version}{get_detail('[latest]')}")
     except requests.exceptions.RequestException:
         print(f"\n{get_detail('[update_error]')}")
 
