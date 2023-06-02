@@ -43,6 +43,7 @@ from os import linesep, path, remove
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import sys
+import re
 import requests
 import tldextract
 
@@ -541,7 +542,7 @@ def check_updates(version):
     r_url = 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py'
     try:
         response_t = requests.get(r_url, timeout=10).text
-        remote_v = response_t.split("version = '")[1].split("'")[0]
+        remote_v = re.search(r"\d{4}-\d{2}-\d{2}", response_t).group()
         remote_v_date = datetime.strptime(remote_v, '%Y-%m-%d').date()
         if remote_v_date > version:
             print(f"\n v.{version}{get_detail('[not_latest]')[:-1]}{remote_v})\
