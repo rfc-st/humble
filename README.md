@@ -271,6 +271,7 @@ Any HTTP response header.
 ## To-do
 
 - [ ] Add more header/value checks (only security-oriented)
+- [ ] Google Style Python Docstrings and maaaybe documentation via Sphinx :).
 
 ## Further reading
 
