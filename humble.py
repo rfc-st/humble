@@ -201,13 +201,18 @@ def save_extract_totals(t_cnt):
         url_ln = [line for line in c_history if URL in line]
         if not url_ln:
             return ("First",) * 5
-        date_var = max(line.split(" ; ")[0] for line in url_ln)
-        for line in url_ln:
-            if date_var in line:
-                _, _, mh_cnt, fh_cnt, ih_cnt, eh_cnt, \
-                     th_cnt = line.strip().split(' ; ')
-                break
+        mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = extract_totals(url_ln)
         return mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt
+
+
+def extract_totals(url_ln):
+    date_var = max(line.split(" ; ")[0] for line in url_ln)
+    for line in url_ln:
+        if date_var in line:
+            _, _, mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = \
+                line.strip().split(' ; ')
+            break
+    return mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt
 
 
 def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
