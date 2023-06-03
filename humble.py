@@ -63,7 +63,7 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = datetime.strptime('2023-06-02', '%Y-%m-%d').date()
+version = datetime.strptime('2023-06-03', '%Y-%m-%d').date()
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
 
@@ -125,11 +125,71 @@ def pdf_links(pdfstring):
     pdf.cell(w=2000, h=3, txt=x[x.index(": ")+2:], align="L", link=link_h)
 
 
+def python_ver():
+    if sys.version_info < (3, 9):
+        print("")
+        print_detail('[python]', 2)
+        sys.exit()
+
+
+def check_updates(version):
+    r_url = 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py'
+    try:
+        response_t = requests.get(r_url, timeout=10).text
+        remote_v = re.search(r"\d{4}-\d{2}-\d{2}", response_t).group()
+        remote_v_date = datetime.strptime(remote_v, '%Y-%m-%d').date()
+        if remote_v_date > version:
+            print(f"\n v.{version}{get_detail('[not_latest]')[:-1]}{remote_v})\
+                  \n{get_detail('[home]')}")
+        else:
+            print(f"\n v.{version}{get_detail('[latest]')}")
+    except requests.exceptions.RequestException:
+        print(f"\n{get_detail('[update_error]')}")
+
+
+def print_guides():
+    print("")
+    print_detail('[guides]')
+    with open(path.join('additional', 'guides.txt'), 'r', encoding='utf8') as \
+            gd:
+        for line in gd:
+            if line.startswith('['):
+                print(f"{Style.BRIGHT}{line}", end='')
+            else:
+                print(f"{line}", end='')
+
+
+def ua_ru_analysis(suffix, country):
+    print("")
+    if suffix == "UA" or country == 'Ukraine':
+        detail = '[analysis_ua_output]' if args.output else '[analysis_ua]'
+    elif suffix == "RU" and suffix not in NON_RU_TLDS or country == 'Russia':
+        detail = RU_DESC
+    print_detail(detail, 2) if detail == RU_DESC else print_detail(detail)
+    if detail == RU_DESC:
+        sys.exit()
+
+
 def get_details_lines():
     file_path = path.join('i10n', 'details_es.txt' if args.lang == 'es' else
                           'details.txt')
     with open(file_path, encoding='utf8') as file:
         return file.readlines()
+
+
+def analysis_time():
+    print(".:")
+    print("")
+    print_detail_l('[analysis_time]')
+    print(round(end - start, 2), end="")
+    print_detail_l('[analysis_time_sec]')
+    t_cnt = m_cnt + f_cnt + i_cnt[0] + e_cnt
+    mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = save_extract_totals(t_cnt)
+    mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt,\
+        thr_cnt = compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt,
+                                 eh_cnt, e_cnt, th_cnt, t_cnt)
+    print("")
+    analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt)
 
 
 def save_extract_totals(t_cnt):
@@ -185,6 +245,24 @@ def url_analytics():
             print(f"{key}: {value}")
 
 
+def extract_metrics(c_history):
+    url_ln = [line for line in c_history if URL in line]
+    if not url_ln:
+        print("")
+        print(get_detail('[no_analysis]'))
+        print("")
+        sys.exit()
+    total_a = len(url_ln)
+    first_m = extract_first_metrics(url_ln)
+    second_m = [extract_second_metrics(url_ln, i, total_a) for i in
+                range(2, 6)]
+    third_m = extract_third_metrics(url_ln)
+    additional_m = extract_additional_metrics(url_ln)
+    fourth_m = extract_highlights_metrics(url_ln)
+    return print_metrics(total_a, first_m, second_m, third_m, additional_m,
+                         fourth_m)
+
+
 def extract_first_metrics(url_ln):
     first_a = min(f"{line.split(' ; ')[0]}" for line in url_ln)
     latest_a = max(f"{line.split(' ; ')[0]}" for line in url_ln)
@@ -212,6 +290,13 @@ def extract_third_metrics(url_ln):
     return (avg_miss, avg_fng, avg_dep, avg_ety)
 
 
+def extract_additional_metrics(url_ln):
+    avg_w = int(sum(int(line.split(' ; ')[-1]) for line in url_ln) /
+                len(url_ln))
+    year_a, avg_w_y, month_a = extract_year_month_metrics(url_ln)
+    return (avg_w, year_a, avg_w_y, month_a)
+
+
 def extract_year_month_metrics(url_ln):
     year_cnt = defaultdict(int)
     year_wng = defaultdict(int)
@@ -221,8 +306,8 @@ def extract_year_month_metrics(url_ln):
         year_cnt[year] += 1
         year_wng[year] += int(line.split(' ; ')[-1])
     years_str = generate_year_month_group(year_cnt, url_ln)
-    avg_w_y = sum(year_wng.values()) // len(year_wng)
-    return years_str, avg_w_y, year_wng
+    avg_wng_y = sum(year_wng.values()) // len(year_wng)
+    return years_str, avg_wng_y, year_wng
 
 
 def generate_year_month_group(year_cnt, url_ln):
@@ -230,43 +315,22 @@ def generate_year_month_group(year_cnt, url_ln):
     for year in sorted(year_cnt.keys()):
         year_str = f" {year}: {year_cnt[year]} \
 {get_detail('[analysis_y]').rstrip()}"
-        month_counts = defaultdict(int)
-        for line in url_ln:
-            date_str = line.split(' ; ')[0].split()[0]
-            line_year, line_month, _ = map(int, date_str.split('/'))
-            if line_year == year:
-                month_name = get_detail(f'[month_{line_month:02d}]')
-                month_counts[month_name] += 1
+        month_cnts = get_month_counts(year, url_ln)
         months_str = '\n'.join([f" {month_name.rstrip()} ({count})" for
-                                month_name, count in month_counts.items()])
+                                month_name, count in month_cnts.items()])
         year_str += '\n' + months_str + '\n'
         years_str.append(year_str)
     return '\n'.join(years_str)
 
 
-def extract_additional_metrics(url_ln):
-    avg_w = int(sum(int(line.split(' ; ')[-1]) for line in url_ln) /
-                len(url_ln))
-    year_a, avg_w_y, month_a = extract_year_month_metrics(url_ln)
-    return (avg_w, year_a, avg_w_y, month_a)
-
-
-def extract_metrics(c_history):
-    url_ln = [line for line in c_history if URL in line]
-    if not url_ln:
-        print("")
-        print(get_detail('[no_analysis]'))
-        print("")
-        sys.exit()
-    total_a = len(url_ln)
-    first_m = extract_first_metrics(url_ln)
-    second_m = [extract_second_metrics(url_ln, i, total_a) for i in
-                range(2, 6)]
-    third_m = extract_third_metrics(url_ln)
-    additional_m = extract_additional_metrics(url_ln)
-    fourth_m = extract_highlights_metrics(url_ln)
-    return print_metrics(total_a, first_m, second_m, third_m, additional_m,
-                         fourth_m)
+def get_month_counts(year, url_ln):
+    month_cnts = defaultdict(int)
+    for line in url_ln:
+        date_str = line.split(' ; ')[0].split()[0]
+        line_year, line_month, _ = map(int, date_str.split('/'))
+        if line_year == year:
+            month_cnts[get_detail(f'[month_{line_month:02d}]')] += 1
+    return month_cnts
 
 
 def extract_highlights_metrics(url_ln):
@@ -308,21 +372,6 @@ def print_metrics(total_a, first_m, second_m, third_m, additional_m, fourth_m):
         analysis_year_m
     return {get_detail(key, replace=True): value for key, value in
             totals_m.items()}
-
-
-def analysis_time():
-    print(".:")
-    print("")
-    print_detail_l('[analysis_time]')
-    print(round(end - start, 2), end="")
-    print_detail_l('[analysis_time_sec]')
-    t_cnt = m_cnt + f_cnt + i_cnt[0] + e_cnt
-    mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = save_extract_totals(t_cnt)
-    mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt,\
-        thr_cnt = compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt,
-                                 eh_cnt, e_cnt, th_cnt, t_cnt)
-    print("")
-    analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt)
 
 
 def clean_output():
@@ -442,36 +491,6 @@ def get_detail(id_mode, replace=False):
                 details_f[i+1]
 
 
-def python_ver():
-    if sys.version_info < (3, 9):
-        print("")
-        print_detail('[python]', 2)
-        sys.exit()
-
-
-def print_guides():
-    print("")
-    print_detail('[guides]')
-    with open(path.join('additional', 'guides.txt'), 'r', encoding='utf8') as \
-            gd:
-        for line in gd:
-            if line.startswith('['):
-                print(f"{Style.BRIGHT}{line}", end='')
-            else:
-                print(f"{line}", end='')
-
-
-def ua_ru_analysis(suffix, country):
-    print("")
-    if suffix == "UA" or country == 'Ukraine':
-        detail = '[analysis_ua_output]' if args.output else '[analysis_ua]'
-    elif suffix == "RU" and suffix not in NON_RU_TLDS or country == 'Russia':
-        detail = RU_DESC
-    print_detail(detail, 2) if detail == RU_DESC else print_detail(detail)
-    if detail == RU_DESC:
-        sys.exit()
-
-
 def fingerprint_headers(headers, l_fng, l_fng_ex):
     f_cnt = 0
     matching_headers = sorted([header for header in headers if any(elem.lower()
@@ -536,21 +555,6 @@ def request_exceptions():
     except requests.exceptions.RequestException as err:
         raise SystemExit from err
     return headers, status_c
-
-
-def check_updates(version):
-    r_url = 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py'
-    try:
-        response_t = requests.get(r_url, timeout=10).text
-        remote_v = re.search(r"\d{4}-\d{2}-\d{2}", response_t).group()
-        remote_v_date = datetime.strptime(remote_v, '%Y-%m-%d').date()
-        if remote_v_date > version:
-            print(f"\n v.{version}{get_detail('[not_latest]')[:-1]}{remote_v})\
-                  \n{get_detail('[home]')}")
-        else:
-            print(f"\n v.{version}{get_detail('[latest]')}")
-    except requests.exceptions.RequestException:
-        print(f"\n{get_detail('[update_error]')}")
 
 
 init(autoreset=True)
