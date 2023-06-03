@@ -63,8 +63,9 @@ REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-version = datetime.strptime('2023-06-03', '%Y-%m-%d').date()
+export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
+version = datetime.strptime('2023-06-03', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -666,13 +667,12 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
 headers, status_code = request_exceptions()
 
 # Export analysis
-date_now = datetime.now().strftime("%Y%m%d")
 extension = "t.txt" if args.output in ['pdf', 'html'] else ".txt"
 
 if args.output:
     orig_stdout = sys.stdout
     name_s = tldextract.extract(URL)
-    name_e = f"{name_s.domain}_headers_{date_now}{extension}"
+    name_e = f"{name_s.domain}_headers_{export_date}{extension}"
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
@@ -1088,7 +1088,6 @@ for key in empty_s_headers:
         e_cnt += 1
 
 print("") if e_cnt != 0 else print_ok()
-
 print("")
 
 # Report - 5. Browser Compatibility for Enabled HTTP Security Headers
