@@ -519,24 +519,28 @@ def get_detail(id_mode, replace=False):
 
 def fingerprint_headers(headers, l_fng, l_fng_ex):
     f_cnt = 0
-    matching_headers = sorted([header for header in headers if any(elem.lower()
-                               in headers for elem in l_fng)])
+    match_h = sorted([header for header in headers if any(elem.lower()
+                     in headers for elem in l_fng)])
     l_fng = [x.title() for x in l_fng]
-    matching_headers = [x.title() for x in matching_headers]
-    for key in matching_headers:
-        if key in l_fng:
-            if not args.brief:
-                index_fng = l_fng.index(key)
-                print_header_fng(l_fng_ex[index_fng])
-                if not headers[key]:
-                    print(get_detail('[empty_fng]'))
-                else:
-                    print(f" {headers[key]}")
-                print("")
-            else:
-                print_header(key)
+    match_h = [x.title() for x in match_h]
+    for header in match_h:
+        if header in l_fng:
+            get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args)
             f_cnt += 1
     return f_cnt
+
+
+def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
+    if not args.brief:
+        index_fng = l_fng.index(header)
+        print_header_fng(l_fng_ex[index_fng])
+        if not headers[header]:
+            print(get_detail('[empty_fng]'))
+        else:
+            print(f" {headers[header]}")
+        print("")
+    else:
+        print_header(header)
 
 
 def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt):
