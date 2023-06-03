@@ -352,26 +352,51 @@ def extract_highlights_metrics(url_ln):
 
 
 def print_metrics(total_a, first_m, second_m, third_m, additional_m, fourth_m):
-    basic_m = {'[main]': "", '[total_analysis]': total_a,
-               '[first_analysis_a]': first_m[0], '[latest_analysis]':
-               first_m[1], '[best_analysis]': f"{first_m[2]} \
-{get_detail('[total_warnings]', replace=True)}{first_m[3]})",
-               '[worst_analysis]': f"{first_m[4]} \
-{get_detail('[total_warnings]', replace=True)}{first_m[5]})\n"}
-    error_m = {'[analysis_y]': "", '[no_missing]': second_m[0],
-               '[no_fingerprint]': second_m[1], '[no_ins_deprecated]':
-               second_m[2], '[no_empty]': second_m[3] + "\n"}
-    warning_m = {'[averages]': "", '[average_warnings]': f"{additional_m[0]}",
-                 '[average_warnings_year]': f"{additional_m[2]}"}
-    averages_m = {'[average_miss]': f"{third_m[0]}", '[average_fng]':
-                  f"{third_m[1]}", '[average_dep]': f"{third_m[2]}",
-                  '[average_ety]': f"{third_m[3]}\n"}
-    analysis_year_m = {'[analysis_year_month]': f"\n{additional_m[1]}"}
-    fourth_m = {'[highlights]': "\n" + "\n".join(fourth_m)}
-    totals_m = basic_m | error_m | warning_m | averages_m | fourth_m |\
-        analysis_year_m
+    basic_m = get_basic_metrics(total_a, first_m)
+    error_m = get_error_metrics(second_m)
+    warning_m = get_warning_metrics(additional_m)
+    averages_m = get_averages_metrics(third_m)
+    fourth_m = get_fourth_metrics(fourth_m)
+    analysis_year_m = get_analysis_year_metrics(additional_m)
+    totals_m = {**basic_m, **error_m, **warning_m, **averages_m, **fourth_m,
+                **analysis_year_m}
     return {get_detail(key, replace=True): value for key, value in
             totals_m.items()}
+
+
+def get_basic_metrics(total_a, first_m):
+    return {'[main]': "", '[total_analysis]': total_a,
+            '[first_analysis_a]': first_m[0], '[latest_analysis]': first_m[1],
+            '[best_analysis]': f"{first_m[2]} \
+{get_detail('[total_warnings]', replace=True)}{first_m[3]})",
+            '[worst_analysis]': f"{first_m[4]} \
+{get_detail('[total_warnings]', replace=True)}{first_m[5]})\n"}
+
+
+def get_error_metrics(second_m):
+    return {'[analysis_y]': "", '[no_missing]': second_m[0],
+            '[no_fingerprint]': second_m[1],
+            '[no_ins_deprecated]': second_m[2],
+            '[no_empty]': second_m[3] + "\n"}
+
+
+def get_warning_metrics(additional_m):
+    return {'[averages]': "", '[average_warnings]': f"{additional_m[0]}",
+            '[average_warnings_year]': f"{additional_m[2]}"}
+
+
+def get_averages_metrics(third_m):
+    return {'[average_miss]': f"{third_m[0]}",
+            '[average_fng]': f"{third_m[1]}", '[average_dep]': f"{third_m[2]}",
+            '[average_ety]': f"{third_m[3]}\n"}
+
+
+def get_fourth_metrics(fourth_m):
+    return {'[highlights]': "\n" + "\n".join(fourth_m)}
+
+
+def get_analysis_year_metrics(additional_m):
+    return {'[analysis_year_month]': f"\n{additional_m[1]}"}
 
 
 def clean_output():
