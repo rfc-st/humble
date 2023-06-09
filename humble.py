@@ -549,14 +549,13 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
 
 
 def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt):
-    print(" ")
-    print(f"{(print_detail_l('[miss_cnt]') or '')[:-1]}{m_cnt} ({mhr_cnt})")
-    print(f"{(print_detail_l('[finger_cnt]') or '')[:-1]}{f_cnt} ({fhr_cnt})")
-    print(f"{(print_detail_l('[ins_cnt]') or '')[:-1]}{i_cnt[0]} ({ihr_cnt})")
-    print(f"{(print_detail_l('[empty_cnt]') or '')[:-1]}{e_cnt} ({ehr_cnt})")
+    literals = ['[miss_cnt]', '[finger_cnt]', '[ins_cnt]', '[empty_cnt]',
+                '[total_cnt]']
+    totals = [f"{m_cnt} ({mhr_cnt})", f"{f_cnt} ({fhr_cnt})", f"{i_cnt[0]} \
+({ihr_cnt})", f"{e_cnt} ({ehr_cnt})\n", f"{t_cnt} ({thr_cnt})\n"]
     print("")
-    print(f"{(print_detail_l('[total_cnt]') or '')[:-1]}{t_cnt} ({thr_cnt})")
-    print(""), print(".:"), print("")
+    for literal, total in zip(literals, totals):
+        print(f"{(print_detail_l(literal) or '')[:-1]}{total}")
 
 
 def detail_exceptions(id_exception, exception_v):

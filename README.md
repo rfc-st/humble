@@ -270,7 +270,6 @@ Any HTTP response header.
 
 ## To-do
 
-- [ ] Achieve at least 60% quality score in all functions.
 - [ ] Add more header/value checks (only security-oriented)
 - [ ] Google Style Python Docstrings and maybe documentation via Sphinx.
 
