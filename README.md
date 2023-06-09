@@ -155,7 +155,7 @@ options:
   -b                 Show a brief analysis; if omitted, a detailed analysis will be shown.
   -g                 Show guidelines on securing most used web servers/services.
   -l {es}            Displays the analysis in the indicated language; if omitted, English will be used.
-  -o {html,pdf,txt}  Save analysis to file (URL_yyyymmdd.ext).
+  -o {html,pdf,txt}  Save analysis to file (URL_headers_yyyymmdd.ext).
   -r                 Show HTTP response headers and a detailed analysis.
   -u URL             URL to analyze, with schema. E.g., https://google.com
   -v, --version      Show version and checks for updates

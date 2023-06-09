@@ -65,7 +65,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-06-03', '%Y-%m-%d').date()
+version = datetime.strptime('2023-06-09', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -605,7 +605,7 @@ guidelines on securing most used web servers/services.")
 parser.add_argument("-l", dest='lang', choices=['es'], help="Displays the \
 analysis in the indicated language; if omitted, English will be used.")
 parser.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
-                    help="Save analysis to file (URL_yyyymmdd.ext).")
+                    help="Save analysis to file (URL_headers_yyyymmdd.ext).")
 parser.add_argument("-r", dest='ret', action="store_true", help="Show HTTP \
 response headers and a detailed analysis.")
 parser.add_argument('-u', type=str, dest='URL', help="URL to analyze, with \
@@ -676,12 +676,15 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
 headers, status_code = request_exceptions()
 
 # Export analysis
-extension = "t.txt" if args.output in ['pdf', 'html'] else ".txt"
+ext = "t.txt" if args.output in ['pdf', 'html'] else ".txt"
 
 if args.output:
     orig_stdout = sys.stdout
     name_s = tldextract.extract(URL)
-    name_e = f"{name_s.domain}_headers_{export_date}{extension}"
+    name_sub = name_s.subdomain + '.' if name_s.subdomain else ''
+    name_dom = name_s.domain
+    name_tld = name_s.suffix
+    name_e = f"{name_sub}{name_dom}.{name_tld}_headers_{export_date}{ext}"
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
