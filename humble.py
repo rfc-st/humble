@@ -230,8 +230,12 @@ def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
 
 def file_exists(filepath):
     if not path.exists(filepath):
-        print("")
-        print(get_detail('[no_analysis]'))
+        if args.URL:
+            print("")
+            print(get_detail('[no_analysis]'))
+        else:
+            print("")
+            print(get_detail('[no_global_analysis]'))
         print("")
         sys.exit()
 
@@ -405,6 +409,75 @@ def get_fourth_metrics(fourth_m):
 
 def get_analysis_year_metrics(additional_m):
     return {'[analysis_year_month]': f"\n{additional_m[1]}"}
+
+
+def global_analytics():
+    file_exists(A_FILE)
+    with open(A_FILE, 'r', encoding='utf8') as c_history:
+        analysis_stats = extract_global_metrics(c_history)
+    print("")
+    print(f"{get_detail('[global_stats_analysis]', replace=True)}")
+    print("")
+    for key, value in analysis_stats.items():
+        if not value or not key.startswith(' '):
+            key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}"
+            print(f"{key}{value}")
+        else:
+            print(f"{key}: {value}")
+
+
+def extract_global_metrics(c_history):
+    url_ln = list(c_history)
+    if not url_ln:
+        print("")
+        print(get_detail('[no_global_analysis]'))
+        print("")
+        sys.exit()
+    total_a = len(url_ln)
+    first_m = extract_global_first_metrics(url_ln)
+    second_m = [extract_second_metrics(url_ln, i, total_a) for i in
+                range(2, 6)]
+    third_m = extract_third_metrics(url_ln)
+    additional_m = extract_additional_metrics(url_ln)
+    return print_global_metrics(total_a, first_m, second_m, third_m,
+                                additional_m)
+
+
+def extract_global_first_metrics(url_ln):
+    url_lines = {}
+    for line in url_ln:
+        url = line.split(' ; ')[1]
+        if url in url_lines:
+            url_lines[url] += 1
+        else:
+            url_lines[url] = 1
+    first_a = min(f"{line.split(' ; ')[0]}" for line in url_ln)
+    latest_a = max(f"{line.split(' ; ')[0]}" for line in url_ln)
+    unique_u = len({line.split(' ; ')[1] for line in url_ln})
+    most_analyzed_u = max(url_lines, key=url_lines.get)
+    least_analyzed_u = min(url_lines, key=url_lines.get)
+    return (first_a, latest_a, unique_u, most_analyzed_u, least_analyzed_u)
+
+
+def get_basic_global_metrics(total_a, first_m):
+    return {'[main]': "", '[total_analysis]': total_a,
+            '[total_global_analysis]': str(first_m[2]),
+            '[first_analysis_a]': first_m[0],
+            '[latest_analysis]': first_m[1] + "\n",
+            '[most_analyzed]': first_m[3],
+            '[least_analyzed]': first_m[4] + "\n"}
+
+
+def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
+    basic_m = get_basic_global_metrics(total_a, first_m)
+    error_m = get_error_metrics(second_m)
+    warning_m = get_warning_metrics(additional_m)
+    averages_m = get_averages_metrics(third_m)
+    analysis_year_m = get_analysis_year_metrics(additional_m)
+    totals_m = {**basic_m, **error_m, **warning_m, **averages_m,
+                **analysis_year_m}
+    return {get_detail(key, replace=True): value for key, value in
+            totals_m.items()}
 
 
 def clean_output():
@@ -598,7 +671,7 @@ init(autoreset=True)
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
                         description=PRG_N + GIT_U)
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Show \
-statistics of the analysis performed on the specified URL.")
+statistics of the performed analysis (will be global if -u URL is omitted)")
 parser.add_argument("-b", dest='brief', action="store_true", help="Show a \
 brief analysis; if omitted, a detailed analysis will be shown.")
 parser.add_argument("-g", dest='guides', action="store_true", help="Show \
@@ -623,8 +696,11 @@ if args.version:
     check_updates(version)
     sys.exit()
 
+if args.lang and not (args.URL or args.URL_A):
+    parser.error("The '-l' option requires '-u' or '-a'.")
+
 if any([args.brief, args.lang, args.output, args.ret]) \
-        and (args.URL is None and not args.guides):
+        and (args.URL is None and not args.guides) and (args.URL_A is None):
     parser.error("The '-u' option is required.")
 
 URL = args.URL
@@ -636,7 +712,11 @@ if args.guides:
     sys.exit()
 
 if args.URL_A:
-    url_analytics()
+    if args.URL:
+        url_analytics()
+    else:
+        details_f = get_details_lines()
+        global_analytics()
     sys.exit()
 
 start = time()

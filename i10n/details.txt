@@ -722,6 +722,9 @@ First Analysis
 [stats_analysis]
 Statistics of 
 
+[global_stats_analysis]
+Global statistics of all analyses performed 
+ 
 [total_analysis]
  Analyses done   
 
@@ -731,17 +734,29 @@ Statistics of
 [latest_analysis]
  Latest analysis 
 
+[most_analyzed]
+ Most analyzed   
+
+[least_analyzed]
+ Least analyzed  
+
 [best_analysis]
  Best analysis   
 
 [worst_analysis]
  Worst analysis  
 
+[total_global_analysis]
+ URLs analyzed   
+
 [total_warnings]
 (Warnings: 
 
 [no_analysis]
 To use this option ('-a') you must have run at least one scan against that URL.
+
+[no_global_analysis]
+To use this option ('-a') you must have run at least one scan against any URL.
 
 [no_missing]
  Without missing headers                             
