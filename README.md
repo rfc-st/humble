@@ -157,7 +157,7 @@ humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 options:
   -h, --help         show this help message and exit
-  -a                 Show statistics of the analysis performed on the specified URL.
+  -a                 Show statistics of the performed analysis (will be global if '-u' URL is omitted).
   -b                 Show a brief analysis; if omitted, a detailed analysis will be shown.
   -g                 Show guidelines on securing most used web servers/services.
   -l {es}            Displays the analysis in the indicated language; if omitted, English will be used.

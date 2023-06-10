@@ -671,7 +671,7 @@ init(autoreset=True)
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
                         description=PRG_N + GIT_U)
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Show \
-statistics of the performed analysis (will be global if -u URL is omitted)")
+statistics of the performed analysis (will be global if '-u' URL is omitted)")
 parser.add_argument("-b", dest='brief', action="store_true", help="Show a \
 brief analysis; if omitted, a detailed analysis will be shown.")
 parser.add_argument("-g", dest='guides', action="store_true", help="Show \
