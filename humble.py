@@ -65,7 +65,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-06-09', '%Y-%m-%d').date()
+version = datetime.strptime('2023-06-10', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -342,19 +342,21 @@ def get_month_counts(year, url_ln):
 def extract_highlights_metrics(url_ln):
     sections = ['[miss_cnt]', '[finger_cnt]', '[ins_cnt]', '[empty_cnt]']
     fields_h = [2, 3, 4, 5]
-    output = []
-    values = [[int(line.split(';')[fields_h[i]].strip()) for line in url_ln]
-              for i in range(len(fields_h))]
-    for i in range(len(fields_h)):
-        max_idx = max(range(len(values[i])), key=values[i].__getitem__)
-        min_idx = min(range(len(values[i])), key=values[i].__getitem__)
-        max_date = url_ln[max_idx].split(';')[0].strip()
-        min_date = url_ln[min_idx].split(';')[0].strip()
-        output.extend([f"{print_detail_h(sections[i])}",
-                       f"  {print_detail_h('[best_analysis]')}: {min_date}",
-                       f"  {print_detail_h('[worst_analysis]')}: {max_date}",
-                       ""])
-    return output
+    return [f"{print_detail_h(sections[i])}\n"
+            f"  {print_detail_h('[best_analysis]')}: \
+{get_best_worst_highlights(url_ln, fields_h[i], min)}\n"
+            f"  {print_detail_h('[worst_analysis]')}: \
+{get_best_worst_highlights(url_ln, fields_h[i], max)}\n"
+            for i in range(len(fields_h))]
+
+
+def get_best_worst_highlights(url_ln, field_index, func):
+    values = [int(line.split(';')[field_index].strip()) for line in url_ln]
+    target_value = func(values)
+    target_line = next(line for line in url_ln
+                       if int(line.split(';')[field_index].strip()) ==
+                       target_value)
+    return target_line.split(';')[0].strip()
 
 
 def print_metrics(total_a, first_m, second_m, third_m, additional_m, fourth_m):
