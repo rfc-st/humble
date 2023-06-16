@@ -65,7 +65,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-06-10', '%Y-%m-%d').date()
+version = datetime.strptime('2023-06-16', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -230,13 +230,8 @@ def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
 
 def file_exists(filepath):
     if not path.exists(filepath):
-        if args.URL:
-            print("")
-            print(get_detail('[no_analysis]'))
-        else:
-            print("")
-            print(get_detail('[no_global_analysis]'))
-        print("")
+        detail = '[no_analysis]' if args.URL else '[no_global_analysis]'
+        print(f"\n{get_detail(detail).strip()}\n")
         sys.exit()
 
 
@@ -244,9 +239,7 @@ def url_analytics():
     file_exists(A_FILE)
     with open(A_FILE, 'r', encoding='utf8') as c_history:
         analysis_stats = extract_metrics(c_history)
-    print("")
-    print(f"{get_detail('[stats_analysis]', replace=True)}{URL}")
-    print("")
+    print(f"\n{get_detail('[stats_analysis]', replace=True)}{URL}\n")
     for key, value in analysis_stats.items():
         if not value or not key.startswith(' '):
             key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}"
@@ -258,9 +251,7 @@ def url_analytics():
 def extract_metrics(c_history):
     url_ln = [line for line in c_history if URL in line]
     if not url_ln:
-        print("")
-        print(get_detail('[no_analysis]'))
-        print("")
+        print(f"\n{get_detail('[no_analysis]').strip()}\n")
         sys.exit()
     total_a = len(url_ln)
     first_m = extract_first_metrics(url_ln)
