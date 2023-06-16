@@ -406,9 +406,7 @@ def global_analytics():
     file_exists(A_FILE)
     with open(A_FILE, 'r', encoding='utf8') as c_history:
         analysis_stats = extract_global_metrics(c_history)
-    print("")
-    print(f"{get_detail('[global_stats_analysis]', replace=True)}")
-    print("")
+    print(f"\n{get_detail('[global_stats_analysis]', replace=True)}\n")
     for key, value in analysis_stats.items():
         if not value or not key.startswith(' '):
             key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}"
@@ -420,9 +418,7 @@ def global_analytics():
 def extract_global_metrics(c_history):
     url_ln = list(c_history)
     if not url_ln:
-        print("")
-        print(get_detail('[no_global_analysis]'))
-        print("")
+        print(f"\n{get_detail('[no_global_analysis]').strip()}\n")
         sys.exit()
     total_a = len(url_ln)
     first_m = extract_global_first_metrics(url_ln)
