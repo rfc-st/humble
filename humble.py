@@ -317,7 +317,7 @@ def generate_year_month_group(year_cnt, url_ln):
         year_str = f" {year}: {year_cnt[year]} \
 {get_detail('[analysis_y]').rstrip()}"
         month_cnts = get_month_counts(year, url_ln)
-        months_str = '\n'.join([f" {month_name.rstrip()} ({count})" for
+        months_str = '\n'.join([f"  ({count}){month_name.rstrip()}" for
                                 month_name, count in month_cnts.items()])
         year_str += '\n' + months_str + '\n'
         years_str.append(year_str)
@@ -442,8 +442,12 @@ def extract_global_first_metrics(url_ln):
     latest_a = max(f"{line.split(' ; ')[0]}" for line in url_ln)
     unique_u = len({line.split(' ; ')[1] for line in url_ln})
     most_analyzed_u = max(url_lines, key=url_lines.get)
+    most_analyzed_c = url_lines[most_analyzed_u]
+    most_analyzed_cu = f"({most_analyzed_c}) {most_analyzed_u}"
     least_analyzed_u = min(url_lines, key=url_lines.get)
-    return (first_a, latest_a, unique_u, most_analyzed_u, least_analyzed_u)
+    least_analyzed_c = url_lines[least_analyzed_u]
+    least_analyzed_cu = f"({least_analyzed_c}) {least_analyzed_u}"
+    return (first_a, latest_a, unique_u, most_analyzed_cu, least_analyzed_cu)
 
 
 def get_basic_global_metrics(total_a, first_m):
