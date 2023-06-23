@@ -873,8 +873,10 @@ l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                     'style-src-attr', 'trusted-types',
                     'upgrade-insecure-requests', 'worker-src']
 
-l_csp_deprecated = ['block-all-mixed-content', 'plugin-types', 'prefetch-src',
-                    'referrer', 'report-uri', 'require-sri-for']
+l_csp_dep = ['block-all-mixed-content', 'plugin-types', 'prefetch-src',
+             'referrer', 'report-uri', 'require-sri-for']
+
+l_csp_ro_dep = ['violated-directive']
 
 l_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
 
@@ -978,10 +980,10 @@ if 'Content-Security-Policy' in headers:
         print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
     elif not any(elem in csp_h for elem in l_csp_directives):
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
-    if any(elem in csp_h for elem in l_csp_deprecated):
+    if any(elem in csp_h for elem in l_csp_dep):
         print_detail_r('[icsi_d]', is_red=True)
         if not args.brief:
-            matches_csp = [x for x in l_csp_deprecated if x in csp_h]
+            matches_csp = [x for x in l_csp_dep if x in csp_h]
             print_detail_l("[icsi_d_s]")
             print(', '.join(matches_csp))
             print_detail("[icsi_d_r]")
@@ -992,6 +994,16 @@ if 'Content-Security-Policy' in headers:
         print_details('[icsh_h]', '[icsh]', 'd', i_cnt)
     if ' * ' in csp_h:
         print_details('[icsw_h]', '[icsw]', 'd', i_cnt)
+
+csp_ro_header = headers.get('Content-Security-Policy-Report-Only', '').lower()
+if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep):
+    print_detail_r('[icsiro_d]', is_red=True)
+    if not args.brief:
+        matches_csp_ro = [x for x in l_csp_ro_dep if x in csp_ro_header]
+        print_detail_l("[icsi_d_s]")
+        print(', '.join(matches_csp_ro))
+        print_detail("[icsiro_d_r]")
+    i_cnt[0] += 1
 
 ctype_header = headers.get('Content-Type', '').lower()
 if ctype_header:

@@ -12,6 +12,7 @@ Content-Security-Policy: Incorrect values
 Content-Security-Policy: Insecure Schemes
 Content-Security-Policy: Too Permissive Value
 Content-Security-Policy: Unsafe Values
+Content-Security-Policy-Report-Only: Deprecated Directives
 Content-Type: Deprecated Values
 Content-Type: Non-HTML MIME type
 Digest: Deprecated Header

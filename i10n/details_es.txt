@@ -188,6 +188,12 @@
 [icsi_d_r]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
+[icsiro_d]
+ Content-Security-Policy-Report-Only (Directivas obsoletas)
+
+[icsiro_d_r]
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
+
 [icsi_d_s]
  Evite utilizar directivas obsoletas: 
 
