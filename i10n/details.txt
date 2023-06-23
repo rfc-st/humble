@@ -114,6 +114,13 @@
  This header is ignored by the browser when accessing via HTTP.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 
+[icencod]
+ Include at least one valid directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
+
+[icencod_h]
+ Content-Encoding (No Valid Directives)
+
 [ictlg_h]
  Content-Type (Deprecated Values)
 
