@@ -48,6 +48,7 @@ import requests
 import tldextract
 
 A_FILE = 'analysis_h.txt'
+F_FILE = 'fingerprint.txt'
 BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRI_R = Style.BRIGHT + Fore.RED
 CAN_S = ': https://caniuse.com/?search='
@@ -146,6 +147,20 @@ def check_updates(version):
             print(f"\n v.{version}{get_detail('[latest]')}")
     except requests.exceptions.RequestException:
         print(f"\n{get_detail('[update_error]')}")
+
+
+def fingerprint_analytics(term):
+    print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
+{Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
+    with open(path.join('additional', F_FILE), 'r', encoding='utf8') as fng_f:
+        fng_lines = fng_f.readlines()
+        fng_ln = len(fng_lines)
+        term_count = sum(term.lower() in line.lower() for line in fng_lines)
+        pct_fng = round(term_count / fng_ln * 100, 2)
+        print(f" {get_detail('[fng_add]', replace=True)} '{term}': {pct_fng}%\
+ ({term_count}{get_detail('[pdf_po]', replace=True)}{fng_ln})\n")
+        print(*(f"   {line.strip()}" for line in fng_lines if term.lower() in
+                line.lower()), sep='\n')
 
 
 def print_guides():
@@ -656,6 +671,8 @@ parser.add_argument("-a", dest='URL_A', action="store_true", help="Show \
 statistics of the performed analysis (will be global if '-u' URL is omitted)")
 parser.add_argument("-b", dest='brief', action="store_true", help="Show a \
 brief analysis; if omitted, a detailed analysis will be shown.")
+parser.add_argument("-f", type=str, dest='term', help="Show statistics \
+for fingerprint headers related to the term E.g., Akamai, Google.")
 parser.add_argument("-g", dest='guides', action="store_true", help="Show \
 guidelines on securing most used web servers/services.")
 parser.add_argument("-l", dest='lang', choices=['es'], help="Displays the \
@@ -676,6 +693,14 @@ if args.version:
     if args.lang:
         details_f = get_details_lines()
     check_updates(version)
+    sys.exit()
+
+if args.term:
+    term = args.term
+    details_f = get_details_lines()
+    if args.lang:
+        details_f = get_details_lines()
+    fingerprint_analytics(term)
     sys.exit()
 
 if args.lang and not (args.URL or args.URL_A):

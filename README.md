@@ -85,6 +85,12 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="Full analysis" width=70% height=70%>
 </p>
 <br />
+.: Specific fingerprint headers (Linux).<br />
+<p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fng.jpg" alt="Specific fingerprint headers" width=70% height=70%>
+</p>
+<br />
 .: Detailed analysis exported to PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/tesla_headers_20230406.pdf">Example.</a><br />
 <p></p>
 <p align="center">
@@ -151,14 +157,15 @@ https://github.com/rfc-st/humble/releases
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-g] [-l {es}] [-o {html,pdf,txt}] [-r] [-u URL] [-v]
+usage: humble.py [-h] [-a] [-b] [-f TERM] [-g] [-l {es}] [-o {html,pdf,txt}] [-r] [-u URL] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 options:
   -h, --help         show this help message and exit
-  -a                 Show statistics of the performed analysis (will be global if '-u' URL is omitted).
+  -a                 Show statistics of the performed analysis (will be global if '-u' URL is omitted)
   -b                 Show a brief analysis; if omitted, a detailed analysis will be shown.
+  -f TERM            Show statistics for fingerprint headers related to the term E.g., Akamai, Google.
   -g                 Show guidelines on securing most used web servers/services.
   -l {es}            Displays the analysis in the indicated language; if omitted, English will be used.
   -o {html,pdf,txt}  Save analysis to file (URL_headers_yyyymmdd.ext).

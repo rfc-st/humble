@@ -873,3 +873,12 @@ A destacar
 
 [update_error]
  Hubo un error al comprobar si usas la versión más reciente. Por favor, espera unos minutos y vuelve a intentarlo.
+
+[fng_stats]
+ Estadísticas de huella digital por cabeceras
+
+[fng_source]
+ (fuente: "additional/fingerprint.txt")
+
+[fng_add]
+ Asociadas a

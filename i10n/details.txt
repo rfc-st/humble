@@ -873,3 +873,12 @@ Highlights
 
 [update_error]
  There was an error checking if you are using the latest version. Please wait a few minutes and try again.
+
+[fng_stats]
+ HTTP fingerprint headers statistics
+
+[fng_source]
+ (source: "additional/fingerprint.txt")
+
+[fng_add]
+ Related to
