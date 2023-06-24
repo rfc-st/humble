@@ -240,9 +240,8 @@ def url_analytics(is_global=False):
     with open(A_FILE, 'r', encoding='utf8') as c_history:
         analysis_stats = extract_global_metrics(c_history) if is_global else \
             extract_metrics(c_history)
-    analysis_type = '[global_stats_analysis]' if is_global else \
-        '[stats_analysis]'
-    print(f"\n{get_detail(analysis_type, replace=True)}{URL}\n")
+    stats_s = '[global_stats_analysis]' if is_global else '[stats_analysis]'
+    print(f"\n{get_detail(stats_s, replace=True)}{'' if is_global else URL}\n")
     for key, value in analysis_stats.items():
         key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}" \
             if (not value or not key.startswith(' ')) else key
@@ -426,6 +425,10 @@ def extract_global_first_metrics(url_ln):
             url_lines[url] += 1
         else:
             url_lines[url] = 1
+    return get_global_first_metrics(url_ln, url_lines)
+
+
+def get_global_first_metrics(url_ln, url_lines):
     first_a = min(f"{line.split(' ; ')[0]}" for line in url_ln)
     latest_a = max(f"{line.split(' ; ')[0]}" for line in url_ln)
     unique_u = len({line.split(' ; ')[1] for line in url_ln})
@@ -435,7 +438,7 @@ def extract_global_first_metrics(url_ln):
     least_analyzed_u = min(url_lines, key=url_lines.get)
     least_analyzed_c = url_lines[least_analyzed_u]
     least_analyzed_cu = f"({least_analyzed_c}) {least_analyzed_u}"
-    return (first_a, latest_a, unique_u, most_analyzed_cu, least_analyzed_cu)
+    return first_a, latest_a, unique_u, most_analyzed_cu, least_analyzed_cu
 
 
 def get_basic_global_metrics(total_a, first_m):
