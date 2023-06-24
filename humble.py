@@ -65,7 +65,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-06-23', '%Y-%m-%d').date()
+version = datetime.strptime('2023-06-24', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -235,17 +235,18 @@ def file_exists(filepath):
         sys.exit()
 
 
-def url_analytics():
+def url_analytics(is_global=False):
     file_exists(A_FILE)
     with open(A_FILE, 'r', encoding='utf8') as c_history:
-        analysis_stats = extract_metrics(c_history)
-    print(f"\n{get_detail('[stats_analysis]', replace=True)}{URL}\n")
+        analysis_stats = extract_global_metrics(c_history) if is_global else \
+            extract_metrics(c_history)
+    analysis_type = '[global_stats_analysis]' if is_global else \
+        '[stats_analysis]'
+    print(f"\n{get_detail(analysis_type, replace=True)}{URL}\n")
     for key, value in analysis_stats.items():
-        if not value or not key.startswith(' '):
-            key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}"
-            print(f"{key}{value}")
-        else:
-            print(f"{key}: {value}")
+        key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}" \
+            if (not value or not key.startswith(' ')) else key
+        print(f"{key}: {value}")
 
 
 def extract_metrics(c_history):
@@ -317,7 +318,7 @@ def generate_year_month_group(year_cnt, url_ln):
         year_str = f" {year}: {year_cnt[year]} \
 {get_detail('[analysis_y]').rstrip()}"
         month_cnts = get_month_counts(year, url_ln)
-        months_str = '\n'.join([f"  ({count}){month_name.rstrip()}" for
+        months_str = '\n'.join([f"   ({count}){month_name.rstrip()}" for
                                 month_name, count in month_cnts.items()])
         year_str += '\n' + months_str + '\n'
         years_str.append(year_str)
@@ -400,19 +401,6 @@ def get_fourth_metrics(fourth_m):
 
 def get_analysis_year_metrics(additional_m):
     return {'[analysis_year_month]': f"\n{additional_m[1]}"}
-
-
-def global_analytics():
-    file_exists(A_FILE)
-    with open(A_FILE, 'r', encoding='utf8') as c_history:
-        analysis_stats = extract_global_metrics(c_history)
-    print(f"\n{get_detail('[global_stats_analysis]', replace=True)}\n")
-    for key, value in analysis_stats.items():
-        if not value or not key.startswith(' '):
-            key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}"
-            print(f"{key}{value}")
-        else:
-            print(f"{key}: {value}")
 
 
 def extract_global_metrics(c_history):
@@ -707,7 +695,7 @@ if args.URL_A:
         url_analytics()
     else:
         details_f = get_details_lines()
-        global_analytics()
+        url_analytics(is_global=True)
     sys.exit()
 
 start = time()
