@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-06-24', '%Y-%m-%d').date()
+version = datetime.strptime('2023-06-30', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -149,18 +149,35 @@ def check_updates(version):
         print(f"\n{get_detail('[update_error]')}")
 
 
-def fingerprint_analytics(term):
+def fng_analytics_groups(fng_lines, term):
+    pattern = r'\[(.*?)\]'
+    distinct_content = {re.search(pattern, line)[1].strip() for line in
+                        fng_lines if re.search(pattern, line) and term.lower()
+                        in re.search(pattern, line)[1].lower()}
+    term_count = sum(re.search(pattern, line) and term.lower() in
+                     re.search(pattern, line)[1].lower() for line in fng_lines)
+    return distinct_content, term_count
+
+
+def fng_analytics_sorted(fng_lines, term, distinct_content):
+    for content in sorted(distinct_content):
+        print(f"\n [{content}]")
+        for line in fng_lines:
+            if term.lower() in line.lower() and content in line:
+                print(f"  {line[:line.find('[')].strip()}")
+
+
+def fng_analytics(term):
     print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join('additional', F_FILE), 'r', encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
-        fng_ln = len(fng_lines)
-        term_count = sum(term.lower() in line.lower() for line in fng_lines)
-        pct_fng = round(term_count / fng_ln * 100, 2)
-        print(f" {get_detail('[fng_add]', replace=True)} '{term}': {pct_fng}%\
- ({term_count}{get_detail('[pdf_po]', replace=True)}{fng_ln})\n")
-        print(*(f"   {line.strip()}" for line in fng_lines if term.lower() in
-                line.lower()), sep='\n')
+    distinct_content, term_count = fng_analytics_groups(fng_lines, term)
+    fng_ln = len(fng_lines)
+    pct_fng = round(term_count / fng_ln * 100, 2)
+    print(f"{get_detail('[fng_add]', replace=True)} '{term}': {pct_fng}%\
+ ({term_count}{get_detail('[pdf_po]', replace=True)}{fng_ln})")
+    fng_analytics_sorted(fng_lines, term, distinct_content)
 
 
 def print_guides():
@@ -700,7 +717,7 @@ if args.term:
     details_f = get_details_lines()
     if args.lang:
         details_f = get_details_lines()
-    fingerprint_analytics(term)
+    fng_analytics(term)
     sys.exit()
 
 if args.lang and not (args.URL or args.URL_A):
