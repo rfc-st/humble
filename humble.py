@@ -38,7 +38,7 @@
 from fpdf import FPDF
 from time import time
 from datetime import datetime
-from collections import defaultdict
+from collections import Counter, defaultdict
 from os import linesep, path, remove
 from colorama import Fore, Style, init
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -149,13 +149,34 @@ def check_updates(version):
         print(f"\n{get_detail('[update_error]')}")
 
 
+def fng_analytics_global_groups(fng_lines):
+    pattern = r'\[([^\]]+)\]'
+    content_count = Counter(match.strip() for line in fng_lines for match in
+                            re.findall(pattern, line))
+    total_lines = len(fng_lines)
+    print(f"{get_detail('[fng_top]', replace=True)}{total_lines}\
+{get_detail('[fng_top_2]', replace=True)}\n")
+    for content, count in content_count.most_common(20):
+        percentage = round(count / total_lines * 100, 2)
+        print(f" [{content}]: {percentage}% ({count})")
+
+
+def fng_analytics_global():
+    print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
+{Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
+    with open(path.join('additional', F_FILE), 'r', encoding='utf8') as fng_f:
+        fng_lines = fng_f.readlines()
+    fng_analytics_global_groups(fng_lines)
+
+
 def fng_analytics_groups(fng_lines, term):
     pattern = r'\[(.*?)\]'
-    distinct_content = {re.search(pattern, line)[1].strip() for line in
-                        fng_lines if re.search(pattern, line) and term.lower()
-                        in re.search(pattern, line)[1].lower()}
-    term_count = sum(re.search(pattern, line) and term.lower() in
-                     re.search(pattern, line)[1].lower() for line in fng_lines)
+    distinct_content = \
+        {match[1].strip()
+         for line in fng_lines if (match := re.search(pattern, line)) and
+         term.lower() in match[1].lower()}
+    term_count = sum(bool((match := re.search(pattern, line)) and term.lower()
+                          in match[1].lower()) for line in fng_lines)
     return distinct_content, term_count
 
 
@@ -163,7 +184,9 @@ def fng_analytics_sorted(fng_lines, term, distinct_content):
     for content in sorted(distinct_content):
         print(f"\n [{content}]")
         for line in fng_lines:
-            if term.lower() in line.lower() and content in line:
+            match = re.search(r'\[(.*?)\]', line)
+            if match and term.lower() in match[1].lower() \
+               and content == match[1].strip():
                 print(f"  {line[:line.find('[')].strip()}")
 
 
@@ -687,19 +710,20 @@ parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Show \
 statistics of the performed analysis (will be global if '-u' URL is omitted)")
 parser.add_argument("-b", dest='brief', action="store_true", help="Show a \
-brief analysis; if omitted, a detailed analysis will be shown.")
-parser.add_argument("-f", type=str, dest='term', help="Show statistics \
-for fingerprint headers related to the term E.g., Akamai, Google.")
+brief analysis; if omitted, a detailed analysis will be shown")
+parser.add_argument("-f", nargs='?', type=str, dest='term', help="Show \
+fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
+omitted)")
 parser.add_argument("-g", dest='guides', action="store_true", help="Show \
-guidelines on securing most used web servers/services.")
+guidelines on securing most used web servers/services")
 parser.add_argument("-l", dest='lang', choices=['es'], help="Displays the \
-analysis in the indicated language; if omitted, English will be used.")
+analysis in the indicated language; if omitted, English will be used")
 parser.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
-                    help="Save analysis to file (URL_headers_yyyymmdd.ext).")
+                    help="Save analysis to file (URL_headers_yyyymmdd.ext)")
 parser.add_argument("-r", dest='ret', action="store_true", help="Show HTTP \
-response headers and a detailed analysis.")
+response headers and a detailed analysis")
 parser.add_argument('-u', type=str, dest='URL', help="URL to analyze, with \
-schema. E.g., https://google.com")
+schema. E.g. https://google.com")
 parser.add_argument("-v", "--version", action="store_true",
                     help="Show version and checks for updates")
 
@@ -710,6 +734,13 @@ if args.version:
     if args.lang:
         details_f = get_details_lines()
     check_updates(version)
+    sys.exit()
+
+if args.term is None and '-f' in sys.argv:
+    details_f = get_details_lines()
+    if args.lang:
+        details_f = get_details_lines()
+    fng_analytics_global()
     sys.exit()
 
 if args.term:

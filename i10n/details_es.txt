@@ -882,3 +882,9 @@ A destacar
 
 [fng_add]
  Asociadas a
+
+[fng_top]
+ Top 20 en relación a las 
+
+[fng_top_2]
+ cabeceras del fichero fuente
