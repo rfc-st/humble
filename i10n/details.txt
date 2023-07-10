@@ -878,13 +878,13 @@ Highlights
  HTTP fingerprint headers statistics
 
 [fng_source]
- (source: "additional/fingerprint.txt")
+ (source file: "additional/fingerprint.txt")
 
 [fng_add]
  Related to
 
 [fng_top]
- Top 20 in relation to the 
+ Top 20 groups in relation to the 
 
 [fng_top_2]
- headers of the source
+ headers of the source file

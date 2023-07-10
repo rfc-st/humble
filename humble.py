@@ -38,12 +38,12 @@
 from fpdf import FPDF
 from time import time
 from datetime import datetime
-from collections import Counter, defaultdict
 from os import linesep, path, remove
 from colorama import Fore, Style, init
+from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-import sys
 import re
+import sys
 import requests
 import tldextract
 
@@ -150,15 +150,15 @@ def check_updates(version):
 
 
 def fng_analytics_global_groups(fng_lines):
-    pattern = r'\[([^\]]+)\]'
-    content_count = Counter(match.strip() for line in fng_lines for match in
-                            re.findall(pattern, line))
-    total_lines = len(fng_lines)
-    print(f"{get_detail('[fng_top]', replace=True)}{total_lines}\
+    pattern_fng_global = r'\[([^\]]+)\]'
+    content_cnt = Counter(match.strip() for line in fng_lines for match in
+                          re.findall(pattern_fng_global, line))
+    total_ln = len(fng_lines)
+    print(f"{get_detail('[fng_top]', replace=True)}{total_ln}\
 {get_detail('[fng_top_2]', replace=True)}\n")
-    for content, count in content_count.most_common(20):
-        percentage = round(count / total_lines * 100, 2)
-        print(f" [{content}]: {percentage}% ({count})")
+    for content, count in content_cnt.most_common(20):
+        pct_fng_global = round(count / total_ln * 100, 2)
+        print(f" [{content}]: {pct_fng_global}% ({count})")
 
 
 def fng_analytics_global():
@@ -169,15 +169,15 @@ def fng_analytics_global():
     fng_analytics_global_groups(fng_lines)
 
 
-def fng_analytics_groups(fng_lines, term):
-    pattern = r'\[(.*?)\]'
+def fng_analytics_groups(fng_ln, term):
+    pattern_fng = r'\[(.*?)\]'
     distinct_content = \
         {match[1].strip()
-         for line in fng_lines if (match := re.search(pattern, line)) and
+         for line in fng_ln if (match := re.search(pattern_fng, line)) and
          term.lower() in match[1].lower()}
-    term_count = sum(bool((match := re.search(pattern, line)) and term.lower()
-                          in match[1].lower()) for line in fng_lines)
-    return distinct_content, term_count
+    term_cnt = sum(bool((match := re.search(pattern_fng, line)) and
+                        term.lower() in match[1].lower()) for line in fng_ln)
+    return distinct_content, term_cnt
 
 
 def fng_analytics_sorted(fng_lines, term, distinct_content):
