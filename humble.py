@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-07-09', '%Y-%m-%d').date()
+version = datetime.strptime('2023-07-10', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -807,7 +807,7 @@ exception_d = {
 requests.packages.urllib3.disable_warnings()
 
 c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
+AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}
 
 headers, status_code = request_exceptions()
 
