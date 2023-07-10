@@ -752,11 +752,11 @@ if args.term:
     sys.exit()
 
 if args.lang and not (args.URL or args.URL_A):
-    parser.error("The '-l' option requires '-u' or '-a'.")
+    parser.error("'-l' option requires also '-u' or '-a'.")
 
-if any([args.brief, args.lang, args.output, args.ret]) \
-        and (args.URL is None and not args.guides) and (args.URL_A is None):
-    parser.error("The '-u' option is required.")
+if any([args.brief, args.output, args.ret]) \
+        and (args.URL is None or args.guides is None or args.URL_A is None):
+    parser.error("'-b', -'o' and '-r' options requires also '-u'.")
 
 URL = args.URL
 details_f = get_details_lines()
