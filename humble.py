@@ -196,11 +196,15 @@ def fng_analytics(term):
     with open(path.join('additional', F_FILE), 'r', encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
     distinct_content, term_count = fng_analytics_groups(fng_lines, term)
-    fng_ln = len(fng_lines)
-    pct_fng = round(term_count / fng_ln * 100, 2)
-    print(f"{get_detail('[fng_add]', replace=True)} '{term}': {pct_fng}%\
+    if not distinct_content:
+        print(f"{get_detail('[fng_zero]', replace=True)} '{term}'.\n\n\
+{get_detail('[fng_zero_2]', replace=True)}.\n")
+    else:
+        fng_ln = len(fng_lines)
+        pct_fng = round(term_count / fng_ln * 100, 2)
+        print(f"{get_detail('[fng_add]', replace=True)} '{term}': {pct_fng}%\
  ({term_count}{get_detail('[pdf_po]', replace=True)}{fng_ln})")
-    fng_analytics_sorted(fng_lines, term, distinct_content)
+        fng_analytics_sorted(fng_lines, term, distinct_content)
 
 
 def print_guides():

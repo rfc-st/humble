@@ -883,6 +883,12 @@ Highlights
 [fng_add]
  Related to
 
+[fng_zero]
+ No matches found for
+
+[fng_zero_2]
+ Tip: quote multiple words to search for exact matches; e.g. "Microsoft Azure Storage"
+
 [fng_top]
  Top 20 groups in relation to the 
 

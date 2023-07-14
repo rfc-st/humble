@@ -883,6 +883,12 @@ A destacar
 [fng_add]
  Asociadas a
 
+[fng_zero]
+ Sin coincidencias para
+
+[fng_zero_2]
+ Consejo: entrecomilla varias palabras para buscar coincidencias exactas; ej. "Microsoft Azure Storage"
+
 [fng_top]
  Top 20 de grupos en relación a las 
 
