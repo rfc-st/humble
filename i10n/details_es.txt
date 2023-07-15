@@ -233,6 +233,9 @@
 [icsw_h]
  Content-Security-Policy (Valor muy permisivo)
 
+[icsu_h]
+ Content-Security-Policy (Funcionalidad insegura)
+
 [ieta_h]
  Etag (Cabecera potencialmente insegura)
 
@@ -537,6 +540,10 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 [icsw]
  Limite las fuentes permitidas en las directivas. El valor '*' permite cualquier URL.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+
+[icsu]
+ Evite usar esta palabra clave, y traslade toda la lógica asociada a ella a un fichero Javascript.
+ Ref: https://content-security-policy.com/unsafe-hashes/
 
 [ictp]
  El único valor permitido es 'nosniff'.

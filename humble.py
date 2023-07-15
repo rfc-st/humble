@@ -939,7 +939,7 @@ l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                     'sandbox', 'script-src', 'script-src-elem',
                     'script-src-attr', 'style-src', 'style-src-elem',
                     'style-src-attr', 'trusted-types',
-                    'upgrade-insecure-requests', 'worker-src']
+                    'upgrade-insecure-requests', 'webrtc', 'worker-src']
 
 l_csp_dep = ['block-all-mixed-content', 'plugin-types', 'prefetch-src',
              'referrer', 'report-uri', 'require-sri-for']
@@ -1062,6 +1062,9 @@ if 'Content-Security-Policy' in headers:
         print_details('[icsh_h]', '[icsh]', 'd', i_cnt)
     if ' * ' in csp_h:
         print_details('[icsw_h]', '[icsw]', 'd', i_cnt)
+    if 'unsafe-hashes' in csp_h:
+        print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
+
 
 csp_ro_header = headers.get('Content-Security-Policy-Report-Only', '').lower()
 if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep):

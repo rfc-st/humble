@@ -6,11 +6,12 @@ Cache-Control: Recommended Values
 Clear-Site-Data: Ignored Header via Unsafe Scheme
 Content-DPR: Deprecated Header
 Content-Encoding: No Valid Directives
-Content-Security-Policy: No Valid Directives
 Content-Security-Policy: Deprecated Directives
 Content-Security-Policy: Incorrect values
 Content-Security-Policy: Insecure Schemes
+Content-Security-Policy: No Valid Directives
 Content-Security-Policy: Too Permissive Value
+Content-Security-Policy: Unsafe Funcionality
 Content-Security-Policy: Unsafe Values
 Content-Security-Policy-Report-Only: Deprecated Directives
 Content-Type: Deprecated Values
@@ -36,8 +37,8 @@ Set-Cookie: Insecure Attributes
 Set-Cookie: Insecure Schemes
 Set-Cookie: Missing Attribute
 Strict-Transport-Security: Duplicated Values
-Strict-Transport-Security: Recommended Values
 Strict-Transport-Security: Ignored Header via Unsafe Scheme
+Strict-Transport-Security: Recommended Values
 Timing-Allow-Origin: Potentially Unsafe Header
 Tk: Deprecated Header
 Warning: Deprecated Header
