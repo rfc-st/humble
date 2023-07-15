@@ -236,6 +236,9 @@
 [icsu_h]
  Content-Security-Policy (Unsafe Funcionality)
 
+[icsnces_h]
+ Content-Security-Policy (Unsafe Nonce)
+
 [ieta_h]
  Etag (Potentially Unsafe Header)
 
@@ -544,6 +547,10 @@ Articles that may be useful to secure servers/services and enable security HTTP 
 [icsu]
  Avoid using this keyword, and move all the logic associated with it to a JavaScript file.
  Ref: https://content-security-policy.com/unsafe-hashes/
+
+[icsnces]
+ Nonces should have at least 128 bits of entropy (32 hex/24 base64 characters).
+ Ref: https://content-security-policy.com/nonce/
 
 [ictp]
  The only valid value is 'nosniff'.

@@ -1064,7 +1064,12 @@ if 'Content-Security-Policy' in headers:
         print_details('[icsw_h]', '[icsw]', 'd', i_cnt)
     if 'unsafe-hashes' in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
-
+    if "'nonce-" in csp_h:
+        nonces_csp = re.findall(r"'nonce-([^']+)'", csp_h)
+        for nonce_csp in nonces_csp:
+            if len(nonce_csp) < 32:
+                print_details('[icsnces_h]', '[icsnces]', 'd', i_cnt)
+                break
 
 csp_ro_header = headers.get('Content-Security-Policy-Report-Only', '').lower()
 if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep):

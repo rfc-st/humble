@@ -236,6 +236,9 @@
 [icsu_h]
  Content-Security-Policy (Funcionalidad insegura)
 
+[icsnces_h]
+ Content-Security-Policy (Nonce inseguro)
+
 [ieta_h]
  Etag (Cabecera potencialmente insegura)
 
@@ -544,6 +547,10 @@ Referencias que pueden ser utilidad para securizar servidores y habilitar cabece
 [icsu]
  Evite usar esta palabra clave, y traslade toda la lógica asociada a ella a un fichero Javascript.
  Ref: https://content-security-policy.com/unsafe-hashes/
+
+[icsnces]
+ Los Nonces deben tener al menos 128 bits de entropía (32 caracteres hexadecimales/24 caracteres base64).
+ Ref: https://content-security-policy.com/nonce/
 
 [ictp]
  El único valor permitido es 'nosniff'.

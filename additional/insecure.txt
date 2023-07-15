@@ -12,6 +12,7 @@ Content-Security-Policy: Insecure Schemes
 Content-Security-Policy: No Valid Directives
 Content-Security-Policy: Too Permissive Value
 Content-Security-Policy: Unsafe Funcionality
+Content-Security-Policy: Unsafe Nonce
 Content-Security-Policy: Unsafe Values
 Content-Security-Policy-Report-Only: Deprecated Directives
 Content-Type: Deprecated Values
