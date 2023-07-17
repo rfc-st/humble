@@ -711,25 +711,27 @@ init(autoreset=True)
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
                         description=PRG_N + GIT_U)
-parser.add_argument("-a", dest='URL_A', action="store_true", help="Show \
-statistics of the performed analysis (will be global if '-u' URL is omitted)")
-parser.add_argument("-b", dest='brief', action="store_true", help="Show a \
-brief analysis; if omitted, a detailed analysis will be shown")
-parser.add_argument("-f", nargs='?', type=str, dest='term', help="Show \
+parser.add_argument("-a", dest='URL_A', action="store_true", help="show \
+statistics of the performed analysis (will be global if '-u URL' is omitted)")
+parser.add_argument("-b", dest='brief', action="store_true", help="show a \
+brief analysis (if omitted, a detailed one will be shown)")
+parser.add_argument("-f", nargs='?', type=str, dest='term', help="show \
 fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
 omitted)")
-parser.add_argument("-g", dest='guides', action="store_true", help="Show \
-guidelines on securing most used web servers/services")
-parser.add_argument("-l", dest='lang', choices=['es'], help="Displays the \
-analysis in the indicated language; if omitted, English will be used")
+parser.add_argument("-g", dest='guides', action="store_true", help="shows \
+guidelines for securing popular web servers/services")
+parser.add_argument("-l", dest='lang', choices=['es'], help="show the \
+analysis in the indicated language (if omitted, English will be used)")
 parser.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
-                    help="Save analysis to file (URL_headers_yyyymmdd.ext)")
-parser.add_argument("-r", dest='ret', action="store_true", help="Show HTTP \
-response headers and a detailed analysis")
-parser.add_argument('-u', type=str, dest='URL', help="URL to analyze, with \
-schema. E.g. https://google.com")
+                    help="save analysis to file (with the format \
+URL_headers_yyyymmdd.ext)")
+parser.add_argument("-r", dest='ret', action="store_true", help="show full \
+HTTP response headers and a detailed analysis")
+parser.add_argument('-u', type=str, dest='URL', help="schema and URL to \
+analyze. E.g. https://google.com")
 parser.add_argument("-v", "--version", action="store_true",
-                    help="Show version and checks for updates")
+                    help="show the version of this tool and check for \
+updates")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 

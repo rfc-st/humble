@@ -154,7 +154,7 @@ https://github.com/rfc-st/humble/releases
 
 ## Usage
 
-```bash
+```console
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
@@ -164,15 +164,15 @@ humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 options:
   -h, --help         show this help message and exit
-  -a                 Show statistics of the performed analysis (will be global if '-u' URL is omitted)
-  -b                 Show a brief analysis; if omitted, a detailed analysis will be shown
-  -f [TERM]          Show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
-  -g                 Show guidelines on securing most used web servers/services
-  -l {es}            Displays the analysis in the indicated language; if omitted, English will be used
-  -o {html,pdf,txt}  Save analysis to file (URL_headers_yyyymmdd.ext)
-  -r                 Show HTTP response headers and a detailed analysis
-  -u URL             URL to analyze, with schema. E.g. https://google.com
-  -v, --version      Show version and checks for updates
+  -a                 show statistics of the performed analysis (will be global if '-u URL' is omitted)
+  -b                 show a brief analysis (if omitted, a detailed one will be shown)
+  -f [TERM]          show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
+  -g                 shows guidelines for securing popular web servers/services
+  -l {es}            show the analysis in the indicated language (if omitted, English will be used)
+  -o {html,pdf,txt}  save analysis to file (with the format URL_headers_yyyymmdd.ext)
+  -r                 show full HTTP response headers and a detailed analysis
+  -u URL             schema and URL to analyze. E.g. https://google.com
+  -v, --version      show the version of this tool and check for updates
 ```
 
 ## Advanced Usage
