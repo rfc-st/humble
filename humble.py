@@ -214,9 +214,9 @@ def print_guides():
             gd:
         for line in gd:
             if line.startswith('['):
-                print(f"{Style.BRIGHT}{line}", end='')
+                print(f" {Style.BRIGHT}{line}", end='')
             else:
-                print(f"{line}", end='')
+                print(f"  {line}", end='')
 
 
 def ua_ru_analysis(suffix, country):
@@ -757,7 +757,7 @@ if args.term:
     fng_analytics(term)
     sys.exit()
 
-if args.lang and not (args.URL or args.URL_A):
+if args.lang and not (args.URL or args.URL_A) and not args.guides:
     parser.error("'-l' option requires also '-u' or '-a'.")
 
 if any([args.brief, args.output, args.ret]) \

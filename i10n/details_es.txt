@@ -396,7 +396,7 @@ Cabeceras de respuesta HTTP
 5.- Compatibilidad de navegadores
 
 [guides]
-Referencias que pueden ser utilidad para securizar servidores y habilitar cabeceras HTTP:
+ Guías y referencias útiles sobre cabeceras de respuesta HTTP y servidores/servicios populares:
 
 [e_schema]
  Error: Incluye el esquema "http" o "https" en la URL a analizar.
