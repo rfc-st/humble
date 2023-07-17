@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-07-15', '%Y-%m-%d').date()
+version = datetime.strptime('2023-07-17', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -941,8 +941,8 @@ l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                     'style-src-attr', 'trusted-types',
                     'upgrade-insecure-requests', 'webrtc', 'worker-src']
 
-l_csp_dep = ['block-all-mixed-content', 'plugin-types', 'prefetch-src',
-             'referrer', 'report-uri', 'require-sri-for']
+l_csp_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
+             'prefetch-src', 'referrer', 'report-uri', 'require-sri-for']
 
 l_csp_ro_dep = ['violated-directive']
 
