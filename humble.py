@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-07-17', '%Y-%m-%d').date()
+version = datetime.strptime('2023-07-18', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -718,7 +718,7 @@ brief analysis (if omitted, a detailed one will be shown)")
 parser.add_argument("-f", nargs='?', type=str, dest='term', help="show \
 fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
 omitted)")
-parser.add_argument("-g", dest='guides', action="store_true", help="shows \
+parser.add_argument("-g", dest='guides', action="store_true", help="show \
 guidelines for securing popular web servers/services")
 parser.add_argument("-l", dest='lang', choices=['es'], help="show the \
 analysis in the indicated language (if omitted, English will be used)")
@@ -1071,6 +1071,14 @@ if 'Content-Security-Policy' in headers:
         for nonce_csp in nonces_csp:
             if len(nonce_csp) < 32:
                 print_details('[icsnces_h]', '[icsnces]', 'd', i_cnt)
+                break
+    ip_ptrn = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
+               r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
+    ip_mtch = re.findall(ip_ptrn, csp_h)
+    if ip_mtch != ['127.0.0.1']:
+        for match in ip_mtch:
+            if re.match(ip_ptrn, match):
+                print_details('[icsipa_h]', '[icsipa]', 'd', i_cnt)
                 break
 
 csp_ro_header = headers.get('Content-Security-Policy-Report-Only', '').lower()

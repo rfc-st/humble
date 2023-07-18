@@ -230,6 +230,9 @@
 [icsh_h]
  Content-Security-Policy (Esquemas inseguros)
 
+[icsipa_h]
+ Content-Security-Policy (IP detectada)
+
 [icsw_h]
  Content-Security-Policy (Valor muy permisivo)
 
@@ -551,6 +554,11 @@ Cabeceras de respuesta HTTP
 [icsnces]
  Los Nonces deben tener al menos 128 bits de entropía (32 caracteres hexadecimales/24 caracteres base64).
  Ref: https://content-security-policy.com/nonce/
+
+[icsipa]
+ Los estándares desaconsejan las direcciones IP como valores (excepto para 127.0.0.1).
+ Ref: https://www.w3.org/TR/CSP2/#match-source-expression
+ Ref: https://www.w3.org/TR/CSP3/#match-hosts
 
 [ictp]
  El único valor permitido es 'nosniff'.
