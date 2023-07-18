@@ -1078,7 +1078,7 @@ if 'Content-Security-Policy' in headers:
     if ip_mtch != ['127.0.0.1']:
         for match in ip_mtch:
             if re.match(ip_ptrn, match):
-                print_details('[icsipa_h]', '[icsipa]', 'd', i_cnt)
+                print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
                 break
 
 csp_ro_header = headers.get('Content-Security-Policy-Report-Only', '').lower()
