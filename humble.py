@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-07-18', '%Y-%m-%d').date()
+version = datetime.strptime('2023-07-19', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
