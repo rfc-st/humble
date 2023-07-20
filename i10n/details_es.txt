@@ -195,6 +195,9 @@
 [icsi_d_r]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
+[itrailer_d_r]
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
+
 [icsiro_d]
  Content-Security-Policy-Report-Only (Directivas obsoletas)
 
@@ -203,6 +206,9 @@
 
 [icsi_d_s]
  Evite utilizar directivas obsoletas: 
+
+[itrailer_d_s]
+ Evite utilizar directivas no permitidas: 
 
 [imethods_s]
  Asegúrese de que estos métodos HTTP habilitados son necesarios: 
@@ -311,6 +317,9 @@
 
 [itao_h]
  Timing-Allow-Origin (Cabecera potencialmente insegura)
+
+[itrailer_h]
+ Trailer (Directivas no permitidas)
 
 [ihbas_h]
  WWW-Authenticate (Valor inseguro)

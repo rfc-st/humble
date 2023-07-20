@@ -195,6 +195,9 @@
 [icsi_d_r]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
+[itrailer_d_r]
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
+
 [icsiro_d]
  Content-Security-Policy-Report-Only (Deprecated Directives)
 
@@ -203,6 +206,9 @@
 
 [icsi_d_s]
  Avoid using deprecated directives: 
+
+[itrailer_d_s]
+ Avoid using disallowed directives: 
 
 [imethods_s]
  Make sure these enabled HTTP methods are needed: 
@@ -311,6 +317,9 @@
 
 [itao_h]
  Timing-Allow-Origin (Potentially Unsafe Header)
+
+[itrailer_h]
+ Trailer (Disallowed Directives)
 
 [ihbas_h]
  WWW-Authenticate (Unsafe Value)

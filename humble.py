@@ -959,6 +959,11 @@ l_legacy = ['application/javascript', 'application/ecmascript',
             'text/javascript1.5', 'text/jscript', 'text/livescript',
             'text/x-ecmascript', 'text/x-javascript']
 
+l_trailer = ['Authorization', 'Cache-Control', 'Content-Encoding',
+             'Content-Length', 'Content-Type', 'Content-Range', 'Host',
+             'Max-Forwards', 'Set-Cookie', 'TE', 'Trailer',
+             'Transfer-Encoding']
+
 l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'bluetooth', 'browsing-topics', 'camera', 'ch-ua', 'ch-ua-arch',
               'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
@@ -1189,6 +1194,17 @@ if headers.get('Timing-Allow-Origin', '') == '*':
 
 if 'Tk' in headers:
     print_details('[ixtk_h]', '[ixtkd]', 'd', i_cnt)
+
+if 'Trailer' in headers:
+    trailer_h = headers['Trailer'].lower()
+    if any(elem in trailer_h for elem in l_trailer):
+        print_detail_r('[itrailer_h]', is_red=True)
+        if not args.brief:
+            matches_trailer = [x for x in l_trailer if x in trailer_h]
+            print_detail_l("[itrailer_d_s]")
+            print(', '.join(matches_trailer))
+            print_detail("[itrailer_d_r]")
+        i_cnt[0] += 1
 
 if 'Warning' in headers:
     print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
