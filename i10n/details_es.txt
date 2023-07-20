@@ -110,8 +110,15 @@
 [icsd_h]
  Clear-Site-Data (Cabecera ignorada)
 
+[icsdn_h]
+ Clear-Site-Data (Sin directivas adecuadas)
+
 [icsd]
  Al acceder mediante HTTP los navegadores ignoran esta cabecera.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
+
+[icsdn]
+ Incluya, al menos, una directiva correcta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 
 [icencod]

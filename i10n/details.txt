@@ -110,8 +110,15 @@
 [icsd_h]
  Clear-Site-Data (Ignored Header)
 
+[icsdn_h]
+ Clear-Site-Data (No Valid Directives)
+
 [icsd]
  This header is ignored by the browser when accessing via HTTP.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
+
+[icsdn]
+ Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 
 [icencod]

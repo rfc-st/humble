@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-07-19', '%Y-%m-%d').date()
+version = datetime.strptime('2023-07-20', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -932,6 +932,8 @@ l_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK', 'DELETE',
 
 l_cache = ['no-cache', 'no-store', 'must-revalidate']
 
+l_csdata = ['cache', 'cookies', 'storage', 'executionContexts', '*']
+
 l_cencoding = ['br', 'compress', 'deflate', 'gzip', 'x-gzip']
 
 l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
@@ -1034,8 +1036,12 @@ cache_header = headers.get("Cache-Control", '').lower()
 if cache_header and not all(elem in cache_header for elem in l_cache):
     print_details('[icache_h]', '[icache]', 'd', i_cnt)
 
-if ('Clear-Site-Data' in headers) and (URL.startswith(INS_S)):
-    print_details('[icsd_h]', '[icsd]', 'd', i_cnt)
+if 'Clear-Site-Data' in headers:
+    clsdata_header = headers['Clear-Site-Data'].lower()
+    if URL.startswith(INS_S):
+        print_details('[icsd_h]', '[icsd]', 'd', i_cnt)
+    if not any(elem in clsdata_header for elem in l_csdata):
+        print_details('[icsdn_h]', '[icsdn]', 'd', i_cnt)
 
 cencod_header = headers.get("Content-Encoding", '').lower()
 if cencod_header and not any(elem in cencod_header for elem in l_cencoding):

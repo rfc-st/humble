@@ -4,6 +4,7 @@ Access-Control-Allow-Origin: Unsafe Values
 Allow: Insecure Methods
 Cache-Control: Recommended Values
 Clear-Site-Data: Ignored Header via Unsafe Scheme
+Clear-Site-Data: No Valid Directives
 Content-DPR: Deprecated Header
 Content-Encoding: No Valid Directives
 Content-Security-Policy: Deprecated Directives
