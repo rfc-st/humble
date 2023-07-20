@@ -143,6 +143,13 @@
  La URL no es un documento HTML. Este análisis puede que no aplique en su totalidad.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
+[icrch_h]
+ Critical-CH (Cabecera ignorada)
+
+[icrch]
+ Al acceder mediante HTTP los navegadores ignoran esta cabecera.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Critical-CH
+
 [idig_h]
  Digest (Cabecera obsoleta)
 

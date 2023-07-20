@@ -20,6 +20,7 @@ Content-Security-Policy: Unsafe Values
 Content-Security-Policy-Report-Only: Deprecated Directives
 Content-Type: Deprecated Values
 Content-Type: Non-HTML MIME type
+Critical-CH: Ignored Header via Unsafe Scheme
 Digest: Deprecated Header
 Etag: Potentially Unsafe Header
 Expect-CT: Deprecated Header

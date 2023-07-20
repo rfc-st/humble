@@ -143,6 +143,13 @@
  The URL is not an HTML document. This analysis may not apply in its entirety.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
+[icrch_h]
+ Critical-CH (Ignored Header)
+
+[icrch]
+ This header is ignored by the browser when accessing via HTTP.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Critical-CH
+
 [idig_h]
  Digest (Deprecated Header)
 

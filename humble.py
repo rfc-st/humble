@@ -1113,6 +1113,9 @@ if ctype_header:
     if 'html' not in ctype_header:
         print_details('[ictlhtml_h]', '[ictlhtml]', 'd', i_cnt)
 
+if 'Critical-CH' in headers and URL.startswith(INS_S):
+    print_details('[icrch_h]', '[icrch]', 'd', i_cnt)
+
 if 'Digest' in headers:
     print_details('[idig_h]', '[idig]', 'd', i_cnt)
 
