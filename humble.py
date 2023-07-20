@@ -1269,6 +1269,9 @@ if robots_header:
 if 'X-Runtime' in headers:
     print_details('[ixrun_h]', '[ixrun]', 'd', i_cnt)
 
+if 'X-SourceMap' in headers:
+    print_details('[ixsrc_h]', '[ixsrc]', 'd', i_cnt)
+
 if 'X-UA-Compatible' in headers:
     print_details('[ixuacom_h]', '[ixuacom]', 'm', i_cnt)
 

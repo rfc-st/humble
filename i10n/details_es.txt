@@ -373,6 +373,9 @@
 [ixrun_h]
  X-Runtime (Valor inseguro)
 
+[ixsrc_h]
+ X-SourceMap (Cabecera obsoleta)
+
 [ixwcsp_h]
  X-Webkit-CSP (Cabecera obsoleta)
 
@@ -745,6 +748,10 @@ Cabeceras de respuesta HTTP
 [ixrun]
  El valor de esta cabecera puede facilitar la identificación de usuarios activos.
  Ref: https://www.virtuesecurity.com/kb/x-runtime-header-timing-attacks/
+
+[ixsrc]
+ Esta cabecera está obsoleta. Utiliza "SourceMap".
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
 
 [ixxp]
  Para mitigar ataques Cross-site scripting, habilite la cabecera "Content-Security-Policy".

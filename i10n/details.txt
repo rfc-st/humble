@@ -373,6 +373,9 @@
 [ixrun_h]
  X-Runtime (Unsafe Value)
 
+[ixsrc_h]
+ X-SourceMap (Deprecated Header)
+
 [ixwcsp_h]
  X-Webkit-CSP (Deprecated Header)
 
@@ -745,6 +748,10 @@ HTTP Response Headers
 [ixrun]
  The value of this header could allow valid user harvesting attacks.
  Ref: https://www.virtuesecurity.com/kb/x-runtime-header-timing-attacks/
+
+[ixsrc]
+ This header is deprecated. Use instead "SourceMap".
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
  
 [ixxp]
  To mitigate XSS attacks, restrictively enable the "Content-Security-Policy" header.
