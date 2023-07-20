@@ -1025,6 +1025,10 @@ if accesso_header and ((accesso_header in ['*', 'null']) and
                                 val in ['.*', '*.']))):
     print_details('[iaccess_h]', '[iaccess]', 'd', i_cnt)
 
+accesma_header = headers.get("Access-Control-Max-Age", '')
+if accesma_header and int(accesma_header) > 86400:
+    print_details('[iacessma_h]', '[iaccessma]', 'd', i_cnt)
+
 if 'Allow' in headers:
     methods = headers["Allow"]
     if any(method in methods for method in l_methods):

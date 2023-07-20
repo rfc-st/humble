@@ -225,6 +225,9 @@
 [iaccess_h]
  Access-Control-Allow-Origin (Unsafe Values)
 
+[iacessma_h]
+ Access-Control-Max-Age (Excessive Value)
+
 [imethods_hh]
  Allow (Insecure Methods)
 
@@ -537,6 +540,10 @@ HTTP Response Headers
 [iaccess]
  Review the values '*' or 'null' regarding your Cross-origin resource sharing requirements.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+
+[iaccessma]
+ The value of this header is higher than the maximum limited by popular browsers.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
 
 [icache]
  Enable 'no-cache', 'no-store', and 'must-revalidate' if there are sensitive data.

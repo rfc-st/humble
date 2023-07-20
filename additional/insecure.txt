@@ -1,6 +1,7 @@
 Accept-CH-Lifetime: Deprecated Header
 Access-Control-Allow-Methods: Insecure Methods
 Access-Control-Allow-Origin: Unsafe Values
+Access-Control-Max-Age: Excessive Value
 Allow: Insecure Methods
 Cache-Control: Recommended Values
 Clear-Site-Data: Ignored Header via Unsafe Scheme

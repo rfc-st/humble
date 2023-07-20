@@ -225,6 +225,9 @@
 [iaccess_h]
  Access-Control-Allow-Origin (Valores inseguros)
 
+[iacessma_h]
+ Access-Control-Max-Age (Valor excesivo)
+
 [imethods_hh]
  Allow (Valores inseguros)
 
@@ -537,6 +540,10 @@ Cabeceras de respuesta HTTP
 [iaccess]
  Revise los valores '*' o 'null', y sus requisitos de intercambio de recursos de origen cruzado.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+
+[iaccessma]
+ El valor de esta cabecera es superior al máximo limitado por navegadores populares.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
 
 [icache]
  Si hay datos sensibles, habilite 'no-cache', 'no-store', y 'must-revalidate'.
