@@ -1004,6 +1004,9 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
+if 'Accept-CH' in headers and URL.startswith(INS_S):
+    print_details('[ixach_h]', '[ixach]', 'd', i_cnt)
+
 if 'Accept-CH-Lifetime' in headers:
     print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
 

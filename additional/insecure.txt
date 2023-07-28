@@ -1,3 +1,4 @@
+Accept-CH: Ignored Header via Unsafe Scheme
 Accept-CH-Lifetime: Deprecated Header
 Access-Control-Allow-Methods: Insecure Methods
 Access-Control-Allow-Origin: Unsafe Values

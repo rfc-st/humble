@@ -181,6 +181,13 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest
 
+[ixach_h]
+ Accept-CH (Cabecera ignorada)
+
+[ixach]
+ Al acceder mediante HTTP los navegadores ignoran esta cabecera.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
+
 [ixacl_h]
  Accept-CH-Lifetime (Cabecera obsoleta)
 

@@ -181,6 +181,13 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest
 
+[ixach_h]
+ Accept-CH (Ignored Header)
+
+[ixach]
+ This header is ignored by the browser when accessing via HTTP.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
+
 [ixacl_h]
  Accept-CH-Lifetime (Deprecated Header)
 
