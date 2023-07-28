@@ -1010,6 +1010,9 @@ if 'Accept-CH' in headers and URL.startswith(INS_S):
 if 'Accept-CH-Lifetime' in headers:
     print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
 
+if headers.get('Access-Control-Allow-Credentials', '') != 'true':
+    print_details('[icred_h]', '[icred]', 'd', i_cnt)
+
 if 'Access-Control-Allow-Methods' in headers:
     methods = headers["Access-Control-Allow-Methods"]
     if any(method in methods for method in l_methods):

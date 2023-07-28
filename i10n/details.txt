@@ -195,6 +195,13 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH-Lifetime
 
+[icred_h]
+ Access-Control-Allow-Credentials (Incorrect Values)
+
+[icred]
+ The only valid value for this header is 'true'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials
+
 [ixcdpr_h]
  Content-DPR (Deprecated Header)
 

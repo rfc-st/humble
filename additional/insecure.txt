@@ -1,5 +1,6 @@
 Accept-CH: Ignored Header via Unsafe Scheme
 Accept-CH-Lifetime: Deprecated Header
+Access-Control-Allow-Credentials: Incorrect Values
 Access-Control-Allow-Methods: Insecure Methods
 Access-Control-Allow-Origin: Unsafe Values
 Access-Control-Max-Age: Excessive Value
