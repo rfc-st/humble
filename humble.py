@@ -930,6 +930,11 @@ l_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
 l_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK', 'DELETE',
              'DEBUG', 'PATCH', '*']
 
+l_cachev = ['immutable', 'max-age', 'must-revalidate', 'must-understand',
+            'no-cache', 'no-store', 'no-transform', 'private',
+            'proxy-revalidate', 'public', 's-maxage', 'stale-if-error',
+            'stale-while-revalidate']
+
 l_cache = ['no-cache', 'no-store', 'must-revalidate']
 
 l_csdata = ['cache', 'cookies', 'storage', 'executionContexts', '*']
@@ -1010,7 +1015,8 @@ if 'Accept-CH' in headers and URL.startswith(INS_S):
 if 'Accept-CH-Lifetime' in headers:
     print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
 
-if headers.get('Access-Control-Allow-Credentials', '') != 'true':
+accescred_header = headers.get("Access-Control-Allow-Credentials", '').lower()
+if accescred_header and accescred_header != 'true':
     print_details('[icred_h]', '[icred]', 'd', i_cnt)
 
 if 'Access-Control-Allow-Methods' in headers:
@@ -1048,6 +1054,8 @@ if 'Allow' in headers:
         i_cnt[0] += 1
 
 cache_header = headers.get("Cache-Control", '').lower()
+if cache_header and not any(elem in cache_header for elem in l_cachev):
+    print_details('[icachev_h]', '[icachev]', 'd', i_cnt)
 if cache_header and not all(elem in cache_header for elem in l_cache):
     print_details('[icache_h]', '[icache]', 'd', i_cnt)
 

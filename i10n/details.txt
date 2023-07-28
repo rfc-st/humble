@@ -279,6 +279,9 @@
 [icache_h]
  Cache-Control (Recommended Values)
 
+[icachev_h]
+ Cache-Control (No Valid Directives)
+
 [icsi_h]
  Content-Security-Policy (No Valid Directives)
 
@@ -595,6 +598,10 @@ HTTP Response Headers
 
 [icache]
  Enable 'no-cache', 'no-store', and 'must-revalidate' if there are sensitive data.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+
+[icachev]
+ Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 [icsp]
