@@ -343,6 +343,9 @@
 [ipkp_h]
  Public-Key-Pins (Cabecera obsoleta)
 
+[ipkpr_h]
+ Public-Key-Pins-Report-Only (Cabecera obsoleta)
+
 [iref_h]
  Referrer-Policy (Valores recomendados)
 
@@ -738,10 +741,6 @@ Cabeceras de respuesta HTTP
  Esta cabecera está obsoleta.
  Ref: https://chromestatus.com/feature/6244547273687040
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
-
-[ipkph]
- Esta cabecera debe enviarse mediante HTTPS.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Public_Key_Pinning
 
 [itao]
  El valor '*' permite a cualquier origen ver recursos pontencialmente sensibles.

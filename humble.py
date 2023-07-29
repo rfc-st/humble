@@ -1180,6 +1180,9 @@ if 'Pragma' in headers:
 if 'Public-Key-Pins' in headers:
     print_details('[ipkp_h]', '[ipkp]', 'd', i_cnt)
 
+if 'Public-Key-Pins-Report-Only' in headers:
+    print_details('[ipkpr_h]', '[ipkp]', 'd', i_cnt)
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 referrer_header = headers.get('Referrer-Policy', '').lower()
 if referrer_header:

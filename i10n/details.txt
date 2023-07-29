@@ -343,6 +343,9 @@
 [ipkp_h]
  Public-Key-Pins (Deprecated Header)
 
+[ipkpr_h]
+ Public-Key-Pins-Report-Only (Deprecated Header)
+
 [iref_h]
  Referrer-Policy (Recommended Values)
 
@@ -738,10 +741,6 @@ HTTP Response Headers
  This header is deprecated.
  Ref: https://chromestatus.com/feature/6244547273687040
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
-
-[ipkph]
- This header must be returned only in HTTPS connections.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Public_Key_Pinning
 
 [itao]
  The value '*' gives permission to any origin to see timing resources.
