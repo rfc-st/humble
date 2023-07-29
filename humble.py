@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-07-28', '%Y-%m-%d').date()
+version = datetime.strptime('2023-07-29', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -981,16 +981,18 @@ l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'execution-while-out-of-viewport',
               'focus-without-user-activation', 'font-display-late-swap',
               'fullscreen', 'gamepad', 'geolocation', 'gyroscope', 'hid',
-              'idle-detection', 'interest-cohort', 'join-ad-interest-group',
-              'keyboard-map', 'layout-animations', 'lazyload',
-              'legacy-image-formats', 'loading-frame-default-eager',
-              'local-fonts', 'magnetometer', 'microphone', 'midi',
-              'navigation-override', 'oversized-images', 'payment',
-              'picture-in-picture', 'publickey-credentials-get',
+              'identity-credentials-get', 'idle-detection', 'interest-cohort',
+              'join-ad-interest-group', 'keyboard-map', 'layout-animations',
+              'lazyload', 'legacy-image-formats',
+              'loading-frame-default-eager', 'local-fonts', 'magnetometer',
+              'microphone', 'midi', 'navigation-override', 'otp-credentials',
+              'oversized-images', 'payment', 'picture-in-picture',
+              'publickey-credentials-create', 'publickey-credentials-get',
               'run-ad-auction', 'screen-wake-lock', 'serial',
-              'shared-autofill', 'speaker', 'speaker-selection', 'sync-script',
-              'sync-xhr', 'trust-token-redemption', 'unload',
-              'unoptimized-images', 'unoptimized-lossless-images',
+              'shared-autofill', 'speaker', 'speaker-selection',
+              'storage-access', 'sync-script', 'sync-xhr',
+              'trust-token-redemption', 'unload', 'unoptimized-images',
+              'unoptimized-lossless-images',
               'unoptimized-lossless-images-strict', 'unoptimized-lossy-images',
               'unsized-media', 'usb', 'vertical-scroll', 'vibrate',
               'wake-lock', 'web-share', 'window-placement',
