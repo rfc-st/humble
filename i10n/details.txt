@@ -123,6 +123,13 @@
  Ref: https://community.torproject.org/onion-services/advanced/onion-location/
  Ref: https://forum.torproject.net/t/eventual-support-for-https-dns-records/4799
 
+[ip3p_h]
+ P3P (Deprecated Header)
+
+[ip3p]
+ This header is deprecated. Use cookies, consents and regulations (e.g. GDPR) instead.
+ Ref: https://webhint.io/docs/user-guide/hints/hint-no-p3p/
+
 [ixrobv_h]
  X-Robots-Tag (No Valid Directives)
 

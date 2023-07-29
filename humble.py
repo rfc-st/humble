@@ -920,8 +920,8 @@ if not args.brief:
 
 l_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
          'Allow', 'Content-Type', 'Etag', 'Expect-CT', 'Feature-Policy',
-         'Onion-Location', 'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
-         'Timing-Allow-Origin', 'X-Content-Security-Policy',
+         'Onion-Location', 'P3P', 'Public-Key-Pins', 'Set-Cookie',
+         'Server-Timing', 'Timing-Allow-Origin', 'X-Content-Security-Policy',
          'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
          'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
          'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
@@ -1170,6 +1170,9 @@ if perm_header:
 
 if 'Onion-Location' in headers:
     print_details('[ionloc_h]', '[ionloc]', 'm', i_cnt)
+
+if 'P3P' in headers:
+    print_details('[ip3p_h]', '[ip3p]', 'd', i_cnt)
 
 if 'Pragma' in headers:
     print_details('[iprag_h]', '[iprag]', 'd', i_cnt)

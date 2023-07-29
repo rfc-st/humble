@@ -123,6 +123,13 @@
  Ref: https://community.torproject.org/onion-services/advanced/onion-location/
  Ref: https://forum.torproject.net/t/eventual-support-for-https-dns-records/4799
 
+[ip3p_h]
+ P3P (Cabecera obsoleta)
+
+[ip3p]
+ Esta cabecera está obsoleta. Utiliza en su lugar cookies, consentimientos y normativas (ej. GDPR).
+ Ref: https://webhint.io/docs/user-guide/hints/hint-no-p3p/
+
 [ixrobv_h]
  X-Robots-Tag (Sin directivas adecuadas)
 

@@ -31,6 +31,7 @@ Feature-Policy: Deprecated Header
 HTTP: Domain Via Unsafe Scheme
 Large-Allocation: Deprecated Header
 Onion-Location: Potentially Unsafe Header
+P3P: Deprecated Header
 Permissions-Policy: Deprecated Values
 Permissions-Policy: Incorrect Values
 Permissions-Policy: No Valid Features
