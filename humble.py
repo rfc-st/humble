@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-07-29', '%Y-%m-%d').date()
+version = datetime.strptime('2023-08-04', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -927,9 +927,12 @@ l_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
          'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
          'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+# https://cyberwhite.co.uk/http-verbs-and-their-security-risks/
 l_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK', 'DELETE',
              'DEBUG', 'PATCH', '*']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 l_cachev = ['immutable', 'max-age', 'must-revalidate', 'must-understand',
             'no-cache', 'no-store', 'no-transform', 'private',
             'proxy-revalidate', 'public', 's-maxage', 'stale-if-error',
@@ -937,10 +940,13 @@ l_cachev = ['immutable', 'max-age', 'must-revalidate', 'must-understand',
 
 l_cache = ['no-cache', 'no-store', 'must-revalidate']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 l_csdata = ['cache', 'cookies', 'storage', 'executionContexts', '*']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
 l_cencoding = ['br', 'compress', 'deflate', 'gzip', 'x-gzip']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                     'font-src', 'form-action', 'frame-ancestors', 'frame-src',
                     'img-src', 'manifest-src', 'media-src', 'navigate-to',
@@ -957,6 +963,7 @@ l_csp_ro_dep = ['violated-directive']
 
 l_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
 l_legacy = ['application/javascript', 'application/ecmascript',
             'application/x-ecmascript', 'application/x-javascript',
             'text/ecmascript', 'text/javascript1.0', 'text/javascript1.1',
@@ -964,11 +971,14 @@ l_legacy = ['application/javascript', 'application/ecmascript',
             'text/javascript1.5', 'text/jscript', 'text/livescript',
             'text/x-ecmascript', 'text/x-javascript']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
 l_trailer = ['Authorization', 'Cache-Control', 'Content-Encoding',
              'Content-Length', 'Content-Type', 'Content-Range', 'Host',
              'Max-Forwards', 'Set-Cookie', 'TE', 'Trailer',
              'Transfer-Encoding']
 
+# https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+# https://csplite.com/fp/
 l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'bluetooth', 'browsing-topics', 'camera', 'ch-ua', 'ch-ua-arch',
               'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
@@ -998,13 +1008,17 @@ l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'wake-lock', 'web-share', 'window-placement',
               'xr-spatial-tracking']
 
-l_ref_secure = ['strict-origin', 'strict-origin-when-cross-origin',
-                'no-referrer-when-downgrade', 'no-referrer']
-
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 l_ref_values = ['no-referrer', 'no-referrer-when-downgrade', 'origin',
                 'origin-when-cross-origin', 'same-origin', 'strict-origin',
                 'strict-origin-when-cross-origin', 'unsafe-url']
 
+l_ref_secure = ['strict-origin', 'strict-origin-when-cross-origin',
+                'no-referrer-when-downgrade', 'no-referrer']
+
+# https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
+# https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
+# https://seranking.com/blog/guide-meta-tag-robots-x-robots-tag/
 l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
             'max-image-preview', 'max-snippet', 'max-video-preview',
             'noarchive', 'nocache', 'noodp', 'nofollow', 'noimageindex',
@@ -1150,8 +1164,6 @@ if URL.startswith(INS_S):
 if 'Large-Allocation' in headers:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd', i_cnt)
 
-# https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
-# https://csplite.com/fp/
 perm_header = headers.get('Permissions-Policy', '').lower()
 if perm_header:
     if not any(elem in perm_header for elem in l_per_feat):
@@ -1183,7 +1195,6 @@ if 'Public-Key-Pins' in headers:
 if 'Public-Key-Pins-Report-Only' in headers:
     print_details('[ipkpr_h]', '[ipkp]', 'd', i_cnt)
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 referrer_header = headers.get('Referrer-Policy', '').lower()
 if referrer_header:
     if not any(elem in referrer_header for elem in l_ref_secure):
@@ -1278,9 +1289,6 @@ if headers.get('X-Permitted-Cross-Domain-Policies', '') == 'all':
 if headers.get('X-Pingback', '').endswith('xmlrpc.php'):
     print_details('[ixpb_h]', '[ixpb]', 'd', i_cnt)
 
-# https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
-# https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
-# https://seranking.com/blog/guide-meta-tag-robots-x-robots-tag/
 robots_header = headers.get('X-Robots-Tag', '').lower()
 if robots_header:
     if not any(elem in robots_header for elem in l_robots):
