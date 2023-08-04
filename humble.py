@@ -1164,8 +1164,8 @@ if URL.startswith(INS_S):
 if 'Large-Allocation' in headers:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd', i_cnt)
 
-perm_header = headers.get('Permissions-Policy', '').lower()
-if perm_header:
+if 'Permissions-Policy' in headers:
+    perm_header = headers['Permissions-Policy'].lower()
     if not any(elem in perm_header for elem in l_per_feat):
         print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
     if '*' in perm_header:
