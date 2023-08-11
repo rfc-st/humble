@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-08-04', '%Y-%m-%d').date()
+version = datetime.strptime('2023-08-11', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -978,35 +978,28 @@ l_trailer = ['Authorization', 'Cache-Control', 'Content-Encoding',
              'Transfer-Encoding']
 
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
-# https://csplite.com/fp/
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'bluetooth', 'browsing-topics', 'camera', 'ch-ua', 'ch-ua-arch',
               'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
               'ch-ua-mobile', 'ch-ua-model', 'ch-ua-platform',
               'ch-ua-platform-version', 'ch-ua-wow64', 'clipboard-read',
               'clipboard-write', 'conversion-measurement',
-              'cross-origin-isolated', 'display-capture', 'document-access',
-              'document-write', 'encrypted-media',
+              'cross-origin-isolated', 'display-capture', 'encrypted-media',
               'execution-while-not-rendered',
               'execution-while-out-of-viewport',
-              'focus-without-user-activation', 'font-display-late-swap',
+              'focus-without-user-activation',
               'fullscreen', 'gamepad', 'geolocation', 'gyroscope', 'hid',
               'identity-credentials-get', 'idle-detection', 'interest-cohort',
               'join-ad-interest-group', 'keyboard-map', 'layout-animations',
-              'lazyload', 'legacy-image-formats',
-              'loading-frame-default-eager', 'local-fonts', 'magnetometer',
-              'microphone', 'midi', 'navigation-override', 'otp-credentials',
-              'oversized-images', 'payment', 'picture-in-picture',
-              'publickey-credentials-create', 'publickey-credentials-get',
-              'run-ad-auction', 'screen-wake-lock', 'serial',
-              'shared-autofill', 'speaker', 'speaker-selection',
-              'storage-access', 'sync-script', 'sync-xhr',
-              'trust-token-redemption', 'unload', 'unoptimized-images',
-              'unoptimized-lossless-images',
-              'unoptimized-lossless-images-strict', 'unoptimized-lossy-images',
-              'unsized-media', 'usb', 'vertical-scroll', 'vibrate',
-              'wake-lock', 'web-share', 'window-placement',
-              'xr-spatial-tracking']
+              'local-fonts', 'magnetometer', 'microphone', 'midi',
+              'navigation-override', 'otp-credentials', 'payment',
+              'picture-in-picture', 'publickey-credentials-create',
+              'publickey-credentials-get', 'run-ad-auction',
+              'screen-wake-lock', 'serial', 'shared-autofill',
+              'speaker-selection', 'storage-access', 'sync-script', 'sync-xhr',
+              'trust-token-redemption', 'unload', 'usb', 'vertical-scroll',
+              'web-share', 'window-placement', 'xr-spatial-tracking']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 l_ref_values = ['no-referrer', 'no-referrer-when-downgrade', 'origin',
