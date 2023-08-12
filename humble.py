@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-08-11', '%Y-%m-%d').date()
+version = datetime.strptime('2023-08-12', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -941,7 +941,8 @@ l_cachev = ['immutable', 'max-age', 'must-revalidate', 'must-understand',
 l_cache = ['no-cache', 'no-store', 'must-revalidate']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
-l_csdata = ['cache', 'cookies', 'storage', 'executionContexts', '*']
+l_csdata = ['cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
+            '*']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
 l_cencoding = ['br', 'compress', 'deflate', 'gzip', 'x-gzip']
