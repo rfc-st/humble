@@ -268,6 +268,27 @@
 [ifpold_s]
  These values are deprecated: 
 
+[icoep_h]
+ Cross-Origin-Embedder-Policy (No Valid Directives)
+
+[icoep]
+ Include at least one valid directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
+
+[icoop_h]
+ Cross-Origin-Opener-Policy (No Valid Directives)
+
+[icoop]
+ Include at least one valid directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+
+[icorp_h]
+ Cross-Origin-Resource-Policy (No Valid Directives)
+
+[icorp]
+ Include at least one valid directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
+
 [icsp_h]
  Content-Security-Policy (Unsafe Values)
 

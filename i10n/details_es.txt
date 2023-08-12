@@ -268,6 +268,27 @@
 [ifpold_s]
  Estos valores están obsoletos: 
 
+[icoep_h]
+ Cross-Origin-Embedder-Policy (Sin directivas adecuadas)
+
+[icoep]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
+
+[icoop_h]
+ Cross-Origin-Opener-Policy (Sin directivas adecuadas)
+
+[icoop]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+
+[icorp_h]
+ Cross-Origin-Resource-Policy (Sin directivas adecuadas)
+
+[icorp]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
+
 [icsp_h]
  Content-Security-Policy (Valores inseguros)
 

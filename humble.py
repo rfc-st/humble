@@ -947,6 +947,15 @@ l_csdata = ['cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
 l_cencoding = ['br', 'compress', 'deflate', 'gzip', 'x-gzip']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
+l_coep = ['credentialless', 'require-corp', 'unsafe-none']
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+l_coop = ['same-origin', 'same-origin-allow-popups', 'unsafe-none']
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
+l_corp = ['cross-origin', 'same-origin', 'same-site']
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                     'font-src', 'form-action', 'frame-ancestors', 'frame-src',
@@ -1139,6 +1148,21 @@ if ctype_header:
 
 if 'Critical-CH' in headers and URL.startswith(INS_S):
     print_details('[icrch_h]', '[icrch]', 'd', i_cnt)
+
+if 'Cross-Origin-Embedder-Policy' in headers:
+    coep_h = headers['Cross-Origin-Embedder-Policy'].lower()
+    if not any(elem in coep_h for elem in l_coep):
+        print_details('[icoep_h]', '[icoep]', 'd', i_cnt)
+
+if 'Cross-Origin-Opener-Policy' in headers:
+    coop_h = headers['Cross-Origin-Opener-Policy'].lower()
+    if not any(elem in coop_h for elem in l_coop):
+        print_details('[icoop_h]', '[icoop]', 'd', i_cnt)
+
+if 'Cross-Origin-Resource-Policy' in headers:
+    corp_h = headers['Cross-Origin-Resource-Policy'].lower()
+    if not any(elem in corp_h for elem in l_corp):
+        print_details('[icorp_h]', '[icorp]', 'd', i_cnt)
 
 if 'Digest' in headers:
     print_details('[idig_h]', '[idig]', 'd', i_cnt)

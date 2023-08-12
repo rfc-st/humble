@@ -24,6 +24,9 @@ Content-Security-Policy-Report-Only: Deprecated Directives
 Content-Type: Deprecated Values
 Content-Type: Non-HTML MIME type
 Critical-CH: Ignored Header via Unsafe Scheme
+Cross-Origin-Embedder-Policy: No Valid Directives
+Cross-Origin-Opener-Policy: No Valid Directives
+Cross-Origin-Resource-Policy: No Valid Directives
 Digest: Deprecated Header
 Etag: Potentially Unsafe Header
 Expect-CT: Deprecated Header
