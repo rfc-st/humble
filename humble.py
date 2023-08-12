@@ -973,6 +973,9 @@ l_csp_ro_dep = ['violated-directive']
 
 l_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
+l_excc = ['max-age', 's-maxage']
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
 l_legacy = ['application/javascript', 'application/ecmascript',
             'application/x-ecmascript', 'application/x-javascript',
@@ -1172,6 +1175,10 @@ if 'Etag' in headers:
 
 if 'Expect-CT' in headers:
     print_details('[iexct_h]', '[iexct]', 'm', i_cnt)
+
+if 'Expires' in headers and any(elem in headers.get('Cache-Control', '') for
+                                elem in l_excc):
+    print_details('[iexpi_h]', '[iexpi]', 'd', i_cnt)
 
 if 'Feature-Policy' in headers:
     print_details('[iffea_h]', '[iffea]', 'd', i_cnt)

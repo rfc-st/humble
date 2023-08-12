@@ -340,6 +340,9 @@
 [iexct_h]
  Expect-CT (Deprecated Header)
 
+[iexpi_h]
+ Expires (Ignored Header)
+
 [iffea_h]
  Feature-Policy (Deprecated Header)
 
@@ -762,6 +765,10 @@ HTTP Response Headers
  This header is deprecated.
  Ref: https://chromestatus.com/feature/6244547273687040
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
+
+[iexpi]
+ Header ignored by the directives 'max-age' or 's-maxage' in the 'Cache-Control' header.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
 
 [itao]
  The value '*' gives permission to any origin to see timing resources.

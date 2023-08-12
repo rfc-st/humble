@@ -30,6 +30,7 @@ Cross-Origin-Resource-Policy: No Valid Directives
 Digest: Deprecated Header
 Etag: Potentially Unsafe Header
 Expect-CT: Deprecated Header
+Expires: Ignored Header
 Feature-Policy: Deprecated Header
 HTTP: Domain Via Unsafe Scheme
 Large-Allocation: Deprecated Header
