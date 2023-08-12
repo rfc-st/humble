@@ -214,6 +214,13 @@ $ python3 humble.py -u https://block.fiverr.com | grep -B5 'Note : \|Nota : ' --
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_4.jpg" alt="Check for HTTP client errors (4XX) (Linux)">
 
 
+### Linux: Analyze multiple URLs and save the results as PDFs (thanks <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo!</a>)
+```
+$ datasets=('https://facebook.com' 'https://www.microsoft.com' 'https://www.spacex.com'); for dataset in "${datasets[@]}"; do python3 humble.py -u "$dataset" -o pdf; done
+```
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_5.jpg" alt="Analyze multiple URLs and save the results as PDFs">
+
+
 ## Caveats
 
 ### Country and suffix errors (TLDs)
