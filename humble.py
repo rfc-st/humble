@@ -158,15 +158,30 @@ def fng_analytics_global():
 
 
 def fng_analytics_global_groups(fng_lines):
-    pattern_fng_global = r'\[([^\]]+)\]'
+    pttn_fng_global = r'\[([^\]]+)\]'
     content_cnt = Counter(match.strip() for line in fng_lines for match in
-                          re.findall(pattern_fng_global, line))
-    total_ln = len(fng_lines)
-    print(f"{get_detail('[fng_top]', replace=True)}{total_ln}\
+                          re.findall(pttn_fng_global, line))
+    fng_analytics_global_print(fng_lines, content_cnt)
+
+
+def fng_analytics_global_print(fng_lines, content_cnt):
+    max_ln_lgth, fng_wdth = fng_analytics_global_max(fng_lines, content_cnt)
+    print(f"{get_detail('[fng_top]', replace=True)}{len(fng_lines)}\
 {get_detail('[fng_top_2]', replace=True)}\n")
     for content, count in content_cnt.most_common(20):
-        pct_fng_global = round(count / total_ln * 100, 2)
-        print(f" [{content}]: {pct_fng_global}% ({count})")
+        pct_fng_global = round(count / len(fng_lines) * 100, 2)
+        padding_s = ' ' * (max_ln_lgth - len(content))
+        print(f" [{content}]: {padding_s}{pct_fng_global:.2f}%"
+              f"{' ' * (fng_wdth - len(f'{pct_fng_global:.2f}%'))} ({count})")
+
+
+def fng_analytics_global_max(fng_lines, content_cnt):
+    max_ln_lgth = max(len(content) for content, _ in
+                      content_cnt.most_common(20))
+    fng_max = max(count / len(fng_lines) * 100 for _, count in
+                  content_cnt.most_common(20))
+    fng_wdth = max(len(f"{fng_max:.2f}%") for _ in content_cnt.most_common(20))
+    return max_ln_lgth, fng_wdth
 
 
 def fng_analytics(term):
