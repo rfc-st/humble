@@ -216,6 +216,13 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-DPR
 
+[ickeep_h]
+ Keep-Alive (Cabecera ignorada)
+
+[ickeep]
+ Esta cabecera se ignora si el valor de la cabecera 'Connection' no es 'keep-alive'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Keep-Alive
+
 [ixlalloc_h]
  Large-Allocation (Cabecera obsoleta)
 

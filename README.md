@@ -4,7 +4,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--08--12-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--08--14-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/OWASP-Resource-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.kali.org/tools/humble/" title="Tool accepted in Kali"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
@@ -32,7 +32,7 @@ HTTP Headers Analyzer<br />
  [Linux: Show only the URL, date and analysis summary](#linux-show-only-the-url-date-and-analysis-summary)<br />
  [Linux: Show only the deprecated headers/protocols and insecure values](#linux-show-only-the-deprecated-headersprotocols-and-insecure-values)<br />
  [Linux: Check for HTTP client errors (4XX)](#linux-check-for-http-client-errors-4xx)<br />
- [Linux: Analyze multiple URLs and save the results as PDFs (thanks Eduardo!)](#linux-analyze-multiple-urls-and-save-the-results-as-pdfs-thanks-eduardo)<br />
+ [Linux: Analyze multiple URLs and save the results as PDFs](#linux-analyze-multiple-urls-and-save-the-results-as-pdfs)<br />
 [Caveats](#caveats)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
 [Checks: Fingerprint Headers](#checks-fingerprint-headers)<br />
@@ -50,7 +50,7 @@ HTTP Headers Analyzer<br />
 
 :heavy_check_mark: 13 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
 :heavy_check_mark: 954 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 81 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
+:heavy_check_mark: 82 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
@@ -215,7 +215,7 @@ $ python3 humble.py -u https://block.fiverr.com | grep -B5 'Note : \|Nota : ' --
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_4.jpg" alt="Check for HTTP client errors (4XX) (Linux)">
 
 
-### Linux: Analyze multiple URLs and save the results as PDFs (thanks <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo!</a>)
+### Linux: Analyze multiple URLs and save the results as PDFs
 ```
 $ datasets=('https://facebook.com' 'https://www.microsoft.com' 'https://www.spacex.com'); for dataset in "${datasets[@]}"; do python3 humble.py -u "$dataset" -o pdf; done
 ```
@@ -319,7 +319,7 @@ Thanks for your time!! :).
 ## Acknowledgements
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
 * <a href="https://github.com/bulaktm">bulaktm</a> for <a href="https://github.com/rfc-st/humble/issues/5">this</a> suggestion.
-* <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo</a>, for making possible the first Demo ^^.
+* <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo</a>, for making possible the first Demo and <a href="https://github.com/rfc-st/humble/edit/master/README.md#linux-analyze-multiple-urls-and-save-the-results-as-pdfs">this</a> example.
 * İDRİS BUDAK for reporting the need to <a href="https://github.com/rfc-st/humble/commit/f85dd7811859fd2e403a0ecd848b21db20949841">this</a> check.
 
 ## License

@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-08-12', '%Y-%m-%d').date()
+version = datetime.strptime('2023-08-14', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1185,6 +1185,11 @@ if 'Feature-Policy' in headers:
 
 if URL.startswith(INS_S):
     print_details('[ihttp_h]', '[ihttp]', 'd', i_cnt)
+
+if ('Keep-Alive' in headers and headers['Keep-Alive'] and
+    ('Connection' not in headers or
+     headers['Connection'].lower() != 'keep-alive')):
+    print_details('[ickeep_h]', '[ickeep]', 'd', i_cnt)
 
 if 'Large-Allocation' in headers:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd', i_cnt)

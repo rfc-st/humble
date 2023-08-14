@@ -33,6 +33,7 @@ Expect-CT: Deprecated Header
 Expires: Ignored Header
 Feature-Policy: Deprecated Header
 HTTP: Domain Via Unsafe Scheme
+Keep-Alive: Ignored Header
 Large-Allocation: Deprecated Header
 Onion-Location: Potentially Unsafe Header
 P3P: Deprecated Header

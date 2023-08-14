@@ -216,6 +216,13 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-DPR
 
+[ickeep_h]
+ Keep-Alive (Ignored Header)
+
+[ickeep]
+ This header is ignored if the value of the 'Connection' header is not 'keep-alive'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Keep-Alive
+
 [ixlalloc_h]
  Large-Allocation (Deprecated Header)
 
