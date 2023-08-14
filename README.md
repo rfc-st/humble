@@ -319,7 +319,7 @@ Thanks for your time!! :).
 ## Acknowledgements
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
 * <a href="https://github.com/bulaktm">bulaktm</a> for <a href="https://github.com/rfc-st/humble/issues/5">this</a> suggestion.
-* <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo</a>, for making possible the first Demo and <a href="https://github.com/rfc-st/humble/edit/master/README.md#linux-analyze-multiple-urls-and-save-the-results-as-pdfs">this</a> example.
+* <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo</a>, for making possible the first Demo and <a href="https://github.com/rfc-st/humble#linux-analyze-multiple-urls-and-save-the-results-as-pdfs">this</a> example.
 * İDRİS BUDAK for reporting the need to <a href="https://github.com/rfc-st/humble/commit/f85dd7811859fd2e403a0ecd848b21db20949841">this</a> check.
 
 ## License
