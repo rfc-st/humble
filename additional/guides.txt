@@ -1,45 +1,32 @@
 
 [Amazon AWS]
-
 https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example-function-add-security-headers.html
 https://dev.to/kumo/deliver-perfect-http-security-headers-with-aws-cloudfront-4din
 
-
 [Apache HTTP Server]
-
 https://htaccessbook.com/important-security-headers/
 https://geekflare.com/apache-web-server-hardening-security/
 https://www.adminbyaccident.com/security/how-to-harden-apache-http/
 https://www.digitalocean.com/community/tutorials/recommended-steps-to-harden-apache-http-on-freebsd-12-0
 
-
 [Cloudflare]
-
 https://jarv.is/notes/security-headers-cloudflare-workers/
 https://blog.headforcloud.com/2020/06/26/static-hosting-cf-workers/
 
-
 [LiteSpeed Web Server]
-
 https://www.litespeedtech.com/docs/webserver/config/security
 https://docs.litespeedtech.com/lsws/cp/cpanel/tunings/
 
-
 [Microsoft Internet Information Services]
-
 https://geekflare.com/http-header-implementation/
 https://www.ryadel.com/en/iis-web-config-secure-http-response-headers-pass-securityheaders-io-scan/
 https://beaglesecurity.com/blog/article/hardening-server-security-by-implementing-security-headers.html
 
-
 [Nginx]
-
 https://www.acunetix.com/blog/web-security-zone/hardening-nginx/
 https://www.getpagespeed.com/server-setup/nginx-security-headers-the-right-way
 
-
 [Node.js]
-
 https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html
 https://blog.logrocket.com/using-helmet-node-js-secure-application/
 https://blog.risingstack.com/node-js-security-checklist/
