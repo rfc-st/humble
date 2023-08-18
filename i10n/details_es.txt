@@ -667,7 +667,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icsu]
- Evite usar esta palabra clave, y traslade toda la lógica asociada a ella a un fichero Javascript.
+ Evita utilizar 'unsafe-hashes', y traslada toda la lógica asociada a ella a un fichero Javascript.
  Ref: https://content-security-policy.com/unsafe-hashes/
 
 [icsnces]
