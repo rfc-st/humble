@@ -413,6 +413,9 @@
 [itrailer_h]
  Trailer (Disallowed Directives)
 
+[ictrf_h]
+ Transfer-Encoding (No Valid Directives)
+
 [ihbas_h]
  WWW-Authenticate (Unsafe Value)
 
@@ -725,6 +728,10 @@ HTTP Response Headers
 [ipkp]
  This header is deprecated.
  Ref: https://scotthelme.co.uk/hpkp-is-no-more/
+
+[itrf]
+ Include at least one valid directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
 
 [iref]
  Use 'strict-origin' or 'strict-origin-when-cross-origin' if there are sensitive resources.

@@ -1009,6 +1009,9 @@ l_trailer = ['Authorization', 'Cache-Control', 'Content-Encoding',
              'Max-Forwards', 'Set-Cookie', 'TE', 'Trailer',
              'Transfer-Encoding']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
+l_transfer = ['chunked', 'compress', 'deflate', 'gzip']
+
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
@@ -1294,6 +1297,11 @@ if 'Trailer' in headers:
             print(', '.join(matches_trailer))
             print_detail("[itrailer_d_r]")
         i_cnt[0] += 1
+
+if 'Transfer-Encoding' in headers:
+    transfer_h = headers['Transfer-Encoding'].lower()
+    if not any(elem in transfer_h for elem in l_transfer):
+        print_details('[ictrf_h]', '[itrf]', 'd', i_cnt)
 
 if 'Warning' in headers:
     print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
