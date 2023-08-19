@@ -63,6 +63,7 @@ PRG_N = 'humble (HTTP Headers Analyzer) - '
 REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
+PAT_LN = r'\[(.*?)\]'
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
@@ -185,13 +186,12 @@ def fng_analytics(term):
 
 
 def fng_analytics_groups(fng_ln, term):
-    pattern_fng = r'\[(.*?)\]'
     distinct_content = \
         {match[1].strip()
-         for line in fng_ln if (match := re.search(pattern_fng, line)) and
+         for line in fng_ln if (match := re.search(PAT_LN, line)) and
          term.lower() in match[1].lower()}
-    term_cnt = sum(bool((match := re.search(pattern_fng, line)) and
-                        term.lower() in match[1].lower()) for line in fng_ln)
+    term_cnt = sum(bool((match := re.search(PAT_LN, line)) and term.lower() in
+                        match[1].lower()) for line in fng_ln)
     return distinct_content, term_cnt
 
 
@@ -211,7 +211,7 @@ def fng_analytics_sorted(fng_lines, term, distinct_content):
     for content in sorted(distinct_content):
         print(f"\n [{content}]")
         for line in fng_lines:
-            match = re.search(r'\[(.*?)\]', line)
+            match = re.search(PAT_LN, line)
             if match and term.lower() in match[1].lower() \
                and content == match[1].strip():
                 print(f"  {line[:line.find('[')].strip()}")
