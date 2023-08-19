@@ -66,7 +66,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-08-18', '%Y-%m-%d').date()
+version = datetime.strptime('2023-08-19', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -976,6 +976,8 @@ l_coop = ['same-origin', 'same-origin-allow-popups', 'unsafe-none']
 l_corp = ['cross-origin', 'same-origin', 'same-site']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+# https://www.w3.org/TR/CSP2/
+# https://www.w3.org/TR/CSP3/
 l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                     'font-src', 'form-action', 'frame-ancestors', 'frame-src',
                     'img-src', 'manifest-src', 'media-src', 'navigate-to',
