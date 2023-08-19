@@ -165,23 +165,14 @@ def fng_analytics_global_groups(fng_lines):
 
 
 def fng_analytics_global_print(fng_lines, content_cnt):
-    max_ln_lgth, fng_wdth = fng_analytics_global_max(fng_lines, content_cnt)
+    max_ln_lgth = max(len(content) for content, _ in
+                      content_cnt.most_common(20))
     print(f"{get_detail('[fng_top]', replace=True)}{len(fng_lines)}\
 {get_detail('[fng_top_2]', replace=True)}\n")
     for content, count in content_cnt.most_common(20):
         pct_fng_global = round(count / len(fng_lines) * 100, 2)
         padding_s = ' ' * (max_ln_lgth - len(content))
-        print(f" [{content}]: {padding_s}{pct_fng_global:.2f}%"
-              f"{' ' * (fng_wdth - len(f'{pct_fng_global:.2f}%'))} ({count})")
-
-
-def fng_analytics_global_max(fng_lines, content_cnt):
-    max_ln_lgth = max(len(content) for content, _ in
-                      content_cnt.most_common(20))
-    fng_max = max(count / len(fng_lines) * 100 for _, count in
-                  content_cnt.most_common(20))
-    fng_wdth = max(len(f"{fng_max:.2f}%") for _ in content_cnt.most_common(20))
-    return max_ln_lgth, fng_wdth
+        print(f" [{content}]: {padding_s}{pct_fng_global:.2f}% ({count})")
 
 
 def fng_analytics(term):
