@@ -474,13 +474,13 @@
 Analizador de cabeceras HTTP
 
 [pdf_p]
-Página 
+Página
 
 [pdf_po]
- de 
+ de
 
 [pdf_m]
-Informe de las cabeceras HTTP de 
+Informe de las cabeceras HTTP de
 
 [pdf_k]
 Cabeceras HTTP Analizador Informe Ciberseguridad Seguridad
@@ -500,7 +500,7 @@ Cabeceras de respuesta HTTP
 [1missing_s]
 1.- Cabeceras no habilitadas
 
-[2fingerprint_s]                   
+[2fingerprint_s]
 2.- Huella digital por cabeceras
 
 [3depinsecure_s]
@@ -892,10 +892,10 @@ Analisis realizado en
 Primer analisis
 
 [stats_analysis]
-Estadísticas de 
+Estadísticas de
 
 [global_stats_analysis]
-Estadísticas globales de los análisis realizados 
+Estadísticas globales de los análisis realizados
 
 [total_analysis]
  Análisis realizados 
@@ -1042,7 +1042,7 @@ A destacar
  Consejo: entrecomilla varias palabras para buscar coincidencias exactas; ej. "Microsoft Azure Storage"
 
 [fng_top]
- Top 20 de grupos en relación a las 
+ Top 20 de grupos en relación a las
 
 [fng_top_2]
  cabeceras del fichero fuente

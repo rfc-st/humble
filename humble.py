@@ -67,7 +67,7 @@ PAT_LN = r'\[(.*?)\]'
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-08-19', '%Y-%m-%d').date()
+version = datetime.strptime('2023-08-26', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -89,12 +89,12 @@ class PDF(FPDF):
         self.set_y(-15)
         self.set_font('Helvetica', 'I', 8)
         pdf.set_text_color(0, 0, 0)
-        self.cell(0, 10, get_detail('[pdf_p]') + str(self.page_no()) +
+        self.cell(0, 10, get_detail('[pdf_p]') + ' ' + str(self.page_no()) +
                   get_detail('[pdf_po') + '{nb}', align='C')
 
 
 def pdf_metadata():
-    title = get_detail('[pdf_m]', replace=True) + URL
+    title = get_detail('[pdf_m]', replace=True) + ' ' + URL
     git_urlc = f"{GIT_U} (v.{version})"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
@@ -168,7 +168,7 @@ def fng_analytics_global_groups(fng_lines):
 def fng_analytics_global_print(fng_lines, content_cnt):
     max_ln_lgth = max(len(content) for content, _ in
                       content_cnt.most_common(20))
-    print(f"{get_detail('[fng_top]', replace=True)}{len(fng_lines)}\
+    print(f"{get_detail('[fng_top]', replace=True)} {len(fng_lines)}\
 {get_detail('[fng_top_2]', replace=True)}\n")
     for content, count in content_cnt.most_common(20):
         pct_fng_global = round(count / len(fng_lines) * 100, 2)
@@ -203,7 +203,7 @@ def fng_analytics_content(distinct_content, term, term_count, fng_lines):
         fng_ln = len(fng_lines)
         pct_fng = round(term_count / fng_ln * 100, 2)
         print(f"{get_detail('[fng_add]', replace=True)} '{term}': {pct_fng}%\
- ({term_count}{get_detail('[pdf_po]', replace=True)}{fng_ln})")
+ ({term_count}{get_detail('[pdf_po]', replace=True)} {fng_ln})")
         fng_analytics_sorted(fng_lines, term, distinct_content)
 
 
@@ -310,7 +310,8 @@ def url_analytics(is_global=False):
         analysis_stats = extract_global_metrics(c_history) if is_global else \
             extract_metrics(c_history)
     stats_s = '[global_stats_analysis]' if is_global else '[stats_analysis]'
-    print(f"\n{get_detail(stats_s, replace=True)}{'' if is_global else URL}\n")
+    print(f"\n{get_detail(stats_s, replace=True)} {'' if is_global else URL}\
+\n")
     for key, value in analysis_stats.items():
         key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}" \
             if (not value or not key.startswith(' ')) else key

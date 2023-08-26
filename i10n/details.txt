@@ -474,13 +474,13 @@
 Humble HTTP headers analyzer
 
 [pdf_p]
-Page 
+Page
 
 [pdf_po]
- of 
+ of
 
 [pdf_m]
-Humble HTTP headers analysis of 
+Humble HTTP headers analysis of
 
 [pdf_k]
 HTTP Headers  Analyzer  Analysis  Cybersecurity  Security-scanner  Security-Tools  Header-Parser 
@@ -500,7 +500,7 @@ HTTP Response Headers
 [1missing_s]
 1.- Missing Headers
 
-[2fingerprint_s]                   
+[2fingerprint_s]
 2.- Fingerprint Headers
 
 [3depinsecure_s]
@@ -532,7 +532,7 @@ HTTP Response Headers
 
 [e_timeout]
  Error: URL is taking too long to respond. Wait a while and try again.
- 
+
 [report]
  Report saved to 
 
@@ -713,7 +713,7 @@ HTTP Response Headers
 
 [ifpold]
  Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
- 
+
 [ihttp]
  You are analyzing a domain via HTTP, in which the communications are not encrypted.
  Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
@@ -845,7 +845,7 @@ HTTP Response Headers
 [ixsrc]
  This header is deprecated. Use instead "SourceMap".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
- 
+
 [ixxp]
  To mitigate XSS attacks, restrictively enable the "Content-Security-Policy" header.
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
@@ -892,11 +892,11 @@ Analysis done in
 First Analysis
 
 [stats_analysis]
-Statistics of 
+Statistics of
 
 [global_stats_analysis]
-Global statistics of all analyses performed 
- 
+Global statistics of all analyses performed
+
 [total_analysis]
  Analyses done   
 
@@ -1042,7 +1042,7 @@ Highlights
  Tip: quote multiple words to search for exact matches; e.g. "Microsoft Azure Storage"
 
 [fng_top]
- Top 20 groups in relation to the 
+ Top 20 groups in relation to the
 
 [fng_top_2]
  headers of the source file
