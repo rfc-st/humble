@@ -181,22 +181,22 @@ def fng_analytics(term):
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join('additional', F_FILE), 'r', encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
-    distinct_content, term_count = fng_analytics_groups(fng_lines, term)
-    fng_analytics_content(distinct_content, term, term_count, fng_lines)
+    fng_group, term_count = fng_analytics_groups(fng_lines, term)
+    fng_analytics_content(fng_group, term, term_count, fng_lines)
 
 
 def fng_analytics_groups(fng_ln, term):
-    distinct_content = \
+    fng_group = \
         {match[1].strip()
          for line in fng_ln if (match := re.search(PAT_LN, line)) and
          term.lower() in match[1].lower()}
     term_cnt = sum(bool((match := re.search(PAT_LN, line)) and term.lower() in
                         match[1].lower()) for line in fng_ln)
-    return distinct_content, term_cnt
+    return fng_group, term_cnt
 
 
-def fng_analytics_content(distinct_content, term, term_count, fng_lines):
-    if not distinct_content:
+def fng_analytics_content(fng_group, term, term_count, fng_lines):
+    if not fng_group:
         print(f"{get_detail('[fng_zero]', replace=True)} '{term}'.\n\n\
 {get_detail('[fng_zero_2]', replace=True)}.\n")
     else:
@@ -204,11 +204,11 @@ def fng_analytics_content(distinct_content, term, term_count, fng_lines):
         pct_fng = round(term_count / fng_ln * 100, 2)
         print(f"{get_detail('[fng_add]', replace=True)} '{term}': {pct_fng}%\
  ({term_count}{get_detail('[pdf_po]', replace=True)} {fng_ln})")
-        fng_analytics_sorted(fng_lines, term, distinct_content)
+        fng_analytics_sorted(fng_lines, term, fng_group)
 
 
-def fng_analytics_sorted(fng_lines, term, distinct_content):
-    for content in sorted(distinct_content):
+def fng_analytics_sorted(fng_lines, term, fng_group):
+    for content in sorted(fng_group):
         print(f"\n [{content}]")
         for line in fng_lines:
             match = re.search(PAT_LN, line)
@@ -223,10 +223,8 @@ def print_guides():
     with open(path.join('additional', 'guides.txt'), 'r', encoding='utf8') as \
             gd:
         for line in gd:
-            if line.startswith('['):
-                print(f" {Style.BRIGHT}{line}", end='')
-            else:
-                print(f"  {line}", end='')
+            print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"  \
+{line}", end='')
 
 
 def ua_ru_analysis(suffix, country):
