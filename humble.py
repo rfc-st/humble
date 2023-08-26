@@ -683,6 +683,18 @@ def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt):
         print(f"{(print_detail_l(literal) or '')[:-1]}{total}")
 
 
+def parse_csp(csp_header):
+    csp_output = []
+    for directive in csp_header.split(';'):
+        dir_csp = directive.strip().split(' ', 1)
+        if dir_name := dir_csp[0]:
+            csp_output.extend([f" {dir_name}"])
+            if len(dir_csp) > 1 and dir_csp[1]:
+                csp_output.append(f" {dir_csp[1]}")
+            csp_output.append("")
+    return '\n'.join(csp_output)
+
+
 def detail_exceptions(id_exception, exception_v):
     clean_output()
     print("")
@@ -977,12 +989,16 @@ l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                     'style-src-attr', 'trusted-types',
                     'upgrade-insecure-requests', 'webrtc', 'worker-src']
 
+l_csp_broad = ['*',  'blob:', 'data:', 'ftp:', 'http:', 'http://*',
+               'http://*.*', 'https:', 'https://*', 'https://*.*', 'ws:',
+               'ws://']
+
 l_csp_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
              'prefetch-src', 'referrer', 'report-uri', 'require-sri-for']
 
-l_csp_ro_dep = ['violated-directive']
-
 l_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
+
+l_csp_ro_dep = ['violated-directive']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
 l_excc = ['max-age', 's-maxage']
