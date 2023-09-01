@@ -688,7 +688,7 @@ def parse_csp(csp_header):
     for directive in csp_header.split(';'):
         dir_csp = directive.strip().split(' ', 1)
         if dir_name := dir_csp[0]:
-            csp_output.extend([f" {dir_name}"])
+            csp_output.extend([f" {Style.BRIGHT}{dir_name}{Style.RESET_ALL}"])
             if len(dir_csp) > 1 and dir_csp[1]:
                 csp_output.append(f" {dir_csp[1]}")
             csp_output.append("")
