@@ -590,7 +590,6 @@ Cabeceras de respuesta HTTP
 [mctype]
  Indica el tipo de medio original del recurso.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
- Ref: https://textslashplain.com/2018/01/08/content-types-matter-more-than-you-think/
 
 [mcoe]
  Evita que un documento cargue recursos de origen cruzado sin permiso previo.
