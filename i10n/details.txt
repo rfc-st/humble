@@ -398,6 +398,9 @@
 [iseti_m]
  Set-Cookie (Missing attribute)
 
+[isdyn_h]
+ Strict-Dynamic (Incorrect Header)
+
 [ists_h]
  Strict-Transport-Security (Recommended Values)
 
@@ -756,6 +759,10 @@ HTTP Response Headers
 [isetm]
  'SameSite=None' cookies must also be set with the 'Secure' attribute.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+
+[isdyn]
+ This is not a header, but a keyword of the 'Content-Security-Policy' header.
+ Ref: https://content-security-policy.com/strict-dynamic/
 
 [ists]
  Add 'includeSubDomains' and set 'max-age' to at least 31536000 (one year).

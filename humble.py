@@ -1277,6 +1277,9 @@ if ck_header:
     if "samesite=none" in ck_header and "secure" not in ck_header:
         print_details("[iseti_m]", "[isetm]", "d", i_cnt)
 
+if 'Strict-Dynamic' in headers:
+    print_details('[isdyn_h]', '[isdyn]', 'd', i_cnt)
+
 sts_header = headers.get('Strict-Transport-Security', '').lower()
 if (sts_header) and not (URL.startswith(INS_S)):
     age = int(''.join(filter(str.isdigit, sts_header)))

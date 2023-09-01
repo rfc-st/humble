@@ -398,6 +398,9 @@
 [iseti_m]
  Set-Cookie (Atributo ausente)
 
+[isdyn_h]
+ Strict-Dynamic (Cabecera incorrecta)
+
 [ists_h]
  Strict-Transport-Security (Valores recomendados)
 
@@ -756,6 +759,10 @@ Cabeceras de respuesta HTTP
 [isetm]
  Las cookies 'SameSite=None' también deben establecerse con el atributo 'Secure'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+
+[isdyn]
+ Esto no es una cabecera, sino una palabra clave de la cabecera 'Content-Security-Policy'.
+ Ref: https://content-security-policy.com/strict-dynamic/
 
 [ists]
  Habilite 'includeSubDomains' y 'max-age' con, al menos, un valor de 31536000.

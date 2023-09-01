@@ -51,6 +51,7 @@ Server-Timing: Potentially Unsafe Header
 Set-Cookie: Insecure Attributes
 Set-Cookie: Insecure Schemes
 Set-Cookie: Missing Attribute
+Strict-Dynamic: Incorrect Header
 Strict-Transport-Security: Duplicated Values
 Strict-Transport-Security: Ignored Header via Unsafe Scheme
 Strict-Transport-Security: Recommended Values
