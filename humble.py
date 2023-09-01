@@ -67,7 +67,7 @@ PAT_LN = r'\[(.*?)\]'
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-08-26', '%Y-%m-%d').date()
+version = datetime.strptime('2023-09-01', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
