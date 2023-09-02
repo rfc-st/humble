@@ -333,7 +333,7 @@
  Content-Security-Policy (IP detectada)
 
 [icsw_h]
- Content-Security-Policy (Valor muy permisivo)
+ Content-Security-Policy (Orígenes demasiado permisivos)
 
 [icsu_h]
  Content-Security-Policy (Funcionalidad insegura)
@@ -668,8 +668,7 @@ Cabeceras de respuesta HTTP
  Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
 
 [icsw]
- Limite las fuentes permitidas en las directivas. El valor '*' permite cualquier URL.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ Intenta limitar estos orígenes permisivos: 
 
 [icsu]
  Evita utilizar 'unsafe-hashes', y traslada toda la lógica asociada a ella a un fichero Javascript.
@@ -722,6 +721,9 @@ Cabeceras de respuesta HTTP
 
 [imethods]
  Ref: https://appcheck-ng.com/http-verbs-security-risks/
+
+[icsw_b]
+ Ref: https://content-security-policy.com/
 
 [iprag]
  Esta cabecera está obsoleta.

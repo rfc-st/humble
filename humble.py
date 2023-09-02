@@ -530,6 +530,26 @@ def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
             totals_m.items()}
 
 
+def csp_broad_sources(csp_header, l_csp_broad, i_cnt):
+    # sourcery skip: extract-method, simplify-generator
+    broad_sources = set()
+    for directive in csp_header.split(';'):
+        csp_dir = directive.strip()
+        broad_sources.update(value for value in l_csp_broad if f' {value} ' in
+                             f' {csp_dir} ')
+    if broad_sources:
+        if not args.brief:
+            csp_broad = ' '.join(f"'{value}'" for value in broad_sources)
+            print_detail_r('[icsw_h]', is_red=True)
+            print_detail_l("[icsw]")
+            print(csp_broad)
+            print_detail("[icsw_b]")
+        else:
+            print_detail_r('[icsw_h]', is_red=True)
+        i_cnt[0] += 1
+    return i_cnt
+
+
 def clean_output():
     # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
     sys.stdout.write('\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K')
@@ -989,9 +1009,9 @@ l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                     'style-src-attr', 'trusted-types',
                     'upgrade-insecure-requests', 'webrtc', 'worker-src']
 
-l_csp_broad = ['*',  'blob:', 'data:', 'ftp:', 'http:', 'http://*',
-               'http://*.*', 'https:', 'https://*', 'https://*.*', 'ws:',
-               'ws://']
+l_csp_broad = ['*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'http:',
+               'http://*', 'http://*.*', 'https:', 'https://*', 'https://*.*',
+               'schemes:', 'ws:', 'ws://']
 
 l_csp_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
              'prefetch-src', 'referrer', 'report-uri', 'require-sri-for']
@@ -1143,8 +1163,7 @@ if 'Content-Security-Policy' in headers:
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
     if (INS_S in csp_h) and (URL.startswith('https')):
         print_details('[icsh_h]', '[icsh]', 'd', i_cnt)
-    if ' * ' in csp_h:
-        print_details('[icsw_h]', '[icsw]', 'd', i_cnt)
+    csp_broad_sources(csp_h, l_csp_broad, i_cnt)
     if 'unsafe-hashes' in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
     if "'nonce-" in csp_h:
