@@ -4,7 +4,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--09--02-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--09--08-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/OWASP-Resource-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.kali.org/tools/humble/" title="Tool accepted in Kali"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
@@ -69,55 +69,55 @@ HTTP Headers Analyzer<br />
 
 ## Screenshots
 
-.: Brief analysis (Windows)<br />
+.: (Windows) - Brief analysis.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.PNG" alt="Brief Analysis">
 </p>
 <br />
-.: Brief analysis and retrieved headers (Linux)<br />
+.: (Linux) - Brief analysis and retrieved HTTP headers.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="Brief analysis + retrieved headers">
 </p>
 <br />
-.: Detailed analysis (Linux) in Spanish.<br />
+.: (Linux) - Detailed analysis in Spanish.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="Full analysis" width=70% height=70%>
 </p>
 <br />
-.: Specific fingerprint headers (Linux).<br />
+.: (Linux) - List of HTTP fingerprint headers based on a specific term.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fng.jpg" alt="Specific fingerprint headers" width=70% height=70%>
 </p>
 <br />
-.: Detailed analysis exported to PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/tesla_headers_20230406.pdf">Example.</a><br />
+.: (Windows) - Detailed analysis exported to PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/tesla_headers_20230406.pdf">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="Export analysis to PDF" width=70% height=70%>
 </p>
 <br />
-.: Detailed analysis exported to HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/tesla_headers_20230406.html">Example.</a><br />
+.: (Linux) - Detailed analysis exported to HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/tesla_headers_20230406.html">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Export analysis to HTML" width=70% height=70%>
 </p>
 <br />
-.: Example of history file: Date, URL, Missing, Fingerprint, Deprecated/Insecure, Empty headers & Total warnings (the four previous totals).<br />
+.: (Linux) - Analysis history file: Date, URL, Missing, Fingerprint, Deprecated/Insecure, Empty headers & Total warnings (the four previous totals).<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_ah.PNG" alt="History of analysis performed">
 </p>
 <br />
-.: Example of statistics performed against a URL.<br />
+.: (Linux) - Statistics of the analysis performed against a specific URL.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_analytics.jpg" alt="Statistics of the analysis performed against a URL">
 </p>
 <br />
-.: Example of global statistics.<br />
+.: (Linux) - Statistics of the analysis performed against all URLs.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_global_analytics.jpg" alt="Global statistics of the analysis performed">
