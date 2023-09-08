@@ -530,13 +530,31 @@ def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
             totals_m.items()}
 
 
-def csp_broad_sources(csp_header, l_csp_broad, i_cnt):
-    # sourcery skip: extract-method, simplify-generator
+def csp_check_sources(csp_header, l_csp_broad_s, l_csp_insecure_s, i_cnt):
     broad_sources = set()
+    insecure_schemes = set()
     for directive in csp_header.split(';'):
         csp_dir = directive.strip()
-        broad_sources.update(value for value in l_csp_broad if f' {value} ' in
-                             f' {csp_dir} ')
+        broad_sources.update(value for value in l_csp_broad_s if f' {value} '
+                             in f' {csp_dir} ')
+        insecure_schemes.update(value for value in l_csp_insecure_s if value in
+                                csp_dir)
+    return csp_print_sources(broad_sources, insecure_schemes, i_cnt)
+
+
+def csp_print_sources(broad_sources, insecure_schemes, i_cnt):
+    # sourcery skip: extract-duplicate-method
+    if insecure_schemes:
+        if not args.brief:
+            csp_insecure = ' '.join(f"'{value}'" for value in insecure_schemes)
+            print_detail_r('[icsh_h]', is_red=True)
+            print_detail_l("[icsh]")
+            print(csp_insecure)
+            print_detail("[icsh_b]")
+            print("")
+        else:
+            print_detail_r('[icsh_h]', is_red=True)
+        i_cnt[0] += 1
     if broad_sources:
         if not args.brief:
             csp_broad = ' '.join(f"'{value}'" for value in broad_sources)
@@ -1009,9 +1027,10 @@ l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
                     'style-src-attr', 'trusted-types',
                     'upgrade-insecure-requests', 'webrtc', 'worker-src']
 
-l_csp_broad = ['*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'http:',
-               'http://*', 'http://*.*', 'https:', 'https://*', 'https://*.*',
-               'schemes:', 'ws:', 'ws://']
+l_csp_broad_s = ['*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'https:',
+                 'https://*', 'https://*.*', 'schemes:', 'wss:', 'wss://']
+
+l_csp_insecure_s = ['http:', 'ws:']
 
 l_csp_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
              'prefetch-src', 'referrer', 'report-uri', 'require-sri-for']
@@ -1161,9 +1180,7 @@ if 'Content-Security-Policy' in headers:
         i_cnt[0] += 1
     if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
-    if (INS_S in csp_h) and (URL.startswith('https')):
-        print_details('[icsh_h]', '[icsh]', 'd', i_cnt)
-    csp_broad_sources(csp_h, l_csp_broad, i_cnt)
+    csp_check_sources(csp_h, l_csp_broad_s, l_csp_insecure_s, i_cnt)
     if 'unsafe-hashes' in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
     if "'nonce-" in csp_h:

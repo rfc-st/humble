@@ -664,11 +664,14 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icsh]
- It is not recommended to allow content of insecure schemes ('http:' or 'http://').
+ Do not allow insecure, unencrypted schemes: 
+
+[icsh_b]
  Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
+ Ref: https://http.dev/wss
 
 [icsw]
- Try to limit these permissive sources: 
+ Limit these permissive origins: 
 
 [icsu]
  Avoid using 'unsafe-hashes', and move all the logic associated with it to a JavaScript file.

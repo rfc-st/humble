@@ -664,11 +664,14 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icsh]
- No es recomendable permitir contenido de esquemas inseguros ('http:' o 'http://').
+ No permita esquemas inseguros, sin encriptar: 
+
+[icsh_b]
  Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
+ Ref: https://http.dev/wss
 
 [icsw]
- Intenta limitar estos orígenes permisivos: 
+ Limite estos orígenes permisivos: 
 
 [icsu]
  Evita utilizar 'unsafe-hashes', y traslada toda la lógica asociada a ella a un fichero Javascript.
