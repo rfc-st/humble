@@ -211,9 +211,7 @@ def fng_analytics_sorted(fng_lines, term, fng_group):
     for content in sorted(fng_group):
         print(f"\n [{content}]")
         for line in fng_lines:
-            match = re.search(PAT_LN, line)
-            if match and term.lower() in match[1].lower() \
-               and content == match[1].strip():
+            if term.lower() in line.lower() and content in line:
                 print(f"  {line[:line.find('[')].strip()}")
 
 
