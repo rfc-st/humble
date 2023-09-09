@@ -533,10 +533,16 @@ def csp_check_values(csp_header, l_csp_broad_s, l_csp_insecure_s, i_cnt):
                              in f' {csp_dir} ')
         insecure_schemes.update(value for value in l_csp_insecure_s if value in
                                 csp_dir)
-    csp_broad_sources(broad_sources, i_cnt) if broad_sources and not \
-        args.brief else print_detail_r('[icsw_h]', is_red=True)
-    csp_insecure_schemes(insecure_schemes, i_cnt) if insecure_schemes and not \
-        args.brief else print_detail_r('[icsh_h]', is_red=True)
+    if broad_sources:
+        if not args.brief:
+            csp_broad_sources(broad_sources, i_cnt)
+        else:
+            print_detail_r('[icsw_h]', is_red=True)
+    if insecure_schemes:
+        if not args.brief:
+            csp_insecure_schemes(insecure_schemes, i_cnt)
+        else:
+            print_detail_r('[icsh_h]', is_red=True)
     return (i_cnt)
 
 
