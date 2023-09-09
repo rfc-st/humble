@@ -67,7 +67,7 @@ PAT_LN = r'\[(.*?)\]'
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-09-08', '%Y-%m-%d').date()
+version = datetime.strptime('2023-09-09', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -286,13 +286,9 @@ def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
                    th_cnt, t_cnt):
     if mh_cnt == "First":
         return [get_detail('[first_one]', replace=True)] * 5
-    mhr_cnt = m_cnt - int(mh_cnt)
-    fhr_cnt = f_cnt - int(fh_cnt)
-    ihr_cnt = i_cnt[0] - int(ih_cnt)
-    ehr_cnt = e_cnt - int(eh_cnt)
-    thr_cnt = t_cnt - int(th_cnt)
-    return [f'+{n}' if n > 0 else str(n) for n in [mhr_cnt, fhr_cnt, ihr_cnt,
-                                                   ehr_cnt, thr_cnt]]
+    totals = [m_cnt - int(mh_cnt), f_cnt - int(fh_cnt), i_cnt[0] - int(ih_cnt),
+              e_cnt - int(eh_cnt), t_cnt - int(th_cnt)]
+    return [f'+{total}' if total > 0 else str(total) for total in totals]
 
 
 def file_exists(filepath):
@@ -530,7 +526,7 @@ def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
             totals_m.items()}
 
 
-def csp_check_sources(csp_header, l_csp_broad_s, l_csp_insecure_s, i_cnt):
+def csp_check_values(csp_header, l_csp_broad_s, l_csp_insecure_s, i_cnt):
     broad_sources = set()
     insecure_schemes = set()
     for directive in csp_header.split(';'):
@@ -539,32 +535,32 @@ def csp_check_sources(csp_header, l_csp_broad_s, l_csp_insecure_s, i_cnt):
                              in f' {csp_dir} ')
         insecure_schemes.update(value for value in l_csp_insecure_s if value in
                                 csp_dir)
-    return csp_print_sources(broad_sources, insecure_schemes, i_cnt)
+    csp_broad_sources(broad_sources, i_cnt) if broad_sources and not \
+        args.brief else print_detail_r('[icsw_h]', is_red=True)
+    csp_insecure_schemes(insecure_schemes, i_cnt) if insecure_schemes and not \
+        args.brief else print_detail_r('[icsh_h]', is_red=True)
+    return (i_cnt)
 
 
-def csp_print_sources(broad_sources, insecure_schemes, i_cnt):
-    # sourcery skip: extract-duplicate-method
-    if insecure_schemes:
-        if not args.brief:
-            csp_insecure = ' '.join(f"'{value}'" for value in insecure_schemes)
-            print_detail_r('[icsh_h]', is_red=True)
-            print_detail_l("[icsh]")
-            print(csp_insecure)
-            print_detail("[icsh_b]")
-            print("")
-        else:
-            print_detail_r('[icsh_h]', is_red=True)
-        i_cnt[0] += 1
-    if broad_sources:
-        if not args.brief:
-            csp_broad = ' '.join(f"'{value}'" for value in broad_sources)
-            print_detail_r('[icsw_h]', is_red=True)
-            print_detail_l("[icsw]")
-            print(csp_broad)
-            print_detail("[icsw_b]")
-        else:
-            print_detail_r('[icsw_h]', is_red=True)
-        i_cnt[0] += 1
+def csp_broad_sources(broad_sources, i_cnt):
+    csp_broad = ' '.join(f"'{value}'" for value in broad_sources)
+    print_detail_r('[icsw_h]', is_red=True)
+    print_detail_l("[icsw]")
+    print(csp_broad)
+    print_detail("[icsw_b]")
+    i_cnt[0] += 1
+    return i_cnt
+
+
+def csp_insecure_schemes(insecure_schemes, i_cnt):
+    # sourcery skip: extract-method
+    csp_insecure = ' '.join(f"'{value}'" for value in insecure_schemes)
+    print_detail_r('[icsh_h]', is_red=True)
+    print_detail_l("[icsh]")
+    print(csp_insecure)
+    print_detail("[icsh_b]")
+    print("")
+    i_cnt[0] += 1
     return i_cnt
 
 
@@ -1180,7 +1176,7 @@ if 'Content-Security-Policy' in headers:
         i_cnt[0] += 1
     if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
-    csp_check_sources(csp_h, l_csp_broad_s, l_csp_insecure_s, i_cnt)
+    csp_check_values(csp_h, l_csp_broad_s, l_csp_insecure_s, i_cnt)
     if 'unsafe-hashes' in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
     if "'nonce-" in csp_h:
