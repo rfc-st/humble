@@ -56,6 +56,8 @@ CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
 GIT_U = "https://github.com/rfc-st/humble"
 INS_S = 'http:'
+IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
+           r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLDS = ['CYMRU', 'GURU', 'PRU']
 RU_DESC = '[bcnt]'
@@ -525,29 +527,33 @@ def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
 
 
 def csp_check_values(csp_header, l_csp_broad_s, l_csp_insecure_s, i_cnt):
-    broad_sources = set()
-    insecure_schemes = set()
+    csp_broad, csp_deprecated, csp_insecure = (set(), set(), set())
     for directive in csp_header.split(';'):
         csp_dir = directive.strip()
-        broad_sources.update(value for value in l_csp_broad_s if f' {value} '
-                             in f' {csp_dir} ')
-        insecure_schemes.update(value for value in l_csp_insecure_s if value in
-                                csp_dir)
-    if broad_sources:
-        if not args.brief:
-            csp_broad_sources(broad_sources, i_cnt)
-        else:
-            print_detail_r('[icsw_h]', is_red=True)
-    if insecure_schemes:
-        if not args.brief:
-            csp_insecure_schemes(insecure_schemes, i_cnt)
-        else:
-            print_detail_r('[icsh_h]', is_red=True)
+        csp_broad.update(value for value in l_csp_broad_s if f' {value} ' in
+                         f' {csp_dir} ')
+        csp_deprecated.update(value for value in l_csp_dep if value in csp_dir)
+        csp_insecure.update(value for value in l_csp_insecure_s if value in
+                            csp_dir)
+    csp_print_checks(csp_broad, csp_deprecated, csp_insecure, i_cnt)
     return (i_cnt)
 
 
-def csp_broad_sources(broad_sources, i_cnt):
-    csp_broad = ' '.join(f"'{value}'" for value in broad_sources)
+def csp_print_checks(csp_broad, csp_deprecated, csp_insecure, i_cnt):
+    if csp_deprecated:
+        print_detail_r('[icsi_d]', is_red=True) if args.brief else \
+            csp_deprecated_values(csp_deprecated, i_cnt)
+    if csp_insecure:
+        print_detail_r('[icsh_h]', is_red=True) if args.brief else \
+            csp_insecure_schemes(csp_insecure, i_cnt)
+    if csp_broad:
+        print_detail_r('[icsw_h]', is_red=True) if args.brief else \
+            csp_broad_sources(csp_broad, i_cnt)
+    return (i_cnt)
+
+
+def csp_broad_sources(csp_broad, i_cnt):
+    csp_broad = ' '.join(f"'{value}'" for value in csp_broad)
     print_detail_r('[icsw_h]', is_red=True)
     print_detail_l("[icsw]")
     print(csp_broad)
@@ -556,9 +562,18 @@ def csp_broad_sources(broad_sources, i_cnt):
     return i_cnt
 
 
-def csp_insecure_schemes(insecure_schemes, i_cnt):
-    # sourcery skip: extract-method
-    csp_insecure = ' '.join(f"'{value}'" for value in insecure_schemes)
+def csp_deprecated_values(csp_deprecated, i_cnt):
+    csp_broad = ' '.join(f"'{value}'" for value in csp_deprecated)
+    print_detail_r('[icsi_d]', is_red=True)
+    print_detail_l("[icsi_d_s]")
+    print(csp_broad)
+    print_detail("[icsi_d_r]")
+    i_cnt[0] += 1
+    return i_cnt
+
+
+def csp_insecure_schemes(csp_insecure, i_cnt):
+    csp_insecure = ' '.join(f"'{value}'" for value in csp_insecure)
     print_detail_r('[icsh_h]', is_red=True)
     print_detail_l("[icsh]")
     print(csp_insecure)
@@ -1166,21 +1181,13 @@ if 'Content-DPR' in headers:
 
 if 'Content-Security-Policy' in headers:
     csp_h = headers['Content-Security-Policy'].lower()
-    if any(elem in csp_h for elem in ['unsafe-eval', 'unsafe-inline']):
-        print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
-    elif not any(elem in csp_h for elem in l_csp_directives):
+    if not any(elem in csp_h for elem in l_csp_directives):
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
-    if any(elem in csp_h for elem in l_csp_dep):
-        print_detail_r('[icsi_d]', is_red=True)
-        if not args.brief:
-            matches_csp = [x for x in l_csp_dep if x in csp_h]
-            print_detail_l("[icsi_d_s]")
-            print(', '.join(matches_csp))
-            print_detail("[icsi_d_r]")
-        i_cnt[0] += 1
     if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
     csp_check_values(csp_h, l_csp_broad_s, l_csp_insecure_s, i_cnt)
+    if any(elem in csp_h for elem in ['unsafe-eval', 'unsafe-inline']):
+        print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
     if 'unsafe-hashes' in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
     if "'nonce-" in csp_h:
@@ -1189,12 +1196,10 @@ if 'Content-Security-Policy' in headers:
             if len(nonce_csp) < 32:
                 print_details('[icsnces_h]', '[icsnces]', 'd', i_cnt)
                 break
-    ip_ptrn = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
-               r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
-    ip_mtch = re.findall(ip_ptrn, csp_h)
+    ip_mtch = re.findall(IP_PTRN, csp_h)
     if ip_mtch != ['127.0.0.1']:
         for match in ip_mtch:
-            if re.match(ip_ptrn, match):
+            if re.match(IP_PTRN, match):
                 print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
                 break
 
