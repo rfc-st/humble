@@ -560,12 +560,6 @@ Cabeceras de respuesta HTTP
 [5compat]
 [5. Compatibilidad de navegadores con cabeceras HTTP de respuesta]
 
-[analysis_ua]
- Slava Ukraini!. Analizando URL, espera por favor ...
-
-[analysis_ua_output]
- Slava Ukraini!. Analizando URL y guardando el informe, espera por favor ...
-
 [analysis]
  Analizando URL, espera por favor ...
 

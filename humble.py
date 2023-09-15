@@ -35,6 +35,7 @@
 # Carlos, David, Carlos, Juán, Alejandro, Pablo, Íñigo, Naiara, Ricardo,
 # Gabriel, Miguel Angel, David (x2), Sergio, Marta, Alba, Montse & Eloy.
 
+import contextlib
 from fpdf import FPDF
 from time import time
 from datetime import datetime
@@ -69,7 +70,7 @@ PAT_LN = r'\[(.*?)\]'
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-09-09', '%Y-%m-%d').date()
+version = datetime.strptime('2023-09-15', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -225,17 +226,6 @@ def print_guides():
         for line in gd:
             print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"  \
 {line}", end='')
-
-
-def ua_ru_analysis(suffix, country):
-    print("")
-    if suffix == "UA" or country == 'Ukraine':
-        detail = '[analysis_ua_output]' if args.output else '[analysis_ua]'
-    elif suffix == "RU" and suffix not in NON_RU_TLDS or country == 'Russia':
-        detail = RU_DESC
-    print_detail(detail, 2) if detail == RU_DESC else print_detail(detail)
-    if detail == RU_DESC:
-        sys.exit()
 
 
 def get_details_lines():
@@ -755,6 +745,19 @@ def detail_exceptions(id_exception, exception_v):
     raise SystemExit from exception_v
 
 
+def print_ru_message():
+    # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
+    with contextlib.suppress(requests.exceptions.RequestException):
+        requests.packages.urllib3.disable_warnings()
+        sffx = tldextract.extract(URL).suffix[-2:].upper()
+        cnty = requests.get('https://ipapi.co/country_name/', verify=False,
+                            timeout=5).text.strip()
+        if (sffx == 'RU' and sffx not in NON_RU_TLDS) or cnty == 'Russia':
+            print("")
+            print_detail(RU_DESC, 2)
+            sys.exit()
+
+
 def request_exceptions():
     headers = {}
     status_c = None
@@ -856,17 +859,12 @@ if args.URL_A:
 
 start = time()
 
-# https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
-sffx = tldextract.extract(URL).suffix[-2:].upper()
-cnty = requests.get('https://ipapi.co/country_name/').text.strip()
-if (sffx in ("UA", 'RU') and sffx not in NON_RU_TLDS) or cnty in ('Ukraine',
-                                                                  'Russia'):
-    ua_ru_analysis(sffx, cnty)
-else:
-    if not args.URL_A:
-        detail = '[analysis_output]' if args.output else '[analysis]'
-        print("")
-        print_detail(detail)
+print_ru_message()
+
+if not args.URL_A:
+    detail = '[analysis_output]' if args.output else '[analysis]'
+    print("")
+    print_detail(detail)
 
 # Regarding 'dh key too small' errors: https://stackoverflow.com/a/41041028
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
@@ -1265,6 +1263,12 @@ if ('Keep-Alive' in headers and headers['Keep-Alive'] and
 if 'Large-Allocation' in headers:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd', i_cnt)
 
+if 'Onion-Location' in headers:
+    print_details('[ionloc_h]', '[ionloc]', 'm', i_cnt)
+
+if 'P3P' in headers:
+    print_details('[ip3p_h]', '[ip3p]', 'd', i_cnt)
+
 if 'Permissions-Policy' in headers:
     perm_header = headers['Permissions-Policy'].lower()
     if not any(elem in perm_header for elem in l_per_feat):
@@ -1280,12 +1284,6 @@ if 'Permissions-Policy' in headers:
             print('document-domain')
             print_detail('[ifpold]')
         i_cnt[0] += 1
-
-if 'Onion-Location' in headers:
-    print_details('[ionloc_h]', '[ionloc]', 'm', i_cnt)
-
-if 'P3P' in headers:
-    print_details('[ip3p_h]', '[ip3p]', 'd', i_cnt)
 
 if 'Pragma' in headers:
     print_details('[iprag_h]', '[iprag]', 'd', i_cnt)

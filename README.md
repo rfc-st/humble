@@ -4,7 +4,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--09--09-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--09--15-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/OWASP-Resource-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.kali.org/tools/humble/" title="Tool accepted in Kali"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
@@ -33,7 +33,6 @@ HTTP Headers Analyzer<br />
  [Linux: Show only the deprecated headers/protocols and insecure values](#linux-show-only-the-deprecated-headersprotocols-and-insecure-values)<br />
  [Linux: Check for HTTP client errors (4XX)](#linux-check-for-http-client-errors-4xx)<br />
  [Linux: Analyze multiple URLs and save the results as PDFs](#linux-analyze-multiple-urls-and-save-the-results-as-pdfs)<br />
-[Caveats](#caveats)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
 [Checks: Fingerprint Headers](#checks-fingerprint-headers)<br />
 [Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
@@ -221,36 +220,6 @@ $ datasets=('https://facebook.com' 'https://www.microsoft.com' 'https://www.spac
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_5.jpg" alt="Analyze multiple URLs and save the results as PDFs">
 
-
-## Caveats
-
-### Country and suffix errors (TLDs)
-
-These <a href="https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326">checks</a> may generate errors in internal networks, or development environments, that do not have connectivity to https://ipapi.co. 
-
-To avoid the errors, you can replace the following code <a href="https://github.com/rfc-st/humble/blob/master/humble.py">here</a>:
-
-```
-sffx = tldextract.extract(URL).suffix[-2:].upper()
-cnty = requests.get('https://ipapi.co/country_name/').text.strip()
-if (sffx in ("UA", 'RU') and sffx not in NON_RU_TLDS) or cnty in ('Ukraine',
-                                                                  'Russia'):
-    ua_ru_analysis(sffx, cnty)
-else:
-    if not args.URL_A:
-        detail = '[analysis_output]' if args.output else '[analysis]'
-        print("")
-        print_detail(detail)
-```
-
-with this code:
-
-```
-if not args.URL_A:
-    detail = '[analysis_output]' if args.output else '[analysis]'
-    print("")
-    print_detail(detail)
-```
 
 ## Checks: Missing Headers
 <details>

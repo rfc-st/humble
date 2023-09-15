@@ -560,12 +560,6 @@ HTTP Response Headers
 [5compat]
 [5. Browser Compatibility for Enabled HTTP Security Headers]
 
-[analysis_ua]
- Slava Ukraini!. Analyzing URL, please wait ...
-
-[analysis_ua_output]
- Slava Ukraini!. Analyzing URL and saving the report, please wait ...
-
 [analysis]
  Analyzing URL, please wait ...
 
