@@ -35,7 +35,6 @@
 # Carlos, David, Carlos, Juán, Alejandro, Pablo, Íñigo, Naiara, Ricardo,
 # Gabriel, Miguel Angel, David (x2), Sergio, Marta, Alba, Montse & Eloy.
 
-import contextlib
 from fpdf import FPDF
 from time import time
 from datetime import datetime
@@ -46,6 +45,7 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
 import sys
 import requests
+import contextlib
 import tldextract
 
 A_FILE = 'analysis_h.txt'
