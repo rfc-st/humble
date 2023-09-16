@@ -516,7 +516,7 @@ def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
             totals_m.items()}
 
 
-def csp_check_values(csp_header, l_csp_broad_s, l_csp_insecure_s, i_cnt):
+def csp_store_values(csp_header, l_csp_broad_s, l_csp_insecure_s, i_cnt):
     csp_broad, csp_deprecated, csp_insecure = (set(), set(), set())
     for directive in csp_header.split(';'):
         csp_dir = directive.strip()
@@ -525,52 +525,34 @@ def csp_check_values(csp_header, l_csp_broad_s, l_csp_insecure_s, i_cnt):
         csp_deprecated.update(value for value in l_csp_dep if value in csp_dir)
         csp_insecure.update(value for value in l_csp_insecure_s if value in
                             csp_dir)
-    csp_print_checks(csp_broad, csp_deprecated, csp_insecure, i_cnt)
+    csp_check_values(csp_broad, csp_deprecated, csp_insecure, i_cnt)
     return (i_cnt)
 
 
-def csp_print_checks(csp_broad, csp_deprecated, csp_insecure, i_cnt):
+def csp_check_values(csp_broad, csp_deprecated, csp_insecure, i_cnt):
     if csp_deprecated:
         print_detail_r('[icsi_d]', is_red=True) if args.brief else \
-            csp_deprecated_values(csp_deprecated, i_cnt)
+            csp_print_warnings(csp_deprecated, '[icsi_d]', '[icsi_d_s]',
+                               '[icsi_d_r]')
     if csp_insecure:
         print_detail_r('[icsh_h]', is_red=True) if args.brief else \
-            csp_insecure_schemes(csp_insecure, i_cnt)
+            csp_print_warnings(csp_insecure, '[icsh_h]', '[icsh]', '[icsh_b]')
+        if not args.brief:
+            print("")
     if csp_broad:
         print_detail_r('[icsw_h]', is_red=True) if args.brief else \
-            csp_broad_sources(csp_broad, i_cnt)
+            csp_print_warnings(csp_broad, '[icsw_h]', '[icsw]', '[icsw_b]')
+    i_cnt[0] += sum(bool(csp) for csp in (csp_broad, csp_deprecated,
+                                          csp_insecure))
     return (i_cnt)
 
 
-def csp_broad_sources(csp_broad, i_cnt):
-    csp_broad = ' '.join(f"'{value}'" for value in csp_broad)
-    print_detail_r('[icsw_h]', is_red=True)
-    print_detail_l("[icsw]")
-    print(csp_broad)
-    print_detail("[icsw_b]")
-    i_cnt[0] += 1
-    return i_cnt
-
-
-def csp_deprecated_values(csp_deprecated, i_cnt):
-    csp_broad = ' '.join(f"'{value}'" for value in csp_deprecated)
-    print_detail_r('[icsi_d]', is_red=True)
-    print_detail_l("[icsi_d_s]")
-    print(csp_broad)
-    print_detail("[icsi_d_r]")
-    i_cnt[0] += 1
-    return i_cnt
-
-
-def csp_insecure_schemes(csp_insecure, i_cnt):
-    csp_insecure = ' '.join(f"'{value}'" for value in csp_insecure)
-    print_detail_r('[icsh_h]', is_red=True)
-    print_detail_l("[icsh]")
-    print(csp_insecure)
-    print_detail("[icsh_b]")
-    print("")
-    i_cnt[0] += 1
-    return i_cnt
+def csp_print_warnings(csp_values, csp_title, csp_desc, csp_refs):
+    csp_values = ' '.join(f"'{value}'" for value in csp_values)
+    print_detail_r(f'{csp_title}', is_red=True)
+    print_detail_l(f'{csp_desc}')
+    print(csp_values)
+    print_detail(f'{csp_refs}')
 
 
 def clean_output():
@@ -1183,7 +1165,7 @@ if 'Content-Security-Policy' in headers:
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
     if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
-    csp_check_values(csp_h, l_csp_broad_s, l_csp_insecure_s, i_cnt)
+    csp_store_values(csp_h, l_csp_broad_s, l_csp_insecure_s, i_cnt)
     if any(elem in csp_h for elem in ['unsafe-eval', 'unsafe-inline']):
         print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
     if 'unsafe-hashes' in csp_h:
