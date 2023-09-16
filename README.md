@@ -63,7 +63,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Fully tested and working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
 :heavy_check_mark: All code under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
-:heavy_check_mark: Created and updated in my spare time, without any relationship with clients or companies: try it and integrate it without worries in your projects!.<br />
+:heavy_check_mark: Developed entirely in my spare time, with no relationship with clients/companies: try it and integrate it into your projects!.<br />
 :heavy_check_mark: Technical resource accepted in the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">Secure Headers</a> Project and <a href="https://www.kali.org/tools/humble/" target="_blank">Kali Linux</a>.<br />
 <br />
 
