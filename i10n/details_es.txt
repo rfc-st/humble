@@ -863,7 +863,7 @@ Cabeceras de respuesta HTTP
  Las siguientes cabeceras no tienen valor (equivalente a no estar definidas):
 
 [afgp]
- Estas cabeceras pueden filtrar datos sensibles (software, versiones, hosts, etc):
+ Estas cabeceras pueden exponer datos sensibles (software, versiones, hosts, etc):
 
 [aisc]
  Estas cabeceras, o protocolos, están obsoletos o sus valores son inseguros:
