@@ -188,12 +188,21 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest
 
+[ixachd_h]
+ Accept-CH (Valor obsoleto)
+
 [ixach_h]
  Accept-CH (Cabecera ignorada)
 
 [ixach]
  Al acceder mediante HTTP los navegadores ignoran esta cabecera.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
+
+[ixachd_s]
+ Estos valores están obsoletos: 
+
+[ixachd]
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-CH-UA-Full-Version
 
 [ixacl_h]
  Accept-CH-Lifetime (Cabecera obsoleta)

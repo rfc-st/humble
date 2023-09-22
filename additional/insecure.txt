@@ -1,3 +1,4 @@
+Accept-CH: Deprecated Value
 Accept-CH: Ignored Header via Unsafe Scheme
 Accept-CH-Lifetime: Deprecated Header
 Access-Control-Allow-Credentials: Incorrect Values

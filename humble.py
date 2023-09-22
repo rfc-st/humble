@@ -833,7 +833,6 @@ if args.URL_A:
     sys.exit()
 
 start = time()
-
 print_ru_message()
 
 if not args.URL_A:
@@ -938,8 +937,7 @@ print_detail_r('[2fingerprint]')
 if not args.brief:
     print_detail("[afgp]")
 
-l_fng = []
-l_fng_ex = []
+l_fng, l_fng_ex = [], []
 
 with open(path.join('additional', 'fingerprint.txt'), 'r', encoding='utf8') \
           as fn:
@@ -1088,8 +1086,17 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
-if 'Accept-CH' in headers and URL.startswith(INS_S):
-    print_details('[ixach_h]', '[ixach]', 'd', i_cnt)
+if 'Accept-CH' in headers:
+    acceptch_header = headers['Accept-CH'].lower()
+    if URL.startswith(INS_S):
+        print_details('[ixach_h]', '[ixach]', 'd', i_cnt)
+    if 'sec-ch-ua-full-version' in acceptch_header:
+        print_detail_r('[ixachd_h]', is_red=True)
+        if not args.brief:
+            print_detail_l('[ixachd_s]')
+            print('sec-ch-ua-full-version')
+            print_detail('[ixachd]')
+        i_cnt[0] += 1
 
 if 'Accept-CH-Lifetime' in headers:
     print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
