@@ -486,7 +486,7 @@ Page
 Humble HTTP headers analysis of
 
 [pdf_k]
-HTTP Headers  Analyzer  Analysis  Cybersecurity  Security-scanner  Security-Tools  Header-Parser 
+HTTP Headers  Analyzer  Analysis  Cybersecurity  Security-scanner  Security-Tools  Header-Parser
 
 [pdf_l]
 en-US

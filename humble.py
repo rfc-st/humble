@@ -61,7 +61,6 @@ IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
            r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLDS = ['CYMRU', 'GURU', 'PRU']
-RU_DESC = '[bcnt]'
 PRG_N = 'humble (HTTP Headers Analyzer) - '
 REF_S = 'Ref: '
 SEC_S = "https://"
@@ -70,7 +69,7 @@ PAT_LN = r'\[(.*?)\]'
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-09-16', '%Y-%m-%d').date()
+version = datetime.strptime('2023-09-22', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -391,10 +390,10 @@ def get_month_counts(year, url_ln):
 def extract_highlights_metrics(url_ln):
     sections = ['[miss_cnt]', '[finger_cnt]', '[ins_cnt]', '[empty_cnt]']
     fields_h = [2, 3, 4, 5]
-    return [f"{print_detail_h(sections[i])}\n"
-            f"  {print_detail_h('[best_analysis]')}: \
+    return [f"{print_detail_l(sections[i], analytics=True)}\n"
+            f"  {print_detail_l('[best_analysis]', analytics=True)}: \
 {get_best_worst_highlights(url_ln, fields_h[i], min)}\n"
-            f"  {print_detail_h('[worst_analysis]')}: \
+            f"  {print_detail_l('[worst_analysis]', analytics=True)}: \
 {get_best_worst_highlights(url_ln, fields_h[i], max)}\n"
             for i in range(len(fields_h))]
 
@@ -572,10 +571,7 @@ def print_ok():
 
 
 def print_header(header):
-    if not args.output:
-        print(f"{BRI_R} {header}")
-    else:
-        print(f" {header}")
+    print(f" {header}" if args.output else f"{BRI_R} {header}")
 
 
 def print_header_fng(header):
@@ -641,16 +637,13 @@ def print_detail(id_mode, num_lines=1):
             print(details_f[idx+i+1], end='')
 
 
-def print_detail_l(id_mode):
+def print_detail_l(id_mode, analytics=False):
     for i, line in enumerate(details_f):
         if line.startswith(id_mode):
-            print(details_f[i+1].replace('\n', ''), end='')
-
-
-def print_detail_h(id_mode):
-    for i, line in enumerate(details_f):
-        if line.startswith(id_mode):
-            return details_f[i+1].replace('\n', '').replace(':', '')[1:]
+            if not analytics:
+                print(details_f[i+1].replace('\n', ''), end='')
+            else:
+                return details_f[i+1].replace('\n', '').replace(':', '')[1:]
 
 
 def print_detail_r(id_mode, is_red=False):
@@ -736,7 +729,7 @@ def print_ru_message():
                             timeout=5).text.strip()
         if (sffx == 'RU' and sffx not in NON_RU_TLDS) or cnty == 'Russia':
             print("")
-            print_detail(RU_DESC, 2)
+            print_detail('[bcnt]', 2)
             sys.exit()
 
 
