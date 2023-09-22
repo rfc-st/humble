@@ -92,7 +92,7 @@ class PDF(FPDF):
         self.set_font('Helvetica', 'I', 8)
         pdf.set_text_color(0, 0, 0)
         self.cell(0, 10, get_detail('[pdf_p]') + ' ' + str(self.page_no()) +
-                  get_detail('[pdf_po') + '{nb}', align='C')
+                  get_detail('[pdf_po') + ' {nb}', align='C')
 
 
 def pdf_metadata():
