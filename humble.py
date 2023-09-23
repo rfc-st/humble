@@ -69,7 +69,7 @@ PAT_LN = r'\[(.*?)\]'
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-09-22', '%Y-%m-%d').date()
+version = datetime.strptime('2023-09-23', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -702,6 +702,7 @@ def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt):
 
 
 def parse_csp(csp_header):
+    # TO-DO: analyze/show detailed directives and values in the future.
     csp_output = []
     for directive in csp_header.split(';'):
         dir_csp = directive.strip().split(' ', 1)
