@@ -736,6 +736,17 @@ def print_ru_message():
             sys.exit()
 
 
+def handle_http_error(err_http):
+    if err_http.response.status_code == 407:
+        detail_exceptions('[e_proxy]', err_http)
+    if str(err_http.response.status_code).startswith('5'):
+        if err_http.response.status_code in SER_E:
+            desc_error = f'[server_{str(err_http.response.status_code)}]'
+        else:
+            desc_error = "[e_serror]"
+        detail_exceptions(desc_error, err_http)
+
+
 def request_exceptions():
     headers = {}
     status_c = None
@@ -749,14 +760,7 @@ def request_exceptions():
         headers = r.headers
         r.raise_for_status()
     except requests.exceptions.HTTPError as err_http:
-        if err_http.response.status_code == 407:
-            detail_exceptions('[e_proxy]', err_http)
-        if str(err_http.response.status_code).startswith('5'):
-            if err_http.response.status_code in SER_E:
-                desc_error = f'[server_{str(err_http.response.status_code)}]'
-            else:
-                desc_error = "[e_serror]"
-            detail_exceptions(desc_error, err_http)
+        handle_http_error(err_http)
     except tuple(exception_d.keys()) as e:
         ex = exception_d.get(type(e))
         if ex and (not callable(ex) or ex(e)):
