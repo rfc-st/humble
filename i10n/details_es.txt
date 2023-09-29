@@ -97,6 +97,86 @@
 [http_451]
  Nota : La URL devuelve un error (Código HTTP 451, 'Unavailable For Legal Reasons')
 
+[server_500]
+ Error en servidor (Código HTTP 500, 'Internal Server Error')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+[server_501]
+ Error en servidor (Código HTTP 501, 'Not Implemented')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/501
+
+[server_502]
+ Error en servidor (Código HTTP 502, 'Bad Gateway')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502
+
+[server_503]
+ Error en servidor (Código HTTP 503, 'Service Unavailable')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503
+
+[server_504]
+ Error en servidor (Código HTTP 504, 'Gateway Timeout')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504
+
+[server_505]
+ Error en servidor (Código HTTP 505, 'HTTP Version Not Supported')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/505
+
+[server_506]
+ Error en servidor (Código HTTP 506, 'Variant Also Negotiates')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/506
+
+[server_507]
+ Error en servidor (Código HTTP 507, 'Insufficient Storage')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/507
+
+[server_508]
+ Error en servidor (Código HTTP 508, 'Loop Detected')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/508
+
+[server_510]
+ Error en servidor (Código HTTP 510, 'Not Extended')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/510
+
+[server_511]
+ Error en servidor (Código HTTP 511, 'Network Authentication Required')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/511
+
+[server_520]
+ Error en servidor, asociado habitualmente con un CDN (código HTTP 520, 'Unknown error')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_521]
+ Error en servidor, asociado habitualmente con un CDN (código HTTP 521, 'Web server is down')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_522]
+ Error en servidor, asociado habitualmente con un CDN (código HTTP 522, 'Connection timed out')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_523]
+ Error en servidor, asociado habitualmente con un CDN (código HTTP 523, 'Origin is unreachable')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_524]
+ Error en servidor, asociado habitualmente con un CDN (código HTTP 524, 'A timeout occurred')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_525]
+ Error en servidor, asociado habitualmente con un CDN (código HTTP 525, 'SSL handshake failed')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_526]
+ Error en servidor, asociado habitualmente con un CDN (código HTTP 526, 'Invalid SSL certificate')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_527]
+ Error en servidor, asociado habitualmente con un CDN (código HTTP 527, 'Railgun error')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_530]
+ Error en servidor, asociado habitualmente con un CDN (código HTTP 530, 'Review accompanying 1XXX error')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
 [ixuacom_h]
  X-UA-compatible (Cabecera obsoleta)
 
@@ -537,7 +617,7 @@ Cabeceras de respuesta HTTP
  Error: La URL requiere autentificación previa con proxy (este programa no lo contempla actualmente).
 
 [e_serror]
- Error: Error interno de servidor. Espera unos minutos y prueba de nuevo.
+ Error en servidor; espera unos minutos y prueba de nuevo.
 
 [e_404]
  Error: No se encuentra la URL. Revisa que sea correcta y prueba de nuevo.

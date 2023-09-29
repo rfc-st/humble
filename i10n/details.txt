@@ -97,6 +97,86 @@
 [http_451]
  Note : The URL returns an error (HTTP code 451, 'Unavailable For Legal Reasons')
 
+[server_500]
+ Server error (HTTP code 500, 'Internal Server Error')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+[server_501]
+ Server error (HTTP code 501, 'Not Implemented')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/501
+
+[server_502]
+ Server error (HTTP code 502, 'Bad Gateway')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502
+
+[server_503]
+ Server error (HTTP code 503, 'Service Unavailable')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503
+
+[server_504]
+ Server error (HTTP code 504, 'Gateway Timeout')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504
+
+[server_505]
+ Server error (HTTP code 505, 'HTTP Version Not Supported')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/505
+
+[server_506]
+ Server error (HTTP code 506, 'Variant Also Negotiates')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/506
+
+[server_507]
+ Server error (HTTP code 507, 'Insufficient Storage')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/507
+
+[server_508]
+ Server error (HTTP code 508, 'Loop Detected')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/508
+
+[server_510]
+ Server error (HTTP code 510, 'Not Extended')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/510
+
+[server_511]
+ Server error (HTTP code 511, 'Network Authentication Required')
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/511
+
+[server_520]
+ Server error, generally associated with a CDN (HTTP code 520, 'Unknown error')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_521]
+ Server error, generally associated with a CDN (HTTP code 521, 'Web server is down')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_522]
+ Server error, generally associated with a CDN (HTTP code 522, 'Connection timed out')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_523]
+ Server error, generally associated with a CDN (HTTP code 523, 'Origin is unreachable')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_524]
+ Server error, generally associated with a CDN (HTTP code 524, 'A timeout occurred')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_525]
+ Server error, generally associated with a CDN (HTTP code 525, 'SSL handshake failed')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_526]
+ Server error, generally associated with a CDN (HTTP code 526, 'Invalid SSL certificate')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_527]
+ Server error, generally associated with a CDN (HTTP code 527, 'Railgun error')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
+[server_530]
+ Server error, generally associated with a CDN (HTTP code 530, 'Review accompanying 1XXX error')
+ Ref: https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+
 [ixuacom_h]
  X-UA-compatible (Deprecated Header)
 
@@ -537,7 +617,7 @@ HTTP Response Headers
  Error: Proxy authentication required (not yet supported by this program).
 
 [e_serror]
- Error: Server error requesting URL (wait a while and try again).
+ Server error; wait a while and try again.
 
 [e_404]
  Error: URL not found. Check syntax and try again.
