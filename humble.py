@@ -64,6 +64,7 @@ IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLDS = ['CYMRU', 'GURU', 'PRU']
 PRG_N = 'humble (HTTP Headers Analyzer) - '
+REF_E = 'Ref  :'
 REF_S = 'Ref: '
 SEC_S = "https://"
 URL_S = ' URL  : '
@@ -71,7 +72,7 @@ PAT_LN = r'\[(.*?)\]'
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-09-29', '%Y-%m-%d').date()
+version = datetime.strptime('2023-09-30', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -120,11 +121,17 @@ def pdf_sections():
 
 
 def pdf_links(pdfstring):
-    links = {URL_S: URL, REF_S: x.partition(REF_S)[2].strip(),
+    links = {URL_S: URL, REF_E: x.partition(REF_E)[2].strip(),
+             REF_S: x.partition(REF_S)[2].strip(),
              CAN_S: x.partition(': ')[2].strip()}
     link_h = links.get(pdfstring)
-    if pdfstring in (URL_S, REF_S):
-        prefix = ' Ref: ' if pdfstring == REF_S else pdfstring
+    if pdfstring in (URL_S, REF_E, REF_S):
+        if pdfstring == REF_E:
+            prefix = ' Ref  : '
+        elif pdfstring == REF_S:
+            prefix = ' Ref: '
+        else:
+            prefix = pdfstring
         pdf.write(h=3, txt=prefix)
     else:
         pdf.write(h=3, txt=x[:x.index(": ")+2])
@@ -608,7 +615,8 @@ def print_summary():
     print(f' URL  : {URL}')
     if status_code in CLI_E:
         id_mode = f"[http_{status_code}]"
-        print(f"{get_detail(id_mode, replace=True)}")
+        if detail := print_detail(id_mode, num_lines=2):
+            print(detail)
 
 
 def print_headers():
@@ -737,8 +745,6 @@ def print_ru_message():
 
 
 def handle_http_error(err_http):
-    if err_http.response.status_code == 407:
-        detail_exceptions('[e_proxy]', err_http)
     if str(err_http.response.status_code).startswith('5'):
         if err_http.response.status_code in SER_E:
             desc_error = f'[server_{str(err_http.response.status_code)}]'
@@ -1485,7 +1491,7 @@ elif args.output == 'pdf':
     # PDF Body
     pdf.set_font("Courier", size=9)
     f = open(name_e, "r", encoding='utf8')
-    links_strings = (URL_S, REF_S, CAN_S)
+    links_strings = (URL_S, REF_E, REF_S, CAN_S)
 
     for x in f:
         if '[' in x:
@@ -1547,6 +1553,9 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                 output.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}")
             elif ' Ref: ' in ln:
                 output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}\
+                             {sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}")
+            elif ' Ref  : ' in ln:
+                output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[8:]}\
                              {sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}")
             elif 'caniuse' in ln:
                 ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: \

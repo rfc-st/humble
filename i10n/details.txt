@@ -24,78 +24,103 @@
 
 [http_400]
  Note : The URL returns an error (HTTP code 400, 'Bad Request')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
 
 [http_401]
  Note : The URL returns an error (HTTP code 401, 'Unauthorized')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
 
 [http_402]
  Note : The URL returns an error (HTTP code 402, 'Payment Required')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402
 
 [http_403]
  Note : The URL returns an error (HTTP code 403, 'Forbidden')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
 
 [http_405]
  Note : The URL returns an error (HTTP code 405, 'Method Not Allowed')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/405
 
 [http_406]
  Note : The URL returns an error (HTTP code 406, 'Not Acceptable')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/406
 
 [http_409]
  Note : The URL returns an error (HTTP code 409, 'Conflict')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409
 
 [http_410]
  Note : The URL returns an error (HTTP code 410, 'Gone')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/410
 
 [http_411]
  Note : The URL returns an error (HTTP code 411, 'Length Required')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/411
 
 [http_412]
  Note : The URL returns an error (HTTP code 412, 'Precondition Failed')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/412
 
 [http_413]
  Note : The URL returns an error (HTTP code 413, 'Payload Too Large')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/413
 
 [http_414]
  Note : The URL returns an error (HTTP code 414, 'URI Too Long')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/414
 
 [http_415]
  Note : The URL returns an error (HTTP code 415, 'Unsupported Media Type')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/415
 
 [http_416]
  Note : The URL returns an error (HTTP code 416, 'Range Not Satisfiable')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/416
 
 [http_417]
  Note : The URL returns an error (HTTP code 417, 'Expectation Failed')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/417
 
 [http_421]
  Note : The URL returns an error (HTTP code 421, 'Misdirected Request')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/421
 
 [http_422]
  Note : The URL returns an error (HTTP code 422, 'Unprocessable Entity')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422
 
 [http_423]
  Note : The URL returns an error (HTTP code 423, 'Locked')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/423
 
 [http_424]
  Note : The URL returns an error (HTTP code 424, 'Failed Dependency')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424
 
 [http_425]
  Note : The URL returns an error (HTTP code 425, 'Too Early')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/425
 
 [http_426]
  Note : The URL returns an error (HTTP code 426, 'Upgrade Required')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/426
 
 [http_428]
  Note : The URL returns an error (HTTP code 428, 'Precondition Required')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/428
 
 [http_429]
  Note : The URL returns an error (HTTP code 429, 'Too Many Requests')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
 
 [http_431]
  Note : The URL returns an error (HTTP code 431, 'Request Header Fields Too Large')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/431
 
 [http_451]
  Note : The URL returns an error (HTTP code 451, 'Unavailable For Legal Reasons')
+ Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451
 
 [server_500]
  Server error (HTTP code 500, 'Internal Server Error')
@@ -612,9 +637,6 @@ HTTP Response Headers
 
 [e_invalid]
  Error: The URL is not valid. Check syntax and try again.
-
-[e_proxy]
- Error: Proxy authentication required (not yet supported by this program).
 
 [e_serror]
  Server error; wait a while and try again.
