@@ -49,30 +49,32 @@ import contextlib
 import tldextract
 
 A_FILE = 'analysis_h.txt'
-F_FILE = 'fingerprint.txt'
 BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRI_R = Style.BRIGHT + Fore.RED
 CAN_S = ': https://caniuse.com/?search='
 CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
-SER_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511, 520, 521, 522,
-         523, 524, 525, 526, 527, 530]
+F_FILE = 'fingerprint.txt'
 GIT_U = "https://github.com/rfc-st/humble"
+HTTP_C_E = ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/'
 INS_S = 'http:'
 IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
            r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLDS = ['CYMRU', 'GURU', 'PRU']
+PAT_LN = r'\[(.*?)\]'
 PRG_N = 'humble (HTTP Headers Analyzer) - '
 REF_E = 'Ref  :'
 REF_S = 'Ref: '
+SER_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511, 520, 521, 522,
+         523, 524, 525, 526, 527, 530]
 SEC_S = "https://"
 URL_S = ' URL  : '
-PAT_LN = r'\[(.*?)\]'
+
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-09-30', '%Y-%m-%d').date()
+version = datetime.strptime('2023-10-07', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -615,8 +617,9 @@ def print_summary():
     print(f' URL  : {URL}')
     if status_code in CLI_E:
         id_mode = f"[http_{status_code}]"
-        if detail := print_detail(id_mode, num_lines=2):
+        if detail := print_detail(id_mode, num_lines=0):
             print(detail)
+        print(HTTP_C_E + str(status_code))
 
 
 def print_headers():
