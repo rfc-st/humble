@@ -57,6 +57,8 @@ CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
 F_FILE = 'fingerprint.txt'
 GIT_U = "https://github.com/rfc-st/humble"
 HTTP_C_E = ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/'
+HTTP_CDN_E = ' Ref  : https://developers.cloudflare.com/support/\
+troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/'
 INS_S = 'http:'
 IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
            r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
@@ -66,15 +68,15 @@ PAT_LN = r'\[(.*?)\]'
 PRG_N = 'humble (HTTP Headers Analyzer) - '
 REF_E = 'Ref  :'
 REF_S = 'Ref: '
-SER_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511, 520, 521, 522,
-         523, 524, 525, 526, 527, 530]
+SER_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511]
+CND_E = [520, 521, 522, 523, 524, 525, 526, 527, 530]
 SEC_S = "https://"
 URL_S = ' URL  : '
 
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-10-07', '%Y-%m-%d').date()
+version = datetime.strptime('2023-10-11', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -747,13 +749,19 @@ def print_ru_message():
             sys.exit()
 
 
-def handle_http_error(err_http):
-    if str(err_http.response.status_code).startswith('5'):
-        if err_http.response.status_code in SER_E:
-            desc_error = f'[server_{str(err_http.response.status_code)}]'
+def handle_http_error(http_code, id_mode):
+    if str(http_code).startswith('5'):
+        clean_output()
+        print()
+        if http_code in SER_E or http_code in CND_E:
+            if detail := print_detail(id_mode, num_lines=0):
+                print(detail)
+            else:
+                print((HTTP_C_E if http_code in SER_E else HTTP_CDN_E) +
+                      str(http_code))
         else:
-            desc_error = "[e_serror]"
-        detail_exceptions(desc_error, err_http)
+            print_detail('[e_serror]', num_lines=1)
+        sys.exit()
 
 
 def request_exceptions():
@@ -769,7 +777,9 @@ def request_exceptions():
         headers = r.headers
         r.raise_for_status()
     except requests.exceptions.HTTPError as err_http:
-        handle_http_error(err_http)
+        http_code = err_http.response.status_code
+        id_mode = f"[server_{http_code}]"
+        handle_http_error(http_code, id_mode)
     except tuple(exception_d.keys()) as e:
         ex = exception_d.get(type(e))
         if ex and (not callable(ex) or ex(e)):
