@@ -852,7 +852,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
 [iexpi]
- Header ignored by the directives 'max-age' or 's-maxage' in the 'Cache-Control' header.
+ Header ignored by the directives 'max-age' or 's-maxage' in in the header that controls the cache.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
 
 [itao]

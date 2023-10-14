@@ -852,7 +852,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
 [iexpi]
- Cabecera ignorada por las directivas 'max-age' o 's-maxage' en la cabecera 'Cache-Control'.
+ Cabecera ignorada por las directivas 'max-age' o 's-maxage' en la cabecera que controla la caché.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
 
 [itao]

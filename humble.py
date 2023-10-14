@@ -993,10 +993,11 @@ print_detail_r('[3depinsecure]')
 if not args.brief:
     print_detail("[aisc]")
 
-l_ins = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
-         'Allow', 'Content-Type', 'Etag', 'Expect-CT', 'Feature-Policy',
-         'Onion-Location', 'P3P', 'Public-Key-Pins', 'Set-Cookie',
-         'Server-Timing', 'Timing-Allow-Origin', 'X-Content-Security-Policy',
+l_ins = ['Accept-CH', 'Access-Control-Allow-Methods',
+         'Access-Control-Allow-Origin', 'Allow', 'Content-Type', 'Etag',
+         'Expect-CT', 'Expires', 'Feature-Policy', 'Onion-Location', 'P3P',
+         'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
+         'Timing-Allow-Origin', 'X-Content-Security-Policy',
          'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
          'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
          'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
