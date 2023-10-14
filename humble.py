@@ -52,13 +52,11 @@ A_FILE = 'analysis_h.txt'
 BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRI_R = Style.BRIGHT + Fore.RED
 CAN_S = ': https://caniuse.com/?search='
+CDN_E = [520, 521, 522, 523, 524, 525, 526, 527, 530]
 CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
 F_FILE = 'fingerprint.txt'
 GIT_U = "https://github.com/rfc-st/humble"
-HTTP_C_E = ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/'
-HTTP_CDN_E = ' Ref  : https://developers.cloudflare.com/support/\
-troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/'
 INS_S = 'http:'
 IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
            r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
@@ -66,17 +64,19 @@ IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
 NON_RU_TLDS = ['CYMRU', 'GURU', 'PRU']
 PAT_LN = r'\[(.*?)\]'
 PRG_N = 'humble (HTTP Headers Analyzer) - '
+REF_CDN_E = ' Ref  : https://developers.cloudflare.com/support/\
+troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/'
+REF_SRV_E = ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/'
 REF_E = 'Ref  :'
 REF_S = 'Ref: '
-SER_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511]
-CND_E = [520, 521, 522, 523, 524, 525, 526, 527, 530]
+SRV_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511]
 SEC_S = "https://"
 URL_S = ' URL  : '
 
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-10-11', '%Y-%m-%d').date()
+version = datetime.strptime('2023-10-14', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -621,7 +621,7 @@ def print_summary():
         id_mode = f"[http_{status_code}]"
         if detail := print_detail(id_mode, num_lines=0):
             print(detail)
-        print(HTTP_C_E + str(status_code))
+        print(REF_SRV_E + str(status_code))
 
 
 def print_headers():
@@ -753,11 +753,11 @@ def handle_http_error(http_code, id_mode):
     if str(http_code).startswith('5'):
         clean_output()
         print()
-        if http_code in SER_E or http_code in CND_E:
+        if http_code in SRV_E or http_code in CDN_E:
             if detail := print_detail(id_mode, num_lines=0):
                 print(detail)
             else:
-                print((HTTP_C_E if http_code in SER_E else HTTP_CDN_E) +
+                print((REF_SRV_E if http_code in SRV_E else REF_CDN_E) +
                       str(http_code))
         else:
             print_detail('[e_serror]', num_lines=1)
@@ -1034,19 +1034,18 @@ l_corp = ['cross-origin', 'same-origin', 'same-site']
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 # https://www.w3.org/TR/CSP2/
 # https://www.w3.org/TR/CSP3/
-l_csp_directives = ['base-uri', 'child-src', 'connect-src', 'default-src',
-                    'font-src', 'form-action', 'frame-ancestors', 'frame-src',
-                    'img-src', 'manifest-src', 'media-src', 'navigate-to',
-                    'object-src', 'report-to', 'require-trusted-types-for',
-                    'sandbox', 'script-src', 'script-src-elem',
-                    'script-src-attr', 'style-src', 'style-src-elem',
-                    'style-src-attr', 'trusted-types',
-                    'upgrade-insecure-requests', 'webrtc', 'worker-src']
+l_csp_dirs = ['base-uri', 'child-src', 'connect-src', 'default-src',
+              'font-src', 'form-action', 'frame-ancestors', 'frame-src',
+              'img-src', 'manifest-src', 'media-src', 'navigate-to',
+              'object-src', 'report-to', 'require-trusted-types-for',
+              'sandbox', 'script-src', 'script-src-elem', 'script-src-attr',
+              'style-src', 'style-src-elem', 'style-src-attr', 'trusted-types',
+              'upgrade-insecure-requests', 'webrtc', 'worker-src']
 
-l_csp_broad_s = ['*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'https:',
-                 'https://*', 'https://*.*', 'schemes:', 'wss:', 'wss://']
+l_csp_broad = ['*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'https:',
+               'https://*', 'https://*.*', 'schemes:', 'wss:', 'wss://']
 
-l_csp_insecure_s = ['http:', 'ws:']
+l_csp_insecure = ['http:', 'ws:']
 
 l_csp_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
              'prefetch-src', 'referrer', 'report-uri', 'require-sri-for']
@@ -1077,7 +1076,7 @@ l_transfer = ['chunked', 'compress', 'deflate', 'gzip']
 
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
-l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
+l_per_dirs = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'bluetooth', 'browsing-topics', 'camera', 'ch-ua', 'ch-ua-arch',
               'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
               'ch-ua-mobile', 'ch-ua-model', 'ch-ua-platform',
@@ -1191,11 +1190,11 @@ if 'Content-DPR' in headers:
 
 if 'Content-Security-Policy' in headers:
     csp_h = headers['Content-Security-Policy'].lower()
-    if not any(elem in csp_h for elem in l_csp_directives):
+    if not any(elem in csp_h for elem in l_csp_dirs):
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
     if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
-    csp_store_values(csp_h, l_csp_broad_s, l_csp_insecure_s, i_cnt)
+    csp_store_values(csp_h, l_csp_broad, l_csp_insecure, i_cnt)
     if any(elem in csp_h for elem in ['unsafe-eval', 'unsafe-inline']):
         print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
     if 'unsafe-hashes' in csp_h:
@@ -1283,7 +1282,7 @@ if 'P3P' in headers:
 
 if 'Permissions-Policy' in headers:
     perm_header = headers['Permissions-Policy'].lower()
-    if not any(elem in perm_header for elem in l_per_feat):
+    if not any(elem in perm_header for elem in l_per_dirs):
         print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
     if '*' in perm_header:
         print_details('[ifpol_h]', '[ifpol]', 'd', i_cnt)
