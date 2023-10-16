@@ -44,6 +44,7 @@ from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
 import sys
+import json
 import requests
 import contextlib
 import tldextract
@@ -804,7 +805,7 @@ parser.add_argument("-g", dest='guides', action="store_true", help="show \
 guidelines for securing popular web servers/services")
 parser.add_argument("-l", dest='lang', choices=['es'], help="show the \
 analysis in the indicated language (if omitted, English will be used)")
-parser.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
+parser.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt', 'json'],
                     help="save analysis to file (with the format \
 URL_headers_yyyymmdd.ext)")
 parser.add_argument("-r", dest='ret', action="store_true", help="show full \
@@ -894,7 +895,7 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}
 headers, status_code = request_exceptions()
 
 # Export analysis
-ext = "t.txt" if args.output in ['pdf', 'html'] else ".txt"
+ext = "t.txt" if args.output in ['pdf', 'html', 'json'] else ".txt"
 
 if args.output:
     orig_stdout = sys.stdout
@@ -1520,6 +1521,45 @@ elif args.output == 'pdf':
     pdf.output(name_p)
     print_path(name_p)
     f.close()
+    remove(name_e)
+elif args.output == 'json':
+    sys.stdout = orig_stdout
+    f.close()
+    name_p = f"{name_e[:-5]}.json"
+    with open(name_e, 'r', encoding='utf8') as input_file,\
+            open(name_p, 'w', encoding='utf8') as output_file:
+        section = 0
+        out = list()
+        for ln in input_file:
+            if 'URL' in ln:
+                url = ln.lstrip(' URL  : ')
+            if '[1. Missing HTTP Security Headers]' in ln:
+                description = 'Missing HTTP Security Header'
+                section = 1
+            if '[2. Fingerprint HTTP Response Headers]' in ln:
+                description = 'Fingerprint HTTP Response Headers'
+                section = 2
+            if '[3. Deprecated HTTP Response Headers/Protocols and Insecure Values]' in ln:
+                description = 'Deprecated HTTP Response Headers/Protocols and Insecure Values'
+                section = 3
+            if '[4. Empty HTTP Response Headers Values]' in ln:
+                description = 'Empty HTTP Response Headers Values'
+                section = 4
+            if '[5. Browser Compatibility for Enabled HTTP Security Headers]' in ln:
+                description = None
+                section = 5
+            if ln != '\n' and 'Nothing to report, all seems OK!' not in ln and section in [1,2,3,4] and description not in ln:
+                data = {'description': description,
+                'Finding': ln.strip('\n')
+                }
+                out.append(data)
+        output = {'Title': 'Humble HTTP headers analyzer',
+                'Repo': 'https://github.com/rfc-st/humble',
+                'Findings': out
+                }
+        finaljson=json.dumps(output, indent = 4, sort_keys = False, separators = (',', ': '), ensure_ascii = False)
+        output_file.write(finaljson)
+    print_path(name_p)
     remove(name_e)
 elif args.output == 'html':
     sys.stdout = orig_stdout
