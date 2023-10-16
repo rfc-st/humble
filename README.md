@@ -52,7 +52,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: 85 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
-:heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
+:heavy_check_mark: Export of analysis to HTML5, PDF 1.4, TXT and JSON.<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
 :heavy_check_mark: i10n: analysis results in English or Spanish.<br />
 :heavy_check_mark: Saves each analysis, showing (at the end) the improvements or deficiencies in relation to the last one.<br />
@@ -159,21 +159,21 @@ https://github.com/rfc-st/humble/releases
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-f [TERM]] [-g] [-l {es}] [-o {html,pdf,txt}] [-r] [-u URL] [-v]
+usage: humble.py [-h] [-a] [-b] [-f [TERM]] [-g] [-l {es}] [-o {html,pdf,txt,json}] [-r] [-u URL] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 options:
-  -h, --help         show this help message and exit
-  -a                 show statistics of the performed analysis (will be global if '-u URL' is omitted)
-  -b                 show a brief analysis (if omitted, a detailed one will be shown)
-  -f [TERM]          show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
-  -g                 show guidelines for securing popular web servers/services
-  -l {es}            show the analysis in the indicated language (if omitted, English will be used)
-  -o {html,pdf,txt}  save analysis to file (with the format URL_headers_yyyymmdd.ext)
-  -r                 show full HTTP response headers and a detailed analysis
-  -u URL             schema and URL to analyze. E.g. https://google.com
-  -v, --version      show the version of this tool and check for updates
+  -h, --help              show this help message and exit
+  -a                      show statistics of the performed analysis (will be global if '-u URL' is omitted)
+  -b                      show a brief analysis (if omitted, a detailed one will be shown)
+  -f [TERM]               show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
+  -g                      show guidelines for securing popular web servers/services
+  -l {es}                 show the analysis in the indicated language (if omitted, English will be used)
+  -o {html,pdf,txt,json}  save analysis to file (with the format URL_headers_yyyymmdd.ext)
+  -r                      show full HTTP response headers and a detailed analysis
+  -u URL                  schema and URL to analyze. E.g. https://google.com
+  -v, --version           show the version of this tool and check for updates
 ```
 
 ## Advanced Usage
