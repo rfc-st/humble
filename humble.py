@@ -918,7 +918,7 @@ l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
           'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
           'Cross-Origin-Resource-Policy', 'Content-Security-Policy', 'NEL',
           'Permissions-Policy', 'Referrer-Policy', 'Strict-Transport-Security',
-          'X-Content-Type-Options']
+          'X-Content-Type-Options', 'X-Permitted-Cross-Domain-Policies']
 
 l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
             '[mcsp]', '[mnel]', '[mpermission]', '[mreferrer]', '[msts]',
@@ -999,8 +999,7 @@ l_ins = ['Accept-CH', 'Access-Control-Allow-Methods',
          'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
          'Timing-Allow-Origin', 'X-Content-Security-Policy',
          'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
-         'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
-         'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
+         'X-Download-Options', 'X-Pad', 'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
          'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
@@ -1401,9 +1400,6 @@ if xfo_header:
 
 if 'X-Pad' in headers:
     print_details('[ixpad_h]', '[ixpad]', 'd', i_cnt)
-
-if headers.get('X-Permitted-Cross-Domain-Policies', '') == 'all':
-    print_details('[ixcd_h]', '[ixcd]', 'm', i_cnt)
 
 if headers.get('X-Pingback', '').endswith('xmlrpc.php'):
     print_details('[ixpb_h]', '[ixpb]', 'd', i_cnt)
