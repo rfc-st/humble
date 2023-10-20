@@ -76,7 +76,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-10-14', '%Y-%m-%d').date()
+version = datetime.strptime('2023-10-20', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -918,11 +918,11 @@ l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
           'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
           'Cross-Origin-Resource-Policy', 'Content-Security-Policy', 'NEL',
           'Permissions-Policy', 'Referrer-Policy', 'Strict-Transport-Security',
-          'X-Content-Type-Options']
+          'X-Content-Type-Options', 'X-Permitted-Cross-Domain-Policies']
 
 l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
             '[mcsp]', '[mnel]', '[mpermission]', '[mreferrer]', '[msts]',
-            '[mxcto]', '[mxfo]']
+            '[mxcto]', '[mxpcd]', '[mxfo]']
 
 missing_headers_lower = {k.lower(): v for k, v in headers.items()}
 

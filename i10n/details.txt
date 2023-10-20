@@ -694,6 +694,10 @@ HTTP Response Headers
  Prevents clickjacking attacks, limiting sources of embedded content.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
+[mxpcd]
+ Limit which data external resources (e.g. Adobe Flash/PDF documents), can access on the domain.
+ Ref: https://owasp.org/www-project-secure-headers/#div-headers
+
 [iaccess]
  Review the values '*' or 'null' regarding your Cross-origin resource sharing requirements.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin

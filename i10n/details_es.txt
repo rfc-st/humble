@@ -694,6 +694,10 @@ Cabeceras de respuesta HTTP
  Evita los ataques de clickjacking, limitando las fuentes de contenido embebido.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
+[mxpcd]
+ Limita el acceso a datos por recursos externos (ej. documentos Adobe Flash/PDF) en el dominio.
+ Ref: https://owasp.org/www-project-secure-headers/#div-headers
+
 [iaccess]
  Revise los valores '*' o 'null', y sus requisitos de intercambio de recursos de origen cruzado.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
