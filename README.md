@@ -4,7 +4,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--10--20-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--10--27-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/OWASP-Resource-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.kali.org/tools/humble/" title="Tool accepted in Kali"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
@@ -52,7 +52,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: 85 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
-:heavy_check_mark: Export of analysis to HTML5, PDF 1.4 and TXT.<br />
+:heavy_check_mark: Export of analysis to HTML5, JSON, PDF 1.4 and TXT.<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
 :heavy_check_mark: i10n: analysis results in English or Spanish.<br />
 :heavy_check_mark: Saves each analysis, showing (at the end) the improvements or deficiencies in relation to the last one.<br />
@@ -159,21 +159,21 @@ https://github.com/rfc-st/humble/releases
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-f [TERM]] [-g] [-l {es}] [-o {html,pdf,txt}] [-r] [-u URL] [-v]
+usage: humble.py [-h] [-a] [-b] [-f [TERM]] [-g] [-l {es}] [-o {html,json,pdf,txt}] [-r] [-u URL] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 options:
-  -h, --help         show this help message and exit
-  -a                 show statistics of the performed analysis (will be global if '-u URL' is omitted)
-  -b                 show a brief analysis (if omitted, a detailed one will be shown)
-  -f [TERM]          show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
-  -g                 show guidelines for securing popular web servers/services
-  -l {es}            show the analysis in the indicated language (if omitted, English will be used)
-  -o {html,pdf,txt}  save analysis to file (with the format URL_headers_yyyymmdd.ext)
-  -r                 show full HTTP response headers and a detailed analysis
-  -u URL             schema and URL to analyze. E.g. https://google.com
-  -v, --version      show the version of this tool and check for updates
+  -h, --help              show this help message and exit
+  -a                      show statistics of the performed analysis (will be global if '-u URL' is omitted)
+  -b                      show a brief analysis (if omitted, a detailed one will be shown)
+  -f [TERM]               show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
+  -g                      show guidelines for securing popular web servers/services
+  -l {es}                 show the analysis in the indicated language (if omitted, English will be used)
+  -o {html,json,pdf,txt}  save analysis to 'URL_headers_yyyymmdd.ext' file (.json files will contain a brief analysis).
+  -r                      show full HTTP response headers and a detailed analysis
+  -u URL                  schema and URL to analyze. E.g. https://google.com
+  -v, --version           show the version of this tool and check for updates
 ```
 
 ## Advanced Usage
@@ -292,7 +292,7 @@ Thanks for your time!! :).
 * <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo</a>, for making possible the first Demo and <a href="https://github.com/rfc-st/humble#linux-analyze-multiple-urls-and-save-the-results-as-pdfs">this</a> example.
 * <a href="https://github.com/gl4nce">gl4nce</a> for <a href="https://github.com/rfc-st/humble/issues/6">this</a> suggestion.
 * İDRİS BUDAK for reporting the need to <a href="https://github.com/rfc-st/humble/commit/f85dd7811859fd2e403a0ecd848b21db20949841">this</a> check.
-* <a href="https://github.com/manuel-sommer">manuel-sommer</a> for <a href="https://github.com/rfc-st/humble/issues/8">this</a> suggestion.
+* <a href="https://github.com/manuel-sommer">manuel-sommer</a> for <a href="https://github.com/rfc-st/humble/issues/8">this</a> and <a href="https://github.com/rfc-st/humble/issues/10">this</a> suggestions.
 
 ## License
 

@@ -41,8 +41,9 @@ from datetime import datetime
 from os import linesep, path, remove
 from colorama import Fore, Style, init
 from collections import Counter, defaultdict
-from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from argparse import ArgumentParser, HelpFormatter
 import re
+import json
 import sys
 import requests
 import contextlib
@@ -73,10 +74,9 @@ SRV_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511]
 SEC_S = "https://"
 URL_S = ' URL  : '
 
-
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-10-20', '%Y-%m-%d').date()
+version = datetime.strptime('2023-10-27', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -789,10 +789,15 @@ def request_exceptions():
     return headers, status_c
 
 
+def custom_help_formatter(prog):
+    return HelpFormatter(prog, max_help_position=26)
+
+
 init(autoreset=True)
 
-parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
+parser = ArgumentParser(formatter_class=custom_help_formatter,
                         description=PRG_N + GIT_U)
+
 parser.add_argument("-a", dest='URL_A', action="store_true", help="show \
 statistics of the performed analysis (will be global if '-u URL' is omitted)")
 parser.add_argument("-b", dest='brief', action="store_true", help="show a \
@@ -804,9 +809,10 @@ parser.add_argument("-g", dest='guides', action="store_true", help="show \
 guidelines for securing popular web servers/services")
 parser.add_argument("-l", dest='lang', choices=['es'], help="show the \
 analysis in the indicated language (if omitted, English will be used)")
-parser.add_argument("-o", dest='output', choices=['html', 'pdf', 'txt'],
-                    help="save analysis to file (with the format \
-URL_headers_yyyymmdd.ext)")
+parser.add_argument("-o", dest='output', choices=['html', 'json', 'pdf',
+                                                  'txt'], help="save analysis \
+to 'URL_headers_yyyymmdd.ext' file (.json files will contain a brief analysis)\
+.")
 parser.add_argument("-r", dest='ret', action="store_true", help="show full \
 HTTP response headers and a detailed analysis")
 parser.add_argument('-u', type=str, dest='URL', help="schema and URL to \
@@ -845,6 +851,10 @@ if args.lang and not (args.URL or args.URL_A) and not args.guides:
 if any([args.brief, args.output, args.ret]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
     parser.error("'-b', -'o' and '-r' options requires also '-u'.")
+
+if args.output == 'json' and (args.ret or not args.brief):
+    parser.error("'-o json' currently requires '-b' and does not support '-r'\
+.")
 
 URL = args.URL
 details_f = get_details_lines()
@@ -894,7 +904,7 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}
 headers, status_code = request_exceptions()
 
 # Export analysis
-ext = "t.txt" if args.output in ['pdf', 'html'] else ".txt"
+ext = "t.txt" if args.output in ['html', 'json', 'pdf'] else ".txt"
 
 if args.output:
     orig_stdout = sys.stdout
@@ -1492,6 +1502,35 @@ if args.output == 'txt':
     sys.stdout = orig_stdout
     print_path(name_e)
     f.close()
+elif args.output == 'json':
+    sys.stdout = orig_stdout
+    f.close()
+    name_p = f"{name_e[:-5]}.json"
+
+    with open(name_e, 'r', encoding='utf8') as input_file,\
+            open(name_p, 'w', encoding='utf8') as output:
+
+        content = input_file.read()
+        sections = re.split(r'\[(\d+\.\s[^\]]+)\]\n', content)[1:]
+        data = {}
+
+        # JSON Format
+        for i in range(0, len(sections), 2):
+            section_name = "[" + sections[i] + "]"
+            section_content = sections[i + 1].strip()
+            if section_name == get_detail('[5compat]', replace=True):
+                section_content = section_content.split('.:')[0].strip()
+            section_lines = section_content.split('\n')
+            section_data = []
+            for line in section_lines:
+                if line.strip():
+                    section_data.append(line.strip())
+            data[section_name] = section_data
+
+        json_data = json.dumps(data, indent=4, ensure_ascii=False)
+        output.write(json_data)
+    print_path(name_p)
+    remove(name_e)
 elif args.output == 'pdf':
     sys.stdout = orig_stdout
     f.close()
