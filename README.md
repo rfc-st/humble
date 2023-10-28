@@ -184,7 +184,7 @@ options:
 
 ## Advanced Usage
 
-### Linux: Show only the analysis summary
+.: (Linux) - Show only the analysis summary.<br />
 
 ```
 $ python3 humble.py -u https://www.spacex.com | grep -A 8 "\!." | sed $'1i \n'
@@ -192,7 +192,7 @@ $ python3 humble.py -u https://www.spacex.com | grep -A 8 "\!." | sed $'1i \n'
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux.jpg" alt="Show only the analysis summary (Linux)">
 
 
-### Windows (in Spanish): show only the analysis summary (PowerShell >= 7 required)
+.: (Windows, in Spanish) - show only the analysis summary (PowerShell >= 7 required).<br />
 
 ```
 $ py humble.py -u https://www.spacex.com -l es | Select-String -Pattern '!.' -Context 1,8 -NoEmphasis
@@ -200,28 +200,32 @@ $ py humble.py -u https://www.spacex.com -l es | Select-String -Pattern '!.' -Co
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_windows.jpg" alt="Show only the analysis summary (Windows, in Spanish. PowerShell >= 7 required)">
 
 
-### Linux: Show only the URL, date and analysis summary
+.: (Linux) - Show only the URL, date and analysis summary.<br />
+
 ```
 $ python3 humble.py -u https://www.spacex.com | grep -A7 -E "0. Info|\!." | grep -v "^\[1\." | sed 's/[--]//g' | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' | sed $'1i \n'
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_2.jpg" alt="Show URL, date and the analysis summary (Linux)">
 
 
-### Linux: Show only the deprecated headers/protocols and insecure values
+.: (Linux) - Show only the deprecated headers/protocols and insecure values.<br />
+
 ```
 $ python3 humble.py -u https://www.spacex.com | sed '/3. /,/4. /!d' | sed '$d' | sed $'1i \n'
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_3.jpg" alt="Show only the deprecated headers/protocols and insecure values (Linux)">
 
 
-### Linux: Check for HTTP client errors (4XX)
+.: (Linux) - Check for HTTP client errors (4XX).<br />
+
 ```
 $ python3 humble.py -u https://block.fiverr.com | grep -A1 -B5 'Note : \|Nota : ' --color=never
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_4.jpg" alt="Check for HTTP client errors (4XX) (Linux)">
 
 
-### Linux: Analyze multiple URLs and save the results as PDFs
+.: (Linux) - Analyze multiple URLs and save the results as PDFs.<br />
+
 ```
 $ datasets=('https://facebook.com' 'https://www.microsoft.com' 'https://www.spacex.com'); for dataset in "${datasets[@]}"; do python3 humble.py -u "$dataset" -o pdf; done
 ```
