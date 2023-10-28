@@ -1,7 +1,7 @@
 Contributing to 'humble' Open Source Project
 ============================================
 
-'humble' (https://github.com/rfc-st/humble) welcomes contributions. When contributing, please follow the Community [Code of Conduct](https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md).
+[humble](https://github.com/rfc-st/humble) welcomes contributions. When contributing, please follow the [Code of Conduct](https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md).
 
 Enhancement & Issues
 --------------------
