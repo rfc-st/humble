@@ -93,16 +93,22 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fng.jpg" alt="Specific fingerprint headers" width=70% height=70%>
 </p>
 <br />
-.: (Windows) - Detailed analysis exported to PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/tesla_headers_20230406.pdf">Example.</a><br />
+.: (Windows) - Detailed analysis saved as PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/tesla_headers_20230406.pdf">Example.</a><br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="Export analysis to PDF" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="Detailed analysis saved as PDF." width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Detailed analysis exported to HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/tesla_headers_20230406.html">Example.</a><br />
+.: (Linux) - Detailed analysis saved as HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/tesla_headers_20230406.html">Example.</a><br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Export analysis to HTML" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Detailed analysis saved as HTML." width=70% height=70%>
+</p>
+<br />
+.: (Linux) - Detailed analysis saved as JSON. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/www.spacex.com_headers_20231028.json">Example.</a><br />
+<p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="Detailed analysis saved as JSON." width=70% height=70%>
 </p>
 <br />
 .: (Linux) - Analysis history file: Date, URL, Missing, Fingerprint, Deprecated/Insecure, Empty headers & Total warnings (the four previous totals).<br />
