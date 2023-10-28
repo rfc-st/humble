@@ -105,7 +105,7 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Detailed analysis saved as HTML." width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Detailed analysis saved as JSON. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/www.spacex.com_headers_20231028.json">Example.</a><br />
+.: (Linux) - Detailed analysis saved as JSON.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="Detailed analysis saved as JSON." width=70% height=70%>
