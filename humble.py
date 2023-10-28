@@ -43,8 +43,8 @@ from colorama import Fore, Style, init
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, HelpFormatter
 import re
-import json
 import sys
+import json
 import requests
 import contextlib
 import tldextract
@@ -76,7 +76,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-10-27', '%Y-%m-%d').date()
+version = datetime.strptime('2023-10-28', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -727,6 +727,24 @@ def parse_csp(csp_header):
                 csp_output.append(f" {dir_csp[1]}")
             csp_output.append("")
     return '\n'.join(csp_output)
+
+
+def generate_json(name_e, name_p):
+    with (open(name_e, 'r', encoding='utf8') as source_txt,
+          open(name_p, 'w', encoding='utf8') as final_json):
+        txt_content = source_txt.read()
+        txt_sections = re.split(r'\[(\d+\.\s[^\]]+)\]\n', txt_content)[1:]
+        data = {}
+        for i in range(0, len(txt_sections), 2):
+            json_section = f"[{txt_sections[i]}]"
+            json_content = txt_sections[i + 1].strip()
+            if json_section == get_detail('[5compat]', replace=True):
+                json_content = json_content.split('.:')[0].strip()
+            json_lines = json_content.split('\n')
+            json_data = [line.strip() for line in json_lines if line.strip()]
+            data[json_section] = json_data
+        json_data = json.dumps(data, indent=4, ensure_ascii=False)
+        final_json.write(json_data)
 
 
 def detail_exceptions(id_exception, exception_v):
@@ -1498,49 +1516,23 @@ end = time()
 analysis_time()
 
 # Export analysis
+
+if args.output:
+    name_p = f"{name_e[:-5]}.{args.output}"
+    sys.stdout = orig_stdout
+    f.close()
 if args.output == 'txt':
-    sys.stdout = orig_stdout
     print_path(name_e)
-    f.close()
 elif args.output == 'json':
-    sys.stdout = orig_stdout
-    f.close()
-    name_p = f"{name_e[:-5]}.json"
-
-    with open(name_e, 'r', encoding='utf8') as input_file,\
-            open(name_p, 'w', encoding='utf8') as output:
-
-        content = input_file.read()
-        sections = re.split(r'\[(\d+\.\s[^\]]+)\]\n', content)[1:]
-        data = {}
-
-        # JSON Format
-        for i in range(0, len(sections), 2):
-            section_name = "[" + sections[i] + "]"
-            section_content = sections[i + 1].strip()
-            if section_name == get_detail('[5compat]', replace=True):
-                section_content = section_content.split('.:')[0].strip()
-            section_lines = section_content.split('\n')
-            section_data = []
-            for line in section_lines:
-                if line.strip():
-                    section_data.append(line.strip())
-            data[section_name] = section_data
-
-        json_data = json.dumps(data, indent=4, ensure_ascii=False)
-        output.write(json_data)
+    generate_json(name_e, name_p)
     print_path(name_p)
     remove(name_e)
 elif args.output == 'pdf':
-    sys.stdout = orig_stdout
-    f.close()
     pdf = PDF()
     pdf.alias_nb_pages()
     pdf_metadata()
     pdf.set_display_mode(zoom='real')
     pdf.add_page()
-
-    # PDF Body
     pdf.set_font("Courier", size=9)
     f = open(name_e, "r", encoding='utf8')
     links_strings = (URL_S, REF_E, REF_S, CAN_S)
@@ -1555,16 +1547,11 @@ elif args.output == 'pdf':
         pdf.set_text_color(0, 0, 0)
         pdf.multi_cell(197, 2.6, txt=x, align='L')
 
-    name_p = f"{name_e[:-5]}.pdf"
     pdf.output(name_p)
     print_path(name_p)
     f.close()
     remove(name_e)
 elif args.output == 'html':
-    sys.stdout = orig_stdout
-    f.close()
-
-    # HTML Template
     title = get_detail('[pdf_s]')
     header = f'<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
 <title>{title}</title><style>pre {{overflow-x: auto; white-space: \
@@ -1575,7 +1562,6 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
     body = '<body><pre>'
     footer = '</pre></body></html>'
 
-    name_p = f"{name_e[:-5]}.html"
     l_miss.extend(['Pragma', 'WWW-Authenticate', 'X-Frame-Options',
                    'X-Robots-Tag', 'X-UA-compatible'])
     l_final = sorted(l_miss + l_ins)
