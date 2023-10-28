@@ -27,12 +27,6 @@ HTTP Headers Analyzer<br />
 [Installation & Update](#installation--update)<br />
 [Usage](#usage)<br />
 [Advanced Usage](#advanced-usage)<br />
- [Linux: Show only the analysis summary](#linux-show-only-the-analysis-summary)<br />
- [Windows: In spanish. Show only the analysis summary (PowerShell >= 7 required)](#windows-in-spanish-show-only-the-analysis-summary-powershell--7-required)<br />
- [Linux: Show only the URL, date and analysis summary](#linux-show-only-the-url-date-and-analysis-summary)<br />
- [Linux: Show only the deprecated headers/protocols and insecure values](#linux-show-only-the-deprecated-headersprotocols-and-insecure-values)<br />
- [Linux: Check for HTTP client errors (4XX)](#linux-check-for-http-client-errors-4xx)<br />
- [Linux: Analyze multiple URLs and save the results as PDFs](#linux-analyze-multiple-urls-and-save-the-results-as-pdfs)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
 [Checks: Fingerprint Headers](#checks-fingerprint-headers)<br />
 [Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
