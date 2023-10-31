@@ -76,7 +76,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-10-28', '%Y-%m-%d').date()
+version = datetime.strptime('2023-10-31', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -730,21 +730,33 @@ def parse_csp(csp_header):
 
 
 def generate_json(name_e, name_p):
+    section0 = get_detail('[0section]', replace=True)
+    section5 = get_detail('[5compat]', replace=True)
     with (open(name_e, 'r', encoding='utf8') as source_txt,
           open(name_p, 'w', encoding='utf8') as final_json):
         txt_content = source_txt.read()
         txt_sections = re.split(r'\[(\d+\.\s[^\]]+)\]\n', txt_content)[1:]
         data = {}
-        for i in range(0, len(txt_sections), 2):
-            json_section = f"[{txt_sections[i]}]"
-            json_content = txt_sections[i + 1].strip()
-            if json_section == get_detail('[5compat]', replace=True):
-                json_content = json_content.split('.:')[0].strip()
-            json_lines = json_content.split('\n')
-            json_data = [line.strip() for line in json_lines if line.strip()]
-            data[json_section] = json_data
+        parse_sections_json(txt_sections, data, section0, section5)
         json_data = json.dumps(data, indent=4, ensure_ascii=False)
         final_json.write(json_data)
+
+
+def parse_sections_json(txt_sections, data, section0, section5):
+    for i in range(0, len(txt_sections), 2):
+        json_section = f"[{txt_sections[i]}]"
+        json_content = txt_sections[i + 1].strip()
+        if json_section == section5:
+            json_content = json_content.split('.:')[0].strip()
+        json_lines = json_content.split('\n')
+        if json_section in (section0, section5):
+            json_data = {}
+            for line in json_lines:
+                key, value = line.split(':', 1)
+                json_data[key.strip()] = value.strip()
+        else:
+            json_data = [line.strip() for line in json_lines if line.strip()]
+        data[json_section] = json_data
 
 
 def detail_exceptions(id_exception, exception_v):
