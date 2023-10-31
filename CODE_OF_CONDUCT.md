@@ -77,11 +77,11 @@ For answers to common questions about this code of conduct, see the FAQ at https
 
 ## Update 2022/03/26
 
-Due to the invasion of Ukraine by Russia (started at the end of February 2022), the author of this software took the decision to modify the code to block all analysis against Russian domains and the use of this software from Russian IPs: all commits, from the first to the most recent, have been made by the same person, so this decision was unique and unanimous.
+Due to the invasion of Ukraine by Russia (started at the end of February 2022), I (the author of this software) took the decision to modify the code to block all analysis against Russian domains and the use of this software from Russian IPs: all commits, from the first to the most recent, have been made by the same person (me), so the decision was unique and unanimous.
 
-The author of this software knows that, unfortunately, this blocking goes against the very nature of Free Software, against this very Document and against the freedom of any individual to be able to analyze any domain. The author of this software also recognizes that this blocking can be bypassed very easily: by modifying the code itself, using a VPN, a proxy, etc.
+I know that, unfortunately, this blocking goes against the very nature of Free Software, against this very Document and against the <b>freedom</b> of any individual to be able to analyze any domain. I also recognize that this blocking can be bypassed very easily: by modifying the code itself, using a VPN, a proxy, etc.
 
-Sometimes, these blocks are the only possible (and peaceful) way to protest against certain behaviors, aggressions and threats. The author of this software hopes, above all, that the invasion will end as soon as possible and that peace will return to Ukraine.
+Sometimes, these blocks are the only possible (and <b>peaceful</b>) way to protest against certain behaviors, aggressions and threats. I <b>hope</b>, above all, that the invasion will end as soon as possible and that peace will return to Ukraine.
 
 If you need a service to analyze HTTP response headers of Russian domains, I highly recommend the great https://securityheaders.com/ (with which I have no personal or professional relationship).
 

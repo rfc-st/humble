@@ -1,7 +1,7 @@
 Contributing to 'humble' Open Source Project
 ============================================
 
-[humble](https://github.com/rfc-st/humble) welcomes contributions. When contributing, please follow the [Code of Conduct](https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md).
+[humble](https://github.com/rfc-st/humble) welcomes contributions. When contributing, please follow the [Code of Conduct](https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md), especially the last section (<i>Update 2022/03/26</i>), on the war in Ukraine: is a <b>personal</b> decision that I hope you understand. Otherwise, and if you don't want to contribute to this project because you don't agree with my ideas, I will <b>deeply respect</b> it.
 
 Enhancement & Issues
 --------------------
@@ -28,7 +28,7 @@ Methodology
  2. **Clone** the project to your own machine
  3. **Commit** changes to your own branch
  4. **Push** your work back up to your fork
- 5. Submit a **Pull request** so that we can review your changes
+ 5. Submit a **Pull request** so that I can review your changes
 
 Copyright and Licensing
 -----------------------
