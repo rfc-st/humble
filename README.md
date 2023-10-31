@@ -99,7 +99,7 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="Detailed analysis saved as HTML." width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Brief analysis saved as JSON.<br />
+.: (Linux) - Brief analysis saved as JSON. <a href="https://jsonblob.com/1168976093893222400">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="Detailed analysis saved as JSON." width=70% height=70%>
