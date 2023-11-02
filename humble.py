@@ -737,26 +737,32 @@ def generate_json(name_e, name_p):
         txt_content = source_txt.read()
         txt_sections = re.split(r'\[(\d+\.\s[^\]]+)\]\n', txt_content)[1:]
         data = {}
-        parse_sections_json(txt_sections, data, section0, section5)
+        parse_main_txt_sections(txt_sections, data, section0, section5)
         json_data = json.dumps(data, indent=4, ensure_ascii=False)
         final_json.write(json_data)
 
 
-def parse_sections_json(txt_sections, data, section0, section5):
+def parse_main_txt_sections(txt_sections, data, section0, section5):
     for i in range(0, len(txt_sections), 2):
         json_section = f"[{txt_sections[i]}]"
         json_content = txt_sections[i + 1].strip()
         if json_section == section5:
             json_content = json_content.split('.:')[0].strip()
         json_lines = json_content.split('\n')
-        if json_section in (section0, section5):
-            json_data = {}
-            for line in json_lines:
-                key, value = line.split(':', 1)
-                json_data[key.strip()] = value.strip()
-        else:
-            json_data = [line.strip() for line in json_lines if line.strip()]
+        json_data = write_main_json_sections(section0, section5, json_section,
+                                             json_lines)
         data[json_section] = json_data
+
+
+def write_main_json_sections(section0, section5, json_section, json_lines):
+    if json_section in (section0, section5):
+        json_data = {}
+        for line in json_lines:
+            key, value = line.split(':', 1)
+            json_data[key.strip()] = value.strip()
+    else:
+        json_data = [line.strip() for line in json_lines if line.strip()]
+    return json_data
 
 
 def detail_exceptions(id_exception, exception_v):
