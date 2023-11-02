@@ -255,7 +255,7 @@ def analysis_time():
     print_detail_l('[analysis_time_sec]')
     t_cnt = m_cnt + f_cnt + i_cnt[0] + e_cnt
     mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = save_extract_totals(t_cnt)
-    mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt,\
+    mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, \
         thr_cnt = compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt,
                                  eh_cnt, e_cnt, th_cnt, t_cnt)
     print("")
@@ -1010,7 +1010,7 @@ if not args.brief:
 l_fng, l_fng_ex = [], []
 
 with open(path.join('additional', 'fingerprint.txt'), 'r', encoding='utf8') \
-          as fn:
+     as fn:
     for line in fn:
         l_fng.append(line.partition(' [')[0].strip())
         l_fng_ex.append(line.strip())
@@ -1579,7 +1579,7 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
     l_final = sorted(l_miss + l_ins)
     l_fng_final = sorted(l_fng)
 
-    with open(name_e, 'r', encoding='utf8') as input_file,\
+    with open(name_e, 'r', encoding='utf8') as input_file, \
             open(name_p, 'w', encoding='utf8') as output:
         output.write(str(header))
         output.write(str(body))
