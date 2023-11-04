@@ -4,7 +4,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--11--02-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--11--04-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Tool accepted as a technical resource for OWASP"><img src="https://img.shields.io/badge/OWASP-Resource-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.kali.org/tools/humble/" title="Tool accepted in Kali"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
@@ -52,7 +52,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Saves each analysis, showing (at the end) the improvements or deficiencies in relation to the last one.<br />
 :heavy_check_mark: Shows analysis statistics: either against a specific URL or all of them.<br />
 :heavy_check_mark: Shows fingerprint statistics: either against a specific term or the Top 20.<br />
-:heavy_check_mark: Code reviewed via <a href="https://flake8.pycqa.org/en/latest/" target="_blank">Flake8<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
+:heavy_check_mark: Code reviewed via <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Fully tested and working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
 :heavy_check_mark: All code under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />

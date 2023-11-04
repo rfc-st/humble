@@ -48,12 +48,14 @@ import json
 import requests
 import contextlib
 import tldextract
+import concurrent.futures
 
 A_FILE = 'analysis_h.txt'
 BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRI_R = Style.BRIGHT + Fore.RED
 CAN_S = ': https://caniuse.com/?search='
 CDN_E = [520, 521, 522, 523, 524, 525, 526, 527, 530]
+CLE_O = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
 F_FILE = 'fingerprint.txt'
@@ -76,7 +78,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-02', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-04', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -569,11 +571,19 @@ def csp_print_warnings(csp_values, csp_title, csp_desc, csp_refs):
 
 def clean_output():
     # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
-    sys.stdout.write('\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K')
+    sys.stdout.write(CLE_O)
 
 
-def print_path(filename):
-    clean_output()
+def clean_output_r():
+    sys.stdout.write(CLE_O)
+    sys.stdout.write('\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b')
+
+
+def print_path(filename, reliable):
+    if reliable:
+        clean_output_r()
+    else:
+        clean_output()
     print("")
     print_detail_l('[report]')
     print(path.abspath(filename))
@@ -597,9 +607,12 @@ def print_header_fng(header):
         print(f"{BRI_R} {header}")
 
 
-def print_summary():
+def print_summary(reliable):
     if not args.output:
-        clean_output()
+        if reliable:
+            clean_output_r()
+        else:
+            clean_output()
         print("")
         banner = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
@@ -622,6 +635,8 @@ def print_summary():
         if detail := print_detail(id_mode, num_lines=0):
             print(detail)
         print(REF_SRV_E + str(status_code))
+    if reliable:
+        print(get_detail('[analysis_wait_note]'))
 
 
 def print_headers():
@@ -737,24 +752,24 @@ def generate_json(name_e, name_p):
         txt_content = source_txt.read()
         txt_sections = re.split(r'\[(\d+\.\s[^\]]+)\]\n', txt_content)[1:]
         data = {}
-        parse_main_txt_sections(txt_sections, data, section0, section5)
+        parse_txt_sections(txt_sections, data, section0, section5)
         json_data = json.dumps(data, indent=4, ensure_ascii=False)
         final_json.write(json_data)
 
 
-def parse_main_txt_sections(txt_sections, data, section0, section5):
+def parse_txt_sections(txt_sections, data, section0, section5):
     for i in range(0, len(txt_sections), 2):
         json_section = f"[{txt_sections[i]}]"
         json_content = txt_sections[i + 1].strip()
         if json_section == section5:
             json_content = json_content.split('.:')[0].strip()
         json_lines = json_content.split('\n')
-        json_data = write_main_json_sections(section0, section5, json_section,
-                                             json_lines)
+        json_data = write_json_sections(section0, section5, json_section,
+                                        json_lines)
         data[json_section] = json_data
 
 
-def write_main_json_sections(section0, section5, json_section, json_lines):
+def write_json_sections(section0, section5, json_section, json_lines):
     if json_section in (section0, section5):
         json_data = {}
         for line in json_lines:
@@ -800,17 +815,25 @@ def handle_http_error(http_code, id_mode):
         sys.exit()
 
 
-def request_exceptions():
-    headers = {}
-    status_c = None
+def make_http_request():
     try:
-        # Yes: Server certificates should be verified during SSL/TLS
-        # connections. Despite this, I think 'verify=False' would benefit
-        # analysis of URLs with self-signed certificates, associated with
-        # development environments, etc.
+        start_time = time()
         r = requests.get(URL, verify=False, headers=c_headers, timeout=15)
-        status_c = r.status_code
-        headers = r.headers
+        elapsed_time = time() - start_time
+        return r, elapsed_time
+    except requests.exceptions.RequestException:
+        return None, 0.0
+
+
+def wait_http_request(future):
+    with contextlib.suppress(concurrent.futures.TimeoutError):
+        future.result(timeout=5)
+
+
+def handle_http_exceptions(r, exception_d):
+    if r is None:
+        return
+    try:
         r.raise_for_status()
     except requests.exceptions.HTTPError as err_http:
         http_code = err_http.response.status_code
@@ -820,9 +843,32 @@ def request_exceptions():
         ex = exception_d.get(type(e))
         if ex and (not callable(ex) or ex(e)):
             detail_exceptions(ex, e)
-    except requests.exceptions.RequestException as err:
-        raise SystemExit from err
-    return headers, status_c
+    except requests.exceptions.RequestException as e:
+        raise SystemExit from e
+
+
+def request_exceptions():
+    headers = {}
+    status_c = None
+    reliable = None
+    request_time = 0.0
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future = executor.submit(make_http_request)
+        wait_http_request(future)
+
+        if not future.done():
+            print(get_detail('[analysis_wait]'))
+            reliable = 'No'
+
+        r, request_time = future.result()
+        handle_http_exceptions(r, exception_d)
+
+        if r is not None:
+            status_c = r.status_code
+            headers = r.headers
+
+    return headers, status_c, reliable
 
 
 def custom_help_formatter(prog):
@@ -937,7 +983,7 @@ requests.packages.urllib3.disable_warnings()
 c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}
 
-headers, status_code = request_exceptions()
+headers, status_code, reliable = request_exceptions()
 
 # Export analysis
 ext = "t.txt" if args.output in ['html', 'json', 'pdf'] else ".txt"
@@ -952,7 +998,7 @@ if args.output:
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
-print_summary()
+print_summary(reliable)
 print_headers()
 
 # Report - 1. Missing HTTP Security Headers
@@ -1540,10 +1586,10 @@ if args.output:
     sys.stdout = orig_stdout
     f.close()
 if args.output == 'txt':
-    print_path(name_e)
+    print_path(name_e, reliable)
 elif args.output == 'json':
     generate_json(name_e, name_p)
-    print_path(name_p)
+    print_path(name_p, reliable)
     remove(name_e)
 elif args.output == 'pdf':
     pdf = PDF()
@@ -1566,7 +1612,7 @@ elif args.output == 'pdf':
         pdf.multi_cell(197, 2.6, txt=x, align='L')
 
     pdf.output(name_p)
-    print_path(name_p)
+    print_path(name_p, reliable)
     f.close()
     remove(name_e)
 elif args.output == 'html':
@@ -1643,5 +1689,5 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                 output.write(ln)
         output.write(footer)
 
-    print_path(name_p)
+    print_path(name_p, reliable)
     remove(name_e)

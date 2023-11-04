@@ -629,6 +629,12 @@ Cabeceras de respuesta HTTP
 [analysis]
  Analizando URL, espera por favor ...
 
+[analysis_wait]
+ (El análisis tarda más de lo habitual -quizá por conectividad de red, WAF, etc- y puede no ser fiable)
+
+[analysis_wait_note]
+ Nota : El análisis puede no ser fiable por el tiempo que tardó en responder la URL.
+
 [analysis_output]
  Analizando URL y guardando el informe, espera por favor ...
 

@@ -629,6 +629,12 @@ HTTP Response Headers
 [analysis]
  Analyzing URL, please wait ...
 
+[analysis_wait]
+ (The analysis is taking longer than usual -may be due to network connectivity, WAF, etc- and may not be reliable)
+
+[analysis_wait_note]
+ Note : The analysis may not be reliable because of the time it took for the URL to respond.
+
 [analysis_output]
  Analyzing URL and saving the report, please wait ...
 
