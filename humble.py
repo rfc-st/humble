@@ -776,8 +776,11 @@ def write_json_sections(section0, section5, json_section, json_lines):
     if json_section in (section0, section5):
         json_data = {}
         for line in json_lines:
-            key, value = line.split(':', 1)
-            json_data[key.strip()] = value.strip()
+            if ':' in line:
+                key, value = line.split(':', 1)
+                json_data[key.strip()] = value.strip()
+            else:
+                json_data[line.strip()] = ""
     else:
         json_data = [line.strip() for line in json_lines if line.strip()]
     return json_data
@@ -855,23 +858,18 @@ def request_exceptions():
     status_c = None
     reliable = None
     request_time = 0.0
-
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future = executor.submit(make_http_request)
         wait_http_request(future)
-
         if not future.done():
             print(get_detail('[analysis_wait]'))
             reliable = 'No'
-
         r, request_time = future.result()
         handle_http_exceptions(r, exception_d)
-
         if r is not None:
             status_c = r.status_code
             headers = r.headers
-
-    return headers, status_c, reliable
+    return headers, status_c, reliable, request_time
 
 
 def custom_help_formatter(prog):
@@ -984,9 +982,9 @@ exception_d = {
 requests.packages.urllib3.disable_warnings()
 
 c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}
+AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'}
 
-headers, status_code, reliable = request_exceptions()
+headers, status_code, reliable, request_time = request_exceptions()
 
 # Export analysis
 ext = "t.txt" if args.output in ['html', 'json', 'pdf'] else ".txt"
