@@ -78,7 +78,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-04', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-08', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -587,6 +587,9 @@ def print_path(filename, reliable):
     print("")
     print_detail_l('[report]')
     print(path.abspath(filename))
+    if reliable:
+        print("")
+        print(get_detail('[analysis_wait_note]', replace=True))
 
 
 def print_ok():
@@ -636,7 +639,7 @@ def print_summary(reliable):
             print(detail)
         print(REF_SRV_E + str(status_code))
     if reliable:
-        print(get_detail('[analysis_wait_note]'))
+        print(get_detail('[analysis_wait_note]', replace=True))
 
 
 def print_headers():
