@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 # humble (HTTP Headers Analyzer)
+# https://github.com/rfc-st/humble/
 #
 # MIT License
 #
@@ -31,9 +32,10 @@
 # really interests you, learn, research and become a Security Analyst!.
 
 # GREETINGS:
-# María Antonia, Fernando, Joanna, Eduardo, Ana, Iván, Luis Joaquín, Juan
-# Carlos, David, Carlos, Juán, Alejandro, Pablo, Íñigo, Naiara, Ricardo,
-# Gabriel, Miguel Angel, David (x2), Sergio, Marta, Alba, Montse & Eloy.
+# Aleix, Ana, Alejandro, Alejandro (x2), Alba, Álvaro, Carlos, Carlos (x2),
+# David, David (x2), Eduardo, Eloy, Fernando, Gabriel, Íñigo, Joanna,
+# Juan Carlos, Juán, Julián, Iván, Lourdes, Luis Joaquín, María Antonia, Marta,
+# Miguel, Miguel Angel, Montse, Naiara, Pablo, Sergio, Ricardo & Rubén!.
 
 from fpdf import FPDF
 from time import time
