@@ -1211,6 +1211,9 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
+l_support_mode = ['credentialed-prerender']
+
 if 'Accept-CH' in headers:
     acceptch_header = headers['Accept-CH'].lower()
     if URL.startswith(INS_S):
@@ -1434,6 +1437,11 @@ if (sts_header) and not (URL.startswith(INS_S)):
         print_details('[ists_h]', '[ists]', 'm', i_cnt)
     if ',' in sts_header:
         print_details('[istsd_h]', '[istsd]', 'd', i_cnt)
+
+if 'Supports-Loading-Mode' in headers:
+    support_mode_h = headers['Supports-Loading-Mode'].lower()
+    if not any(elem in support_mode_h for elem in l_support_mode):
+        print_details('[islmode_h]', '[islmode]', 'd', i_cnt)
 
 if (sts_header) and (URL.startswith(INS_S)):
     print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
