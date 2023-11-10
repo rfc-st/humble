@@ -240,8 +240,9 @@ def print_guides():
     with open(path.join('additional', 'guides.txt'), 'r', encoding='utf8') as \
             gd:
         for line in gd:
-            print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"  \
-{line}", end='')
+            if not line.startswith('#'):
+                print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
+  {line}", end='')
 
 
 def get_details_lines():
@@ -1054,11 +1055,6 @@ if m_cnt == 0:
 print("")
 
 # Report - 2. Fingerprinting through headers/values
-
-# Certain content of the file 'fingerprint.txt' has been made possible by:
-#
-# OWASP Secure Headers Project
-# https://github.com/OWASP/www-project-secure-headers/blob/master/LICENSE.txt
 print_detail_r('[2fingerprint]')
 
 if not args.brief:
@@ -1069,8 +1065,9 @@ l_fng, l_fng_ex = [], []
 with open(path.join('additional', 'fingerprint.txt'), 'r', encoding='utf8') \
      as fn:
     for line in fn:
-        l_fng.append(line.partition(' [')[0].strip())
-        l_fng_ex.append(line.strip())
+        if not line.startswith('#'):
+            l_fng.append(line.partition(' [')[0].strip())
+            l_fng_ex.append(line.strip())
 
 f_cnt = fingerprint_headers(headers, l_fng, l_fng_ex)
 
