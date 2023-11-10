@@ -78,7 +78,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-08', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-10', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -749,31 +749,34 @@ def parse_csp(csp_header):
 
 def generate_json(name_e, name_p):
     section0 = get_detail('[0section]', replace=True)
+    sectionh = get_detail('[0headers]', replace=True)
     section5 = get_detail('[5compat]', replace=True)
     with (open(name_e, 'r', encoding='utf8') as source_txt,
           open(name_p, 'w', encoding='utf8') as final_json):
         txt_content = source_txt.read()
-        txt_sections = re.split(r'\[(\d+\.\s[^\]]+)\]\n', txt_content)[1:]
+        txt_sections = re.split(r'\[(.*?)\]\n', txt_content)[1:]
         data = {}
-        parse_txt_sections(txt_sections, data, section0, section5)
+        parse_json_sections(txt_sections, data, section0, sectionh, section5)
         json_data = json.dumps(data, indent=4, ensure_ascii=False)
         final_json.write(json_data)
 
 
-def parse_txt_sections(txt_sections, data, section0, section5):
+def parse_json_sections(txt_sections, data, section0, sectionh, section5):
     for i in range(0, len(txt_sections), 2):
         json_section = f"[{txt_sections[i]}]"
         json_content = txt_sections[i + 1].strip()
         if json_section == section5:
             json_content = json_content.split('.:')[0].strip()
         json_lines = json_content.split('\n')
-        json_data = write_json_sections(section0, section5, json_section,
+        json_data = write_json_sections(section0, sectionh, section5,
+                                        json_section,
                                         json_lines)
         data[json_section] = json_data
 
 
-def write_json_sections(section0, section5, json_section, json_lines):
-    if json_section in (section0, section5):
+def write_json_sections(section0, sectionh, section5, json_section,
+                        json_lines):
+    if json_section in (section0, sectionh, section5):
         json_data = {}
         for line in json_lines:
             if ':' in line:
@@ -935,9 +938,8 @@ if any([args.brief, args.output, args.ret]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
     parser.error("'-b', -'o' and '-r' options requires also '-u'.")
 
-if args.output == 'json' and (args.ret or not args.brief):
-    parser.error("'-o json' currently requires '-b' and does not support '-r'\
-.")
+if args.output == 'json' and not args.brief:
+    parser.error("'-o json' currently requires '-b'.")
 
 URL = args.URL
 details_f = get_details_lines()
