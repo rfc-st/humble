@@ -179,18 +179,20 @@ def fng_analytics_global():
 
 def fng_analytics_global_groups(fng_lines):
     pttn_fng_global = r'\[([^\]]+)\]'
-    content_cnt = Counter(match.strip() for line in fng_lines for match in
+    content_fng = Counter(match.strip() for line in fng_lines for match in
                           re.findall(pttn_fng_global, line))
-    fng_analytics_global_print(fng_lines, content_cnt)
+    excl_ln = sum(bool(line.startswith('#')) for line in fng_lines) + 2
+    len_fng = len(fng_lines) - excl_ln
+    fng_analytics_global_print(content_fng, len_fng)
 
 
-def fng_analytics_global_print(fng_lines, content_cnt):
+def fng_analytics_global_print(content_fng, len_fng):
     max_ln_lgth = max(len(content) for content, _ in
-                      content_cnt.most_common(20))
-    print(f"{get_detail('[fng_top]', replace=True)} {len(fng_lines)}\
+                      content_fng.most_common(20))
+    print(f"{get_detail('[fng_top]', replace=True)} {len_fng}\
 {get_detail('[fng_top_2]', replace=True)}\n")
-    for content, count in content_cnt.most_common(20):
-        pct_fng_global = round(count / len(fng_lines) * 100, 2)
+    for content, count in content_fng.most_common(20):
+        pct_fng_global = round(count / len_fng * 100, 2)
         padding_s = ' ' * (max_ln_lgth - len(content))
         print(f" [{content}]: {padding_s}{pct_fng_global:.2f}% ({count})")
 
@@ -219,7 +221,8 @@ def fng_analytics_content(fng_group, term, term_count, fng_lines):
         print(f"{get_detail('[fng_zero]', replace=True)} '{term}'.\n\n\
 {get_detail('[fng_zero_2]', replace=True)}.\n")
     else:
-        fng_ln = len(fng_lines)
+        excl_ln = sum(bool(line.startswith('#')) for line in fng_lines) + 2
+        fng_ln = len(fng_lines)-excl_ln
         pct_fng = round(term_count / fng_ln * 100, 2)
         print(f"{get_detail('[fng_add]', replace=True)} '{term}': {pct_fng}%\
  ({term_count}{get_detail('[pdf_po]', replace=True)} {fng_ln})")
@@ -1590,7 +1593,6 @@ end = time()
 analysis_time()
 
 # Export analysis
-
 if args.output:
     name_p = f"{name_e[:-5]}.{args.output}"
     sys.stdout = orig_stdout
