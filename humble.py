@@ -66,9 +66,12 @@ INS_S = 'http:'
 IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
            r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
+NO_HEADERS = '[bcompat_n]'
 NON_RU_TLDS = ['CYMRU', 'GURU', 'PRU']
 PAT_LN = r'\[(.*?)\]'
 PRG_N = 'humble (HTTP Headers Analyzer) - '
+REF_1 = ' Ref  : '
+REF_2 = ' Ref: '
 REF_CDN_E = ' Ref  : https://developers.cloudflare.com/support/\
 troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/'
 REF_SRV_E = ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/'
@@ -135,9 +138,9 @@ def pdf_links(pdfstring):
     link_h = links.get(pdfstring)
     if pdfstring in (URL_S, REF_E, REF_S):
         if pdfstring == REF_E:
-            prefix = ' Ref  : '
+            prefix = REF_1
         elif pdfstring == REF_S:
-            prefix = ' Ref: '
+            prefix = REF_2
         else:
             prefix = pdfstring
         pdf.write(h=3, txt=prefix)
@@ -145,6 +148,42 @@ def pdf_links(pdfstring):
         pdf.write(h=3, txt=x[:x.index(": ")+2])
     pdf.set_text_color(0, 0, 255)
     pdf.cell(w=2000, h=3, txt=x[x.index(": ")+2:], align="L", link=link_h)
+
+
+def format_html_lines(condition, ln, sub_d):
+    if condition == 'rfc-st':
+        output.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}{sub_d['close_t']}\
+{ln[2:]}{sub_d['ahref_f']}")
+    elif condition == URL_S:
+        output.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}{sub_d['close_t']}\
+{ln[8:]}{sub_d['ahref_f']}<br>")
+
+
+def format_html_lines_2(condition, ln, sub_d):
+    if condition == get_detail('[ok]'):
+        output.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
+    elif condition == get_detail(NO_HEADERS):
+        output.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
+
+
+def format_html_lines_3(condition, ln, sub_d):
+    if condition == REF_2:
+        output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}{sub_d['close_t']}\
+{ln[6:]}{sub_d['ahref_f']}<br>")
+    elif condition == REF_1:
+        output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[8:]}{sub_d['close_t']}\
+{ln[6:]}{sub_d['ahref_f']}<br>")
+
+
+def format_html_lines_4(ln, sub_d):
+    ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: {sub_d['span_f']}\
+{sub_d['ahref_s']}{ln[ln.index(SEC_S):]}{sub_d['close_t']}\
+{ln[ln.index(SEC_S):]}{sub_d['ahref_f']}<br>"
+    output.write(ln)
+
+
+def format_html_lines_5(ln):
+    output.write(f'<strong>{ln}</strong><br>')
 
 
 def python_ver():
@@ -1654,37 +1693,22 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                  '<span class="header">', 'span_f': '</span>'}
 
         for ln in input_file:
-            if 'rfc-st' in ln:
-                ln = ln.rstrip('\n')
-                output.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}\
-{sub_d['close_t']}{ln[2:]}{sub_d['ahref_f']}")
-            elif ' URL  : ' in ln:
-                ln = ln.rstrip('\n')
-                output.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}\
-{sub_d['close_t']}{ln[8:]}{sub_d['ahref_f']}<br>")
+            ln_stripped = ln.rstrip('\n')
+            if 'rfc-st' in ln or URL_S in ln:
+                condition = 'rfc-st' if 'rfc-st' in ln else URL_S
+                format_html_lines(condition, ln_stripped, sub_d)
             elif any(s in ln for s in BOLD_S):
-                ln = ln.rstrip('\n')
-                output.write(f'<strong>{ln}</strong><br>')
-            elif get_detail('[ok]') in ln:
-                ln = ln.rstrip('\n')
-                output.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
-            elif get_detail('[bcompat_n]') in ln:
-                ln = ln.rstrip('\n')
-                output.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
-            elif ' Ref: ' in ln:
-                ln = ln.rstrip('\n')
-                output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}\
-{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
-            elif ' Ref  : ' in ln:
-                ln = ln.rstrip('\n')
-                output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[8:]}\
-{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
+                condition = any(s in ln for s in BOLD_S)
+                format_html_lines_5(ln_stripped)
+            elif get_detail('[ok]') in ln or get_detail(NO_HEADERS) in ln:
+                condition = get_detail('[ok]') if get_detail('[ok]') in ln \
+                    else get_detail(NO_HEADERS)
+                format_html_lines_2(condition, ln_stripped, sub_d)
+            elif REF_2 in ln or REF_1 in ln:
+                condition = REF_2 if REF_2 in ln else REF_1
+                format_html_lines_3(condition, ln_stripped, sub_d)
             elif 'caniuse' in ln:
-                ln = ln.rstrip('\n')
-                ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: \
-{sub_d['span_f']}{sub_d['ahref_s']}{ln[ln.index(SEC_S):]}{sub_d['close_t']}\
-{ln[ln.index(SEC_S):]}{sub_d['ahref_f']}<br>"
-                output.write(ln)
+                format_html_lines_4(ln_stripped, sub_d)
             else:
                 for i in headers:
                     if (str(i + ": ") in ln) and ('Date:   ' not in ln):
