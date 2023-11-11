@@ -80,7 +80,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-10', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-11', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1068,7 +1068,8 @@ l_fng, l_fng_ex = [], []
 with open(path.join('additional', 'fingerprint.txt'), 'r', encoding='utf8') \
      as fn:
     for line in fn:
-        if not line.startswith('#'):
+        stripped_line = line.strip()
+        if stripped_line and not line.startswith('#'):
             l_fng.append(line.partition(' [')[0].strip())
             l_fng_ex.append(line.strip())
 
@@ -1654,27 +1655,35 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
 
         for ln in input_file:
             if 'rfc-st' in ln:
-                output.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-2]}\
-                             {sub_d['close_t']}{ln[2:]}{sub_d['ahref_f']}")
+                ln = ln.rstrip('\n')
+                output.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}\
+{sub_d['close_t']}{ln[2:]}{sub_d['ahref_f']}")
             elif ' URL  : ' in ln:
-                output.write(f"{ln[:7]}{sub_d['ahref_s']}{ln[7:]}\
-                             {sub_d['close_t']}{ln[7:]}{sub_d['ahref_f']}")
+                ln = ln.rstrip('\n')
+                output.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}\
+{sub_d['close_t']}{ln[8:]}{sub_d['ahref_f']}<br>")
             elif any(s in ln for s in BOLD_S):
-                output.write(f'<strong>{ln}</strong>')
+                ln = ln.rstrip('\n')
+                output.write(f'<strong>{ln}</strong><br>')
             elif get_detail('[ok]') in ln:
-                output.write(f'<span class="ok">{ln}{sub_d["span_f"]}')
+                ln = ln.rstrip('\n')
+                output.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
             elif get_detail('[bcompat_n]') in ln:
-                output.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}")
+                ln = ln.rstrip('\n')
+                output.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
             elif ' Ref: ' in ln:
+                ln = ln.rstrip('\n')
                 output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}\
-                             {sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}")
+{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
             elif ' Ref  : ' in ln:
+                ln = ln.rstrip('\n')
                 output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[8:]}\
-                             {sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}")
+{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
             elif 'caniuse' in ln:
+                ln = ln.rstrip('\n')
                 ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: \
 {sub_d['span_f']}{sub_d['ahref_s']}{ln[ln.index(SEC_S):]}{sub_d['close_t']}\
-{ln[ln.index(SEC_S):]}{sub_d['ahref_f']}"
+{ln[ln.index(SEC_S):]}{sub_d['ahref_f']}<br>"
                 output.write(ln)
             else:
                 for i in headers:
