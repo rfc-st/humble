@@ -149,7 +149,7 @@ def pdf_links(pdfstring):
     pdf.cell(w=2000, h=3, txt=x[x.index(": ")+2:], align="L", link=link_h)
 
 
-def format_html_lines(condition, ln, sub_d):
+def format_html_info(condition, ln, sub_d):
     if condition == 'rfc-st':
         output.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}{sub_d['close_t']}\
 {ln[2:]}{sub_d['ahref_f']}")
@@ -158,14 +158,14 @@ def format_html_lines(condition, ln, sub_d):
 {ln[8:]}{sub_d['ahref_f']}<br>")
 
 
-def format_html_lines_2(condition, ln, sub_d):
+def format_html_strings(condition, ln, sub_d):
     if condition == ok_string:
         output.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
     elif condition == ko_string:
         output.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
 
 
-def format_html_lines_3(condition, ln, sub_d):
+def format_html_refs(condition, ln, sub_d):
     if condition == REF_2:
         output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}{sub_d['close_t']}\
 {ln[6:]}{sub_d['ahref_f']}<br>")
@@ -174,14 +174,14 @@ def format_html_lines_3(condition, ln, sub_d):
 {ln[6:]}{sub_d['ahref_f']}<br>")
 
 
-def format_html_lines_4(ln, sub_d):
+def format_html_caniuse(ln, sub_d):
     ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: {sub_d['span_f']}\
 {sub_d['ahref_s']}{ln[ln.index(SEC_S):]}{sub_d['close_t']}\
 {ln[ln.index(SEC_S):]}{sub_d['ahref_f']}<br>"
     output.write(ln)
 
 
-def format_html_lines_5(ln):
+def format_html_bold(ln):
     output.write(f'<strong>{ln}</strong><br>')
 
 
@@ -976,7 +976,7 @@ if args.term:
     sys.exit()
 
 if args.lang and not (args.URL or args.URL_A) and not args.guides:
-    parser.error("'-l' option requires also '-u' or '-a'.")
+    parser.error("'-l' requires also '-u' or '-a'.")
 
 if any([args.brief, args.output, args.ret]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
@@ -1222,18 +1222,18 @@ l_per_dirs = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'cross-origin-isolated', 'display-capture', 'encrypted-media',
               'execution-while-not-rendered',
               'execution-while-out-of-viewport',
-              'focus-without-user-activation',
-              'fullscreen', 'gamepad', 'geolocation', 'gyroscope', 'hid',
-              'identity-credentials-get', 'idle-detection', 'interest-cohort',
-              'join-ad-interest-group', 'keyboard-map', 'layout-animations',
-              'local-fonts', 'magnetometer', 'microphone', 'midi',
-              'navigation-override', 'otp-credentials', 'payment',
-              'picture-in-picture', 'publickey-credentials-create',
-              'publickey-credentials-get', 'run-ad-auction',
-              'screen-wake-lock', 'serial', 'shared-autofill',
-              'speaker-selection', 'storage-access', 'sync-script', 'sync-xhr',
-              'trust-token-redemption', 'unload', 'usb', 'vertical-scroll',
-              'web-share', 'window-placement', 'xr-spatial-tracking']
+              'focus-without-user-activation', 'fullscreen', 'gamepad',
+              'geolocation', 'gyroscope', 'hid', 'identity-credentials-get',
+              'idle-detection', 'interest-cohort', 'join-ad-interest-group',
+              'keyboard-map', 'layout-animations', 'local-fonts',
+              'magnetometer', 'microphone', 'midi', 'navigation-override',
+              'otp-credentials', 'payment', 'picture-in-picture',
+              'publickey-credentials-create', 'publickey-credentials-get',
+              'run-ad-auction', 'screen-wake-lock', 'serial',
+              'shared-autofill', 'speaker-selection', 'storage-access',
+              'sync-script', 'sync-xhr', 'trust-token-redemption', 'unload',
+              'usb', 'vertical-scroll', 'web-share', 'window-placement',
+              'xr-spatial-tracking']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 l_ref_values = ['no-referrer', 'no-referrer-when-downgrade', 'origin',
@@ -1684,8 +1684,7 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
 
     with open(name_e, 'r', encoding='utf8') as input_file, \
             open(name_p, 'w', encoding='utf8') as output:
-        output.write(str(header))
-        output.write(str(body))
+        output.write(f"{header}{body}")
 
         sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
                  'span_ko': '<span class="ko">', 'span_h':
@@ -1698,18 +1697,17 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
             ln_stripped = ln.rstrip('\n')
             if 'rfc-st' in ln or URL_S in ln:
                 condition = 'rfc-st' if 'rfc-st' in ln else URL_S
-                format_html_lines(condition, ln_stripped, sub_d)
+                format_html_info(condition, ln_stripped, sub_d)
             elif any(s in ln for s in BOLD_S):
-                condition = any(s in ln for s in BOLD_S)
-                format_html_lines_5(ln_stripped)
+                format_html_bold(ln_stripped)
             elif ok_string in ln or ko_string in ln:
                 condition = ok_string if ok_string in ln else ko_string
-                format_html_lines_2(condition, ln_stripped, sub_d)
+                format_html_strings(condition, ln_stripped, sub_d)
             elif REF_2 in ln or REF_1 in ln:
                 condition = REF_2 if REF_2 in ln else REF_1
-                format_html_lines_3(condition, ln_stripped, sub_d)
+                format_html_refs(condition, ln_stripped, sub_d)
             elif 'caniuse' in ln:
-                format_html_lines_4(ln_stripped, sub_d)
+                format_html_caniuse(ln_stripped, sub_d)
             else:
                 for i in headers:
                     if (str(i + ": ") in ln) and ('Date:   ' not in ln):
