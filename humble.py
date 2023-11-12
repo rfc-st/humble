@@ -66,7 +66,6 @@ INS_S = 'http:'
 IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
            r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
-NO_HEADERS = '[bcompat_n]'
 NON_RU_TLDS = ['CYMRU', 'GURU', 'PRU']
 PAT_LN = r'\[(.*?)\]'
 PRG_N = 'humble (HTTP Headers Analyzer) - '
@@ -83,7 +82,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-11', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-12', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -160,9 +159,9 @@ def format_html_lines(condition, ln, sub_d):
 
 
 def format_html_lines_2(condition, ln, sub_d):
-    if condition == get_detail('[ok]'):
+    if condition == ok_string:
         output.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
-    elif condition == get_detail(NO_HEADERS):
+    elif condition == ko_string:
         output.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
 
 
@@ -1692,6 +1691,9 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                  'span_ko': '<span class="ko">', 'span_h':
                  '<span class="header">', 'span_f': '</span>'}
 
+        ok_string = get_detail('[ok]')
+        ko_string = get_detail('[bcompat_n]')
+
         for ln in input_file:
             ln_stripped = ln.rstrip('\n')
             if 'rfc-st' in ln or URL_S in ln:
@@ -1700,9 +1702,8 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
             elif any(s in ln for s in BOLD_S):
                 condition = any(s in ln for s in BOLD_S)
                 format_html_lines_5(ln_stripped)
-            elif get_detail('[ok]') in ln or get_detail(NO_HEADERS) in ln:
-                condition = get_detail('[ok]') if get_detail('[ok]') in ln \
-                    else get_detail(NO_HEADERS)
+            elif ok_string in ln or ko_string in ln:
+                condition = ok_string if ok_string in ln else ko_string
                 format_html_lines_2(condition, ln_stripped, sub_d)
             elif REF_2 in ln or REF_1 in ln:
                 condition = REF_2 if REF_2 in ln else REF_1
