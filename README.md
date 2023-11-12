@@ -44,6 +44,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: 14 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
 :heavy_check_mark: 997 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 86 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
+:heavy_check_mark: TLS/SSL checks: requires https://testssl.sh/, Bash and Non-Windows machine!.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to HTML5, JSON, PDF 1.4 and TXT.<br />
