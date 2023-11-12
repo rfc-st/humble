@@ -81,6 +81,13 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="Full analysis" width=70% height=70%>
 </p>
 <br />
+<br />
+.: (Linux) - TLS/SSL checks (requires https://testssl.sh/ and Bash!).<br />
+<p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_encryption_s.PNG" alt="TLS/SSL analysis" width=70% height=70%>
+</p>
+<br />
 .: (Linux) - List of HTTP fingerprint headers based on a specific term.<br />
 <p></p>
 <p align="center">
@@ -159,7 +166,7 @@ https://github.com/rfc-st/humble/releases
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-f [TERM]] [-g] [-l {es}] [-o {html,json,pdf,txt}] [-r] [-u URL] [-v]
+usage: humble.py [-h] [-a] [-b] [-e [PATH]] [-f [TERM]] [-g] [-l {es}] [-o {html,json,pdf,txt}] [-r] [-u URL] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
@@ -167,10 +174,11 @@ options:
   -h, --help              show this help message and exit
   -a                      show statistics of the performed analysis (will be global if '-u URL' is omitted)
   -b                      show a brief analysis (if omitted, a detailed one will be shown)
+  -e [PATH]               show TLS/SSL checks; requires https://testssl.sh/, its PATH, Bash and Non-Windows!
   -f [TERM]               show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
   -g                      show guidelines for securing popular web servers/services
   -l {es}                 show the analysis in the indicated language (if omitted, English will be used)
-  -o {html,json,pdf,txt}  save analysis to 'URL_headers_yyyymmdd.ext' file (.json files will contain a brief analysis).
+  -o {html,json,pdf,txt}  save analysis to 'URL_headers_yyyymmdd.ext' file (.json files will contain a brief analysis)
   -r                      show full HTTP response headers and a detailed analysis
   -u URL                  schema and URL to analyze. E.g. https://google.com
   -v, --version           show the version of this tool and check for updates

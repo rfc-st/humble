@@ -48,8 +48,10 @@ import re
 import sys
 import json
 import requests
+import platform
 import contextlib
 import tldextract
+import subprocess
 import concurrent.futures
 
 A_FILE = 'analysis_h.txt'
@@ -153,7 +155,7 @@ def format_html_info(condition, ln, sub_d):
     if condition == 'rfc-st':
         output.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}{sub_d['close_t']}\
 {ln[2:]}{sub_d['ahref_f']}")
-    elif condition == URL_S:
+    else:
         output.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}{sub_d['close_t']}\
 {ln[8:]}{sub_d['ahref_f']}<br>")
 
@@ -161,7 +163,7 @@ def format_html_info(condition, ln, sub_d):
 def format_html_strings(condition, ln, sub_d):
     if condition == ok_string:
         output.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
-    elif condition == ko_string:
+    else:
         output.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
 
 
@@ -169,7 +171,7 @@ def format_html_refs(condition, ln, sub_d):
     if condition == REF_2:
         output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}{sub_d['close_t']}\
 {ln[6:]}{sub_d['ahref_f']}<br>")
-    elif condition == REF_1:
+    else:
         output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[8:]}{sub_d['close_t']}\
 {ln[6:]}{sub_d['ahref_f']}<br>")
 
@@ -284,6 +286,29 @@ def print_guides():
             if not line.startswith('#'):
                 print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
   {line}", end='')
+
+
+def testssl_params(directory, URL):
+    testssl_file = path.join(directory, 'testssl.sh')
+    if not path.isfile(testssl_file):
+        sys.exit(f"\nError: 'testssl.sh' (https://testssl.sh/) is not found in\
+ '{directory}'; please double-check the path.")
+    else:
+        testssl_analysis(testssl_file, URL)
+
+
+def testssl_analysis(testssl_file, URL):
+    # Each analysis can take between 30 seconds and one minute ... be patient!.
+    command = f'bash {testssl_file} -p -U -s "{URL}" | grep -A 47 "Testing \
+protocols" 2> /dev/null'
+    try:
+        result = subprocess.run(command, shell=True, check=True,
+                                capture_output=True, text=True)
+        print()
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"Error running testssl analysis!: {e}")
+        print(f"Command stderr: {e.stderr}")
 
 
 def get_details_lines():
@@ -932,6 +957,8 @@ parser.add_argument("-a", dest='URL_A', action="store_true", help="show \
 statistics of the performed analysis (will be global if '-u URL' is omitted)")
 parser.add_argument("-b", dest='brief', action="store_true", help="show a \
 brief analysis (if omitted, a detailed one will be shown)")
+parser.add_argument("-e", nargs='?', type=str, dest='path', help="show \
+TLS/SSL checks; requires https://testssl.sh/, its PATH, Bash and Non-Windows!")
 parser.add_argument("-f", nargs='?', type=str, dest='term', help="show \
 fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
 omitted)")
@@ -942,7 +969,7 @@ analysis in the indicated language (if omitted, English will be used)")
 parser.add_argument("-o", dest='output', choices=['html', 'json', 'pdf',
                                                   'txt'], help="save analysis \
 to 'URL_headers_yyyymmdd.ext' file (.json files will contain a brief analysis)\
-.")
+")
 parser.add_argument("-r", dest='ret', action="store_true", help="show full \
 HTTP response headers and a detailed analysis")
 parser.add_argument('-u', type=str, dest='URL', help="schema and URL to \
@@ -975,6 +1002,14 @@ if args.term:
     fng_analytics(term)
     sys.exit()
 
+if '-e' in sys.argv and platform.system().lower() == 'windows':
+    parser.error("Windows is excluded in this analysis; sorry for the \
+inconvenience!.")
+
+if '-e' in sys.argv and (args.path is None or args.URL is None):
+    parser.error("'-e' requires the path of 'testssl.sh' and '-u' (the URL to \
+analyze).")
+
 if args.lang and not (args.URL or args.URL_A) and not args.guides:
     parser.error("'-l' requires also '-u' or '-a'.")
 
@@ -991,6 +1026,10 @@ python_ver()
 
 if args.guides:
     print_guides()
+    sys.exit()
+
+if args.path:
+    testssl_params(args.path, args.URL)
     sys.exit()
 
 if args.URL_A:
