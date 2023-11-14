@@ -83,7 +83,7 @@ HTTP Headers Analyzer<br />
 </p>
 <br />
 <br />
-.: (Linux) - TLS/SSL checks (requires https://testssl.sh/ and Bash!).<br />
+.: (Linux) - TLS/SSL checks (requires https://testssl.sh/ and Unix machine, for now!).<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_encryption_s.PNG" alt="TLS/SSL analysis" width=70% height=70%>
