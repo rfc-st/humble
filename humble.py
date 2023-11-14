@@ -84,7 +84,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-12', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-14', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -288,27 +288,35 @@ def print_guides():
   {line}", end='')
 
 
-def testssl_params(directory, URL):
+def testssl_params(directory, uri):
     testssl_file = path.join(directory, 'testssl.sh')
     if not path.isfile(testssl_file):
-        sys.exit(f"\nError: 'testssl.sh' (https://testssl.sh/) is not found in\
- '{directory}'; please double-check the path.")
+        sys.exit(f"\nError: 'testssl.sh' is not found in '{directory}': please\
+ double-check the PATH.")
     else:
-        testssl_analysis(testssl_file, URL)
+        testssl_analysis(testssl_file, uri)
 
 
-def testssl_analysis(testssl_file, URL):
-    # Each analysis can take between 30 seconds and one minute ... be patient!.
-    command = f'bash {testssl_file} -p -U -s "{URL}" | grep -A 47 "Testing \
-protocols" 2> /dev/null'
+def testssl_analysis(testssl_file, uri):
+    # Check './testssl.sh --help' to choose your preferred options:
+    # -p: checks TLS/SSL protocols (including SPDY/HTTP2)
+    # -U: tests all vulnerabilities (if applicable)
+    # -s: tests standard cipher categories by strength
+    # --hints: additional hints to findings
+    command = f'{testssl_file} -p -U -s --hints "{uri}"'
     try:
-        result = subprocess.run(command, shell=True, check=True,
-                                capture_output=True, text=True)
-        print()
-        print(result.stdout)
+        process = subprocess.Popen(command, shell=True,
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, text=True)
+        for line in iter(process.stdout.readline, ''):
+            print(line, end='')
+            if line.strip().startswith("(Done )"):
+                break
+        process.communicate()
     except subprocess.CalledProcessError as e:
-        print(f"Error running testssl analysis!: {e}")
         print(f"Command stderr: {e.stderr}")
+    except Exception as e:
+        print(f"Error running testssl analysis!: {e}")
 
 
 def get_details_lines():
@@ -957,8 +965,9 @@ parser.add_argument("-a", dest='URL_A', action="store_true", help="show \
 statistics of the performed analysis (will be global if '-u URL' is omitted)")
 parser.add_argument("-b", dest='brief', action="store_true", help="show a \
 brief analysis (if omitted, a detailed one will be shown)")
-parser.add_argument("-e", nargs='?', type=str, dest='path', help="show \
-TLS/SSL checks; requires https://testssl.sh/, its PATH, Bash and Non-Windows!")
+parser.add_argument("-e", nargs='?', type=str, dest='path', help="show TLS/SSL\
+ checks; requires the PATH of testssl.sh (https://testssl.sh/); Unix is \
+required (for now)!.")
 parser.add_argument("-f", nargs='?', type=str, dest='term', help="show \
 fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
 omitted)")
@@ -1003,7 +1012,8 @@ if args.term:
     sys.exit()
 
 if '-e' in sys.argv and platform.system().lower() == 'windows':
-    parser.error("Windows is excluded in this analysis; sorry for the \
+    parser.error("Windows is excluded in this analysis: it should work with \
+Cygwin//MSYS2/WSL but I have not been able to test it yet. Sorry for the \
 inconvenience!.")
 
 if '-e' in sys.argv and (args.path is None or args.URL is None):
