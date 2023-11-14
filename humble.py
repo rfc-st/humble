@@ -906,9 +906,9 @@ def make_http_request():
         start_time = time()
         r = requests.get(URL, verify=False, headers=c_headers, timeout=15)
         elapsed_time = time() - start_time
-        return r, elapsed_time
-    except requests.exceptions.RequestException:
-        return None, 0.0
+        return r, elapsed_time, None
+    except requests.exceptions.RequestException as e:
+        return None, 0.0, e
 
 
 def wait_http_request(future):
@@ -944,7 +944,15 @@ def request_exceptions():
         if not future.done():
             print(get_detail('[analysis_wait]'))
             reliable = 'No'
-        r, request_time = future.result()
+        r, request_time, exception = future.result()
+        if exception:
+            exception_type = type(exception)
+            if exception_type in exception_d:
+                error_string = exception_d[exception_type]
+                detail_exceptions(error_string, exception)
+            else:
+                print(f"Unhandled exception type: {exception_type}")
+            return headers, status_c, reliable, request_time
         handle_http_exceptions(r, exception_d)
         if r is not None:
             status_c = r.status_code
