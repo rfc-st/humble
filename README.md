@@ -49,7 +49,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to HTML5, JSON, PDF 1.4 and TXT.<br />
 :heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
-:heavy_check_mark: i10n: analysis results in English or Spanish.<br />
+:heavy_check_mark: i10n: show the analysis, messages and nearly all errors in English or Spanish.<br />
 :heavy_check_mark: Saves each analysis, showing (at the end) the improvements or deficiencies in relation to the last one.<br />
 :heavy_check_mark: Shows analysis statistics: either against a specific URL or all of them.<br />
 :heavy_check_mark: Shows fingerprint statistics: either against a specific term or the Top 20.<br />
@@ -175,10 +175,10 @@ options:
   -h, --help              show this help message and exit
   -a                      show statistics of the performed analysis (will be global if '-u URL' is omitted)
   -b                      show a brief analysis (if omitted, a detailed one will be shown)
-  -e [PATH]               show TLS/SSL checks; requires the PATH of testssl.sh (https://testssl.sh/); Unix is required (for now)!.
+  -e [PATH]               show TLS/SSL checks; requires the PATH of testssl.sh (https://testssl.sh/) and Unix (for now!)
   -f [TERM]               show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
   -g                      show guidelines for securing popular web servers/services
-  -l {es}                 show the analysis in the indicated language (if omitted, English will be used)
+  -l {es}                 the language for displaying analyses, messages and errors (if omitted it will be in English)
   -o {html,json,pdf,txt}  save analysis to 'URL_headers_yyyymmdd.ext' file (.json files will contain a brief analysis)
   -r                      show full HTTP response headers and a detailed analysis
   -u URL                  schema and URL to analyze. E.g. https://google.com

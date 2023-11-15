@@ -973,15 +973,15 @@ statistics of the performed analysis (will be global if '-u URL' is omitted)")
 parser.add_argument("-b", dest='brief', action="store_true", help="show a \
 brief analysis (if omitted, a detailed one will be shown)")
 parser.add_argument("-e", nargs='?', type=str, dest='path', help="show TLS/SSL\
- checks; requires the PATH of testssl.sh (https://testssl.sh/); Unix is \
-required (for now)!.")
+ checks; requires the PATH of testssl.sh (https://testssl.sh/) and Unix (for \
+now!)")
 parser.add_argument("-f", nargs='?', type=str, dest='term', help="show \
 fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
 omitted)")
 parser.add_argument("-g", dest='guides', action="store_true", help="show \
 guidelines for securing popular web servers/services")
-parser.add_argument("-l", dest='lang', choices=['es'], help="show the \
-analysis in the indicated language (if omitted, English will be used)")
+parser.add_argument("-l", dest='lang', choices=['es'], help="the language for \
+displaying analyses, messages and errors (if omitted it will be in English)")
 parser.add_argument("-o", dest='output', choices=['html', 'json', 'pdf',
                                                   'txt'], help="save analysis \
 to 'URL_headers_yyyymmdd.ext' file (.json files will contain a brief analysis)\
