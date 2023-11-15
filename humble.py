@@ -279,7 +279,7 @@ def fng_analytics_sorted(fng_lines, term, fng_group):
 
 def print_guides():
     print("")
-    print_detail('[guides]')
+    print(get_detail('[guides]', replace=True))
     with open(path.join('additional', 'guides.txt'), 'r', encoding='utf8') as \
             gd:
         for line in gd:
