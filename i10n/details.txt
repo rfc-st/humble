@@ -1135,3 +1135,21 @@ Highlights
 
 [fng_top_2]
  headers of the source file
+
+[args_ssltls]
+Windows is excluded in this analysis (it should work with Cygwin//MSYS2/WSL but I have not been able to test it yet). Sorry for the inconvenience!.
+
+[args_notestssl]
+'-e' requires the path of 'testssl.sh' and '-u'.
+
+[args_lang]
+'-l' requires also '-u' or '-a'.
+
+[args_several]
+'-b', -'o' and '-r' requires also '-u'.
+
+[args_json]
+'-o json' currently requires '-b'.
+
+[notestssl_path]
+Error: 'testssl.sh' is not found in that PATH.

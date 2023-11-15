@@ -84,7 +84,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-14', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-15', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -291,8 +291,7 @@ def print_guides():
 def testssl_params(directory, uri):
     testssl_file = path.join(directory, 'testssl.sh')
     if not path.isfile(testssl_file):
-        sys.exit(f"\nError: 'testssl.sh' is not found in '{directory}': please\
- double-check the PATH.")
+        sys.exit(f"\n{get_detail('[notestssl_path]')}")
     else:
         testssl_analysis(testssl_file, uri)
 
@@ -996,50 +995,33 @@ parser.add_argument("-v", "--version", action="store_true",
 updates")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+details_f = get_details_lines()
 
 if args.version:
-    details_f = get_details_lines()
-    if args.lang:
-        details_f = get_details_lines()
     check_updates(version)
     sys.exit()
 
-if args.term is None and '-f' in sys.argv:
-    details_f = get_details_lines()
-    if args.lang:
-        details_f = get_details_lines()
-    fng_analytics_global()
+if '-f' in sys.argv:
+    fng_analytics(args.term) if args.term else fng_analytics_global()
     sys.exit()
 
-if args.term:
-    term = args.term
-    details_f = get_details_lines()
-    if args.lang:
-        details_f = get_details_lines()
-    fng_analytics(term)
-    sys.exit()
-
-if '-e' in sys.argv and platform.system().lower() == 'windows':
-    parser.error("Windows is excluded in this analysis: it should work with \
-Cygwin//MSYS2/WSL but I have not been able to test it yet. Sorry for the \
-inconvenience!.")
-
-if '-e' in sys.argv and (args.path is None or args.URL is None):
-    parser.error("'-e' requires the path of 'testssl.sh' and '-u' (the URL to \
-analyze).")
+if '-e' in sys.argv:
+    if platform.system().lower() == 'windows':
+        parser.error(get_detail('[args_ssltls]'))
+    if (args.path is None or args.URL is None):
+        parser.error(get_detail('[args_notestssl]'))
 
 if args.lang and not (args.URL or args.URL_A) and not args.guides:
-    parser.error("'-l' requires also '-u' or '-a'.")
+    parser.error(get_detail('[args_lang]'))
 
 if any([args.brief, args.output, args.ret]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
-    parser.error("'-b', -'o' and '-r' options requires also '-u'.")
+    parser.error(get_detail('[args_several]'))
 
 if args.output == 'json' and not args.brief:
-    parser.error("'-o json' currently requires '-b'.")
+    parser.error(get_detail('[args_json]'))
 
 URL = args.URL
-details_f = get_details_lines()
 python_ver()
 
 if args.guides:
@@ -1051,11 +1033,7 @@ if args.path:
     sys.exit()
 
 if args.URL_A:
-    if args.URL:
-        url_analytics()
-    else:
-        details_f = get_details_lines()
-        url_analytics(is_global=True)
+    url_analytics() if args.URL else url_analytics(is_global=True)
     sys.exit()
 
 start = time()

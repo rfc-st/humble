@@ -1135,3 +1135,21 @@ A destacar
 
 [fng_top_2]
  cabeceras del fichero fuente
+
+[args_ssltls]
+Windows está excluido en este análisis (debería funcionar con Cygwin//MSYS2/WSL pero no he podido probarlo); !disculpa las molestias!.
+
+[args_notestssl]
+'-e' requiere la ruta de 'testssl.sh' y '-u'.
+
+[args_lang]
+'-l' requiere '-u' o '-a'.
+
+[args_several]
+'-b', -'o' y '-r' requieren '-u'.
+
+[args_json]
+'-o json' requiere, por ahora, '-b'.
+
+[notestssl_path]
+Error: no ha encontrado 'testssl.sh' en esa ruta.
