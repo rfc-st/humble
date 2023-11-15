@@ -42,7 +42,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 14 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
-:heavy_check_mark: 999 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 1000 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 86 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: TLS/SSL checks: requires https://testssl.sh/ and Unix machine!.<br />
 :heavy_check_mark: Browser compatibility check for enabled security headers.<br />
@@ -82,8 +82,7 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="Full analysis" width=70% height=70%>
 </p>
 <br />
-<br />
-.: (Linux) - TLS/SSL checks (requires https://testssl.sh/ and Unix machine, for now!).<br />
+.: (Linux) - TLS/SSL checks (requires https://testssl.sh/ and Unix machine (for now!).<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_encryption_s.PNG" alt="TLS/SSL analysis" width=70% height=70%>
