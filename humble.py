@@ -1645,11 +1645,13 @@ print("")
 # Report - 5. Browser Compatibility for Enabled HTTP Security Headers
 print_detail_r('[5compat]')
 
-l_sec = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
-         'Content-Security-Policy', 'Cross-Origin-Embedder-Policy',
-         'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy', 'NEL',
+l_sec = ['Access-Control-Allow-Methods', 'Cache-Control', 'Clear-Site-Data',
+         'Content-Type', 'Content-Security-Policy',
+         'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
+         'Cross-Origin-Resource-Policy', 'Feature-Policy', 'NEL',
          'Permissions-Policy', 'Referrer-Policy', 'Strict-Transport-Security',
-         'X-Content-Type-Options', 'X-Frame-Options']
+         'Supports-Loading-Mode', 'X-Content-Type-Options',
+         'X-DNS-Prefetch-Control', 'X-Frame-Options', 'X-XSS-Protection']
 
 header_matches = [header for header in l_sec if header in headers]
 
