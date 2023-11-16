@@ -543,6 +543,9 @@
 [ixxp_h]
  X-XSS-Protection (Valor inseguro)
 
+[ixxpdp_h]
+ X-XSS-Protection (Cabecera obsoleta)
+
 [ixxpd_h]
  X-XSS-Protection (Valores duplicados)
 
@@ -938,6 +941,11 @@ Cabeceras de respuesta HTTP
 [ixxp]
  Para mitigar ataques Cross-site scripting, habilite la cabecera "Content-Security-Policy".
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
+
+[ixxpdp]
+ Esta cabecera está obsoleta en los tres principales navegadores.
+ En su lugar, utilice de forma restrictiva la cabecera "Content-Security-Policy".
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
 [ixxpd]
  Esta cabecera, o sus valores, pueden estar duplicados.

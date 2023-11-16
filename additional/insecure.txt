@@ -38,7 +38,7 @@ Clear-Site-Data: No Valid Directives
 Content-DPR: Deprecated Header
 Content-Encoding: No Valid Directives
 Content-Security-Policy: Deprecated Directives
-Content-Security-Policy: Incorrect values
+Content-Security-Policy: Incorrect Values
 Content-Security-Policy: Insecure Schemes
 Content-Security-Policy: IP detected
 Content-Security-Policy: No Valid Directives
@@ -107,5 +107,6 @@ X-SourceMap: Deprecated Header
 X-UA-Compatible: Deprecated Header
 X-Webkit-CSP: Deprecated Header
 X-Webkit-CSP-Report-Only: Deprecated Header
-X-XSS-Protection: Unsafe Value
+X-XSS-Protection: Deprecated Header
 X-XSS-Protection: Duplicated Values
+X-XSS-Protection: Unsafe Value

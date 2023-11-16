@@ -84,7 +84,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-15', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-16', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1610,6 +1610,7 @@ if 'X-Webkit-CSP-Report-Only' in headers:
     print_details('[ixwcspr_h]', '[ixcspr]', 'd', i_cnt)
 
 if 'X-XSS-Protection' in headers:
+    print_details('[ixxpdp_h]', '[ixxpdp]', 'm', i_cnt)
     if '0' not in headers["X-XSS-Protection"]:
         print_details('[ixxp_h]', '[ixxp]', 'd', i_cnt)
     if ',' in headers['X-XSS-Protection']:
