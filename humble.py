@@ -32,10 +32,10 @@
 # really interests you, learn, research and become a Security Analyst!.
 
 # GREETINGS:
-# Aleix, Ana, Alejandro, Alejandro (x2), Alba, Álvaro, Carlos, Carlos (x2),
-# David, David (x2), Eduardo, Eloy, Fernando, Gabriel, Íñigo, Joanna,
-# Juan Carlos, Juán, Julián, Iván, Lourdes, Luis Joaquín, María Antonia, Marta,
-# Miguel, Miguel Angel, Montse, Naiara, Pablo, Sergio, Ricardo & Rubén!.
+# Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3), David (x3), Eduardo,
+# Eloy, Fernando, Gabriel, Íñigo, Joanna, Juan Carlos, Juán, Julián, Iván,
+# Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Angel, Montse,
+# Naiara, Pablo, Sergio, Ricardo & Rubén!.
 
 from fpdf import FPDF
 from time import time
@@ -656,10 +656,7 @@ def clean_output_r():
 
 
 def print_path(filename, reliable):
-    if reliable:
-        clean_output_r()
-    else:
-        clean_output()
+    clean_output_r() if reliable else clean_output()
     print("")
     print_detail_l('[report]')
     print(path.abspath(filename))
@@ -688,10 +685,7 @@ def print_header_fng(header):
 
 def print_summary(reliable):
     if not args.output:
-        if reliable:
-            clean_output_r()
-        else:
-            clean_output()
+        clean_output_r() if reliable else clean_output()
         print("")
         banner = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
