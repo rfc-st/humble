@@ -60,9 +60,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
 :heavy_check_mark: Technical resource in OWASP <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">Secure Headers</a> Project and <a href="https://www.kali.org/tools/humble/" target="_blank">Kali Linux</a> (<a href="https://pkg.kali.org/pkg/humble" target="_blank">this</a> should be the latest Release).<br />
 :heavy_check_mark: Developed entirely in my spare time, no strings attached: feel <b>free</b> to try it out and integrate it into your projects!.<br />
-<br />
-:heavy_check_mark: And with the <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA.PNG">approval</a> of an AI :)!.
-<br />
+:heavy_check_mark: And with the <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA.PNG">approval</a> of an AI :)!.<br />
 
 ## Screenshots
 
