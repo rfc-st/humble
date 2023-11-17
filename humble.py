@@ -40,6 +40,7 @@
 from fpdf import FPDF
 from time import time
 from datetime import datetime
+from urllib.parse import urlparse
 from os import linesep, path, remove
 from colorama import Fore, Style, init
 from collections import Counter, defaultdict
@@ -292,8 +293,19 @@ def testssl_params(directory, uri):
     testssl_file = path.join(directory, 'testssl.sh')
     if not path.isfile(testssl_file):
         sys.exit(f"\n{get_detail('[notestssl_path]')}")
+    elif not testsst_check_uri(uri):
+        print("")
+        sys.exit(get_detail('[kotestssl_uri]'))
     else:
         testssl_analysis(testssl_file, uri)
+
+
+def testsst_check_uri(uri):
+    try:
+        parsed_uri = urlparse(uri)
+        return all([parsed_uri.scheme, parsed_uri.netloc])
+    except ValueError:
+        return False
 
 
 def testssl_analysis(testssl_file, uri):
@@ -309,9 +321,9 @@ def testssl_analysis(testssl_file, uri):
                                    stderr=subprocess.PIPE, text=True)
         for line in iter(process.stdout.readline, ''):
             print(line, end='')
-            if line.strip().startswith("(Done )"):
-                break
-        process.communicate()
+            if 'Done' in line:
+                process.terminate()
+                sys.exit()
     except subprocess.CalledProcessError as e:
         print(f"Command stderr: {e.stderr}")
     except Exception as e:
