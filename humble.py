@@ -84,7 +84,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-16', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-17', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -153,38 +153,38 @@ def pdf_links(pdfstring):
 
 def format_html_info(condition, ln, sub_d):
     if condition == 'rfc-st':
-        output.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}{sub_d['close_t']}\
-{ln[2:]}{sub_d['ahref_f']}")
+        html_final.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}\
+{sub_d['close_t']}{ln[2:]}{sub_d['ahref_f']}")
     else:
-        output.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}{sub_d['close_t']}\
-{ln[8:]}{sub_d['ahref_f']}<br>")
+        html_final.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}\
+{sub_d['close_t']}{ln[8:]}{sub_d['ahref_f']}<br>")
 
 
-def format_html_strings(condition, ln, sub_d):
+def format_html_okko(condition, ln, sub_d):
     if condition == ok_string:
-        output.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
+        html_final.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
     else:
-        output.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
+        html_final.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
 
 
 def format_html_refs(condition, ln, sub_d):
     if condition == REF_2:
-        output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}{sub_d['close_t']}\
-{ln[6:]}{sub_d['ahref_f']}<br>")
+        html_final.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}\
+{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
     else:
-        output.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[8:]}{sub_d['close_t']}\
-{ln[6:]}{sub_d['ahref_f']}<br>")
+        html_final.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[8:]}\
+{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
 
 
 def format_html_caniuse(ln, sub_d):
     ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: {sub_d['span_f']}\
 {sub_d['ahref_s']}{ln[ln.index(SEC_S):]}{sub_d['close_t']}\
 {ln[ln.index(SEC_S):]}{sub_d['ahref_f']}<br>"
-    output.write(ln)
+    html_final.write(ln)
 
 
 def format_html_bold(ln):
-    output.write(f'<strong>{ln}</strong><br>')
+    html_final.write(f'<strong>{ln}</strong><br>')
 
 
 def python_ver():
@@ -786,7 +786,7 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
         index_fng = l_fng.index(header)
         print_header_fng(l_fng_ex[index_fng])
         if not headers[header]:
-            print(get_detail('[empty_fng]'))
+            print(get_detail('[empty_fng]', replace=True))
         else:
             print(f" {headers[header]}")
         print("")
@@ -1681,10 +1681,10 @@ elif args.output == 'pdf':
     pdf.set_display_mode(zoom='real')
     pdf.add_page()
     pdf.set_font("Courier", size=9)
-    f = open(name_e, "r", encoding='utf8')
+    pdf_source = open(name_e, "r", encoding='utf8')
     links_strings = (URL_S, REF_E, REF_S, CAN_S)
 
-    for x in f:
+    for x in pdf_source:
         if '[' in x:
             pdf_sections()
         pdf.set_font(style='B' if any(s in x for s in BOLD_S) else '')
@@ -1714,18 +1714,18 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
     l_final = sorted(l_miss + l_ins)
     l_fng_final = sorted(l_fng)
 
-    with open(name_e, 'r', encoding='utf8') as input_file, \
-            open(name_p, 'w', encoding='utf8') as output:
-        output.write(f"{header}{body}")
+    ok_string = get_detail('[ok]')
+    ko_string = get_detail('[bcompat_n]')
 
-        sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
-                 'span_ko': '<span class="ko">', 'span_h':
-                 '<span class="header">', 'span_f': '</span>'}
+    sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
+             'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
+             'span_f': '</span>'}
 
-        ok_string = get_detail('[ok]')
-        ko_string = get_detail('[bcompat_n]')
+    with open(name_e, 'r', encoding='utf8') as html_source, \
+            open(name_p, 'w', encoding='utf8') as html_final:
+        html_final.write(f"{header}{body}")
 
-        for ln in input_file:
+        for ln in html_source:
             ln_stripped = ln.rstrip('\n')
             if 'rfc-st' in ln or URL_S in ln:
                 condition = 'rfc-st' if 'rfc-st' in ln else URL_S
@@ -1734,7 +1734,7 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                 format_html_bold(ln_stripped)
             elif ok_string in ln or ko_string in ln:
                 condition = ok_string if ok_string in ln else ko_string
-                format_html_strings(condition, ln_stripped, sub_d)
+                format_html_okko(condition, ln_stripped, sub_d)
             elif REF_2 in ln or REF_1 in ln:
                 condition = REF_2 if REF_2 in ln else REF_1
                 format_html_refs(condition, ln_stripped, sub_d)
@@ -1760,10 +1760,10 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                         ln = ln.replace(ln, sub_d['span_ko'] +
                                         ln + sub_d['span_f'])
                 for i in l_empty:
-                    if i[1:] in ln:
+                    if i[1:] in ln and '[' not in ln:
                         ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
-                output.write(ln)
-        output.write(footer)
+                html_final.write(ln)
+        html_final.write(footer)
 
     print_path(name_p, reliable)
     remove(name_e)
