@@ -39,6 +39,7 @@
 
 from fpdf import FPDF
 from time import time
+from shlex import quote
 from datetime import datetime
 from os import linesep, path, remove
 from colorama import Fore, Style, init
@@ -294,7 +295,8 @@ def testssl_params(directory, uri):
         sys.exit(f"\n{get_detail('[notestssl_path]')}")
     else:
         # Check './testssl.sh --help' to choose your preferred options
-        command = f'{testssl_file} -f -g -p -U -s --hints "{uri}"'
+        uri_safe = quote(uri)
+        command = f'{testssl_file} -f -g -p -U -s --hints "{uri_safe}"'
         testssl_analysis(command)
 
 
@@ -901,7 +903,8 @@ def handle_http_error(http_code, id_mode):
 def make_http_request():
     try:
         start_time = time()
-        r = requests.get(URL, verify=False, headers=c_headers, timeout=15)
+        uri_safe = quote(URL)
+        r = requests.get(uri_safe, verify=False, headers=c_headers, timeout=15)
         elapsed_time = time() - start_time
         return r, elapsed_time, None
     except requests.exceptions.RequestException as e:
