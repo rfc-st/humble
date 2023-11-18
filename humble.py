@@ -293,41 +293,33 @@ def testssl_params(directory, uri):
     if not path.isfile(testssl_file):
         sys.exit(f"\n{get_detail('[notestssl_path]')}")
     else:
-        testssl_analysis(testssl_file, uri)
+        # Check './testssl.sh --help' to choose your preferred options
+        command = f'{testssl_file} -f -g -p -U -s --hints "{uri}"'
+        testssl_analysis(command)
 
 
-def testssl_analysis(testssl_file, uri):
-    # Check './testssl.sh --help' to choose your preferred options:
-    # -p: checks TLS/SSL protocols (including SPDY/HTTP2)
-    # -U: tests all vulnerabilities (if applicable)
-    # -s: tests standard cipher categories by strength
-    # --hints: additional hints to findings
-    command = f'{testssl_file} -p -U -s --hints "{uri}"'
+def testssl_analysis(command):
     try:
         process = subprocess.Popen(command, shell=True,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE, text=True)
         while True:
-            line = process.stdout.readline()
-            if not line:
+            ln = process.stdout.readline()
+            if not ln:
                 break
-            print(line, end='')
-
-            if 'Done' in line:
+            print(ln, end='')
+            if 'Done' in ln:
                 process.terminate()
                 process.wait()
                 sys.exit()
 
         stdout, stderr = process.communicate()
-
-        if stdout:
-            print(stdout)
-        if stderr:
-            print(stderr)
+        print(stdout or '')
+        print(stderr or '')
     except subprocess.CalledProcessError as e:
         print(e.stderr)
     except Exception as e:
-        print(f"Error running testssl analysis!: {e}")
+        print(f"Error running testssl.sh analysis!: {e}")
 
 
 def get_details_lines():
