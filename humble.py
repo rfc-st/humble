@@ -40,7 +40,6 @@
 from fpdf import FPDF
 from time import time
 from datetime import datetime
-from urllib.parse import urlparse
 from os import linesep, path, remove
 from colorama import Fore, Style, init
 from collections import Counter, defaultdict
@@ -85,7 +84,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-17', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-18', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -293,19 +292,8 @@ def testssl_params(directory, uri):
     testssl_file = path.join(directory, 'testssl.sh')
     if not path.isfile(testssl_file):
         sys.exit(f"\n{get_detail('[notestssl_path]')}")
-    elif not testsst_check_uri(uri):
-        print("")
-        sys.exit(get_detail('[kotestssl_uri]'))
     else:
         testssl_analysis(testssl_file, uri)
-
-
-def testsst_check_uri(uri):
-    try:
-        parsed_uri = urlparse(uri)
-        return all([parsed_uri.scheme, parsed_uri.netloc])
-    except ValueError:
-        return False
 
 
 def testssl_analysis(testssl_file, uri):
@@ -319,13 +307,25 @@ def testssl_analysis(testssl_file, uri):
         process = subprocess.Popen(command, shell=True,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE, text=True)
-        for line in iter(process.stdout.readline, ''):
+        while True:
+            line = process.stdout.readline()
+            if not line:
+                break
             print(line, end='')
+
             if 'Done' in line:
                 process.terminate()
+                process.wait()
                 sys.exit()
+
+        stdout, stderr = process.communicate()
+
+        if stdout:
+            print(stdout)
+        if stderr:
+            print(stderr)
     except subprocess.CalledProcessError as e:
-        print(f"Command stderr: {e.stderr}")
+        print(e.stderr)
     except Exception as e:
         print(f"Error running testssl analysis!: {e}")
 

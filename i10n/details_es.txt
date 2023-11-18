@@ -1161,6 +1161,3 @@ Windows está excluido en este análisis (debería funcionar con Cygwin//MSYS2/W
 
 [notestssl_path]
 Error: no ha encontrado 'testssl.sh' en esa ruta.
-
-[kotestssl_uri]
-Error: La URL puede ser incorrecta; por favor, revísala.
