@@ -85,7 +85,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-18', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-24', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -716,6 +716,8 @@ def print_summary(reliable):
         print(REF_SRV_E + str(status_code))
     if reliable:
         print(get_detail('[analysis_wait_note]', replace=True))
+    if args.redirects:
+        print(get_detail('[analysis_redirects]', replace=True))
 
 
 def print_headers():
@@ -904,7 +906,11 @@ def make_http_request():
     try:
         start_time = time()
         uri_safe = quote(URL)
-        r = requests.get(uri_safe, verify=False, headers=c_headers, timeout=15)
+        # So dirty, I know!: if args.redirects ('-df' param) is not provided
+        # the last redirection will be the one analyzed (arg.redirects=True).
+        # If this is not the case, the exact URL indicated will be analyzed.
+        r = requests.get(uri_safe, allow_redirects=not args.redirects,
+                         verify=False, headers=c_headers, timeout=15)
         elapsed_time = time() - start_time
         return r, elapsed_time, None
     except requests.exceptions.RequestException as e:
@@ -973,6 +979,8 @@ parser.add_argument("-a", dest='URL_A', action="store_true", help="show \
 statistics of the performed analysis (will be global if '-u URL' is omitted)")
 parser.add_argument("-b", dest='brief', action="store_true", help="show a \
 brief analysis (if omitted, a detailed one will be shown)")
+parser.add_argument("-df", dest='redirects', action="store_true", help="do not\
+ follow redirects (if omitted, the last redirection will be the one analyzed)")
 parser.add_argument("-e", nargs='?', type=str, dest='path', help="show TLS/SSL\
  checks; requires the PATH of testssl.sh (https://testssl.sh/) and Unix (for \
 now!)")
@@ -988,7 +996,7 @@ parser.add_argument("-o", dest='output', choices=['html', 'json', 'pdf',
 to 'URL_headers_yyyymmdd.ext' file (.json files will contain a brief analysis)\
 ")
 parser.add_argument("-r", dest='ret', action="store_true", help="show full \
-HTTP response headers and a detailed analysis")
+ HTTP response headers and a detailed analysis")
 parser.add_argument('-u', type=str, dest='URL', help="schema and URL to \
 analyze. E.g. https://google.com")
 parser.add_argument("-v", "--version", action="store_true",
@@ -1015,7 +1023,7 @@ if '-e' in sys.argv:
 if args.lang and not (args.URL or args.URL_A) and not args.guides:
     parser.error(get_detail('[args_lang]'))
 
-if any([args.brief, args.output, args.ret]) \
+if any([args.brief, args.output, args.ret, args.redirects]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
     parser.error(get_detail('[args_several]'))
 
@@ -1074,10 +1082,11 @@ ext = "t.txt" if args.output in ['html', 'json', 'pdf'] else ".txt"
 if args.output:
     orig_stdout = sys.stdout
     name_s = tldextract.extract(URL)
+    name_sch = URL.split(":", 1)[0]
     name_sub = name_s.subdomain + '.' if name_s.subdomain else ''
     name_dom = name_s.domain
     name_tld = name_s.suffix
-    name_e = f"{name_sub}{name_dom}.{name_tld}_headers_{export_date}{ext}"
+    name_e = f"{name_sch}_{name_sub}{name_dom}.{name_tld}_{export_date}{ext}"
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 

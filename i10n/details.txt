@@ -642,6 +642,9 @@ HTTP Response Headers
 [analysis_wait_note]
  Note : The analysis may not be reliable because of the time it took for the URL to respond.
 
+[analysis_redirects]
+ Note : It has been expressly indicated to analyze the exact URL, without following redirects.
+
 [analysis_output]
  Analyzing URL and saving the report, please wait ...
 
@@ -1154,7 +1157,7 @@ Windows is excluded in this analysis (it should work with Cygwin//MSYS2/WSL but 
 '-l' requires also '-u' or '-a'.
 
 [args_several]
-'-b', -'o' and '-r' requires also '-u'.
+'-b', '-df', '-'o' and '-r' requires also '-u'.
 
 [args_json]
 '-o json' currently requires '-b'.

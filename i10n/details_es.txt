@@ -642,6 +642,9 @@ Cabeceras de respuesta HTTP
 [analysis_wait_note]
  Nota : El análisis puede no ser fiable por el tiempo que tardó en responder la URL.
 
+[analysis_redirects]
+ Nota : Se ha indicado expresamente analizar la URL exacta, sin seguir redirecciones.
+
 [analysis_output]
  Analizando URL y guardando el informe, espera por favor ...
 
@@ -1154,7 +1157,7 @@ Windows está excluido en este análisis (debería funcionar con Cygwin//MSYS2/W
 '-l' requiere '-u' o '-a'.
 
 [args_several]
-'-b', -'o' y '-r' requieren '-u'.
+-b', '-df', -'o' y '-r' requieren '-u'.
 
 [args_json]
 '-o json' requiere, por ahora, '-b'.
