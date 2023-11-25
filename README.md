@@ -44,18 +44,18 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: 14 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
 :heavy_check_mark: 1005 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 88 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
-:heavy_check_mark: TLS/SSL checks: requires https://testssl.sh/ and Unix machine!.<br />
-:heavy_check_mark: Browser compatibility check for enabled security headers.<br />
+:heavy_check_mark: SSL/TLS checks: requires https://testssl.sh/ and Unix machine.<br />
+:heavy_check_mark: Browser compatibility references for enabled HTTP security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Export of analysis to HTML5, JSON, PDF 1.4 and TXT.<br />
-:heavy_check_mark: The analysis includes dozens of references, official documentation and technical articles.<br />
+:heavy_check_mark: Each detailed analysis includes dozens of references, official documentation and technical articles.<br />
 :heavy_check_mark: i10n: show the analysis, messages and nearly all errors in English or Spanish.<br />
 :heavy_check_mark: Saves each analysis, showing (at the end) the improvements or deficiencies in relation to the last one.<br />
 :heavy_check_mark: Shows analysis statistics: either against a specific URL or all of them.<br />
 :heavy_check_mark: Shows fingerprint statistics: either against a specific term or the Top 20.<br />
 :heavy_check_mark: Code reviewed via <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
-:heavy_check_mark: Fully tested and working on Windows (10 20H2 - 19042.985) and Linux (Kali 2021.1).<br />
+:heavy_check_mark: Fully tested and working on (at least) Windows 10 20H2 - 19042.985 and Kali Linux 2021.1.<br />
 :heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost<a> all the code under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
 :heavy_check_mark: Technical resource in OWASP <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">Secure Headers</a> Project and <a href="https://www.kali.org/tools/humble/" target="_blank">Kali Linux</a> (<a href="https://pkg.kali.org/pkg/humble" target="_blank">this</a> should be the latest Release).<br />
