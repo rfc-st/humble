@@ -41,6 +41,7 @@ from fpdf import FPDF
 from time import time
 from shlex import quote
 from datetime import datetime
+from urllib.parse import urlparse
 from os import linesep, path, remove
 from colorama import Fore, Style, init
 from collections import Counter, defaultdict
@@ -85,7 +86,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-24', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-25', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -906,9 +907,8 @@ def make_http_request():
     try:
         start_time = time()
         uri_safe = quote(URL)
-        # So dirty, I know!: if args.redirects ('-df' param) is not provided
-        # the last redirection will be the one analyzed (arg.redirects=True).
-        # If this is not the case, the exact URL indicated will be analyzed.
+        # If '-df' (args.redirect) param is provided the exact URL will be
+        # analyzed; otherwise the last redirected URL will be analyzed.
         r = requests.get(uri_safe, allow_redirects=not args.redirects,
                          verify=False, headers=c_headers, timeout=15)
         elapsed_time = time() - start_time
@@ -993,8 +993,8 @@ parser.add_argument("-l", dest='lang', choices=['es'], help="the language for \
 displaying analyses, messages and errors (if omitted it will be in English)")
 parser.add_argument("-o", dest='output', choices=['html', 'json', 'pdf',
                                                   'txt'], help="save analysis \
-to 'URL_headers_yyyymmdd.ext' file (.json files will contain a brief analysis)\
-")
+to 'scheme_host_port_yyyymmdd.ext' file (.json files will contain a brief \
+analysis)")
 parser.add_argument("-r", dest='ret', action="store_true", help="show full \
  HTTP response headers and a detailed analysis")
 parser.add_argument('-u', type=str, dest='URL', help="schema and URL to \
@@ -1080,13 +1080,17 @@ headers, status_code, reliable, request_time = request_exceptions()
 ext = "t.txt" if args.output in ['html', 'json', 'pdf'] else ".txt"
 
 if args.output:
+    # tldextract seems to be more reliable for extracting certain components of
+    # the URI.
     orig_stdout = sys.stdout
-    name_s = tldextract.extract(URL)
-    name_sch = URL.split(":", 1)[0]
-    name_sub = name_s.subdomain + '.' if name_s.subdomain else ''
-    name_dom = name_s.domain
-    name_tld = name_s.suffix
-    name_e = f"{name_sch}_{name_sub}{name_dom}.{name_tld}_{export_date}{ext}"
+    url_obj = tldextract.extract(URL)
+    url_sch = urlparse(URL).scheme
+    url_sub = f"_{url_obj.subdomain}." if url_obj.subdomain else '_'
+    url_dom = f"{url_obj.domain}."
+    url_tld = url_obj.suffix
+    url_prt = f"_{urlparse(URL).port}_" if urlparse(URL).port is not None \
+        else '_'
+    name_e = f"{url_sch}{url_sub}{url_dom}{url_tld}{url_prt}{export_date}{ext}"
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
