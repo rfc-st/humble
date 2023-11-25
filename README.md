@@ -185,7 +185,7 @@ options:
   -f [TERM]               show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
   -g                      show guidelines for securing popular web servers/services
   -l {es}                 the language for displaying analyses, messages and errors (if omitted it will be in English)
-  -o {html,json,pdf,txt}  save analysis to 'URL_headers_yyyymmdd.ext' file (.json files will contain a brief analysis)
+  -o {html,json,pdf,txt}  save analysis to 'scheme_host_port_yyyymmdd.ext' file (.json files will contain a brief analysis)
   -r                      show full HTTP response headers and a detailed analysis
   -u URL                  schema and URL to analyze. E.g. https://google.com
   -v, --version           show the version of this tool and check for updates
