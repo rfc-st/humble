@@ -275,9 +275,10 @@ Any HTTP response header.
 * Amazon AWS
 * Apache HTTP Server
 * Cloudflare
-* MaxCDN
+* LiteSpeed Web Server
 * Microsoft Internet Information Services
 * Nginx
+* Node.js
 
 ## To-do
 
