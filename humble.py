@@ -47,6 +47,7 @@ from collections import Counter, defaultdict
 from argparse import ArgumentParser, HelpFormatter
 import re
 import sys
+import ssl
 import json
 import requests
 import platform
@@ -87,6 +88,38 @@ export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 version = datetime.strptime('2023-11-24', '%Y-%m-%d').date()
 
+FORCED_CIPHERS = ":".join(
+    [
+        "ECDHE+AESGCM",
+        "ECDHE+CHACHA20",
+        "DHE+AESGCM",
+        "DHE+CHACHA20",
+        "ECDH+AESGCM",
+        "DH+AESGCM",
+        "ECDH+AES",
+        "DH+AES",
+        "RSA+AESGCM",
+        "RSA+AES",
+        "!aNULL",
+        "!eNULL",
+        "!MD5",
+        "!DSS",
+        "HIGH",
+        "!DH"
+    ]
+)
+
+
+class SSLContextAdapter(requests.adapters.HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        print('SSLContextAdapter.init_poolmanager called')
+        context = ssl.create_default_context()
+        context.set_ciphers(FORCED_CIPHERS)
+        kwargs['ssl_context'] = context
+        return super(SSLContextAdapter, self).init_poolmanager(*args, **kwargs)
+
+requests.Session().mount('http://', SSLContextAdapter())
+requests.Session().mount('https://', SSLContextAdapter())
 
 class PDF(FPDF):
 
@@ -1053,13 +1086,6 @@ if not args.URL_A:
     print("")
     print_detail(detail)
 
-# Regarding 'dh key too small' errors: https://stackoverflow.com/a/41041028
-requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
-try:
-    requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS \
-        += ':HIGH:!DH:!aNULL'
-except AttributeError:
-    pass
 
 exception_d = {
     requests.exceptions.ConnectionError: '[e_404]',
