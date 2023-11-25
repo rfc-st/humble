@@ -468,6 +468,9 @@
 [iseti_m]
  Set-Cookie (Atributo ausente)
 
+[ismap_m]
+ SourceMap (Funcionalidad insegura)
+
 [isdyn_h]
  Strict-Dynamic (Cabecera incorrecta)
 
@@ -844,6 +847,10 @@ Cabeceras de respuesta HTTP
 [isetm]
  Las cookies 'SameSite=None' también deben establecerse con el atributo 'Secure'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+
+[ismap]
+ Esta cabecera puede exponer información sensible sobre el código fuente original.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
 
 [isdyn]
  Esto no es una cabecera, sino una palabra clave de la cabecera 'Content-Security-Policy'.

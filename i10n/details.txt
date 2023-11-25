@@ -468,6 +468,9 @@
 [iseti_m]
  Set-Cookie (Missing attribute)
 
+[ismap_m]
+ SourceMap (Unsafe Funcionality)
+
 [isdyn_h]
  Strict-Dynamic (Incorrect Header)
 
@@ -844,6 +847,10 @@ HTTP Response Headers
 [isetm]
  'SameSite=None' cookies must also be set with the 'Secure' attribute.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+
+[ismap]
+ This header can expose sensitive information about the original source code.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
 
 [isdyn]
  This is not a header, but a keyword of the 'Content-Security-Policy' header.

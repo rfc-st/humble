@@ -1516,6 +1516,9 @@ if ck_header:
     if "samesite=none" in ck_header and "secure" not in ck_header:
         print_details("[iseti_m]", "[isetm]", "d", i_cnt)
 
+if 'SourceMap' in headers:
+    print_details('[ismap_m]', '[ismap]', 'd', i_cnt)
+
 if 'Strict-Dynamic' in headers:
     print_details('[isdyn_h]', '[isdyn]', 'd', i_cnt)
 
