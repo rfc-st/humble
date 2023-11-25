@@ -112,7 +112,6 @@ FORCED_CIPHERS = ":".join(
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
     def init_poolmanager(self, *args, **kwargs):
-        print('SSLContextAdapter.init_poolmanager called')
         context = ssl.create_default_context()
         context.set_ciphers(FORCED_CIPHERS)
         kwargs['ssl_context'] = context
