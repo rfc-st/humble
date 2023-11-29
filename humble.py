@@ -86,7 +86,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-25', '%Y-%m-%d').date()
+version = datetime.strptime('2023-11-29', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -297,14 +297,14 @@ def testssl_params(directory, uri):
     else:
         # Check './testssl.sh --help' to choose your preferred options
         uri_safe = quote(uri)
-        command = f'{testssl_file} -f -g -p -U -s --hints "{uri_safe}"'
+        command = [testssl_file, '-f', '-g', '-p', '-U', '-s', '--hints',
+                   uri_safe]
         testssl_analysis(command)
 
 
 def testssl_analysis(command):
     try:
-        process = subprocess.Popen(command, shell=True,
-                                   stdout=subprocess.PIPE,
+        process = subprocess.Popen(command, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE, text=True)
         while True:
             ln = process.stdout.readline()
