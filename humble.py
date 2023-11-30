@@ -292,8 +292,10 @@ def print_guides():
 
 def testssl_params(directory, uri):
     testssl_file = path.join(directory, 'testssl.sh')
-    if not path.isfile(testssl_file):
+    if not path.isdir(directory):
         sys.exit(f"\n{get_detail('[notestssl_path]')}")
+    if not path.isfile(testssl_file):
+        sys.exit(f"\n{get_detail('[notestssl_file]')}")
     else:
         # Check './testssl.sh --help' to choose your preferred options
         uri_safe = quote(uri)

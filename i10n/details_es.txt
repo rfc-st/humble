@@ -1169,5 +1169,8 @@ Windows está excluido en este análisis (debería funcionar con Cygwin//MSYS2/W
 [args_json]
 '-o json' requiere, por ahora, '-b'.
 
+[notestssl_file]
+Error: 'testssl.sh' no existe en la ruta indicada.
+
 [notestssl_path]
-Error: no ha encontrado 'testssl.sh' en esa ruta.
+Error: la ruta indicada de 'testssl.sh' es incorrecta.

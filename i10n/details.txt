@@ -1169,5 +1169,8 @@ Windows is excluded in this analysis (it should work with Cygwin//MSYS2/WSL but 
 [args_json]
 '-o json' currently requires '-b'.
 
-[notestssl_path]
+[notestssl_file]
 Error: 'testssl.sh' is not found in that PATH.
+
+[notestssl_path]
+Error: The PATH for 'testssl.sh' is incorrect.
