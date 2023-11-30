@@ -1018,7 +1018,8 @@ if '-f' in sys.argv:
 
 if '-e' in sys.argv:
     if platform.system().lower() == 'windows':
-        parser.error(get_detail('[args_ssltls]'))
+        print_detail('[args_ssltls]', num_lines=32)
+        sys.exit()
     if (args.path is None or args.URL is None):
         parser.error(get_detail('[args_notestssl]'))
 

@@ -1162,7 +1162,38 @@ Highlights
  headers of the source file
 
 [args_ssltls]
-Windows is excluded in this analysis (it should work with Cygwin//MSYS2/WSL but I have not been able to test it yet). Sorry for the inconvenience!.
+
+To run a SSL/TSL scan on Windows (via testssl.sh) you have three choices:
+
+1. Cygwin
+
+- Download https://testssl.sh/
+- And Cygwin!: https://www.cygwin.com/install.html
+- Run Cygwin installer and choose the packages you need, including the 'bash' package
+- Start the Cygwin Terminal
+- Change to the directory where 'testssl.sh' is located and execute the command using 'bash'
+-- Ex. cd /cygdrive/c/testssl
+-- Ex. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
+
+2. MSYS2
+
+- Download https://testssl.sh/
+- And MSYS2!: https://www.msys2.org/
+- Run MSYS2 installer and follow the installation instructions
+- Start the MSYS2 MinGW 64-bit terminal
+- Change to the directory where 'testssl.sh' is located and execute the command using 'bash'
+-- Ex. cd /c/testssl
+-- Ex. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
+
+3. WSL (Windows Subsystem for Linux)
+
+- Download https://testssl.sh/
+- Follow WSL instructions!: https://learn.microsoft.com/en-us/windows/wsl/install
+- Install a Linux distribution from the Microsoft Store (e.g., Ubuntu, Debian)
+- Open the installed Linux distribution from the Start menu or use 'wsl' from the Command Prompt
+- Change to the directory where 'testssl.sh' is located and execute the command using 'bash'
+-- Ex. cd /mnt/c/testssl
+-- Ex. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 [args_notestssl]
 '-e' requires the path of 'testssl.sh' and '-u'.
