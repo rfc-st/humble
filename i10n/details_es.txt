@@ -495,6 +495,9 @@
 [islmode_h]
  Supports-Loading-Mode (Sin directivas adecuadas)
 
+[isurrmode_h]
+ Surrogate-Control (Sin directivas adecuadas)
+
 [ihbas_h]
  WWW-Authenticate (Valor inseguro)
 
@@ -868,6 +871,10 @@ Cabeceras de respuesta HTTP
 [islmode]
  Incluya, al menos, una directiva correcta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
+
+[isurrmode]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://www.w3.org/TR/edge-arch/
 
 [ihsts]
  Al acceder mediante HTTP los navegadores ignoran esta cabecera.

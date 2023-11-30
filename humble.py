@@ -297,8 +297,8 @@ def testssl_params(directory, uri):
     if not path.isfile(testssl_file):
         sys.exit(f"\n{get_detail('[notestssl_file]')}")
     else:
-        # Check './testssl.sh --help' to choose your preferred options
         uri_safe = quote(uri)
+        # Check './testssl.sh --help' to choose your preferred options
         command = [testssl_file, '-f', '-g', '-p', '-U', '-s', '--hints',
                    uri_safe]
         testssl_analysis(command)
@@ -1183,7 +1183,7 @@ if not args.brief:
 l_ins = ['Accept-CH', 'Access-Control-Allow-Methods',
          'Access-Control-Allow-Origin', 'Allow', 'Content-Type', 'Etag',
          'Expect-CT', 'Expires', 'Feature-Policy', 'Onion-Location', 'P3P',
-         'Public-Key-Pins', 'Set-Cookie', 'Server-Timing',
+         'Public-Key-Pins', 'Set-Cookie', 'Server-Timing', 'Surrogate-Control',
          'Timing-Allow-Origin', 'X-Content-Security-Policy',
          'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
          'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
@@ -1305,6 +1305,10 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
 l_support_mode = ['credentialed-prerender']
+
+# https://www.w3.org/TR/edge-arch/
+l_surrogate = ['content', 'extension-directive', 'max-age', 'no-store',
+               'no-store-remote']
 
 if 'Accept-CH' in headers:
     acceptch_header = headers['Accept-CH'].lower()
@@ -1540,6 +1544,11 @@ if 'Supports-Loading-Mode' in headers:
 
 if (sts_header) and (URL.startswith(INS_S)):
     print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
+
+if 'Surrogate-Control' in headers:
+    surrogate_mode_h = headers['Surrogate-Control'].lower()
+    if not any(elem in surrogate_mode_h for elem in l_surrogate):
+        print_details('[isurrmode_h]', '[isurrmode]', 'd', i_cnt)
 
 if headers.get('Timing-Allow-Origin', '') == '*':
     print_details('[itao_h]', '[itao]', 'd', i_cnt)

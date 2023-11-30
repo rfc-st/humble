@@ -83,6 +83,7 @@ Strict-Transport-Security: Duplicated Values
 Strict-Transport-Security: Ignored Header via Unsafe Scheme
 Strict-Transport-Security: Recommended Values
 Supports-Loading-Mode: No Valid Directives
+Surrogate-Control: No Valid Directives
 Timing-Allow-Origin: Potentially Unsafe Header
 Tk: Deprecated Header
 Trailer: Disallowed Directives

@@ -495,6 +495,9 @@
 [islmode_h]
  Supports-Loading-Mode (No Valid Directives)
 
+[isurrmode_h]
+ Surrogate-Control (No Valid Directives)
+
 [ihbas_h]
  WWW-Authenticate (Unsafe Value)
 
@@ -868,6 +871,10 @@ HTTP Response Headers
 [islmode]
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
+
+[isurrmode]
+ Include at least one valid directive.
+ Ref: https://www.w3.org/TR/edge-arch/
 
 [ihsts]
  This header is ignored by the browser when accessing via HTTP.
