@@ -86,7 +86,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-11-30', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-01', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -290,7 +290,7 @@ def print_guides():
   {line}", end='')
 
 
-def testssl_params(directory, uri):
+def testssl_command(directory, uri):
     testssl_file = path.join(directory, 'testssl.sh')
     if not path.isdir(directory):
         sys.exit(f"\n{get_detail('[notestssl_path]')}")
@@ -317,7 +317,6 @@ def testssl_analysis(command):
                 process.terminate()
                 process.wait()
                 sys.exit()
-
         stdout, stderr = process.communicate()
         print(stdout or '')
         print(stderr or '')
@@ -341,7 +340,7 @@ def analysis_time():
     print(round(end - start, 2), end="")
     print_detail_l('[analysis_time_sec]')
     t_cnt = m_cnt + f_cnt + i_cnt[0] + e_cnt
-    mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = save_extract_totals(t_cnt)
+    mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = get_totals(t_cnt)
     mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, \
         thr_cnt = compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt,
                                  eh_cnt, e_cnt, th_cnt, t_cnt)
@@ -349,7 +348,7 @@ def analysis_time():
     analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt)
 
 
-def save_extract_totals(t_cnt):
+def get_totals(t_cnt):
     with open(A_FILE, 'a+', encoding='utf8') as a_history, \
          open(A_FILE, 'r', encoding='utf8') as c_history:
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
@@ -380,7 +379,7 @@ def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
     return [f'+{total}' if total > 0 else str(total) for total in totals]
 
 
-def file_exists(filepath):
+def analysis_exists(filepath):
     if not path.exists(filepath):
         detail = '[no_analysis]' if args.URL else '[no_global_analysis]'
         print(f"\n{get_detail(detail).strip()}\n")
@@ -388,7 +387,7 @@ def file_exists(filepath):
 
 
 def url_analytics(is_global=False):
-    file_exists(A_FILE)
+    analysis_exists(A_FILE)
     with open(A_FILE, 'r', encoding='utf8') as c_history:
         analysis_stats = extract_global_metrics(c_history) if is_global else \
             extract_metrics(c_history)
@@ -412,7 +411,7 @@ def extract_metrics(c_history):
                 range(2, 6)]
     third_m = extract_third_metrics(url_ln)
     additional_m = extract_additional_metrics(url_ln)
-    fourth_m = extract_highlights_metrics(url_ln)
+    fourth_m = extract_highlights(url_ln)
     return print_metrics(total_a, first_m, second_m, third_m, additional_m,
                          fourth_m)
 
@@ -447,11 +446,11 @@ def extract_third_metrics(url_ln):
 def extract_additional_metrics(url_ln):
     avg_w = int(sum(int(line.split(' ; ')[-1]) for line in url_ln) /
                 len(url_ln))
-    year_a, avg_w_y, month_a = extract_year_month_metrics(url_ln)
+    year_a, avg_w_y, month_a = extract_date_metrics(url_ln)
     return (avg_w, year_a, avg_w_y, month_a)
 
 
-def extract_year_month_metrics(url_ln):
+def extract_date_metrics(url_ln):
     year_cnt = defaultdict(int)
     year_wng = defaultdict(int)
     for line in url_ln:
@@ -459,12 +458,12 @@ def extract_year_month_metrics(url_ln):
         year, _, _ = map(int, date_str.split('/'))
         year_cnt[year] += 1
         year_wng[year] += int(line.split(' ; ')[-1])
-    years_str = generate_year_month_group(year_cnt, url_ln)
+    years_str = generate_date_groups(year_cnt, url_ln)
     avg_wng_y = sum(year_wng.values()) // len(year_wng)
     return years_str, avg_wng_y, year_wng
 
 
-def generate_year_month_group(year_cnt, url_ln):
+def generate_date_groups(year_cnt, url_ln):
     years_str = []
     for year in sorted(year_cnt.keys()):
         year_str = f" {year}: {year_cnt[year]} \
@@ -487,18 +486,18 @@ def get_month_counts(year, url_ln):
     return month_cnts
 
 
-def extract_highlights_metrics(url_ln):
+def extract_highlights(url_ln):
     sections = ['[miss_cnt]', '[finger_cnt]', '[ins_cnt]', '[empty_cnt]']
     fields_h = [2, 3, 4, 5]
     return [f"{print_detail_l(sections[i], analytics=True)}\n"
             f"  {print_detail_l('[best_analysis]', analytics=True)}: \
-{get_best_worst_highlights(url_ln, fields_h[i], min)}\n"
+{get_highlights(url_ln, fields_h[i], min)}\n"
             f"  {print_detail_l('[worst_analysis]', analytics=True)}: \
-{get_best_worst_highlights(url_ln, fields_h[i], max)}\n"
+{get_highlights(url_ln, fields_h[i], max)}\n"
             for i in range(len(fields_h))]
 
 
-def get_best_worst_highlights(url_ln, field_index, func):
+def get_highlights(url_ln, field_index, func):
     values = [int(line.split(';')[field_index].strip()) for line in url_ln]
     target_value = func(values)
     target_line = next(line for line in url_ln
@@ -509,11 +508,11 @@ def get_best_worst_highlights(url_ln, field_index, func):
 
 def print_metrics(total_a, first_m, second_m, third_m, additional_m, fourth_m):
     basic_m = get_basic_metrics(total_a, first_m)
-    error_m = get_error_metrics(second_m)
-    warning_m = get_warning_metrics(additional_m)
+    error_m = get_security_metrics(second_m)
+    warning_m = get_warnings_metrics(additional_m)
     averages_m = get_averages_metrics(third_m)
-    fourth_m = get_fourth_metrics(fourth_m)
-    analysis_year_m = get_analysis_year_metrics(additional_m)
+    fourth_m = get_highlights_metrics(fourth_m)
+    analysis_year_m = get_date_metrics(additional_m)
     totals_m = {**basic_m, **error_m, **warning_m, **averages_m, **fourth_m,
                 **analysis_year_m}
     return {get_detail(key, replace=True): value for key, value in
@@ -529,14 +528,14 @@ def get_basic_metrics(total_a, first_m):
 {get_detail('[total_warnings]', replace=True)}{first_m[5]})\n"}
 
 
-def get_error_metrics(second_m):
+def get_security_metrics(second_m):
     return {'[analysis_y]': "", '[no_missing]': second_m[0],
             '[no_fingerprint]': second_m[1],
             '[no_ins_deprecated]': second_m[2],
             '[no_empty]': second_m[3] + "\n"}
 
 
-def get_warning_metrics(additional_m):
+def get_warnings_metrics(additional_m):
     return {'[averages]': "", '[average_warnings]': f"{additional_m[0]}",
             '[average_warnings_year]': f"{additional_m[2]}"}
 
@@ -547,11 +546,11 @@ def get_averages_metrics(third_m):
             '[average_ety]': f"{third_m[3]}\n"}
 
 
-def get_fourth_metrics(fourth_m):
+def get_highlights_metrics(fourth_m):
     return {'[highlights]': "\n" + "\n".join(fourth_m)}
 
 
-def get_analysis_year_metrics(additional_m):
+def get_date_metrics(additional_m):
     return {'[analysis_year_month]': f"\n{additional_m[1]}"}
 
 
@@ -578,10 +577,10 @@ def extract_global_first_metrics(url_ln):
             url_lines[url] += 1
         else:
             url_lines[url] = 1
-    return get_global_first_metrics(url_ln, url_lines)
+    return get_global_metrics(url_ln, url_lines)
 
 
-def get_global_first_metrics(url_ln, url_lines):
+def get_global_metrics(url_ln, url_lines):
     first_a = min(f"{line.split(' ; ')[0]}" for line in url_ln)
     latest_a = max(f"{line.split(' ; ')[0]}" for line in url_ln)
     unique_u = len({line.split(' ; ')[1] for line in url_ln})
@@ -605,10 +604,10 @@ def get_basic_global_metrics(total_a, first_m):
 
 def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
     basic_m = get_basic_global_metrics(total_a, first_m)
-    error_m = get_error_metrics(second_m)
-    warning_m = get_warning_metrics(additional_m)
+    error_m = get_security_metrics(second_m)
+    warning_m = get_warnings_metrics(additional_m)
     averages_m = get_averages_metrics(third_m)
-    analysis_year_m = get_analysis_year_metrics(additional_m)
+    analysis_year_m = get_date_metrics(additional_m)
     totals_m = {**basic_m, **error_m, **warning_m, **averages_m,
                 **analysis_year_m}
     return {get_detail(key, replace=True): value for key, value in
@@ -712,13 +711,18 @@ def print_summary(reliable):
     print_detail_l('[info]')
     print(f" {now}")
     print(f' URL  : {URL}')
+    if status_code in CLI_E or reliable or args.redirects:
+        print_additional_summary(reliable)
+
+
+def print_additional_summary(reliable):
     if status_code in CLI_E:
         id_mode = f"[http_{status_code}]"
         if detail := print_detail(id_mode, num_lines=0):
             print(detail)
         print(REF_SRV_E + str(status_code))
     if reliable:
-        print(get_detail('[analysis_wait_note]', replace=True))
+        print(get_detail('[analysis_reliable_note]', replace=True))
     if args.redirects:
         print(get_detail('[analysis_redirects]', replace=True))
 
@@ -950,7 +954,7 @@ def request_exceptions():
         future = executor.submit(make_http_request)
         wait_http_request(future)
         if not future.done():
-            print(get_detail('[analysis_wait]'))
+            print(get_detail('[analysis_reliable]'))
             reliable = 'No'
         r, request_time, exception = future.result()
         if exception:
@@ -1018,7 +1022,7 @@ if '-f' in sys.argv:
 
 if '-e' in sys.argv:
     if platform.system().lower() == 'windows':
-        print_detail('[args_ssltls]', num_lines=32)
+        print_detail('[args_ssltls]', num_lines=28)
         sys.exit()
     if (args.path is None or args.URL is None):
         parser.error(get_detail('[args_notestssl]'))
@@ -1041,7 +1045,7 @@ if args.guides:
     sys.exit()
 
 if args.path:
-    testssl_params(args.path, args.URL)
+    testssl_command(args.path, args.URL)
     sys.exit()
 
 if args.URL_A:

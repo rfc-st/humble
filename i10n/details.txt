@@ -642,10 +642,10 @@ HTTP Response Headers
 [analysis]
  Analyzing URL, please wait ...
 
-[analysis_wait]
+[analysis_reliable]
  (The analysis is taking longer than usual -may be due to network connectivity, WAF, etc- and may not be reliable)
 
-[analysis_wait_note]
+[analysis_reliable_note]
  Note : The analysis may not be reliable because of the time it took for the URL to respond.
 
 [analysis_redirects]
@@ -1163,36 +1163,32 @@ Highlights
 
 [args_ssltls]
 
-To run a SSL/TSL scan on Windows (via testssl.sh) you have three choices:
+To run an SSL/TSL analysis on Windows (via testssl.sh) you have three choices:
 
 1. Cygwin
 
 - Download https://testssl.sh/
-- And Cygwin!: https://www.cygwin.com/install.html
+- Download https://www.cygwin.com/install.html
 - Run Cygwin installer and choose the packages you need, including the 'bash' package
 - Start the Cygwin Terminal
-- Change to the directory where 'testssl.sh' is located and execute the command using 'bash'
--- Ex. cd /cygdrive/c/testssl
+- Change to the directory where 'testssl.sh' is located and run the analysis using 'bash'
 -- Ex. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 2. MSYS2
 
 - Download https://testssl.sh/
-- And MSYS2!: https://www.msys2.org/
+- Download https://www.msys2.org/
 - Run MSYS2 installer and follow the installation instructions
 - Start the MSYS2 MinGW 64-bit terminal
-- Change to the directory where 'testssl.sh' is located and execute the command using 'bash'
--- Ex. cd /c/testssl
+- Change to the directory where 'testssl.sh' is located and run the analyisis using 'bash'
 -- Ex. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 3. WSL (Windows Subsystem for Linux)
 
 - Download https://testssl.sh/
-- Follow WSL instructions!: https://learn.microsoft.com/en-us/windows/wsl/install
-- Install a Linux distribution from the Microsoft Store (e.g., Ubuntu, Debian)
+- Follow WSL instructions: https://learn.microsoft.com/en-us/windows/wsl/install
 - Open the installed Linux distribution from the Start menu or use 'wsl' from the Command Prompt
-- Change to the directory where 'testssl.sh' is located and execute the command using 'bash'
--- Ex. cd /mnt/c/testssl
+- Change to the directory where 'testssl.sh' is located and run the analyisis using 'bash'
 -- Ex. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 [args_notestssl]

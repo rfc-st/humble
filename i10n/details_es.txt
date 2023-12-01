@@ -642,10 +642,10 @@ Cabeceras de respuesta HTTP
 [analysis]
  Analizando URL, espera por favor ...
 
-[analysis_wait]
+[analysis_reliable]
  (El análisis tarda más de lo habitual -quizá por conectividad de red, WAF, etc- y puede no ser fiable)
 
-[analysis_wait_note]
+[analysis_reliable_note]
  Nota : El análisis puede no ser fiable por el tiempo que tardó en responder la URL.
 
 [analysis_redirects]
@@ -1168,31 +1168,27 @@ Para ejecutar un análisis SSL/TSL en Windows (vía testssl.sh) tienes tres opci
 1. Cygwin
 
 - Descarga https://testssl.sh/
-- Y Cygwin!: https://www.cygwin.com/install.html
-- Ejecuta Cygwin, seleccionando de entre sus opciones 'bash'
+- Descarga https://www.cygwin.com/install.html
+- Ejecuta el instalador de Cygwin y selecciona los paquetes que desees (incluyendo 'bash')
 - Ejecuta la terminal Cygwin
-- Cambia a la carpeta donde esté 'testssl.sh' y ejecútalo
--- Ej. cd /cygdrive/c/testssl
+- Cambia al directorio donde esté 'testssl.sh' y lanza el análisis con 'bash'
 -- Ej. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 2. MSYS2
 
 - Descarga https://testssl.sh/
-- Y MSYS2!: https://www.msys2.org/
+- Descarga https://www.msys2.org/
 - Ejecuta MSYS2 y sigue las instrucciones del instalador
 - Ejecuta la terminal MSYS2 MinGW 64-bit
-- Cambia a la carpeta donde esté 'testssl.sh' y ejecútalo
--- Ej. cd /c/testssl
+- Cambia al directorio donde esté 'testssl.sh' y lanza el análisis con 'bash'
 -- Ej. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
-3. WSL (Windows Subsystem for Linux)
+3. WSL (Subsistema de Windows para Linux)
 
 - Descarga https://testssl.sh/
-- Revisa las indicaciones sobre WSL!: https://learn.microsoft.com/en-us/windows/wsl/install
-- Instala una Distribución Linux (ej. Ubuntu, Debian)
+- Revisa las indicaciones sobre WSL: https://learn.microsoft.com/en-us/windows/wsl/install
 - Ejecuta la distribución Linux desde el menú Inicio o ejecuta 'wsl' desde el símbolo del sistema
-- Cambia a la carpeta donde esté 'testssl.sh' y ejecútalo
--- Ej. cd /mnt/c/testssl
+- Cambia al directorio donde esté 'testssl.sh' y lanza el análisis con 'bash'
 -- Ej. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 [args_notestssl]
