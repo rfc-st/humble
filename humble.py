@@ -70,7 +70,7 @@ INS_S = 'http:'
 IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
            r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
-NON_RU_TLDS = ['CYMRU', 'GURU', 'PRU']
+NON_RU_TLD = ['CYMRU', 'GURU', 'PRU']
 PAT_LN = r'\[(.*?)\]'
 PRG_N = 'humble (HTTP Headers Analyzer) - '
 REF_1 = ' Ref  : '
@@ -86,7 +86,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-01', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-02', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -99,10 +99,7 @@ class PDF(FPDF):
                   align='C')
         self.ln(1)
         self.cell(0, 5, f"({GIT_U})", align='C')
-        if self.page_no() == 1:
-            self.ln(9)
-        else:
-            self.ln(13)
+        self.ln(9) if self.page_no() == 1 else self.ln(13)
 
     def footer(self):
         self.set_y(-15)
@@ -189,14 +186,12 @@ def format_html_bold(ln):
     html_final.write(f'<strong>{ln}</strong><br>')
 
 
-def python_ver():
-    if sys.version_info < (3, 9):
-        print("")
-        print_detail('[python]', 2)
-        sys.exit()
+def check_python_version():
+    exit(print_detail('[python_version]', 3)) if sys.version_info < (3, 9) \
+        else None
 
 
-def check_updates(version):
+def check_humble_updates(version):
     r_url = 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py'
     try:
         response_t = requests.get(r_url, timeout=10).text
@@ -280,8 +275,7 @@ def fng_analytics_sorted(fng_lines, term, fng_group):
 
 
 def print_guides():
-    print("")
-    print(get_detail('[guides]', replace=True))
+    print_detail('[security_guides]', 1)
     with open(path.join('additional', 'guides.txt'), 'r', encoding='utf8') as \
             gd:
         for line in gd:
@@ -653,6 +647,19 @@ def csp_print_warnings(csp_values, csp_title, csp_desc, csp_refs):
     print_detail(f'{csp_refs}')
 
 
+def csp_parse_content(csp_header):
+    # TO-DO: analyze detailed directives/values in the future.
+    csp_output = []
+    for directive in csp_header.split(';'):
+        dir_csp = directive.strip().split(' ', 1)
+        if dir_name := dir_csp[0]:
+            csp_output.extend([f" {Style.BRIGHT}{dir_name}{Style.RESET_ALL}"])
+            if len(dir_csp) > 1 and dir_csp[1]:
+                csp_output.append(f" {dir_csp[1]}")
+            csp_output.append("")
+    return '\n'.join(csp_output)
+
+
 def clean_output():
     # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
     sys.stdout.write(CLE_O)
@@ -718,7 +725,7 @@ def print_summary(reliable):
 def print_additional_summary(reliable):
     if status_code in CLI_E:
         id_mode = f"[http_{status_code}]"
-        if detail := print_detail(id_mode, num_lines=0):
+        if detail := print_detail(id_mode, 0):
             print(detail)
         print(REF_SRV_E + str(status_code))
     if reliable:
@@ -819,19 +826,6 @@ def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt):
         print(f"{(print_detail_l(literal) or '')[:-1]}{total}")
 
 
-def parse_csp(csp_header):
-    # TO-DO: analyze/show detailed directives and values in the future.
-    csp_output = []
-    for directive in csp_header.split(';'):
-        dir_csp = directive.strip().split(' ', 1)
-        if dir_name := dir_csp[0]:
-            csp_output.extend([f" {Style.BRIGHT}{dir_name}{Style.RESET_ALL}"])
-            if len(dir_csp) > 1 and dir_csp[1]:
-                csp_output.append(f" {dir_csp[1]}")
-            csp_output.append("")
-    return '\n'.join(csp_output)
-
-
 def generate_json(name_e, name_p):
     section0 = get_detail('[0section]', replace=True)
     sectionh = get_detail('[0headers]', replace=True)
@@ -852,25 +846,23 @@ def parse_json_sections(txt_sections, data, section0, sectionh, section5):
         json_content = txt_sections[i + 1].strip()
         if json_section == section5:
             json_content = json_content.split('.:')[0].strip()
-        json_lines = json_content.split('\n')
+        json_lns = json_content.split('\n')
         json_data = write_json_sections(section0, sectionh, section5,
-                                        json_section,
-                                        json_lines)
+                                        json_section, json_lns)
         data[json_section] = json_data
 
 
-def write_json_sections(section0, sectionh, section5, json_section,
-                        json_lines):
+def write_json_sections(section0, sectionh, section5, json_section, json_lns):
     if json_section in (section0, sectionh, section5):
         json_data = {}
-        for line in json_lines:
+        for line in json_lns:
             if ':' in line:
                 key, value = line.split(':', 1)
                 json_data[key.strip()] = value.strip()
             else:
                 json_data[line.strip()] = ""
     else:
-        json_data = [line.strip() for line in json_lines if line.strip()]
+        json_data = [line.strip() for line in json_lns if line.strip()]
     return json_data
 
 
@@ -888,9 +880,8 @@ def print_ru_message():
         sffx = tldextract.extract(URL).suffix[-2:].upper()
         cnty = requests.get('https://ipapi.co/country_name/', verify=False,
                             timeout=5).text.strip()
-        if (sffx == 'RU' and sffx not in NON_RU_TLDS) or cnty == 'Russia':
-            print("")
-            print_detail('[bcnt]', 2)
+        if (sffx == 'RU' and sffx not in NON_RU_TLD) or cnty == 'Russia':
+            print_detail('[check_ru]', 3)
             sys.exit()
 
 
@@ -899,13 +890,13 @@ def handle_http_error(http_code, id_mode):
         clean_output()
         print()
         if http_code in SRV_E or http_code in CDN_E:
-            if detail := print_detail(id_mode, num_lines=0):
+            if detail := print_detail(id_mode, 0):
                 print(detail)
             else:
                 print((REF_SRV_E if http_code in SRV_E else REF_CDN_E) +
                       str(http_code))
         else:
-            print_detail('[e_serror]', num_lines=1)
+            print_detail('[e_serror]', 1)
         sys.exit()
 
 
@@ -913,8 +904,13 @@ def make_http_request():
     try:
         start_time = time()
         uri_safe = quote(URL)
-        # If '-df' (args.redirect) param is provided the exact URL will be
+        # If '-df' param is provided ('args.redirect') the exact URL will be
         # analyzed; otherwise the last redirected URL will be analyzed.
+        #
+        # Regarding 'verify=False': yes, Server certificates should be
+        # verified during SSL/TLS connections; however, I think it is also
+        # important that URLs with self-signed certificates or development
+        # environments can be analyzed.
         r = requests.get(uri_safe, allow_redirects=not args.redirects,
                          verify=False, headers=c_headers, timeout=15)
         elapsed_time = time() - start_time
@@ -1011,9 +1007,10 @@ updates")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 details_f = get_details_lines()
+check_python_version()
 
 if args.version:
-    check_updates(version)
+    check_humble_updates(version)
     sys.exit()
 
 if '-f' in sys.argv:
@@ -1022,7 +1019,7 @@ if '-f' in sys.argv:
 
 if '-e' in sys.argv:
     if platform.system().lower() == 'windows':
-        print_detail('[args_ssltls]', num_lines=28)
+        print_detail('[windows_ssltls]', 28)
         sys.exit()
     if (args.path is None or args.URL is None):
         parser.error(get_detail('[args_notestssl]'))
@@ -1034,11 +1031,11 @@ if any([args.brief, args.output, args.ret, args.redirects]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
     parser.error(get_detail('[args_several]'))
 
+# Exporting a detailed analysis to JSON is tricky; this will take some time ...
 if args.output == 'json' and not args.brief:
     parser.error(get_detail('[args_json]'))
 
 URL = args.URL
-python_ver()
 
 if args.guides:
     print_guides()

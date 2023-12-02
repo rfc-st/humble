@@ -597,7 +597,8 @@ HTTP Response Headers
 [5compat_s]
 5.- Browser Compatibility
 
-[guides]
+[security_guides]
+
  Useful guides and references on HTTP response headers and popular servers/services:
 
 [e_schema]
@@ -657,7 +658,8 @@ HTTP Response Headers
 [info]
  Date :
 
-[python]
+[python_version]
+
  This tool requires, at least, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
@@ -977,7 +979,8 @@ HTTP Response Headers
 [aisc]
  The following headers/protocols are deprecated or their values may be considered unsafe:
 
-[bcnt]
+[check_ru]
+
  This humble program will not analyze Russian domains, nor will it be allowed to be used from Russian IPs, until Russia withdraws from Ukraine.
  Ref: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
@@ -1161,7 +1164,7 @@ Highlights
 [fng_top_2]
  headers of the source file
 
-[args_ssltls]
+[windows_ssltls]
 
 To run an SSL/TSL analysis on Windows (via testssl.sh) you have three choices:
 
@@ -1192,7 +1195,7 @@ To run an SSL/TSL analysis on Windows (via testssl.sh) you have three choices:
 -- Ex. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 [args_notestssl]
-'-e' requires the path of 'testssl.sh' and '-u'.
+'-e' requires the PATH of 'testssl.sh' and '-u'.
 
 [args_lang]
 '-l' requires also '-u' or '-a'.

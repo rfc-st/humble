@@ -597,7 +597,8 @@ Cabeceras de respuesta HTTP
 [5compat_s]
 5.- Compatibilidad de navegadores
 
-[guides]
+[security_guides]
+
  Guías y referencias útiles sobre cabeceras de respuesta HTTP y servidores/servicios populares:
 
 [e_schema]
@@ -657,7 +658,8 @@ Cabeceras de respuesta HTTP
 [info]
  Fecha:
 
-[python]
+[python_version]
+
  Este programa requiere, al menos, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
@@ -977,7 +979,8 @@ Cabeceras de respuesta HTTP
 [aisc]
  Estas cabeceras, o protocolos, están obsoletos o sus valores son inseguros:
 
-[bcnt]
+[check_ru]
+
  Este humilde programa no analizará dominios rusos, ni permitirá su uso desde Rusia, hasta que se retire de Ucrania.
  Ref: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
@@ -1161,7 +1164,7 @@ A destacar
 [fng_top_2]
  cabeceras del fichero fuente
 
-[args_ssltls]
+[windows_ssltls]
 
 Para ejecutar un análisis SSL/TSL en Windows (vía testssl.sh) tienes tres opciones:
 
