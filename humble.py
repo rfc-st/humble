@@ -1732,6 +1732,7 @@ elif args.output == 'pdf':
 
     pdf.output(name_p)
     print_path(name_p, reliable)
+    pdf_source.close()
     f.close()
     remove(name_e)
 elif args.output == 'html':
