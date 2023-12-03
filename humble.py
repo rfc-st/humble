@@ -86,7 +86,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-02', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-03', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -95,8 +95,8 @@ class PDF(FPDF):
         self.set_font('Courier', 'B', 10)
         self.set_y(15)
         pdf.set_text_color(0, 0, 0)
-        self.cell(0, 5, get_detail('[pdf_t]'), new_x="CENTER", new_y="NEXT",
-                  align='C')
+        self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
+                  new_y="NEXT", align='C')
         self.ln(1)
         self.cell(0, 5, f"({GIT_U})", align='C')
         self.ln(9) if self.page_no() == 1 else self.ln(13)
@@ -105,19 +105,20 @@ class PDF(FPDF):
         self.set_y(-15)
         self.set_font('Helvetica', 'I', 8)
         pdf.set_text_color(0, 0, 0)
-        self.cell(0, 10, get_detail('[pdf_p]') + ' ' + str(self.page_no()) +
-                  get_detail('[pdf_po') + ' {nb}', align='C')
+        self.cell(0, 10, get_detail('[pdf_footer]') + ' ' +
+                  str(self.page_no()) + get_detail('[pdf_footer2') +
+                  ' {nb}', align='C')
 
 
 def pdf_metadata():
-    title = get_detail('[pdf_m]', replace=True) + ' ' + URL
+    title = get_detail('[pdf_meta_title]', replace=True) + ' ' + URL
     git_urlc = f"{GIT_U} (v.{version})"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
     pdf.set_creator(git_urlc)
-    pdf.set_keywords(get_detail('[pdf_k]', replace=True))
-    pdf.set_lang(get_detail('[pdf_l]'))
-    pdf.set_subject(get_detail('[pdf_s]', replace=True))
+    pdf.set_keywords(get_detail('[pdf_meta_keywords]', replace=True))
+    pdf.set_lang(get_detail('[pdf_meta_language]'))
+    pdf.set_subject(get_detail('[pdf_meta_subject]', replace=True))
     pdf.set_title(title)
     pdf.set_producer(git_urlc)
 
@@ -199,7 +200,7 @@ def check_humble_updates(version):
         remote_v_date = datetime.strptime(remote_v, '%Y-%m-%d').date()
         if remote_v_date > version:
             print(f"\n v.{version}{get_detail('[not_latest]')[:-1]}{remote_v})\
-                  \n{get_detail('[home]')}")
+                  \n{get_detail('[github_humble]')}")
         else:
             print(f"\n v.{version}{get_detail('[latest]')}")
     except requests.exceptions.RequestException:
@@ -262,7 +263,7 @@ def fng_analytics_content(fng_group, term, term_count, fng_lines):
         fng_ln = len(fng_lines)-excl_ln
         pct_fng = round(term_count / fng_ln * 100, 2)
         print(f"{get_detail('[fng_add]', replace=True)} '{term}': {pct_fng}%\
- ({term_count}{get_detail('[pdf_po]', replace=True)} {fng_ln})")
+ ({term_count}{get_detail('[pdf_footer2]', replace=True)} {fng_ln})")
         fng_analytics_sorted(fng_lines, term, fng_group)
 
 
@@ -424,7 +425,7 @@ def extract_second_metrics(url_ln, index, total_a):
     metric_c = len([line for line in url_ln if int(line.split(' ; ')[index])
                     == 0])
     return f"{metric_c / total_a:.0%} ({metric_c}\
-{get_detail('[pdf_po]', replace=True)} {total_a})"
+{get_detail('[pdf_footer2]', replace=True)} {total_a})"
 
 
 def extract_third_metrics(url_ln):
@@ -481,7 +482,7 @@ def get_month_counts(year, url_ln):
 
 
 def extract_highlights(url_ln):
-    sections = ['[miss_cnt]', '[finger_cnt]', '[ins_cnt]', '[empty_cnt]']
+    sections = ['[missing_cnt]', '[fng_cnt]', '[insecure_cnt]', '[empty_cnt]']
     fields_h = [2, 3, 4, 5]
     return [f"{print_detail_l(sections[i], analytics=True)}\n"
             f"  {print_detail_l('[best_analysis]', analytics=True)}: \
@@ -660,24 +661,18 @@ def csp_parse_content(csp_header):
     return '\n'.join(csp_output)
 
 
-def clean_output():
+def clean_output(reliable=True):
     # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
+    if not reliable:
+        sys.stdout.write(CLE_O)
     sys.stdout.write(CLE_O)
-
-
-def clean_output_r():
-    sys.stdout.write(CLE_O)
-    sys.stdout.write('\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b')
 
 
 def print_path(filename, reliable):
-    clean_output_r() if reliable else clean_output()
+    clean_output(reliable=False) if reliable else clean_output()
     print("")
     print_detail_l('[report]')
     print(path.abspath(filename))
-    if reliable:
-        print("")
-        print(get_detail('[analysis_wait_note]', replace=True))
 
 
 def print_ok():
@@ -700,7 +695,7 @@ def print_header_fng(header):
 
 def print_summary(reliable):
     if not args.output:
-        clean_output_r() if reliable else clean_output()
+        clean_output(reliable=False) if reliable else clean_output()
         print("")
         banner = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
@@ -817,7 +812,7 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
 
 
 def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt):
-    literals = ['[miss_cnt]', '[finger_cnt]', '[ins_cnt]', '[empty_cnt]',
+    literals = ['[missing_cnt]', '[fng_cnt]', '[insecure_cnt]', '[empty_cnt]',
                 '[total_cnt]']
     totals = [f"{m_cnt} ({mhr_cnt})", f"{f_cnt} ({fhr_cnt})", f"{i_cnt[0]} \
 ({ihr_cnt})", f"{e_cnt} ({ehr_cnt})\n", f"{t_cnt} ({thr_cnt})\n"]
@@ -896,7 +891,7 @@ def handle_http_error(http_code, id_mode):
                 print((REF_SRV_E if http_code in SRV_E else REF_CDN_E) +
                       str(http_code))
         else:
-            print_detail('[e_serror]', 1)
+            print_detail('[server_serror]', 1)
         sys.exit()
 
 
@@ -1312,6 +1307,8 @@ l_support_mode = ['credentialed-prerender']
 l_surrogate = ['content', 'extension-directive', 'max-age', 'no-store',
                'no-store-remote']
 
+# TO-DO: Update deprecated client-hints
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 if 'Accept-CH' in headers:
     acceptch_header = headers['Accept-CH'].lower()
     if URL.startswith(INS_S):
@@ -1326,6 +1323,9 @@ if 'Accept-CH' in headers:
 
 if 'Accept-CH-Lifetime' in headers:
     print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
+
+# TO-DO: Add Accept-Patch
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Patch
 
 accescred_header = headers.get("Access-Control-Allow-Credentials", '').lower()
 if accescred_header and accescred_header != 'true':
@@ -1514,6 +1514,8 @@ if referrer_header:
 if 'Server-Timing' in headers:
     print_details('[itim_h]', '[itim]', 'd', i_cnt)
 
+# TO-DO: Check Cookie prefixes
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#cookie_prefixes
 ck_header = headers.get("Set-Cookie", '').lower()
 if ck_header:
     if not (URL.startswith(INS_S)) and not all(elem in ck_header for elem in
@@ -1736,7 +1738,7 @@ elif args.output == 'pdf':
     f.close()
     remove(name_e)
 elif args.output == 'html':
-    title = get_detail('[pdf_s]')
+    title = get_detail('[pdf_meta_subject]')
     header = f'<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
 <title>{title}</title><style>pre {{overflow-x: auto; white-space: \
 pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: \

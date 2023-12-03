@@ -555,25 +555,25 @@
 [ixxpd_h]
  X-XSS-Protection (Valores duplicados)
 
-[pdf_t]
+[pdf_title]
 Analizador de cabeceras HTTP
 
-[pdf_p]
+[pdf_footer]
 Página
 
-[pdf_po]
+[pdf_footer2]
  de
 
-[pdf_m]
+[pdf_meta_title]
 Informe de las cabeceras HTTP de
 
-[pdf_k]
+[pdf_meta_keywords]
 Cabeceras HTTP Analizador Informe Ciberseguridad Seguridad
 
-[pdf_l]
+[pdf_meta_language]
 es-ES
 
-[pdf_s]
+[pdf_meta_subject]
 Informe de cabeceras HTTP
 
 [0section_s]
@@ -607,7 +607,7 @@ Cabeceras de respuesta HTTP
 [e_invalid]
  Error: La URL no resuelve. Revisa que sea correcta y prueba de nuevo.
 
-[e_serror]
+[server_serror]
  Error en servidor; espera unos minutos y prueba de nuevo.
 
 [e_404]
@@ -984,13 +984,13 @@ Cabeceras de respuesta HTTP
  Este humilde programa no analizará dominios rusos, ni permitirá su uso desde Rusia, hasta que se retire de Ucrania.
  Ref: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
-[miss_cnt]
+[missing_cnt]
   Cabeceras no habilitadas:                    
 
-[finger_cnt]
+[fng_cnt]
   Huella digital por cabeceras:                
 
-[ins_cnt]
+[insecure_cnt]
   Protocolos/Cabeceras obsoletas o inseguras:  
 
 [empty_cnt]
@@ -1137,7 +1137,7 @@ A destacar
 [latest]
  (estás usando una versión reciente)
 
-[home]
+[github_humble]
  Revisa las novedades en https://github.com/rfc-st/humble/
 
 [update_error]

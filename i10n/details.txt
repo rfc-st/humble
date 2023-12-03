@@ -555,25 +555,25 @@
 [ixxpd_h]
  X-XSS-Protection (Duplicated Values)
 
-[pdf_t]
+[pdf_title]
 Humble HTTP headers analyzer
 
-[pdf_p]
+[pdf_footer]
 Page
 
-[pdf_po]
+[pdf_footer2]
  of
 
-[pdf_m]
+[pdf_meta_title]
 Humble HTTP headers analysis of
 
-[pdf_k]
+[pdf_meta_keywords]
 HTTP Headers  Analyzer  Analysis  Cybersecurity  Security-scanner  Security-Tools  Header-Parser
 
-[pdf_l]
+[pdf_meta_language]
 en-US
 
-[pdf_s]
+[pdf_meta_subject]
 HTTP headers analysis
 
 [0section_s]
@@ -607,7 +607,7 @@ HTTP Response Headers
 [e_invalid]
  Error: The URL is not valid. Check syntax and try again.
 
-[e_serror]
+[server_serror]
  Server error; wait a while and try again.
 
 [e_404]
@@ -984,13 +984,13 @@ HTTP Response Headers
  This humble program will not analyze Russian domains, nor will it be allowed to be used from Russian IPs, until Russia withdraws from Ukraine.
  Ref: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
-[miss_cnt]
+[missing_cnt]
   Missing headers:              
 
-[finger_cnt]
+[fng_cnt]
   Fingerprint headers:          
 
-[ins_cnt]
+[insecure_cnt]
   Deprecated/Insecure headers:  
 
 [empty_cnt]
@@ -1137,7 +1137,7 @@ Highlights
 [latest]
  (you are using a recent version)
 
-[home]
+[github_humble]
  Check for updates in https://github.com/rfc-st/humble/
 
 [update_error]
