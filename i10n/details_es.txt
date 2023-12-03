@@ -314,11 +314,11 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning
 
-[humble]
+[humble_description]
  Analizador de cabeceras HTTP
  (https://github.com/rfc-st/humble)
 
-[bcompat_n]
+[no_sec_headers]
  No hay cabeceras de seguridad HTTP habilitadas.
 
 [icsi_d_r]
@@ -655,7 +655,7 @@ Cabeceras de respuesta HTTP
 [analysis_output]
  Analizando URL y guardando el informe, espera por favor ...
 
-[info]
+[analysis_date]
  Fecha:
 
 [python_version]
@@ -663,7 +663,7 @@ Cabeceras de respuesta HTTP
  Este programa requiere, al menos, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
-[ok]
+[ok_check]
  Todo parece estar bien.
 
 [mcache]

@@ -314,11 +314,11 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning
 
-[humble]
+[humble_description]
  Humble HTTP headers analyzer
  (https://github.com/rfc-st/humble)
 
-[bcompat_n]
+[no_sec_headers]
  No HTTP security headers are enabled.
 
 [icsi_d_r]
@@ -655,7 +655,7 @@ HTTP Response Headers
 [analysis_output]
  Analyzing URL and saving the report, please wait ...
 
-[info]
+[analysis_date]
  Date :
 
 [python_version]
@@ -663,7 +663,7 @@ HTTP Response Headers
  This tool requires, at least, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
-[ok]
+[ok_check]
  Nothing to report, all seems OK!
 
 [mcache]

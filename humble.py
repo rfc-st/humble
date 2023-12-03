@@ -676,7 +676,7 @@ def print_path(filename, reliable):
 
 
 def print_ok():
-    print_detail('[ok]')
+    print_detail('[ok_check]')
 
 
 def print_header(header):
@@ -707,10 +707,10 @@ def print_summary(reliable):
         print(f" ({GIT_U})")
     elif args.output != 'pdf':
         print("")
-        print_detail('[humble]', 2)
+        print_detail('[humble_description]', 2)
     print(linesep.join(['']*2))
     print_detail_r('[0section]')
-    print_detail_l('[info]')
+    print_detail_l('[analysis_date]')
     print(f" {now}")
     print(f' URL  : {URL}')
     if status_code in CLI_E or reliable or args.redirects:
@@ -1694,8 +1694,8 @@ if header_matches:
         print(f"{output_string}{key_string}{CAN_S}\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 else:
-    print_detail_l("[bcompat_n]") if args.output else \
-        print_detail_r("[bcompat_n]", is_red=True)
+    print_detail_l("[no_sec_headers]") if args.output else \
+        print_detail_r("[no_sec_headers]", is_red=True)
 
 print(linesep.join(['']*2))
 end = time()
@@ -1753,8 +1753,8 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
     l_final = sorted(l_miss + l_ins)
     l_fng_final = sorted(l_fng)
 
-    ok_string = get_detail('[ok]')
-    ko_string = get_detail('[bcompat_n]')
+    ok_string = get_detail('[ok_check]')
+    ko_string = get_detail('[no_sec_headers]')
 
     sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
              'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
