@@ -86,7 +86,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-03', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-04', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1251,10 +1251,10 @@ l_legacy = ['application/javascript', 'application/ecmascript',
             'text/x-ecmascript', 'text/x-javascript']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
-l_trailer = ['Authorization', 'Cache-Control', 'Content-Encoding',
-             'Content-Length', 'Content-Type', 'Content-Range', 'Host',
-             'Max-Forwards', 'Set-Cookie', 'TE', 'Trailer',
-             'Transfer-Encoding']
+l_trailer = ['authorization', 'cache-control', 'content-encoding',
+             'content-length', 'content-type', 'content-range', 'host',
+             'max-forwards', 'set-cookie', 'te', 'trailer',
+             'transfer-encoding']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
 l_transfer = ['chunked', 'compress', 'deflate', 'gzip']
@@ -1323,9 +1323,6 @@ if 'Accept-CH' in headers:
 
 if 'Accept-CH-Lifetime' in headers:
     print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
-
-# TO-DO: Add Accept-Patch
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Patch
 
 accescred_header = headers.get("Access-Control-Allow-Credentials", '').lower()
 if accescred_header and accescred_header != 'true':
