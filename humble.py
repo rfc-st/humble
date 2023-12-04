@@ -65,6 +65,7 @@ CLE_O = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
 F_FILE = 'fingerprint.txt'
+GIT_H = "https://raw.githubusercontent.com/rfc-st/humble/master/humble.py"
 GIT_U = "https://github.com/rfc-st/humble"
 INS_S = 'http:'
 IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
@@ -193,9 +194,8 @@ def check_python_version():
 
 
 def check_humble_updates(version):
-    r_url = 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py'
     try:
-        response_t = requests.get(r_url, timeout=10).text
+        response_t = requests.get(GIT_H, timeout=10).text
         remote_v = re.search(r"\d{4}-\d{2}-\d{2}", response_t).group()
         remote_v_date = datetime.strptime(remote_v, '%Y-%m-%d').date()
         if remote_v_date > version:
@@ -987,13 +987,13 @@ omitted)")
 parser.add_argument("-g", dest='guides', action="store_true", help="show \
 guidelines for securing popular web servers/services")
 parser.add_argument("-l", dest='lang', choices=['es'], help="the language for \
-displaying analyses, messages and errors (if omitted it will be in English)")
+displaying analyses, errors and messages (if omitted it will be in English)")
 parser.add_argument("-o", dest='output', choices=['html', 'json', 'pdf',
                                                   'txt'], help="save analysis \
 to 'scheme_host_port_yyyymmdd.ext' file (.json files will contain a brief \
 analysis)")
-parser.add_argument("-r", dest='ret', action="store_true", help="show full \
- HTTP response headers and a detailed analysis")
+parser.add_argument("-r", dest='ret', action="store_true", help="show HTTP \
+response headers and a detailed analysis ('-b' parameter will take priority)")
 parser.add_argument('-u', type=str, dest='URL', help="schema and URL to \
 analyze. E.g. https://google.com")
 parser.add_argument("-v", "--version", action="store_true",
@@ -1052,6 +1052,7 @@ if not args.URL_A:
     print("")
     print_detail(detail)
 
+# TO-DO: check https://github.com/rfc-st/humble/pull/16
 # Regarding 'dh key too small' errors: https://stackoverflow.com/a/41041028
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
 try:
@@ -1079,8 +1080,7 @@ headers, status_code, reliable, request_time = request_exceptions()
 ext = "t.txt" if args.output in ['html', 'json', 'pdf'] else ".txt"
 
 if args.output:
-    # tldextract seems to be more reliable for extracting certain components of
-    # the URI.
+    # tldextract seems to be more reliable for certain components of the URI.
     orig_stdout = sys.stdout
     url_obj = tldextract.extract(URL)
     url_sch = urlparse(URL).scheme
@@ -1312,7 +1312,7 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
-# TO-DO: Update deprecated client-hints
+# TO-DO: Update deprecated client-hints checks
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 if 'Accept-CH' in headers:
     acceptch_header = headers['Accept-CH'].lower()
