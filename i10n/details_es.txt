@@ -468,6 +468,9 @@
 [iseti_m]
  Set-Cookie (Atributo ausente)
 
+[ispref_m]
+ Set-Cookie (Prefijos de cookies)
+
 [ismap_m]
  SourceMap (Funcionalidad insegura)
 
@@ -851,6 +854,10 @@ Cabeceras de respuesta HTTP
 
 [isetm]
  Las cookies 'SameSite=None' también deben establecerse con el atributo 'Secure'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+
+[ispref]
+ Las cookies '__Host-' y '__Secure-' deben servirse desde HTTPS y tener el flag 'secure'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [ismap]

@@ -1193,12 +1193,12 @@ l_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK', 'DELETE',
              'DEBUG', 'PATCH', '*']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+l_cache = ['no-cache', 'no-store', 'must-revalidate']
+
 l_cachev = ['immutable', 'max-age', 'must-revalidate', 'must-understand',
             'no-cache', 'no-store', 'no-transform', 'private',
             'proxy-revalidate', 'public', 's-maxage', 'stale-if-error',
             'stale-while-revalidate']
-
-l_cache = ['no-cache', 'no-store', 'must-revalidate']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 l_csdata = ['cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
@@ -1206,6 +1206,29 @@ l_csdata = ['cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
 l_cencoding = ['br', 'compress', 'deflate', 'gzip', 'x-gzip']
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+# https://www.w3.org/TR/CSP2/
+# https://www.w3.org/TR/CSP3/
+l_csp_broad = ['*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'https:',
+               'https://*', 'https://*.*', 'schemes:', 'wss:', 'wss://']
+
+l_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
+
+l_csp_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
+             'prefetch-src', 'referrer', 'report-uri', 'require-sri-for']
+
+l_csp_dirs = ['base-uri', 'child-src', 'connect-src', 'default-src',
+              'font-src', 'form-action', 'frame-ancestors', 'frame-src',
+              'img-src', 'manifest-src', 'media-src', 'navigate-to',
+              'object-src', 'report-to', 'require-trusted-types-for',
+              'sandbox', 'script-src', 'script-src-elem', 'script-src-attr',
+              'style-src', 'style-src-elem', 'style-src-attr', 'trusted-types',
+              'upgrade-insecure-requests', 'webrtc', 'worker-src']
+
+l_csp_insecure = ['http:', 'ws:']
+
+l_csp_ro_dep = ['violated-directive']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
 l_coep = ['credentialless', 'require-corp', 'unsafe-none']
@@ -1215,29 +1238,6 @@ l_coop = ['same-origin', 'same-origin-allow-popups', 'unsafe-none']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
 l_corp = ['cross-origin', 'same-origin', 'same-site']
-
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
-# https://www.w3.org/TR/CSP2/
-# https://www.w3.org/TR/CSP3/
-l_csp_dirs = ['base-uri', 'child-src', 'connect-src', 'default-src',
-              'font-src', 'form-action', 'frame-ancestors', 'frame-src',
-              'img-src', 'manifest-src', 'media-src', 'navigate-to',
-              'object-src', 'report-to', 'require-trusted-types-for',
-              'sandbox', 'script-src', 'script-src-elem', 'script-src-attr',
-              'style-src', 'style-src-elem', 'style-src-attr', 'trusted-types',
-              'upgrade-insecure-requests', 'webrtc', 'worker-src']
-
-l_csp_broad = ['*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'https:',
-               'https://*', 'https://*.*', 'schemes:', 'wss:', 'wss://']
-
-l_csp_insecure = ['http:', 'ws:']
-
-l_csp_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
-             'prefetch-src', 'referrer', 'report-uri', 'require-sri-for']
-
-l_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
-
-l_csp_ro_dep = ['violated-directive']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
 l_excc = ['max-age', 's-maxage']
@@ -1249,15 +1249,6 @@ l_legacy = ['application/javascript', 'application/ecmascript',
             'text/javascript1.2', 'text/javascript1.3', 'text/javascript1.4',
             'text/javascript1.5', 'text/jscript', 'text/livescript',
             'text/x-ecmascript', 'text/x-javascript']
-
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
-l_trailer = ['authorization', 'cache-control', 'content-encoding',
-             'content-length', 'content-type', 'content-range', 'host',
-             'max-forwards', 'set-cookie', 'te', 'trailer',
-             'transfer-encoding']
-
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
-l_transfer = ['chunked', 'compress', 'deflate', 'gzip']
 
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
@@ -1284,12 +1275,33 @@ l_per_dirs = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'xr-spatial-tracking']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+l_ref_secure = ['strict-origin', 'strict-origin-when-cross-origin',
+                'no-referrer-when-downgrade', 'no-referrer']
+
 l_ref_values = ['no-referrer', 'no-referrer-when-downgrade', 'origin',
                 'origin-when-cross-origin', 'same-origin', 'strict-origin',
                 'strict-origin-when-cross-origin', 'unsafe-url']
 
-l_ref_secure = ['strict-origin', 'strict-origin-when-cross-origin',
-                'no-referrer-when-downgrade', 'no-referrer']
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+l_cookie_prf = ['__Host-', '__Secure-']
+
+l_cookie_sec = ['httponly', 'secure']
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
+l_support_mode = ['credentialed-prerender']
+
+# https://www.w3.org/TR/edge-arch/
+l_surrogate = ['content', 'extension-directive', 'max-age', 'no-store',
+               'no-store-remote']
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
+l_trailer = ['authorization', 'cache-control', 'content-encoding',
+             'content-length', 'content-type', 'content-range', 'host',
+             'max-forwards', 'set-cookie', 'te', 'trailer',
+             'transfer-encoding']
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
+l_transfer = ['chunked', 'compress', 'deflate', 'gzip']
 
 # https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 # https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
@@ -1299,13 +1311,6 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
             'noarchive', 'nocache', 'noodp', 'nofollow', 'noimageindex',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
-
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
-l_support_mode = ['credentialed-prerender']
-
-# https://www.w3.org/TR/edge-arch/
-l_surrogate = ['content', 'extension-directive', 'max-age', 'no-store',
-               'no-store-remote']
 
 # TO-DO: Update deprecated client-hints
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
@@ -1511,16 +1516,17 @@ if referrer_header:
 if 'Server-Timing' in headers:
     print_details('[itim_h]', '[itim]', 'd', i_cnt)
 
-# TO-DO: Check Cookie prefixes
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#cookie_prefixes
-ck_header = headers.get("Set-Cookie", '').lower()
-if ck_header:
-    if not (URL.startswith(INS_S)) and not all(elem in ck_header for elem in
-                                               ('secure', 'httponly')):
+stc_header = headers.get("Set-Cookie", '').lower()
+if stc_header:
+    if not (URL.startswith(INS_S)) and not all(elem in stc_header for elem in
+                                               l_cookie_sec):
         print_details("[iset_h]", "[iset]", "d", i_cnt)
-    if (URL.startswith(INS_S)) and ('secure' in ck_header):
-        print_details("[iseti_h]", "[iseti]", "d", i_cnt)
-    if "samesite=none" in ck_header and "secure" not in ck_header:
+    if URL.startswith(INS_S):
+        if 'secure' in stc_header:
+            print_details("[iseti_h]", "[iseti]", "d", i_cnt)
+        if any(prefix in stc_header for prefix in l_cookie_prf):
+            print_details("[ispref_m]", "[ispref]", "d", i_cnt)
+    if "samesite=none" in stc_header and "secure" not in stc_header:
         print_details("[iseti_m]", "[isetm]", "d", i_cnt)
 
 if 'SourceMap' in headers:
