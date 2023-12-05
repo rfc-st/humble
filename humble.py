@@ -275,7 +275,7 @@ def fng_analytics_sorted(fng_lines, term, fng_group):
                 print(f"  {line[:line.find('[')].strip()}")
 
 
-def print_guides():
+def print_security_guides():
     print_detail('[security_guides]', 1)
     with open(path.join('additional', 'guides.txt'), 'r', encoding='utf8') as \
             gd:
@@ -328,22 +328,22 @@ def get_details_lines():
         return file.readlines()
 
 
-def analysis_time():
+def get_analysis_result():
     print(".:")
     print("")
     print_detail_l('[analysis_time]')
     print(round(end - start, 2), end="")
     print_detail_l('[analysis_time_sec]')
     t_cnt = m_cnt + f_cnt + i_cnt[0] + e_cnt
-    mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = get_totals(t_cnt)
+    mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = get_analysis_totals(t_cnt)
     mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, \
-        thr_cnt = compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt,
-                                 eh_cnt, e_cnt, th_cnt, t_cnt)
+        thr_cnt = compare_analysis_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt,
+                                          i_cnt, eh_cnt, e_cnt, th_cnt, t_cnt)
     print("")
-    analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt)
+    print_analysis_totals(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt)
 
 
-def get_totals(t_cnt):
+def get_analysis_totals(t_cnt):
     with open(A_FILE, 'a+', encoding='utf8') as a_history, \
          open(A_FILE, 'r', encoding='utf8') as c_history:
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
@@ -351,11 +351,12 @@ def get_totals(t_cnt):
         url_ln = [line for line in c_history if URL in line]
         if not url_ln:
             return ("First",) * 5
-        mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = extract_totals(url_ln)
+        mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = \
+            extract_analysis_totals(url_ln)
         return mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt
 
 
-def extract_totals(url_ln):
+def extract_analysis_totals(url_ln):
     date_var = max(line.split(" ; ")[0] for line in url_ln)
     for line in url_ln:
         if date_var in line:
@@ -365,13 +366,23 @@ def extract_totals(url_ln):
     return mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt
 
 
-def compare_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt, eh_cnt, e_cnt,
-                   th_cnt, t_cnt):
+def compare_analysis_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt,
+                            eh_cnt, e_cnt, th_cnt, t_cnt):
     if mh_cnt == "First":
         return [get_detail('[first_one]', replace=True)] * 5
     totals = [m_cnt - int(mh_cnt), f_cnt - int(fh_cnt), i_cnt[0] - int(ih_cnt),
               e_cnt - int(eh_cnt), t_cnt - int(th_cnt)]
     return [f'+{total}' if total > 0 else str(total) for total in totals]
+
+
+def print_analysis_totals(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt):
+    literals = ['[missing_cnt]', '[fng_cnt]', '[insecure_cnt]', '[empty_cnt]',
+                '[total_cnt]']
+    totals = [f"{m_cnt} ({mhr_cnt})", f"{f_cnt} ({fhr_cnt})", f"{i_cnt[0]} \
+({ihr_cnt})", f"{e_cnt} ({ehr_cnt})\n", f"{t_cnt} ({thr_cnt})\n"]
+    print("")
+    for literal, total in zip(literals, totals):
+        print(f"{(print_detail_l(literal) or '')[:-1]}{total}")
 
 
 def analysis_exists(filepath):
@@ -385,7 +396,7 @@ def url_analytics(is_global=False):
     analysis_exists(A_FILE)
     with open(A_FILE, 'r', encoding='utf8') as c_history:
         analysis_stats = extract_global_metrics(c_history) if is_global else \
-            extract_metrics(c_history)
+            extract_analysis_metrics(c_history)
     stats_s = '[global_stats_analysis]' if is_global else '[stats_analysis]'
     print(f"\n{get_detail(stats_s, replace=True)} {'' if is_global else URL}\
 \n")
@@ -395,7 +406,7 @@ def url_analytics(is_global=False):
         print(f"{key}: {value}")
 
 
-def extract_metrics(c_history):
+def extract_analysis_metrics(c_history):
     url_ln = [line for line in c_history if URL in line]
     if not url_ln:
         print(f"\n{get_detail('[no_analysis]').strip()}\n")
@@ -661,15 +672,15 @@ def csp_parse_content(csp_header):
     return '\n'.join(csp_output)
 
 
-def clean_output(reliable=True):
+def clean_shell_output(reliable=True):
     # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
     if not reliable:
         sys.stdout.write(CLE_O)
     sys.stdout.write(CLE_O)
 
 
-def print_path(filename, reliable):
-    clean_output(reliable=False) if reliable else clean_output()
+def print_export_path(filename, reliable):
+    clean_shell_output(reliable=False) if reliable else clean_shell_output()
     print("")
     print_detail_l('[report]')
     print(path.abspath(filename))
@@ -693,9 +704,10 @@ def print_header_fng(header):
         print(f"{BRI_R} {header}")
 
 
-def print_summary(reliable):
+def print_analysis_summary(reliable):
     if not args.output:
-        clean_output(reliable=False) if reliable else clean_output()
+        clean_shell_output(reliable=False) if reliable else \
+            clean_shell_output()
         print("")
         banner = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
@@ -811,16 +823,6 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
         print_header(header)
 
 
-def analysis_detail(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt):
-    literals = ['[missing_cnt]', '[fng_cnt]', '[insecure_cnt]', '[empty_cnt]',
-                '[total_cnt]']
-    totals = [f"{m_cnt} ({mhr_cnt})", f"{f_cnt} ({fhr_cnt})", f"{i_cnt[0]} \
-({ihr_cnt})", f"{e_cnt} ({ehr_cnt})\n", f"{t_cnt} ({thr_cnt})\n"]
-    print("")
-    for literal, total in zip(literals, totals):
-        print(f"{(print_detail_l(literal) or '')[:-1]}{total}")
-
-
 def generate_json(name_e, name_p):
     section0 = get_detail('[0section]', replace=True)
     sectionh = get_detail('[0headers]', replace=True)
@@ -862,7 +864,7 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
 
 
 def detail_exceptions(id_exception, exception_v):
-    clean_output()
+    clean_shell_output()
     print("")
     print_detail(id_exception)
     raise SystemExit from exception_v
@@ -882,7 +884,7 @@ def print_ru_message():
 
 def handle_http_error(http_code, id_mode):
     if str(http_code).startswith('5'):
-        clean_output()
+        clean_shell_output()
         print()
         if http_code in SRV_E or http_code in CDN_E:
             if detail := print_detail(id_mode, 0):
@@ -899,7 +901,7 @@ def make_http_request():
     try:
         start_time = time()
         uri_safe = quote(URL)
-        # If '-df' param is provided ('args.redirect') the exact URL will be
+        # If '-df' param is provided ('args.redirects') the exact URL will be
         # analyzed; otherwise the last redirected URL will be analyzed.
         #
         # Regarding 'verify=False': yes, Server certificates should be
@@ -936,7 +938,7 @@ def handle_http_exceptions(r, exception_d):
         raise SystemExit from e
 
 
-def request_exceptions():
+def manage_http_request():
     headers = {}
     status_c = None
     reliable = None
@@ -1032,16 +1034,13 @@ if args.output == 'json' and not args.brief:
 
 URL = args.URL
 
-if args.guides:
-    print_guides()
-    sys.exit()
-
-if args.path:
-    testssl_command(args.path, args.URL)
-    sys.exit()
-
-if args.URL_A:
-    url_analytics() if args.URL else url_analytics(is_global=True)
+if args.guides or args.path or args.URL_A:
+    if args.guides:
+        print_security_guides()
+    elif args.path:
+        testssl_command(args.path, args.URL)
+    elif args.URL_A:
+        url_analytics() if args.URL else url_analytics(is_global=True)
     sys.exit()
 
 start = time()
@@ -1074,7 +1073,7 @@ requests.packages.urllib3.disable_warnings()
 c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'}
 
-headers, status_code, reliable, request_time = request_exceptions()
+headers, status_code, reliable, request_time = manage_http_request()
 
 # Export analysis
 ext = "t.txt" if args.output in ['html', 'json', 'pdf'] else ".txt"
@@ -1093,7 +1092,7 @@ if args.output:
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
-print_summary(reliable)
+print_analysis_summary(reliable)
 print_headers()
 
 # Report - 1. Missing HTTP Security Headers
@@ -1193,8 +1192,8 @@ l_acceptch_dep = ['content-dpr', 'dpr', 'sec-ch-ua-full-version',
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 # https://cyberwhite.co.uk/http-verbs-and-their-security-risks/
-l_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK', 'DELETE',
-             'DEBUG', 'PATCH', '*']
+l_methods = ['*', 'CONNECT', 'DEBUG', 'DELETE', 'HEAD', 'OPTIONS', 'PATCH',
+             'PUT', 'TRACE', 'TRACK']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 l_cache = ['no-cache', 'no-store', 'must-revalidate']
@@ -1665,14 +1664,13 @@ print("")
 
 # Report - 4. Empty HTTP Response Headers Values
 e_cnt = 0
-empty_s_headers = sorted(headers)
 l_empty = []
 print_detail_r('[4empty]')
 
 if not args.brief:
     print_detail("[aemp]")
 
-for key in empty_s_headers:
+for key in sorted(headers):
     if not headers[key]:
         l_empty.append("_" + key)
         print_header(key)
@@ -1706,7 +1704,7 @@ else:
 
 print(linesep.join(['']*2))
 end = time()
-analysis_time()
+get_analysis_result()
 
 # Export analysis
 if args.output:
@@ -1714,10 +1712,10 @@ if args.output:
     sys.stdout = orig_stdout
     f.close()
 if args.output == 'txt':
-    print_path(name_e, reliable)
+    print_export_path(name_e, reliable)
 elif args.output == 'json':
     generate_json(name_e, name_p)
-    print_path(name_p, reliable)
+    print_export_path(name_p, reliable)
     remove(name_e)
 elif args.output == 'pdf':
     pdf = PDF()
@@ -1740,7 +1738,7 @@ elif args.output == 'pdf':
         pdf.multi_cell(197, 2.6, txt=x, align='L')
 
     pdf.output(name_p)
-    print_path(name_p, reliable)
+    print_export_path(name_p, reliable)
     pdf_source.close()
     f.close()
     remove(name_e)
@@ -1811,5 +1809,5 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                 html_final.write(ln)
         html_final.write(footer)
 
-    print_path(name_p, reliable)
+    print_export_path(name_p, reliable)
     remove(name_e)
