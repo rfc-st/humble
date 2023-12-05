@@ -250,7 +250,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest
 
 [ixachd_h]
- Accept-CH (Valor obsoleto)
+ Accept-CH (Valores obsoletos)
 
 [ixach_h]
  Accept-CH (Cabecera ignorada)
@@ -263,7 +263,7 @@
  Estos valores están obsoletos: 
 
 [ixachd]
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-CH-UA-Full-Version
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 
 [ixacl_h]
  Accept-CH-Lifetime (Cabecera obsoleta)

@@ -253,7 +253,7 @@
  Accept-CH (Ignored Header)
 
 [ixachd_h]
- Accept-CH (Deprecated Value)
+ Accept-CH (Deprecated Values)
 
 [ixach]
  This header is ignored by the browser when accessing via HTTP.
@@ -263,7 +263,7 @@
  These values are deprecated: 
 
 [ixachd]
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-CH-UA-Full-Version
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 
 [ixacl_h]
  Accept-CH-Lifetime (Deprecated Header)

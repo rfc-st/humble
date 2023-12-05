@@ -87,7 +87,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-04', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-05', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1187,6 +1187,10 @@ l_ins = ['Accept-CH', 'Access-Control-Allow-Methods',
          'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
          'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
+l_acceptch_dep = ['content-dpr', 'dpr', 'sec-ch-ua-full-version',
+                  'viewport-width', 'width']
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 # https://cyberwhite.co.uk/http-verbs-and-their-security-risks/
 l_methods = ['PUT', 'HEAD', 'OPTIONS', 'CONNECT', 'TRACE', 'TRACK', 'DELETE',
@@ -1312,17 +1316,17 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
-# TO-DO: Update deprecated client-hints checks
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 if 'Accept-CH' in headers:
     acceptch_header = headers['Accept-CH'].lower()
     if URL.startswith(INS_S):
         print_details('[ixach_h]', '[ixach]', 'd', i_cnt)
-    if 'sec-ch-ua-full-version' in acceptch_header:
+    if any(value in acceptch_header for value in l_acceptch_dep):
         print_detail_r('[ixachd_h]', is_red=True)
         if not args.brief:
-            print_detail_l('[ixachd_s]')
-            print('sec-ch-ua-full-version')
+            match_value = [x for x in l_acceptch_dep if x in acceptch_header]
+            match_value_str = ', '.join(match_value)
+            print_detail_l("[ixachd_s]")
+            print(match_value_str)
             print_detail('[ixachd]')
         i_cnt[0] += 1
 
