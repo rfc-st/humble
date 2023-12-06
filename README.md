@@ -32,7 +32,7 @@ HTTP Headers Analyzer<br />
 [Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
 [Checks: Empty Values](#checks-empty-values)<br />
 [Guidelines included](#guidelines-included-to-enable-security-http-headers)<br />
-[To-Do](#to-do)<br />
+[To-Do](#to-do-by-priority)<br />
 [Further Reading](#further-reading)<br />
 [Contribute](#contribute)<br />
 [Acknowledgements](#acknowledgements)<br />
