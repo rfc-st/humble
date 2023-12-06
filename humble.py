@@ -87,7 +87,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-05', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-06', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1797,6 +1797,7 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                             continue
                         ln = f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}\
 {ln[idx:]}"
+                    # TO-DO: Fix some fng headers not having proper CSS
                     elif i in ln and args.brief:
                         ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
                 for i in l_final:
