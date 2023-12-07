@@ -975,14 +975,13 @@ parser = ArgumentParser(formatter_class=custom_help_formatter,
                         description=PRG_N + GIT_U)
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="show \
-statistics of the performed analysis (will be global if '-u URL' is omitted)")
+statistics of the performed analysis (will be global if '-u' is omitted)")
 parser.add_argument("-b", dest='brief', action="store_true", help="show a \
 brief analysis (if omitted, a detailed one will be shown)")
 parser.add_argument("-df", dest='redirects', action="store_true", help="do not\
  follow redirects (if omitted, the last redirection will be the one analyzed)")
 parser.add_argument("-e", nargs='?', type=str, dest='path', help="show TLS/SSL\
- checks; requires the PATH of testssl.sh (https://testssl.sh/) and Unix (for \
-now!)")
+ checks (requires the PATH of https://testssl.sh/ and Unix machine)")
 parser.add_argument("-f", nargs='?', type=str, dest='term', help="show \
 fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
 omitted)")
@@ -996,8 +995,8 @@ to 'scheme_host_port_yyyymmdd.ext' file (.json files will contain a brief \
 analysis)")
 parser.add_argument("-r", dest='ret', action="store_true", help="show HTTP \
 response headers and a detailed analysis ('-b' parameter will take priority)")
-parser.add_argument('-u', type=str, dest='URL', help="schema and URL to \
-analyze. E.g. https://google.com")
+parser.add_argument('-u', type=str, dest='URL', help="scheme, host and port to\
+ analyze. E.g. https://google.com")
 parser.add_argument("-v", "--version", action="store_true",
                     help="show the version of this tool and check for \
 updates")

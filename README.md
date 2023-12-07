@@ -178,16 +178,16 @@ humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 options:
   -h, --help              show this help message and exit
-  -a                      show statistics of the performed analysis (will be global if '-u URL' is omitted)
+  -a                      show statistics of the performed analysis (will be global if '-u' is omitted)
   -b                      show a brief analysis (if omitted, a detailed one will be shown)
   -df                     do not follow redirects (if omitted, the last redirection will be the one analyzed)
-  -e [PATH]               show TLS/SSL checks; requires the PATH of testssl.sh (https://testssl.sh/) and Unix (for now!)
+  -e [PATH]               show TLS/SSL checks (requires the PATH of https://testssl.sh/ and Unix machine)
   -f [TERM]               show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
   -g                      show guidelines for securing popular web servers/services
   -l {es}                 the language for displaying analyses, errors and messages (if omitted it will be in English)
   -o {html,json,pdf,txt}  save analysis to 'scheme_host_port_yyyymmdd.ext' file (.json files will contain a brief analysis)
   -r                      show HTTP response headers and a detailed analysis ('-b' parameter will take priority)
-  -u URL                  schema and URL to analyze. E.g. https://google.com
+  -u URL                  scheme, host and port to analyze. E.g. https://google.com
   -v, --version           show the version of this tool and check for updates
 ```
 
@@ -281,10 +281,11 @@ Any HTTP response header.
 * Node.js
 
 ## To-do (by priority)
-- [ ] Add more header/value checks (only security-oriented)
-- [ ] Check PR https://github.com/rfc-st/humble/pull/16 to fix https://github.com/rfc-st/humble/issues/7 (_AttributeError: module 'urllib3.util.ssl' has no attribute 'DEFAULT_CIPHERS'_)
-- [ ] Analyze detailed CSP Directives/values.
-- [ ] Google Style Python Docstrings and documentation via Sphinx.
+- [ ] Add more Header/Value checks (only security-oriented)
+- [ ] Check https://github.com/rfc-st/humble/pull/16 to fix https://github.com/rfc-st/humble/issues/7
+- [ ] Export a detailed analysis to JSON
+- [ ] Analyze detailed CSP Directives/Values
+- [ ] Google Style Python Docstrings and documentation via Sphinx
 
 ## Further reading
 
@@ -305,7 +306,7 @@ https://www.w3.org<br />
 * Report a <a href="https://github.com/rfc-st/humble/security/policy">Security Vulnerability</a>.
 * Send me an email with your suggestions!: rafael.fcucalon@gmail.com
 
-Thanks for your time!! :).
+Thanks for your time! :).
 
 ## Acknowledgements
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
