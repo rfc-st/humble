@@ -87,7 +87,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-06', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-07', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1757,6 +1757,7 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                    'X-Robots-Tag', 'X-UA-compatible'])
     l_final = sorted(l_miss + l_ins)
     l_fng_final = sorted(l_fng)
+    l_fng_final_case = [x.casefold() for x in l_fng_final]
 
     ok_string = get_detail('[ok_check]')
     ko_string = get_detail('[no_sec_headers]')
@@ -1797,8 +1798,9 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                             continue
                         ln = f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}\
 {ln[idx:]}"
-                    # TO-DO: Fix some fng headers not having proper CSS
-                    elif i in ln and args.brief:
+                for i in l_fng_final_case:
+                    if args.brief and (i in ln.casefold() and ':' not in
+                                       ln.casefold()):
                         ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
                 for i in l_final:
                     if (i in ln) and ('"' not in ln) or ('HTTP (' in ln):
