@@ -42,7 +42,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 14 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
-:heavy_check_mark: 1005 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 1006 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 90 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: SSL/TLS checks: requires https://testssl.sh/ and Unix machine.<br />
 :heavy_check_mark: Browser compatibility references for enabled HTTP security headers.<br />
