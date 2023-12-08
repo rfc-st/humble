@@ -111,47 +111,6 @@ class PDF(FPDF):
                   ' {nb}', align='C')
 
 
-def pdf_metadata():
-    title = get_detail('[pdf_meta_title]', replace=True) + ' ' + URL
-    git_urlc = f"{GIT_U} (v.{version})"
-    pdf.set_author(git_urlc)
-    pdf.set_creation_date = now
-    pdf.set_creator(git_urlc)
-    pdf.set_keywords(get_detail('[pdf_meta_keywords]', replace=True))
-    pdf.set_lang(get_detail('[pdf_meta_language]'))
-    pdf.set_subject(get_detail('[pdf_meta_subject]', replace=True))
-    pdf.set_title(title)
-    pdf.set_producer(git_urlc)
-
-
-def pdf_sections():
-    section_dict = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
-                    '[1.': '[1missing_s]', '[2.': '[2fingerprint_s]',
-                    '[3.': '[3depinsecure_s]', '[4.': '[4empty_s]',
-                    '[5.': '[5compat_s]', '[Cabeceras': '[0headers_s]'}
-    if match := next((i for i in section_dict if x.startswith(i)), None):
-        pdf.start_section(get_detail(section_dict[match]))
-
-
-def pdf_links(pdfstring):
-    links = {URL_S: URL, REF_E: x.partition(REF_E)[2].strip(),
-             REF_S: x.partition(REF_S)[2].strip(),
-             CAN_S: x.partition(': ')[2].strip()}
-    link_h = links.get(pdfstring)
-    if pdfstring in (URL_S, REF_E, REF_S):
-        if pdfstring == REF_E:
-            prefix = REF_1
-        elif pdfstring == REF_S:
-            prefix = REF_2
-        else:
-            prefix = pdfstring
-        pdf.write(h=3, txt=prefix)
-    else:
-        pdf.write(h=3, txt=x[:x.index(": ")+2])
-    pdf.set_text_color(0, 0, 255)
-    pdf.cell(w=2000, h=3, txt=x[x.index(": ")+2:], align="L", link=link_h)
-
-
 def format_html_info(condition, ln, sub_d):
     if condition == 'rfc-st':
         html_final.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}\
@@ -835,6 +794,8 @@ def generate_json(name_e, name_p):
         parse_json_sections(txt_sections, data, section0, sectionh, section5)
         json_data = json.dumps(data, indent=4, ensure_ascii=False)
         final_json.write(json_data)
+    print_export_path(name_p, reliable)
+    remove(name_e)
 
 
 def parse_json_sections(txt_sections, data, section0, sectionh, section5):
@@ -861,6 +822,73 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
     else:
         json_data = [line.strip() for line in json_lns if line.strip()]
     return json_data
+
+
+def generate_pdf(name_e, pdf):
+    pdf_structure()
+    with open(name_e, "r", encoding='utf8') as pdf_source:
+        links_strings = (URL_S, REF_E, REF_S, CAN_S)
+        for i in pdf_source:
+            if '[' in i:
+                pdf_sections(i)
+            pdf.set_font(style='B' if any(s in i for s in BOLD_S) else '')
+            for string in links_strings:
+                if string in i:
+                    pdf_links(i, string)
+            pdf.set_text_color(0, 0, 0)
+            pdf.multi_cell(197, 2.6, txt=i, align='L')
+    pdf.output(name_p)
+    print_export_path(name_p, reliable)
+    remove(name_e)
+
+
+def pdf_structure():
+    pdf.alias_nb_pages()
+    pdf_metadata()
+    pdf.set_display_mode(zoom='real')
+    pdf.add_page()
+    pdf.set_font("Courier", size=9)
+
+
+def pdf_metadata():
+    title = get_detail('[pdf_meta_title]', replace=True) + ' ' + URL
+    git_urlc = f"{GIT_U} (v.{version})"
+    pdf.set_author(git_urlc)
+    pdf.set_creation_date = now
+    pdf.set_creator(git_urlc)
+    pdf.set_keywords(get_detail('[pdf_meta_keywords]', replace=True))
+    pdf.set_lang(get_detail('[pdf_meta_language]'))
+    pdf.set_subject(get_detail('[pdf_meta_subject]', replace=True))
+    pdf.set_title(title)
+    pdf.set_producer(git_urlc)
+
+
+def pdf_sections(i):
+    section_dict = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
+                    '[1.': '[1missing_s]', '[2.': '[2fingerprint_s]',
+                    '[3.': '[3depinsecure_s]', '[4.': '[4empty_s]',
+                    '[5.': '[5compat_s]', '[Cabeceras': '[0headers_s]'}
+    if match := next((x for x in section_dict if i.startswith(x)), None):
+        pdf.start_section(get_detail(section_dict[match]))
+
+
+def pdf_links(i, pdfstring):
+    links = {URL_S: URL, REF_E: i.partition(REF_E)[2].strip(),
+             REF_S: i.partition(REF_S)[2].strip(),
+             CAN_S: i.partition(': ')[2].strip()}
+    link_h = links.get(pdfstring)
+    if pdfstring in (URL_S, REF_E, REF_S):
+        if pdfstring == REF_E:
+            prefix = REF_1
+        elif pdfstring == REF_S:
+            prefix = REF_2
+        else:
+            prefix = pdfstring
+        pdf.write(h=3, txt=prefix)
+    else:
+        pdf.write(h=3, txt=i[:i.index(": ")+2])
+    pdf.set_text_color(0, 0, 255)
+    pdf.cell(w=2000, h=3, txt=i[i.index(": ")+2:], align="L", link=link_h)
 
 
 def detail_exceptions(id_exception, exception_v):
@@ -1714,33 +1742,9 @@ if args.output == 'txt':
     print_export_path(name_e, reliable)
 elif args.output == 'json':
     generate_json(name_e, name_p)
-    print_export_path(name_p, reliable)
-    remove(name_e)
 elif args.output == 'pdf':
     pdf = PDF()
-    pdf.alias_nb_pages()
-    pdf_metadata()
-    pdf.set_display_mode(zoom='real')
-    pdf.add_page()
-    pdf.set_font("Courier", size=9)
-    pdf_source = open(name_e, "r", encoding='utf8')
-    links_strings = (URL_S, REF_E, REF_S, CAN_S)
-
-    for x in pdf_source:
-        if '[' in x:
-            pdf_sections()
-        pdf.set_font(style='B' if any(s in x for s in BOLD_S) else '')
-        for string in links_strings:
-            if string in x:
-                pdf_links(string)
-        pdf.set_text_color(0, 0, 0)
-        pdf.multi_cell(197, 2.6, txt=x, align='L')
-
-    pdf.output(name_p)
-    print_export_path(name_p, reliable)
-    pdf_source.close()
-    f.close()
-    remove(name_e)
+    generate_pdf(name_e, pdf)
 elif args.output == 'html':
     title = get_detail('[pdf_meta_subject]')
     header = f'<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
