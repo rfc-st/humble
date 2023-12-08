@@ -56,7 +56,7 @@ import tldextract
 import subprocess
 import concurrent.futures
 
-A_FILE = 'analysis_h.txt'
+ANL_F = 'analysis_h.txt'
 BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRI_R = Style.BRIGHT + Fore.RED
 CAN_S = ': https://caniuse.com/?search='
@@ -64,7 +64,7 @@ CDN_E = [520, 521, 522, 523, 524, 525, 526, 527, 530]
 CLE_O = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
-F_FILE = 'fingerprint.txt'
+FNG_S = 'fingerprint.txt'
 GIT_H = "https://raw.githubusercontent.com/rfc-st/humble/master/humble.py"
 GIT_U = "https://github.com/rfc-st/humble"
 INS_S = 'http:'
@@ -169,7 +169,7 @@ def check_humble_updates(version):
 def fng_analytics_global():
     print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join('additional', F_FILE), 'r', encoding='utf8') as fng_f:
+    with open(path.join('additional', FNG_S), 'r', encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
     fng_analytics_global_groups(fng_lines)
 
@@ -197,7 +197,7 @@ def fng_analytics_global_print(content_fng, len_fng):
 def fng_analytics(term):
     print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join('additional', F_FILE), 'r', encoding='utf8') as fng_f:
+    with open(path.join('additional', FNG_S), 'r', encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
     fng_group, term_count = fng_analytics_groups(fng_lines, term)
     fng_analytics_content(fng_group, term, term_count, fng_lines)
@@ -303,8 +303,8 @@ def get_analysis_result():
 
 
 def get_analysis_totals(t_cnt):
-    with open(A_FILE, 'a+', encoding='utf8') as a_history, \
-         open(A_FILE, 'r', encoding='utf8') as c_history:
+    with open(ANL_F, 'a+', encoding='utf8') as a_history, \
+         open(ANL_F, 'r', encoding='utf8') as c_history:
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
 {e_cnt} ; {t_cnt}\n")
         url_ln = [line for line in c_history if URL in line]
@@ -352,8 +352,8 @@ def analysis_exists(filepath):
 
 
 def url_analytics(is_global=False):
-    analysis_exists(A_FILE)
-    with open(A_FILE, 'r', encoding='utf8') as c_history:
+    analysis_exists(ANL_F)
+    with open(ANL_F, 'r', encoding='utf8') as c_history:
         analysis_stats = extract_global_metrics(c_history) if is_global else \
             extract_analysis_metrics(c_history)
     stats_s = '[global_stats_analysis]' if is_global else '[stats_analysis]'
@@ -646,7 +646,7 @@ def print_export_path(filename, reliable):
 
 
 def print_ok():
-    print_detail('[ok_check]')
+    print_detail('[no_warnings]')
 
 
 def print_header(header):
@@ -695,7 +695,7 @@ def print_additional_summary(reliable):
             print(detail)
         print(REF_SRV_E + str(status_code))
     if reliable:
-        print(get_detail('[analysis_reliable_note]', replace=True))
+        print(get_detail('[unreliable_analysis_note]', replace=True))
     if args.redirects:
         print(get_detail('[analysis_redirects]', replace=True))
 
@@ -851,7 +851,7 @@ def pdf_structure():
 
 
 def pdf_metadata():
-    title = get_detail('[pdf_meta_title]', replace=True) + ' ' + URL
+    title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
     git_urlc = f"{GIT_U} (v.{version})"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
@@ -899,14 +899,13 @@ def detail_exceptions(id_exception, exception_v):
 
 
 def print_ru_message():
-    # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
     with contextlib.suppress(requests.exceptions.RequestException):
         requests.packages.urllib3.disable_warnings()
         sffx = tldextract.extract(URL).suffix[-2:].upper()
         cnty = requests.get('https://ipapi.co/country_name/', verify=False,
                             timeout=5).text.strip()
         if (sffx == 'RU' and sffx not in NON_RU_TLD) or cnty == 'Russia':
-            print_detail('[check_ru]', 3)
+            print_detail('[ru_analysis_message]', 3)
             sys.exit()
 
 
@@ -975,7 +974,7 @@ def manage_http_request():
         future = executor.submit(make_http_request)
         wait_http_request(future)
         if not future.done():
-            print(get_detail('[analysis_reliable]'))
+            print(get_detail('[unreliable_analysis]'))
             reliable = 'No'
         r, request_time, exception = future.result()
         if exception:
@@ -1762,7 +1761,7 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
     l_fng_final = sorted(l_fng)
     l_fng_final_case = [x.casefold() for x in l_fng_final]
 
-    ok_string = get_detail('[ok_check]')
+    ok_string = get_detail('[no_warnings]')
     ko_string = get_detail('[no_sec_headers]')
 
     sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',

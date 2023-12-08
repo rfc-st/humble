@@ -646,10 +646,10 @@ Cabeceras de respuesta HTTP
 [analysis]
  Analizando URL, espera por favor ...
 
-[analysis_reliable]
+[unreliable_analysis]
  (El análisis tarda más de lo habitual -quizá por conectividad de red, WAF, etc- y puede no ser fiable)
 
-[analysis_reliable_note]
+[unreliable_analysis_note]
  Nota : El análisis puede no ser fiable por el tiempo que tardó en responder la URL.
 
 [analysis_redirects]
@@ -666,7 +666,7 @@ Cabeceras de respuesta HTTP
  Este programa requiere, al menos, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
-[ok_check]
+[no_warnings]
  Todo parece estar bien.
 
 [mcache]
@@ -986,10 +986,10 @@ Cabeceras de respuesta HTTP
 [aisc]
  Estas cabeceras, o protocolos, están obsoletos o sus valores son inseguros:
 
-[check_ru]
+[ru_analysis_message]
 
- Este humilde programa no analizará dominios rusos, ni permitirá su uso desde Rusia, hasta que se retire de Ucrania.
- Ref: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
+ Esta humilde herramienta no analizará dominios rusos (ni permitirá su uso desde Rusia) hasta que se retire de Ucrania.
+ Por favor, lee esto: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
 [missing_cnt]
   Cabeceras no habilitadas:                    

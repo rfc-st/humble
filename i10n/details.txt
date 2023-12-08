@@ -646,10 +646,10 @@ HTTP Response Headers
 [analysis]
  Analyzing URL, please wait ...
 
-[analysis_reliable]
+[unreliable_analysis]
  (The analysis is taking longer than usual -may be due to network connectivity, WAF, etc- and may not be reliable)
 
-[analysis_reliable_note]
+[unreliable_analysis_note]
  Note : The analysis may not be reliable because of the time it took for the URL to respond.
 
 [analysis_redirects]
@@ -666,7 +666,7 @@ HTTP Response Headers
  This tool requires, at least, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
-[ok_check]
+[no_warnings]
  Nothing to report, all seems OK!
 
 [mcache]
@@ -986,10 +986,10 @@ HTTP Response Headers
 [aisc]
  The following headers/protocols are deprecated or their values may be considered unsafe:
 
-[check_ru]
+[ru_analysis_message]
 
- This humble program will not analyze Russian domains, nor will it be allowed to be used from Russian IPs, until Russia withdraws from Ukraine.
- Ref: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
+ This humble tool will not analyze Russian domains (or allow their use from Russia) until it withdraws from Ukraine.
+ Please, read this: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
 [missing_cnt]
   Missing headers:              
