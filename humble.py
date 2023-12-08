@@ -87,7 +87,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-07', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-08', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1795,11 +1795,12 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                             idx = ln.index(' [')
                         except ValueError:
                             continue
-                        ln = f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}\
-{ln[idx:]}"
+                        if 'class="ko"' not in ln:
+                            ln = f"{sub_d['span_ko']}{ln[:idx]}\
+{sub_d['span_f']}{ln[idx:]}"
                 for i in l_fng_final_case:
-                    if args.brief and (i in ln.casefold() and ':' not in
-                                       ln.casefold()):
+                    if args.brief and i in ln.casefold() and ':' not in \
+                     ln.casefold() and 'class="ko"' not in ln:
                         ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
                 for i in l_final:
                     if (i in ln) and ('"' not in ln) or ('HTTP (' in ln):
