@@ -441,6 +441,9 @@
 [iprag_h]
  Pragma (Deprecated Header)
 
+[iprxauth_h]
+ Proxy-Authenticate (Unsafe Value)
+
 [ipkp_h]
  Public-Key-Pins (Deprecated Header)
 

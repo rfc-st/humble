@@ -1535,6 +1535,11 @@ if 'Permissions-Policy' in headers:
 if 'Pragma' in headers:
     print_details('[iprag_h]', '[iprag]', 'd', i_cnt)
 
+if 'Proxy-Authenticate' in headers:
+    prxyauth_h = headers['Proxy-Authenticate'].lower()
+    if 'basic' in prxyauth_h and URL.startswith(INS_S):
+        print_details('[iprxauth_h]', '[ihbas]', 'd', i_cnt)
+
 if 'Public-Key-Pins' in headers:
     print_details('[ipkp_h]', '[ipkp]', 'd', i_cnt)
 

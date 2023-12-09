@@ -441,6 +441,9 @@
 [iprag_h]
  Pragma (Cabecera obsoleta)
 
+[iprxauth_h]
+ Proxy-Authenticate (Valor inseguro)
+
 [ipkp_h]
  Public-Key-Pins (Cabecera obsoleta)
 
@@ -897,7 +900,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [ihbas]
- Al acceder mediante HTTP el valor "Basic" transmite los credenciales en base64, sin encriptarlos.
+ La autenticación HTTP "Basic" transmite credenciales codificadas en base64, sin cifrarlas.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
 
 [iexct]
