@@ -501,6 +501,9 @@
 [isurrmode_h]
  Surrogate-Control (No Valid Directives)
 
+[iorigcluster_h]
+ Origin-Agent-Cluster (No Valid Directives)
+
 [ihbas_h]
  WWW-Authenticate (Unsafe Value)
 
@@ -884,6 +887,10 @@ HTTP Response Headers
 [isurrmode]
  Include at least one valid directive.
  Ref: https://www.w3.org/TR/edge-arch/
+
+[iorigcluster]
+ Include at least one valid directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
 
 [ihsts]
  This header is ignored by the browser when accessing via HTTP.

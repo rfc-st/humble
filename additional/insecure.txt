@@ -62,6 +62,7 @@ HTTP: Domain Via Unsafe Scheme
 Keep-Alive: Ignored Header
 Large-Allocation: Deprecated Header
 Onion-Location: Potentially Unsafe Header
+Origin-Agent-Cluster: No Valid Directives
 P3P: Deprecated Header
 Permissions-Policy: Deprecated Values
 Permissions-Policy: Incorrect Values

@@ -87,7 +87,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-08', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-09', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1279,6 +1279,9 @@ l_legacy = ['application/javascript', 'application/ecmascript',
             'text/javascript1.5', 'text/jscript', 'text/livescript',
             'text/x-ecmascript', 'text/x-javascript']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
+l_origcluster = ['?0', '?1']
+
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 l_per_dirs = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
@@ -1504,6 +1507,11 @@ if 'Large-Allocation' in headers:
 
 if 'Onion-Location' in headers:
     print_details('[ionloc_h]', '[ionloc]', 'm', i_cnt)
+
+if 'Origin-Agent-Cluster' in headers:
+    origin_cluster_h = headers['Origin-Agent-Cluster'].lower()
+    if not any(elem in origin_cluster_h for elem in l_origcluster):
+        print_details('[iorigcluster_h]', '[iorigcluster]', 'd', i_cnt)
 
 if 'P3P' in headers:
     print_details('[ip3p_h]', '[ip3p]', 'd', i_cnt)
