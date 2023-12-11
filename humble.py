@@ -87,7 +87,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-09', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-11', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -245,6 +245,7 @@ def print_security_guides():
 
 
 def testssl_command(directory, uri):
+    directory = path.abspath(directory)
     testssl_file = path.join(directory, 'testssl.sh')
     if not path.isdir(directory):
         sys.exit(f"\n{get_detail('[notestssl_path]')}")
@@ -1020,6 +1021,8 @@ parser.add_argument("-o", dest='output', choices=['html', 'json', 'pdf',
                                                   'txt'], help="save analysis \
 to 'scheme_host_port_yyyymmdd.ext' file (.json files will contain a brief \
 analysis)")
+parser.add_argument("-op", dest='output_path', type=str, help="save analysis \
+to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)")
 parser.add_argument("-r", dest='ret', action="store_true", help="show HTTP \
 response headers and a detailed analysis ('-b' parameter will take priority)")
 parser.add_argument('-u', type=str, dest='URL', help="scheme, host and port to\
@@ -1049,6 +1052,15 @@ if '-e' in sys.argv:
 
 if args.lang and not (args.URL or args.URL_A) and not args.guides:
     parser.error(get_detail('[args_lang]'))
+
+if args.output_path is not None:
+    if args.output is None:
+        parser.error(get_detail('[args_nooutputfmt]'))
+    else:
+        if path.exists(args.output_path):
+            path_safe = path.abspath(args.output_path)
+        else:
+            parser.error(get_detail('[args_noexportpath]'))
 
 if any([args.brief, args.output, args.ret, args.redirects]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
@@ -1115,6 +1127,8 @@ if args.output:
     url_prt = f"_{urlparse(URL).port}_" if urlparse(URL).port is not None \
         else '_'
     name_e = f"{url_sch}{url_sub}{url_dom}{url_tld}{url_prt}{export_date}{ext}"
+    if args.output_path:
+        name_e = path.join(path_safe, name_e)
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 

@@ -1228,3 +1228,9 @@ Error: 'testssl.sh' is not found in that PATH.
 
 [notestssl_path]
 Error: The PATH for 'testssl.sh' is incorrect.
+
+[args_nooutputfmt]
+Error: '-op' requires '-o'.
+
+[args_noexportpath]
+Error: The specified OUTPUT_PATH ('-op') does not exist.
