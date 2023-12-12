@@ -45,14 +45,14 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: 1013 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 92 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: SSL/TLS checks: requires https://testssl.sh/ and Unix machine.<br />
-:heavy_check_mark: Browser compatibility references for enabled HTTP security headers.<br />
+:heavy_check_mark: Browser support references for enabled HTTP security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
-:heavy_check_mark: Export of analysis to HTML5, JSON, PDF 1.4 and TXT.<br />
-:heavy_check_mark: Each detailed analysis includes dozens of references, official documentation and technical articles.<br />
-:heavy_check_mark: i10n: show the analysis, messages and nearly all errors in English or Spanish.<br />
-:heavy_check_mark: Saves each analysis, showing (at the end) the improvements or deficiencies in relation to the last one.<br />
-:heavy_check_mark: Shows analysis statistics: either against a specific URL or all of them.<br />
-:heavy_check_mark: Shows fingerprint statistics: either against a specific term or the Top 20.<br />
+:heavy_check_mark: Can export each analysis to HTML5, JSON, PDF 1.4 and TXT, and in the PATH of your choice.<br />
+:heavy_check_mark: Each detailed analysis may include up to dozens of official links, references and technical articles.<br />
+:heavy_check_mark: i10n: can display each analysis, the messages and almost all errors in English or Spanish.<br />
+:heavy_check_mark: Saves each analysis, showing at the end the improvements or deficiencies in relation to the last one.<br />
+:heavy_check_mark: Can display analysis statistics: either against a specific URL or all of them.<br />
+:heavy_check_mark: Can display fingerprint statistics: either against a specific term or the Top 20.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a> and <a href="https://pypi.org/project/vermin/" target="_blank">vermin<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Fully tested and working on (at least) Windows 10 20H2 - 19042.985 and Kali Linux 2021.1.<br />
