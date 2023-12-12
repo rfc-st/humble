@@ -112,42 +112,6 @@ class PDF(FPDF):
                   ' {nb}', align='C')
 
 
-def format_html_info(condition, ln, sub_d):
-    if condition == 'rfc-st':
-        html_final.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}\
-{sub_d['close_t']}{ln[2:]}{sub_d['ahref_f']}")
-    else:
-        html_final.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}\
-{sub_d['close_t']}{ln[8:]}{sub_d['ahref_f']}<br>")
-
-
-def format_html_okko(condition, ln, sub_d):
-    if condition == ok_string:
-        html_final.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
-    else:
-        html_final.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
-
-
-def format_html_refs(condition, ln, sub_d):
-    if condition == REF_2:
-        html_final.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}\
-{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
-    else:
-        html_final.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[8:]}\
-{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
-
-
-def format_html_caniuse(ln, sub_d):
-    ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: {sub_d['span_f']}\
-{sub_d['ahref_s']}{ln[ln.index(SEC_S):]}{sub_d['close_t']}\
-{ln[ln.index(SEC_S):]}{sub_d['ahref_f']}<br>"
-    html_final.write(ln)
-
-
-def format_html_bold(ln):
-    html_final.write(f'<strong>{ln}</strong><br>')
-
-
 def check_python_version():
     exit(print_detail('[python_version]', 3)) if sys.version_info < (3, 9) \
         else None
@@ -900,6 +864,42 @@ def pdf_links(i, pdfstring):
         pdf.write(h=3, txt=i[:i.index(": ")+2])
     pdf.set_text_color(0, 0, 255)
     pdf.cell(w=2000, h=3, txt=i[i.index(": ")+2:], align="L", link=link_h)
+
+
+def format_html_info(condition, ln, sub_d):
+    if condition == 'rfc-st':
+        html_final.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}\
+{sub_d['close_t']}{ln[2:]}{sub_d['ahref_f']}")
+    else:
+        html_final.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}\
+{sub_d['close_t']}{ln[8:]}{sub_d['ahref_f']}<br>")
+
+
+def format_html_okko(condition, ln, sub_d):
+    if condition == ok_string:
+        html_final.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
+    else:
+        html_final.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
+
+
+def format_html_refs(condition, ln, sub_d):
+    if condition == REF_2:
+        html_final.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}\
+{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
+    else:
+        html_final.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[8:]}\
+{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
+
+
+def format_html_caniuse(ln, sub_d):
+    ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: {sub_d['span_f']}\
+{sub_d['ahref_s']}{ln[ln.index(SEC_S):]}{sub_d['close_t']}\
+{ln[ln.index(SEC_S):]}{sub_d['ahref_f']}<br>"
+    html_final.write(ln)
+
+
+def format_html_bold(ln):
+    html_final.write(f'<strong>{ln}</strong><br>')
 
 
 def detail_exceptions(id_exception, exception_v):
