@@ -61,6 +61,7 @@ BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRI_R = Style.BRIGHT + Fore.RED
 CAN_S = ': https://caniuse.com/?search='
 CDN_E = [520, 521, 522, 523, 524, 525, 526, 527, 530]
+CHK_F = 'check_path_permissions'
 CLE_O = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
@@ -87,7 +88,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-11', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-12', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -783,6 +784,15 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
         print_header(header)
 
 
+def check_path_permissions(path_safe):
+    try:
+        open(path.join(path_safe, CHK_F), 'w')
+    except PermissionError:
+        parser.error(get_detail('[args_nowritepermission]'))
+    else:
+        remove(path.join(path_safe, CHK_F))
+
+
 def generate_json(name_e, name_p):
     section0 = get_detail('[0section]', replace=True)
     sectionh = get_detail('[0headers]', replace=True)
@@ -1059,6 +1069,7 @@ if args.output_path is not None:
     else:
         if path.exists(args.output_path):
             path_safe = path.abspath(args.output_path)
+            check_path_permissions(path_safe)
         else:
             parser.error(get_detail('[args_noexportpath]'))
 

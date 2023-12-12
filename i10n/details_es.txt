@@ -1230,7 +1230,10 @@ Error: 'testssl.sh' no existe en la ruta indicada.
 Error: la ruta indicada de 'testssl.sh' es incorrecta.
 
 [args_nooutputfmt]
-Error: '-op' requiere '-o'.
+'-op' requiere '-o'.
 
 [args_noexportpath]
-Error: No existe la OUTPUT_PATH indicada ('-op').
+No existe la OUTPUT_PATH indicada.
+
+[args_nowritepermission]
+Sin permisos de escritura en OUTPUT_PATH.
