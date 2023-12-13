@@ -47,6 +47,7 @@ from colorama import Fore, Style, init
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, HelpFormatter
 import re
+import csv
 import sys
 import json
 import requests
@@ -88,7 +89,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-12', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-13', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -757,6 +758,35 @@ def check_path_permissions(path_safe):
         remove(path.join(path_safe, CHK_F))
 
 
+def parse_csv(csv_writer, csv_source, csv_section):
+    exclude_ln = False
+    for i in csv_section:
+        if i in csv_source:
+            csv_content = csv_source.split(i)[1].split('[')[0]
+            info_list = [line.strip() for line in csv_content.split('\n') if
+                         line.strip()]
+            for csv_ln in info_list:
+                if csv_ln.startswith('.:'):
+                    exclude_ln = True
+                if not exclude_ln:
+                    csv_writer.writerow([i.strip('[]'), csv_ln])
+
+
+def generate_csv(name_e, name_p):
+    with open(name_e, 'r', encoding='utf-8') as source_txt, \
+         open(name_p, 'w', newline='', encoding='utf-8') as final_csv:
+        csv_source = source_txt.read()
+        csv_writer = csv.writer(final_csv)
+        csv_id = ['0section', '0headers', '1missing', '2fingerprint',
+                  '3depinsecure', '4empty', '5compat']
+        csv_section = [get_detail(f'[{i}]', replace=True) for i in csv_id]
+        csv_writer.writerow([get_detail('[csv_section]', replace=True),
+                             get_detail('[csv_info]', replace=True)])
+        parse_csv(csv_writer, csv_source, csv_section)
+    print_export_path(name_p, reliable)
+    remove(name_e)
+
+
 def generate_json(name_e, name_p):
     section0 = get_detail('[0section]', replace=True)
     sectionh = get_detail('[0headers]', replace=True)
@@ -1004,7 +1034,7 @@ def manage_http_request():
 
 
 def custom_help_formatter(prog):
-    return HelpFormatter(prog, max_help_position=26)
+    return HelpFormatter(prog, max_help_position=30)
 
 
 init(autoreset=True)
@@ -1027,9 +1057,9 @@ parser.add_argument("-g", dest='guides', action="store_true", help="show \
 guidelines for securing popular web servers/services")
 parser.add_argument("-l", dest='lang', choices=['es'], help="the language for \
 displaying analyses, errors and messages (if omitted it will be in English)")
-parser.add_argument("-o", dest='output', choices=['html', 'json', 'pdf',
+parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt'], help="save analysis \
-to 'scheme_host_port_yyyymmdd.ext' file (.json files will contain a brief \
+to 'scheme_host_port_yyyymmdd.ext' file (csv/json files will contain a brief \
 analysis)")
 parser.add_argument("-op", dest='output_path', type=str, help="save analysis \
 to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)")
@@ -1077,9 +1107,9 @@ if any([args.brief, args.output, args.ret, args.redirects]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
     parser.error(get_detail('[args_several]'))
 
-# Exporting a detailed analysis to JSON is tricky; this will take some time ...
-if args.output == 'json' and not args.brief:
-    parser.error(get_detail('[args_json]'))
+# Exporting a detailed analysis to CSV/JSON is tricky, but I will not give up!
+if args.output in ['csv', 'json'] and not args.brief:
+    parser.error(get_detail('[args_csv_json]'))
 
 URL = args.URL
 
@@ -1777,6 +1807,8 @@ if args.output:
     f.close()
 if args.output == 'txt':
     print_export_path(name_e, reliable)
+elif args.output == 'csv':
+    generate_csv(name_e, name_p)
 elif args.output == 'json':
     generate_json(name_e, name_p)
 elif args.output == 'pdf':

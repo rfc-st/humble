@@ -4,7 +4,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--12--12-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2023--12--13-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Official tool in OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-Tool-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.kali.org/tools/humble/" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
@@ -47,7 +47,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: SSL/TLS checks: requires https://testssl.sh/ and Unix machine.<br />
 :heavy_check_mark: Browser support references for enabled HTTP security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
-:heavy_check_mark: Can export each analysis to HTML5, JSON, PDF 1.4 and TXT, and in the PATH of your choice.<br />
+:heavy_check_mark: Can export each analysis to CSV, HTML5, JSON, PDF 1.4 and TXT (and in the PATH of your choice).<br />
 :heavy_check_mark: Each detailed analysis may include up to dozens of official links, references and technical articles.<br />
 :heavy_check_mark: i10n: can display each analysis, the messages and almost all errors in English or Spanish.<br />
 :heavy_check_mark: Saves each analysis, showing at the end the improvements or deficiencies in relation to the last one.<br />
@@ -172,24 +172,24 @@ https://github.com/rfc-st/humble/releases
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-df] [-e [PATH]] [-f [TERM]] [-g] [-l {es}] [-o {html,json,pdf,txt}] [-op OUTPUT_PATH] [-r] [-u URL] [-v]
+usage: humble.py [-h] [-a] [-b] [-df] [-e [PATH]] [-f [TERM]] [-g] [-l {es}] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r] [-u URL] [-v]
 
 humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
 
 options:
-  -h, --help              show this help message and exit
-  -a                      show statistics of the performed analysis (will be global if '-u' is omitted)
-  -b                      show a brief analysis (if omitted, a detailed one will be shown)
-  -df                     do not follow redirects (if omitted, the last redirection will be the one analyzed)
-  -e [PATH]               show TLS/SSL checks (requires the PATH of https://testssl.sh/ and Unix machine)
-  -f [TERM]               show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
-  -g                      show guidelines for securing popular web servers/services
-  -l {es}                 the language for displaying analyses, errors and messages (if omitted it will be in English)
-  -o {html,json,pdf,txt}  save analysis to 'scheme_host_port_yyyymmdd.ext' file (.json files will contain a brief analysis)
-  -op OUTPUT_PATH         save analysis to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)
-  -r                      show HTTP response headers and a detailed analysis ('-b' parameter will take priority)
-  -u URL                  scheme, host and port to analyze. E.g. https://google.com
-  -v, --version           show the version of this tool and check for updates
+  -h, --help                  show this help message and exit
+  -a                          show statistics of the performed analysis (will be global if '-u' is omitted)
+  -b                          show a brief analysis (if omitted, a detailed one will be shown)
+  -df                         do not follow redirects (if omitted, the last redirection will be the one analyzed)
+  -e [PATH]                   show TLS/SSL checks (requires the PATH of https://testssl.sh/ and Unix machine)
+  -f [TERM]                   show fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
+  -g                          show guidelines for securing popular web servers/services
+  -l {es}                     the language for displaying analyses, errors and messages (if omitted it will be in English)
+  -o {csv,html,json,pdf,txt}  save analysis to 'scheme_host_port_yyyymmdd.ext' file (csv/json files will contain a brief analysis)
+  -op OUTPUT_PATH             save analysis to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)
+  -r                          show HTTP response headers and a detailed analysis ('-b' parameter will take priority)
+  -u URL                      scheme, host and port to analyze. E.g. https://google.com
+  -v, --version               show the version of this tool and check for updates
 ```
 
 ## Advanced Usage

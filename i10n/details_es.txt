@@ -1220,8 +1220,8 @@ Para ejecutar un análisis SSL/TSL en Windows (vía testssl.sh) tienes tres opci
 [args_several]
 -b', '-df', -'o' y '-r' requieren '-u'.
 
-[args_json]
-'-o json' requiere, por ahora, '-b'.
+[args_csv_json]
+'-o csv' y '-o json' requieren, por ahora, '-b'.
 
 [notestssl_file]
 Error: 'testssl.sh' no existe en la ruta indicada.
@@ -1237,3 +1237,9 @@ No existe la OUTPUT_PATH indicada.
 
 [args_nowritepermission]
 Sin permisos de escritura en OUTPUT_PATH.
+
+[csv_section]
+Sección
+
+[csv_info]
+Contenido
