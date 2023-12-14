@@ -100,7 +100,7 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fng.jpg" alt="Specific fingerprint headers" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Detailed analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/https_www.spacex.com_20231214.csv">Example.</a><br />
+.: (Linux) - Brief analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/https_www.spacex.com_20231214.csv">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_csv_s.PNG" alt="Detailed analysis saved as CSV." width=70% height=70%>
