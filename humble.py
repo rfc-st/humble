@@ -66,6 +66,8 @@ CHK_F = 'check_path_permissions'
 CLE_O = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
+CSV_ID = ['0section', '0headers', '1missing', '2fingerprint', '3depinsecure',
+          '4empty', '5compat']
 FNG_S = 'fingerprint.txt'
 GIT_H = "https://raw.githubusercontent.com/rfc-st/humble/master/humble.py"
 GIT_U = "https://github.com/rfc-st/humble"
@@ -89,7 +91,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-13', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-14', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -758,6 +760,19 @@ def check_path_permissions(path_safe):
         remove(path.join(path_safe, CHK_F))
 
 
+def generate_csv(name_e, name_p):
+    with open(name_e, 'r', encoding='utf-8') as source_txt, \
+         open(name_p, 'w', newline='', encoding='utf-8') as final_csv:
+        csv_source = source_txt.read()
+        csv_writer = csv.writer(final_csv, quoting=csv.QUOTE_ALL)
+        csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_ID]
+        csv_writer.writerow([get_detail('[csv_section]', replace=True),
+                             get_detail('[csv_info]', replace=True)])
+        parse_csv(csv_writer, csv_source, csv_section)
+    print_export_path(name_p, reliable)
+    remove(name_e)
+
+
 def parse_csv(csv_writer, csv_source, csv_section):
     exclude_ln = False
     for i in csv_section:
@@ -768,23 +783,9 @@ def parse_csv(csv_writer, csv_source, csv_section):
             for csv_ln in info_list:
                 if csv_ln.startswith('.:'):
                     exclude_ln = True
+                    break
                 if not exclude_ln:
                     csv_writer.writerow([i.strip('[]'), csv_ln])
-
-
-def generate_csv(name_e, name_p):
-    with open(name_e, 'r', encoding='utf-8') as source_txt, \
-         open(name_p, 'w', newline='', encoding='utf-8') as final_csv:
-        csv_source = source_txt.read()
-        csv_writer = csv.writer(final_csv)
-        csv_id = ['0section', '0headers', '1missing', '2fingerprint',
-                  '3depinsecure', '4empty', '5compat']
-        csv_section = [get_detail(f'[{i}]', replace=True) for i in csv_id]
-        csv_writer.writerow([get_detail('[csv_section]', replace=True),
-                             get_detail('[csv_info]', replace=True)])
-        parse_csv(csv_writer, csv_source, csv_section)
-    print_export_path(name_p, reliable)
-    remove(name_e)
 
 
 def generate_json(name_e, name_p):
@@ -1107,7 +1108,7 @@ if any([args.brief, args.output, args.ret, args.redirects]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
     parser.error(get_detail('[args_several]'))
 
-# Exporting a detailed analysis to CSV/JSON is tricky, but I will not give up!
+# Exporting a detailed analysis to CSV/JSON is tricky, for now ...
 if args.output in ['csv', 'json'] and not args.brief:
     parser.error(get_detail('[args_csv_json]'))
 
