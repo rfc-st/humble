@@ -1156,7 +1156,7 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'}
 headers, status_code, reliable, request_time = manage_http_request()
 
 # Export analysis
-ext = "t.txt" if args.output in ['html', 'json', 'pdf'] else ".txt"
+ext = "t.txt" if args.output in ['csv', 'html', 'json', 'pdf'] else ".txt"
 
 if args.output:
     # tldextract seems to be more reliable for certain components of the URI.
