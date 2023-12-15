@@ -28,8 +28,8 @@
 # ADVICE:
 # Use the information provided by this humble program wisely. There is *far*
 # more merit in teaching, learning and helping others than in harming,
-# attacking or taking advantage. Don't just be a 'script kiddie': if this
-# really interests you, learn, research and become a Security Analyst!.
+# attacking or taking advantage. Don't just be a 'Script kiddie': if this
+# really interests you learn, research and become a Security Analyst!.
 
 # GREETINGS:
 # Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3), David (x3), Eduardo,
@@ -91,7 +91,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-14', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-15', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -830,6 +830,79 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
     return json_data
 
 
+def generate_detailed_json(name_e, name_p):
+    json_sect = [f'[{i}]' for i in CSV_ID]
+    json_id = {name: get_detail(name, replace=True) for name in json_sect}
+    section_ptrn = re.compile(r'\[(.*?)\]\n')
+    with open(name_e, 'r', encoding='utf8') as source_txt, \
+         open(name_p, 'w', encoding='utf8') as final_json:
+        txt_content = source_txt.read()
+        txt_sections = section_ptrn.split(txt_content)[1:]
+        data = {}
+        parse_detailed_json_sections(txt_sections, data, *json_id.values())
+        json_data = json.dumps(data, indent=4, ensure_ascii=False)
+        final_json.write(json_data)
+    print_export_path(name_p, reliable)
+    remove(name_e)
+
+
+def parse_detailed_json_sections(txt_sections, data, section0, sectionh,
+                                 section1, section2, section3, section4,
+                                 section5):
+    for i in range(0, len(txt_sections), 2):
+        json_section = f"[{txt_sections[i]}]"
+        json_content = txt_sections[i + 1].strip()
+        if json_section == section5:
+            json_content = json_content.split('.:')[0].strip()
+        json_lns = json_content.split('\n')
+        json_data = write_detailed_json_sections(section0, sectionh, section1,
+                                                 section2, section3, section4,
+                                                 section5, json_section,
+                                                 json_lns)
+        data[json_section] = json_data
+
+
+def write_detailed_json_sections(section0, sectionh, section1, section2,
+                                 section3, section4, section5, json_section,
+                                 json_lns):
+    if json_section in (section0, sectionh, section1, section2, section3,
+                        section4, section5):
+        json_data = {}
+        current_key = None
+        stored_key = None
+        for line in json_lns:
+            if json_section == section1:
+                json_data, current_key, stored_key = \
+                    missing_detailed_json(json_data, current_key, stored_key,
+                                          line, l_miss)
+            elif ':' in line:
+                key, value = line.split(':', 1)
+                json_data[key.strip()] = value.strip()
+        if current_key is not None:
+            if current_key not in json_data:
+                json_data[current_key] = []
+            json_data[current_key].append("")
+    else:
+        json_data = [line.strip() for line in json_lns if line.strip()]
+    return json_data
+
+
+def missing_detailed_json(json_data, current_key, stored_key, line, l_miss):
+    if line.strip().lower() in map(str.lower, l_miss):
+        current_key = line.strip()
+        stored_key = current_key
+        if current_key is None:
+            current_key = stored_key
+        else:
+            if current_key not in json_data:
+                json_data[current_key] = []
+            current_key = None
+    elif line != '':
+        json_data[stored_key].append(line.strip())
+        current_key = None
+    return json_data, current_key, stored_key
+
+
 def generate_pdf(name_e, pdf):
     pdf_structure()
     with open(name_e, "r", encoding='utf8') as pdf_source:
@@ -1068,9 +1141,8 @@ parser.add_argument("-r", dest='ret', action="store_true", help="show HTTP \
 response headers and a detailed analysis ('-b' parameter will take priority)")
 parser.add_argument('-u', type=str, dest='URL', help="scheme, host and port to\
  analyze. E.g. https://google.com")
-parser.add_argument("-v", "--version", action="store_true",
-                    help="show the version of this tool and check for \
-updates")
+parser.add_argument("-v", "--version", action="store_true", help="show the \
+version of this tool and check for updates")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 details_f = get_details_lines()
@@ -1811,7 +1883,10 @@ if args.output == 'txt':
 elif args.output == 'csv':
     generate_csv(name_e, name_p)
 elif args.output == 'json':
-    generate_json(name_e, name_p)
+    if args.brief:
+        generate_json(name_e, name_p)
+    else:
+        generate_detailed_json(name_e, name_p)
 elif args.output == 'pdf':
     pdf = PDF()
     generate_pdf(name_e, pdf)
