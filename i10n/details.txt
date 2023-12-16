@@ -1221,7 +1221,7 @@ To run an SSL/TSL analysis on Windows (via testssl.sh) you have three choices:
 '-b', '-df', '-'o' and '-r' requires also '-u'.
 
 [args_csv_json]
-'-o csv' and '-o json' currently requires '-b'.
+'-o csv' and '-o json' requires '-b'.
 
 [notestssl_file]
 Error: 'testssl.sh' is not found in that PATH.

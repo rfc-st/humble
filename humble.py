@@ -91,7 +91,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-15', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-16', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1180,7 +1180,7 @@ if any([args.brief, args.output, args.ret, args.redirects]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
     parser.error(get_detail('[args_several]'))
 
-# Exporting a detailed analysis to CSV/JSON is tricky, for now ...
+# Exporting a detailed analysis to CSV/JSON is tricky, too much effort.
 if args.output in ['csv', 'json'] and not args.brief:
     parser.error(get_detail('[args_csv_json]'))
 
