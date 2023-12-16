@@ -91,7 +91,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-16', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-17', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1778,13 +1778,17 @@ print("")
 # Report - 5. Browser Compatibility for Enabled HTTP Security Headers
 print_detail_r('[5compat]')
 
-l_sec = ['Access-Control-Allow-Methods', 'Cache-Control', 'Clear-Site-Data',
-         'Content-Type', 'Content-Security-Policy',
+l_sec = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Credentials',
+         'Cache-Control', 'Clear-Site-Data', 'Content-Type',
+         'Content-Security-Policy', 'Critical-CH',
          'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
-         'Cross-Origin-Resource-Policy', 'Feature-Policy', 'NEL',
-         'Permissions-Policy', 'Referrer-Policy', 'Strict-Transport-Security',
-         'Supports-Loading-Mode', 'X-Content-Type-Options',
-         'X-DNS-Prefetch-Control', 'X-Frame-Options', 'X-XSS-Protection']
+         'Cross-Origin-Resource-Policy', 'ETag', 'Feature-Policy', 'NEL',
+         'Origin-Agent-Cluster', 'Proxy-Authenticate', 'Permissions-Policy',
+         'Referrer-Policy', 'Server-Timing', 'Set-Cookie',
+         'Strict-Transport-Security', 'Supports-Loading-Mode',
+         'Timing-Allow-Origin', 'Trailer', 'WWW-Authenticate',
+         'X-Content-Type-Options', 'X-DNS-Prefetch-Control',
+         'X-Frame-Options', 'X-XSS-Protection']
 
 header_matches = [header for header in l_sec if header in headers]
 
