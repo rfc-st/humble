@@ -1241,5 +1241,5 @@ Sin permisos de escritura en OUTPUT_PATH.
 [csv_section]
 Sección
 
-[csv_info]
-Contenido
+[csv_values]
+Valores

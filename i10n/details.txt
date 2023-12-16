@@ -1241,5 +1241,5 @@ No write access in OUTPUT_PATH.
 [csv_section]
 Section
 
-[csv_info]
-Info
+[csv_values]
+Values

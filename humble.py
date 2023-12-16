@@ -767,19 +767,19 @@ def generate_csv(name_e, name_p):
         csv_writer = csv.writer(final_csv, quoting=csv.QUOTE_ALL)
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_ID]
         csv_writer.writerow([get_detail('[csv_section]', replace=True),
-                             get_detail('[csv_info]', replace=True)])
+                             get_detail('[csv_values]', replace=True)])
         parse_csv(csv_writer, csv_source, csv_section)
     print_export_path(name_p, reliable)
     remove(name_e)
 
 
 def parse_csv(csv_writer, csv_source, csv_section):
-    exclude_ln = False
     for i in csv_section:
         if i in csv_source:
             csv_content = csv_source.split(i)[1].split('[')[0]
             info_list = [line.strip() for line in csv_content.split('\n') if
                          line.strip()]
+            exclude_ln = False
             for csv_ln in info_list:
                 if csv_ln.startswith('.:'):
                     exclude_ln = True
