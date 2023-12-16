@@ -1257,15 +1257,17 @@ print_detail_r('[3depinsecure]')
 if not args.brief:
     print_detail("[aisc]")
 
-l_ins = ['Accept-CH', 'Access-Control-Allow-Methods',
-         'Access-Control-Allow-Origin', 'Allow', 'Content-Type', 'Etag',
-         'Expect-CT', 'Expires', 'Feature-Policy', 'Onion-Location', 'P3P',
-         'Public-Key-Pins', 'Set-Cookie', 'Server-Timing', 'Surrogate-Control',
-         'Timing-Allow-Origin', 'X-Content-Security-Policy',
+l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Methods',
+         'Access-Control-Allow-Origin', 'Allow', 'Content-DPR', 'Content-Type',
+         'Digest', 'Etag', 'Expect-CT', 'Expires', 'Feature-Policy',
+         'Large-Allocation', 'Onion-Location', 'P3P', 'Pragma',
+         'Public-Key-Pins', 'Public-Key-Pins-Report-Only', 'Set-Cookie',
+         'Server-Timing', 'SourceMap', 'Strict-Dynamic', 'Surrogate-Control',
+         'Timing-Allow-Origin', 'Tk', 'Warning', 'X-Content-Security-Policy',
          'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
          'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
-         'X-Pingback', 'X-Runtime', 'X-Webkit-CSP',
-         'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
+         'X-Pingback', 'X-Runtime', 'X-SourceMap', 'X-UA-Compatible',
+         'X-Webkit-CSP', 'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 l_acceptch_dep = ['content-dpr', 'dpr', 'sec-ch-ua-full-version',

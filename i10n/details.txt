@@ -1014,7 +1014,7 @@ HTTP Response Headers
   Empty headers:                
 
 [total_cnt]
-  Warnings to review:           
+  Findings to review:           
 
 [analysis_time]
 Analysis done in 
