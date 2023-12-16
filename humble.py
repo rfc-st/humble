@@ -830,79 +830,6 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
     return json_data
 
 
-def generate_detailed_json(name_e, name_p):
-    json_sect = [f'[{i}]' for i in CSV_ID]
-    json_id = {name: get_detail(name, replace=True) for name in json_sect}
-    section_ptrn = re.compile(r'\[(.*?)\]\n')
-    with open(name_e, 'r', encoding='utf8') as source_txt, \
-         open(name_p, 'w', encoding='utf8') as final_json:
-        txt_content = source_txt.read()
-        txt_sections = section_ptrn.split(txt_content)[1:]
-        data = {}
-        parse_detailed_json_sections(txt_sections, data, *json_id.values())
-        json_data = json.dumps(data, indent=4, ensure_ascii=False)
-        final_json.write(json_data)
-    print_export_path(name_p, reliable)
-    remove(name_e)
-
-
-def parse_detailed_json_sections(txt_sections, data, section0, sectionh,
-                                 section1, section2, section3, section4,
-                                 section5):
-    for i in range(0, len(txt_sections), 2):
-        json_section = f"[{txt_sections[i]}]"
-        json_content = txt_sections[i + 1].strip()
-        if json_section == section5:
-            json_content = json_content.split('.:')[0].strip()
-        json_lns = json_content.split('\n')
-        json_data = write_detailed_json_sections(section0, sectionh, section1,
-                                                 section2, section3, section4,
-                                                 section5, json_section,
-                                                 json_lns)
-        data[json_section] = json_data
-
-
-def write_detailed_json_sections(section0, sectionh, section1, section2,
-                                 section3, section4, section5, json_section,
-                                 json_lns):
-    if json_section in (section0, sectionh, section1, section2, section3,
-                        section4, section5):
-        json_data = {}
-        current_key = None
-        stored_key = None
-        for line in json_lns:
-            if json_section == section1:
-                json_data, current_key, stored_key = \
-                    missing_detailed_json(json_data, current_key, stored_key,
-                                          line, l_miss)
-            elif ':' in line:
-                key, value = line.split(':', 1)
-                json_data[key.strip()] = value.strip()
-        if current_key is not None:
-            if current_key not in json_data:
-                json_data[current_key] = []
-            json_data[current_key].append("")
-    else:
-        json_data = [line.strip() for line in json_lns if line.strip()]
-    return json_data
-
-
-def missing_detailed_json(json_data, current_key, stored_key, line, l_miss):
-    if line.strip().lower() in map(str.lower, l_miss):
-        current_key = line.strip()
-        stored_key = current_key
-        if current_key is None:
-            current_key = stored_key
-        else:
-            if current_key not in json_data:
-                json_data[current_key] = []
-            current_key = None
-    elif line != '':
-        json_data[stored_key].append(line.strip())
-        current_key = None
-    return json_data, current_key, stored_key
-
-
 def generate_pdf(name_e, pdf):
     pdf_structure()
     with open(name_e, "r", encoding='utf8') as pdf_source:
@@ -1883,10 +1810,7 @@ if args.output == 'txt':
 elif args.output == 'csv':
     generate_csv(name_e, name_p)
 elif args.output == 'json':
-    if args.brief:
-        generate_json(name_e, name_p)
-    else:
-        generate_detailed_json(name_e, name_p)
+    generate_json(name_e, name_p)
 elif args.output == 'pdf':
     pdf = PDF()
     generate_pdf(name_e, pdf)
