@@ -91,7 +91,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-17', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-22', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -1273,11 +1273,6 @@ l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Methods',
 l_acceptch_dep = ['content-dpr', 'dpr', 'sec-ch-ua-full-version',
                   'viewport-width', 'width']
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
-# https://cyberwhite.co.uk/http-verbs-and-their-security-risks/
-l_methods = ['*', 'CONNECT', 'DEBUG', 'DELETE', 'HEAD', 'OPTIONS', 'PATCH',
-             'PUT', 'TRACE', 'TRACK']
-
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 l_cache = ['no-cache', 'no-store', 'must-revalidate']
 
@@ -1312,7 +1307,9 @@ l_csp_dirs = ['base-uri', 'child-src', 'connect-src', 'default-src',
               'style-src', 'style-src-elem', 'style-src-attr', 'trusted-types',
               'upgrade-insecure-requests', 'webrtc', 'worker-src']
 
-l_csp_insecure = ['http:', 'ws:']
+l_csp_insecs = ['http:', 'ws:']
+
+l_csp_insecv = ['unsafe-eval', 'unsafe-inline']
 
 l_csp_ro_dep = ['violated-directive']
 
@@ -1328,6 +1325,11 @@ l_corp = ['cross-origin', 'same-origin', 'same-site']
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
 l_excc = ['max-age', 's-maxage']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+# https://cyberwhite.co.uk/http-verbs-and-their-security-risks/
+l_methods = ['*', 'CONNECT', 'DEBUG', 'DELETE', 'HEAD', 'OPTIONS', 'PATCH',
+             'PUT', 'TRACE', 'TRACK']
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
 l_legacy = ['application/javascript', 'application/ecmascript',
             'application/x-ecmascript', 'application/x-javascript',
@@ -1339,8 +1341,8 @@ l_legacy = ['application/javascript', 'application/ecmascript',
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
 l_origcluster = ['?0', '?1']
 
-# https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
+# https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 l_per_dirs = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'bluetooth', 'browsing-topics', 'camera', 'ch-ua', 'ch-ua-arch',
               'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
@@ -1376,6 +1378,9 @@ l_cookie_prf = ['__Host-', '__Secure-']
 
 l_cookie_sec = ['httponly', 'secure']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+l_sts_dir = ['includesubdomains', 'max-age']
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
 l_support_mode = ['credentialed-prerender']
 
@@ -1391,6 +1396,9 @@ l_trailer = ['authorization', 'cache-control', 'content-encoding',
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
 l_transfer = ['chunked', 'compress', 'deflate', 'gzip']
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+l_xfo_dir = ['deny', 'sameorigin']
 
 # https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 # https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
@@ -1482,8 +1490,8 @@ if 'Content-Security-Policy' in headers:
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
     if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
-    csp_store_values(csp_h, l_csp_broad, l_csp_insecure, i_cnt)
-    if any(elem in csp_h for elem in ['unsafe-eval', 'unsafe-inline']):
+    csp_store_values(csp_h, l_csp_broad, l_csp_insecs, i_cnt)
+    if any(elem in csp_h for elem in l_csp_insecv):
         print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
     if 'unsafe-hashes' in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
@@ -1636,12 +1644,14 @@ if 'Strict-Dynamic' in headers:
 
 sts_header = headers.get('Strict-Transport-Security', '').lower()
 if (sts_header) and not (URL.startswith(INS_S)):
-    age = int(''.join(filter(str.isdigit, sts_header)))
-    if not all(elem in sts_header for elem in ('includesubdomains',
-       'max-age')) or (age is None or age < 31536000):
+    try:
+        age = int(''.join(filter(str.isdigit, sts_header)))
+        if not all(elem in sts_header for elem in l_sts_dir) or age < 31536000:
+            print_details('[ists_h]', '[ists]', 'm', i_cnt)
+        if ',' in sts_header:
+            print_details('[istsd_h]', '[istsd]', 'd', i_cnt)
+    except ValueError:
         print_details('[ists_h]', '[ists]', 'm', i_cnt)
-    if ',' in sts_header:
-        print_details('[istsd_h]', '[istsd]', 'd', i_cnt)
 
 if 'Supports-Loading-Mode' in headers:
     support_mode_h = headers['Supports-Loading-Mode'].lower()
@@ -1709,7 +1719,7 @@ if xfo_header:
         print_details('[ixfo_h]', '[ixfo]', 'm', i_cnt)
     if 'allow-from' in xfo_header:
         print_details('[ixfod_h]', '[ixfod]', 'm', i_cnt)
-    if xfo_header not in ['deny', 'sameorigin']:
+    if xfo_header not in l_xfo_dir:
         print_details('[ixfoi_h]', '[ixfodi]', 'm', i_cnt)
 
 if 'X-Pad' in headers:
