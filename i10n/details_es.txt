@@ -1046,6 +1046,18 @@ Estadísticas globales de los análisis realizados
 [least_analyzed]
  Menos analizadas    
 
+[most_warnings]
+ Más advertencias    
+
+[most_warnings_c]
+ Más advertencias    
+
+[least_warnings]
+ Menos advertencias  
+
+[least_warnings_c]
+ Menos advertencias  
+
 [best_analysis]
  Mejor análisis      
 

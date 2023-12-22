@@ -1046,6 +1046,18 @@ Global statistics of all analyses performed
 [least_analyzed]
  Least analyzed  
 
+[most_warnings]
+ Most Warnings   
+
+[most_warnings_c]
+ Most Warnings   
+
+[least_warnings]
+ Least Warnings  
+
+[least_warnings_c]
+ Least Warnings   
+
 [best_analysis]
  Best analysis   
 

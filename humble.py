@@ -524,7 +524,21 @@ def get_global_metrics(url_ln, url_lines):
     least_analyzed_u = min(url_lines, key=url_lines.get)
     least_analyzed_c = url_lines[least_analyzed_u]
     least_analyzed_cu = f"({least_analyzed_c}) {least_analyzed_u}"
-    return first_a, latest_a, unique_u, most_analyzed_cu, least_analyzed_cu
+    most_warnings, least_warnings = get_global_warnings(url_ln)
+    return (first_a, latest_a, unique_u, most_analyzed_cu, least_analyzed_cu,
+            most_warnings, least_warnings)
+
+
+def get_global_warnings(url_ln):
+    most_warnings_u = max(url_ln, key=lambda line: int(line.split(' ; ')[-1]))
+    most_warnings_c = most_warnings_u.split(' ; ')[1]
+    most_warnings_cu = str(most_warnings_u.split(' ; ')[-1]).strip()
+    most_warning_p = f"({most_warnings_cu}) {most_warnings_c}"
+    least_warnings_u = min(url_ln, key=lambda line: int(line.split(' ; ')[-1]))
+    least_warnings_c = least_warnings_u.split(' ; ')[1]
+    least_warnings_cu = str(least_warnings_u.split(' ; ')[-1]).strip()
+    least_warnings_p = f"({least_warnings_cu}) {least_warnings_c}"
+    return (most_warning_p, least_warnings_p)
 
 
 def get_basic_global_metrics(total_a, first_m):
@@ -533,7 +547,9 @@ def get_basic_global_metrics(total_a, first_m):
             '[first_analysis_a]': first_m[0],
             '[latest_analysis]': first_m[1] + "\n",
             '[most_analyzed]': first_m[3],
-            '[least_analyzed]': first_m[4] + "\n"}
+            '[least_analyzed]': first_m[4] + "\n",
+            '[most_warnings]': first_m[5],
+            '[least_warnings]': first_m[6] + "\n"}
 
 
 def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
