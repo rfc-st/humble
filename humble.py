@@ -91,7 +91,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-22', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-23', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -152,13 +152,13 @@ def fng_analytics_global_groups(fng_lines):
 
 
 def fng_analytics_global_print(content_fng, len_fng):
-    max_ln_lgth = max(len(content) for content, _ in
-                      content_fng.most_common(20))
+    max_ln_len = max(len(content) for content, _ in
+                     content_fng.most_common(20))
     print(f"{get_detail('[fng_top]', replace=True)} {len_fng}\
 {get_detail('[fng_top_2]', replace=True)}\n")
     for content, count in content_fng.most_common(20):
         pct_fng_global = round(count / len_fng * 100, 2)
-        padding_s = ' ' * (max_ln_lgth - len(content))
+        padding_s = ' ' * (max_ln_len - len(content))
         print(f" [{content}]: {padding_s}{pct_fng_global:.2f}% ({count})")
 
 
@@ -195,11 +195,14 @@ def fng_analytics_content(fng_group, term, term_count, fng_lines):
 
 
 def fng_analytics_sorted(fng_lines, term, fng_group):
+    term_l = term.lower()
     for content in sorted(fng_group):
         print(f"\n [{content}]")
         for line in fng_lines:
-            if term.lower() in line.lower() and content in line:
-                print(f"  {line[:line.find('[')].strip()}")
+            line_l = line.lower()
+            if term_l in line_l and content in line:
+                start_index = line.find('[')
+                print(f"  {line[:start_index].strip()}")
 
 
 def print_security_guides():
@@ -214,15 +217,15 @@ def print_security_guides():
 
 def testssl_command(directory, uri):
     directory = path.abspath(directory)
-    testssl_file = path.join(directory, 'testssl.sh')
+    testssl_f = path.join(directory, 'testssl.sh')
     if not path.isdir(directory):
         sys.exit(f"\n{get_detail('[notestssl_path]')}")
-    if not path.isfile(testssl_file):
+    if not path.isfile(testssl_f):
         sys.exit(f"\n{get_detail('[notestssl_file]')}")
     else:
         uri_safe = quote(uri)
         # Check './testssl.sh --help' to choose your preferred options
-        command = [testssl_file, '-f', '-g', '-p', '-U', '-s', '--hints',
+        command = [testssl_f, '-f', '-g', '-p', '-U', '-s', '--hints',
                    uri_safe]
         testssl_analysis(command)
 
@@ -249,8 +252,8 @@ def testssl_analysis(command):
         print(f"Error running testssl.sh analysis!: {e}")
 
 
-def get_details_lines():
-    file_path = path.join('i10n', 'details_es.txt' if args.lang == 'es' else
+def get_l10n_lines():
+    file_path = path.join('l10n', 'details_es.txt' if args.lang == 'es' else
                           'details.txt')
     with open(file_path, encoding='utf8') as file:
         return file.readlines()
@@ -530,13 +533,13 @@ def get_global_metrics(url_ln, url_lines):
 
 
 def get_global_warnings(url_ln):
-    most_warnings_u = max(url_ln, key=lambda line: int(line.split(' ; ')[-1]))
-    most_warnings_c = most_warnings_u.split(' ; ')[1]
-    most_warnings_cu = str(most_warnings_u.split(' ; ')[-1]).strip()
+    most_warnings = max(url_ln, key=lambda line: int(line.split(' ; ')[-1]))
+    least_warnings = min(url_ln, key=lambda line: int(line.split(' ; ')[-1]))
+    most_warnings_c, most_warnings_cu = most_warnings.split(' ; ')[1], \
+        str(most_warnings.split(' ; ')[-1]).strip()
     most_warning_p = f"({most_warnings_cu}) {most_warnings_c}"
-    least_warnings_u = min(url_ln, key=lambda line: int(line.split(' ; ')[-1]))
-    least_warnings_c = least_warnings_u.split(' ; ')[1]
-    least_warnings_cu = str(least_warnings_u.split(' ; ')[-1]).strip()
+    least_warnings_c, least_warnings_cu = least_warnings.split(' ; ')[1], \
+        str(least_warnings.split(' ; ')[-1]).strip()
     least_warnings_p = f"({least_warnings_cu}) {least_warnings_c}"
     return (most_warning_p, least_warnings_p)
 
@@ -1088,7 +1091,7 @@ parser.add_argument("-v", "--version", action="store_true", help="show the \
 version of this tool and check for updates")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
-details_f = get_details_lines()
+details_f = get_l10n_lines()
 check_python_version()
 
 if args.version:
