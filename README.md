@@ -136,7 +136,7 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_analytics.jpg" alt="Statistics of the analysis performed against a URL">
 </p>
 <br />
-.: (Linux) - Statistics of the analysis performed against all URLs.<br />
+.: (Linux) - Statistics of the analysis performed against all URLs in Spanish.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_global_analytics.jpg" alt="Global statistics of the analysis performed">
@@ -148,27 +148,27 @@ Options used: -f -g -p -U -s --hints
 **NOTE**: Python 3.9 or higher is required.
 
 ```bash
-# install python3 and python3-pip if not exist
+# Install python3 and python3-pip if not exist
 (Windows) https://www.python.org/downloads/windows/
 (Linux) if not installed by default, install them via, e.g. Synaptic, apt, dnf, yum ...
 
-# install git
+# Install Git
 (Windows) https://git-scm.com/download/win
 (Linux) https://git-scm.com/download/linux
 
-# clone the repository
+# Clone this Git Repository
 $ git clone https://github.com/rfc-st/humble.git
 
-# change the working directory to humble
+# Change the working directory to 'humble'
 $ cd humble
 
-# install the requirements
+# Install the required dependencies
 $ pip3 install -r requirements.txt
 
-# update humble (every week, inside humble's working directory)
+# (Recommended) Check for updates weekly, inside 'humble' directory
 $ git pull
 
-# or download the latest release (every four to five weeks)
+# Or download the latest release, every four to five weeks
 https://github.com/rfc-st/humble/releases
 ```
 
