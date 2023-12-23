@@ -641,7 +641,7 @@ def print_header(header):
     print(f" {header}" if args.output else f"{BRI_R} {header}")
 
 
-def print_header_fng(header):
+def print_fng_header(header):
     prefix, _, suffix = [x.strip() for x in header.partition(' [')]
     if args.output:
         print(f" {header}")
@@ -651,7 +651,7 @@ def print_header_fng(header):
         print(f"{BRI_R} {header}")
 
 
-def print_analysis_summary(reliable):
+def print_analysis_info(reliable):
     if not args.output:
         clean_shell_output(reliable=False) if reliable else \
             clean_shell_output()
@@ -673,10 +673,10 @@ def print_analysis_summary(reliable):
     print(f" {now}")
     print(f' URL  : {URL}')
     if status_code in CLI_E or reliable or args.redirects:
-        print_additional_summary(reliable)
+        print_extra_info(reliable)
 
 
-def print_additional_summary(reliable):
+def print_extra_info(reliable):
     if status_code in CLI_E:
         id_mode = f"[http_{status_code}]"
         if detail := print_detail(id_mode, 0):
@@ -760,7 +760,7 @@ def fingerprint_headers(headers, l_fng, l_fng_ex):
 def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
     if not args.brief:
         index_fng = l_fng.index(header)
-        print_header_fng(l_fng_ex[index_fng])
+        print_fng_header(l_fng_ex[index_fng])
         if not headers[header]:
             print(get_detail('[empty_fng]', replace=True))
         else:
@@ -1192,7 +1192,7 @@ if args.output:
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
-print_analysis_summary(reliable)
+print_analysis_info(reliable)
 print_headers()
 
 # Report - 1. Missing HTTP Security Headers
