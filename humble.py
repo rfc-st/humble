@@ -91,7 +91,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-23', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-24', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -785,8 +785,8 @@ def generate_csv(name_e, name_p):
         csv_source = source_txt.read()
         csv_writer = csv.writer(final_csv, quoting=csv.QUOTE_ALL)
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_ID]
-        csv_writer.writerow([get_detail('[csv_section]', replace=True),
-                             get_detail('[csv_values]', replace=True)])
+        csv_writer.writerow([get_detail(f'[{i}]', replace=True) for i in
+                             ['csv_section', 'csv_values']])
         parse_csv(csv_writer, csv_source, csv_section)
     print_export_path(name_p, reliable)
     remove(name_e)
@@ -808,9 +808,8 @@ def parse_csv(csv_writer, csv_source, csv_section):
 
 
 def generate_json(name_e, name_p):
-    section0 = get_detail('[0section]', replace=True)
-    sectionh = get_detail('[0headers]', replace=True)
-    section5 = get_detail('[5compat]', replace=True)
+    section0, sectionh, section5 = [get_detail(f'[{i}]', replace=True) for i
+                                    in ['0section', '0headers', '5compat']]
     with (open(name_e, 'r', encoding='utf8') as source_txt,
           open(name_p, 'w', encoding='utf8') as final_json):
         txt_content = source_txt.read()
@@ -1866,8 +1865,8 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
     l_fng_final = sorted(l_fng)
     l_fng_final_case = [x.casefold() for x in l_fng_final]
 
-    ok_string = get_detail('[no_warnings]')
-    ko_string = get_detail('[no_sec_headers]')
+    ok_string, ko_string = [get_detail(f'[{i}]') for i
+                            in ['no_warnings', 'no_sec_headers']]
 
     sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
              'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
