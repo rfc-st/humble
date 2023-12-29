@@ -1247,8 +1247,8 @@ Error: The PATH for 'testssl.sh' is incorrect.
 [args_noexportpath]
 The specified OUTPUT_PATH does not exist.
 
-[args_nowritepermission]
-No write access in OUTPUT_PATH.
+[args_nowr]
+This user does not have write permissions on 
 
 [csv_section]
 Section

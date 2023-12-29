@@ -1247,8 +1247,8 @@ Error: la ruta indicada de 'testssl.sh' es incorrecta.
 [args_noexportpath]
 No existe la OUTPUT_PATH indicada.
 
-[args_nowritepermission]
-Sin permisos de escritura en OUTPUT_PATH.
+[args_nowr]
+Este usuario no tiene permisos de escritura en 
 
 [csv_section]
 Sección

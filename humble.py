@@ -57,20 +57,20 @@ import tldextract
 import subprocess
 import concurrent.futures
 
-ANL_F = 'analysis_h.txt'
 BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRI_R = Style.BRIGHT + Fore.RED
 CAN_S = ': https://caniuse.com/?search='
 CDN_E = [520, 521, 522, 523, 524, 525, 526, 527, 530]
-CHK_F = 'check_path_permissions'
 CLE_O = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
 CSV_ID = ['0section', '0headers', '1missing', '2fingerprint', '3depinsecure',
           '4empty', '5compat']
-FNG_S = 'fingerprint.txt'
 GIT_H = "https://raw.githubusercontent.com/rfc-st/humble/master/humble.py"
 GIT_U = "https://github.com/rfc-st/humble"
+HUM_D = ['additional', 'l10n']
+HUM_F = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
+         'guides.txt', 'details_es.txt', 'details.txt']
 INS_S = 'http:'
 IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
            r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
@@ -85,13 +85,14 @@ troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/'
 REF_SRV_E = ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/'
 REF_E = 'Ref  :'
 REF_S = 'Ref: '
+RU_I = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 SRV_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511]
 SEC_S = "https://"
 URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-24', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-29', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -137,7 +138,7 @@ def check_humble_updates(version):
 def fng_analytics_global():
     print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join('additional', FNG_S), 'r', encoding='utf8') as fng_f:
+    with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
     fng_analytics_global_groups(fng_lines)
 
@@ -165,7 +166,7 @@ def fng_analytics_global_print(content_fng, len_fng):
 def fng_analytics(term):
     print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join('additional', FNG_S), 'r', encoding='utf8') as fng_f:
+    with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
     fng_group, term_count = fng_analytics_groups(fng_lines, term)
     fng_analytics_content(fng_group, term, term_count, fng_lines)
@@ -207,8 +208,7 @@ def fng_analytics_sorted(fng_lines, term, fng_group):
 
 def print_security_guides():
     print_detail('[security_guides]', 1)
-    with open(path.join('additional', 'guides.txt'), 'r', encoding='utf8') as \
-            gd:
+    with open(path.join(HUM_D[0], HUM_F[3]), 'r', encoding='utf8') as gd:
         for line in gd:
             if not line.startswith('#'):
                 print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
@@ -253,8 +253,8 @@ def testssl_analysis(command):
 
 
 def get_l10n_lines():
-    file_path = path.join('l10n', 'details_es.txt' if args.lang == 'es' else
-                          'details.txt')
+    file_path = path.join(HUM_D[1], HUM_F[4] if args.lang == 'es' else
+                          HUM_F[5])
     with open(file_path, encoding='utf8') as file:
         return file.readlines()
 
@@ -275,8 +275,8 @@ def get_analysis_result():
 
 
 def get_analysis_totals(t_cnt):
-    with open(ANL_F, 'a+', encoding='utf8') as a_history, \
-         open(ANL_F, 'r', encoding='utf8') as c_history:
+    with open(HUM_F[0], 'a+', encoding='utf8') as a_history, \
+         open(HUM_F[0], 'r', encoding='utf8') as c_history:
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
 {e_cnt} ; {t_cnt}\n")
         url_ln = [line for line in c_history if URL in line]
@@ -324,8 +324,8 @@ def analysis_exists(filepath):
 
 
 def url_analytics(is_global=False):
-    analysis_exists(ANL_F)
-    with open(ANL_F, 'r', encoding='utf8') as c_history:
+    analysis_exists(HUM_F[0])
+    with open(HUM_F[0], 'r', encoding='utf8') as c_history:
         analysis_stats = extract_global_metrics(c_history) if is_global else \
             extract_analysis_metrics(c_history)
     stats_s = '[global_stats_analysis]' if is_global else '[stats_analysis]'
@@ -671,7 +671,7 @@ def print_analysis_info(reliable):
     print_detail_r('[0section]')
     print_detail_l('[analysis_date]')
     print(f" {now}")
-    print(f' URL  : {URL}')
+    print(f'{URL_S}{URL}')
     if status_code in CLI_E or reliable or args.redirects:
         print_extra_info(reliable)
 
@@ -772,11 +772,11 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
 
 def check_path_permissions(path_safe):
     try:
-        open(path.join(path_safe, CHK_F), 'w')
+        open(path.join(path_safe, HUM_F[1]), 'w')
     except PermissionError:
-        parser.error(get_detail('[args_nowritepermission]'))
+        parser.error(f"{get_detail('[args_nowr]', replace=True)}'{path_safe}'")
     else:
-        remove(path.join(path_safe, CHK_F))
+        remove(path.join(path_safe, HUM_F[1]))
 
 
 def generate_csv(name_e, name_p):
@@ -962,9 +962,8 @@ def print_ru_message():
     with contextlib.suppress(requests.exceptions.RequestException):
         requests.packages.urllib3.disable_warnings()
         sffx = tldextract.extract(URL).suffix[-2:].upper()
-        cnty = requests.get('https://ipapi.co/country_name/', verify=False,
-                            timeout=5).text.strip()
-        if (sffx == 'RU' and sffx not in NON_RU_TLD) or cnty == 'Russia':
+        cnty = requests.get(RU_I[0], verify=False, timeout=5).text.strip()
+        if (sffx == RU_I[1] and sffx not in NON_RU_TLD) or cnty == RU_I[2]:
             print_detail('[ru_analysis_message]', 3)
             sys.exit()
 
@@ -1249,8 +1248,7 @@ if not args.brief:
 
 l_fng, l_fng_ex = [], []
 
-with open(path.join('additional', 'fingerprint.txt'), 'r', encoding='utf8') \
-     as fn:
+with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fn:
     for line in fn:
         stripped_line = line.strip()
         if stripped_line and not line.startswith('#'):
