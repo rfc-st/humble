@@ -1245,10 +1245,13 @@ Error: The PATH for 'testssl.sh' is incorrect.
 '-op' requires '-o'.
 
 [args_noexportpath]
-The specified OUTPUT_PATH does not exist.
+The indicated PATH does not exist 
 
 [args_nowr]
 This user does not have write permissions on 
+
+[args_path_traversal]
+Error: The indicated PATH seems wrong
 
 [csv_section]
 Section

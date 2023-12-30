@@ -1245,10 +1245,13 @@ Error: la ruta indicada de 'testssl.sh' es incorrecta.
 '-op' requiere '-o'.
 
 [args_noexportpath]
-No existe la OUTPUT_PATH indicada.
+No existe la ruta indicada indicada 
 
 [args_nowr]
 Este usuario no tiene permisos de escritura en 
+
+[args_path_traversal]
+Error: La ruta indicada parece errónea
 
 [csv_section]
 Sección

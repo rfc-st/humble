@@ -77,6 +77,9 @@ IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ['CYMRU', 'GURU', 'PRU']
 PAT_LN = r'\[(.*?)\]'
+PATH_PTRN = (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
+             r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
+             r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')
 PRG_N = 'humble (HTTP Headers Analyzer) - '
 REF_1 = ' Ref  : '
 REF_2 = ' Ref: '
@@ -92,7 +95,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2023-12-29', '%Y-%m-%d').date()
+version = datetime.strptime('2023-12-30', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -770,6 +773,14 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
         print_header(header)
 
 
+def check_path_traversal(path):
+    path_traversal_ptrn = re.compile(PATH_PTRN)
+    if path_traversal_ptrn.search(path):
+        print(f"\n{get_detail('[args_path_traversal]', replace=True)} \
+('{path}')")
+        sys.exit()
+
+
 def check_path_permissions(path_safe):
     try:
         open(path.join(path_safe, HUM_F[1]), 'w')
@@ -1111,14 +1122,16 @@ if args.lang and not (args.URL or args.URL_A) and not args.guides:
     parser.error(get_detail('[args_lang]'))
 
 if args.output_path is not None:
+    check_path_traversal(args.output_path)
+    path_safe = path.abspath(args.output_path)
     if args.output is None:
         parser.error(get_detail('[args_nooutputfmt]'))
     else:
-        if path.exists(args.output_path):
-            path_safe = path.abspath(args.output_path)
+        if path.exists(path_safe):
             check_path_permissions(path_safe)
         else:
-            parser.error(get_detail('[args_noexportpath]'))
+            parser.error(f"{get_detail('[args_noexportpath]', replace=True)}\
+('{path_safe}')")
 
 if any([args.brief, args.output, args.ret, args.redirects]) \
         and (args.URL is None or args.guides is None or args.URL_A is None):
