@@ -64,7 +64,7 @@ Large-Allocation: Deprecated Header
 Onion-Location: Potentially Unsafe Header
 Origin-Agent-Cluster: No Valid Directives
 P3P: Deprecated Header
-Permissions-Policy: Deprecated Values
+Permissions-Policy: Deprecated Features
 Permissions-Policy: Incorrect Values
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value

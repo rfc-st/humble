@@ -342,9 +342,6 @@
 [imethods_s]
  Asegúrese de que estos métodos HTTP habilitados son necesarios: 
 
-[ifpold_s]
- Estos valores están obsoletos: 
-
 [icoep_h]
  Cross-Origin-Embedder-Policy (Sin directivas adecuadas)
 
@@ -811,6 +808,9 @@ Cabeceras de respuesta HTTP
 [ifpoli]
  Utilice '=()' en vez de 'none'.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
+
+[ifpold_h_s]
+ Evite utilizar valores obsoletos: 
 
 [ifpold]
  Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md

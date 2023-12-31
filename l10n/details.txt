@@ -342,9 +342,6 @@
 [imethods_s]
  Make sure these enabled HTTP methods are needed: 
 
-[ifpold_s]
- These values are deprecated: 
-
 [icoep_h]
  Cross-Origin-Embedder-Policy (No Valid Directives)
 
@@ -436,7 +433,7 @@
  Permissions-Policy (Incorrect Value)
 
 [ifpold_h]
- Permissions-Policy (Deprecated Values)
+ Permissions-Policy (Deprecated Features)
 
 [iprag_h]
  Pragma (Deprecated Header)
@@ -811,6 +808,9 @@ HTTP Response Headers
 [ifpoli]
  Use '=()' instead of 'none'.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
+
+[ifpold_h_s]
+ Avoid using deprecated features: 
 
 [ifpold]
  Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md

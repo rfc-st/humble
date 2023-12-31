@@ -1372,7 +1372,9 @@ l_origcluster = ['?0', '?1']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
-l_per_dirs = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
+l_per_dep = ['document-domain', 'window-placement']
+
+l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'bluetooth', 'browsing-topics', 'camera', 'ch-ua', 'ch-ua-arch',
               'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
               'ch-ua-mobile', 'ch-ua-model', 'ch-ua-platform',
@@ -1391,7 +1393,7 @@ l_per_dirs = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'run-ad-auction', 'screen-wake-lock', 'serial',
               'shared-autofill', 'speaker-selection', 'storage-access',
               'sync-script', 'sync-xhr', 'trust-token-redemption', 'unload',
-              'usb', 'vertical-scroll', 'web-share', 'window-placement',
+              'usb', 'vertical-scroll', 'web-share', 'window-management',
               'xr-spatial-tracking']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
@@ -1612,18 +1614,19 @@ if 'P3P' in headers:
 
 if 'Permissions-Policy' in headers:
     perm_header = headers['Permissions-Policy'].lower()
-    if not any(elem in perm_header for elem in l_per_dirs):
+    if not any(elem in perm_header for elem in l_per_feat):
         print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
     if '*' in perm_header:
         print_details('[ifpol_h]', '[ifpol]', 'd', i_cnt)
     if 'none' in perm_header:
         print_details('[ifpoli_h]', '[ifpoli]', 'd', i_cnt)
-    if 'document-domain' in perm_header:
+    if any(elem in perm_header for elem in l_per_dep):
         print_detail_r('[ifpold_h]', is_red=True)
         if not args.brief:
-            print_detail_l('[ifpold_s]')
-            print('document-domain')
-            print_detail('[ifpold]')
+            matches_perm = [x for x in l_per_dep if x in perm_header]
+            print_detail_l("[ifpold_h_s]")
+            print(', '.join(matches_perm))
+            print_detail("[ifpold]")
         i_cnt[0] += 1
 
 if 'Pragma' in headers:
