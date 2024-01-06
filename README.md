@@ -180,7 +180,7 @@ https://github.com/rfc-st/humble/releases
 
 usage: humble.py [-h] [-a] [-b] [-df] [-e [PATH]] [-f [TERM]] [-g] [-l {es}] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r] [-u URL] [-v]
 
-humble (HTTP Headers Analyzer) - https://github.com/rfc-st/humble
+'humble' (HTTP Headers Analyzer) | v.2024-01-06 | https://github.com/rfc-st/humble
 
 options:
   -h, --help                  show this help message and exit

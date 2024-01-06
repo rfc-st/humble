@@ -80,7 +80,7 @@ PAT_LN = r'\[(.*?)\]'
 PATH_PTRN = (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
              r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
              r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')
-PRG_N = 'humble (HTTP Headers Analyzer) - '
+PRG_N = "'humble' (HTTP Headers Analyzer)"
 REF_1 = ' Ref  : '
 REF_2 = ' Ref: '
 REF_CDN_E = ' Ref  : https://developers.cloudflare.com/support/\
@@ -107,7 +107,7 @@ class PDF(FPDF):
         self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
                   new_y="NEXT", align='C')
         self.ln(1)
-        self.cell(0, 5, f"({GIT_U})", align='C')
+        self.cell(0, 5, f"({GIT_U}) | v.{version})", align='C')
         self.ln(9) if self.page_no() == 1 else self.ln(13)
 
     def footer(self):
@@ -666,11 +666,12 @@ def print_analysis_info(reliable):
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
         print(banner)
-        print(f" ({GIT_U})")
+        print(f" ({GIT_U} | v.{version})")
     elif args.output != 'pdf':
         print("")
         print_detail('[humble_description]', 2)
-    print(linesep.join(['']*2))
+    print(linesep.join(['']*2) if args.output == 'html' or not args.output
+          else "")
     print_detail_r('[0section]')
     print_detail_l('[analysis_date]')
     print(f" {now}")
@@ -887,7 +888,7 @@ def pdf_structure():
 
 def pdf_metadata():
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
-    git_urlc = f"{GIT_U} (v.{version})"
+    git_urlc = f"{GIT_U} | v.{version}"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
     pdf.set_creator(git_urlc)
@@ -928,8 +929,8 @@ def pdf_links(i, pdfstring):
 
 def format_html_info(condition, ln, sub_d):
     if condition == 'rfc-st':
-        html_final.write(f"{ln[:2]}{sub_d['ahref_s']}{ln[2:-1]}\
-{sub_d['close_t']}{ln[2:]}{sub_d['ahref_f']}")
+        html_final.write(f"{ln[:1]}{sub_d['ahref_s']}{ln[1:]}\
+{sub_d['close_t']}{ln[1:]}{sub_d['ahref_f']}")
     else:
         html_final.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}\
 {sub_d['close_t']}{ln[8:]}{sub_d['ahref_f']}<br>")
@@ -1069,7 +1070,7 @@ def custom_help_formatter(prog):
 init(autoreset=True)
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
-                        description=PRG_N + GIT_U)
+                        description=f"{PRG_N} | v.{version} | {GIT_U}")
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="show \
 statistics of the performed analysis (will be global if '-u' is omitted)")

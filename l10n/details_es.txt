@@ -315,8 +315,8 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning
 
 [humble_description]
- Analizador de cabeceras HTTP
- (https://github.com/rfc-st/humble)
+ 'humble' (Analizador de cabeceras HTTP)
+ https://github.com/rfc-st/humble
 
 [no_sec_headers]
  No hay cabeceras de seguridad HTTP habilitadas.
