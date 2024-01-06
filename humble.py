@@ -58,7 +58,7 @@ import subprocess
 import concurrent.futures
 
 BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
-BRI_R = Style.BRIGHT + Fore.RED
+BRI_R = f"{Style.BRIGHT}{Fore.RED}"
 CAN_S = ': https://caniuse.com/?search='
 CDN_E = [520, 521, 522, 523, 524, 525, 526, 527, 530]
 CLE_O = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
@@ -95,7 +95,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-01-01', '%Y-%m-%d').date()
+version = datetime.strptime('2024-01-06', '%Y-%m-%d').date()
 
 
 class PDF(FPDF):
@@ -268,7 +268,7 @@ def get_analysis_result():
     print_detail_l('[analysis_time]')
     print(round(end - start, 2), end="")
     print_detail_l('[analysis_time_sec]')
-    t_cnt = m_cnt + f_cnt + i_cnt[0] + e_cnt
+    t_cnt = sum([m_cnt, f_cnt, i_cnt[0], e_cnt])
     mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = get_analysis_totals(t_cnt)
     mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, \
         thr_cnt = compare_analysis_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt,
@@ -411,7 +411,7 @@ def generate_date_groups(year_cnt, url_ln):
         month_cnts = get_month_counts(year, url_ln)
         months_str = '\n'.join([f"   ({count}){month_name.rstrip()}" for
                                 month_name, count in month_cnts.items()])
-        year_str += '\n' + months_str + '\n'
+        year_str += f"\n{months_str}\n"
         years_str.append(year_str)
     return '\n'.join(years_str)
 
@@ -472,7 +472,7 @@ def get_security_metrics(second_m):
     return {'[analysis_y]': "", '[no_missing]': second_m[0],
             '[no_fingerprint]': second_m[1],
             '[no_ins_deprecated]': second_m[2],
-            '[no_empty]': second_m[3] + "\n"}
+            '[no_empty]': f"{second_m[3]}\n"}
 
 
 def get_warnings_metrics(additional_m):
@@ -551,11 +551,11 @@ def get_basic_global_metrics(total_a, first_m):
     return {'[main]': "", '[total_analysis]': total_a,
             '[total_global_analysis]': str(first_m[2]),
             '[first_analysis_a]': first_m[0],
-            '[latest_analysis]': first_m[1] + "\n",
+            '[latest_analysis]': f"{first_m[1]}\n",
             '[most_analyzed]': first_m[3],
-            '[least_analyzed]': first_m[4] + "\n",
+            '[least_analyzed]': f"{first_m[4]}\n",
             '[most_warnings]': first_m[5],
-            '[least_warnings]': first_m[6] + "\n"}
+            '[least_warnings]': f"{first_m[6]}\n"}
 
 
 def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
@@ -684,7 +684,7 @@ def print_extra_info(reliable):
         id_mode = f"[http_{status_code}]"
         if detail := print_detail(id_mode, 0):
             print(detail)
-        print(REF_SRV_E + str(status_code))
+        print(f"{REF_SRV_E}{status_code}")
     if reliable:
         print(get_detail('[unreliable_analysis_note]', replace=True))
     if args.redirects:
@@ -733,7 +733,7 @@ def print_detail_r(id_mode, is_red=False):
     for i, line in enumerate(details_f):
         if line.startswith(id_mode):
             if not args.output:
-                print(style_str + details_f[i+1], end='')
+                print(f"{style_str}{details_f[i+1]}", end='')
             else:
                 print(details_f[i+1], end='')
             if not is_red:
@@ -1837,7 +1837,7 @@ header_matches = [header for header in l_sec if header in headers]
 if header_matches:
     for key in header_matches:
         output_string = "  " if args.output == 'html' else " "
-        key_string = key if args.output else Fore.CYAN + key + Fore.RESET
+        key_string = key if args.output else f"{Fore.CYAN}{key}{Fore.RESET}"
         print(f"{output_string}{key_string}{CAN_S}\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 else:
