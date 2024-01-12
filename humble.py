@@ -46,12 +46,14 @@ from os import linesep, path, remove
 from colorama import Fore, Style, init
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, HelpFormatter
+from requests.adapters import HTTPAdapter
 import re
 import csv
+import ssl
 import sys
 import json
-import requests
 import platform
+import requests
 import contextlib
 import tldextract
 import subprocess
@@ -66,6 +68,7 @@ CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
 CSV_ID = ['0section', '0headers', '1missing', '2fingerprint', '3depinsecure',
           '4empty', '5compat']
+FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 GIT_H = "https://raw.githubusercontent.com/rfc-st/humble/master/humble.py"
 GIT_U = "https://github.com/rfc-st/humble"
 HUM_D = ['additional', 'l10n']
@@ -95,7 +98,23 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-01-06', '%Y-%m-%d').date()
+version = datetime.strptime('2024-01-12', '%Y-%m-%d').date()
+
+
+class SSLContextAdapter(requests.adapters.HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        # Yes, certificates and hosts must always be checked/verified on HTTPS
+        # connections. However, and within the scope of 'humble', I have
+        # chosen to disable these checks so that in certain cases (e.g.
+        # development environments, hosts with very old servers/software,
+        # self-signed certificates, etc) the URL can still be analyzed.
+        context = ssl._create_unverified_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
+        context.cert_reqs = ssl.CERT_NONE
+        context.set_ciphers(FORCED_CIPHERS)
+        kwargs['ssl_context'] = context
+        return super(SSLContextAdapter, self).init_poolmanager(*args, **kwargs)
 
 
 class PDF(FPDF):
@@ -999,17 +1018,23 @@ def make_http_request():
     try:
         start_time = time()
         uri_safe = quote(URL)
+        session = requests.Session()
+        session.mount("https://", SSLContextAdapter())
+        session.mount("http://", HTTPAdapter())
         # If '-df' param is provided ('args.redirects') the exact URL will be
         # analyzed; otherwise the last redirected URL will be analyzed.
         #
-        # Regarding 'verify=False': yes, Server certificates should be
-        # verified during SSL/TLS connections; however, I think it is also
-        # important that URLs with self-signed certificates or development
-        # environments can be analyzed.
-        r = requests.get(uri_safe, allow_redirects=not args.redirects,
-                         verify=False, headers=c_headers, timeout=15)
+        # Yes, certificates must always be checked/verified by default on
+        # HTTPS connections. However, and within the scope of 'humble', I have
+        # chosen to disable these checks so that in certain cases (e.g.
+        # development environments, hosts with very old servers/software,
+        # self-signed certificates, etc) the URL can still be analyzed.
+        r = session.get(uri_safe, allow_redirects=not args.redirects,
+                        verify=False, headers=c_headers, timeout=15)
         elapsed_time = time() - start_time
         return r, elapsed_time, None
+    except requests.exceptions.SSLError:
+        pass
     except requests.exceptions.RequestException as e:
         return None, 0.0, e
 
@@ -1160,15 +1185,6 @@ if not args.URL_A:
     detail = '[analysis_output]' if args.output else '[analysis]'
     print("")
     print_detail(detail)
-
-# TO-DO: check https://github.com/rfc-st/humble/pull/16
-# Regarding 'dh key too small' errors: https://stackoverflow.com/a/41041028
-requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
-try:
-    requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS \
-        += ':HIGH:!DH:!aNULL'
-except AttributeError:
-    pass
 
 exception_d = {
     requests.exceptions.ConnectionError: '[e_404]',
