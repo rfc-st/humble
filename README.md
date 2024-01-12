@@ -64,25 +64,25 @@ HTTP Headers Analyzer<br />
 
 ## Screenshots
 
-.: (Windows) - Brief analysis.<br />
+* (Windows) - Brief analysis.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.PNG" alt="(Windows) - Brief analysis">
 </p>
 <br />
-.: (Linux) - Brief analysis and retrieved HTTP headers.<br />
+* (Linux) - Brief analysis and retrieved HTTP headers.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="(Linux) - Brief analysis and retrieved HTTP headers">
 </p>
 <br />
-.: (Linux) - Detailed analysis in Spanish.<br />
+* (Linux) - Detailed analysis in Spanish.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="(Linux) - Detailed analysis in Spanish" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - SSL/TLS checks (requires https://testssl.sh/ and Linux/Unix client).<br />
+* (Linux) - SSL/TLS checks (requires https://testssl.sh/ and Linux/Unix client).<br />
 <p></p>
 
 ```bash
@@ -94,49 +94,49 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_encryption_s.PNG" alt="(Linux) - SSL/TLS checks (requires https://testssl.sh/ and Linux/Unix client)" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - List of HTTP fingerprint headers based on a specific term.<br />
+* (Linux) - List of HTTP fingerprint headers based on a specific term.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fng.jpg" alt="(Linux) - List of HTTP fingerprint headers based on a specific term" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Brief analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/https_www.spacex.com_20231214.csv">Example.</a><br />
+* (Linux) - Brief analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/https_www.spacex.com_20231214.csv">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_csv_s.PNG" alt="(Linux) - Brief analysis saved as CSV" width=70% height=70%>
 </p>
 <br />
-.: (Windows) - Detailed analysis saved as PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/www.spacex.com_headers_20231110.pdf">Example.</a><br />
+* (Windows) - Detailed analysis saved as PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/www.spacex.com_headers_20231110.pdf">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="(Windows) - Detailed analysis saved as PDF" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Detailed analysis saved as HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/www.spacex.com_headers_20231110.html">Example.</a><br />
+* (Linux) - Detailed analysis saved as HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/www.spacex.com_headers_20231110.html">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="(Linux) - Detailed analysis saved as HTML" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Brief analysis saved as JSON. <a href="https://jsonblob.com/1168976093893222400">Example.</a><br />
+* (Linux) - Brief analysis saved as JSON. <a href="https://jsonblob.com/1168976093893222400">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="(Linux) - Brief analysis saved as JSON" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Analysis history file: Date, URL, Missing, Fingerprint, Deprecated/Insecure, Empty headers & Total warnings (the four previous totals).<br />
+* (Linux) - Analysis history file: Date, URL, Missing, Fingerprint, Deprecated/Insecure, Empty headers & Total warnings (the four previous totals).<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_ah.PNG" alt="(Linux) - Analysis history file: Date, URL, Missing, Fingerprint, Deprecated/Insecure, Empty headers & Total warnings (the four previous totals)">
 </p>
 <br />
-.: (Linux) - Statistics of the analysis performed against a specific URL.<br />
+* (Linux) - Statistics of the analysis performed against a specific URL.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_analytics.jpg" alt="(Linux) - Statistics of the analysis performed against a specific URL">
 </p>
 <br />
-.: (Linux) - Statistics of the analysis performed against all URLs in Spanish.<br />
+* (Linux) - Statistics of the analysis performed against all URLs in Spanish.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_global_analytics.jpg" alt="(Linux) - Statistics of the analysis performed against all URLs in Spanish">
