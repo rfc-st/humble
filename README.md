@@ -145,7 +145,8 @@ Options used: -f -g -p -U -s --hints
 
 ## Installation & Update
 
-**NOTE**: Python 3.9 or higher is required.
+> [!NOTE]
+> Python 3.9 or higher is required.
 
 ```bash
 # Install python3 and python3-pip if not exist
