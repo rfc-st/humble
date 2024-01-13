@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-01-12', '%Y-%m-%d').date()
+version = datetime.strptime('2024-01-13', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -628,8 +628,19 @@ def csp_print_warnings(csp_values, csp_title, csp_desc, csp_refs):
     print_detail(f'{csp_refs}')
 
 
-def csp_parse_content(csp_header):
-    # TO-DO: analyze detailed directives/values in the future.
+def csp_full_analysis(csp_header):
+    # TO-DO: detailed directives/values analysis, based on W3C CSP Level 2 & 3:
+    #
+    # 0.- Source values.
+    #
+    # 1.- Fetch directives: default-src, child-src, connect-src, font-src,
+    # frame-src, img-src, manifest-src, media-src, object-src, prefetch-src,
+    # script-src, script-src-elem, script-src-attr, style-src, style-src-elem,
+    # style-src-attr, worker-src.
+    #
+    # 2.- Document directives: base-uri, sandbox.
+    #
+    # 3.- Navigation directives: form-action, frame-ancestors.
     csp_output = []
     for directive in csp_header.split(';'):
         dir_csp = directive.strip().split(' ', 1)
