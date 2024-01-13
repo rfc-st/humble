@@ -1106,7 +1106,7 @@ def custom_help_formatter(prog):
 init(autoreset=True)
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
-                        description=f"{PRG_N} | v.{version} | {GIT_U}")
+                        description=f"{PRG_N} |  {GIT_U} | v.{version}")
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="show \
 statistics of the performed analysis (will be global if '-u' is omitted)")
@@ -1134,7 +1134,7 @@ response headers and a detailed analysis ('-b' parameter will take priority)")
 parser.add_argument('-u', type=str, dest='URL', help="scheme, host and port to\
  analyze. E.g. https://google.com")
 parser.add_argument("-v", "--version", action="store_true", help="show the \
-version of this tool and check for updates")
+version of 'humble' and check for updates at https://github.com/rfc-st/humble")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 details_f = get_l10n_lines()

@@ -44,7 +44,7 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: 14 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
 :heavy_check_mark: 1091 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 92 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
-:heavy_check_mark: SSL/TLS checks: requires https://testssl.sh/ and Linux/Unix client.<br />
+:heavy_check_mark: SSL/TLS checks: requires the wonderful https://testssl.sh/ and Linux/Unix client.<br />
 :heavy_check_mark: Browser support references for enabled HTTP security headers.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Can export each analysis to CSV, HTML5, JSON, PDF 1.4 and TXT (and in the PATH of your choice).<br />
@@ -70,10 +70,10 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_b.PNG" alt="(Windows) - Brief analysis">
 </p>
 <br />
-.: (Linux) - Brief analysis and retrieved HTTP headers.<br />
+.: (Linux) - Brief analysis along with HTTP response headers.<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="(Linux) - Brief analysis and retrieved HTTP headers">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="(Linux) - Brief analysis along with HTTP response headers">
 </p>
 <br />
 .: (Linux) - Detailed analysis in Spanish.<br />
@@ -181,7 +181,7 @@ https://github.com/rfc-st/humble/releases
 
 usage: humble.py [-h] [-a] [-b] [-df] [-e [PATH]] [-f [TERM]] [-g] [-l {es}] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r] [-u URL] [-v]
 
-'humble' (HTTP Headers Analyzer) | v.2024-01-06 | https://github.com/rfc-st/humble
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-01-13
 
 options:
   -h, --help                  show this help message and exit
@@ -196,7 +196,7 @@ options:
   -op OUTPUT_PATH             save analysis to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)
   -r                          show HTTP response headers and a detailed analysis ('-b' parameter will take priority)
   -u URL                      scheme, host and port to analyze. E.g. https://google.com
-  -v, --version               show the version of this tool and check for updates
+  -v, --version               show the version of 'humble' and check for updates at https://github.com/rfc-st/humble
 ```
 
 ## Advanced Usage

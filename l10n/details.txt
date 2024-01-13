@@ -998,7 +998,7 @@ HTTP Response Headers
 
 [ru_analysis_message]
 
- This humble tool will not analyze Russian domains (or allow their use from Russia) until it withdraws from Ukraine.
+ 'humble' will not analyze Russian domains (or allow their use from Russia) until it withdraws from Ukraine.
  Please, read this: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
 [missing_cnt]
