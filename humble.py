@@ -1129,6 +1129,8 @@ to 'scheme_host_port_yyyymmdd.ext' file (csv/json files will contain a brief \
 analysis)")
 parser.add_argument("-op", dest='output_path', type=str, help="save analysis \
 to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)")
+parser.add_argument("-ua", dest='user_agent', type=str, help="if set, will \
+override the default User-Agent header")
 parser.add_argument("-r", dest='ret', action="store_true", help="show HTTP \
 response headers and a detailed analysis ('-b' parameter will take priority)")
 parser.add_argument('-u', type=str, dest='URL', help="scheme, host and port to\
@@ -1207,8 +1209,11 @@ exception_d = {
 }
 requests.packages.urllib3.disable_warnings()
 
-c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'}
+c_headers = {
+    'User-Agent':
+        args.user_agent or
+        'humble'
+}
 
 headers, status_code, reliable, request_time = manage_http_request()
 
