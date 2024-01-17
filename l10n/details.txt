@@ -1176,7 +1176,7 @@ Highlights
  HTTP fingerprint headers statistics
 
 [fng_source]
- (source file: "additional/fingerprint.txt")
+ (source: 'additional/fingerprint.txt')
 
 [fng_add]
  Related to
@@ -1192,6 +1192,15 @@ Highlights
 
 [fng_top_2]
  headers of the source file
+
+[ua_available]
+ Available User-Agents
+
+[ua_source]
+ (source: 'additional/user_agents.txt')
+
+[ua_invalid]
+ Error: The specified User-Agent was not found. Please check its ID.
 
 [windows_ssltls]
 
@@ -1228,6 +1237,9 @@ To run an SSL/TSL analysis on Windows (via testssl.sh) you have three choices:
 
 [args_lang]
 '-l' requires also '-u' or '-a'.
+
+[args_useragent]
+'-ua' requires also '-u'.
 
 [args_several]
 '-b', '-df', '-'o' and '-r' requires also '-u'.

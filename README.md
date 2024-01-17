@@ -3,8 +3,8 @@
 <p align=center>
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--01--13-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--01--17-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Official tool in OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-Tool-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.kali.org/tools/humble/" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
@@ -76,7 +76,7 @@ HTTP Headers Analyzer<br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_br.PNG" alt="(Linux) - Brief analysis along with HTTP response headers">
 </p>
 <br />
-.: (Linux) - Detailed analysis in Spanish.<br />
+.: (Linux) - Detailed analysis, in Spanish.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="(Linux) - Detailed analysis in Spanish" width=70% height=70%>
@@ -136,7 +136,7 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_analytics.jpg" alt="(Linux) - Statistics of the analysis performed against a specific URL">
 </p>
 <br />
-.: (Linux) - Statistics of the analysis performed against all URLs in Spanish.<br />
+.: (Linux) - Statistics of the analysis performed against all URLs, in Spanish.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_global_analytics.jpg" alt="(Linux) - Statistics of the analysis performed against all URLs in Spanish">
@@ -179,9 +179,9 @@ https://github.com/rfc-st/humble/releases
 (Windows) $ py humble.py
 (Linux)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-df] [-e [PATH]] [-f [TERM]] [-g] [-l {es}] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r] [-u URL] [-v]
+usage: humble.py [-h] [-a] [-b] [-df] [-e [PATH]] [-f [TERM]] [-g] [-l {es}] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-01-13
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-01-17
 
 options:
   -h, --help                  show this help message and exit
@@ -196,6 +196,7 @@ options:
   -op OUTPUT_PATH             save analysis to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)
   -r                          show HTTP response headers and a detailed analysis ('-b' parameter will take priority)
   -u URL                      scheme, host and port to analyze. E.g. https://google.com
+  -ua USER_AGENT              User-Agent ID from 'additional/user_agents.txt' to use. '0' will show all and '1' is the default.
   -v, --version               show the version of 'humble' and check for updates at https://github.com/rfc-st/humble
 ```
 

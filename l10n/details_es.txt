@@ -1176,7 +1176,7 @@ A destacar
  Estadísticas de huella digital por cabeceras
 
 [fng_source]
- (fichero fuente: "additional/fingerprint.txt")
+ (fuente: "additional/fingerprint.txt")
 
 [fng_add]
  Asociadas a
@@ -1192,6 +1192,15 @@ A destacar
 
 [fng_top_2]
  cabeceras del fichero fuente
+
+[ua_available]
+ User-Agents disponibles
+
+[ua_source]
+ (fuente: 'additional/user_agents.txt')
+
+[ua_invalid]
+ Error: No se ha encontrado el User-Agent indicado. Revisa su ID.
 
 [windows_ssltls]
 
@@ -1228,6 +1237,9 @@ Para ejecutar un análisis SSL/TSL en Windows (vía testssl.sh) tienes tres opci
 
 [args_lang]
 '-l' requiere '-u' o '-a'.
+
+[args_useragent]
+'-ua' requiere '-u'.
 
 [args_several]
 -b', '-df', -'o' y '-r' requieren '-u'.

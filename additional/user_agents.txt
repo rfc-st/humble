@@ -1,0 +1,47 @@
+# humble (HTTP Headers Analyzer)
+# https://github.com/rfc-st/humble/
+#
+# MIT License
+#
+# Copyright (c) 2020-2024 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# To use a specific User-Agent, use the "-ua" parameter followed by the number
+# associated with the desired User-Agent in the call to "humble". For example,
+# the "-ua 1" parameter will look for the first User-Agent in this file, using
+# it in the request (excluding the "1.- " part of that line).
+#
+# Use this file to add as many User-Agents as you wish, one per line, always
+# following the format below.
+#
+# Advice: if the User-Agent is not representative of a typical device (e.g.
+# containing operating system, browser, engine, versions, etc.) it is very
+# likely that the target server will process the request as coming from a
+# crawler, bot or scanner, and may block or return HTTP headers that do not
+# correspond to reality.
+#
+# Below are four real User-Agents (associated with real browsers). In case
+# the "-ua" parameter is not specified, the first User-Agent will be selected
+# by default in the request.
+
+ 1.- Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+ 2.- Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0
+ 3.- Mozilla/5.0 (X11; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0
+ 4.- Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36

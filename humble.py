@@ -73,7 +73,7 @@ GIT_H = "https://raw.githubusercontent.com/rfc-st/humble/master/humble.py"
 GIT_U = "https://github.com/rfc-st/humble"
 HUM_D = ['additional', 'l10n']
 HUM_F = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
-         'guides.txt', 'details_es.txt', 'details.txt']
+         'guides.txt', 'details_es.txt', 'details.txt', 'user_agents.txt']
 INS_S = 'http:'
 IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
            r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-01-13', '%Y-%m-%d').date()
+version = datetime.strptime('2024-01-17', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -821,6 +821,28 @@ def check_path_permissions(path_safe):
         remove(path.join(path_safe, HUM_F[1]))
 
 
+def get_user_agent(ua_param):
+    try:
+        ua_id = int(ua_param)
+    except ValueError:
+        print(f'\n {get_detail("[ua_invalid]", replace=True)}')
+        sys.exit()
+    with open(path.join(HUM_D[0], HUM_F[6]), 'r', encoding='utf-8') as ua_file:
+        ua_lines = [line.strip() for line in ua_file.readlines() if not
+                    line.startswith('#')]
+    if ua_id == 0:
+        print(f"\n{Style.BRIGHT}{get_detail('[ua_available]', replace=True)}\
+{Style.RESET_ALL}{get_detail('[ua_source]', replace=True)}")
+        for line in ua_lines:
+            print(f' {line}')
+        sys.exit()
+    for line in ua_lines:
+        if line.startswith(f"{ua_id}.-"):
+            return line[len(f"{ua_id}.-"):].strip()
+    print(f'\n {get_detail("[ua_invalid]", replace=True)}')
+    sys.exit()
+
+
 def generate_csv(name_e, name_p):
     with open(name_e, 'r', encoding='utf-8') as source_txt, \
          open(name_p, 'w', newline='', encoding='utf-8') as final_csv:
@@ -1133,6 +1155,9 @@ parser.add_argument("-r", dest='ret', action="store_true", help="show HTTP \
 response headers and a detailed analysis ('-b' parameter will take priority)")
 parser.add_argument('-u', type=str, dest='URL', help="scheme, host and port to\
  analyze. E.g. https://google.com")
+parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
+from 'additional/user_agents.txt' to use. '0' will show all and '1' is the \
+default.")
 parser.add_argument("-v", "--version", action="store_true", help="show the \
 version of 'humble' and check for updates at https://github.com/rfc-st/humble")
 
@@ -1147,6 +1172,17 @@ if args.version:
 if '-f' in sys.argv:
     fng_analytics(args.term) if args.term else fng_analytics_global()
     sys.exit()
+
+if '-ua' in sys.argv and not args.URL:
+    parser.error(get_detail('[args_useragent]'))
+    sys.exit()
+elif '-ua' in sys.argv and args.URL:
+    ua_index = sys.argv.index('-ua')
+    ua_param = sys.argv[ua_index + 1].lstrip('-ua') if ua_index + 1 < \
+        len(sys.argv) else None
+    c_headers = {'User-Agent': get_user_agent(ua_param)}
+elif args.URL:
+    c_headers = {'User-Agent': get_user_agent('1')}
 
 if '-e' in sys.argv:
     if platform.system().lower() == 'windows':
@@ -1206,9 +1242,6 @@ exception_d = {
     requests.exceptions.Timeout: '[e_timeout]',
 }
 requests.packages.urllib3.disable_warnings()
-
-c_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'}
 
 headers, status_code, reliable, request_time = manage_http_request()
 
