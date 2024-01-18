@@ -42,7 +42,7 @@ HTTP Headers Analyzer<br />
 ## Features
 
 :heavy_check_mark: 14 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
-:heavy_check_mark: 1101 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 1102 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 92 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: SSL/TLS checks: requires the wonderful https://testssl.sh/ and Linux/Unix client.<br />
 :heavy_check_mark: Browser support references for enabled HTTP security headers.<br />
@@ -196,8 +196,8 @@ options:
   -op OUTPUT_PATH             save analysis to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)
   -r                          show HTTP response headers and a detailed analysis ('-b' parameter will take priority)
   -u URL                      scheme, host and port to analyze. E.g. https://google.com
-  -ua USER_AGENT              User-Agent ID from 'additional/user_agents.txt' to use. '0' will show all and '1' is the default.
-  -v, --version               show the version of 'humble' and check for updates at https://github.com/rfc-st/humble
+  -ua USER_AGENT              User-Agent ID from 'additional/user_agents.txt' to use. '0' will show all and '1' is the default
+  -v, --version               check for updates at https://github.com/rfc-st/humble
 ```
 
 ## Advanced Usage

@@ -1157,8 +1157,8 @@ parser.add_argument('-u', type=str, dest='URL', help="scheme, host and port to\
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
 from 'additional/user_agents.txt' to use. '0' will show all and '1' is the \
 default.")
-parser.add_argument("-v", "--version", action="store_true", help="show the \
-version of 'humble' and check for updates at https://github.com/rfc-st/humble")
+parser.add_argument("-v", "--version", action="store_true", help="check for \
+updates at https://github.com/rfc-st/humble")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 details_f = get_l10n_lines()
