@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-01-17', '%Y-%m-%d').date()
+version = datetime.strptime('2024-01-18', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -822,24 +822,23 @@ def check_path_permissions(path_safe):
 
 
 def get_user_agent(ua_param):
-    try:
-        ua_id = int(ua_param)
-    except ValueError:
-        print(f'\n {get_detail("[ua_invalid]", replace=True)}')
-        sys.exit()
     with open(path.join(HUM_D[0], HUM_F[6]), 'r', encoding='utf-8') as ua_file:
         ua_lines = [line.strip() for line in ua_file.readlines() if not
                     line.startswith('#')]
-    if ua_id == 0:
-        print(f"\n{Style.BRIGHT}{get_detail('[ua_available]', replace=True)}\
-{Style.RESET_ALL}{get_detail('[ua_source]', replace=True)}")
-        for line in ua_lines:
-            print(f' {line}')
-        sys.exit()
+    if ua_param == str(0):
+        print_user_agents(ua_lines)
     for line in ua_lines:
-        if line.startswith(f"{ua_id}.-"):
-            return line[len(f"{ua_id}.-"):].strip()
+        if line.startswith(f"{ua_param}.-"):
+            return line[len(f"{ua_param}.-"):].strip()
     print(f'\n {get_detail("[ua_invalid]", replace=True)}')
+    sys.exit()
+
+
+def print_user_agents(ua_lines):
+    print(f"\n{Style.BRIGHT}{get_detail('[ua_available]', replace=True)}\
+{Style.RESET_ALL}{get_detail('[ua_source]', replace=True)}")
+    for line in ua_lines:
+        print(f' {line}')
     sys.exit()
 
 
