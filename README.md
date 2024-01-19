@@ -54,8 +54,8 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Can display analysis statistics: either against a specific URL or all of them.<br />
 :heavy_check_mark: Can display fingerprint statistics: either against a specific term or the Top 20.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a> and <a href="https://pypi.org/project/vermin/" target="_blank">vermin<a>.<br />
-:heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
-:heavy_check_mark: Tested on (at least) Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
+:heavy_check_mark: Tested (one by one) on thousands of URLs.<br />
+:heavy_check_mark: Tested on Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
 :heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost<a> all the code under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
 :heavy_check_mark: Official tool in <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">OWASP Secure Headers Project</a> and <a href="https://www.kali.org/tools/humble/" target="_blank">Kali Linux</a> (<a href="https://pkg.kali.org/pkg/humble" target="_blank">this</a> should be the latest Release).<br />
@@ -327,7 +327,7 @@ Thanks for your time! :).
 * <a href="https://github.com/stanley101music">stanley101music</a> for <a href="https://github.com/rfc-st/humble/issues/14">this</a>, <a href="https://github.com/rfc-st/humble/issues/15">this</a> and <a href="https://github.com/rfc-st/humble/issues/17">this</a>!.
 * <a href="https://github.com/n3bojs4">n3bojs4</a>, <a href="https://github.com/ehlewis">ehlewis</a> and <a href="https://github.com/dkadev">dkadev</a> for <a href="https://github.com/rfc-st/humble/issues/7">this</a> and <a href="https://github.com/rfc-st/humble/pull/16">this</a>.
 * <a href="https://github.com/kazet">kazet</a> for <a href="https://github.com/rfc-st/humble/pull/18">this</a> suggestion.
-* <a href="https://www.linkedin.com/in/jdelamo/">Julio</a> for testing 'humble' on macOS.
+* <a href="https://www.linkedin.com/in/jdelamo/">Julio</a> for testing on macOS.
 
 ## License
 
