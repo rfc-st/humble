@@ -312,9 +312,10 @@ https://www.w3.org<br />
 * Report a <a href="https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=bug_report.md&title=">Bug</a>.
 * Create a <a href="https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=feature_request.md&title=">Feature request</a>.
 * Report a <a href="https://github.com/rfc-st/humble/security/policy">Security Vulnerability</a>.
-* Send me an email with your suggestions!: rafael.fcucalon@gmail.com
+* Send me your suggestions: rafael.fcucalon@gmail.com
+* And use the above email to tell me about integrations of this tool in others!
 
-Thanks for your time! :).
+Thanks for downloading _'humble'_, for trying it and for your time! :).
 
 ## Acknowledgements
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
