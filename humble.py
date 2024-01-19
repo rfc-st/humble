@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-01-18', '%Y-%m-%d').date()
+version = datetime.strptime('2024-01-19', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -188,8 +188,9 @@ def fng_analytics_global_print(content_fng, len_fng):
 def fng_analytics(term):
     print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fng_f:
-        fng_lines = fng_f.readlines()
+    with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as \
+            fng_source:
+        fng_lines = fng_source.readlines()
     fng_group, term_count = fng_analytics_groups(fng_lines, term)
     fng_analytics_content(fng_group, term, term_count, fng_lines)
 
@@ -230,8 +231,9 @@ def fng_analytics_sorted(fng_lines, term, fng_group):
 
 def print_security_guides():
     print_detail('[security_guides]', 1)
-    with open(path.join(HUM_D[0], HUM_F[3]), 'r', encoding='utf8') as gd:
-        for line in gd:
+    with open(path.join(HUM_D[0], HUM_F[3]), 'r', encoding='utf8') as \
+            guides_source:
+        for line in guides_source:
             if not line.startswith('#'):
                 print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
   {line}", end='')
@@ -277,8 +279,8 @@ def testssl_analysis(command):
 def get_l10n_lines():
     file_path = path.join(HUM_D[1], HUM_F[4] if args.lang == 'es' else
                           HUM_F[5])
-    with open(file_path, encoding='utf8') as file:
-        return file.readlines()
+    with open(file_path, 'r', encoding='utf8') as l10n_source:
+        return l10n_source.readlines()
 
 
 def get_analysis_result():
@@ -722,15 +724,12 @@ def print_extra_info(reliable):
         print(get_detail('[analysis_redirects]', replace=True))
 
 
-def print_headers():
-    if args.ret:
-        print(linesep.join(['']*2))
-        print_detail_r('[0headers]')
-        for key, value in sorted(headers.items()):
-            if not args.output:
-                print(f" {Fore.CYAN}{key}:", value)
-            else:
-                print(f" {key}:", value)
+def print_response_headers():
+    print(linesep.join(['']*2))
+    print_detail_r('[0headers]')
+    for key, value in sorted(headers.items()):
+        print(f" {key}:", value) if args.output else print(f" {Fore.CYAN}\
+{key}:", value)
     print('\n')
 
 
@@ -778,7 +777,7 @@ def get_detail(id_mode, replace=False):
                 details_f[i+1]
 
 
-def fingerprint_headers(headers, l_fng, l_fng_ex):
+def get_fingerprint_headers(headers, l_fng, l_fng_ex):
     f_cnt = 0
     match_h = sorted([header for header in headers if any(elem.lower()
                      in headers for elem in l_fng)])
@@ -822,8 +821,9 @@ def check_path_permissions(path_safe):
 
 
 def get_user_agent(ua_param):
-    with open(path.join(HUM_D[0], HUM_F[6]), 'r', encoding='utf-8') as ua_file:
-        ua_lines = [line.strip() for line in ua_file.readlines() if not
+    with open(path.join(HUM_D[0], HUM_F[6]), 'r', encoding='utf-8') as \
+            ua_source:
+        ua_lines = [line.strip() for line in ua_source.readlines() if not
                     line.startswith('#')]
     if ua_param == str(0):
         print_user_agents(ua_lines)
@@ -843,10 +843,10 @@ def print_user_agents(ua_lines):
 
 
 def generate_csv(name_e, name_p):
-    with open(name_e, 'r', encoding='utf-8') as source_txt, \
-         open(name_p, 'w', newline='', encoding='utf-8') as final_csv:
-        csv_source = source_txt.read()
-        csv_writer = csv.writer(final_csv, quoting=csv.QUOTE_ALL)
+    with open(name_e, 'r', encoding='utf-8') as txt_source, \
+         open(name_p, 'w', newline='', encoding='utf-8') as csv_final:
+        csv_source = txt_source.read()
+        csv_writer = csv.writer(csv_final, quoting=csv.QUOTE_ALL)
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_ID]
         csv_writer.writerow([get_detail(f'[{i}]', replace=True) for i in
                              ['csv_section', 'csv_values']])
@@ -1245,7 +1245,7 @@ requests.packages.urllib3.disable_warnings()
 headers, status_code, reliable, request_time = manage_http_request()
 
 # Export analysis
-ext = "t.txt" if args.output in ['csv', 'html', 'json', 'pdf'] else ".txt"
+ext = ".txt" if args.output == 'txt' else "t.txt"
 
 if args.output:
     # tldextract seems to be more reliable for certain components of the URI.
@@ -1264,7 +1264,7 @@ if args.output:
     sys.stdout = f
 
 print_analysis_info(reliable)
-print_headers()
+print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
 # Report - 1. Missing HTTP Security Headers
 m_cnt = 0
@@ -1321,14 +1321,14 @@ if not args.brief:
 
 l_fng, l_fng_ex = [], []
 
-with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fn:
-    for line in fn:
-        stripped_line = line.strip()
-        if stripped_line and not line.startswith('#'):
+with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fng_source:
+    for line in fng_source:
+        fng_stripped_ln = line.strip()
+        if fng_stripped_ln and not line.startswith('#'):
             l_fng.append(line.partition(' [')[0].strip())
             l_fng_ex.append(line.strip())
 
-f_cnt = fingerprint_headers(headers, l_fng, l_fng_ex)
+f_cnt = get_fingerprint_headers(headers, l_fng, l_fng_ex)
 
 if args.brief and f_cnt != 0:
     print("")
@@ -1923,15 +1923,15 @@ elif args.output == 'pdf':
     pdf = PDF()
     generate_pdf(name_e, pdf)
 elif args.output == 'html':
-    title = get_detail('[pdf_meta_subject]')
-    header = f'<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
-<title>{title}</title><style>pre {{overflow-x: auto; white-space: \
+    html_title = get_detail('[pdf_meta_subject]')
+    html_head = f'<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
+<title>{html_title}</title><style>pre {{overflow-x: auto; white-space: \
 pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: \
 -o-pre-wrap; word-wrap: break-word; font-size: medium;}} a {{color: blue; \
 text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
 .ko {{color: red;}} </style></head>'
-    body = '<body><pre>'
-    footer = '</pre></body></html>'
+    html_body = '<body><pre>'
+    html_footer = '</pre></body></html>'
 
     l_miss.extend(['Pragma', 'WWW-Authenticate', 'X-Frame-Options',
                    'X-Robots-Tag', 'X-UA-compatible'])
@@ -1948,7 +1948,7 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
 
     with open(name_e, 'r', encoding='utf8') as html_source, \
             open(name_p, 'w', encoding='utf8') as html_final:
-        html_final.write(f"{header}{body}")
+        html_final.write(f"{html_head}{html_body}")
 
         for ln in html_source:
             ln_stripped = ln.rstrip('\n')
@@ -1991,7 +1991,7 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                     if i[1:] in ln and '[' not in ln:
                         ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
                 html_final.write(ln)
-        html_final.write(footer)
+        html_final.write(html_footer)
 
     print_export_path(name_p, reliable)
     remove(name_e)
