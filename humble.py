@@ -276,10 +276,10 @@ def testssl_analysis(command):
         print(f"Error running testssl.sh analysis!: {e}")
 
 
-def get_l10n_lines():
-    file_path = path.join(HUM_D[1], HUM_F[4] if args.lang == 'es' else
-                          HUM_F[5])
-    with open(file_path, 'r', encoding='utf8') as l10n_source:
+def get_l10n_details():
+    l10n_file_path = path.join(HUM_D[1], HUM_F[4] if args.lang == 'es' else
+                               HUM_F[5])
+    with open(l10n_file_path, 'r', encoding='utf8') as l10n_source:
         return l10n_source.readlines()
 
 
@@ -668,7 +668,7 @@ def print_export_path(filename, reliable):
     print(path.abspath(filename))
 
 
-def print_ok():
+def print_nowarnings():
     print_detail('[no_warnings]')
 
 
@@ -742,39 +742,39 @@ def print_details(short_d, long_d, id_mode, i_cnt):
 
 
 def print_detail(id_mode, num_lines=1):
-    idx = details_f.index(id_mode + '\n')
-    print(details_f[idx+1], end='')
+    idx = l10n_details.index(id_mode + '\n')
+    print(l10n_details[idx+1], end='')
     for i in range(1, num_lines+1):
-        if idx+i+1 < len(details_f):
-            print(details_f[idx+i+1], end='')
+        if idx+i+1 < len(l10n_details):
+            print(l10n_details[idx+i+1], end='')
 
 
 def print_detail_l(id_mode, analytics=False):
-    for i, line in enumerate(details_f):
+    for i, line in enumerate(l10n_details):
         if line.startswith(id_mode):
             if not analytics:
-                print(details_f[i+1].replace('\n', ''), end='')
+                print(l10n_details[i+1].replace('\n', ''), end='')
             else:
-                return details_f[i+1].replace('\n', '').replace(':', '')[1:]
+                return l10n_details[i+1].replace('\n', '').replace(':', '')[1:]
 
 
 def print_detail_r(id_mode, is_red=False):
     style_str = BRI_R if is_red else Style.BRIGHT
-    for i, line in enumerate(details_f):
+    for i, line in enumerate(l10n_details):
         if line.startswith(id_mode):
             if not args.output:
-                print(f"{style_str}{details_f[i+1]}", end='')
+                print(f"{style_str}{l10n_details[i+1]}", end='')
             else:
-                print(details_f[i+1], end='')
+                print(l10n_details[i+1], end='')
             if not is_red:
                 print("")
 
 
 def get_detail(id_mode, replace=False):
-    for i, line in enumerate(details_f):
+    for i, line in enumerate(l10n_details):
         if line.startswith(id_mode):
-            return (details_f[i+1].replace('\n', '')) if replace else \
-                details_f[i+1]
+            return (l10n_details[i+1].replace('\n', '')) if replace else \
+                l10n_details[i+1]
 
 
 def get_fingerprint_headers(headers, l_fng, l_fng_ex):
@@ -873,14 +873,14 @@ def parse_csv(csv_writer, csv_source, csv_section):
 def generate_json(name_e, name_p):
     section0, sectionh, section5 = [get_detail(f'[{i}]', replace=True) for i
                                     in ['0section', '0headers', '5compat']]
-    with (open(name_e, 'r', encoding='utf8') as source_txt,
-          open(name_p, 'w', encoding='utf8') as final_json):
-        txt_content = source_txt.read()
+    with (open(name_e, 'r', encoding='utf8') as txt_source,
+          open(name_p, 'w', encoding='utf8') as json_final):
+        txt_content = txt_source.read()
         txt_sections = re.split(r'\[(.*?)\]\n', txt_content)[1:]
         data = {}
         parse_json_sections(txt_sections, data, section0, sectionh, section5)
         json_data = json.dumps(data, indent=4, ensure_ascii=False)
-        final_json.write(json_data)
+        json_final.write(json_data)
     print_export_path(name_p, reliable)
     remove(name_e)
 
@@ -912,16 +912,16 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
 
 
 def generate_pdf(name_e, pdf):
-    pdf_structure()
-    with open(name_e, "r", encoding='utf8') as pdf_source:
+    set_pdf_structure()
+    with open(name_e, "r", encoding='utf8') as txt_source:
         links_strings = (URL_S, REF_E, REF_S, CAN_S)
-        for i in pdf_source:
+        for i in txt_source:
             if '[' in i:
-                pdf_sections(i)
+                set_pdf_sections(i)
             pdf.set_font(style='B' if any(s in i for s in BOLD_S) else '')
             for string in links_strings:
                 if string in i:
-                    pdf_links(i, string)
+                    set_pdf_links(i, string)
             pdf.set_text_color(0, 0, 0)
             pdf.multi_cell(197, 2.6, txt=i, align='L')
     pdf.output(name_p)
@@ -929,15 +929,15 @@ def generate_pdf(name_e, pdf):
     remove(name_e)
 
 
-def pdf_structure():
+def set_pdf_structure():
     pdf.alias_nb_pages()
-    pdf_metadata()
+    set_pdf_metadata()
     pdf.set_display_mode(zoom='real')
     pdf.add_page()
     pdf.set_font("Courier", size=9)
 
 
-def pdf_metadata():
+def set_pdf_metadata():
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
     git_urlc = f"{GIT_U} | v.{version}"
     pdf.set_author(git_urlc)
@@ -950,7 +950,7 @@ def pdf_metadata():
     pdf.set_producer(git_urlc)
 
 
-def pdf_sections(i):
+def set_pdf_sections(i):
     section_dict = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
                     '[1.': '[1missing_s]', '[2.': '[2fingerprint_s]',
                     '[3.': '[3depinsecure_s]', '[4.': '[4empty_s]',
@@ -959,23 +959,19 @@ def pdf_sections(i):
         pdf.start_section(get_detail(section_dict[match]))
 
 
-def pdf_links(i, pdfstring):
-    links = {URL_S: URL, REF_E: i.partition(REF_E)[2].strip(),
-             REF_S: i.partition(REF_S)[2].strip(),
-             CAN_S: i.partition(': ')[2].strip()}
-    link_h = links.get(pdfstring)
+def set_pdf_links(i, pdfstring):
+    link_prefixes = {REF_E: REF_1, REF_S: REF_2}
+    links_d = {URL_S: URL, REF_E: i.partition(REF_E)[2].strip(),
+               REF_S: i.partition(REF_S)[2].strip(),
+               CAN_S: i.partition(': ')[2].strip()}
+    link_final = links_d.get(pdfstring)
     if pdfstring in (URL_S, REF_E, REF_S):
-        if pdfstring == REF_E:
-            prefix = REF_1
-        elif pdfstring == REF_S:
-            prefix = REF_2
-        else:
-            prefix = pdfstring
+        prefix = link_prefixes.get(pdfstring, pdfstring)
         pdf.write(h=3, txt=prefix)
     else:
         pdf.write(h=3, txt=i[:i.index(": ")+2])
     pdf.set_text_color(0, 0, 255)
-    pdf.cell(w=2000, h=3, txt=i[i.index(": ")+2:], align="L", link=link_h)
+    pdf.cell(w=2000, h=3, txt=i[i.index(": ")+2:], align="L", link=link_final)
 
 
 def format_html_info(condition, ln, sub_d):
@@ -1014,7 +1010,7 @@ def format_html_bold(ln):
     html_final.write(f'<strong>{ln}</strong><br>')
 
 
-def detail_exceptions(id_exception, exception_v):
+def print_http_exception(id_exception, exception_v):
     clean_shell_output()
     print("")
     print_detail(id_exception)
@@ -1076,7 +1072,7 @@ def wait_http_request(future):
         future.result(timeout=5)
 
 
-def handle_http_exceptions(r, exception_d):
+def handle_http_exception(r, exception_d):
     if r is None:
         return
     try:
@@ -1088,7 +1084,7 @@ def handle_http_exceptions(r, exception_d):
     except tuple(exception_d.keys()) as e:
         ex = exception_d.get(type(e))
         if ex and (not callable(ex) or ex(e)):
-            detail_exceptions(ex, e)
+            print_http_exception(ex, e)
     except requests.exceptions.RequestException as e:
         raise SystemExit from e
 
@@ -1109,11 +1105,11 @@ def manage_http_request():
             exception_type = type(exception)
             if exception_type in exception_d:
                 error_string = exception_d[exception_type]
-                detail_exceptions(error_string, exception)
+                print_http_exception(error_string, exception)
             else:
                 print(f"Unhandled exception type: {exception_type}")
             return headers, status_c, reliable, request_time
-        handle_http_exceptions(r, exception_d)
+        handle_http_exception(r, exception_d)
         if r is not None:
             status_c = r.status_code
             headers = r.headers
@@ -1161,7 +1157,7 @@ parser.add_argument("-v", "--version", action="store_true", help="check for \
 updates at https://github.com/rfc-st/humble")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
-details_f = get_l10n_lines()
+l10n_details = get_l10n_details()
 check_python_version()
 
 if args.version:
@@ -1248,7 +1244,6 @@ headers, status_code, reliable, request_time = manage_http_request()
 ext = ".txt" if args.output == 'txt' else "t.txt"
 
 if args.output:
-    # tldextract seems to be more reliable for certain components of the URI.
     orig_stdout = sys.stdout
     url_obj = tldextract.extract(URL)
     url_sch = urlparse(URL).scheme
@@ -1266,7 +1261,7 @@ if args.output:
 print_analysis_info(reliable)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
-# Report - 1. Missing HTTP Security Headers
+# 1. Missing HTTP Security Headers
 m_cnt = 0
 
 print_detail_r('[1missing]')
@@ -1309,11 +1304,11 @@ if args.brief and m_cnt != 0:
     print("")
 
 if m_cnt == 0:
-    print_ok()
+    print_nowarnings()
 
 print("")
 
-# Report - 2. Fingerprinting through headers/values
+# 2. Fingerprinting through Headers/Values
 print_detail_r('[2fingerprint]')
 
 if not args.brief:
@@ -1334,11 +1329,11 @@ if args.brief and f_cnt != 0:
     print("")
 
 if f_cnt == 0:
-    print_ok()
+    print_nowarnings()
 
 print("")
 
-# Report - 3. Deprecated HTTP Headers/Protocols and Insecure values
+# 3. Deprecated HTTP Headers/Protocols and Insecure values
 i_cnt = [0]
 
 print_detail_r('[3depinsecure]')
@@ -1856,11 +1851,11 @@ if args.brief and i_cnt[0] != 0:
     print("")
 
 if i_cnt[0] == 0:
-    print_ok()
+    print_nowarnings()
 
 print("")
 
-# Report - 4. Empty HTTP Response Headers Values
+# 4. Empty HTTP Response Headers Values
 e_cnt = 0
 l_empty = []
 print_detail_r('[4empty]')
@@ -1874,10 +1869,10 @@ for key in sorted(headers):
         print_header(key)
         e_cnt += 1
 
-print("") if e_cnt != 0 else print_ok()
+print("") if e_cnt != 0 else print_nowarnings()
 print("")
 
-# Report - 5. Browser Compatibility for Enabled HTTP Security Headers
+# 5. Browser Compatibility for Enabled HTTP Security Headers
 print_detail_r('[5compat]')
 
 l_sec = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Credentials',
