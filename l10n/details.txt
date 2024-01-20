@@ -314,10 +314,6 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning
 
-[humble_description]
- 'humble' (HTTP Headers Analyzer)
- https://github.com/rfc-st/humble
-
 [no_sec_headers]
  No HTTP security headers are enabled.
 
@@ -562,7 +558,7 @@
  X-XSS-Protection (Duplicated Values)
 
 [pdf_title]
-Humble HTTP headers analyzer
+'humble' (HTTP Headers Analyzer)
 
 [pdf_footer]
 Page

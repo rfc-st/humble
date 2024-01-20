@@ -314,10 +314,6 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning
 
-[humble_description]
- 'humble' (Analizador de cabeceras HTTP)
- https://github.com/rfc-st/humble
-
 [no_sec_headers]
  No hay cabeceras de seguridad HTTP habilitadas.
 
@@ -562,7 +558,7 @@
  X-XSS-Protection (Valores duplicados)
 
 [pdf_title]
-Analizador de cabeceras HTTP
+'humble' (Analizador de cabeceras HTTP)
 
 [pdf_footer]
 Página

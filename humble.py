@@ -126,7 +126,7 @@ class PDF(FPDF):
         self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
                   new_y="NEXT", align='C')
         self.ln(1)
-        self.cell(0, 5, f"({GIT_U}) | v.{version})", align='C')
+        self.cell(0, 5, f"{GIT_U} | v.{version}", align='C')
         self.ln(9) if self.page_no() == 1 else self.ln(13)
 
     def footer(self):
@@ -710,7 +710,7 @@ def print_analysis_info(reliable):
         print(f" ({GIT_U} | v.{version})")
     elif args.output != 'pdf':
         print("")
-        print_detail('[humble_description]', 2)
+        print(f"\n{PRG_N}\n{GIT_U} | v.{version}\n")
     print(linesep.join(['']*2) if args.output == 'html' or not args.output
           else "")
     print_detail_r('[0section]')
@@ -985,8 +985,8 @@ def set_pdf_links(i, pdfstring):
 
 def format_html_info(condition, ln, sub_d):
     if condition == 'rfc-st':
-        html_final.write(f"{ln[:1]}{sub_d['ahref_s']}{ln[1:]}\
-{sub_d['close_t']}{ln[1:]}{sub_d['ahref_f']}")
+        html_final.write(f"{sub_d['ahref_s']}{ln[:32]}\
+{sub_d['close_t']}{ln[:32]}{sub_d['ahref_f']}{ln[32:]}")
     else:
         html_final.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}\
 {sub_d['close_t']}{ln[8:]}{sub_d['ahref_f']}<br>")
@@ -1132,7 +1132,7 @@ def custom_help_formatter(prog):
 init(autoreset=True)
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
-                        description=f"{PRG_N} |  {GIT_U} | v.{version}")
+                        description=f"{PRG_N} | {GIT_U} | v.{version}")
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="show \
 statistics of the performed analysis (will be global if '-u' is omitted)")
