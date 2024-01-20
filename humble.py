@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-01-19', '%Y-%m-%d').date()
+version = datetime.strptime('2024-01-20', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -643,6 +643,15 @@ def csp_full_analysis(csp_header):
     # 2.- Document directives: base-uri, sandbox.
     #
     # 3.- Navigation directives: form-action, frame-ancestors.
+    #
+    # Perhaps with a new file, 'csp_analysis.py', which will contain a class
+    # (to be imported into 'humble.py') consisting of a function for each CSP
+    # directive (in charge of all security validations like permissive sources,
+    # unsafe values, incorrect values, absence of the directive itself, etc)
+    # and a function that aggregates the results of those analyses and returns
+    # it to 'humble.py' for text formatting, printing, etc.
+    #
+    # The following code is only a test.
     csp_output = []
     for directive in csp_header.split(';'):
         dir_csp = directive.strip().split(' ', 1)
@@ -1058,7 +1067,7 @@ def make_http_request():
         # development environments, hosts with very old servers/software,
         # self-signed certificates, etc) the URL can still be analyzed.
         r = session.get(uri_safe, allow_redirects=not args.redirects,
-                        verify=False, headers=c_headers, timeout=15)
+                        verify=False, headers=ua_header, timeout=15)
         elapsed_time = time() - start_time
         return r, elapsed_time, None
     except requests.exceptions.SSLError:
@@ -1132,7 +1141,7 @@ brief analysis (if omitted, a detailed one will be shown)")
 parser.add_argument("-df", dest='redirects', action="store_true", help="do not\
  follow redirects (if omitted, the last redirection will be the one analyzed)")
 parser.add_argument("-e", nargs='?', type=str, dest='path', help="show TLS/SSL\
- checks (requires the PATH of https://testssl.sh/ and Unix machine)")
+ checks (requires the PATH of https://testssl.sh/ and Linux/Unix OS)")
 parser.add_argument("-f", nargs='?', type=str, dest='term', help="show \
 fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
 omitted)")
@@ -1173,11 +1182,11 @@ if '-ua' in sys.argv and not args.URL:
     sys.exit()
 elif '-ua' in sys.argv and args.URL:
     ua_index = sys.argv.index('-ua')
-    ua_param = sys.argv[ua_index + 1].lstrip('-ua') if ua_index + 1 < \
+    ua_id = sys.argv[ua_index + 1].lstrip('-ua') if ua_index + 1 < \
         len(sys.argv) else None
-    c_headers = {'User-Agent': get_user_agent(ua_param)}
+    ua_header = {'User-Agent': get_user_agent(ua_id)}
 elif args.URL:
-    c_headers = {'User-Agent': get_user_agent('1')}
+    ua_header = {'User-Agent': get_user_agent('1')}
 
 if '-e' in sys.argv:
     if platform.system().lower() == 'windows':
