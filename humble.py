@@ -120,7 +120,7 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
 class PDF(FPDF):
 
     def header(self):
-        self.set_font('Courier', 'B', 10)
+        self.set_font('Courier', 'B', 9)
         self.set_y(15)
         pdf.set_text_color(0, 0, 0)
         self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",

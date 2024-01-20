@@ -567,7 +567,7 @@ Page
  of
 
 [pdf_meta_title]
-Humble HTTP headers analysis of
+HTTP headers analysis of
 
 [pdf_meta_keywords]
 HTTP Headers  Analyzer  Analysis  Cybersecurity  Security-scanner  Security-Tools  Header-Parser

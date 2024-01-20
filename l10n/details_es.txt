@@ -567,7 +567,7 @@ Página
  de
 
 [pdf_meta_title]
-Informe de las cabeceras HTTP de
+Análisis de las cabeceras HTTP de
 
 [pdf_meta_keywords]
 Cabeceras HTTP Analizador Informe Ciberseguridad Seguridad

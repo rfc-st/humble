@@ -318,6 +318,7 @@ https://www.w3.org<br />
 Thanks for downloading _'humble'_, for trying it and for your time! :).
 
 ## Acknowledgements
+* <a href="https://github.com/tartley/colorama">colorama</a>, <a href="https://github.com/py-pdf/fpdf2">fpdf2</a>, <a href="https://github.com/psf/requests">requests</a> and <a href="https://github.com/john-kurkowski/tldextract">tldextract</a> authors/teams: you rock :metal:!.
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
 * <a href="https://github.com/bulaktm">bulaktm</a> for <a href="https://github.com/rfc-st/humble/issues/5">this</a> suggestion.
 * <a href="https://www.linkedin.com/in/david-boronat/">David</a>, for believing in the usefulness of this tool.
