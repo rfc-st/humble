@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-# humble (HTTP Headers Analyzer)
+# 'humble' (HTTP Headers Analyzer)
 # https://github.com/rfc-st/humble/
 #
 # MIT License
