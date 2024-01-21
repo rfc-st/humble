@@ -1194,32 +1194,32 @@ A destacar
 
 [windows_ssltls]
 
-Para ejecutar un análisis SSL/TSL en Windows (vía testssl.sh) tienes tres opciones:
+Para ejecutar un análisis SSL/TLS en Windows (vía 'testssl.sh') recomiendo una de estas opciones:
 
 1. Cygwin
 
-- Descarga https://testssl.sh/
+- Descarga https://github.com/drwetter/testssl.sh/releases
 - Descarga https://www.cygwin.com/install.html
 - Ejecuta el instalador de Cygwin y selecciona los paquetes que desees (incluyendo 'bash')
 - Ejecuta la terminal Cygwin
-- Cambia al directorio donde esté 'testssl.sh' y lanza el análisis con 'bash'
+- Cambia al directorio donde esté 'testssl.sh' y lanza el análisis con 'bash':
 -- Ej. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 2. MSYS2
 
-- Descarga https://testssl.sh/
+- Descarga https://github.com/drwetter/testssl.sh/releases
 - Descarga https://www.msys2.org/
 - Ejecuta MSYS2 y sigue las instrucciones del instalador
 - Ejecuta la terminal MSYS2 MinGW 64-bit
-- Cambia al directorio donde esté 'testssl.sh' y lanza el análisis con 'bash'
+- Cambia al directorio donde esté 'testssl.sh' y lanza el análisis con 'bash':
 -- Ej. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 3. WSL (Subsistema de Windows para Linux)
 
-- Descarga https://testssl.sh/
+- Descarga https://github.com/drwetter/testssl.sh/releases
 - Revisa las indicaciones sobre WSL: https://learn.microsoft.com/en-us/windows/wsl/install
 - Ejecuta la distribución Linux desde el menú Inicio o ejecuta 'wsl' desde el símbolo del sistema
-- Cambia al directorio donde esté 'testssl.sh' y lanza el análisis con 'bash'
+- Cambia al directorio donde esté 'testssl.sh' y lanza el análisis con 'bash':
 -- Ej. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 [args_notestssl]

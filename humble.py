@@ -33,9 +33,9 @@
 
 # GREETINGS:
 # Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3), David (x3), Eduardo,
-# Eloy, Fernando, Gabriel, Íñigo, Joanna, Juan Carlos, Juán, Julián, Iván,
-# Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Angel, Montse,
-# Naiara, Pablo, Sergio, Ricardo & Rubén!.
+# Eloy, Fernando, Gabriel, Íñigo, Joanna, Juan Carlos, Juán, Julián, Julio,
+# Iván, Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Angel,
+# Montse, Naiara, Pablo, Sergio, Ricardo & Rubén!.
 
 from fpdf import FPDF
 from time import time
