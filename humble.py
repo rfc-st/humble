@@ -1928,12 +1928,18 @@ elif args.output == 'pdf':
     generate_pdf(name_e, pdf)
 elif args.output == 'html':
     html_title = get_detail('[pdf_meta_subject]')
-    html_head = f'<!DOCTYPE HTML><html lang="en"><head><meta charset="utf-8">\
-<title>{html_title}</title><style>pre {{overflow-x: auto; white-space: \
-pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: \
--o-pre-wrap; word-wrap: break-word; font-size: medium;}} a {{color: blue; \
-text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
-.ko {{color: red;}} </style></head>'
+    html_desc = get_detail('[pdf_meta_title]')
+    html_keywords = get_detail('[pdf_meta_keywords]')
+    html_head = f'<!DOCTYPE HTML><html lang="en"><head><meta http-equiv="\
+Content-Type" content="text/html; charset=utf-8"><meta name="description" \
+content="{html_desc} {URL}"><meta name="keywords" content="{html_keywords}">\
+<meta name="author" content="{GIT_U} | v.{version}"><meta name="generator" \
+content="{GIT_U} | v.{version}"><title>{html_title}</title><style>pre \
+{{overflow-x: auto; white-space: pre-wrap;white-space: -moz-pre-wrap; \
+white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word; \
+font-size: medium;}} a {{color: blue; text-decoration: none;}} .ok \
+{{color: green;}} .header {{color: #660033;}} .ko {{color: red;}} </style>\
+ </head>'
     html_body = '<body><pre>'
     html_footer = '</pre></body></html>'
 

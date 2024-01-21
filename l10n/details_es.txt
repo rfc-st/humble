@@ -570,7 +570,7 @@ Página
 Análisis de las cabeceras HTTP de
 
 [pdf_meta_keywords]
-Cabeceras HTTP Analizador Informe Ciberseguridad Seguridad
+Cabeceras HTTP, Analizador, Análisis, Ciberseguridad, Análisis de seguridad, Herramienta de seguridad, Revisión de cabeceras
 
 [pdf_meta_language]
 es-ES

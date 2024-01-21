@@ -570,7 +570,7 @@ Page
 HTTP headers analysis of
 
 [pdf_meta_keywords]
-HTTP Headers  Analyzer  Analysis  Cybersecurity  Security-scanner  Security-Tools  Header-Parser
+HTTP Headers, Analyzer, Analysis, Cybersecurity, Security-scanner, Security-Tools, Header-Parser
 
 [pdf_meta_language]
 en-US
