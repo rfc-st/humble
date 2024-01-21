@@ -1016,7 +1016,7 @@ Cabeceras de respuesta HTTP
 Analisis realizado en 
 
 [analysis_time_sec]
- segundos! (cambios con respecto al ultimo analisis entre parentesis)
+ segundos! (cambios con respecto al ultimo analisis entre paréntesis)
 
 [first_one]
 Primer analisis
@@ -1160,7 +1160,7 @@ A destacar
  Revisa las novedades en https://github.com/rfc-st/humble/
 
 [update_error]
- Hubo un error al comprobar si usas la versión más reciente. Por favor, espera unos minutos y vuelve a intentarlo.
+ Hubo un error al comprobar si usas la versión más reciente; espera unos minutos y vuelve a intentarlo.
 
 [fng_stats]
  Estadísticas de huella digital por cabeceras
@@ -1247,7 +1247,7 @@ Error: la ruta indicada de 'testssl.sh' es incorrecta.
 '-op' requiere '-o'.
 
 [args_noexportpath]
-No existe la ruta indicada indicada 
+No existe la ruta indicada 
 
 [args_nowr]
 Este usuario no tiene permisos de escritura en 

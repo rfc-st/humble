@@ -1160,7 +1160,7 @@ Highlights
  Check for updates in https://github.com/rfc-st/humble/
 
 [update_error]
- There was an error checking if you are using the latest version. Please wait a few minutes and try again.
+ There was an error checking if you are using the latest version; wait a few minutes and try again.
 
 [fng_stats]
  HTTP fingerprint headers statistics
