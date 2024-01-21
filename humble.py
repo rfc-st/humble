@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-01-20', '%Y-%m-%d').date()
+version = datetime.strptime('2024-01-21', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -932,7 +932,7 @@ def generate_pdf(name_e, pdf):
                 if string in i:
                     set_pdf_links(i, string)
             pdf.set_text_color(0, 0, 0)
-            pdf.multi_cell(197, 2.6, txt=i, align='L')
+            pdf.multi_cell(197, 2.6, text=i, align='L')
     pdf.output(name_p)
     print_export_path(name_p, reliable)
     remove(name_e)
@@ -976,11 +976,11 @@ def set_pdf_links(i, pdfstring):
     link_final = links_d.get(pdfstring)
     if pdfstring in (URL_S, REF_E, REF_S):
         prefix = link_prefixes.get(pdfstring, pdfstring)
-        pdf.write(h=3, txt=prefix)
+        pdf.write(h=3, text=prefix)
     else:
-        pdf.write(h=3, txt=i[:i.index(": ")+2])
+        pdf.write(h=3, text=i[:i.index(": ")+2])
     pdf.set_text_color(0, 0, 255)
-    pdf.cell(w=2000, h=3, txt=i[i.index(": ")+2:], align="L", link=link_final)
+    pdf.cell(w=2000, h=3, text=i[i.index(": ")+2:], align="L", link=link_final)
 
 
 def format_html_info(condition, ln, sub_d):
