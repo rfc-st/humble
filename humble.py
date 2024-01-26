@@ -941,7 +941,7 @@ def generate_pdf(name_e, pdf):
 def set_pdf_structure():
     pdf.alias_nb_pages()
     set_pdf_metadata()
-    pdf.set_display_mode(zoom='real')
+    pdf.set_display_mode(zoom=125)
     pdf.add_page()
     pdf.set_font("Courier", size=9)
 
@@ -1937,7 +1937,7 @@ content="{html_desc} {URL}"><meta name="keywords" content="{html_keywords}">\
 content="{GIT_U} | v.{version}"><title>{html_title}</title><style>pre \
 {{overflow-x: auto; white-space: pre-wrap;white-space: -moz-pre-wrap; \
 white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word; \
-font-size: medium;}} a {{color: blue; text-decoration: none;}} .ok \
+font-size: 13px;}} a {{color: blue; text-decoration: none;}} .ok \
 {{color: green;}} .header {{color: #660033;}} .ko {{color: red;}} </style>\
  </head>'
     html_body = '<body><pre>'
