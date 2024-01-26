@@ -664,7 +664,6 @@ def csp_full_analysis(csp_header):
 
 
 def clean_shell_output(reliable=True):
-    # Kudos to Aniket Navlur!!!: https://stackoverflow.com/a/52590238
     if not reliable:
         sys.stdout.write(CLE_O)
     sys.stdout.write(CLE_O)
