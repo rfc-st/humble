@@ -213,7 +213,7 @@ $ python3 humble.py -u https://www.spacex.com | grep -A 8 "\!." | sed $'1i \n'
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux.jpg" alt="Show only the analysis summary (Linux)">
 
 
-.: (Windows, in Spanish) - show only the analysis summary (PowerShell >= 7 required).<br />
+.: (Windows) - Show only the analysis summary, in Spanish. PowerShell >= 7 required.<br />
 
 ```
 $ py humble.py -u https://www.spacex.com -l es | Select-String -Pattern '!.' -Context 1,8 -NoEmphasis
@@ -292,10 +292,10 @@ Any HTTP response header.
 * Nginx
 * Node.js
 
-## To-do (by priority)
+## To-Do
 - [ ] Add more Header/Value checks (only security-oriented)
-- [ ] A new detailed analysis of all CSP directives (W3C Level 2 & 3)
-- [ ] Google Style Python Docstrings and documentation via Sphinx
+- [ ] A new detailed analysis of all CSP directives/values (W3C Level <a href="https://www.w3.org/TR/CSP2/">2</a> & <a href="https://www.w3.org/TR/CSP3/">3</a>)
+- [ ] Google Style Python Docstrings and documentation via <a href="https://www.sphinx-doc.org/en/master/">Sphinx</a>
 
 ## Further reading
 
@@ -324,8 +324,8 @@ Thanks for downloading _'humble'_, for trying it and for your time! :).
 * <a href="https://stackoverflow.com/users/8665970/aniket-navlur">Aniket Navlur</a> for <a href="https://stackoverflow.com/questions/19596750/is-there-a-way-to-clear-your-printed-text-in-python/52590238#52590238">this</a> gem.
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
 * <a href="https://github.com/bulaktm">bulaktm</a> for <a href="https://github.com/rfc-st/humble/issues/5">this</a> suggestion.
-* <a href="https://www.linkedin.com/in/david-boronat/">David</a>, for believing in the usefulness of this tool.
-* <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo</a>, for making possible the first Demo and for the example <i>"(Linux) - Analyze multiple URLs and save the results as PDFs"</i>.
+* <a href="https://www.linkedin.com/in/david-boronat/">David</a> for believing in the usefulness of this tool.
+* <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo</a> for the first Demo and the example <i>"(Linux) - Analyze multiple URLs and save the results as PDFs"</i>.
 * <a href="https://github.com/gl4nce">gl4nce</a> for <a href="https://github.com/rfc-st/humble/issues/6">this</a> suggestion.
 * İDRİS BUDAK for reporting the need to <a href="https://github.com/rfc-st/humble/commit/f85dd7811859fd2e403a0ecd848b21db20949841">this</a> check.
 * <a href="https://github.com/manuel-sommer">manuel-sommer</a> for <a href="https://github.com/rfc-st/humble/issues/8">this</a>, <a href="https://github.com/rfc-st/humble/issues/10">this</a> and <a href="https://github.com/rfc-st/humble/issues/13">this</a>!.
