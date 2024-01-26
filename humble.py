@@ -133,9 +133,8 @@ class PDF(FPDF):
         self.set_y(-15)
         self.set_font('Helvetica', 'I', 8)
         pdf.set_text_color(0, 0, 0)
-        self.cell(0, 10, get_detail('[pdf_footer]') + ' ' +
-                  str(self.page_no()) + get_detail('[pdf_footer2') +
-                  ' {nb}', align='C')
+        self.cell(0, 10, get_detail('[pdf_footer]') + str(self.page_no()) +
+                  get_detail('[pdf_footer2') + ' {nb}', align='C')
 
 
 def check_python_version():
@@ -1176,14 +1175,18 @@ if '-f' in sys.argv:
     fng_analytics(args.term) if args.term else fng_analytics_global()
     sys.exit()
 
-if '-ua' in sys.argv and not args.URL:
-    parser.error(get_detail('[args_useragent]'))
-    sys.exit()
-elif '-ua' in sys.argv and args.URL:
-    ua_index = sys.argv.index('-ua')
-    ua_id = sys.argv[ua_index + 1].lstrip('-ua') if ua_index + 1 < \
-        len(sys.argv) else None
-    ua_header = {'User-Agent': get_user_agent(ua_id)}
+if '-ua' in sys.argv:
+    ua_id = int(sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua'))
+    if not args.URL:
+        if ua_id != 0:
+            parser.error(get_detail('[args_useragent]'))
+        else:
+            ua_header = {'User-Agent': get_user_agent('0')}
+    if args.URL:
+        ua_index = sys.argv.index('-ua')
+        ua_id = sys.argv[ua_index + 1].lstrip('-ua') if ua_index + 1 < \
+            len(sys.argv) else None
+        ua_header = {'User-Agent': get_user_agent(ua_id)}
 elif args.URL:
     ua_header = {'User-Agent': get_user_agent('1')}
 

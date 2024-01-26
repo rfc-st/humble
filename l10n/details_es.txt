@@ -561,7 +561,7 @@
 'humble' (Analizador de cabeceras HTTP)
 
 [pdf_footer]
-Página
+Página 
 
 [pdf_footer2]
  de
