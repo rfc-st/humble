@@ -1176,16 +1176,17 @@ if '-f' in sys.argv:
     sys.exit()
 
 if '-ua' in sys.argv:
-    ua_id = int(sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua'))
+    ua_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
     if not args.URL:
-        if ua_id != 0:
-            parser.error(get_detail('[args_useragent]'))
-        else:
-            ua_header = {'User-Agent': get_user_agent('0')}
+        try:
+            if int(ua_id) != 0:
+                parser.error(get_detail('[args_useragent]'))
+            else:
+                ua_header = {'User-Agent': get_user_agent('0')}
+        except ValueError:
+            print(f'\n {get_detail("[ua_invalid]", replace=True)}')
+            sys.exit()
     if args.URL:
-        ua_index = sys.argv.index('-ua')
-        ua_id = sys.argv[ua_index + 1].lstrip('-ua') if ua_index + 1 < \
-            len(sys.argv) else None
         ua_header = {'User-Agent': get_user_agent(ua_id)}
 elif args.URL:
     ua_header = {'User-Agent': get_user_agent('1')}

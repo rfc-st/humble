@@ -1190,7 +1190,7 @@ Highlights
  (source: 'additional/user_agents.txt')
 
 [ua_invalid]
- Error: The specified User-Agent was not found. Please check its ID.
+ Error: That User-Agent ID does not exist; check the available ones with '-ua 0'
 
 [windows_ssltls]
 
