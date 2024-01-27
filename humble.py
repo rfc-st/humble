@@ -25,13 +25,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# ADVICE:
-# Use the information provided by this humble program wisely. There is *far*
-# more merit in teaching, learning and helping others than in harming,
-# attacking or taking advantage. Don't just be a 'Script kiddie': if this
-# really interests you learn, research and become a Security Analyst!.
+# Advice:
+# Use the information provided by 'humble' wisely. There is *far* more merit in
+# helping others, learning and teaching than in attacking, harming or taking
+# advantage. Do not just be a 'Script kiddie': if this really interests you
+# learn, research and become a Security Analyst!.
 
-# GREETINGS:
+# Greetings:
 # Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3), David (x3), Eduardo,
 # Eloy, Fernando, Gabriel, Íñigo, Joanna, Juan Carlos, Juán, Julián, Julio,
 # Iván, Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Angel,
@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-01-26', '%Y-%m-%d').date()
+version = datetime.strptime('2024-01-27', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
