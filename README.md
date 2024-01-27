@@ -58,9 +58,9 @@ HTTP Headers Analyzer<br />
 :heavy_check_mark: Tested on Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
 :heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost<a> all the code under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
-:heavy_check_mark: Featured on OWASP <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">Secure Headers</a> Project, <a href="https://www.kali.org/tools/humble/" target="_blank">Kali Linux</a> (<a href="https://pkg.kali.org/pkg/humble" target="_blank">latest</a> Release), <a href="https://github.com/CERT-Polska/Artemis/pull/705">Artemis</a> (CERT Polska), <a href="https://defectdojo.github.io/django-DefectDojo/integrations/parsers/file/humble/">DefectDojo</a> and <a href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/special-http-headers">HackTricks</a>!.<br />
+:heavy_check_mark: Featured on <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">OWASP</a>, <a href="https://pkg.kali.org/pkg/humble" target="_blank">Kali Linux</a>, <a href="https://github.com/CERT-Polska/Artemis/pull/705">Artemis</a> (CERT Polska), <a href="https://defectdojo.github.io/django-DefectDojo/integrations/parsers/file/humble/">DefectDojo</a> and <a href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/special-http-headers">HackTricks</a>!.<br />
 :heavy_check_mark: Developed entirely in my spare time, no strings attached: feel <b>free</b> to try it out and integrate it into your projects!.<br />
-:heavy_check_mark: And with the <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA.PNG">approval</a> of an AI :)!.<br />
+:heavy_check_mark: And with the <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA.PNG">approval</a> of an AI :smile:!.<br />
 
 ## Screenshots
 
@@ -317,7 +317,7 @@ https://www.w3.org<br />
 * Send me your suggestions: rafael.fcucalon@gmail.com
 * And use the above email to tell me about integrations of this tool in others!
 
-Thanks for downloading _'humble'_, for trying it and for your time! :).
+Thanks for downloading _'humble'_, for trying it and for your time!.
 
 ## Acknowledgements
 * <a href="https://github.com/tartley/colorama">colorama</a>, <a href="https://github.com/py-pdf/fpdf2">fpdf2</a>, <a href="https://github.com/psf/requests">requests</a> and <a href="https://github.com/john-kurkowski/tldextract">tldextract</a> authors/teams: you rock :metal:!.
