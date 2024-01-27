@@ -1154,7 +1154,7 @@ A destacar
  (la versión más reciente es v.
 
 [latest]
- (estás usando una versión reciente)
+ (utilizas una versión reciente)
 
 [github_humble]
  Revisa las novedades en https://github.com/rfc-st/humble/

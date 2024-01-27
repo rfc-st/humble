@@ -154,6 +154,7 @@ def check_humble_updates(version):
             print(f"\n v.{version}{get_detail('[latest]')}")
     except requests.exceptions.RequestException:
         print(f"\n{get_detail('[update_error]')}")
+    sys.exit()
 
 
 def fng_analytics_global():
@@ -162,6 +163,7 @@ def fng_analytics_global():
     with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
     fng_analytics_global_groups(fng_lines)
+    sys.exit()
 
 
 def fng_analytics_global_groups(fng_lines):
@@ -192,6 +194,7 @@ def fng_analytics(term):
         fng_lines = fng_source.readlines()
     fng_group, term_count = fng_analytics_groups(fng_lines, term)
     fng_analytics_content(fng_group, term, term_count, fng_lines)
+    sys.exit()
 
 
 def fng_analytics_groups(fng_ln, term):
@@ -236,6 +239,7 @@ def print_security_guides():
             if not line.startswith('#'):
                 print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
   {line}", end='')
+    sys.exit()
 
 
 def testssl_command(directory, uri):
@@ -251,6 +255,7 @@ def testssl_command(directory, uri):
         command = [testssl_f, '-f', '-g', '-p', '-U', '-s', '--hints',
                    uri_safe]
         testssl_analysis(command)
+    sys.exit()
 
 
 def testssl_analysis(command):
@@ -358,6 +363,7 @@ def url_analytics(is_global=False):
         key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}" \
             if (not value or not key.startswith(' ')) else key
         print(f"{key}: {value}")
+    sys.exit()
 
 
 def extract_analysis_metrics(c_history):
@@ -1186,11 +1192,9 @@ check_python_version()
 
 if args.version:
     check_humble_updates(version)
-    sys.exit()
 
 if '-f' in sys.argv:
     fng_analytics(args.term) if args.term else fng_analytics_global()
-    sys.exit()
 
 if '-ua' in sys.argv:
     ua_header = parse_user_agent(user_agent=True)
@@ -1236,7 +1240,6 @@ if args.guides or args.path or args.URL_A:
         testssl_command(args.path, args.URL)
     elif args.URL_A:
         url_analytics() if args.URL else url_analytics(is_global=True)
-    sys.exit()
 
 start = time()
 print_ru_message()
