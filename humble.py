@@ -827,6 +827,23 @@ def check_path_permissions(path_safe):
         remove(path.join(path_safe, HUM_F[1]))
 
 
+def parse_user_agent(user_agent=False):
+    if not user_agent:
+        return {'User-Agent': get_user_agent('1')}
+    ua_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
+    if not args.URL:
+        try:
+            if int(ua_id) != 0:
+                parser.error(get_detail('[args_useragent]'))
+            else:
+                return {'User-Agent': get_user_agent('0')}
+        except ValueError:
+            print(f'\n {get_detail("[ua_invalid]", replace=True)}')
+            sys.exit()
+    if args.URL:
+        return {'User-Agent': get_user_agent(ua_id)}
+
+
 def get_user_agent(ua_param):
     with open(path.join(HUM_D[0], HUM_F[6]), 'r', encoding='utf-8') as \
             ua_source:
@@ -1176,20 +1193,9 @@ if '-f' in sys.argv:
     sys.exit()
 
 if '-ua' in sys.argv:
-    ua_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
-    if not args.URL:
-        try:
-            if int(ua_id) != 0:
-                parser.error(get_detail('[args_useragent]'))
-            else:
-                ua_header = {'User-Agent': get_user_agent('0')}
-        except ValueError:
-            print(f'\n {get_detail("[ua_invalid]", replace=True)}')
-            sys.exit()
-    if args.URL:
-        ua_header = {'User-Agent': get_user_agent(ua_id)}
+    ua_header = parse_user_agent(user_agent=True)
 elif args.URL:
-    ua_header = {'User-Agent': get_user_agent('1')}
+    ua_header = parse_user_agent(user_agent=False)
 
 if '-e' in sys.argv:
     if platform.system().lower() == 'windows':
