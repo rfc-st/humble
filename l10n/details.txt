@@ -300,6 +300,20 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Large-Allocation
 
+[inel_h]
+ NEL (No Valid Directives)
+
+[inel]
+ Include at least one valid directive.
+ Ref: https://w3c.github.io/network-error-logging/#nel-response-header
+
+[inelm_h]
+ NEL (Missing Directives)
+
+[inelm]
+ The 'report_to' and 'max_age' directives are mandatory.
+ Ref: https://w3c.github.io/network-error-logging/#nel-response-header
+
 [ixtk_h]
  Tk (Deprecated Header)
 

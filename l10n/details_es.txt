@@ -300,6 +300,20 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Large-Allocation
 
+[inel_h]
+ NEL (Sin directivas adecuadas)
+
+[inel]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://w3c.github.io/network-error-logging/#nel-response-header
+
+[inelm_h]
+ NEL (Directivas ausentes)
+
+[inelm]
+ Las directivas 'report_to' y 'max_age' son obligatorias.
+ Ref: https://w3c.github.io/network-error-logging/#nel-response-header
+
 [ixtk_h]
  Tk (Cabecera obsoleta)
 

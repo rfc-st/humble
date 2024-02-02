@@ -1446,6 +1446,12 @@ l_legacy = ['application/javascript', 'application/ecmascript',
             'text/javascript1.5', 'text/jscript', 'text/livescript',
             'text/x-ecmascript', 'text/x-javascript']
 
+# https://w3c.github.io/network-error-logging/#nel-response-header
+l_nel_dir = ['failure_fraction', 'include_subdomains', 'max_age', 'report_to',
+             'request_headers', 'response_headers', 'success_fraction']
+
+l_nel_req = ['report_to', 'max_age']
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
 l_origcluster = ['?0', '?1']
 
@@ -1679,6 +1685,13 @@ if ('Keep-Alive' in headers and headers['Keep-Alive'] and
 
 if 'Large-Allocation' in headers:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd', i_cnt)
+
+if 'NEL' in headers:
+    nel_header = headers['NEL'].lower()
+    if not any(elem in nel_header for elem in l_nel_dir):
+        print_details('[inel_h]', '[inel]', 'd', i_cnt)
+    if not all(elem in nel_header for elem in l_nel_req):
+        print_details("[inelm_h]", "[inelm]", "d", i_cnt)
 
 if 'Onion-Location' in headers:
     print_details('[ionloc_h]', '[ionloc]', 'm', i_cnt)
