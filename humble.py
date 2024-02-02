@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-01-27', '%Y-%m-%d').date()
+version = datetime.strptime('2024-02-02', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -668,14 +668,14 @@ def csp_full_analysis(csp_header):
     return '\n'.join(csp_output)
 
 
-def clean_shell_output(reliable=True):
+def clean_shell_lines(reliable=True):
     if not reliable:
         sys.stdout.write(CLE_O)
     sys.stdout.write(CLE_O)
 
 
 def print_export_path(filename, reliable):
-    clean_shell_output(reliable=False) if reliable else clean_shell_output()
+    clean_shell_lines(reliable=False) if reliable else clean_shell_lines()
     print("")
     print_detail_l('[report]')
     print(path.abspath(filename))
@@ -699,10 +699,9 @@ def print_fng_header(header):
         print(f"{BRI_R} {header}")
 
 
-def print_analysis_info(reliable):
+def print_banner(reliable):
     if not args.output:
-        clean_shell_output(reliable=False) if reliable else \
-            clean_shell_output()
+        clean_shell_lines(reliable=False) if reliable else clean_shell_lines()
         print("")
         banner = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
@@ -715,14 +714,18 @@ def print_analysis_info(reliable):
     elif args.output != 'pdf':
         print("")
         print(f"\n{PRG_N}\n{GIT_U} | v.{version}\n")
+    print_basic_info()
+    if status_code in CLI_E or reliable or args.redirects:
+        print_extra_info(reliable)
+
+
+def print_basic_info():
     print(linesep.join(['']*2) if args.output == 'html' or not args.output
           else "")
     print_detail_r('[0section]')
     print_detail_l('[analysis_date]')
     print(f" {now}")
     print(f'{URL_S}{URL}')
-    if status_code in CLI_E or reliable or args.redirects:
-        print_extra_info(reliable)
 
 
 def print_extra_info(reliable):
@@ -1041,7 +1044,7 @@ def format_html_bold(ln):
 
 
 def print_http_exception(id_exception, exception_v):
-    clean_shell_output()
+    clean_shell_lines()
     print("")
     print_detail(id_exception)
     raise SystemExit from exception_v
@@ -1059,7 +1062,7 @@ def print_ru_message():
 
 def handle_http_error(http_code, id_mode):
     if str(http_code).startswith('5'):
-        clean_shell_output()
+        clean_shell_lines()
         print()
         if http_code in SRV_E or http_code in CDN_E:
             if detail := print_detail(id_mode, 0):
@@ -1279,7 +1282,7 @@ if args.output:
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
-print_analysis_info(reliable)
+print_banner(reliable)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
 # 1. Missing HTTP Security Headers
