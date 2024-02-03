@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-02-02', '%Y-%m-%d').date()
+version = datetime.strptime('2024-02-03', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -641,13 +641,16 @@ def csp_full_analysis(csp_header):
     # 0.- Source values.
     #
     # 1.- Fetch directives: default-src, child-src, connect-src, font-src,
-    # frame-src, img-src, manifest-src, media-src, object-src, prefetch-src,
-    # script-src, script-src-elem, script-src-attr, style-src, style-src-elem,
-    # style-src-attr, worker-src.
+    #     frame-src, img-src, manifest-src, media-src, object-src,
+    #     prefetch-src, script-src, script-src-elem, script-src-attr,
+    #     style-src, style-src-elem, style-src-attr, worker-src.
     #
     # 2.- Document directives: base-uri, sandbox.
     #
     # 3.- Navigation directives: form-action, frame-ancestors.
+    #
+    # 4.- Other directives: require-trusted-types-for, trusted-types,
+    #     upgrade-insecure-requests
     #
     # Perhaps with a new file, 'csp_analysis.py', which will contain a class
     # (to be imported into 'humble.py') consisting of a function for each CSP
@@ -1609,6 +1612,9 @@ if 'Content-Security-Policy' in headers:
     csp_store_values(csp_h, l_csp_broad, l_csp_insecs, i_cnt)
     if any(elem in csp_h for elem in l_csp_insecv):
         print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
+    if 'upgrade-insecure-requests' in csp_h and \
+       'strict-transport-security' not in headers:
+        print_details('[icspi_h]', '[icspi]', 'm', i_cnt)
     if 'unsafe-hashes' in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
     if "'nonce-" in csp_h:

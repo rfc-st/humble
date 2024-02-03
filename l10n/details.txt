@@ -376,6 +376,9 @@
 [icsp_h]
  Content-Security-Policy (Unsafe Values)
 
+[icspi_h]
+ Content-Security-Policy (Unsafe Directive)
+
 [imethods_h]
  Access-Control-Allow-Methods (Insecure Methods)
 
@@ -758,6 +761,11 @@ HTTP Response Headers
  'unsafe-inline' and 'unsafe-eval' negate most of the security benefits provided by this header.
  Ref: https://csper.io/blog/no-more-unsafe-inline
  Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
+
+[icspi]
+ 'upgrade-insecure-requests' without 'HSTS' header could lead to SSL Stripping attacks.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ Ref: https://www.ssldragon.com/blog/ssl-stripping/
 
 [icsi]
  Include at least one valid directive.

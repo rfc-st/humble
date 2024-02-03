@@ -376,6 +376,9 @@
 [icsp_h]
  Content-Security-Policy (Valores inseguros)
 
+[icspi_h]
+ Content-Security-Policy (Directiva insegura)
+
 [imethods_h]
  Access-Control-Allow-Methods (Valores inseguros)
 
@@ -758,6 +761,11 @@ Cabeceras de respuesta HTTP
  'unsafe-inline' y 'unsafe-eval' anulan las principales ventajas de esta cabecera.
  Ref: https://csper.io/blog/no-more-unsafe-inline
  Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
+
+[icspi]
+ 'upgrade-insecure-requests' sin la cabecera 'HSTS' podría facilitar ataques SSL Stripping.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ Ref: https://www.ssldragon.com/blog/ssl-stripping/
 
 [icsi]
  Incluya, al menos, una directiva correcta.
