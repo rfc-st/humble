@@ -796,7 +796,7 @@ def get_detail(id_mode, replace=False):
                 l10n_details[i+1]
 
 
-def get_fingerprint_headers(headers, l_fng, l_fng_ex):
+def print_fingerprint_headers(headers, l_fng, l_fng_ex):
     f_cnt = 0
     match_h = sorted([header for header in headers if any(elem.lower()
                      in headers for elem in l_fng)])
@@ -820,6 +820,24 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
         print("")
     else:
         print_header(header)
+
+
+def print_empty_headers(headers, l_empty):
+    e_cnt = 0
+    for key in sorted(headers):
+        if not headers[key]:
+            l_empty.append(f"_{key}")
+            print_header(key)
+            e_cnt += 1
+    return e_cnt
+
+
+def print_browser_compatibility(browser_compat_header):
+    for key in browser_compat_header:
+        output_string = "  " if args.output == 'html' else " "
+        key_string = key if args.output else f"{Fore.CYAN}{key}{Fore.RESET}"
+        print(f"{output_string}{key_string}{CAN_S}\
+{key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 
 
 def check_path_traversal(path):
@@ -1285,13 +1303,13 @@ if args.output:
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
+# 0. Info & HTTP Response Headers
 print_banner(reliable)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
 # 1. Missing HTTP Security Headers
-m_cnt = 0
-
 print_detail_r('[1missing]')
+m_cnt = 0
 
 l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
           'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
@@ -1335,7 +1353,7 @@ if m_cnt == 0:
 
 print("")
 
-# 2. Fingerprinting through Headers/Values
+# 2. Fingerprint HTTP Response Headers
 print_detail_r('[2fingerprint]')
 
 if not args.brief:
@@ -1350,7 +1368,7 @@ with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fng_source:
             l_fng.append(line.partition(' [')[0].strip())
             l_fng_ex.append(line.strip())
 
-f_cnt = get_fingerprint_headers(headers, l_fng, l_fng_ex)
+f_cnt = print_fingerprint_headers(headers, l_fng, l_fng_ex)
 
 if args.brief and f_cnt != 0:
     print("")
@@ -1360,10 +1378,9 @@ if f_cnt == 0:
 
 print("")
 
-# 3. Deprecated HTTP Headers/Protocols and Insecure values
-i_cnt = [0]
-
+# 3. Deprecated HTTP Response Headers/Protocols and Insecure Values
 print_detail_r('[3depinsecure]')
+i_cnt = [0]
 
 if not args.brief:
     print_detail("[aisc]")
@@ -1899,18 +1916,13 @@ if i_cnt[0] == 0:
 print("")
 
 # 4. Empty HTTP Response Headers Values
-e_cnt = 0
-l_empty = []
 print_detail_r('[4empty]')
+l_empty = []
 
 if not args.brief:
     print_detail("[aemp]")
 
-for key in sorted(headers):
-    if not headers[key]:
-        l_empty.append("_" + key)
-        print_header(key)
-        e_cnt += 1
+e_cnt = print_empty_headers(headers, l_empty)
 
 print("") if e_cnt != 0 else print_nowarnings()
 print("")
@@ -1930,14 +1942,9 @@ l_sec = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Credentials',
          'X-Content-Type-Options', 'X-DNS-Prefetch-Control',
          'X-Frame-Options', 'X-XSS-Protection']
 
-header_matches = [header for header in l_sec if header in headers]
-
-if header_matches:
-    for key in header_matches:
-        output_string = "  " if args.output == 'html' else " "
-        key_string = key if args.output else f"{Fore.CYAN}{key}{Fore.RESET}"
-        print(f"{output_string}{key_string}{CAN_S}\
-{key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
+browser_compat_header = [header for header in l_sec if header in headers]
+if browser_compat_header:
+    print_browser_compatibility(browser_compat_header)
 else:
     print_detail_l("[no_sec_headers]") if args.output else \
         print_detail_r("[no_sec_headers]", is_red=True)
@@ -1946,7 +1953,7 @@ print(linesep.join(['']*2))
 end = time()
 get_analysis_result()
 
-# Export analysis
+# Exporting analysis
 if args.output:
     name_p = f"{name_e[:-5]}.{args.output}"
     sys.stdout = orig_stdout
