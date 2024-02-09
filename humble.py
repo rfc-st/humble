@@ -45,7 +45,7 @@ from urllib.parse import urlparse
 from os import linesep, path, remove
 from colorama import Fore, Style, init
 from collections import Counter, defaultdict
-from argparse import ArgumentParser, HelpFormatter
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from requests.adapters import HTTPAdapter
 import re
 import csv
@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-02-03', '%Y-%m-%d').date()
+version = datetime.strptime('2024-02-09', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1171,46 +1171,65 @@ def manage_http_request():
 
 
 def custom_help_formatter(prog):
-    return HelpFormatter(prog, max_help_position=30)
+    return RawDescriptionHelpFormatter(prog, max_help_position=30)
 
 
 init(autoreset=True)
+epi_text = '''examples:
+  -u URL -b                   Analyzes the URL and reports overall findings
+  -u URL -r                   Analyzes the URL and reports detailed findings \
+along with HTTP response headers
+  -u URL -l es                Analyzes the URL and reports detailed findings \
+in Spanish
+  -u URL -b -o csv            Analyzes the URL and exports overall findings to\
+ CSV
+  -u URL -o pdf               Analyzes the URL and exports detailed findings \
+to PDF
+  -u URL -a                   Shows statistics of the analysis performed \
+against the URL
+  -a -l es                    Shows statistics of the analysis performed \
+against all URLs in Spanish
+  -f Google                   Shows HTTP fingerprint headers related to the \
+term 'Google'
+'''
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
-                        description=f"{PRG_N} | {GIT_U} | v.{version}")
+                        description=f"{PRG_N} | {GIT_U} | v.{version}",
+                        epilog=epi_text)
 
-parser.add_argument("-a", dest='URL_A', action="store_true", help="show \
+parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
 statistics of the performed analysis (will be global if '-u' is omitted)")
-parser.add_argument("-b", dest='brief', action="store_true", help="show a \
-brief analysis (if omitted, a detailed one will be shown)")
-parser.add_argument("-df", dest='redirects', action="store_true", help="do not\
+parser.add_argument("-b", dest='brief', action="store_true", help="Shows \
+overall findings (if omitted, details will be shown)")
+parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
  follow redirects (if omitted, the last redirection will be the one analyzed)")
-parser.add_argument("-e", nargs='?', type=str, dest='path', help="show TLS/SSL\
- checks (requires the PATH of https://testssl.sh/ and Linux/Unix OS)")
-parser.add_argument("-f", nargs='?', type=str, dest='term', help="show \
+parser.add_argument("-e", nargs='?', type=str, dest='path', help="Shows \
+TLS/SSL checks (requires the PATH of https://testssl.sh/ and Linux/Unix OS)")
+parser.add_argument("-f", nargs='?', type=str, dest='term', help="Shows \
 fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
 omitted)")
-parser.add_argument("-g", dest='guides', action="store_true", help="show \
+parser.add_argument("-g", dest='guides', action="store_true", help="Shows \
 guidelines for securing popular web servers/services")
-parser.add_argument("-l", dest='lang', choices=['es'], help="the language for \
+parser.add_argument("-l", dest='lang', choices=['es'], help="The language for \
 displaying analyses, errors and messages (if omitted it will be in English)")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
-                                                  'txt'], help="save analysis \
-to 'scheme_host_port_yyyymmdd.ext' file (csv/json files will contain a brief \
-analysis)")
-parser.add_argument("-op", dest='output_path', type=str, help="save analysis \
-to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)")
-parser.add_argument("-r", dest='ret', action="store_true", help="show HTTP \
+                                                  'txt'], help="Exports \
+analysis to 'scheme_host_port_yyyymmdd.ext' file (csv/json files will contain \
+a brief analysis)")
+parser.add_argument("-op", dest='output_path', type=str, help="Exports \
+analysis to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)")
+parser.add_argument("-r", dest='ret', action="store_true", help="Shows HTTP \
 response headers and a detailed analysis ('-b' parameter will take priority)")
-parser.add_argument('-u', type=str, dest='URL', help="scheme, host and port to\
+parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
  analyze. E.g. https://google.com")
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
 from 'additional/user_agents.txt' to use. '0' will show all and '1' is the \
 default.")
-parser.add_argument("-v", "--version", action="store_true", help="check for \
+parser.add_argument("-v", "--version", action="store_true", help="Checks for \
 updates at https://github.com/rfc-st/humble")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+
 l10n_details = get_l10n_details()
 check_python_version()
 
