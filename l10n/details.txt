@@ -1282,3 +1282,14 @@ Section
 
 [csv_values]
 Values
+
+[epilog_content]
+examples:
+  -u URL -b                   Analyzes the URL and reports overall findings
+  -u URL -r                   Analyzes the URL and reports detailed findings along with HTTP response headers
+  -u URL -l es                Analyzes the URL and reports detailed findings in Spanish
+  -u URL -b -o csv            Analyzes the URL and exports overall findings to CSV
+  -u URL -o pdf               Analyzes the URL and exports detailed findings to PDF
+  -u URL -a                   Shows statistics of the analysis performed against the URL
+  -a -l es                    Shows statistics of the analysis performed against all URLs in Spanish
+  -f Google                   Shows HTTP fingerprint headers related to the term 'Google'

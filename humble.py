@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-02-09', '%Y-%m-%d').date()
+version = datetime.strptime('2024-02-10', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -796,6 +796,14 @@ def get_detail(id_mode, replace=False):
                 l10n_details[i+1]
 
 
+def get_epilog_detail(id_mode):
+    epi_file_path = path.join(HUM_D[1], HUM_F[5])
+    with open(epi_file_path, 'r', encoding='utf8') as epi_source:
+        epi_lines = epi_source.readlines()
+        epi_idx = epi_lines.index(id_mode + '\n')
+        return ''.join(epi_lines[epi_idx+1:epi_idx+10])
+
+
 def print_fingerprint_headers(headers, l_fng, l_fng_ex):
     f_cnt = 0
     match_h = sorted([header for header in headers if any(elem.lower()
@@ -1175,23 +1183,7 @@ def custom_help_formatter(prog):
 
 
 init(autoreset=True)
-epi_text = '''examples:
-  -u URL -b                   Analyzes the URL and reports overall findings
-  -u URL -r                   Analyzes the URL and reports detailed findings \
-along with HTTP response headers
-  -u URL -l es                Analyzes the URL and reports detailed findings \
-in Spanish
-  -u URL -b -o csv            Analyzes the URL and exports overall findings to\
- CSV
-  -u URL -o pdf               Analyzes the URL and exports detailed findings \
-to PDF
-  -u URL -a                   Shows statistics of the analysis performed \
-against the URL
-  -a -l es                    Shows statistics of the analysis performed \
-against all URLs in Spanish
-  -f Google                   Shows HTTP fingerprint headers related to the \
-term 'Google'
-'''
+epi_text = get_epilog_detail('[epilog_content]')
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
                         description=f"{PRG_N} | {GIT_U} | v.{version}",
