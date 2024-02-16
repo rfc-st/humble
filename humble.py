@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-02-10', '%Y-%m-%d').date()
+version = datetime.strptime('2024-02-16', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -294,12 +294,11 @@ def get_analysis_result():
     print(round(end - start, 2), end="")
     print_detail_l('[analysis_time_sec]')
     t_cnt = sum([m_cnt, f_cnt, i_cnt[0], e_cnt])
-    mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = get_analysis_totals(t_cnt)
-    mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, \
-        thr_cnt = compare_analysis_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt,
-                                          i_cnt, eh_cnt, e_cnt, th_cnt, t_cnt)
+    current = get_analysis_totals(t_cnt)
+    diff = compare_analysis_totals(*current, m_cnt=m_cnt, f_cnt=f_cnt,
+                                   i_cnt=i_cnt, e_cnt=e_cnt, t_cnt=t_cnt)
     print("")
-    print_analysis_totals(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt)
+    print_analysis_totals(*diff, t_cnt=t_cnt)
 
 
 def get_analysis_totals(t_cnt):
@@ -308,37 +307,32 @@ def get_analysis_totals(t_cnt):
         a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
 {e_cnt} ; {t_cnt}\n")
         url_ln = [line for line in c_history if URL in line]
-        if not url_ln:
-            return ("First",) * 5
-        mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = \
-            extract_analysis_totals(url_ln)
-        return mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt
+        return extract_analysis_totals(url_ln) if url_ln else ("First",) * 5
 
 
 def extract_analysis_totals(url_ln):
     date_var = max(line.split(" ; ")[0] for line in url_ln)
     for line in url_ln:
         if date_var in line:
-            _, _, mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt = \
-                line.strip().split(' ; ')
+            *totals, = line.strip().split(' ; ')
             break
-    return mh_cnt, fh_cnt, ih_cnt, eh_cnt, th_cnt
+    return tuple(totals[2:])
 
 
-def compare_analysis_totals(mh_cnt, m_cnt, fh_cnt, f_cnt, ih_cnt, i_cnt,
-                            eh_cnt, e_cnt, th_cnt, t_cnt):
-    if mh_cnt == "First":
+def compare_analysis_totals(*current, m_cnt, f_cnt, i_cnt, e_cnt, t_cnt):
+    if current[0] == "First":
         return [get_detail('[first_one]', replace=True)] * 5
-    totals = [m_cnt - int(mh_cnt), f_cnt - int(fh_cnt), i_cnt[0] - int(ih_cnt),
-              e_cnt - int(eh_cnt), t_cnt - int(th_cnt)]
+    current = [int(val) for val in current]
+    totals = [m_cnt - current[0], f_cnt - current[1], i_cnt[0] - current[2],
+              e_cnt - current[3], t_cnt - current[4]]
     return [f'+{total}' if total > 0 else str(total) for total in totals]
 
 
-def print_analysis_totals(mhr_cnt, fhr_cnt, ihr_cnt, ehr_cnt, t_cnt, thr_cnt):
+def print_analysis_totals(*diff, t_cnt):
     literals = ['[missing_cnt]', '[fng_cnt]', '[insecure_cnt]', '[empty_cnt]',
                 '[total_cnt]']
-    totals = [f"{m_cnt} ({mhr_cnt})", f"{f_cnt} ({fhr_cnt})", f"{i_cnt[0]} \
-({ihr_cnt})", f"{e_cnt} ({ehr_cnt})\n", f"{t_cnt} ({thr_cnt})\n"]
+    totals = [f"{m_cnt} ({diff[0]})", f"{f_cnt} ({diff[1]})", f"{i_cnt[0]} \
+({diff[2]})", f"{e_cnt} ({diff[3]})\n", f"{t_cnt} ({diff[4]})\n"]
     print("")
     for literal, total in zip(literals, totals):
         print(f"{(print_detail_l(literal) or '')[:-1]}{total}")
@@ -1556,9 +1550,11 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
+unsafe_scheme = True if URL.startswith(INS_S) else False
+
 if 'Accept-CH' in headers:
     acceptch_header = headers['Accept-CH'].lower()
-    if URL.startswith(INS_S):
+    if unsafe_scheme:
         print_details('[ixach_h]', '[ixach]', 'd', i_cnt)
     if any(value in acceptch_header for value in l_acceptch_dep):
         print_detail_r('[ixachd_h]', is_red=True)
@@ -1619,7 +1615,7 @@ if cache_header and not all(elem in cache_header for elem in l_cache):
 
 if 'Clear-Site-Data' in headers:
     clsdata_header = headers['Clear-Site-Data'].lower()
-    if URL.startswith(INS_S):
+    if unsafe_scheme:
         print_details('[icsd_h]', '[icsd]', 'd', i_cnt)
     if not any(elem in clsdata_header for elem in l_csdata):
         print_details('[icsdn_h]', '[icsdn]', 'd', i_cnt)
@@ -1675,7 +1671,7 @@ if ctype_header:
     if 'html' not in ctype_header:
         print_details('[ictlhtml_h]', '[ictlhtml]', 'd', i_cnt)
 
-if 'Critical-CH' in headers and URL.startswith(INS_S):
+if 'Critical-CH' in headers and unsafe_scheme:
     print_details('[icrch_h]', '[icrch]', 'd', i_cnt)
 
 if 'Cross-Origin-Embedder-Policy' in headers:
@@ -1709,7 +1705,7 @@ if 'Expires' in headers and any(elem in headers.get('Cache-Control', '') for
 if 'Feature-Policy' in headers:
     print_details('[iffea_h]', '[iffea]', 'd', i_cnt)
 
-if URL.startswith(INS_S):
+if unsafe_scheme:
     print_details('[ihttp_h]', '[ihttp]', 'd', i_cnt)
 
 if ('Keep-Alive' in headers and headers['Keep-Alive'] and
@@ -1760,7 +1756,7 @@ if 'Pragma' in headers:
 
 if 'Proxy-Authenticate' in headers:
     prxyauth_h = headers['Proxy-Authenticate'].lower()
-    if 'basic' in prxyauth_h and URL.startswith(INS_S):
+    if 'basic' in prxyauth_h and unsafe_scheme:
         print_details('[iprxauth_h]', '[ihbas]', 'd', i_cnt)
 
 if 'Public-Key-Pins' in headers:
@@ -1783,10 +1779,10 @@ if 'Server-Timing' in headers:
 
 stc_header = headers.get("Set-Cookie", '').lower()
 if stc_header:
-    if not (URL.startswith(INS_S)) and not all(elem in stc_header for elem in
-                                               l_cookie_sec):
+    if not unsafe_scheme and not all(elem in stc_header for elem in
+                                     l_cookie_sec):
         print_details("[iset_h]", "[iset]", "d", i_cnt)
-    if URL.startswith(INS_S):
+    if unsafe_scheme:
         if 'secure' in stc_header:
             print_details("[iseti_h]", "[iseti]", "d", i_cnt)
         if any(prefix in stc_header for prefix in l_cookie_prf):
@@ -1801,7 +1797,7 @@ if 'Strict-Dynamic' in headers:
     print_details('[isdyn_h]', '[isdyn]', 'd', i_cnt)
 
 sts_header = headers.get('Strict-Transport-Security', '').lower()
-if (sts_header) and not (URL.startswith(INS_S)):
+if sts_header and not unsafe_scheme:
     try:
         age = int(''.join(filter(str.isdigit, sts_header)))
         if not all(elem in sts_header for elem in l_sts_dir) or age < 31536000:
@@ -1816,7 +1812,7 @@ if 'Supports-Loading-Mode' in headers:
     if not any(elem in support_mode_h for elem in l_support_mode):
         print_details('[islmode_h]', '[islmode]', 'd', i_cnt)
 
-if (sts_header) and (URL.startswith(INS_S)):
+if sts_header and unsafe_scheme:
     print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
 
 if 'Surrogate-Control' in headers:
@@ -1850,7 +1846,7 @@ if 'Warning' in headers:
     print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
 
 wwwa_header = headers.get('WWW-Authenticate', '').lower()
-if (wwwa_header) and (URL.startswith(INS_S)) and ('basic' in wwwa_header):
+if wwwa_header and unsafe_scheme and ('basic' in wwwa_header):
     print_details('[ihbas_h]', '[ihbas]', 'd', i_cnt)
 
 if 'X-Content-Security-Policy' in headers:
