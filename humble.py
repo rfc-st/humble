@@ -44,9 +44,9 @@ from datetime import datetime
 from urllib.parse import urlparse
 from os import linesep, path, remove
 from colorama import Fore, Style, init
+from requests.adapters import HTTPAdapter
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-from requests.adapters import HTTPAdapter
 import re
 import csv
 import ssl
@@ -148,10 +148,10 @@ def check_humble_updates(version):
         remote_v = re.search(r"\d{4}-\d{2}-\d{2}", response_t).group()
         remote_v_date = datetime.strptime(remote_v, '%Y-%m-%d').date()
         if remote_v_date > version:
-            print(f"\n v.{version}{get_detail('[not_latest]')[:-1]}{remote_v})\
-                  \n{get_detail('[github_humble]')}")
+            print(f"\n{get_detail('[not_latest]')[:-1]}\
+                  \n{get_detail('[github_humble]', replace=True)}")
         else:
-            print(f"\n v.{version}{get_detail('[latest]')}")
+            print(f"\n {get_detail('[latest]', replace=True)}")
     except requests.exceptions.RequestException:
         print(f"\n{get_detail('[update_error]')}")
     sys.exit()

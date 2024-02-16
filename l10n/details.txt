@@ -1173,10 +1173,10 @@ Highlights
  December
 
 [not_latest]
- (the most recent version is v.
+ Your version of 'humble' is not the most recent.
 
 [latest]
- (you are using a recent version)
+ You have a recent version of 'humble' :).
 
 [github_humble]
  Check for updates in https://github.com/rfc-st/humble/
