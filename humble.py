@@ -1939,9 +1939,10 @@ print_detail_r('[5compat]')
 
 l_sec = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Credentials',
          'Cache-Control', 'Clear-Site-Data', 'Content-Type',
-         'Content-Security-Policy', 'Critical-CH',
-         'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
-         'Cross-Origin-Resource-Policy', 'ETag', 'Feature-Policy', 'NEL',
+         'Content-Security-Policy', 'Content-Security-Policy-Report-Only',
+         'Critical-CH', 'Cross-Origin-Embedder-Policy',
+         'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy',
+         'Document-Policy', 'ETag', 'Feature-Policy', 'NEL',
          'Origin-Agent-Cluster', 'Proxy-Authenticate', 'Permissions-Policy',
          'Referrer-Policy', 'Server-Timing', 'Set-Cookie',
          'Strict-Transport-Security', 'Supports-Loading-Mode',
