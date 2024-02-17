@@ -618,7 +618,7 @@ Cabeceras de respuesta HTTP
 
 [security_guides]
 
- Guías y referencias útiles sobre cabeceras de respuesta HTTP y servidores/servicios populares:
+ Guías para habilitar cabeceras de respuesta HTTP de seguridad en servidores/servicios populares:
 
 [e_schema]
  Error: Incluye el esquema "http" o "https" en la URL a analizar.

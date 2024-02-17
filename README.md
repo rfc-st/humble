@@ -294,13 +294,14 @@ Check <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.
 Any HTTP response header.
 
 ## Guidelines included to enable security HTTP headers
-* Amazon AWS
+* Amazon Web Services
 * Apache HTTP Server
 * Cloudflare
 * LiteSpeed Web Server
 * Microsoft Internet Information Services
 * Nginx
 * Node.js
+* WordPress
 
 ## To-Do
 - [ ] Add more Header/Value checks (only security-oriented)

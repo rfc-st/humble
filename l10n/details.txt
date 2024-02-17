@@ -618,7 +618,7 @@ HTTP Response Headers
 
 [security_guides]
 
- Useful guides and references on HTTP response headers and popular servers/services:
+ Guidelines for enabling security HTTP response headers on popular servers/services:
 
 [e_schema]
  Error: No "http" or "https" schema supplied. Check syntax and try again.
