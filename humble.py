@@ -1197,7 +1197,7 @@ parser.add_argument("-g", dest='guides', action="store_true", help="Shows \
 guidelines for enabling security HTTP response headers on popular servers/\
 services")
 parser.add_argument("-l", dest='lang', choices=['es'], help="The language for \
-displaying analyses, errors and messages (if omitted it will be in English)")
+displaying analysis, errors and messages (if omitted it will be in English)")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt'], help="Exports \
 analysis to 'scheme_host_port_yyyymmdd.ext' file (csv/json files will contain \
