@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-02-16', '%Y-%m-%d').date()
+version = datetime.strptime('2024-02-17', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -157,47 +157,47 @@ def check_humble_updates(version):
     sys.exit()
 
 
-def fng_analytics_global():
+def fng_statistics_top():
     print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
-    fng_analytics_global_groups(fng_lines)
+    fng_statistics_top_groups(fng_lines)
     sys.exit()
 
 
-def fng_analytics_global_groups(fng_lines):
-    pttn_fng_global = r'\[([^\]]+)\]'
-    content_fng = Counter(match.strip() for line in fng_lines for match in
-                          re.findall(pttn_fng_global, line))
-    excl_ln = sum(bool(line.startswith('#')) for line in fng_lines) + 2
-    len_fng = len(fng_lines) - excl_ln
-    fng_analytics_global_print(content_fng, len_fng)
+def fng_statistics_top_groups(fng_lines):
+    fng_top_ptrn = r'\[([^\]]+)\]'
+    fng_content = Counter(match.strip() for line in fng_lines for match in
+                          re.findall(fng_top_ptrn, line))
+    excl_cnt = sum(bool(line.startswith('#')) for line in fng_lines) + 2
+    headers_cnt = len(fng_lines) - excl_cnt
+    fng_statistics_top_result(fng_content, headers_cnt)
 
 
-def fng_analytics_global_print(content_fng, len_fng):
+def fng_statistics_top_result(fng_content, headers_cnt):
     max_ln_len = max(len(content) for content, _ in
-                     content_fng.most_common(20))
-    print(f"{get_detail('[fng_top]', replace=True)} {len_fng}\
+                     fng_content.most_common(20))
+    print(f"{get_detail('[fng_top]', replace=True)} {headers_cnt}\
 {get_detail('[fng_top_2]', replace=True)}\n")
-    for content, count in content_fng.most_common(20):
-        pct_fng_global = round(count / len_fng * 100, 2)
+    for content, count in fng_content.most_common(20):
+        fng_global_pct = round(count / headers_cnt * 100, 2)
         padding_s = ' ' * (max_ln_len - len(content))
-        print(f" [{content}]: {padding_s}{pct_fng_global:.2f}% ({count})")
+        print(f" [{content}]: {padding_s}{fng_global_pct:.2f}% ({count})")
 
 
-def fng_analytics(term):
+def fng_statistics_term(term):
     print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as \
             fng_source:
         fng_lines = fng_source.readlines()
-    fng_group, term_count = fng_analytics_groups(fng_lines, term)
-    fng_analytics_content(fng_group, term, term_count, fng_lines)
+    fng_group, term_count = fng_statistics_term_groups(fng_lines, term)
+    fng_statistics_term_content(fng_group, term, term_count, fng_lines)
     sys.exit()
 
 
-def fng_analytics_groups(fng_ln, term):
+def fng_statistics_term_groups(fng_ln, term):
     fng_group = \
         {match[1].strip()
          for line in fng_ln if (match := re.search(PAT_LN, line)) and
@@ -207,20 +207,20 @@ def fng_analytics_groups(fng_ln, term):
     return fng_group, term_cnt
 
 
-def fng_analytics_content(fng_group, term, term_count, fng_lines):
+def fng_statistics_term_content(fng_group, term, term_count, fng_lines):
     if not fng_group:
         print(f"{get_detail('[fng_zero]', replace=True)} '{term}'.\n\n\
 {get_detail('[fng_zero_2]', replace=True)}.\n")
-    else:
-        excl_ln = sum(bool(line.startswith('#')) for line in fng_lines) + 2
-        fng_ln = len(fng_lines)-excl_ln
-        pct_fng = round(term_count / fng_ln * 100, 2)
-        print(f"{get_detail('[fng_add]', replace=True)} '{term}': {pct_fng}%\
- ({term_count}{get_detail('[pdf_footer2]', replace=True)} {fng_ln})")
-        fng_analytics_sorted(fng_lines, term, fng_group)
+        return
+    excl_cnt = sum(line.startswith('#') for line in fng_lines) + 2
+    headers_cnt = len(fng_lines)-excl_cnt
+    fng_pct = round(term_count / headers_cnt * 100, 2)
+    print(f"{get_detail('[fng_add]', replace=True)} '{term}': {fng_pct}%\
+ ({term_count}{get_detail('[pdf_footer2]', replace=True)} {headers_cnt})")
+    fng_statistics_term_sorted(fng_lines, term, fng_group)
 
 
-def fng_analytics_sorted(fng_lines, term, fng_group):
+def fng_statistics_term_sorted(fng_lines, term, fng_group):
     term_l = term.lower()
     for content in sorted(fng_group):
         print(f"\n [{content}]")
@@ -288,8 +288,7 @@ def get_l10n_details():
 
 
 def get_analysis_result():
-    print(".:")
-    print("")
+    print(".:\n")
     print_detail_l('[analysis_time]')
     print(round(end - start, 2), end="")
     print_detail_l('[analysis_time_sec]')
@@ -302,11 +301,11 @@ def get_analysis_result():
 
 
 def get_analysis_totals(t_cnt):
-    with open(HUM_F[0], 'a+', encoding='utf8') as a_history, \
-         open(HUM_F[0], 'r', encoding='utf8') as c_history:
-        a_history.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
+    with open(HUM_F[0], 'a+', encoding='utf8') as add_analysis, \
+         open(HUM_F[0], 'r', encoding='utf8') as all_analysis:
+        add_analysis.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
 {e_cnt} ; {t_cnt}\n")
-        url_ln = [line for line in c_history if URL in line]
+        url_ln = [line for line in all_analysis if URL in line]
         return extract_analysis_totals(url_ln) if url_ln else ("First",) * 5
 
 
@@ -1223,7 +1222,7 @@ if args.version:
     check_humble_updates(version)
 
 if '-f' in sys.argv:
-    fng_analytics(args.term) if args.term else fng_analytics_global()
+    fng_statistics_term(args.term) if args.term else fng_statistics_top()
 
 if '-ua' in sys.argv:
     ua_header = parse_user_agent(user_agent=True)

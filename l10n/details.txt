@@ -1191,19 +1191,19 @@ Highlights
  (source: 'additional/fingerprint.txt')
 
 [fng_add]
- Related to
+ Headers related to
 
 [fng_zero]
- No matches found for
+ No headers found related to
 
 [fng_zero_2]
  Tip: quote multiple words to search for exact matches; e.g. "Microsoft Azure Storage"
 
 [fng_top]
- Top 20 groups in relation to the
+ Top 20 groups of headers in relation to the
 
 [fng_top_2]
- headers of the source file
+ headers of the source file.
 
 [ua_available]
  Available User-Agents

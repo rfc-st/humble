@@ -1191,19 +1191,19 @@ A destacar
  (fuente: "additional/fingerprint.txt")
 
 [fng_add]
- Asociadas a
+ Cabeceras relacionadas con
 
 [fng_zero]
- Sin coincidencias para
+ No se han encontrado cabeceras relacionadas con
 
 [fng_zero_2]
  Consejo: entrecomilla varias palabras para buscar coincidencias exactas; ej. "Microsoft Azure Storage"
 
 [fng_top]
- Top 20 de grupos en relación a las
+ Top 20 de grupos de cabeceras en relación a las
 
 [fng_top_2]
- cabeceras del fichero fuente
+ cabeceras del fichero fuente.
 
 [ua_available]
  User-Agents disponibles
