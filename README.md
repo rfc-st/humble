@@ -184,7 +184,7 @@ https://github.com/rfc-st/humble/releases
 
 usage: humble.py [-h] [-a] [-b] [-df] [-e [PATH]] [-f [TERM]] [-g] [-l {es}] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-02-09
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-02-17
 
 options:
   -h, --help                  show this help message and exit
@@ -193,7 +193,7 @@ options:
   -df                         Do not follow redirects (if omitted, the last redirection will be the one analyzed)
   -e [PATH]                   Shows TLS/SSL checks (requires the PATH of https://testssl.sh/ and Linux/Unix OS)
   -f [TERM]                   Shows fingerprint statistics (will be the Top 20 if "TERM", e.g. "Google", is omitted)
-  -g                          Shows guidelines for securing popular web servers/services
+  -g                          Shows guidelines for enabling security HTTP response headers on popular servers/services
   -l {es}                     The language for displaying analyses, errors and messages (if omitted it will be in English)
   -o {csv,html,json,pdf,txt}  Exports analysis to 'scheme_host_port_yyyymmdd.ext' file (csv/json files will contain a brief analysis)
   -op OUTPUT_PATH             Exports analysis to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)

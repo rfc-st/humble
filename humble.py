@@ -1194,7 +1194,8 @@ parser.add_argument("-f", nargs='?', type=str, dest='term', help="Shows \
 fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
 omitted)")
 parser.add_argument("-g", dest='guides', action="store_true", help="Shows \
-guidelines for securing popular web servers/services")
+guidelines for enabling security HTTP response headers on popular servers/\
+services")
 parser.add_argument("-l", dest='lang', choices=['es'], help="The language for \
 displaying analyses, errors and messages (if omitted it will be in English)")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
