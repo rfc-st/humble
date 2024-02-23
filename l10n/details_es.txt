@@ -328,6 +328,14 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning
 
+[ixvary_h]
+ Vary (Cabecera potencialmente insegura)
+
+[ixvary]
+ Los valores de esta cabecera pueden exponer otras, facilitando ataques si aceptan input de usuario.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary
+ Ref: https://www.yeswehack.com/fr/learn-bug-bounty/http-header-exploitation
+
 [no_sec_headers]
  No hay cabeceras de seguridad HTTP habilitadas.
 

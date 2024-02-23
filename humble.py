@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-02-17', '%Y-%m-%d').date()
+version = datetime.strptime('2024-02-23', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1396,11 +1396,12 @@ l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Methods',
          'Large-Allocation', 'Onion-Location', 'P3P', 'Pragma',
          'Public-Key-Pins', 'Public-Key-Pins-Report-Only', 'Set-Cookie',
          'Server-Timing', 'SourceMap', 'Strict-Dynamic', 'Surrogate-Control',
-         'Timing-Allow-Origin', 'Tk', 'Warning', 'X-Content-Security-Policy',
-         'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
-         'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
-         'X-Pingback', 'X-Runtime', 'X-SourceMap', 'X-UA-Compatible',
-         'X-Webkit-CSP', 'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
+         'Timing-Allow-Origin', 'Tk', 'Vary', 'Warning',
+         'X-Content-Security-Policy', 'X-Content-Security-Policy-Report-Only',
+         'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad',
+         'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
+         'X-SourceMap', 'X-UA-Compatible', 'X-Webkit-CSP',
+         'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 l_acceptch_dep = ['content-dpr', 'dpr', 'sec-ch-ua-full-version',
@@ -1842,6 +1843,9 @@ if 'Transfer-Encoding' in headers:
     if not any(elem in transfer_h for elem in l_transfer):
         print_details('[ictrf_h]', '[itrf]', 'd', i_cnt)
 
+if 'Vary' in headers:
+    print_details('[ixvary_h]', '[ixvary]', 'm', i_cnt)
+
 if 'Warning' in headers:
     print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
 
@@ -1946,7 +1950,7 @@ l_sec = ['Access-Control-Allow-Methods', 'Access-Control-Allow-Credentials',
          'Origin-Agent-Cluster', 'Proxy-Authenticate', 'Permissions-Policy',
          'Referrer-Policy', 'Server-Timing', 'Set-Cookie',
          'Strict-Transport-Security', 'Supports-Loading-Mode',
-         'Timing-Allow-Origin', 'Trailer', 'WWW-Authenticate',
+         'Timing-Allow-Origin', 'Trailer', 'Vary', 'WWW-Authenticate',
          'X-Content-Type-Options', 'X-DNS-Prefetch-Control',
          'X-Frame-Options', 'X-XSS-Protection']
 

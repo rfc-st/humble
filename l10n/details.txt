@@ -328,6 +328,14 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning
 
+[ixvary_h]
+ Vary (Potentially Unsafe Header)
+
+[ixvary]
+ The values of this header may expose others, facilitating attacks if user input is accepted.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary
+ Ref: https://www.yeswehack.com/fr/learn-bug-bounty/http-header-exploitation
+
 [no_sec_headers]
  No HTTP security headers are enabled.
 

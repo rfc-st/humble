@@ -94,6 +94,7 @@ Timing-Allow-Origin: Potentially Unsafe Header
 Tk: Deprecated Header
 Trailer: Disallowed Directives
 Transfer-Encoding: No Valid Directives
+Vary: Potentially Unsafe Header
 Warning: Deprecated Header
 WWW-Authenticate: Unsafe Value
 X-Content-Security-Policy: Deprecated Header
