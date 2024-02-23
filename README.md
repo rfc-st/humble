@@ -288,6 +288,10 @@ Check <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerpri
 ## Checks: Deprecated headers/protocols and insecure values
 
 Check <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt">this</a> file.
+> [!NOTE]
+> _humble_ tries to be **strict**: both in checking HTTP response headers and their values; some of these headers may be experimental and you may not agree with all the results after analysis.
+> 
+> And that's **OK**! :smiley:; you should **never** blindly trust the results of security tools: there should be further work to decide whether the risk is non-existent, potential or real depending on the analyzed URL (its exposure, environment, etc).
 
 ## Checks: Empty values
 
