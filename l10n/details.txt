@@ -199,6 +199,22 @@
  Ref: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
  Ref: https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
 
+[ixpermcross_h]
+ X-Permitted-Cross-Domain-Policies (No Valid Directives)
+
+[ixpermcross]
+ Include at least one valid directive.
+ Ref: https://getbutterfly.com/security-headers-a-concise-guide/
+ Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
+
+[ixpermcrossd_h]
+ X-Permitted-Cross-Domain-Policies (Duplicated Values)
+
+[ixpermcrossd]
+ This header, or its values, may be duplicated.
+ Ref: https://getbutterfly.com/security-headers-a-concise-guide/
+ Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
+
 [icsd_h]
  Clear-Site-Data (Ignored Header)
 
@@ -555,7 +571,7 @@
 [ixpad_h]
  X-Pad (Deprecated Header)
 
-[ixcd_h]
+[ixpermcrossu_h]
  X-Permitted-Cross-Domain-Policies (Unsafe Value)
 
 [ixpb_h]
@@ -946,7 +962,7 @@ HTTP Response Headers
  This header should not expose sensitive application or infrastructure information.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing
 
-[ixcd]
+[ixpermcrossu]
  The value 'all' could permit any cross-domain requests from Flash and PDF documents.
  Ref: https://getbutterfly.com/security-headers-a-concise-guide/
  Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html

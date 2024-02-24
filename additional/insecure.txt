@@ -107,6 +107,8 @@ X-Frame-Options: Deprecated Values
 X-Frame-Options: Duplicated Values
 X-Frame-Options: Incorrect Values
 X-Pad: Deprecated Header
+X-Permitted-Cross-Domain-Policies: Duplicated Values
+X-Permitted-Cross-Domain-Policies: No Valid Directives
 X-Permitted-Cross-Domain-Policies: Unsafe Value
 X-Pingback: Unsafe Value
 X-Robots-Tag: Unsafe Value

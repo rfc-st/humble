@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-02-23', '%Y-%m-%d').date()
+version = datetime.strptime('2024-02-24', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -410,8 +410,7 @@ def extract_additional_metrics(url_ln):
 
 
 def extract_date_metrics(url_ln):
-    year_cnt = defaultdict(int)
-    year_wng = defaultdict(int)
+    year_cnt, year_wng = defaultdict(int), defaultdict(int)
     for line in url_ln:
         date_str = line.split(' ; ')[0].split()[0]
         year, _, _ = map(int, date_str.split('/'))
@@ -1539,6 +1538,11 @@ l_trailer = ['authorization', 'cache-control', 'content-encoding',
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
 l_transfer = ['chunked', 'compress', 'deflate', 'gzip']
 
+# https://getbutterfly.com/security-headers-a-concise-guide/
+# https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
+l_permcross = ['all', 'by-content-only', 'by-ftp-only', 'master-only', 'none',
+               'none-this-response']
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 l_xfo_dir = ['deny', 'sameorigin']
 
@@ -1883,8 +1887,14 @@ if xfo_header:
 if 'X-Pad' in headers:
     print_details('[ixpad_h]', '[ixpad]', 'd', i_cnt)
 
-if headers.get('X-Permitted-Cross-Domain-Policies', '') == 'all':
-    print_details('[ixcd_h]', '[ixcd]', 'm', i_cnt)
+permcross_header = headers.get('X-Permitted-Cross-Domain-Policies', '').lower()
+if permcross_header:
+    if not any(elem in permcross_header for elem in l_permcross):
+        print_details('[ixpermcross_h]', '[ixpermcross]', 'm', i_cnt)
+    if 'all' in permcross_header:
+        print_details('[ixpermcrossu_h]', '[ixcd]', 'm', i_cnt)
+    if ',' in permcross_header:
+        print_details('[ixpermcrossd_h]', '[ixpermcrossd]', 'm', i_cnt)
 
 if headers.get('X-Pingback', '').endswith('xmlrpc.php'):
     print_details('[ixpb_h]', '[ixpb]', 'd', i_cnt)

@@ -199,6 +199,22 @@
  Ref: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
  Ref: https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
 
+[ixpermcross_h]
+ X-Permitted-Cross-Domain-Policies (Sin directivas adecuadas)
+
+[ixpermcross]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://getbutterfly.com/security-headers-a-concise-guide/
+ Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
+
+[ixpermcrossd_h]
+ X-Permitted-Cross-Domain-Policies (Valores duplicados)
+
+[ixpermcrossd]
+ Esta cabecera, o sus valores, pueden estar duplicados.
+ Ref: https://getbutterfly.com/security-headers-a-concise-guide/
+ Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
+
 [icsd_h]
  Clear-Site-Data (Cabecera ignorada)
 
@@ -555,7 +571,7 @@
 [ixpad_h]
  X-Pad (Cabecera obsoleta)
 
-[ixcd_h]
+[ixpermcrossu_h]
  X-Permitted-Cross-Domain-Policies (Valor inseguro)
 
 [ixpb_h]
@@ -946,7 +962,7 @@ Cabeceras de respuesta HTTP
  Esta cabecera no debe exponer datos sensibles o de infraestructura.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing
 
-[ixcd]
+[ixpermcrossu]
  El valor 'all' permite peticiones de documentos Flash y PDF entre dominios.
  Ref: https://getbutterfly.com/security-headers-a-concise-guide/
  Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
