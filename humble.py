@@ -59,41 +59,38 @@ import tldextract
 import subprocess
 import concurrent.futures
 
-BOLD_S = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
-BRI_R = f"{Style.BRIGHT}{Fore.RED}"
-CAN_S = ': https://caniuse.com/?search='
+BOLD = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
+BRIGHT_RED = f"{Style.BRIGHT}{Fore.RED}"
+CANIUSE_URL = ': https://caniuse.com/?search='
 CDN_E = [520, 521, 522, 523, 524, 525, 526, 527, 530]
 CLE_O = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
          417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
-CSV_ID = ['0section', '0headers', '1missing', '2fingerprint', '3depinsecure',
-          '4empty', '5compat']
+CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
+               '3depinsecure', '4empty', '5compat']
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
-GIT_H = "https://raw.githubusercontent.com/rfc-st/humble/master/humble.py"
-GIT_U = "https://github.com/rfc-st/humble"
+GIT_URL = ['https://raw.githubusercontent.com/rfc-st/humble/master/humble.py',
+           'https://github.com/rfc-st/humble']
 HUM_D = ['additional', 'l10n']
 HUM_F = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
          'guides.txt', 'details_es.txt', 'details.txt', 'user_agents.txt']
-INS_S = 'http:'
-IP_PTRN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
-           r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
+HUM_N = "'humble' (HTTP Headers Analyzer)"
+IP_PATTERN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
+              r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ['CYMRU', 'GURU', 'PRU']
 PAT_LN = r'\[(.*?)\]'
-PATH_PTRN = (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
-             r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
-             r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')
-PRG_N = "'humble' (HTTP Headers Analyzer)"
-REF_1 = ' Ref  : '
-REF_2 = ' Ref: '
-REF_CDN_E = ' Ref  : https://developers.cloudflare.com/support/\
-troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/'
-REF_SRV_E = ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/'
-REF_E = 'Ref  :'
-REF_S = 'Ref: '
-RU_I = ['https://ipapi.co/country_name/', 'RU', 'Russia']
+PATH_PATTERN = (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
+                r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
+                r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')
+REF_ERROR = [' Ref  : https://developers.cloudflare.com/support/\
+troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/',
+             ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status\
+/']
+REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
+RU_C = ['https://ipapi.co/country_name/', 'RU', 'Russia']
+SCHEME = ['http', 'https']
 SRV_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511]
-SEC_S = "https://"
 URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
@@ -126,7 +123,7 @@ class PDF(FPDF):
         self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
                   new_y="NEXT", align='C')
         self.ln(1)
-        self.cell(0, 5, f"{GIT_U} | v.{version}", align='C')
+        self.cell(0, 5, f"{GIT_URL[1]} | v.{version}", align='C')
         self.ln(9) if self.page_no() == 1 else self.ln(13)
 
     def footer(self):
@@ -144,7 +141,7 @@ def check_python_version():
 
 def check_humble_updates(version):
     try:
-        response_t = requests.get(GIT_H, timeout=10).text
+        response_t = requests.get(GIT_URL[0], timeout=10).text
         remote_v = re.search(r"\d{4}-\d{2}-\d{2}", response_t).group()
         remote_v_date = datetime.strptime(remote_v, '%Y-%m-%d').date()
         if remote_v_date > version:
@@ -681,7 +678,7 @@ def print_nowarnings():
 
 
 def print_header(header):
-    print(f" {header}" if args.output else f"{BRI_R} {header}")
+    print(f" {header}" if args.output else f"{BRIGHT_RED} {header}")
 
 
 def print_fng_header(header):
@@ -689,9 +686,9 @@ def print_fng_header(header):
     if args.output:
         print(f" {header}")
     elif '[' in header:
-        print(f"{BRI_R} {prefix}{Style.NORMAL}{Fore.RESET} [{suffix}")
+        print(f"{BRIGHT_RED} {prefix}{Style.NORMAL}{Fore.RESET} [{suffix}")
     else:
-        print(f"{BRI_R} {header}")
+        print(f"{BRIGHT_RED} {header}")
 
 
 def print_banner(reliable):
@@ -705,10 +702,10 @@ def print_banner(reliable):
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
         print(banner)
-        print(f" ({GIT_U} | v.{version})")
+        print(f" ({GIT_URL[1]} | v.{version})")
     elif args.output != 'pdf':
         print("")
-        print(f"\n{PRG_N}\n{GIT_U} | v.{version}\n")
+        print(f"\n{HUM_N}\n{GIT_URL[1]} | v.{version}\n")
     print_basic_info()
     if status_code in CLI_E or reliable or args.redirects:
         print_extra_info(reliable)
@@ -728,7 +725,7 @@ def print_extra_info(reliable):
         id_mode = f"[http_{status_code}]"
         if detail := print_detail(id_mode, 0):
             print(detail)
-        print(f"{REF_SRV_E}{status_code}")
+        print(f"{REF_ERROR[1]}{status_code}")
     if reliable:
         print(get_detail('[unreliable_analysis_note]', replace=True))
     if args.redirects:
@@ -770,7 +767,7 @@ def print_detail_l(id_mode, analytics=False):
 
 
 def print_detail_r(id_mode, is_red=False):
-    style_str = BRI_R if is_red else Style.BRIGHT
+    style_str = BRIGHT_RED if is_red else Style.BRIGHT
     for i, line in enumerate(l10n_details):
         if line.startswith(id_mode):
             if not args.output:
@@ -836,12 +833,12 @@ def print_browser_compatibility(browser_compat_header):
     for key in browser_compat_header:
         output_string = "  " if args.output == 'html' else " "
         key_string = key if args.output else f"{Fore.CYAN}{key}{Fore.RESET}"
-        print(f"{output_string}{key_string}{CAN_S}\
+        print(f"{output_string}{key_string}{CANIUSE_URL}\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 
 
 def check_path_traversal(path):
-    path_traversal_ptrn = re.compile(PATH_PTRN)
+    path_traversal_ptrn = re.compile(PATH_PATTERN)
     if path_traversal_ptrn.search(path):
         print(f"\n{get_detail('[args_path_traversal]', replace=True)} \
 ('{path}')")
@@ -901,7 +898,7 @@ def generate_csv(name_e, name_p):
          open(name_p, 'w', newline='', encoding='utf-8') as csv_final:
         csv_source = txt_source.read()
         csv_writer = csv.writer(csv_final, quoting=csv.QUOTE_ALL)
-        csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_ID]
+        csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
         csv_writer.writerow([get_detail(f'[{i}]', replace=True) for i in
                              ['csv_section', 'csv_values']])
         parse_csv(csv_writer, csv_source, csv_section)
@@ -968,11 +965,11 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
 def generate_pdf(name_e, pdf):
     set_pdf_structure()
     with open(name_e, "r", encoding='utf8') as txt_source:
-        links_strings = (URL_S, REF_E, REF_S, CAN_S)
+        links_strings = (URL_S, REF_LINKS[2], REF_LINKS[3], CANIUSE_URL)
         for i in txt_source:
             if '[' in i:
                 set_pdf_sections(i)
-            pdf.set_font(style='B' if any(s in i for s in BOLD_S) else '')
+            pdf.set_font(style='B' if any(s in i for s in BOLD) else '')
             for string in links_strings:
                 if string in i:
                     set_pdf_links(i, string)
@@ -993,7 +990,7 @@ def set_pdf_structure():
 
 def set_pdf_metadata():
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
-    git_urlc = f"{GIT_U} | v.{version}"
+    git_urlc = f"{GIT_URL[1]} | v.{version}"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
     pdf.set_creator(git_urlc)
@@ -1014,12 +1011,12 @@ def set_pdf_sections(i):
 
 
 def set_pdf_links(i, pdfstring):
-    link_prefixes = {REF_E: REF_1, REF_S: REF_2}
-    links_d = {URL_S: URL, REF_E: i.partition(REF_E)[2].strip(),
-               REF_S: i.partition(REF_S)[2].strip(),
-               CAN_S: i.partition(': ')[2].strip()}
+    link_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
+    links_d = {URL_S: URL, REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
+               REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
+               CANIUSE_URL: i.partition(': ')[2].strip()}
     link_final = links_d.get(pdfstring)
-    if pdfstring in (URL_S, REF_E, REF_S):
+    if pdfstring in (URL_S, REF_LINKS[2], REF_LINKS[3]):
         prefix = link_prefixes.get(pdfstring, pdfstring)
         pdf.write(h=3, text=prefix)
     else:
@@ -1045,7 +1042,7 @@ def format_html_okko(condition, ln, sub_d):
 
 
 def format_html_refs(condition, ln, sub_d):
-    if condition == REF_2:
+    if condition == REF_LINKS[1]:
         html_final.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}\
 {sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
     else:
@@ -1055,8 +1052,8 @@ def format_html_refs(condition, ln, sub_d):
 
 def format_html_caniuse(ln, sub_d):
     ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: {sub_d['span_f']}\
-{sub_d['ahref_s']}{ln[ln.index(SEC_S):]}{sub_d['close_t']}\
-{ln[ln.index(SEC_S):]}{sub_d['ahref_f']}<br>"
+{sub_d['ahref_s']}{ln[ln.index(SCHEME[1]):]}{sub_d['close_t']}\
+{ln[ln.index(SCHEME[1]):]}{sub_d['ahref_f']}<br>"
     html_final.write(ln)
 
 
@@ -1075,8 +1072,8 @@ def print_ru_message():
     with contextlib.suppress(requests.exceptions.RequestException):
         requests.packages.urllib3.disable_warnings()
         sffx = tldextract.extract(URL).suffix[-2:].upper()
-        cnty = requests.get(RU_I[0], verify=False, timeout=5).text.strip()
-        if (sffx == RU_I[1] and sffx not in NON_RU_TLD) or cnty == RU_I[2]:
+        cnty = requests.get(RU_C[0], verify=False, timeout=5).text.strip()
+        if (sffx == RU_C[1] and sffx not in NON_RU_TLD) or cnty == RU_C[2]:
             print_detail('[ru_analysis_message]', 3)
             sys.exit()
 
@@ -1089,7 +1086,7 @@ def handle_http_error(http_code, id_mode):
             if detail := print_detail(id_mode, 0):
                 print(detail)
             else:
-                print((REF_SRV_E if http_code in SRV_E else REF_CDN_E) +
+                print((REF_ERROR[1] if http_code in SRV_E else REF_ERROR[0]) +
                       str(http_code))
         else:
             print_detail('[server_serror]', 1)
@@ -1178,7 +1175,7 @@ init(autoreset=True)
 epi_text = get_epilog_detail('[epilog_content]')
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
-                        description=f"{PRG_N} | {GIT_U} | v.{version}",
+                        description=f"{HUM_N} | {GIT_URL[1]} | v.{version}",
                         epilog=epi_text)
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
@@ -1555,7 +1552,7 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
-unsafe_scheme = True if URL.startswith(INS_S) else False
+unsafe_scheme = True if URL.startswith(SCHEME[0]) else False
 
 if 'Accept-CH' in headers:
     acceptch_header = headers['Accept-CH'].lower()
@@ -1652,10 +1649,10 @@ if 'Content-Security-Policy' in headers:
             if len(nonce_csp) < 32:
                 print_details('[icsnces_h]', '[icsnces]', 'd', i_cnt)
                 break
-    ip_mtch = re.findall(IP_PTRN, csp_h)
+    ip_mtch = re.findall(IP_PATTERN, csp_h)
     if ip_mtch != ['127.0.0.1']:
         for match in ip_mtch:
-            if re.match(IP_PTRN, match):
+            if re.match(IP_PATTERN, match):
                 print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
                 break
 
@@ -1996,13 +1993,13 @@ elif args.output == 'html':
     html_head = f'<!DOCTYPE HTML><html lang="en"><head><meta http-equiv="\
 Content-Type" content="text/html; charset=utf-8"><meta name="description" \
 content="{html_desc} {URL}"><meta name="keywords" content="{html_keywords}">\
-<meta name="author" content="{GIT_U} | v.{version}"><meta name="generator" \
-content="{GIT_U} | v.{version}"><title>{html_title}</title><style>pre \
-{{overflow-x: auto; white-space: pre-wrap;white-space: -moz-pre-wrap; \
-white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word; \
-font-size: 13px;}} a {{color: blue; text-decoration: none;}} .ok \
-{{color: green;}} .header {{color: #660033;}} .ko {{color: red;}} </style>\
- </head>'
+<meta name="author" content="{GIT_URL[1]} | v.{version}">\
+<meta name="generator" content="{GIT_URL[1]} | v.{version}">\
+<title>{html_title}</title><style>pre {{overflow-x: auto; white-space: \
+pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: \
+-o-pre-wrap; word-wrap: break-word; font-size: 13px;}} a {{color: blue; \
+text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
+.ko {{color: red;}} </style></head>'
     html_body = '<body><pre>'
     html_footer = '</pre></body></html>'
 
@@ -2028,13 +2025,14 @@ font-size: 13px;}} a {{color: blue; text-decoration: none;}} .ok \
             if 'rfc-st' in ln or URL_S in ln:
                 condition = 'rfc-st' if 'rfc-st' in ln else URL_S
                 format_html_info(condition, ln_stripped, sub_d)
-            elif any(s in ln for s in BOLD_S):
+            elif any(s in ln for s in BOLD):
                 format_html_bold(ln_stripped)
             elif ok_string in ln or ko_string in ln:
                 condition = ok_string if ok_string in ln else ko_string
                 format_html_okko(condition, ln_stripped, sub_d)
-            elif REF_2 in ln or REF_1 in ln:
-                condition = REF_2 if REF_2 in ln else REF_1
+            elif REF_LINKS[1] in ln or REF_LINKS[0] in ln:
+                condition = REF_LINKS[1] if REF_LINKS[1] in ln else \
+                            REF_LINKS[0]
                 format_html_refs(condition, ln_stripped, sub_d)
             elif 'caniuse' in ln:
                 format_html_caniuse(ln_stripped, sub_d)
