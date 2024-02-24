@@ -89,7 +89,7 @@ troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/',
 /']
 REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_C = ['https://ipapi.co/country_name/', 'RU', 'Russia']
-SCHEME = ['http', 'https']
+SCHEME = ['http:', 'https:']
 SRV_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511]
 URL_S = ' URL  : '
 
