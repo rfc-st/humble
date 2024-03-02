@@ -692,6 +692,12 @@ Cabeceras de respuesta HTTP
 [unreliable_analysis_note]
  Nota : El análisis puede no ser fiable por el tiempo que tardó en responder la URL.
 
+[analysis_redirects_note]
+ Nota : Se analizará la URL exacta, sin seguir redireccionamientos.
+
+[analysis_skipped_note]
+ Nota : Estas cabeceras de respuesta HTTP no se comprobarán:
+
 [analysis_redirects]
  Nota : Se ha indicado expresamente analizar la URL exacta, sin seguir redirecciones.
 
@@ -1288,6 +1294,15 @@ Error: 'testssl.sh' no existe en la ruta indicada.
 
 [notestssl_path]
 Error: la ruta indicada de 'testssl.sh' es incorrecta.
+
+[args_skipped]
+'-s' requiere, al menos, una cabecera HTTP de respuesta.
+
+[args_skipped_unknown]
+Elimina las siguientes cabeceras HTTP del parámetro '-s', ya que 'humble' no las comprueba:  
+
+[args_skipped_ko]
+-s' requiere, al menos, el nombre de una cabecera de respuesta HTTP..
 
 [args_nooutputfmt]
 '-op' requiere '-o'.

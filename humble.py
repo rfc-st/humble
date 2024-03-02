@@ -95,7 +95,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-02-24', '%Y-%m-%d').date()
+version = datetime.strptime('2024-03-02', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -707,7 +707,7 @@ def print_banner(reliable):
         print("")
         print(f"\n{HUM_N}\n{GIT_URL[1]} | v.{version}\n")
     print_basic_info()
-    if status_code in CLI_E or reliable or args.redirects:
+    if status_code in CLI_E or reliable or args.redirects or skipped_headers:
         print_extra_info(reliable)
 
 
@@ -729,7 +729,11 @@ def print_extra_info(reliable):
     if reliable:
         print(get_detail('[unreliable_analysis_note]', replace=True))
     if args.redirects:
-        print(get_detail('[analysis_redirects]', replace=True))
+        print(get_detail('[analysis_redirects_note]', replace=True))
+    if skipped_headers:
+        skipped_headers_str = ' '.join(header[0] for header in skipped_headers)
+        print_detail_l("[analysis_skipped_note]")
+        print(f" {skipped_headers_str}")
 
 
 def print_response_headers():
@@ -1202,6 +1206,9 @@ parser.add_argument("-op", dest='output_path', type=str, help="Exports \
 analysis to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)")
 parser.add_argument("-r", dest='ret', action="store_true", help="Shows HTTP \
 response headers and a detailed analysis ('-b' parameter will take priority)")
+parser.add_argument("-s", dest='skipped_headers', nargs='*', type=str,
+                    help="Skip analysis of specified HTTP response headers, \
+separated by spaces")
 parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
  analyze. E.g. https://google.com")
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
@@ -1248,13 +1255,66 @@ if args.output_path is not None:
             parser.error(f"{get_detail('[args_noexportpath]', replace=True)}\
 ('{path_safe}')")
 
-if any([args.brief, args.output, args.ret, args.redirects]) \
-        and (args.URL is None or args.guides is None or args.URL_A is None):
+if any([args.brief, args.output, args.ret, args.redirects,
+        args.skipped_headers]) and (args.URL is None or args.guides is None
+                                    or args.URL_A is None):
     parser.error(get_detail('[args_several]'))
 
 # Exporting a detailed analysis to CSV/JSON is tricky, too much effort.
 if args.output in ['csv', 'json'] and not args.brief:
     parser.error(get_detail('[args_csv_json]'))
+
+# TO-DO: parse the HTTP headers from /additional/insecure.txt
+header_list = ["Accept-CH", "Accept-CH-Lifetime",
+               "Access-Control-Allow-Credentials",
+               "Access-Control-Allow-Methods", "Access-Control-Allow-Origin",
+               "Access-Control-Max-Age", "Allow", "Cache-Control",
+               "Clear-Site-Data", "Content-DPR", "Content-Encoding",
+               "Content-Security-Policy",
+               "Content-Security-Policy-Report-Only", "Content-Type",
+               "Content-Type", "Critical-CH", "Cross-Origin-Embedder-Policy",
+               "Cross-Origin-Opener-Policy", "Cross-Origin-Resource-Policy",
+               "Digest", "Etag", "Expect-CT", "Expires", "Feature-Policy",
+               "Keep-Alive", "Large-Allocation", "NEL", "Onion-Location",
+               "Origin-Agent-Cluster", "P3P", "Permissions-Policy", "Pragma",
+               "Proxy-Authenticate", "Public-Key-Pins",
+               "Public-Key-Pins-Report-Only", "Referrer-Policy",
+               "Server-Timing", "Set-Cookie", "SourceMap", "Strict-Dynamic",
+               "Strict-Transport-Security", "Supports-Loading-Mode",
+               "Surrogate-Control", "Timing-Allow-Origin", "Tk", "Trailer",
+               "Transfer-Encoding", "Vary", "Warning", "WWW-Authenticate",
+               "X-Content-Security-Policy",
+               "X-Content-Security-Policy-Report-Only",
+               "X-Content-Type-Options", "X-DNS-Prefetch-Control",
+               "X-Download-Options", "X-Frame-Options", "X-Pad",
+               "X-Permitted-Cross-Domain-Policies", "X-Pingback",
+               "X-Robots-Tag", "X-Runtime", "X-SourceMap", "X-UA-Compatible",
+               "X-Webkit-CSP", "X-Webkit-CSP-Report-Only", "X-XSS-Protection"]
+
+header_dict = {key.lower(): str(index) for index, key in
+               enumerate(header_list, start=1)}
+
+skipped_headers = []
+unsupported_headers = []
+skipped_headers_v = []
+
+if '-s' in sys.argv and len(args.skipped_headers) == 0:
+    parser.error(get_detail('[args_skipped]'))
+elif args.skipped_headers:
+    for header_name in args.skipped_headers:
+        header_name = header_name.strip().lower()
+        if header_name in header_dict:
+            skipped_headers.append((header_name, header_dict[header_name]))
+            skipped_headers_v = {value for _, value in skipped_headers}
+        else:
+            unsupported_headers.append(header_name)
+
+if unsupported_headers:
+    unsupported_headers_str = ' '.join(unsupported_headers)
+    print("")
+    print_detail_l("[args_skipped_unknown]")
+    print(unsupported_headers_str)
+    sys.exit()
 
 URL = args.URL
 
@@ -1355,6 +1415,7 @@ if m_cnt == 0:
 print("")
 
 # 2. Fingerprint HTTP Response Headers
+# Source: /additional/fingerprint.txt
 print_detail_r('[2fingerprint]')
 
 if not args.brief:
@@ -1380,6 +1441,7 @@ if f_cnt == 0:
 print("")
 
 # 3. Deprecated HTTP Response Headers/Protocols and Insecure Values
+# List of checks: /additional/insecure.txt
 print_detail_r('[3depinsecure]')
 i_cnt = [0]
 
@@ -1554,7 +1616,7 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
 
 unsafe_scheme = True if URL.startswith(SCHEME[0]) else False
 
-if 'Accept-CH' in headers:
+if 'Accept-CH' in headers and '1' not in skipped_headers_v:
     acceptch_header = headers['Accept-CH'].lower()
     if unsafe_scheme:
         print_details('[ixach_h]', '[ixach]', 'd', i_cnt)
@@ -1568,14 +1630,15 @@ if 'Accept-CH' in headers:
             print_detail('[ixachd]')
         i_cnt[0] += 1
 
-if 'Accept-CH-Lifetime' in headers:
+if 'Accept-CH-Lifetime' in headers and '2' not in skipped_headers_v:
     print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
 
 accescred_header = headers.get("Access-Control-Allow-Credentials", '').lower()
-if accescred_header and accescred_header != 'true':
+if accescred_header and accescred_header != 'true' and '3' not in \
+     skipped_headers_v:
     print_details('[icred_h]', '[icred]', 'd', i_cnt)
 
-if 'Access-Control-Allow-Methods' in headers:
+if 'Access-Control-Allow-Methods' in headers and '4' not in skipped_headers_v:
     methods = headers["Access-Control-Allow-Methods"]
     if any(method in methods for method in l_methods):
         print_detail_r('[imethods_h]', is_red=True)
@@ -1590,14 +1653,16 @@ if 'Access-Control-Allow-Methods' in headers:
 accesso_header = headers.get("Access-Control-Allow-Origin", '').lower()
 if accesso_header and ((accesso_header in ['*', 'null']) and
                        (not any(val in accesso_header for
-                                val in ['.*', '*.']))):
+                                val in ['.*', '*.']))) and '5' not in \
+                                    skipped_headers_v:
     print_details('[iaccess_h]', '[iaccess]', 'd', i_cnt)
 
 accesma_header = headers.get("Access-Control-Max-Age", '')
-if accesma_header and int(accesma_header) > 86400:
+if accesma_header and int(accesma_header) > 86400 and '6' not in \
+     skipped_headers_v:
     print_details('[iacessma_h]', '[iaccessma]', 'd', i_cnt)
 
-if 'Allow' in headers:
+if 'Allow' in headers and '7' not in skipped_headers_v:
     methods = headers["Allow"]
     if any(method in methods for method in l_methods):
         print_detail_r('[imethods_hh]', is_red=True)
@@ -1615,7 +1680,7 @@ if cache_header and not any(elem in cache_header for elem in l_cachev):
 if cache_header and not all(elem in cache_header for elem in l_cache):
     print_details('[icache_h]', '[icache]', 'd', i_cnt)
 
-if 'Clear-Site-Data' in headers:
+if 'Clear-Site-Data' in headers and '8' not in skipped_headers_v:
     clsdata_header = headers['Clear-Site-Data'].lower()
     if unsafe_scheme:
         print_details('[icsd_h]', '[icsd]', 'd', i_cnt)
@@ -1623,13 +1688,14 @@ if 'Clear-Site-Data' in headers:
         print_details('[icsdn_h]', '[icsdn]', 'd', i_cnt)
 
 cencod_header = headers.get("Content-Encoding", '').lower()
-if cencod_header and not any(elem in cencod_header for elem in l_cencoding):
+if cencod_header and not any(elem in cencod_header for elem in l_cencoding) \
+     and '11' not in skipped_headers_v:
     print_details('[icencod_h]', '[icencod]', 'd', i_cnt)
 
-if 'Content-DPR' in headers:
+if 'Content-DPR' in headers and '10' not in skipped_headers_v:
     print_details('[ixcdpr_h]', '[ixcdprd]', 'd', i_cnt)
 
-if 'Content-Security-Policy' in headers:
+if 'Content-Security-Policy' in headers and '12' not in skipped_headers_v:
     csp_h = headers['Content-Security-Policy'].lower()
     if not any(elem in csp_h for elem in l_csp_dirs):
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
@@ -1657,7 +1723,8 @@ if 'Content-Security-Policy' in headers:
                 break
 
 csp_ro_header = headers.get('Content-Security-Policy-Report-Only', '').lower()
-if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep):
+if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep) and \
+     '13' not in skipped_headers_v:
     print_detail_r('[icsiro_d]', is_red=True)
     if not args.brief:
         matches_csp_ro = [x for x in l_csp_ro_dep if x in csp_ro_header]
@@ -1667,44 +1734,46 @@ if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep):
     i_cnt[0] += 1
 
 ctype_header = headers.get('Content-Type', '').lower()
-if ctype_header:
+if ctype_header and '15' not in skipped_headers_v:
     if any(elem in ctype_header for elem in l_legacy):
         print_details('[ictlg_h]', '[ictlg]', 'm', i_cnt)
     if 'html' not in ctype_header:
         print_details('[ictlhtml_h]', '[ictlhtml]', 'd', i_cnt)
 
-if 'Critical-CH' in headers and unsafe_scheme:
+if 'Critical-CH' in headers and unsafe_scheme and '16' not in \
+     skipped_headers_v:
     print_details('[icrch_h]', '[icrch]', 'd', i_cnt)
 
-if 'Cross-Origin-Embedder-Policy' in headers:
+if 'Cross-Origin-Embedder-Policy' in headers and '17' not in skipped_headers_v:
     coep_h = headers['Cross-Origin-Embedder-Policy'].lower()
     if not any(elem in coep_h for elem in l_coep):
         print_details('[icoep_h]', '[icoep]', 'd', i_cnt)
 
-if 'Cross-Origin-Opener-Policy' in headers:
+if 'Cross-Origin-Opener-Policy' in headers and '18' not in skipped_headers_v:
     coop_h = headers['Cross-Origin-Opener-Policy'].lower()
     if not any(elem in coop_h for elem in l_coop):
         print_details('[icoop_h]', '[icoop]', 'd', i_cnt)
 
-if 'Cross-Origin-Resource-Policy' in headers:
+if 'Cross-Origin-Resource-Policy' in headers and '19' not in skipped_headers_v:
     corp_h = headers['Cross-Origin-Resource-Policy'].lower()
     if not any(elem in corp_h for elem in l_corp):
         print_details('[icorp_h]', '[icorp]', 'd', i_cnt)
 
-if 'Digest' in headers:
+if 'Digest' in headers and '20' not in skipped_headers_v:
     print_details('[idig_h]', '[idig]', 'd', i_cnt)
 
-if 'Etag' in headers:
+if 'Etag' in headers and '21' not in skipped_headers_v:
     print_details('[ieta_h]', '[ieta]', 'd', i_cnt)
 
-if 'Expect-CT' in headers:
+if 'Expect-CT' in headers and '22' not in skipped_headers_v:
     print_details('[iexct_h]', '[iexct]', 'm', i_cnt)
 
 if 'Expires' in headers and any(elem in headers.get('Cache-Control', '') for
-                                elem in l_excc):
+                                elem in l_excc) and '23' not in \
+                                    skipped_headers_v:
     print_details('[iexpi_h]', '[iexpi]', 'd', i_cnt)
 
-if 'Feature-Policy' in headers:
+if 'Feature-Policy' in headers and '24' not in skipped_headers_v:
     print_details('[iffea_h]', '[iffea]', 'd', i_cnt)
 
 if unsafe_scheme:
@@ -1712,31 +1781,32 @@ if unsafe_scheme:
 
 if ('Keep-Alive' in headers and headers['Keep-Alive'] and
     ('Connection' not in headers or
-     headers['Connection'].lower() != 'keep-alive')):
+     headers['Connection'].lower() != 'keep-alive')) and '25' not in \
+        skipped_headers_v:
     print_details('[ickeep_h]', '[ickeep]', 'd', i_cnt)
 
-if 'Large-Allocation' in headers:
+if 'Large-Allocation' in headers and '26' not in skipped_headers_v:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd', i_cnt)
 
-if 'NEL' in headers:
+if 'NEL' in headers and '27' not in skipped_headers_v:
     nel_header = headers['NEL'].lower()
     if not any(elem in nel_header for elem in l_nel_dir):
         print_details('[inel_h]', '[inel]', 'd', i_cnt)
     if not all(elem in nel_header for elem in l_nel_req):
         print_details("[inelm_h]", "[inelm]", "d", i_cnt)
 
-if 'Onion-Location' in headers:
+if 'Onion-Location' in headers and '28' not in skipped_headers_v:
     print_details('[ionloc_h]', '[ionloc]', 'm', i_cnt)
 
-if 'Origin-Agent-Cluster' in headers:
+if 'Origin-Agent-Cluster' in headers and '29' not in skipped_headers_v:
     origin_cluster_h = headers['Origin-Agent-Cluster'].lower()
     if not any(elem in origin_cluster_h for elem in l_origcluster):
         print_details('[iorigcluster_h]', '[iorigcluster]', 'd', i_cnt)
 
-if 'P3P' in headers:
+if 'P3P' in headers and '30' not in skipped_headers_v:
     print_details('[ip3p_h]', '[ip3p]', 'd', i_cnt)
 
-if 'Permissions-Policy' in headers:
+if 'Permissions-Policy' in headers and '31' not in skipped_headers_v:
     perm_header = headers['Permissions-Policy'].lower()
     if not any(elem in perm_header for elem in l_per_feat):
         print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
@@ -1753,22 +1823,22 @@ if 'Permissions-Policy' in headers:
             print_detail("[ifpold]")
         i_cnt[0] += 1
 
-if 'Pragma' in headers:
+if 'Pragma' in headers and '32' not in skipped_headers_v:
     print_details('[iprag_h]', '[iprag]', 'd', i_cnt)
 
-if 'Proxy-Authenticate' in headers:
+if 'Proxy-Authenticate' in headers and '33' not in skipped_headers_v:
     prxyauth_h = headers['Proxy-Authenticate'].lower()
     if 'basic' in prxyauth_h and unsafe_scheme:
         print_details('[iprxauth_h]', '[ihbas]', 'd', i_cnt)
 
-if 'Public-Key-Pins' in headers:
+if 'Public-Key-Pins' in headers and '34' not in skipped_headers_v:
     print_details('[ipkp_h]', '[ipkp]', 'd', i_cnt)
 
-if 'Public-Key-Pins-Report-Only' in headers:
+if 'Public-Key-Pins-Report-Only' in headers and '35' not in skipped_headers_v:
     print_details('[ipkpr_h]', '[ipkp]', 'd', i_cnt)
 
 referrer_header = headers.get('Referrer-Policy', '').lower()
-if referrer_header:
+if referrer_header and '36' not in skipped_headers_v:
     if not any(elem in referrer_header for elem in l_ref_secure):
         print_details('[iref_h]', '[iref]', 'm', i_cnt)
     if 'unsafe-url' in referrer_header:
@@ -1776,11 +1846,11 @@ if referrer_header:
     if not any(elem in referrer_header for elem in l_ref_values):
         print_details('[irefn_h]', '[irefn]', 'd', i_cnt)
 
-if 'Server-Timing' in headers:
+if 'Server-Timing' in headers and '37' not in skipped_headers_v:
     print_details('[itim_h]', '[itim]', 'd', i_cnt)
 
 stc_header = headers.get("Set-Cookie", '').lower()
-if stc_header:
+if stc_header and '38' not in skipped_headers_v:
     if not unsafe_scheme and not all(elem in stc_header for elem in
                                      l_cookie_sec):
         print_details("[iset_h]", "[iset]", "d", i_cnt)
@@ -1792,14 +1862,14 @@ if stc_header:
     if "samesite=none" in stc_header and "secure" not in stc_header:
         print_details("[iseti_m]", "[isetm]", "d", i_cnt)
 
-if 'SourceMap' in headers:
+if 'SourceMap' in headers and '39' not in skipped_headers_v:
     print_details('[ismap_m]', '[ismap]', 'd', i_cnt)
 
-if 'Strict-Dynamic' in headers:
+if 'Strict-Dynamic' in headers and '40' not in skipped_headers_v:
     print_details('[isdyn_h]', '[isdyn]', 'd', i_cnt)
 
 sts_header = headers.get('Strict-Transport-Security', '').lower()
-if sts_header and not unsafe_scheme:
+if sts_header and not unsafe_scheme and '41' not in skipped_headers_v:
     try:
         age = int(''.join(filter(str.isdigit, sts_header)))
         if not all(elem in sts_header for elem in l_sts_dir) or age < 31536000:
@@ -1809,7 +1879,7 @@ if sts_header and not unsafe_scheme:
     except ValueError:
         print_details('[ists_h]', '[ists]', 'm', i_cnt)
 
-if 'Supports-Loading-Mode' in headers:
+if 'Supports-Loading-Mode' in headers and '42' not in skipped_headers_v:
     support_mode_h = headers['Supports-Loading-Mode'].lower()
     if not any(elem in support_mode_h for elem in l_support_mode):
         print_details('[islmode_h]', '[islmode]', 'd', i_cnt)
@@ -1817,18 +1887,19 @@ if 'Supports-Loading-Mode' in headers:
 if sts_header and unsafe_scheme:
     print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
 
-if 'Surrogate-Control' in headers:
+if 'Surrogate-Control' in headers and '43' not in skipped_headers_v:
     surrogate_mode_h = headers['Surrogate-Control'].lower()
     if not any(elem in surrogate_mode_h for elem in l_surrogate):
         print_details('[isurrmode_h]', '[isurrmode]', 'd', i_cnt)
 
-if headers.get('Timing-Allow-Origin', '') == '*':
+if headers.get('Timing-Allow-Origin', '') == '*' and '44' not in \
+     skipped_headers_v:
     print_details('[itao_h]', '[itao]', 'd', i_cnt)
 
-if 'Tk' in headers:
+if 'Tk' in headers and '45' not in skipped_headers_v:
     print_details('[ixtk_h]', '[ixtkd]', 'd', i_cnt)
 
-if 'Trailer' in headers:
+if 'Trailer' in headers and '46' not in skipped_headers_v:
     trailer_h = headers['Trailer'].lower()
     if any(elem in trailer_h for elem in l_trailer):
         print_detail_r('[itrailer_h]', is_red=True)
@@ -1839,41 +1910,44 @@ if 'Trailer' in headers:
             print_detail("[itrailer_d_r]")
         i_cnt[0] += 1
 
-if 'Transfer-Encoding' in headers:
+if 'Transfer-Encoding' in headers and '47' not in skipped_headers_v:
     transfer_h = headers['Transfer-Encoding'].lower()
     if not any(elem in transfer_h for elem in l_transfer):
         print_details('[ictrf_h]', '[itrf]', 'd', i_cnt)
 
-if 'Vary' in headers:
+if 'Vary' in headers and '48' not in skipped_headers_v:
     print_details('[ixvary_h]', '[ixvary]', 'm', i_cnt)
 
-if 'Warning' in headers:
+if 'Warning' in headers and '49' not in skipped_headers_v:
     print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
 
 wwwa_header = headers.get('WWW-Authenticate', '').lower()
-if wwwa_header and unsafe_scheme and ('basic' in wwwa_header):
+if wwwa_header and unsafe_scheme and ('basic' in wwwa_header) and '50' not in \
+     skipped_headers_v:
     print_details('[ihbas_h]', '[ihbas]', 'd', i_cnt)
 
-if 'X-Content-Security-Policy' in headers:
+if 'X-Content-Security-Policy' in headers and '51' not in skipped_headers_v:
     print_details('[ixcsp_h]', '[ixcsp]', 'd', i_cnt)
 
-if 'X-Content-Security-Policy-Report-Only' in headers:
+if 'X-Content-Security-Policy-Report-Only' in headers and '52' not in \
+     skipped_headers_v:
     print_details('[ixcspr_h]', '[ixcspr]', 'd', i_cnt)
 
-if 'X-Content-Type-Options' in headers:
+if 'X-Content-Type-Options' in headers and '53' not in skipped_headers_v:
     if ',' in headers['X-Content-Type-Options']:
         print_details('[ictpd_h]', '[ictpd]', 'd', i_cnt)
     elif 'nosniff' not in headers['X-Content-Type-Options']:
         print_details('[ictp_h]', '[ictp]', 'd', i_cnt)
 
-if headers.get('X-DNS-Prefetch-Control', '') == 'on':
+if headers.get('X-DNS-Prefetch-Control', '') == 'on' and '54' not in \
+     skipped_headers_v:
     print_details('[ixdp_h]', '[ixdp]', 'd', i_cnt)
 
-if 'X-Download-Options' in headers:
+if 'X-Download-Options' in headers and '55' not in skipped_headers_v:
     print_details('[ixdow_h]', '[ixdow]', 'm', i_cnt)
 
 xfo_header = headers.get('X-Frame-Options', '').lower()
-if xfo_header:
+if xfo_header and '56' not in skipped_headers_v:
     if ',' in xfo_header:
         print_details('[ixfo_h]', '[ixfo]', 'm', i_cnt)
     if 'allow-from' in xfo_header:
@@ -1881,11 +1955,11 @@ if xfo_header:
     if xfo_header not in l_xfo_dir:
         print_details('[ixfoi_h]', '[ixfodi]', 'm', i_cnt)
 
-if 'X-Pad' in headers:
+if 'X-Pad' in headers and '57' not in skipped_headers_v:
     print_details('[ixpad_h]', '[ixpad]', 'd', i_cnt)
 
 permcross_header = headers.get('X-Permitted-Cross-Domain-Policies', '').lower()
-if permcross_header:
+if permcross_header and '58' not in skipped_headers_v:
     if not any(elem in permcross_header for elem in l_permcross):
         print_details('[ixpermcross_h]', '[ixpermcross]', 'm', i_cnt)
     if 'all' in permcross_header:
@@ -1893,32 +1967,33 @@ if permcross_header:
     if ',' in permcross_header:
         print_details('[ixpermcrossd_h]', '[ixpermcrossd]', 'm', i_cnt)
 
-if headers.get('X-Pingback', '').endswith('xmlrpc.php'):
+if headers.get('X-Pingback', '').endswith('xmlrpc.php') and '59' not in \
+     skipped_headers_v:
     print_details('[ixpb_h]', '[ixpb]', 'd', i_cnt)
 
 robots_header = headers.get('X-Robots-Tag', '').lower()
-if robots_header:
+if robots_header and '60' not in skipped_headers_v:
     if not any(elem in robots_header for elem in l_robots):
         print_details('[ixrobv_h]', '[ixrobv]', 'm', i_cnt)
     if 'all' in robots_header:
         print_details('[ixrob_h]', '[ixrob]', 'm', i_cnt)
 
-if 'X-Runtime' in headers:
+if 'X-Runtime' in headers and '61' not in skipped_headers_v:
     print_details('[ixrun_h]', '[ixrun]', 'd', i_cnt)
 
-if 'X-SourceMap' in headers:
+if 'X-SourceMap' in headers and '62' not in skipped_headers_v:
     print_details('[ixsrc_h]', '[ixsrc]', 'd', i_cnt)
 
-if 'X-UA-Compatible' in headers:
+if 'X-UA-Compatible' in headers and '63' not in skipped_headers_v:
     print_details('[ixuacom_h]', '[ixuacom]', 'm', i_cnt)
 
-if 'X-Webkit-CSP' in headers:
+if 'X-Webkit-CSP' in headers and '64' not in skipped_headers_v:
     print_details('[ixwcsp_h]', '[ixcsp]', 'd', i_cnt)
 
-if 'X-Webkit-CSP-Report-Only' in headers:
+if 'X-Webkit-CSP-Report-Only' in headers and '65' not in skipped_headers_v:
     print_details('[ixwcspr_h]', '[ixcspr]', 'd', i_cnt)
 
-if 'X-XSS-Protection' in headers:
+if 'X-XSS-Protection' in headers and '66' not in skipped_headers_v:
     print_details('[ixxpdp_h]', '[ixxpdp]', 'm', i_cnt)
     if '0' not in headers["X-XSS-Protection"]:
         print_details('[ixxp_h]', '[ixxp]', 'd', i_cnt)

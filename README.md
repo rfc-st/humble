@@ -4,7 +4,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--02--24-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--03--02-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Official tool in OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-Tool-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.kali.org/tools/humble/" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
@@ -182,9 +182,10 @@ https://github.com/rfc-st/humble/releases
 (Linux)   $ python3 humble.py
 (macOS)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-df] [-e [PATH]] [-f [TERM]] [-g] [-l {es}] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r] [-u URL] [-ua USER_AGENT] [-v]
+usage: humble.py [-h] [-a] [-b] [-df] [-e [PATH]] [-f [TERM]] [-g] [-l {es}] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r] [-s [SKIPPED_HEADERS ...]] [-u URL]
+                 [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-02-17
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-03-02
 
 options:
   -h, --help                  show this help message and exit
@@ -198,6 +199,7 @@ options:
   -o {csv,html,json,pdf,txt}  Exports analysis to 'scheme_host_port_yyyymmdd.ext' file (csv/json files will contain a brief analysis)
   -op OUTPUT_PATH             Exports analysis to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)
   -r                          Shows HTTP response headers and a detailed analysis ('-b' parameter will take priority)
+  -s [SKIPPED_HEADERS ...]    Skip analysis of specified HTTP response headers, separated by spaces
   -u URL                      Scheme, host and port to analyze. E.g. https://google.com
   -ua USER_AGENT              User-Agent ID from 'additional/user_agents.txt' to use. '0' will show all and '1' is the default.
   -v, --version               Checks for updates at https://github.com/rfc-st/humble
@@ -209,8 +211,8 @@ examples:
   -u URL -b -o csv            Analyzes the URL and exports overall findings to CSV
   -u URL -o pdf               Analyzes the URL and exports detailed findings to PDF
   -u URL -a                   Shows statistics of the analysis performed against the URL
+  -u URL -s ETag NEL          Analyzes the URL and skips checks associated with 'ETag' and 'NEL' HTTP response headers
   -a -l es                    Shows statistics of the analysis performed against all URLs in Spanish
-  -f Google                   Shows HTTP fingerprint headers related to the term 'Google'
 ```
 
 ## Advanced Usage

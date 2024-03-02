@@ -692,8 +692,11 @@ HTTP Response Headers
 [unreliable_analysis_note]
  Note : The analysis may not be reliable because of the time it took for the URL to respond.
 
-[analysis_redirects]
- Note : It has been expressly indicated to analyze the exact URL, without following redirects.
+[analysis_redirects_note]
+ Note : The exact URL will be analyzed, without following redirects.
+
+[analysis_skipped_note]
+ Note : These HTTP response headers will not be checked:
 
 [analysis_output]
  Analyzing URL and saving the report, please wait ...
@@ -1278,7 +1281,7 @@ To run an SSL/TLS scan on Windows (via 'testssl.sh') I recommend one of these op
 '-ua' requires also '-u'.
 
 [args_several]
-'-b', '-df', '-'o' and '-r' requires also '-u'.
+'-b', '-df', '-'o', '-r' and '-s' requires also '-u'.
 
 [args_csv_json]
 '-o csv' and '-o json' requires '-b'.
@@ -1291,6 +1294,15 @@ Error: The PATH for 'testssl.sh' is incorrect.
 
 [args_nooutputfmt]
 '-op' requires '-o'.
+
+[args_skipped]
+'-s' requires at least the name of one HTTP response header.
+
+[args_skipped_unknown]
+Remove the following HTTP headers from the '-s' parameter as 'humble' does not check them: 
+
+[args_skipped_ko]
+'-s' requires at least the name of one HTTP response header.
 
 [args_noexportpath]
 The indicated PATH does not exist 
@@ -1315,5 +1327,6 @@ examples:
   -u URL -b -o csv            Analyzes the URL and exports overall findings to CSV
   -u URL -o pdf               Analyzes the URL and exports detailed findings to PDF
   -u URL -a                   Shows statistics of the analysis performed against the URL
+  -u URL -s ETag NEL          Analyzes the URL and skips checks associated with 'ETag' and 'NEL' HTTP response headers
   -a -l es                    Shows statistics of the analysis performed against all URLs in Spanish
   -f Google                   Shows HTTP fingerprint headers related to the term 'Google'
