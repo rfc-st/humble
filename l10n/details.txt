@@ -696,7 +696,7 @@ HTTP Response Headers
  Note : The exact URL will be analyzed, without following redirects.
 
 [analysis_skipped_note]
- Note : These HTTP response headers will not be checked:
+ Note : The values of the following HTTP response headers will not be checked:
 
 [analysis_output]
  Analyzing URL and saving the report, please wait ...

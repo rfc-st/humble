@@ -696,7 +696,7 @@ Cabeceras de respuesta HTTP
  Nota : Se analizará la URL exacta, sin seguir redireccionamientos.
 
 [analysis_skipped_note]
- Nota : Estas cabeceras de respuesta HTTP no se comprobarán:
+ Nota : No se comprobarán los valores de las siguientes cabeceras HTTP de respuesta:
 
 [analysis_redirects]
  Nota : Se ha indicado expresamente analizar la URL exacta, sin seguir redirecciones.
