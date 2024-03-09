@@ -252,7 +252,7 @@ $ python3 humble.py -u https://www.spacex.com | sed -n '/\[3/,/^\[4/ { /^\[4/!p 
 .: (Linux) - Check for HTTP client errors (4XX).<br />
 
 ```
-$ python3 humble.py -u https://block.fiverr.com | grep -A1 -B5 'Note : \|Nota : ' --color=never
+$ python3 humble.py -u https://my.prelude.software/demo/index.pl | grep -A1 -B5 'Note : \|Nota : ' --color=never
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_4.jpg" alt="Check for HTTP client errors (4XX) (Linux)">
 
