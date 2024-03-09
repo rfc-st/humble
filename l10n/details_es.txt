@@ -35,6 +35,9 @@
 [http_403]
  Nota : La URL devuelve un error (Código HTTP 403, 'Forbidden')
 
+[http_404]
+ Nota : La URL devuelve un error (Código HTTP 404, 'Not Found')
+
 [http_405]
  Nota : La URL devuelve un error (Código HTTP 405, 'Method Not Allowed')
 
