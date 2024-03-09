@@ -62,10 +62,7 @@ import concurrent.futures
 BOLD = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRIGHT_RED = f"{Style.BRIGHT}{Fore.RED}"
 CANIUSE_URL = ': https://caniuse.com/?search='
-CDN_E = [520, 521, 522, 523, 524, 525, 526, 527, 530]
 CLE_O = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
-CLI_E = [400, 401, 402, 403, 405, 406, 409, 410, 411, 412, 413, 414, 415, 416,
-         417, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451]
 CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat']
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
@@ -91,7 +88,6 @@ troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/',
 REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_C = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 SCHEME = ['http:', 'https:']
-SRV_E = [500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511]
 URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
@@ -708,7 +704,8 @@ def print_banner(reliable):
         print("")
         print(f"\n{HUM_N}\n{GIT_URL[1]} | v.{version}\n")
     print_basic_info()
-    if status_code in CLI_E or reliable or args.redirects or skipped_headers:
+    if 400 <= status_code <= 451 or reliable or args.redirects or \
+       skipped_headers:
         print_extra_info(reliable)
 
 
@@ -722,7 +719,7 @@ def print_basic_info():
 
 
 def print_extra_info(reliable):
-    if status_code in CLI_E:
+    if 400 <= status_code <= 451:
         id_mode = f"[http_{status_code}]"
         if detail := print_detail(id_mode, 0):
             print(detail)
@@ -1121,12 +1118,13 @@ def handle_http_error(http_code, id_mode):
     if str(http_code).startswith('5'):
         clean_shell_lines()
         print()
-        if http_code in SRV_E or http_code in CDN_E:
+        if (500 <= http_code <= 511) or (520 <= http_code <= 530):
             if detail := print_detail(id_mode, 0):
                 print(detail)
             else:
-                print((REF_ERROR[1] if http_code in SRV_E else REF_ERROR[0]) +
-                      str(http_code))
+                print((REF_ERROR[1] if (500 <= http_code <= 511) else
+                       REF_ERROR[0]) + str(http_code))
+        # For 5xx HTTP codes not in the ranges 500-511 or 520-530
         else:
             print_detail('[server_serror]', 1)
         sys.exit()
