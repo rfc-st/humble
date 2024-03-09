@@ -704,8 +704,8 @@ def print_banner(reliable):
         print("")
         print(f"\n{HUM_N}\n{GIT_URL[1]} | v.{version}\n")
     print_basic_info()
-    if 400 <= status_code <= 451 or reliable or args.redirects or \
-       skipped_headers:
+    if (status_code is not None and 400 <= status_code <= 451) or reliable or \
+       args.redirects or skipped_headers:
         print_extra_info(reliable)
 
 
@@ -719,7 +719,7 @@ def print_basic_info():
 
 
 def print_extra_info(reliable):
-    if 400 <= status_code <= 451:
+    if (status_code is not None and 400 <= status_code <= 451):
         id_mode = f"[http_{status_code}]"
         if detail := print_detail(id_mode, 0):
             print(detail)
