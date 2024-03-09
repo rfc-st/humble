@@ -1114,6 +1114,17 @@ def print_ru_message():
             sys.exit()
 
 
+def output_filename(args, export_date, ext):
+    url_str = tldextract.extract(args.URL)
+    url_sch = urlparse(args.URL).scheme
+    url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
+    url_dom = f"{url_str.domain}."
+    url_tld = url_str.suffix
+    url_prt = f"_{urlparse(args.URL).port}_" if urlparse(args.URL).port is not\
+        None else '_'
+    return f"{url_sch}{url_sub}{url_dom}{url_tld}{url_prt}{export_date}{ext}"
+
+
 def handle_http_error(http_code, id_mode):
     if str(http_code).startswith('5'):
         clean_shell_lines()
@@ -1343,14 +1354,8 @@ ext = ".txt" if args.output == 'txt' else "t.txt"
 
 if args.output:
     orig_stdout = sys.stdout
-    url_obj = tldextract.extract(URL)
-    url_sch = urlparse(URL).scheme
-    url_sub = f"_{url_obj.subdomain}." if url_obj.subdomain else '_'
-    url_dom = f"{url_obj.domain}."
-    url_tld = url_obj.suffix
-    url_prt = f"_{urlparse(URL).port}_" if urlparse(URL).port is not None \
-        else '_'
-    name_e = f"{url_sch}{url_sub}{url_dom}{url_tld}{url_prt}{export_date}{ext}"
+    ext = ".txt" if args.output == 'txt' else "t.txt"
+    name_e = output_filename(args, export_date, ext)
     if args.output_path:
         name_e = path.join(path_safe, name_e)
     f = open(name_e, 'w', encoding='utf8')
