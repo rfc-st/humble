@@ -136,7 +136,7 @@ def check_python_version():
         else None
 
 
-def check_humble_updates(version):
+def check_updates(version):
     try:
         response_t = requests.get(GIT_URL[0], timeout=10).text
         remote_v = re.search(r"\d{4}-\d{2}-\d{2}", response_t).group()
@@ -1114,7 +1114,7 @@ def print_ru_message():
             sys.exit()
 
 
-def output_filename(args, export_date, ext):
+def analysis_filename(args, export_date, ext):
     url_str = tldextract.extract(args.URL)
     url_sch = urlparse(args.URL).scheme
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
@@ -1262,12 +1262,11 @@ parser.add_argument("-v", "--version", action="store_true", help="Checks for \
 updates at https://github.com/rfc-st/humble")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
-
 l10n_details = get_l10n_details()
 check_python_version()
 
 if args.version:
-    check_humble_updates(version)
+    check_updates(version)
 
 if '-f' in sys.argv:
     fng_statistics_term(args.term) if args.term else fng_statistics_top()
@@ -1308,7 +1307,7 @@ if any([args.brief, args.output, args.ret, args.redirects,
 if args.output in ['csv', 'json'] and not args.brief:
     parser.error(get_detail('[args_csv_json]'))
 
-skipped_headers, unsupported_headers, skipped_headers_v = [], [], []
+skipped_headers, skipped_headers_v, unsupported_headers = [], [], []
 
 if '-s' in sys.argv and len(args.skipped_headers) == 0:
     parser.error(get_detail('[args_skipped]'))
@@ -1349,13 +1348,11 @@ requests.packages.urllib3.disable_warnings()
 
 headers, status_code, reliable, request_time = manage_http_request()
 
-# Export analysis
-ext = ".txt" if args.output == 'txt' else "t.txt"
-
+# Export the analysis
 if args.output:
     orig_stdout = sys.stdout
     ext = ".txt" if args.output == 'txt' else "t.txt"
-    name_e = output_filename(args, export_date, ext)
+    name_e = analysis_filename(args, export_date, ext)
     if args.output_path:
         name_e = path.join(path_safe, name_e)
     f = open(name_e, 'w', encoding='utf8')
@@ -1411,8 +1408,7 @@ if m_cnt == 0:
 
 print("")
 
-# 2. Fingerprint HTTP Response Headers
-# Source: /additional/fingerprint.txt
+# 2. Fingerprint HTTP Response Headers (Source: /additional/fingerprint.txt)
 print_detail_r('[2fingerprint]')
 
 if not args.brief:
@@ -1438,7 +1434,7 @@ if f_cnt == 0:
 print("")
 
 # 3. Deprecated HTTP Response Headers/Protocols and Insecure Values
-# List of checks: /additional/insecure.txt
+# (Source: /additional/insecure.txt)
 print_detail_r('[3depinsecure]')
 i_cnt = [0]
 
