@@ -64,6 +64,7 @@ Keep-Alive: Ignored Header
 Large-Allocation: Deprecated Header
 NEL: Missing Directives
 NEL: No Valid Directives
+Observe-Browsing-Topics: No Valid Directives
 Onion-Location: Potentially Unsafe Header
 Origin-Agent-Cluster: No Valid Directives
 P3P: Deprecated Header
@@ -83,6 +84,7 @@ Set-Cookie: Cookie Prefixes
 Set-Cookie: Insecure Attributes
 Set-Cookie: Insecure Schemes
 Set-Cookie: Missing Attribute
+Set-Login: No Valid Directives
 SourceMap: Unsafe Funcionality
 Strict-Dynamic: Incorrect Header
 Strict-Transport-Security: Duplicated Values

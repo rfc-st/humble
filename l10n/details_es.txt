@@ -319,9 +319,16 @@
 [inel_h]
  NEL (Sin directivas adecuadas)
 
+[iobsb_h]
+ Observe-Browsing-Topics (Sin directivas adecuadas)
+
 [inel]
  Incluya, al menos, una directiva correcta.
  Ref: https://w3c.github.io/network-error-logging/#nel-response-header
+
+[iobsb]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Observe-Browsing-Topics
 
 [inelm_h]
  NEL (Directivas ausentes)
@@ -486,6 +493,9 @@
 
 [iref_h]
  Referrer-Policy (Valores recomendados)
+
+[islogin_h]
+ Set-Login (Sin directivas adecuadas)
 
 [irefi_h]
  Referrer-Policy (Valor inseguro)
@@ -889,6 +899,10 @@ Cabeceras de respuesta HTTP
  Si hay datos sensibles utilice 'strict-origin' o 'strict-origin-when-cross-origin'.
  O incluso 'no-referrer-when-downgrade' o 'no-referrer'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
+[islogin]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Login
 
 [irefi]
  'unsafe-url' filtra datos potencialmente privados de las URLs HTTPS a fuentes inseguras.
