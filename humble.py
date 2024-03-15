@@ -62,22 +62,22 @@ import concurrent.futures
 BOLD = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRIGHT_RED = f"{Style.BRIGHT}{Fore.RED}"
 CANIUSE_URL = ': https://caniuse.com/?search='
-CLE_O = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
+CLEAN_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat']
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 GIT_URL = ['https://raw.githubusercontent.com/rfc-st/humble/master/humble.py',
            'https://github.com/rfc-st/humble']
 HUM_D = ['additional', 'l10n']
+HUM_DESC = "'humble' (HTTP Headers Analyzer)"
 HUM_F = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
          'guides.txt', 'details_es.txt', 'details.txt', 'user_agents.txt',
          'insecure.txt']
-HUM_N = "'humble' (HTTP Headers Analyzer)"
 IP_PATTERN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
               r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
+LINE_PATTERN = r'\[(.*?)\]'
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ['CYMRU', 'GURU', 'PRU']
-PAT_LN = r'\[(.*?)\]'
 PATH_PATTERN = (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
                 r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
                 r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')
@@ -86,13 +86,13 @@ troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/',
              ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status\
 /']
 REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
-RU_C = ['https://ipapi.co/country_name/', 'RU', 'Russia']
+RU_CHECK = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 SCHEME = ['http:', 'https:']
 URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-03-09', '%Y-%m-%d').date()
+version = datetime.strptime('2024-03-15', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -194,10 +194,10 @@ def fng_statistics_term(term):
 def fng_statistics_term_groups(fng_ln, term):
     fng_group = \
         {match[1].strip()
-         for line in fng_ln if (match := re.search(PAT_LN, line)) and
+         for line in fng_ln if (match := re.search(LINE_PATTERN, line)) and
          term.lower() in match[1].lower()}
-    term_cnt = sum(bool((match := re.search(PAT_LN, line)) and term.lower() in
-                        match[1].lower()) for line in fng_ln)
+    term_cnt = sum(bool((match := re.search(LINE_PATTERN, line)) and
+                        term.lower() in match[1].lower()) for line in fng_ln)
     return fng_group, term_cnt
 
 
@@ -659,8 +659,8 @@ def csp_full_analysis(csp_header):
 
 def clean_shell_lines(reliable=True):
     if not reliable:
-        sys.stdout.write(CLE_O)
-    sys.stdout.write(CLE_O)
+        sys.stdout.write(CLEAN_LINES)
+    sys.stdout.write(CLEAN_LINES)
 
 
 def print_export_path(filename, reliable):
@@ -702,7 +702,7 @@ def print_banner(reliable):
         print(f" ({GIT_URL[1]} | v.{version})")
     elif args.output != 'pdf':
         print("")
-        print(f"\n{HUM_N}\n{GIT_URL[1]} | v.{version}\n")
+        print(f"\n{HUM_DESC}\n{GIT_URL[1]} | v.{version}\n")
     print_basic_info()
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
        args.redirects or skipped_headers:
@@ -1108,8 +1108,9 @@ def print_ru_message():
     with contextlib.suppress(requests.exceptions.RequestException):
         requests.packages.urllib3.disable_warnings()
         sffx = tldextract.extract(URL).suffix[-2:].upper()
-        cnty = requests.get(RU_C[0], verify=False, timeout=5).text.strip()
-        if (sffx == RU_C[1] and sffx not in NON_RU_TLD) or cnty == RU_C[2]:
+        cnty = requests.get(RU_CHECK[0], verify=False, timeout=5).text.strip()
+        if (sffx == RU_CHECK[1] and sffx not in NON_RU_TLD) or cnty ==\
+           RU_CHECK[2]:
             print_detail('[ru_analysis_message]', 3)
             sys.exit()
 
@@ -1223,7 +1224,7 @@ init(autoreset=True)
 epi_text = get_epilog_detail('[epilog_content]')
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
-                        description=f"{HUM_N} | {GIT_URL[1]} | v.{version}",
+                        description=f"{HUM_DESC} | {GIT_URL[1]} | v.{version}",
                         epilog=epi_text)
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
