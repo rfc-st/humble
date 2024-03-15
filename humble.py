@@ -37,7 +37,6 @@
 # Iván, Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Angel,
 # Montse, Naiara, Pablo, Sergio, Ricardo & Rubén!.
 
-from fpdf import FPDF
 from time import time
 from shlex import quote
 from datetime import datetime
@@ -109,26 +108,6 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         context.set_ciphers(FORCED_CIPHERS)
         kwargs['ssl_context'] = context
         return super(SSLContextAdapter, self).init_poolmanager(*args, **kwargs)
-
-
-class PDF(FPDF):
-
-    def header(self):
-        self.set_font('Courier', 'B', 9)
-        self.set_y(15)
-        pdf.set_text_color(0, 0, 0)
-        self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
-                  new_y="NEXT", align='C')
-        self.ln(1)
-        self.cell(0, 5, f"{GIT_URL[1]} | v.{version}", align='C')
-        self.ln(9) if self.page_no() == 1 else self.ln(13)
-
-    def footer(self):
-        self.set_y(-15)
-        self.set_font('Helvetica', 'I', 8)
-        pdf.set_text_color(0, 0, 0)
-        self.cell(0, 10, get_detail('[pdf_footer]') + str(self.page_no()) +
-                  get_detail('[pdf_footer2') + ' {nb}', align='C')
 
 
 def check_python_version():
@@ -2069,6 +2048,26 @@ elif args.output == 'csv':
 elif args.output == 'json':
     generate_json(name_e, name_p)
 elif args.output == 'pdf':
+    from fpdf import FPDF
+
+    class PDF(FPDF):
+
+        def header(self):
+            self.set_font('Courier', 'B', 9)
+            self.set_y(15)
+            self.set_text_color(0, 0, 0)
+            self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
+                      new_y="NEXT", align='C')
+            self.ln(1)
+            self.cell(0, 5, f"{GIT_URL[1]} | v.{version}", align='C')
+            self.ln(9 if self.page_no() == 1 else 13)
+
+        def footer(self):
+            self.set_y(-15)
+            self.set_font('Helvetica', 'I', 8)
+            self.set_text_color(0, 0, 0)
+            self.cell(0, 10, get_detail('[pdf_footer]') + str(self.page_no()) +
+                      get_detail('[pdf_footer2]') + ' {nb}', align='C')
     pdf = PDF()
     generate_pdf(name_e, pdf)
 elif args.output == 'html':
