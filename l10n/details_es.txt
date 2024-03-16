@@ -1219,10 +1219,10 @@ A destacar
 [month_12]
  Diciembre
 
-[not_latest]
+[humble_not_recent]
  Tu versión de 'humble' no es la más reciente.
 
-[latest]
+[humble_recent]
  Tienes una versión reciente de 'humble' :).
 
 [github_humble]

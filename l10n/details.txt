@@ -1216,10 +1216,10 @@ Highlights
 [month_12]
  December
 
-[not_latest]
+[humble_not_recent]
  Your version of 'humble' is not the most recent.
 
-[latest]
+[humble_recent]
  You have a recent version of 'humble' :).
 
 [github_humble]

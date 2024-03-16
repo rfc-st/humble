@@ -91,7 +91,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-03-16', '%Y-%m-%d').date()
+humble_local_v = datetime.strptime('2024-03-16', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -115,16 +115,16 @@ def check_python_version():
         else None
 
 
-def check_updates(version):
+def check_updates(humble_local_v):
     try:
-        response_t = requests.get(GIT_URL[0], timeout=10).text
-        remote_v = re.search(r"\d{4}-\d{2}-\d{2}", response_t).group()
-        remote_v_date = datetime.strptime(remote_v, '%Y-%m-%d').date()
-        if remote_v_date > version:
-            print(f"\n{get_detail('[not_latest]')[:-1]}\
+        repo_check = requests.get(GIT_URL[0], timeout=10).text
+        humble_remote = re.search(r"\d{4}-\d{2}-\d{2}", repo_check).group()
+        humble_remote_v = datetime.strptime(humble_remote, '%Y-%m-%d').date()
+        if humble_remote_v > humble_local_v:
+            print(f"\n{get_detail('[humble_not_recent]')[:-1]}\
                   \n{get_detail('[github_humble]', replace=True)}")
         else:
-            print(f"\n {get_detail('[latest]', replace=True)}")
+            print(f"\n {get_detail('[humble_recent]', replace=True)}")
     except requests.exceptions.RequestException:
         print(f"\n{get_detail('[update_error]')}")
     sys.exit()
@@ -678,10 +678,10 @@ def print_banner(reliable):
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
         print(banner)
-        print(f" ({GIT_URL[1]} | v.{version})")
+        print(f" ({GIT_URL[1]} | v.{humble_local_v})")
     elif args.output != 'pdf':
         print("")
-        print(f"\n{HUM_DESC}\n{GIT_URL[1]} | v.{version}\n")
+        print(f"\n{HUM_DESC}\n{GIT_URL[1]} | v.{humble_local_v}\n")
     print_basic_info()
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
        args.redirects or skipped_headers:
@@ -826,13 +826,25 @@ def check_path_traversal(path):
         sys.exit()
 
 
-def check_path_permissions(path_safe):
+def check_path_permissions(output_path):
     try:
-        open(path.join(path_safe, HUM_F[1]), 'w')
+        open(path.join(output_path, HUM_F[1]), 'w')
     except PermissionError:
-        parser.error(f"{get_detail('[args_nowr]', replace=True)}'{path_safe}'")
+        parser.error(f"{get_detail('[args_nowr]', replace=True)}\
+'{output_path}'")
     else:
-        remove(path.join(path_safe, HUM_F[1]))
+        remove(path.join(output_path, HUM_F[1]))
+
+
+def check_output_path(args, output_path):
+    check_path_traversal(args.output_path)
+    if args.output is None:
+        parser.error(get_detail('[args_nooutputfmt]'))
+    elif path.exists(output_path):
+        check_path_permissions(output_path)
+    else:
+        parser.error(f"{get_detail('[args_noexportpath]', replace=True)}\
+('{output_path}')")
 
 
 def parse_user_agent(user_agent=False):
@@ -1005,7 +1017,7 @@ def set_pdf_structure():
 
 def set_pdf_metadata():
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
-    git_urlc = f"{GIT_URL[1]} | v.{version}"
+    git_urlc = f"{GIT_URL[1]} | v.{humble_local_v}"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
     pdf.set_creator(git_urlc)
@@ -1203,8 +1215,8 @@ init(autoreset=True)
 epi_text = get_epilog_detail('[epilog_content]')
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
-                        description=f"{HUM_DESC} | {GIT_URL[1]} | v.{version}",
-                        epilog=epi_text)
+                        description=f"{HUM_DESC} | {GIT_URL[1]} | \
+v.{humble_local_v}", epilog=epi_text)
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
 statistics of the performed analysis (will be global if '-u' is omitted)")
@@ -1245,8 +1257,9 @@ args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 l10n_details = get_l10n_details()
 check_python_version()
 
+# Checking parameters and their values
 if args.version:
-    check_updates(version)
+    check_updates(humble_local_v)
 
 if '-f' in sys.argv:
     fng_statistics_term(args.term) if args.term else fng_statistics_top()
@@ -1267,16 +1280,8 @@ if args.lang and not (args.URL or args.URL_A) and not args.guides:
     parser.error(get_detail('[args_lang]'))
 
 if args.output_path is not None:
-    check_path_traversal(args.output_path)
-    path_safe = path.abspath(args.output_path)
-    if args.output is None:
-        parser.error(get_detail('[args_nooutputfmt]'))
-    else:
-        if path.exists(path_safe):
-            check_path_permissions(path_safe)
-        else:
-            parser.error(f"{get_detail('[args_noexportpath]', replace=True)}\
-('{path_safe}')")
+    output_path = path.abspath(args.output_path)
+    check_output_path(args, output_path)
 
 if any([args.brief, args.output, args.ret, args.redirects,
         args.skipped_headers]) and (args.URL is None or args.guides is None
@@ -1328,21 +1333,21 @@ requests.packages.urllib3.disable_warnings()
 
 headers, status_code, reliable, request_time = manage_http_request()
 
-# Export the analysis
+# File name with analysis results
 if args.output:
     orig_stdout = sys.stdout
     ext = ".txt" if args.output == 'txt' else "t.txt"
     name_e = analysis_filename(args, export_date, ext)
     if args.output_path:
-        name_e = path.join(path_safe, name_e)
+        name_e = path.join(output_path, name_e)
     f = open(name_e, 'w', encoding='utf8')
     sys.stdout = f
 
-# 0. Info & HTTP Response Headers
+# Section '0. Info & HTTP Response Headers'
 print_banner(reliable)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
-# 1. Missing HTTP Security Headers
+# Section '1. Missing HTTP Security Headers'
 print_detail_r('[1missing]')
 m_cnt = 0
 
@@ -1388,7 +1393,8 @@ if m_cnt == 0:
 
 print("")
 
-# 2. Fingerprint HTTP Response Headers (Source: /additional/fingerprint.txt)
+# Section '2. Fingerprint HTTP Response Headers'
+# (Source: /additional/fingerprint.txt)
 print_detail_r('[2fingerprint]')
 
 if not args.brief:
@@ -1413,7 +1419,7 @@ if f_cnt == 0:
 
 print("")
 
-# 3. Deprecated HTTP Response Headers/Protocols and Insecure Values
+# Section '3. Deprecated HTTP Response Headers/Protocols and Insecure Values'
 # (Source: /additional/insecure.txt)
 print_detail_r('[3depinsecure]')
 i_cnt = [0]
@@ -1996,7 +2002,7 @@ if i_cnt[0] == 0:
 
 print("")
 
-# 4. Empty HTTP Response Headers Values
+# Section '4. Empty HTTP Response Headers Values'
 print_detail_r('[4empty]')
 l_empty = []
 
@@ -2008,7 +2014,7 @@ e_cnt = print_empty_headers(headers, l_empty)
 print("") if e_cnt != 0 else print_nowarnings()
 print("")
 
-# 5. Browser Compatibility for Enabled HTTP Security Headers
+# Section '5. Browser Compatibility for Enabled HTTP Security Headers'
 print_detail_r('[5compat]')
 
 l_sec = ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
@@ -2036,7 +2042,7 @@ print(linesep.join(['']*2))
 end = time()
 get_analysis_result()
 
-# Exporting analysis
+# For exporting analyses
 if args.output:
     name_p = f"{name_e[:-5]}.{args.output}"
     sys.stdout = orig_stdout
@@ -2061,7 +2067,7 @@ elif args.output == 'pdf':
             self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
                       new_y="NEXT", align='C')
             self.ln(1)
-            self.cell(0, 5, f"{GIT_URL[1]} | v.{version}", align='C')
+            self.cell(0, 5, f"{GIT_URL[1]} | v.{humble_local_v}", align='C')
             self.ln(9 if self.page_no() == 1 else 13)
 
         def footer(self):
@@ -2073,14 +2079,15 @@ elif args.output == 'pdf':
     pdf = PDF()
     generate_pdf(name_e, pdf)
 elif args.output == 'html':
+    # TO-DO: HTML template, value substitution, etc.
     html_title = get_detail('[pdf_meta_subject]')
     html_desc = get_detail('[pdf_meta_title]')
     html_keywords = get_detail('[pdf_meta_keywords]')
     html_head = f'<!DOCTYPE HTML><html lang="en"><head><meta http-equiv="\
 Content-Type" content="text/html; charset=utf-8"><meta name="description" \
 content="{html_desc} {URL}"><meta name="keywords" content="{html_keywords}">\
-<meta name="author" content="{GIT_URL[1]} | v.{version}">\
-<meta name="generator" content="{GIT_URL[1]} | v.{version}">\
+<meta name="author" content="{GIT_URL[1]} | v.{humble_local_v}">\
+<meta name="generator" content="{GIT_URL[1]} | v.{humble_local_v}">\
 <title>{html_title}</title><style>pre {{overflow-x: auto; white-space: \
 pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: \
 -o-pre-wrap; word-wrap: break-word; font-size: 13px;}} a {{color: blue; \
