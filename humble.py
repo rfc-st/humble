@@ -91,7 +91,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-version = datetime.strptime('2024-03-15', '%Y-%m-%d').date()
+version = datetime.strptime('2024-03-16', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -2048,6 +2048,8 @@ elif args.output == 'csv':
 elif args.output == 'json':
     generate_json(name_e, name_p)
 elif args.output == 'pdf':
+    # Lazy import of the dependency and logic associated with fpdf2, to
+    # slightly improve analysis times that do not require exporting to PDF.
     from fpdf import FPDF
 
     class PDF(FPDF):
