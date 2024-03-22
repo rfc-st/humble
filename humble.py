@@ -91,7 +91,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-humble_local_v = datetime.strptime('2024-03-16', '%Y-%m-%d').date()
+humble_local_v = datetime.strptime('2024-03-22', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -115,7 +115,7 @@ def check_python_version():
         else None
 
 
-def check_updates(humble_local_v):
+def check_humble_updates(humble_local_v):
     try:
         repo_check = requests.get(GIT_URL[0], timeout=10).text
         humble_remote = re.search(r"\d{4}-\d{2}-\d{2}", repo_check).group()
@@ -166,8 +166,11 @@ def fng_statistics_term(term):
             fng_source:
         fng_lines = fng_source.readlines()
     fng_group, term_count = fng_statistics_term_groups(fng_lines, term)
+    if not fng_group:
+        print(f"{get_detail('[fng_zero]', replace=True)} '{term}'.\n\n\
+{get_detail('[fng_zero_2]', replace=True)}.\n")
+        sys.exit()
     fng_statistics_term_content(fng_group, term, term_count, fng_lines)
-    sys.exit()
 
 
 def fng_statistics_term_groups(fng_ln, term):
@@ -181,10 +184,6 @@ def fng_statistics_term_groups(fng_ln, term):
 
 
 def fng_statistics_term_content(fng_group, term, term_count, fng_lines):
-    if not fng_group:
-        print(f"{get_detail('[fng_zero]', replace=True)} '{term}'.\n\n\
-{get_detail('[fng_zero_2]', replace=True)}.\n")
-        return
     excl_cnt = sum(line.startswith('#') for line in fng_lines) + 2
     headers_cnt = len(fng_lines)-excl_cnt
     fng_pct = round(term_count / headers_cnt * 100, 2)
@@ -202,6 +201,7 @@ def fng_statistics_term_sorted(fng_lines, term, fng_group):
             if term_l in line_l and content in line:
                 start_index = line.find('[')
                 print(f"  {line[:start_index].strip()}")
+    sys.exit()
 
 
 def print_security_guides():
@@ -501,13 +501,11 @@ def extract_global_metrics(c_history):
 
 
 def extract_global_first_metrics(url_ln):
+    split_lines = [line.split(' ; ') for line in url_ln]
     url_lines = {}
-    for line in url_ln:
-        url = line.split(' ; ')[1]
-        if url in url_lines:
-            url_lines[url] += 1
-        else:
-            url_lines[url] = 1
+    for entry in split_lines:
+        url = entry[1]
+        url_lines[url] = url_lines.get(url, 0) + 1
     return get_global_metrics(url_ln, url_lines)
 
 
@@ -598,42 +596,6 @@ def csp_print_warnings(csp_values, csp_title, csp_desc, csp_refs):
     print_detail_l(f'{csp_desc}')
     print(csp_values)
     print_detail(f'{csp_refs}')
-
-
-def csp_full_analysis(csp_header):
-    # TO-DO: detailed directives/values analysis, based on W3C CSP Level 2 & 3:
-    #
-    # 0.- Source values.
-    #
-    # 1.- Fetch directives: default-src, child-src, connect-src, font-src,
-    #     frame-src, img-src, manifest-src, media-src, object-src,
-    #     prefetch-src, script-src, script-src-elem, script-src-attr,
-    #     style-src, style-src-elem, style-src-attr, worker-src.
-    #
-    # 2.- Document directives: base-uri, sandbox.
-    #
-    # 3.- Navigation directives: form-action, frame-ancestors.
-    #
-    # 4.- Other directives: require-trusted-types-for, trusted-types,
-    #     upgrade-insecure-requests
-    #
-    # Perhaps with a new file, 'csp_analysis.py', which will contain a class
-    # (to be imported into 'humble.py') consisting of a function for each CSP
-    # directive (in charge of all security validations like permissive sources,
-    # unsafe values, incorrect values, absence of the directive itself, etc)
-    # and a function that aggregates the results of those analyses and returns
-    # it to 'humble.py' for text formatting, printing, etc.
-    #
-    # The following code is only a test.
-    csp_output = []
-    for directive in csp_header.split(';'):
-        dir_csp = directive.strip().split(' ', 1)
-        if dir_name := dir_csp[0]:
-            csp_output.extend([f" {Style.BRIGHT}{dir_name}{Style.RESET_ALL}"])
-            if len(dir_csp) > 1 and dir_csp[1]:
-                csp_output.append(f" {dir_csp[1]}")
-            csp_output.append("")
-    return '\n'.join(csp_output)
 
 
 def clean_shell_lines(reliable=True):
@@ -1117,20 +1079,19 @@ def analysis_filename(args, export_date, ext):
     return f"{url_sch}{url_sub}{url_dom}{url_tld}{url_prt}{export_date}{ext}"
 
 
-def handle_http_error(http_code, id_mode):
-    if str(http_code).startswith('5'):
-        clean_shell_lines()
-        print()
-        if (500 <= http_code <= 511) or (520 <= http_code <= 530):
-            if detail := print_detail(id_mode, 0):
-                print(detail)
-            else:
-                print((REF_ERROR[1] if (500 <= http_code <= 511) else
-                       REF_ERROR[0]) + str(http_code))
-        # For 5xx HTTP codes not in the ranges 500-511 or 520-530
+def handle_server_error(http_code, id_mode):
+    clean_shell_lines()
+    print()
+    if (500 <= http_code <= 511) or (520 <= http_code <= 530):
+        if detail := print_detail(id_mode, 0):
+            print(detail)
         else:
-            print_detail('[server_serror]', 1)
-        sys.exit()
+            print((REF_ERROR[1] if (500 <= http_code <= 511) else
+                   REF_ERROR[0]) + str(http_code))
+    # For 5xx HTTP codes not in the ranges (500-511) or (520-530)
+    else:
+        print_detail('[server_serror]', 1)
+    sys.exit()
 
 
 def make_http_request():
@@ -1171,7 +1132,8 @@ def handle_http_exception(r, exception_d):
     except requests.exceptions.HTTPError as err_http:
         http_code = err_http.response.status_code
         id_mode = f"[server_{http_code}]"
-        handle_http_error(http_code, id_mode)
+        if str(http_code).startswith('5'):
+            handle_server_error(http_code, id_mode)
     except tuple(exception_d.keys()) as e:
         ex = exception_d.get(type(e))
         if ex and (not callable(ex) or ex(e)):
@@ -1259,7 +1221,7 @@ check_python_version()
 
 # Checking parameters and their values
 if args.version:
-    check_updates(humble_local_v)
+    check_humble_updates(humble_local_v)
 
 if '-f' in sys.argv:
     fng_statistics_term(args.term) if args.term else fng_statistics_top()
