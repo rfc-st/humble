@@ -670,9 +670,7 @@ def print_extra_info(reliable):
     if args.redirects:
         print(get_detail('[analysis_redirects_note]', replace=True))
     if skipped_headers:
-        skipped_headers_str = ' '.join(header[0] for header in skipped_headers)
-        print_detail_l("[analysis_skipped_note]")
-        print(f" {skipped_headers_str}")
+        print_skipped_headers(skipped_headers)
 
 
 def print_response_headers():
@@ -852,13 +850,11 @@ def get_insecure_checks():
     insecure_header_set = set()
     with open(path.join(HUM_D[0], HUM_F[7]), "r") as ins_source:
         for line in ins_source:
-            line = line.strip()
             if line and not line.startswith('#'):
-                header = line.split(':')[0].strip()
-                insecure_header_set.add(header)
-    header_list = sorted(list(insecure_header_set))
-    return {key.lower(): str(index) for index, key in
-            enumerate(header_list, start=1)}
+                header = line.split(':')[0]
+                insecure_header_set.add(header.strip().lower())
+    header_list = sorted(insecure_header_set)
+    return {key: str(index) for index, key in enumerate(header_list)}
 
 
 def get_skipped_unsupported_headers(args, header_dict):
@@ -872,6 +868,15 @@ def get_skipped_unsupported_headers(args, header_dict):
         else:
             unsupported_headers.append(header_name)
     return skipped_headers, unsupported_headers, skipped_headers_v
+
+
+def print_skipped_headers(skipped_headers):
+    skipped_headers_full = ' '.join(header[0] for header in skipped_headers)
+    quoted_headers = [f"'{header}'" for header in skipped_headers_full.split()]
+    final_headers = ', '.join(quoted_headers) if len(quoted_headers) > 1 else \
+        quoted_headers[0]
+    print_detail_l("[analysis_skipped_note]")
+    print(f" {final_headers}")
 
 
 def print_unsupported_headers(unsupported_headers):

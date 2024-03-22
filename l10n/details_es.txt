@@ -709,7 +709,7 @@ Cabeceras de respuesta HTTP
  Nota : Se analizará la URL exacta, sin seguir redireccionamientos.
 
 [analysis_skipped_note]
- Nota : No se comprobarán los valores de las siguientes cabeceras HTTP de respuesta:
+ Nota : Omitidas comprobaciones de obsolescencia/valores para
 
 [analysis_redirects]
  Nota : Se ha indicado expresamente analizar la URL exacta, sin seguir redirecciones.
