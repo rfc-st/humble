@@ -51,6 +51,7 @@ import csv
 import ssl
 import sys
 import json
+import shutil
 import platform
 import requests
 import contextlib
@@ -71,7 +72,7 @@ HUM_D = ['additional', 'l10n']
 HUM_DESC = "'humble' (HTTP Headers Analyzer)"
 HUM_F = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
          'guides.txt', 'details_es.txt', 'details.txt', 'user_agents.txt',
-         'insecure.txt']
+         'insecure.txt', 'html_template.html']
 IP_PATTERN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
               r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
 LINE_PATTERN = r'\[(.*?)\]'
@@ -91,7 +92,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-humble_local_v = datetime.strptime('2024-03-22', '%Y-%m-%d').date()
+humble_local_v = datetime.strptime('2024-03-23', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1017,6 +1018,24 @@ def set_pdf_links(i, pdfstring):
         pdf.write(h=3, text=i[:i.index(": ")+2])
     pdf.set_text_color(0, 0, 255)
     pdf.cell(w=2000, h=3, text=i[i.index(": ")+2:], align="L", link=link_final)
+
+
+def generate_html():
+    shutil.copyfile(path.join(HUM_D[0], HUM_F[8]), name_p)
+
+    html_replace = {"html_title": get_detail('[pdf_meta_subject]'),
+                    "html_desc": get_detail('[pdf_meta_title]'),
+                    "html_keywords": get_detail('[pdf_meta_keywords]'),
+                    "humble_URL": GIT_URL[1], "humble_local_v": humble_local_v,
+                    "URL_analyzed": URL, "html_body": '<body><pre>'}
+
+    with open(name_p, "r", encoding='utf8') as html_temp:
+        temp_html_content = html_temp.read()
+        replaced_html = temp_html_content.format(**html_replace)
+
+    with open(name_p, "w", encoding='utf8') as html_final:
+        html_final.write(replaced_html)
+        replaced_html = replaced_html.replace('{{', '{')
 
 
 def format_html_info(condition, ln, sub_d):
@@ -2046,22 +2065,7 @@ elif args.output == 'pdf':
     pdf = PDF()
     generate_pdf(name_e, pdf)
 elif args.output == 'html':
-    # TO-DO: HTML template, value substitution, etc.
-    html_title = get_detail('[pdf_meta_subject]')
-    html_desc = get_detail('[pdf_meta_title]')
-    html_keywords = get_detail('[pdf_meta_keywords]')
-    html_head = f'<!DOCTYPE HTML><html lang="en"><head><meta http-equiv="\
-Content-Type" content="text/html; charset=utf-8"><meta name="description" \
-content="{html_desc} {URL}"><meta name="keywords" content="{html_keywords}">\
-<meta name="author" content="{GIT_URL[1]} | v.{humble_local_v}">\
-<meta name="generator" content="{GIT_URL[1]} | v.{humble_local_v}">\
-<title>{html_title}</title><style>pre {{overflow-x: auto; white-space: \
-pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: \
--o-pre-wrap; word-wrap: break-word; font-size: 13px;}} a {{color: blue; \
-text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
-.ko {{color: red;}} </style></head>'
-    html_body = '<body><pre>'
-    html_footer = '</pre></body></html>'
+    generate_html()
 
     l_miss.extend(['Pragma', 'WWW-Authenticate', 'X-Frame-Options',
                    'X-Robots-Tag', 'X-UA-compatible'])
@@ -2077,8 +2081,7 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
              'span_f': '</span>'}
 
     with open(name_e, 'r', encoding='utf8') as html_source, \
-            open(name_p, 'w', encoding='utf8') as html_final:
-        html_final.write(f"{html_head}{html_body}")
+            open(name_p, 'a', encoding='utf8') as html_final:
 
         for ln in html_source:
             ln_stripped = ln.rstrip('\n')
@@ -2122,7 +2125,7 @@ text-decoration: none;}} .ok {{color: green;}} .header {{color: #660033;}} \
                     if i[1:] in ln and '[' not in ln:
                         ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
                 html_final.write(ln)
-        html_final.write(html_footer)
+        html_final.write('</pre></body></html>')
 
     print_export_path(name_p, reliable)
     remove(name_e)
