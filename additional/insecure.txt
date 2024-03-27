@@ -64,6 +64,7 @@ Keep-Alive: Ignored Header
 Large-Allocation: Deprecated Header
 NEL: Missing Directives
 NEL: No Valid Directives
+No-Vary-Search: No Valid Directives
 Observe-Browsing-Topics: No Valid Directives
 Onion-Location: Potentially Unsafe Header
 Origin-Agent-Cluster: No Valid Directives

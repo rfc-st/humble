@@ -473,6 +473,9 @@
 [ifpoln_h]
  Permissions-Policy (No Valid Features)
 
+[ifnvarys_h]
+ No-Vary-Search (No Valid Directives)
+
 [ifpol_h]
  Permissions-Policy (Too Permissive Value)
 
@@ -856,6 +859,10 @@ HTTP Response Headers
 [iffea]
  "Feature-Policy" has been renamed to "Permissions-Policy".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
+
+[ifnvarys]
+ Include at least one valid directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/No-Vary-Search
 
 [ifpoln]
  Include at least one valid feature.
