@@ -59,6 +59,12 @@ import tldextract
 import subprocess
 import concurrent.futures
 
+BANNER = '''  _                     _     _
+ | |__  _   _ _ __ ___ | |__ | | ___
+ | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
+ | | | | |_| | | | | | | |_) | |  __/
+ |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
+'''
 BOLD = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
 BRIGHT_RED = f"{Style.BRIGHT}{Fore.RED}"
 CANIUSE_URL = ': https://caniuse.com/?search='
@@ -630,22 +636,19 @@ def print_fng_header(header):
         print(f"{BRIGHT_RED} {header}")
 
 
-def print_banner(reliable):
+def print_general_info(reliable):
     if not args.output:
         clean_shell_lines(reliable=False) if reliable else clean_shell_lines()
         print("")
-        banner = '''  _                     _     _
- | |__  _   _ _ __ ___ | |__ | | ___
- | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
- | | | | |_| | | | | | | |_) | |  __/
- |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
-'''
-        print(banner)
+        print(BANNER)
         print(f" ({GIT_URL[1]} | v.{humble_local_v})")
     elif args.output != 'pdf':
         print("")
         print(f"\n{HUM_DESC}\n{GIT_URL[1]} | v.{humble_local_v}\n")
     print_basic_info()
+    # Exporting a detailed analysis to CSV/JSON is complicated for now.
+    if args.output in ('csv', 'json'):
+        print(get_detail('[limited_analysis_note]', replace=True))
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
        args.redirects or skipped_headers:
         print_extra_info(reliable)
@@ -1271,7 +1274,6 @@ if any([args.brief, args.output, args.ret, args.redirects,
                                     or args.URL_A is None):
     parser.error(get_detail('[args_several]'))
 
-# Exporting a detailed analysis to CSV/JSON is tricky, too much effort.
 if args.output in ['csv', 'json'] and not args.brief:
     parser.error(get_detail('[args_csv_json]'))
 
@@ -1327,7 +1329,7 @@ if args.output:
     sys.stdout = f
 
 # Section '0. Info & HTTP Response Headers'
-print_banner(reliable)
+print_general_info(reliable)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
 # Section '1. Missing HTTP Security Headers'
