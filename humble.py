@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-humble_local_v = datetime.strptime('2024-03-27', '%Y-%m-%d').date()
+humble_local_v = datetime.strptime('2024-03-28', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1456,11 +1456,12 @@ l_csp_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
              'prefetch-src', 'referrer', 'report-uri', 'require-sri-for']
 
 l_csp_dirs = ['base-uri', 'child-src', 'connect-src', 'default-src',
-              'font-src', 'form-action', 'frame-ancestors', 'frame-src',
-              'img-src', 'manifest-src', 'media-src', 'navigate-to',
-              'object-src', 'report-to', 'require-trusted-types-for',
-              'sandbox', 'script-src', 'script-src-elem', 'script-src-attr',
-              'style-src', 'style-src-elem', 'style-src-attr', 'trusted-types',
+              'fenced-frame-src', 'font-src', 'form-action', 'frame-ancestors',
+              'frame-src', 'img-src', 'manifest-src', 'media-src',
+              'navigate-to', 'object-src', 'report-to',
+              'require-trusted-types-for', 'sandbox', 'script-src',
+              'script-src-attr', 'script-src-elem', 'style-src',
+              'style-src-attr', 'style-src-elem', 'trusted-types',
               'upgrade-insecure-requests', 'webrtc', 'worker-src']
 
 l_csp_insecs = ['http:', 'ws:']
