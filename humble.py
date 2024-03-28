@@ -205,7 +205,7 @@ def fng_statistics_term_sorted(fng_lines, term, fng_group):
         print(f"\n [{content}]")
         for line in fng_lines:
             line_l = line.lower()
-            if term_l in line_l and content in line:
+            if f"[{content.lower()}]" in line_l and term_l in line_l:
                 start_index = line.find('[')
                 print(f"  {line[:start_index].strip()}")
     sys.exit()
