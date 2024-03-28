@@ -735,7 +735,7 @@ def get_epilog_detail(id_mode):
     with open(epi_file_path, 'r', encoding='utf8') as epi_source:
         epi_lines = epi_source.readlines()
         epi_idx = epi_lines.index(id_mode + '\n')
-        return ''.join(epi_lines[epi_idx+1:epi_idx+10])
+        return ''.join(epi_lines[epi_idx+1:epi_idx+12])
 
 
 def print_fingerprint_headers(headers, l_fng, l_fng_ex):
