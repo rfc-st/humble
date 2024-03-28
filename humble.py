@@ -1442,7 +1442,7 @@ l_csdata = ['cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
             '*']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
-l_cencoding = ['br', 'compress', 'deflate', 'gzip', 'x-gzip']
+l_cencoding = ['br', 'compress', 'deflate', 'gzip', 'x-gzip', 'zstd']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 # https://www.w3.org/TR/CSP2/
@@ -1553,7 +1553,7 @@ l_setlogin = ['logged-in', 'logged-out']
 l_sts_dir = ['includesubdomains', 'max-age']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
-l_support_mode = ['credentialed-prerender']
+l_support_mode = ['credentialed-prerender', 'fenced-frame']
 
 # https://www.w3.org/TR/edge-arch/
 l_surrogate = ['content', 'extension-directive', 'max-age', 'no-store',
@@ -1566,7 +1566,7 @@ l_trailer = ['authorization', 'cache-control', 'content-encoding',
              'transfer-encoding']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
-l_transfer = ['chunked', 'compress', 'deflate', 'gzip']
+l_transfer = ['chunked', 'compress', 'deflate', 'gzip', 'x-gzip']
 
 # https://getbutterfly.com/security-headers-a-concise-guide/
 # https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
