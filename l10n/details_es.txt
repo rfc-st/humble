@@ -709,7 +709,7 @@ Cabeceras de respuesta HTTP
  Nota : El análisis puede no ser fiable por el tiempo que tardó en responder la URL.
 
 [limited_analysis_note]
- Nota: Exportar a CSV/JSON limita actualmente a un análisis breve.
+ Nota: Exportar a CSV/JSON limita actualmente a un análisis breve
 
 [analysis_redirects_note]
  Nota : Se analizará la URL exacta, sin seguir redireccionamientos.

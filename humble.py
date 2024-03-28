@@ -891,17 +891,17 @@ def print_unsupported_headers(unsupported_headers):
     sys.exit()
 
 
-def generate_csv(temp_file, final_file):
-    with open(temp_file, 'r', encoding='utf-8') as txt_source, \
-         open(final_file, 'w', newline='', encoding='utf-8') as csv_final:
+def generate_csv(temp_filename, final_filename):
+    with open(temp_filename, 'r', encoding='utf-8') as txt_source, \
+         open(final_filename, 'w', newline='', encoding='utf-8') as csv_final:
         csv_source = txt_source.read()
         csv_writer = csv.writer(csv_final, quoting=csv.QUOTE_ALL)
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
         csv_writer.writerow([get_detail(f'[{i}]', replace=True) for i in
                              ['csv_section', 'csv_values']])
         parse_csv(csv_writer, csv_source, csv_section)
-    print_export_path(final_file, reliable)
-    remove(temp_file)
+    print_export_path(final_filename, reliable)
+    remove(temp_filename)
 
 
 def parse_csv(csv_writer, csv_source, csv_section):
@@ -919,19 +919,19 @@ def parse_csv(csv_writer, csv_source, csv_section):
                     csv_writer.writerow([i.strip('[]'), csv_ln])
 
 
-def generate_json(temp_file, final_file):
+def generate_json(temp_filename, final_filename):
     section0, sectionh, section5 = [get_detail(f'[{i}]', replace=True) for i
                                     in ['0section', '0headers', '5compat']]
-    with (open(temp_file, 'r', encoding='utf8') as txt_source,
-          open(final_file, 'w', encoding='utf8') as json_final):
+    with (open(temp_filename, 'r', encoding='utf8') as txt_source,
+          open(final_filename, 'w', encoding='utf8') as json_final):
         txt_content = txt_source.read()
         txt_sections = re.split(r'\[(.*?)\]\n', txt_content)[1:]
         data = {}
         parse_json_sections(txt_sections, data, section0, sectionh, section5)
         json_data = json.dumps(data, indent=4, ensure_ascii=False)
         json_final.write(json_data)
-    print_export_path(final_file, reliable)
-    remove(temp_file)
+    print_export_path(final_filename, reliable)
+    remove(temp_filename)
 
 
 def parse_json_sections(txt_sections, data, section0, sectionh, section5):
@@ -960,9 +960,9 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
     return json_data
 
 
-def generate_pdf(temp_file, pdf):
+def generate_pdf(temp_filename, pdf):
     set_pdf_structure()
-    with open(temp_file, "r", encoding='utf8') as txt_source:
+    with open(temp_filename, "r", encoding='utf8') as txt_source:
         links_strings = (URL_S, REF_LINKS[2], REF_LINKS[3], CANIUSE_URL)
         for i in txt_source:
             if '[' in i:
@@ -973,9 +973,9 @@ def generate_pdf(temp_file, pdf):
                     set_pdf_links(i, string)
             pdf.set_text_color(0, 0, 0)
             pdf.multi_cell(197, 2.6, text=i, align='L')
-    pdf.output(final_file)
-    print_export_path(final_file, reliable)
-    remove(temp_file)
+    pdf.output(final_filename)
+    print_export_path(final_filename, reliable)
+    remove(temp_filename)
 
 
 def set_pdf_structure():
@@ -1024,14 +1024,14 @@ def set_pdf_links(i, pdfstring):
 
 
 def generate_html():
-    shutil.copyfile(path.join(HUM_D[0], HUM_F[8]), final_file)
+    shutil.copyfile(path.join(HUM_D[0], HUM_F[8]), final_filename)
     html_replace = {"html_title": get_detail('[pdf_meta_subject]'),
                     "html_desc": get_detail('[pdf_meta_title]'),
                     "html_keywords": get_detail('[pdf_meta_keywords]'),
                     "humble_URL": GIT_URL[1], "humble_local_v": humble_local_v,
                     "URL_analyzed": URL, "html_body": '<body><pre>', "}}": '}',
                     "{{": '}'}
-    with open(final_file, "r+", encoding='utf8') as html_file:
+    with open(final_filename, "r+", encoding='utf8') as html_file:
         temp_html_content = html_file.read()
         replaced_html = temp_html_content.format(**html_replace)
         html_file.seek(0)
@@ -1092,7 +1092,7 @@ def print_ru_message():
             sys.exit()
 
 
-def analysis_filename(args, export_date, ext):
+def analysis_filename(args, export_date, file_ext):
     url_str = tldextract.extract(args.URL)
     url_sch = urlparse(args.URL).scheme
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
@@ -1100,7 +1100,8 @@ def analysis_filename(args, export_date, ext):
     url_tld = url_str.suffix
     url_prt = f"_{urlparse(args.URL).port}_" if urlparse(args.URL).port is not\
         None else '_'
-    return f"{url_sch}{url_sub}{url_dom}{url_tld}{url_prt}{export_date}{ext}"
+    return f"{url_sch}{url_sub}{url_dom}{url_tld}{url_prt}{export_date}\
+{file_ext}"
 
 
 def handle_server_error(http_code, id_mode):
@@ -1321,12 +1322,12 @@ headers, status_code, reliable, request_time = manage_http_request()
 # File name with analysis results
 if args.output:
     orig_stdout = sys.stdout
-    ext = ".txt" if args.output == 'txt' else "t.txt"
-    temp_file = analysis_filename(args, export_date, ext)
+    file_ext = ".txt" if args.output == 'txt' else "t.txt"
+    temp_filename = analysis_filename(args, export_date, file_ext)
     if args.output_path:
-        temp_file = path.join(output_path, temp_file)
-    f = open(temp_file, 'w', encoding='utf8')
-    sys.stdout = f
+        temp_filename = path.join(output_path, temp_filename)
+    temp_filename_content = open(temp_filename, 'w', encoding='utf8')
+    sys.stdout = temp_filename_content
 
 # Section '0. Info & HTTP Response Headers'
 print_general_info(reliable)
@@ -2038,15 +2039,15 @@ get_analysis_result()
 
 # For exporting analyses
 if args.output:
-    final_file = f"{temp_file[:-5]}.{args.output}"
+    final_filename = f"{temp_filename[:-5]}.{args.output}"
     sys.stdout = orig_stdout
-    f.close()
+    temp_filename_content.close()
 if args.output == 'txt':
-    print_export_path(temp_file, reliable)
+    print_export_path(temp_filename, reliable)
 elif args.output == 'csv':
-    generate_csv(temp_file, final_file)
+    generate_csv(temp_filename, final_filename)
 elif args.output == 'json':
-    generate_json(temp_file, final_file)
+    generate_json(temp_filename, final_filename)
 elif args.output == 'pdf':
     # Lazy import of the dependency and logic associated with fpdf2, to
     # slightly improve analysis times that do not require exporting to PDF.
@@ -2071,7 +2072,7 @@ elif args.output == 'pdf':
             self.cell(0, 10, get_detail('[pdf_footer]') + str(self.page_no()) +
                       get_detail('[pdf_footer2]') + ' {nb}', align='C')
     pdf = PDF()
-    generate_pdf(temp_file, pdf)
+    generate_pdf(temp_filename, pdf)
 elif args.output == 'html':
     generate_html()
 
@@ -2088,8 +2089,8 @@ elif args.output == 'html':
              'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
              'span_f': '</span>'}
 
-    with open(temp_file, 'r', encoding='utf8') as html_source, \
-            open(final_file, 'a', encoding='utf8') as html_final:
+    with open(temp_filename, 'r', encoding='utf8') as html_source, \
+            open(final_filename, 'a', encoding='utf8') as html_final:
 
         for ln in html_source:
             ln_stripped = ln.rstrip('\n')
@@ -2135,5 +2136,5 @@ elif args.output == 'html':
                 html_final.write(ln)
         html_final.write('</pre></body></html>')
 
-    print_export_path(final_file, reliable)
-    remove(temp_file)
+    print_export_path(final_filename, reliable)
+    remove(temp_filename)
