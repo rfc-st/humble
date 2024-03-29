@@ -1074,12 +1074,6 @@ def format_html_caniuse(ln, sub_d):
     html_final.write(ln)
 
 
-def format_html_empty(i, ln, ln_stripped, sub_d):
-    if i in ln_stripped and '[' not in ln_stripped:
-        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
-    html_final.write(ln)
-
-
 def format_html_bold(ln):
     html_final.write(f'<strong>{ln}</strong><br>')
 
@@ -2101,7 +2095,7 @@ elif args.output == 'html':
 
     sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
              'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
-             'span_f': '</span>', 'pre_final': '</pre></body></html>'}
+             'span_f': '</span>'}
 
     with open(temp_filename, 'r', encoding='utf8') as html_source, \
             open(final_filename, 'a', encoding='utf8') as html_final:
@@ -2145,8 +2139,10 @@ elif args.output == 'html':
                         ln = ln.replace(ln, sub_d['span_ko'] +
                                         ln + sub_d['span_f'])
                 for i in l_empty:
-                    format_html_empty(i, ln, ln_stripped, sub_d)
-        html_final.write(sub_d['pre_final'])
+                    if i in ln_stripped and '[' not in ln_stripped:
+                        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+                html_final.write(ln)
+        html_final.write('</pre></body></html>')
 
     print_export_path(final_filename, reliable)
     remove(temp_filename)
