@@ -162,7 +162,7 @@
  Server error, generally associated with a CDN (HTTP code 530, 'Review accompanying 1XXX error')
 
 [ixuacom_h]
- X-UA-compatible (Deprecated Header)
+ X-UA-Compatible (Deprecated Header)
 
 [ixuacom]
  Unless you need compatibility with very old versions of Internet Explorer (e.g. 6 to 8),

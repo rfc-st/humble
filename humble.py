@@ -98,7 +98,7 @@ URL_S = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-humble_local_v = datetime.strptime('2024-03-28', '%Y-%m-%d').date()
+humble_local_v = datetime.strptime('2024-03-29', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1413,17 +1413,22 @@ i_cnt = [0]
 if not args.brief:
     print_detail("[aisc]")
 
-l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Methods',
-         'Access-Control-Allow-Origin', 'Allow', 'Content-DPR', 'Content-Type',
+l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Credentials',
+         'Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
+         'Access-Control-Max-Age', 'Allow', 'Content-DPR', 'Content-Encoding',
+         'Content-Security-Policy-Report-Only', 'Content-Type', 'Critical-CH',
          'Digest', 'Etag', 'Expect-CT', 'Expires', 'Feature-Policy',
-         'Large-Allocation', 'Onion-Location', 'P3P', 'Pragma',
-         'Public-Key-Pins', 'Public-Key-Pins-Report-Only', 'Set-Cookie',
-         'Server-Timing', 'SourceMap', 'Strict-Dynamic', 'Surrogate-Control',
-         'Timing-Allow-Origin', 'Tk', 'Vary', 'Warning',
+         'Keep-Alive', 'Large-Allocation', 'No-Vary-Search',
+         'Observe-Browsing-Topics', 'Onion-Location', 'Origin-Agent-Cluster',
+         'P3P', 'Pragma', 'Proxy-Authenticate', 'Public-Key-Pins',
+         'Public-Key-Pins-Report-Only', 'Set-Cookie', 'Server-Timing',
+         'SourceMap', 'Strict-Dynamic', 'Supports-Loading-Mode',
+         'Surrogate-Control', 'Timing-Allow-Origin', 'Tk', 'Trailer',
+         'Transfer-Encoding', 'Vary', 'WWW-Authenticate', 'Warning',
          'X-Content-Security-Policy', 'X-Content-Security-Policy-Report-Only',
          'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad',
-         'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Runtime',
-         'X-SourceMap', 'X-UA-Compatible', 'X-Webkit-CSP',
+         'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Robots-Tag',
+         'X-Runtime', 'X-SourceMap', 'X-UA-Compatible', 'X-Webkit-CSP',
          'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
@@ -2076,8 +2081,6 @@ elif args.output == 'pdf':
 elif args.output == 'html':
     generate_html()
 
-    l_miss.extend(['Pragma', 'WWW-Authenticate', 'X-Frame-Options',
-                   'X-Robots-Tag', 'X-UA-compatible'])
     l_final = sorted(l_miss + l_ins)
     l_fng_final = sorted(l_fng)
     l_fng_final_case = [x.casefold() for x in l_fng_final]

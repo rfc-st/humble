@@ -162,7 +162,7 @@
  Error en servidor, asociado habitualmente con un CDN (código HTTP 530, 'Review accompanying 1XXX error')
 
 [ixuacom_h]
- X-UA-compatible (Cabecera obsoleta)
+ X-UA-Compatible (Cabecera obsoleta)
 
 [ixuacom]
  A menos que necesite compatibilidad con versiones muy antiguas de Internet Explorer 
