@@ -1063,7 +1063,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
 [aemp]
- Las siguientes cabeceras no tienen valor (equivalente a no estar definidas):
+ Cabeceras HTTP vacías (y por ello se consideran deshabilitadas):
 
 [afgp]
  Estas cabeceras pueden exponer datos sensibles (software, versiones, hosts, etc):

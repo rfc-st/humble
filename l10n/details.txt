@@ -1060,7 +1060,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
 [aemp]
- The following headers have no value (could be equivalent to as if they were not enabled):
+ Empty HTTP headers (and are therefore considered disabled):
 
 [afgp]
  These headers can leak information about software, versions, hostnames or IP addresses:

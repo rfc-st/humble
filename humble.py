@@ -770,7 +770,7 @@ def print_empty_headers(headers, l_empty):
     e_cnt = 0
     for key in sorted(headers):
         if not headers[key]:
-            l_empty.append(f"_{key}")
+            l_empty.append(f"{key}")
             print_header(key)
             e_cnt += 1
     return e_cnt
@@ -1071,6 +1071,12 @@ def format_html_caniuse(ln, sub_d):
     ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: {sub_d['span_f']}\
 {sub_d['ahref_s']}{ln[ln.index(HTTP_SCHEMES[1]):]}{sub_d['close_t']}\
 {ln[ln.index(HTTP_SCHEMES[1]):]}{sub_d['ahref_f']}<br>"
+    html_final.write(ln)
+
+
+def format_html_empty(i, ln, ln_stripped, sub_d):
+    if i in ln_stripped and '[' not in ln_stripped:
+        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
     html_final.write(ln)
 
 
@@ -2095,7 +2101,7 @@ elif args.output == 'html':
 
     sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
              'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
-             'span_f': '</span>'}
+             'span_f': '</span>', 'pre_final': '</pre></body></html>'}
 
     with open(temp_filename, 'r', encoding='utf8') as html_source, \
             open(final_filename, 'a', encoding='utf8') as html_final:
@@ -2139,10 +2145,8 @@ elif args.output == 'html':
                         ln = ln.replace(ln, sub_d['span_ko'] +
                                         ln + sub_d['span_f'])
                 for i in l_empty:
-                    if i[1:] in ln and '[' not in ln:
-                        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
-                html_final.write(ln)
-        html_final.write('</pre></body></html>')
+                    format_html_empty(i, ln, ln_stripped, sub_d)
+        html_final.write(sub_d['pre_final'])
 
     print_export_path(final_filename, reliable)
     remove(temp_filename)
