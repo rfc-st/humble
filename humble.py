@@ -65,20 +65,26 @@ BANNER = '''  _                     _     _
  | | | | |_| | | | | | | |_) | |  __/
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
-BOLD = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[Cabeceras")
+BOLD_SECTION = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
+                "[Cabeceras")
 BRIGHT_RED = f"{Style.BRIGHT}{Fore.RED}"
 CANIUSE_URL = ': https://caniuse.com/?search='
 CLEAN_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat']
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
-GIT_URL = ['https://raw.githubusercontent.com/rfc-st/humble/master/humble.py',
-           'https://github.com/rfc-st/humble']
-HUM_D = ['additional', 'l10n']
-HUM_DESC = "'humble' (HTTP Headers Analyzer)"
-HUM_F = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
-         'guides.txt', 'details_es.txt', 'details.txt', 'user_agents.txt',
-         'insecure.txt', 'html_template.html']
+HTTP_ERRORS = [' Ref  : https://developers.cloudflare.com/support/\
+troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/',
+               ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
+Status/']
+HTTP_SCHEMES = ['http:', 'https:']
+HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
+HUMBLE_DIRS = ['additional', 'l10n']
+HUMBLE_FILES = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
+                'guides.txt', 'details_es.txt', 'details.txt',
+                'user_agents.txt', 'insecure.txt', 'html_template.html']
+HUMBLE_GIT = ['https://raw.githubusercontent.com/rfc-st/humble/master/humble.p\
+y', 'https://github.com/rfc-st/humble']
 IP_PATTERN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
               r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
 LINE_PATTERN = r'\[(.*?)\]'
@@ -87,14 +93,9 @@ NON_RU_TLD = ['CYMRU', 'GURU', 'PRU']
 PATH_PATTERN = (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
                 r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
                 r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')
-REF_ERROR = [' Ref  : https://developers.cloudflare.com/support/\
-troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/',
-             ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Status\
-/']
 REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
-RU_CHECK = ['https://ipapi.co/country_name/', 'RU', 'Russia']
-SCHEME = ['http:', 'https:']
-URL_S = ' URL  : '
+RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
+URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
@@ -124,7 +125,7 @@ def check_python_version():
 
 def check_humble_updates(humble_local_v):
     try:
-        repo_check = requests.get(GIT_URL[0], timeout=10).text
+        repo_check = requests.get(HUMBLE_GIT[0], timeout=10).text
         humble_remote = re.search(r"\d{4}-\d{2}-\d{2}", repo_check).group()
         humble_remote_v = datetime.strptime(humble_remote, '%Y-%m-%d').date()
         if humble_remote_v > humble_local_v:
@@ -140,7 +141,8 @@ def check_humble_updates(humble_local_v):
 def fng_statistics_top():
     print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fng_f:
+    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
+              encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
     fng_statistics_top_groups(fng_lines)
     sys.exit()
@@ -169,8 +171,8 @@ def fng_statistics_top_result(fng_content, headers_cnt):
 def fng_statistics_term(term):
     print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as \
-            fng_source:
+    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
+              encoding='utf8') as fng_source:
         fng_lines = fng_source.readlines()
     fng_group, term_count = fng_statistics_term_groups(fng_lines, term)
     if not fng_group:
@@ -213,8 +215,8 @@ def fng_statistics_term_sorted(fng_lines, term, fng_group):
 
 def print_security_guides():
     print_detail('[security_guides]', 1)
-    with open(path.join(HUM_D[0], HUM_F[3]), 'r', encoding='utf8') as \
-            guides_source:
+    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
+              encoding='utf8') as guides_source:
         for line in guides_source:
             if not line.startswith('#'):
                 print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
@@ -261,8 +263,8 @@ def testssl_analysis(command):
 
 
 def get_l10n_details():
-    l10n_file_path = path.join(HUM_D[1], HUM_F[4] if args.lang == 'es' else
-                               HUM_F[5])
+    l10n_file_path = path.join(HUMBLE_DIRS[1], HUMBLE_FILES[4] if args.lang ==
+                               'es' else HUMBLE_FILES[5])
     with open(l10n_file_path, 'r', encoding='utf8') as l10n_source:
         return l10n_source.readlines()
 
@@ -281,8 +283,8 @@ def get_analysis_result():
 
 
 def get_analysis_totals(t_cnt):
-    with open(HUM_F[0], 'a+', encoding='utf8') as add_analysis, \
-         open(HUM_F[0], 'r', encoding='utf8') as all_analysis:
+    with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as add_analysis, \
+         open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
         add_analysis.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
 {e_cnt} ; {t_cnt}\n")
         url_ln = [line for line in all_analysis if URL in line]
@@ -325,8 +327,8 @@ def analysis_exists(filepath):
 
 
 def url_analytics(is_global=False):
-    analysis_exists(HUM_F[0])
-    with open(HUM_F[0], 'r', encoding='utf8') as c_history:
+    analysis_exists(HUMBLE_FILES[0])
+    with open(HUMBLE_FILES[0], 'r', encoding='utf8') as c_history:
         analysis_stats = extract_global_metrics(c_history) if is_global else \
             extract_analysis_metrics(c_history)
     stats_s = '[global_stats_analysis]' if is_global else '[stats_analysis]'
@@ -641,10 +643,10 @@ def print_general_info(reliable):
         clean_shell_lines(reliable=False) if reliable else clean_shell_lines()
         print("")
         print(BANNER)
-        print(f" ({GIT_URL[1]} | v.{humble_local_v})")
+        print(f" ({HUMBLE_GIT[1]} | v.{humble_local_v})")
     elif args.output != 'pdf':
         print("")
-        print(f"\n{HUM_DESC}\n{GIT_URL[1]} | v.{humble_local_v}\n")
+        print(f"\n{HUMBLE_DESC}\n{HUMBLE_GIT[1]} | v.{humble_local_v}\n")
     print_basic_info()
     # Exporting a detailed analysis to CSV/JSON is complicated for now.
     if args.output in ('csv', 'json'):
@@ -660,7 +662,7 @@ def print_basic_info():
     print_detail_r('[0section]')
     print_detail_l('[analysis_date]')
     print(f" {now}")
-    print(f'{URL_S}{URL}')
+    print(f'{URL_STRING}{URL}')
 
 
 def print_extra_info(reliable):
@@ -668,7 +670,7 @@ def print_extra_info(reliable):
         id_mode = f"[http_{status_code}]"
         if detail := print_detail(id_mode, 0):
             print(detail)
-        print(f"{REF_ERROR[1]}{status_code}")
+        print(f"{HTTP_ERRORS[1]}{status_code}")
     if reliable:
         print(get_detail('[unreliable_analysis_note]', replace=True))
     if args.redirects:
@@ -731,7 +733,7 @@ def get_detail(id_mode, replace=False):
 
 
 def get_epilog_detail(id_mode):
-    epi_file_path = path.join(HUM_D[1], HUM_F[5])
+    epi_file_path = path.join(HUMBLE_DIRS[1], HUMBLE_FILES[5])
     with open(epi_file_path, 'r', encoding='utf8') as epi_source:
         epi_lines = epi_source.readlines()
         epi_idx = epi_lines.index(id_mode + '\n')
@@ -792,12 +794,12 @@ def check_path_traversal(path):
 
 def check_path_permissions(output_path):
     try:
-        open(path.join(output_path, HUM_F[1]), 'w')
+        open(path.join(output_path, HUMBLE_FILES[1]), 'w')
     except PermissionError:
         parser.error(f"{get_detail('[args_nowr]', replace=True)}\
 '{output_path}'")
     else:
-        remove(path.join(output_path, HUM_F[1]))
+        remove(path.join(output_path, HUMBLE_FILES[1]))
 
 
 def check_output_path(args, output_path):
@@ -829,8 +831,8 @@ def parse_user_agent(user_agent=False):
 
 
 def get_user_agent(ua_param):
-    with open(path.join(HUM_D[0], HUM_F[6]), 'r', encoding='utf-8') as \
-            ua_source:
+    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
+              encoding='utf-8') as ua_source:
         ua_lines = [line.strip() for line in ua_source.readlines() if not
                     line.startswith('#')]
     if ua_param == str(0):
@@ -852,7 +854,7 @@ def print_user_agents(ua_lines):
 
 def get_insecure_checks():
     insecure_header_set = set()
-    with open(path.join(HUM_D[0], HUM_F[7]), "r") as ins_source:
+    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[7]), "r") as ins_source:
         for line in ins_source:
             if line and not line.startswith('#'):
                 header = line.split(':')[0]
@@ -963,11 +965,12 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
 def generate_pdf(temp_filename, pdf):
     set_pdf_structure()
     with open(temp_filename, "r", encoding='utf8') as txt_source:
-        links_strings = (URL_S, REF_LINKS[2], REF_LINKS[3], CANIUSE_URL)
+        links_strings = (URL_STRING, REF_LINKS[2], REF_LINKS[3], CANIUSE_URL)
         for i in txt_source:
             if '[' in i:
                 set_pdf_sections(i)
-            pdf.set_font(style='B' if any(s in i for s in BOLD) else '')
+            pdf.set_font(style='B' if any(s in i for s in BOLD_SECTION)
+                         else '')
             for string in links_strings:
                 if string in i:
                     set_pdf_links(i, string)
@@ -988,7 +991,7 @@ def set_pdf_structure():
 
 def set_pdf_metadata():
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
-    git_urlc = f"{GIT_URL[1]} | v.{humble_local_v}"
+    git_urlc = f"{HUMBLE_GIT[1]} | v.{humble_local_v}"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = now
     pdf.set_creator(git_urlc)
@@ -1010,11 +1013,12 @@ def set_pdf_sections(i):
 
 def set_pdf_links(i, pdfstring):
     link_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
-    links_d = {URL_S: URL, REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
+    links_d = {URL_STRING: URL,
+               REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
                REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
                CANIUSE_URL: i.partition(': ')[2].strip()}
     link_final = links_d.get(pdfstring)
-    if pdfstring in (URL_S, REF_LINKS[2], REF_LINKS[3]):
+    if pdfstring in (URL_STRING, REF_LINKS[2], REF_LINKS[3]):
         prefix = link_prefixes.get(pdfstring, pdfstring)
         pdf.write(h=3, text=prefix)
     else:
@@ -1024,13 +1028,13 @@ def set_pdf_links(i, pdfstring):
 
 
 def generate_html():
-    shutil.copyfile(path.join(HUM_D[0], HUM_F[8]), final_filename)
+    shutil.copyfile(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[8]), final_filename)
     html_replace = {"html_title": get_detail('[pdf_meta_subject]'),
                     "html_desc": get_detail('[pdf_meta_title]'),
                     "html_keywords": get_detail('[pdf_meta_keywords]'),
-                    "humble_URL": GIT_URL[1], "humble_local_v": humble_local_v,
-                    "URL_analyzed": URL, "html_body": '<body><pre>', "}}": '}',
-                    "{{": '}'}
+                    "humble_URL": HUMBLE_GIT[1],
+                    "humble_local_v": humble_local_v, "URL_analyzed": URL,
+                    "html_body": '<body><pre>', "}}": '}', "{{": '}'}
     with open(final_filename, "r+", encoding='utf8') as html_file:
         temp_html_content = html_file.read()
         replaced_html = temp_html_content.format(**html_replace)
@@ -1065,8 +1069,8 @@ def format_html_refs(condition, ln, sub_d):
 
 def format_html_caniuse(ln, sub_d):
     ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: {sub_d['span_f']}\
-{sub_d['ahref_s']}{ln[ln.index(SCHEME[1]):]}{sub_d['close_t']}\
-{ln[ln.index(SCHEME[1]):]}{sub_d['ahref_f']}<br>"
+{sub_d['ahref_s']}{ln[ln.index(HTTP_SCHEMES[1]):]}{sub_d['close_t']}\
+{ln[ln.index(HTTP_SCHEMES[1]):]}{sub_d['ahref_f']}<br>"
     html_final.write(ln)
 
 
@@ -1085,9 +1089,9 @@ def print_ru_message():
     with contextlib.suppress(requests.exceptions.RequestException):
         requests.packages.urllib3.disable_warnings()
         sffx = tldextract.extract(URL).suffix[-2:].upper()
-        cnty = requests.get(RU_CHECK[0], verify=False, timeout=5).text.strip()
-        if (sffx == RU_CHECK[1] and sffx not in NON_RU_TLD) or cnty ==\
-           RU_CHECK[2]:
+        cnty = requests.get(RU_CHECKS[0], verify=False, timeout=5).text.strip()
+        if (sffx == RU_CHECKS[1] and sffx not in NON_RU_TLD) or cnty == \
+                RU_CHECKS[2]:
             print_detail('[ru_analysis_message]', 3)
             sys.exit()
 
@@ -1111,8 +1115,8 @@ def handle_server_error(http_code, id_mode):
         if detail := print_detail(id_mode, 0):
             print(detail)
         else:
-            print((REF_ERROR[1] if (500 <= http_code <= 511) else
-                   REF_ERROR[0]) + str(http_code))
+            print((HTTP_ERRORS[1] if (500 <= http_code <= 511) else
+                   HTTP_ERRORS[0]) + str(http_code))
     # For 5xx HTTP codes not in the ranges (500-511) or (520-530)
     else:
         print_detail('[server_serror]', 1)
@@ -1202,7 +1206,7 @@ init(autoreset=True)
 epi_text = get_epilog_detail('[epilog_content]')
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
-                        description=f"{HUM_DESC} | {GIT_URL[1]} | \
+                        description=f"{HUMBLE_DESC} | {HUMBLE_GIT[1]} | \
 v.{humble_local_v}", epilog=epi_text)
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
@@ -1388,7 +1392,8 @@ if not args.brief:
 
 l_fng, l_fng_ex = [], []
 
-with open(path.join(HUM_D[0], HUM_F[2]), 'r', encoding='utf8') as fng_source:
+with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r', encoding='utf8') \
+     as fng_source:
     for line in fng_source:
         fng_stripped_ln = line.strip()
         if fng_stripped_ln and not line.startswith('#'):
@@ -1591,7 +1596,7 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
 
-unsafe_scheme = True if URL.startswith(SCHEME[0]) else False
+unsafe_scheme = True if URL.startswith(HTTP_SCHEMES[0]) else False
 
 if 'Accept-CH' in headers and '1' not in skipped_headers_v:
     acceptch_header = headers['Accept-CH'].lower()
@@ -2067,7 +2072,7 @@ elif args.output == 'pdf':
             self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
                       new_y="NEXT", align='C')
             self.ln(1)
-            self.cell(0, 5, f"{GIT_URL[1]} | v.{humble_local_v}", align='C')
+            self.cell(0, 5, f"{HUMBLE_GIT[1]} | v.{humble_local_v}", align='C')
             self.ln(9 if self.page_no() == 1 else 13)
 
         def footer(self):
@@ -2097,10 +2102,10 @@ elif args.output == 'html':
 
         for ln in html_source:
             ln_stripped = ln.rstrip('\n')
-            if 'rfc-st' in ln or URL_S in ln:
-                condition = 'rfc-st' if 'rfc-st' in ln else URL_S
+            if 'rfc-st' in ln or URL_STRING in ln:
+                condition = 'rfc-st' if 'rfc-st' in ln else URL_STRING
                 format_html_info(condition, ln_stripped, sub_d)
-            elif any(s in ln for s in BOLD):
+            elif any(s in ln for s in BOLD_SECTION):
                 format_html_bold(ln_stripped)
             elif ok_string in ln or ko_string in ln:
                 condition = ok_string if ok_string in ln else ko_string
