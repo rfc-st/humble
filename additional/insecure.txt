@@ -81,6 +81,7 @@ Public-Key-Pins-Report-Only: Deprecated Header
 Referrer-Policy: Incorrect Value
 Referrer-Policy: Recommended Values
 Referrer-Policy: Unsafe Value
+Reporting-Endpoints: Ignored Value
 Server-Timing: Potentially Unsafe Header
 Set-Cookie: Cookie Prefixes
 Set-Cookie: Insecure Attributes

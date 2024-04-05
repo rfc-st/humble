@@ -512,6 +512,9 @@
 [irefn_h]
  Referrer-Policy (Incorrect Value)
 
+[irepe_h]
+ Reporting-Endpoints (Ignored Value)
+
 [itim_h]
  Server-Timing (Potentially Unsafe Header)
 
@@ -928,6 +931,10 @@ HTTP Response Headers
 [irefn]
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
+[irepe]
+ Insecure endpoints ('http:') are ignored.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Reporting-Endpoints
 
 [iset]
  Enable 'Secure' and 'HttpOnly': to send it via HTTPS and not be accessed by client APIs.

@@ -512,6 +512,9 @@
 [irefn_h]
  Referrer-Policy (Valor incorrecto)
 
+[irepe_h]
+ Reporting-Endpoints (Valor ignorado)
+
 [itim_h]
  Server-Timing (Cabecera potencialmente insegura)
 
@@ -931,6 +934,10 @@ Cabeceras de respuesta HTTP
 [irefn]
  Incluya, al menos, una directiva correcta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
+[irepe]
+ Los endpoints inseguros ('http:') se ignoran.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Reporting-Endpoints
 
 [iset]
  Habilite 'Secure' y 'HttpOnly': para enviarla mediante HTTPS y evitar que sea accedida por APIs.
