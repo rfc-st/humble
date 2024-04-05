@@ -488,6 +488,9 @@
 [iprag_h]
  Pragma (Deprecated Header)
 
+[iprxauthn_h]
+ Proxy-Authenticate (No Valid Directives)
+
 [iprxauth_h]
  Proxy-Authenticate (Unsafe Value)
 
@@ -901,6 +904,10 @@ HTTP Response Headers
  This header is deprecated.
  Ref: https://scotthelme.co.uk/hpkp-is-no-more/
 
+[iprxauthn]
+ Include at least one valid directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
+
 [itrf]
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
@@ -964,7 +971,7 @@ HTTP Response Headers
  Ref: https://www.w3.org/TR/edge-arch/
 
 [iorigcluster]
- Include at least one valid directive.
+ The only valid value is '?1'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
 
 [ihsts]

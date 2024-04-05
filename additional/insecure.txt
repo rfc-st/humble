@@ -74,6 +74,7 @@ Permissions-Policy: Incorrect Values
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value
 Pragma: Deprecated Header
+Proxy-Authenticate: No Valid Directives
 Proxy-Authenticate: Unsafe Value
 Public-Key-Pins: Deprecated Header
 Public-Key-Pins-Report-Only: Deprecated Header

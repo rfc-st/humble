@@ -488,6 +488,9 @@
 [iprag_h]
  Pragma (Cabecera obsoleta)
 
+[iprxauthn_h]
+ Proxy-Authenticate (Sin directivas adecuadas)
+
 [iprxauth_h]
  Proxy-Authenticate (Valor inseguro)
 
@@ -904,6 +907,10 @@ Cabeceras de respuesta HTTP
  Esta cabecera está obsoleta.
  Ref: https://scotthelme.co.uk/hpkp-is-no-more/
 
+[iprxauthn]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
+
 [itrf]
  Incluya, al menos, una directiva correcta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
@@ -967,7 +974,7 @@ Cabeceras de respuesta HTTP
  Ref: https://www.w3.org/TR/edge-arch/
 
 [iorigcluster]
- Incluya, al menos, una directiva correcta.
+ EL único valor permitido es '?1'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
 
 [ihsts]

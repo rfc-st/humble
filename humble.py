@@ -99,7 +99,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-humble_local_v = datetime.strptime('2024-03-29', '%Y-%m-%d').date()
+humble_local_v = datetime.strptime('2024-04-05', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1516,7 +1516,7 @@ l_nel_req = ['report_to', 'max_age']
 l_nvarysearch = ['except', 'key-order', 'params']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
-l_origcluster = ['?0', '?1']
+l_origcluster = ['?1']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
@@ -1543,6 +1543,12 @@ l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'sync-script', 'sync-xhr', 'trust-token-redemption', 'unload',
               'usb', 'vertical-scroll', 'web-share', 'window-management',
               'xr-spatial-tracking']
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
+# https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
+l_proxy_auth = ['AWS4-HMAC-SHA256', 'Basic', 'Bearer', 'Digest', 'DPoP',
+                'GNAP', 'HOBA', 'Mutual', 'Negotiate', 'OAuth',
+                'PrivateToken', 'SCRAM-SHA-1', 'SCRAM-SHA-256', 'vapid']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 l_ref_secure = ['strict-origin', 'strict-origin-when-cross-origin',
@@ -1824,6 +1830,8 @@ if 'Proxy-Authenticate' in headers and '35' not in skipped_headers_v:
     prxyauth_h = headers['Proxy-Authenticate'].lower()
     if 'basic' in prxyauth_h and unsafe_scheme:
         print_details('[iprxauth_h]', '[ihbas]', 'd', i_cnt)
+    if not any(elem in prxyauth_h for elem in l_proxy_auth):
+        print_details('[iprxauthn_h]', '[iprxauthn]', 'd', i_cnt)
 
 if 'Public-Key-Pins' in headers and '36' not in skipped_headers_v:
     print_details('[ipkp_h]', '[ipkp]', 'd', i_cnt)
