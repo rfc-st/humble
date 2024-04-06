@@ -99,7 +99,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-humble_local_v = datetime.strptime('2024-04-05', '%Y-%m-%d').date()
+humble_local_v = datetime.strptime('2024-04-06', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -217,9 +217,10 @@ def print_security_guides():
     print_detail('[security_guides]', 1)
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
               encoding='utf8') as guides_source:
+        for _ in range(24):
+            next(guides_source)
         for line in guides_source:
-            if not line.startswith('#'):
-                print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
+            print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
   {line}", end='')
     sys.exit()
 
@@ -816,10 +817,10 @@ def check_output_path(args, output_path):
 def parse_user_agent(user_agent=False):
     if not user_agent:
         return {'User-Agent': get_user_agent('1')}
-    ua_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
+    user_agent_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
     if not args.URL:
         try:
-            if int(ua_id) != 0:
+            if int(user_agent_id) != 0:
                 parser.error(get_detail('[args_useragent]'))
             else:
                 return {'User-Agent': get_user_agent('0')}
@@ -827,27 +828,28 @@ def parse_user_agent(user_agent=False):
             print(f'\n {get_detail("[ua_invalid]", replace=True)}')
             sys.exit()
     if args.URL:
-        return {'User-Agent': get_user_agent(ua_id)}
+        return {'User-Agent': get_user_agent(user_agent_id)}
 
 
-def get_user_agent(ua_param):
+def get_user_agent(user_agent_id):
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
               encoding='utf-8') as ua_source:
-        ua_lines = [line.strip() for line in ua_source.readlines() if not
-                    line.startswith('#')]
-    if ua_param == str(0):
-        print_user_agents(ua_lines)
-    for line in ua_lines:
-        if line.startswith(f"{ua_param}.-"):
-            return line[len(f"{ua_param}.-"):].strip()
+        for _ in range(42):
+            next(ua_source)
+        user_agents = [line.strip() for line in ua_source.readlines()]
+    if user_agent_id == str(0):
+        print_user_agents(user_agents)
+    for line in user_agents:
+        if line.startswith(f"{user_agent_id}.-"):
+            return line[4:]
     print(f'\n {get_detail("[ua_invalid]", replace=True)}')
     sys.exit()
 
 
-def print_user_agents(ua_lines):
+def print_user_agents(user_agents):
     print(f"\n{Style.BRIGHT}{get_detail('[ua_available]', replace=True)}\
 {Style.RESET_ALL}{get_detail('[ua_source]', replace=True)}")
-    for line in ua_lines:
+    for line in user_agents:
         print(f' {line}')
     sys.exit()
 
@@ -855,12 +857,13 @@ def print_user_agents(ua_lines):
 def get_insecure_checks():
     insecure_header_set = set()
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[7]), "r") as ins_source:
+        for _ in range(25):
+            next(ins_source)
         for line in ins_source:
-            if line and not line.startswith('#'):
-                header = line.split(':')[0]
-                insecure_header_set.add(header.strip().lower())
+            header = line.split(':')[0]
+            insecure_header_set.add(header.strip().lower())
     header_list = sorted(insecure_header_set)
-    return {key: str(index) for index, key in enumerate(header_list)}
+    return {key: str(index + 1) for index, key in enumerate(header_list)}
 
 
 def get_skipped_unsupported_headers(args, header_dict):
@@ -1393,10 +1396,12 @@ if not args.brief:
 l_fng, l_fng_ex = [], []
 
 with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r', encoding='utf8') \
-     as fng_source:
+      as fng_source:
+    for _ in range(30):
+        next(fng_source)
     for line in fng_source:
         fng_stripped_ln = line.strip()
-        if fng_stripped_ln and not line.startswith('#'):
+        if fng_stripped_ln:
             l_fng.append(line.partition(' [')[0].strip())
             l_fng_ex.append(line.strip())
 
@@ -1426,15 +1431,16 @@ l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Credentials',
          'Keep-Alive', 'Large-Allocation', 'No-Vary-Search',
          'Observe-Browsing-Topics', 'Onion-Location', 'Origin-Agent-Cluster',
          'P3P', 'Pragma', 'Proxy-Authenticate', 'Public-Key-Pins',
-         'Public-Key-Pins-Report-Only', 'Set-Cookie', 'Server-Timing',
-         'SourceMap', 'Strict-Dynamic', 'Supports-Loading-Mode',
-         'Surrogate-Control', 'Timing-Allow-Origin', 'Tk', 'Trailer',
-         'Transfer-Encoding', 'Vary', 'WWW-Authenticate', 'Warning',
-         'X-Content-Security-Policy', 'X-Content-Security-Policy-Report-Only',
-         'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad',
-         'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Robots-Tag',
-         'X-Runtime', 'X-SourceMap', 'X-UA-Compatible', 'X-Webkit-CSP',
-         'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
+         'Public-Key-Pins-Report-Only', 'Reporting-Endpoints', 'Set-Cookie',
+         'Server-Timing', 'SourceMap', 'Strict-Dynamic',
+         'Supports-Loading-Mode', 'Surrogate-Control', 'Timing-Allow-Origin',
+         'Tk', 'Trailer', 'Transfer-Encoding', 'Vary', 'WWW-Authenticate',
+         'Warning', 'X-Content-Security-Policy',
+         'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
+         'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
+         'X-Pingback', 'X-Robots-Tag', 'X-Runtime', 'X-SourceMap',
+         'X-UA-Compatible', 'X-Webkit-CSP', 'X-Webkit-CSP-Report-Only',
+         'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 l_acceptch_dep = ['content-dpr', 'dpr', 'sec-ch-ua-full-version',
