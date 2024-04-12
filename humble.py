@@ -99,7 +99,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-humble_local_v = datetime.strptime('2024-04-06', '%Y-%m-%d').date()
+humble_local_v = datetime.strptime('2024-04-12', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -767,6 +767,34 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
         print_header(header)
 
 
+def print_missing_headers(headers, l_detail, l_miss, m_cnt):
+    headers_lower = [i.lower() for i in headers]
+    l_miss_lower = [header.lower() for header in l_miss]
+    for i, key in enumerate(l_miss_lower):
+        if key not in headers_lower:
+            print_header(l_miss[i])
+            if not args.brief:
+                print_detail(l_detail[i], 2)
+            m_cnt += 1
+    return m_cnt
+
+
+def check_frame_options(headers, l_miss, m_cnt):
+    if not (headers.get('X-Frame-Options') or 'frame-ancestors' in
+            headers.get('Content-Security-Policy', '')):
+        print_header('X-Frame-Options')
+        if not args.brief:
+            print_detail("[mxfo]", 2)
+        m_cnt += 1
+    if all(elem.lower() not in headers for elem in l_miss):
+        print_header('X-Frame-Options')
+        if not args.brief:
+            print_detail("[mxfo]", 2)
+        m_cnt += 1
+    l_miss.append('X-Frame-Options')
+    return m_cnt
+
+
 def print_empty_headers(headers, l_empty):
     e_cnt = 0
     for key in sorted(headers):
@@ -1342,7 +1370,6 @@ print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
 # Section '1. Missing HTTP Security Headers'
 print_detail_r('[1missing]')
-m_cnt = 0
 
 l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
           'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
@@ -1354,33 +1381,12 @@ l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
             '[mcsp]', '[mnel]', '[mpermission]', '[mreferrer]', '[msts]',
             '[mxcto]', '[mxpcd]', '[mxfo]']
 
-missing_headers_lower = {k.lower(): v for k, v in headers.items()}
-
-for i, key in enumerate(l_miss):
-    if key.lower() not in missing_headers_lower:
-        print_header(key)
-        if not args.brief:
-            print_detail(l_detail[i], 2)
-        m_cnt += 1
-
-if not (headers.get('X-Frame-Options') or 'frame-ancestors' in
-        headers.get('Content-Security-Policy', '')):
-    print_header('X-Frame-Options')
-    if not args.brief:
-        print_detail("[mxfo]", 2)
-    m_cnt += 1
-
-if not any(elem.lower() in headers for elem in l_miss):
-    print_header('X-Frame-Options')
-    if not args.brief:
-        print_detail("[mxfo]", 2)
-    m_cnt += 1
-
-l_miss.append('X-Frame-Options')
+m_cnt = 0
+m_cnt = print_missing_headers(headers, l_detail, l_miss, m_cnt)
+m_cnt = check_frame_options(headers, l_miss, m_cnt)
 
 if args.brief and m_cnt != 0:
     print("")
-
 if m_cnt == 0:
     print_nowarnings()
 
