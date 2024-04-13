@@ -1244,13 +1244,13 @@ A destacar
  Diciembre
 
 [humble_not_recent]
- Tu versión de 'humble' no es la más reciente.
+ Tu versión no es la más reciente
 
 [humble_recent]
- Tienes una versión reciente de 'humble' :).
+ Tienes la versión más reciente :).
 
 [github_humble]
- Revisa las actualizaciones en https://github.com/rfc-st/humble/
+ Comprueba las actualizaciones en https://github.com/rfc-st/humble/
 
 [update_error]
  Hubo un error al comprobar si usas la versión más reciente; espera unos minutos y vuelve a intentarlo.

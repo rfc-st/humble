@@ -1241,10 +1241,10 @@ Highlights
  December
 
 [humble_not_recent]
- Your version of 'humble' is not the most recent.
+ Your version is not the latest
 
 [humble_recent]
- You have a recent version of 'humble' :).
+ You have the latest version :).
 
 [github_humble]
  Check for updates in https://github.com/rfc-st/humble/

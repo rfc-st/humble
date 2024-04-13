@@ -99,8 +99,8 @@ RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
-now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-humble_local_v = datetime.strptime('2024-04-13', '%Y-%m-%d').date()
+current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
+local_version = datetime.strptime('2024-04-13', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -124,16 +124,17 @@ def check_python_version():
         else None
 
 
-def check_humble_updates(humble_local_v):
+def check_humble_updates(local_version):
     try:
-        repo_check = requests.get(HUMBLE_GIT[0], timeout=10).text
-        humble_remote = re.search(r"\d{4}-\d{2}-\d{2}", repo_check).group()
-        humble_remote_v = datetime.strptime(humble_remote, '%Y-%m-%d').date()
-        if humble_remote_v > humble_local_v:
-            print(f"\n{get_detail('[humble_not_recent]')[:-1]}\
-                  \n{get_detail('[github_humble]', replace=True)}")
+        git_repo = requests.get(HUMBLE_GIT[0], timeout=10).text
+        remote_date = re.search(r"\d{4}-\d{2}-\d{2}", git_repo).group()
+        remote_version = datetime.strptime(remote_date, '%Y-%m-%d').date()
+        if remote_version > local_version:
+            print(f"\n{get_detail('[humble_not_recent]')[:-1]}: \
+'{local_version}'"
+                  f"\n{get_detail('[github_humble]', replace=True)}")
         else:
-            print(f"\n {get_detail('[humble_recent]', replace=True)}")
+            print(f"\n{get_detail('[humble_recent]', replace=True)}")
     except requests.exceptions.RequestException:
         print(f"\n{get_detail('[update_error]')}")
     sys.exit()
@@ -285,8 +286,8 @@ def get_analysis_result():
 def get_analysis_totals(t_cnt):
     with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as add_analysis, \
          open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
-        add_analysis.write(f"{now} ; {URL} ; {m_cnt} ; {f_cnt} ; {i_cnt[0]} ; \
-{e_cnt} ; {t_cnt}\n")
+        add_analysis.write(f"{current_time} ; {URL} ; {m_cnt} ; {f_cnt} ; \
+{i_cnt[0]} ; {e_cnt} ; {t_cnt}\n")
         url_ln = [line for line in all_analysis if URL in line]
         return extract_analysis_totals(url_ln) if url_ln else ("First",) * 5
 
@@ -643,10 +644,10 @@ def print_general_info(reliable):
         clean_shell_lines(reliable=False) if reliable else clean_shell_lines()
         print("")
         print(BANNER)
-        print(f" ({HUMBLE_GIT[1]} | v.{humble_local_v})")
+        print(f" ({HUMBLE_GIT[1]} | v.{local_version})")
     elif args.output != 'pdf':
         print("")
-        print(f"\n{HUMBLE_DESC}\n{HUMBLE_GIT[1]} | v.{humble_local_v}\n")
+        print(f"\n{HUMBLE_DESC}\n{HUMBLE_GIT[1]} | v.{local_version}\n")
     print_basic_info()
     # Exporting a detailed analysis to CSV/JSON is complicated for now.
     if args.output in ('csv', 'json'):
@@ -661,7 +662,7 @@ def print_basic_info():
           else "")
     print_detail_r('[0section]')
     print_detail_l('[analysis_date]')
-    print(f" {now}")
+    print(f" {current_time}")
     print(f'{URL_STRING}{URL}')
 
 
@@ -1013,9 +1014,9 @@ def set_pdf_structure():
 
 def set_pdf_metadata():
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
-    git_urlc = f"{HUMBLE_GIT[1]} | v.{humble_local_v}"
+    git_urlc = f"{HUMBLE_GIT[1]} | v.{local_version}"
     pdf.set_author(git_urlc)
-    pdf.set_creation_date = now
+    pdf.set_creation_date = current_time
     pdf.set_creator(git_urlc)
     pdf.set_keywords(get_detail('[pdf_meta_keywords]', replace=True))
     pdf.set_lang(get_detail('[pdf_meta_language]'))
@@ -1055,7 +1056,7 @@ def generate_html():
                     "html_desc": get_detail('[pdf_meta_title]'),
                     "html_keywords": get_detail('[pdf_meta_keywords]'),
                     "humble_URL": HUMBLE_GIT[1],
-                    "humble_local_v": humble_local_v, "URL_analyzed": URL,
+                    "humble_local_v": local_version, "URL_analyzed": URL,
                     "html_body": '<body><pre>', "}}": '}', "{{": '}'}
     with open(final_filename, "r+", encoding='utf8') as html_file:
         temp_html_content = html_file.read()
@@ -1229,7 +1230,7 @@ epi_text = get_epilog_detail('[epilog_content]')
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
                         description=f"{HUMBLE_DESC} | {HUMBLE_GIT[1]} | \
-v.{humble_local_v}", epilog=epi_text)
+v.{local_version}", epilog=epi_text)
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
 statistics of the performed analysis (will be global if '-u' is omitted)")
@@ -1272,7 +1273,7 @@ check_python_version()
 
 # Checking parameters and their values
 if args.version:
-    check_humble_updates(humble_local_v)
+    check_humble_updates(local_version)
 
 if '-f' in sys.argv:
     fng_statistics_term(args.term) if args.term else fng_statistics_top()
@@ -2085,7 +2086,7 @@ elif args.output == 'pdf':
             self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
                       new_y="NEXT", align='C')
             self.ln(1)
-            self.cell(0, 5, f"{HUMBLE_GIT[1]} | v.{humble_local_v}", align='C')
+            self.cell(0, 5, f"{HUMBLE_GIT[1]} | v.{local_version}", align='C')
             self.ln(9 if self.page_no() == 1 else 13)
 
         def footer(self):
