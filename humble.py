@@ -39,6 +39,7 @@
 
 from time import time
 from shlex import quote
+from itertools import islice
 from datetime import datetime
 from urllib.parse import urlparse
 from os import linesep, path, remove
@@ -99,7 +100,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 now = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-humble_local_v = datetime.strptime('2024-04-12', '%Y-%m-%d').date()
+humble_local_v = datetime.strptime('2024-04-13', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -217,11 +218,9 @@ def print_security_guides():
     print_detail('[security_guides]', 1)
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
               encoding='utf8') as guides_source:
-        for _ in range(24):
-            next(guides_source)
-        for line in guides_source:
+        for line in islice(guides_source, 24, None):
             print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
-  {line}", end='')
+ {line}", end='')
     sys.exit()
 
 
@@ -862,9 +861,7 @@ def parse_user_agent(user_agent=False):
 def get_user_agent(user_agent_id):
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
               encoding='utf-8') as ua_source:
-        for _ in range(42):
-            next(ua_source)
-        user_agents = [line.strip() for line in ua_source.readlines()]
+        user_agents = [line.strip() for line in islice(ua_source, 42, None)]
     if user_agent_id == str(0):
         print_user_agents(user_agents)
     for line in user_agents:
@@ -885,42 +882,36 @@ def print_user_agents(user_agents):
 def get_insecure_checks():
     insecure_header_set = set()
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[7]), "r") as ins_source:
-        for _ in range(25):
-            next(ins_source)
-        for line in ins_source:
-            header = line.split(':')[0]
-            insecure_header_set.add(header.strip().lower())
-    header_list = sorted(insecure_header_set)
-    return {key: str(index + 1) for index, key in enumerate(header_list)}
+        insecure_checks = islice(ins_source, 25, None)
+        for line in insecure_checks:
+            insecure_header = line.split(':')[0]
+            insecure_header_set.add(insecure_header.strip().lower())
+    ins_headers_list = sorted(insecure_header_set)
+    return {key: str(index + 1) for index, key in enumerate(ins_headers_list)}
 
 
-def get_skipped_unsupported_headers(args, header_dict):
-    skipped_headers, unsupported_headers = [], []
-    skipped_headers_v = set()
-    for header_name in args.skipped_headers:
-        header_name = header_name.strip().lower()
-        if header_name in header_dict:
-            skipped_headers.append((header_name, header_dict[header_name]))
-            skipped_headers_v.add(header_dict[header_name])
-        else:
-            unsupported_headers.append(header_name)
+def get_skipped_unsupported_headers(args, ins_headers_dict):
+    ins_headers_set = {ins_header.strip().lower() for ins_header in
+                       args.skipped_headers}
+    skipped_headers = [(ins_header, ins_headers_dict[ins_header]) for
+                       ins_header in ins_headers_set if ins_header in
+                       ins_headers_dict]
+    unsupported_headers = list(ins_headers_set - set(ins_headers_dict.keys()))
+    skipped_headers_v = {header[1] for header in skipped_headers}
     return skipped_headers, unsupported_headers, skipped_headers_v
 
 
 def print_skipped_headers(skipped_headers):
-    skipped_headers_full = ' '.join(header[0] for header in skipped_headers)
-    quoted_headers = [f"'{header}'" for header in skipped_headers_full.split()]
-    final_headers = ', '.join(quoted_headers) if len(quoted_headers) > 1 else \
-        quoted_headers[0]
+    skipped_headers = ', '.join(f"'{header[0]}'" for header in skipped_headers)
     print_detail_l("[analysis_skipped_note]")
-    print(f" {final_headers}")
+    print(f" {skipped_headers}")
 
 
 def print_unsupported_headers(unsupported_headers):
-    unsupported_headers_str = ' '.join(unsupported_headers)
+    unsupported_headers = ' '.join(unsupported_headers)
     print("")
     print_detail_l("[args_skipped_unknown]")
-    print(unsupported_headers_str)
+    print(unsupported_headers)
     sys.exit()
 
 
@@ -1318,9 +1309,9 @@ skipped_headers, skipped_headers_v, unsupported_headers = [], [], []
 if '-s' in sys.argv and len(args.skipped_headers) == 0:
     parser.error(get_detail('[args_skipped]'))
 elif args.skipped_headers:
-    header_dict = get_insecure_checks()
+    ins_headers_dict = get_insecure_checks()
     skipped_headers, unsupported_headers, skipped_headers_v = \
-        get_skipped_unsupported_headers(args, header_dict)
+        get_skipped_unsupported_headers(args, ins_headers_dict)
     if unsupported_headers:
         print_unsupported_headers(unsupported_headers)
 
@@ -1402,14 +1393,12 @@ if not args.brief:
 l_fng, l_fng_ex = [], []
 
 with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r', encoding='utf8') \
-      as fng_source:
-    for _ in range(30):
-        next(fng_source)
-    for line in fng_source:
+     as fng_source:
+    for line in islice(fng_source, 30, None):
         fng_stripped_ln = line.strip()
         if fng_stripped_ln:
             l_fng.append(line.partition(' [')[0].strip())
-            l_fng_ex.append(line.strip())
+            l_fng_ex.append(fng_stripped_ln)
 
 f_cnt = print_fingerprint_headers(headers, l_fng, l_fng_ex)
 
