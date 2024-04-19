@@ -38,9 +38,13 @@
 # Montse, Naiara, Pablo, Sergio, Ricardo & Rubén!.
 
 from time import time
+from json import dumps
 from shlex import quote
+from shutil import copyfile
+from platform import system
 from itertools import islice
 from datetime import datetime
+from csv import writer, QUOTE_ALL
 from urllib.parse import urlparse
 from os import linesep, path, remove
 from colorama import Fore, Style, init
@@ -48,12 +52,8 @@ from requests.adapters import HTTPAdapter
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
-import csv
 import ssl
 import sys
-import json
-import shutil
-import platform
 import requests
 import contextlib
 import tldextract
@@ -100,7 +100,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-04-13', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-04-19', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -221,7 +221,7 @@ def print_security_guides():
               encoding='utf8') as guides_source:
         for line in islice(guides_source, 24, None):
             print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
- {line}", end='')
+  {line}", end='')
     sys.exit()
 
 
@@ -741,6 +741,17 @@ def get_epilog_detail(id_mode):
         return ''.join(epi_lines[epi_idx+1:epi_idx+12])
 
 
+def get_fingerprint_headers():
+    l_fng, l_fng_ex = [], []
+    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
+              encoding='utf8') as fng_source:
+        for line in islice(fng_source, 30, None):
+            if fng_stripped_ln := line.strip():
+                l_fng.append(line.partition(' [')[0].strip())
+                l_fng_ex.append(fng_stripped_ln)
+    return l_fng, l_fng_ex
+
+
 def print_fingerprint_headers(headers, l_fng, l_fng_ex):
     f_cnt = 0
     match_h = sorted([header for header in headers if any(elem.lower()
@@ -767,7 +778,8 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
         print_header(header)
 
 
-def print_missing_headers(headers, l_detail, l_miss, m_cnt):
+def print_missing_headers(headers, l_detail, l_miss):
+    m_cnt = 0
     headers_lower = [i.lower() for i in headers]
     l_miss_lower = [header.lower() for header in l_miss]
     for i, key in enumerate(l_miss_lower):
@@ -920,7 +932,7 @@ def generate_csv(temp_filename, final_filename):
     with open(temp_filename, 'r', encoding='utf-8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf-8') as csv_final:
         csv_source = txt_source.read()
-        csv_writer = csv.writer(csv_final, quoting=csv.QUOTE_ALL)
+        csv_writer = writer(csv_final, quoting=QUOTE_ALL)
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
         csv_writer.writerow([get_detail(f'[{i}]', replace=True) for i in
                              ['csv_section', 'csv_values']])
@@ -953,7 +965,7 @@ def generate_json(temp_filename, final_filename):
         txt_sections = re.split(r'\[(.*?)\]\n', txt_content)[1:]
         data = {}
         parse_json_sections(txt_sections, data, section0, sectionh, section5)
-        json_data = json.dumps(data, indent=4, ensure_ascii=False)
+        json_data = dumps(data, indent=4, ensure_ascii=False)
         json_final.write(json_data)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
@@ -1051,7 +1063,7 @@ def set_pdf_links(i, pdfstring):
 
 
 def generate_html():
-    shutil.copyfile(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[8]), final_filename)
+    copyfile(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[8]), final_filename)
     html_replace = {"html_title": get_detail('[pdf_meta_subject]'),
                     "html_desc": get_detail('[pdf_meta_title]'),
                     "html_keywords": get_detail('[pdf_meta_keywords]'),
@@ -1284,7 +1296,7 @@ elif args.URL:
     ua_header = parse_user_agent(user_agent=False)
 
 if '-e' in sys.argv:
-    if platform.system().lower() == 'windows':
+    if system().lower() == 'windows':
         print_detail('[windows_ssltls]', 28)
         sys.exit()
     if (args.path is None or args.URL is None):
@@ -1373,8 +1385,7 @@ l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
             '[mcsp]', '[mnel]', '[mpermission]', '[mreferrer]', '[msts]',
             '[mxcto]', '[mxpcd]', '[mxfo]']
 
-m_cnt = 0
-m_cnt = print_missing_headers(headers, l_detail, l_miss, m_cnt)
+m_cnt = print_missing_headers(headers, l_detail, l_miss)
 m_cnt = check_frame_options(headers, l_miss, m_cnt)
 
 if args.brief and m_cnt != 0:
@@ -1391,21 +1402,11 @@ print_detail_r('[2fingerprint]')
 if not args.brief:
     print_detail("[afgp]")
 
-l_fng, l_fng_ex = [], []
-
-with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r', encoding='utf8') \
-     as fng_source:
-    for line in islice(fng_source, 30, None):
-        fng_stripped_ln = line.strip()
-        if fng_stripped_ln:
-            l_fng.append(line.partition(' [')[0].strip())
-            l_fng_ex.append(fng_stripped_ln)
-
+l_fng, l_fng_ex = get_fingerprint_headers()
 f_cnt = print_fingerprint_headers(headers, l_fng, l_fng_ex)
 
 if args.brief and f_cnt != 0:
     print("")
-
 if f_cnt == 0:
     print_nowarnings()
 
@@ -2057,6 +2058,7 @@ else:
     print_detail_l("[no_sec_headers]") if args.output else \
         print_detail_r("[no_sec_headers]", is_red=True)
 
+# Show analysis result
 print(linesep.join(['']*2))
 end = time()
 get_analysis_result()
