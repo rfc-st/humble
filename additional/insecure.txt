@@ -82,6 +82,8 @@ Referrer-Policy: Incorrect Value
 Referrer-Policy: Recommended Values
 Referrer-Policy: Unsafe Value
 Reporting-Endpoints: Ignored Value
+Repr-Digest: No Valid Directives
+Repr-Digest: Unsafe Values
 Server-Timing: Potentially Unsafe Header
 Set-Cookie: Cookie Prefixes
 Set-Cookie: Insecure Attributes

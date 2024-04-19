@@ -515,6 +515,12 @@
 [irepe_h]
  Reporting-Endpoints (Valor ignorado)
 
+[irepdig_h]
+ Repr-Digest (Sin directivas adecuadas)
+
+[irepdigi_h]
+ Repr-Digest (Valor inseguro)
+
 [itim_h]
  Server-Timing (Cabecera potencialmente insegura)
 
@@ -938,6 +944,14 @@ Cabeceras de respuesta HTTP
 [irepe]
  Los endpoints inseguros ('http:') se ignoran.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Reporting-Endpoints
+
+[irepdig]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
+
+[irepdigi]
+ No se deben utilizar algoritmos inseguros por riesgo de colisiones.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
 
 [iset]
  Habilite 'Secure' y 'HttpOnly': para enviarla mediante HTTPS y evitar que sea accedida por APIs.

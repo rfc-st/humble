@@ -515,6 +515,12 @@
 [irepe_h]
  Reporting-Endpoints (Ignored Value)
 
+[irepdig_h]
+ Repr-Digest (No Valid Directives)
+
+[irepdigi_h]
+ Repr-Digest (Unsafe Values)
+
 [itim_h]
  Server-Timing (Potentially Unsafe Header)
 
@@ -935,6 +941,14 @@ HTTP Response Headers
 [irepe]
  Insecure endpoints ('http:') are ignored.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Reporting-Endpoints
+
+[irepdig]
+ Include at least one valid directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
+
+[irepdigi]
+ Insecure algorithms should not be used as collisions can be forced.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
 
 [iset]
  Enable 'Secure' and 'HttpOnly': to send it via HTTPS and not be accessed by client APIs.
