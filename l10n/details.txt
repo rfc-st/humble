@@ -347,6 +347,13 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Tk
 
+[ixwandig_h]
+ Want-Digest (Deprecated Header)
+
+[ixwandig]
+ This header is deprecated.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Digest
+
 [ixwar_h]
  Warning (Deprecated Header)
 

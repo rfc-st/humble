@@ -347,6 +347,13 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Tk
 
+[ixwandig_h]
+ Want-Digest (Cabecera obsoleta)
+
+[ixwandig]
+ Esta cabecera está obsoleta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Digest
+
 [ixwar_h]
  Warning (Cabecera obsoleta)
 

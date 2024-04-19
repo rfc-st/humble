@@ -1432,7 +1432,7 @@ l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Credentials',
          'Set-Cookie', 'Server-Timing', 'SourceMap', 'Strict-Dynamic',
          'Supports-Loading-Mode', 'Surrogate-Control', 'Timing-Allow-Origin',
          'Tk', 'Trailer', 'Transfer-Encoding', 'Vary', 'WWW-Authenticate',
-         'Warning', 'X-Content-Security-Policy',
+         'Want-Digest', 'Warning', 'X-Content-Security-Policy',
          'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
          'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
          'X-Pingback', 'X-Robots-Tag', 'X-Runtime', 'X-SourceMap',
@@ -1944,36 +1944,39 @@ if 'Transfer-Encoding' in headers and '52' not in skipped_headers_v:
 if 'Vary' in headers and '53' not in skipped_headers_v:
     print_details('[ixvary_h]', '[ixvary]', 'm', i_cnt)
 
+if 'Want-Digest' in headers and '54' not in skipped_headers_v:
+    print_details('[ixwandig_h]', '[ixwandig]', 'd', i_cnt)
+
 wwwa_header = headers.get('WWW-Authenticate', '').lower()
-if wwwa_header and unsafe_scheme and ('basic' in wwwa_header) and '54' not in \
+if wwwa_header and unsafe_scheme and ('basic' in wwwa_header) and '55' not in \
      skipped_headers_v:
     print_details('[ihbas_h]', '[ihbas]', 'd', i_cnt)
 
-if 'Warning' in headers and '55' not in skipped_headers_v:
+if 'Warning' in headers and '56' not in skipped_headers_v:
     print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
 
-if 'X-Content-Security-Policy' in headers and '56' not in skipped_headers_v:
+if 'X-Content-Security-Policy' in headers and '57' not in skipped_headers_v:
     print_details('[ixcsp_h]', '[ixcsp]', 'd', i_cnt)
 
-if 'X-Content-Security-Policy-Report-Only' in headers and '57' not in \
+if 'X-Content-Security-Policy-Report-Only' in headers and '58' not in \
      skipped_headers_v:
     print_details('[ixcspr_h]', '[ixcspr]', 'd', i_cnt)
 
-if 'X-Content-Type-Options' in headers and '58' not in skipped_headers_v:
+if 'X-Content-Type-Options' in headers and '59' not in skipped_headers_v:
     if ',' in headers['X-Content-Type-Options']:
         print_details('[ictpd_h]', '[ictpd]', 'd', i_cnt)
     elif 'nosniff' not in headers['X-Content-Type-Options']:
         print_details('[ictp_h]', '[ictp]', 'd', i_cnt)
 
-if headers.get('X-DNS-Prefetch-Control', '') == 'on' and '59' not in \
+if headers.get('X-DNS-Prefetch-Control', '') == 'on' and '60' not in \
      skipped_headers_v:
     print_details('[ixdp_h]', '[ixdp]', 'd', i_cnt)
 
-if 'X-Download-Options' in headers and '60' not in skipped_headers_v:
+if 'X-Download-Options' in headers and '61' not in skipped_headers_v:
     print_details('[ixdow_h]', '[ixdow]', 'm', i_cnt)
 
 xfo_header = headers.get('X-Frame-Options', '').lower()
-if xfo_header and '61' not in skipped_headers_v:
+if xfo_header and '62' not in skipped_headers_v:
     if ',' in xfo_header:
         print_details('[ixfo_h]', '[ixfo]', 'm', i_cnt)
     if 'allow-from' in xfo_header:
@@ -1981,11 +1984,11 @@ if xfo_header and '61' not in skipped_headers_v:
     if xfo_header not in l_xfo_dir:
         print_details('[ixfoi_h]', '[ixfodi]', 'm', i_cnt)
 
-if 'X-Pad' in headers and '62' not in skipped_headers_v:
+if 'X-Pad' in headers and '63' not in skipped_headers_v:
     print_details('[ixpad_h]', '[ixpad]', 'd', i_cnt)
 
 permcross_header = headers.get('X-Permitted-Cross-Domain-Policies', '').lower()
-if permcross_header and '63' not in skipped_headers_v:
+if permcross_header and '64' not in skipped_headers_v:
     if not any(elem in permcross_header for elem in l_permcross):
         print_details('[ixpermcross_h]', '[ixpermcross]', 'm', i_cnt)
     if 'all' in permcross_header:
@@ -1993,33 +1996,33 @@ if permcross_header and '63' not in skipped_headers_v:
     if ',' in permcross_header:
         print_details('[ixpermcrossd_h]', '[ixpermcrossd]', 'm', i_cnt)
 
-if headers.get('X-Pingback', '').endswith('xmlrpc.php') and '64' not in \
+if headers.get('X-Pingback', '').endswith('xmlrpc.php') and '65' not in \
      skipped_headers_v:
     print_details('[ixpb_h]', '[ixpb]', 'd', i_cnt)
 
 robots_header = headers.get('X-Robots-Tag', '').lower()
-if robots_header and '65' not in skipped_headers_v:
+if robots_header and '66' not in skipped_headers_v:
     if not any(elem in robots_header for elem in l_robots):
         print_details('[ixrobv_h]', '[ixrobv]', 'm', i_cnt)
     if 'all' in robots_header:
         print_details('[ixrob_h]', '[ixrob]', 'm', i_cnt)
 
-if 'X-Runtime' in headers and '66' not in skipped_headers_v:
+if 'X-Runtime' in headers and '67' not in skipped_headers_v:
     print_details('[ixrun_h]', '[ixrun]', 'd', i_cnt)
 
-if 'X-SourceMap' in headers and '67' not in skipped_headers_v:
+if 'X-SourceMap' in headers and '68' not in skipped_headers_v:
     print_details('[ixsrc_h]', '[ixsrc]', 'd', i_cnt)
 
-if 'X-UA-Compatible' in headers and '68' not in skipped_headers_v:
+if 'X-UA-Compatible' in headers and '69' not in skipped_headers_v:
     print_details('[ixuacom_h]', '[ixuacom]', 'm', i_cnt)
 
-if 'X-Webkit-CSP' in headers and '69' not in skipped_headers_v:
+if 'X-Webkit-CSP' in headers and '70' not in skipped_headers_v:
     print_details('[ixwcsp_h]', '[ixcsp]', 'd', i_cnt)
 
-if 'X-Webkit-CSP-Report-Only' in headers and '70' not in skipped_headers_v:
+if 'X-Webkit-CSP-Report-Only' in headers and '71' not in skipped_headers_v:
     print_details('[ixwcspr_h]', '[ixcspr]', 'd', i_cnt)
 
-if 'X-XSS-Protection' in headers and '71' not in skipped_headers_v:
+if 'X-XSS-Protection' in headers and '72' not in skipped_headers_v:
     print_details('[ixxpdp_h]', '[ixxpdp]', 'm', i_cnt)
     if '0' not in headers["X-XSS-Protection"]:
         print_details('[ixxp_h]', '[ixxp]', 'd', i_cnt)
