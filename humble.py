@@ -68,7 +68,6 @@ BANNER = '''  _                     _     _
 '''
 BOLD_SECTION = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
                 "[Cabeceras")
-BRIGHT_RED = f"{Style.BRIGHT}{Fore.RED}"
 CANIUSE_URL = ': https://caniuse.com/?search='
 CLEAN_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
@@ -96,6 +95,12 @@ PATH_PATTERN = (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
                 r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')
 REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
+S_BRIGHT = Style.BRIGHT
+S_BRIGHT_RED = f"{S_BRIGHT}{Fore.RED}"
+S_CYAN = Fore.CYAN
+S_NORMAL = Style.NORMAL
+S_RESET = Style.RESET_ALL
+SF_RESET = Fore.RESET
 URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
@@ -140,8 +145,8 @@ def check_humble_updates(local_version):
 
 
 def fng_statistics_top():
-    print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
-{Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
+    print(f"\n{S_BRIGHT}{get_detail('[fng_stats]', replace=True)}\
+{S_RESET}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
@@ -170,8 +175,8 @@ def fng_statistics_top_result(fng_content, headers_cnt):
 
 
 def fng_statistics_term(term):
-    print(f"\n{Style.BRIGHT}{get_detail('[fng_stats]', replace=True)}\
-{Style.RESET_ALL}{get_detail('[fng_source]', replace=True)}\n")
+    print(f"\n{S_BRIGHT}{get_detail('[fng_stats]', replace=True)}\
+{S_RESET}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         fng_lines = fng_source.readlines()
@@ -218,7 +223,7 @@ def print_security_guides():
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
               encoding='utf8') as guides_source:
         for line in islice(guides_source, 24, None):
-            print(f" {Style.BRIGHT}{line}" if line.startswith('[') else f"\
+            print(f" {S_BRIGHT}{line}" if line.startswith('[') else f"\
   {line}", end='')
     sys.exit()
 
@@ -335,8 +340,8 @@ def url_analytics(is_global=False):
     print(f"\n{get_detail(stats_s, replace=True)} {'' if is_global else URL}\
 \n")
     for key, value in analysis_stats.items():
-        key = f"{Style.BRIGHT}{key}{Style.RESET_ALL}" \
-            if (not value or not key.startswith(' ')) else key
+        key = f"{S_BRIGHT}{key}{S_RESET}" if \
+            (not value or not key.startswith(' ')) else key
         print(f"{key}: {value}")
     sys.exit()
 
@@ -623,7 +628,7 @@ def print_nowarnings():
 
 
 def print_header(header):
-    print(f" {header}" if args.output else f"{BRIGHT_RED} {header}")
+    print(f" {header}" if args.output else f"{S_BRIGHT_RED} {header}")
 
 
 def print_fng_header(header):
@@ -631,9 +636,9 @@ def print_fng_header(header):
     if args.output:
         print(f" {header}")
     elif '[' in header:
-        print(f"{BRIGHT_RED} {prefix}{Style.NORMAL}{Fore.RESET} [{suffix}")
+        print(f"{S_BRIGHT_RED} {prefix}{S_NORMAL}{SF_RESET} [{suffix}")
     else:
-        print(f"{BRIGHT_RED} {header}")
+        print(f"{S_BRIGHT_RED} {header}")
 
 
 def print_general_info(reliable):
@@ -681,7 +686,7 @@ def print_response_headers():
     print(linesep.join(['']*2))
     print_detail_r('[0headers]')
     for key, value in sorted(headers.items()):
-        print(f" {key}:", value) if args.output else print(f" {Fore.CYAN}\
+        print(f" {key}:", value) if args.output else print(f" {S_CYAN}\
 {key}:", value)
     print('\n')
 
@@ -712,7 +717,7 @@ def print_detail_l(id_mode, analytics=False):
 
 
 def print_detail_r(id_mode, is_red=False):
-    style_str = BRIGHT_RED if is_red else Style.BRIGHT
+    style_str = S_BRIGHT_RED if is_red else S_BRIGHT
     for i, line in enumerate(l10n_details):
         if line.startswith(id_mode):
             if not args.output:
@@ -817,7 +822,7 @@ def print_empty_headers(headers, l_empty):
 def print_browser_compatibility(browser_compat_header):
     for key in browser_compat_header:
         output_string = "  " if args.output == 'html' else " "
-        key_string = key if args.output else f"{Fore.CYAN}{key}{Fore.RESET}"
+        key_string = key if args.output else f"{S_CYAN}{key}{SF_RESET}"
         print(f"{output_string}{key_string}{CANIUSE_URL}\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 
@@ -882,8 +887,8 @@ def get_user_agent(user_agent_id):
 
 
 def print_user_agents(user_agents):
-    print(f"\n{Style.BRIGHT}{get_detail('[ua_available]', replace=True)}\
-{Style.RESET_ALL}{get_detail('[ua_source]', replace=True)}")
+    print(f"\n{S_BRIGHT}{get_detail('[ua_available]', replace=True)}\
+{S_RESET}{get_detail('[ua_source]', replace=True)}")
     for line in user_agents:
         print(f' {line}')
     sys.exit()
@@ -1149,7 +1154,7 @@ def handle_server_error(http_code, id_mode):
         else:
             print((HTTP_ERRORS[1] if (500 <= http_code <= 511) else
                    HTTP_ERRORS[0]) + str(http_code))
-    # For 5xx HTTP codes not in the ranges (500-511) or (520-530)
+    # For HTTP codes not in the ranges 500-511 or 520-530
     else:
         print_detail('[server_serror]', 1)
     sys.exit()
@@ -1162,8 +1167,8 @@ def make_http_request():
         session = requests.Session()
         session.mount("https://", SSLContextAdapter())
         session.mount("http://", HTTPAdapter())
-        # If '-df' param is provided ('args.redirects') the exact URL will be
-        # analyzed; otherwise the last redirected URL will be analyzed.
+        # If '-df' parameter is provided ('args.redirects') the exact URL will
+        # be analyzed; otherwise the last redirected URL will be analyzed.
         #
         # Yes, certificates must always be checked/verified by default on
         # HTTPS connections. However, and within the scope of 'humble', I have
@@ -1355,7 +1360,7 @@ requests.packages.urllib3.disable_warnings()
 
 headers, status_code, reliable, request_time = manage_http_request()
 
-# File name with analysis results
+# To export the results of the analysis (parameter '-o')
 if args.output:
     orig_stdout = sys.stdout
     file_ext = ".txt" if args.output == 'txt' else "t.txt"
@@ -1393,7 +1398,7 @@ if m_cnt == 0:
 print("")
 
 # Section '2. Fingerprint HTTP Response Headers'
-# (Source: /additional/fingerprint.txt)
+# Source: /additional/fingerprint.txt
 print_detail_r('[2fingerprint]')
 
 if not args.brief:
@@ -1410,7 +1415,7 @@ if f_cnt == 0:
 print("")
 
 # Section '3. Deprecated HTTP Response Headers/Protocols and Insecure Values'
-# (Source: /additional/insecure.txt)
+# Source: /additional/insecure.txt
 print_detail_r('[3depinsecure]')
 i_cnt = [0]
 
@@ -2070,12 +2075,12 @@ else:
     print_detail_l("[no_sec_headers]") if args.output else \
         print_detail_r("[no_sec_headers]", is_red=True)
 
-# Show analysis result
+# Print analysis totals
 print(linesep.join(['']*2))
 end = time()
 get_analysis_result()
 
-# For exporting analyses
+# To export the results of the analysis (parameter '-o')
 if args.output:
     final_filename = f"{temp_filename[:-5]}.{args.output}"
     sys.stdout = orig_stdout
