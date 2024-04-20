@@ -100,7 +100,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-04-19', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-04-20', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -131,8 +131,7 @@ def check_humble_updates(local_version):
         remote_version = datetime.strptime(remote_date, '%Y-%m-%d').date()
         if remote_version > local_version:
             print(f"\n{get_detail('[humble_not_recent]')[:-1]}: \
-'{local_version}'"
-                  f"\n{get_detail('[github_humble]', replace=True)}")
+'{local_version}'"f"\n{get_detail('[github_humble]', replace=True)}")
         else:
             print(f"\n{get_detail('[humble_recent]', replace=True)}")
     except requests.exceptions.RequestException:
@@ -210,8 +209,7 @@ def fng_statistics_term_sorted(fng_lines, term, fng_group):
         for line in fng_lines:
             line_l = line.lower()
             if f"[{content.lower()}]" in line_l and term_l in line_l:
-                start_index = line.find('[')
-                print(f"  {line[:start_index].strip()}")
+                print(f"  {line[:line.find('[')].strip()}")
     sys.exit()
 
 
@@ -276,35 +274,36 @@ def get_analysis_result():
     print(round(end - start, 2), end="")
     print_detail_l('[analysis_time_sec]')
     t_cnt = sum([m_cnt, f_cnt, i_cnt[0], e_cnt])
-    current = get_analysis_totals(t_cnt)
-    diff = compare_analysis_totals(*current, m_cnt=m_cnt, f_cnt=f_cnt,
-                                   i_cnt=i_cnt, e_cnt=e_cnt, t_cnt=t_cnt)
+    analysis_totals = add_analysis(t_cnt)
+    analysis_diffs = compare_analysis(*analysis_totals, m_cnt=m_cnt,
+                                      f_cnt=f_cnt, i_cnt=i_cnt, e_cnt=e_cnt,
+                                      t_cnt=t_cnt)
     print("")
-    print_analysis_totals(*diff, t_cnt=t_cnt)
+    print_analysis_totals(*analysis_diffs, t_cnt=t_cnt)
 
 
-def get_analysis_totals(t_cnt):
+def add_analysis(t_cnt):
     with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as add_analysis, \
          open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
         add_analysis.write(f"{current_time} ; {URL} ; {m_cnt} ; {f_cnt} ; \
 {i_cnt[0]} ; {e_cnt} ; {t_cnt}\n")
         url_ln = [line for line in all_analysis if URL in line]
-        return extract_analysis_totals(url_ln) if url_ln else ("First",) * 5
+    return get_analysis_totals(url_ln) if url_ln else ("First",) * 5
 
 
-def extract_analysis_totals(url_ln):
-    date_var = max(line.split(" ; ")[0] for line in url_ln)
+def get_analysis_totals(url_ln):
+    analysis_date = max(line.split(" ; ")[0] for line in url_ln)
     for line in url_ln:
-        if date_var in line:
+        if analysis_date in line:
             *totals, = line.strip().split(' ; ')
             break
     return tuple(totals[2:])
 
 
-def compare_analysis_totals(*current, m_cnt, f_cnt, i_cnt, e_cnt, t_cnt):
-    if current[0] == "First":
+def compare_analysis(*analysis_totals, m_cnt, f_cnt, i_cnt, e_cnt, t_cnt):
+    if analysis_totals[0] == "First":
         return [get_detail('[first_one]', replace=True)] * 5
-    current = [int(val) for val in current]
+    current = [int(val) for val in analysis_totals]
     totals = [m_cnt - current[0], f_cnt - current[1], i_cnt[0] - current[2],
               e_cnt - current[3], t_cnt - current[4]]
     return [f'+{total}' if total > 0 else str(total) for total in totals]
@@ -331,7 +330,7 @@ def url_analytics(is_global=False):
     analysis_exists(HUMBLE_FILES[0])
     with open(HUMBLE_FILES[0], 'r', encoding='utf8') as c_history:
         analysis_stats = extract_global_metrics(c_history) if is_global else \
-            extract_analysis_metrics(c_history)
+            get_analysis_metrics(c_history)
     stats_s = '[global_stats_analysis]' if is_global else '[stats_analysis]'
     print(f"\n{get_detail(stats_s, replace=True)} {'' if is_global else URL}\
 \n")
@@ -342,23 +341,22 @@ def url_analytics(is_global=False):
     sys.exit()
 
 
-def extract_analysis_metrics(c_history):
+def get_analysis_metrics(c_history):
     url_ln = [line for line in c_history if URL in line]
     if not url_ln:
         print(f"\n{get_detail('[no_analysis]').strip()}\n")
         sys.exit()
     total_a = len(url_ln)
-    first_m = extract_first_metrics(url_ln)
-    second_m = [extract_second_metrics(url_ln, i, total_a) for i in
-                range(2, 6)]
-    third_m = extract_third_metrics(url_ln)
-    additional_m = extract_additional_metrics(url_ln)
-    fourth_m = extract_highlights(url_ln)
+    first_m = get_first_metrics(url_ln)
+    second_m = [get_second_metrics(url_ln, i, total_a) for i in range(2, 6)]
+    third_m = get_third_metrics(url_ln)
+    additional_m = get_additional_metrics(url_ln)
+    fourth_m = get_highlights(url_ln)
     return print_metrics(total_a, first_m, second_m, third_m, additional_m,
                          fourth_m)
 
 
-def extract_first_metrics(url_ln):
+def get_first_metrics(url_ln):
     first_a = min(f"{line.split(' ; ')[0]}" for line in url_ln)
     latest_a = max(f"{line.split(' ; ')[0]}" for line in url_ln)
     date_w = [(line.split(" ; ")[0],
@@ -368,14 +366,14 @@ def extract_first_metrics(url_ln):
     return (first_a, latest_a, best_d, best_w, worst_d, worst_w)
 
 
-def extract_second_metrics(url_ln, index, total_a):
+def get_second_metrics(url_ln, index, total_a):
     metric_c = len([line for line in url_ln if int(line.split(' ; ')[index])
                     == 0])
     return f"{metric_c / total_a:.0%} ({metric_c}\
 {get_detail('[pdf_footer2]', replace=True)} {total_a})"
 
 
-def extract_third_metrics(url_ln):
+def get_third_metrics(url_ln):
     fields = [line.strip().split(';') for line in url_ln]
     total_miss, total_fng, total_dep, total_ety = \
         [sum(int(f[i]) for f in fields) for i in range(2, 6)]
@@ -385,7 +383,7 @@ def extract_third_metrics(url_ln):
     return (avg_miss, avg_fng, avg_dep, avg_ety)
 
 
-def extract_additional_metrics(url_ln):
+def get_additional_metrics(url_ln):
     avg_w = int(sum(int(line.split(' ; ')[-1]) for line in url_ln) /
                 len(url_ln))
     year_a, avg_w_y, month_a = extract_date_metrics(url_ln)
@@ -427,18 +425,18 @@ def get_month_counts(year, url_ln):
     return month_cnts
 
 
-def extract_highlights(url_ln):
+def get_highlights(url_ln):
     sections = ['[missing_cnt]', '[fng_cnt]', '[insecure_cnt]', '[empty_cnt]']
     fields_h = [2, 3, 4, 5]
     return [f"{print_detail_l(sections[i], analytics=True)}\n"
             f"  {print_detail_l('[best_analysis]', analytics=True)}: \
-{get_highlights(url_ln, fields_h[i], min)}\n"
+{calculate_highlights(url_ln, fields_h[i], min)}\n"
             f"  {print_detail_l('[worst_analysis]', analytics=True)}: \
-{get_highlights(url_ln, fields_h[i], max)}\n"
+{calculate_highlights(url_ln, fields_h[i], max)}\n"
             for i in range(len(fields_h))]
 
 
-def get_highlights(url_ln, field_index, func):
+def calculate_highlights(url_ln, field_index, func):
     values = [int(line.split(';')[field_index].strip()) for line in url_ln]
     target_value = func(values)
     target_line = next(line for line in url_ln
@@ -501,16 +499,15 @@ def extract_global_metrics(c_history):
         print(f"\n{get_detail('[no_global_analysis]').strip()}\n")
         sys.exit()
     total_a = len(url_ln)
-    first_m = extract_global_first_metrics(url_ln)
-    second_m = [extract_second_metrics(url_ln, i, total_a) for i in
-                range(2, 6)]
-    third_m = extract_third_metrics(url_ln)
-    additional_m = extract_additional_metrics(url_ln)
+    first_m = get_global_first_metrics(url_ln)
+    second_m = [get_second_metrics(url_ln, i, total_a) for i in range(2, 6)]
+    third_m = get_third_metrics(url_ln)
+    additional_m = get_additional_metrics(url_ln)
     return print_global_metrics(total_a, first_m, second_m, third_m,
                                 additional_m)
 
 
-def extract_global_first_metrics(url_ln):
+def get_global_first_metrics(url_ln):
     split_lines = [line.split(' ; ') for line in url_ln]
     url_lines = {}
     for entry in split_lines:
@@ -738,7 +735,7 @@ def get_epilog_detail(id_mode):
     with open(epi_file_path, 'r', encoding='utf8') as epi_source:
         epi_lines = epi_source.readlines()
         epi_idx = epi_lines.index(id_mode + '\n')
-        return ''.join(epi_lines[epi_idx+1:epi_idx+12])
+    return ''.join(epi_lines[epi_idx+1:epi_idx+12])
 
 
 def get_fingerprint_headers():

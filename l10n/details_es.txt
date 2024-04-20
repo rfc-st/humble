@@ -1265,10 +1265,10 @@ A destacar
  Diciembre
 
 [humble_not_recent]
- Tu versión no es la más reciente
+ Tu versión no es reciente
 
 [humble_recent]
- Tienes la versión más reciente :).
+ Tienes una versión reciente :).
 
 [github_humble]
  Comprueba las actualizaciones en https://github.com/rfc-st/humble/
