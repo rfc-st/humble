@@ -206,7 +206,7 @@ def fng_statistics_term_content(fng_group, term, term_count, fng_lines):
 def fng_statistics_term_sorted(fng_lines, term, fng_group):
     term_l = term.lower()
     for content in sorted(fng_group):
-        print(f"\n [{content}]")
+        print(f"\n [{STYLE[0]}{content}]")
         for line in fng_lines:
             line_l = line.lower()
             if f"[{content.lower()}]" in line_l and term_l in line_l:
