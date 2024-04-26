@@ -1886,7 +1886,7 @@ if sts_header and '46' not in skipped_headers_v:
             print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
         if not all(elem in sts_header for elem in l_sts_dir) or age < 31536000:
             print_details('[ists_h]', '[ists]', 'm', i_cnt)
-        if 'preload' in sts_header and ('includeSubDomains' not in sts_header
+        if 'preload' in sts_header and ('includesubdomains' not in sts_header
                                         or age < 31536000):
             print_details('[istsr_h]', '[istsr]', 'd', i_cnt)
         if ',' in sts_header:

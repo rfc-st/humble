@@ -44,6 +44,9 @@
 [http_406]
  Note : The URL returns an error (HTTP code 406, 'Not Acceptable')
 
+[http_407]
+ Note : The URL returns an error (HTTP code 407, 'Proxy Authentication Required')
+
 [http_409]
  Note : The URL returns an error (HTTP code 409, 'Conflict')
 
@@ -135,31 +138,31 @@
  Server error (HTTP code 511, 'Network Authentication Required')
 
 [server_520]
- Server error, generally associated with a CDN (HTTP code 520, 'Unknown error')
+ Server error usually associated with a CDN (HTTP code 520, 'Unknown error')
 
 [server_521]
- Server error, generally associated with a CDN (HTTP code 521, 'Web server is down')
+ Server error usually associated with a CDN (HTTP code 521, 'Web server is down')
 
 [server_522]
- Server error, generally associated with a CDN (HTTP code 522, 'Connection timed out')
+ Server error usually associated with a CDN (HTTP code 522, 'Connection timed out')
 
 [server_523]
- Server error, generally associated with a CDN (HTTP code 523, 'Origin is unreachable')
+ Server error usually associated with a CDN (HTTP code 523, 'Origin is unreachable')
 
 [server_524]
- Server error, generally associated with a CDN (HTTP code 524, 'A timeout occurred')
+ Server error usually associated with a CDN (HTTP code 524, 'A timeout occurred')
 
 [server_525]
- Server error, generally associated with a CDN (HTTP code 525, 'SSL handshake failed')
+ Server error usually associated with a CDN (HTTP code 525, 'SSL handshake failed')
 
 [server_526]
- Server error, generally associated with a CDN (HTTP code 526, 'Invalid SSL certificate')
+ Server error usually associated with a CDN (HTTP code 526, 'Invalid SSL certificate')
 
 [server_527]
- Server error, generally associated with a CDN (HTTP code 527, 'Railgun error')
+ Server error usually associated with a CDN (HTTP code 527, 'Railgun error')
 
 [server_530]
- Server error, generally associated with a CDN (HTTP code 530, 'Review accompanying 1XXX error')
+ Server error usually associated with a CDN (HTTP code 530, 'Review accompanying 1XXX error')
 
 [ixuacom_h]
  X-UA-Compatible (Deprecated Header)
