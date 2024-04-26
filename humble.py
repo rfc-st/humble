@@ -1879,11 +1879,16 @@ if 'Strict-Dynamic' in headers and '45' not in skipped_headers_v:
     print_details('[isdyn_h]', '[isdyn]', 'd', i_cnt)
 
 sts_header = headers.get('Strict-Transport-Security', '').lower()
-if sts_header and not unsafe_scheme and '46' not in skipped_headers_v:
+if sts_header and '46' not in skipped_headers_v:
     try:
         age = int(''.join(filter(str.isdigit, sts_header)))
+        if unsafe_scheme:
+            print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
         if not all(elem in sts_header for elem in l_sts_dir) or age < 31536000:
             print_details('[ists_h]', '[ists]', 'm', i_cnt)
+        if 'preload' in sts_header and ('includeSubDomains' not in sts_header
+                                        or age < 31536000):
+            print_details('[istsr_h]', '[istsr]', 'd', i_cnt)
         if ',' in sts_header:
             print_details('[istsd_h]', '[istsd]', 'd', i_cnt)
     except ValueError:
@@ -1893,9 +1898,6 @@ if 'Supports-Loading-Mode' in headers and '47' not in skipped_headers_v:
     support_mode_h = headers['Supports-Loading-Mode'].lower()
     if not any(elem in support_mode_h for elem in l_support_mode):
         print_details('[islmode_h]', '[islmode]', 'd', i_cnt)
-
-if sts_header and unsafe_scheme:
-    print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
 
 if 'Surrogate-Control' in headers and '48' not in skipped_headers_v:
     surrogate_mode_h = headers['Surrogate-Control'].lower()

@@ -552,6 +552,9 @@
 [ists_h]
  Strict-Transport-Security (Valores recomendados)
 
+[istsr_h]
+ Strict-Transport-Security (Valores obligatorios)
+
 [istsd_h]
  Strict-Transport-Security (Valores duplicados)
 
@@ -985,9 +988,13 @@ Cabeceras de respuesta HTTP
  Ref: https://content-security-policy.com/strict-dynamic/
 
 [ists]
- Habilite 'includeSubDomains' y 'max-age' con, al menos, un valor de 31536000.
+ Habilite 'includeSubDomains' y 'max-age' (con 31536000 -un año- como mínimo).
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
  Ref: https://https.cio.gov/hsts/
+
+[istsr]
+ 'preload' requiere 'includeSubDomains' y 'max-age' (con 31536000 -un año- como mínimo).
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [istsd]
  Esta cabecera, o sus valores, pueden estar duplicados.
