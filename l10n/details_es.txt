@@ -570,6 +570,9 @@
 [ictrf_h]
  Transfer-Encoding (Sin directivas adecuadas)
 
+[islmodei_h]
+ Supports-Loading-Mode (Cabecera ignorada)
+
 [islmode_h]
  Supports-Loading-Mode (Sin directivas adecuadas)
 
@@ -999,6 +1002,10 @@ Cabeceras de respuesta HTTP
 [istsd]
  Esta cabecera, o sus valores, pueden estar duplicados.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+
+[islmodei]
+ Al acceder mediante HTTP los navegadores ignoran esta cabecera.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
 
 [islmode]
  Incluya, al menos, una directiva correcta.

@@ -1896,6 +1896,8 @@ if sts_header and '46' not in skipped_headers_v:
 
 if 'Supports-Loading-Mode' in headers and '47' not in skipped_headers_v:
     support_mode_h = headers['Supports-Loading-Mode'].lower()
+    if unsafe_scheme:
+        print_details('[islmodei_h]', '[islmodei]', 'd', i_cnt)
     if not any(elem in support_mode_h for elem in l_support_mode):
         print_details('[islmode_h]', '[islmode]', 'd', i_cnt)
 

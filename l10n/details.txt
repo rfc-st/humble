@@ -570,6 +570,9 @@
 [ictrf_h]
  Transfer-Encoding (No Valid Directives)
 
+[islmodei_h]
+ Supports-Loading-Mode (Ignored Header)
+
 [islmode_h]
  Supports-Loading-Mode (No Valid Directives)
 
@@ -996,6 +999,10 @@ HTTP Response Headers
 [istsd]
  This header, or its values, may be duplicated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+
+[islmodei]
+ This header is ignored by the browser when accessing via HTTP.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
 
 [islmode]
  Include at least one valid directive.
