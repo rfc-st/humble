@@ -69,9 +69,9 @@ BANNER = '''  _                     _     _
 BOLD_SECTION = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
                 "[Cabeceras")
 CANIUSE_URL = ': https://caniuse.com/?search='
-CLEAN_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat']
+DELETE_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HTTP_ERRORS = [' Ref  : https://developers.cloudflare.com/support/\
 troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/',
@@ -95,17 +95,13 @@ PATH_PATTERN = (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
                 r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')
 REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
-S_BRIGHT = Style.BRIGHT
-S_BRIGHT_RED = f"{S_BRIGHT}{Fore.RED}"
-S_CYAN = Fore.CYAN
-S_NORMAL = Style.NORMAL
-S_RESET = Style.RESET_ALL
-SF_RESET = Fore.RESET
+STYLE = [Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
+         Style.RESET_ALL, Fore.RESET]
 URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-04-20', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-04-26', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -145,8 +141,8 @@ def check_humble_updates(local_version):
 
 
 def fng_statistics_top():
-    print(f"\n{S_BRIGHT}{get_detail('[fng_stats]', replace=True)}\
-{S_RESET}{get_detail('[fng_source]', replace=True)}\n")
+    print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
+{STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
@@ -175,8 +171,8 @@ def fng_statistics_top_result(fng_content, headers_cnt):
 
 
 def fng_statistics_term(term):
-    print(f"\n{S_BRIGHT}{get_detail('[fng_stats]', replace=True)}\
-{S_RESET}{get_detail('[fng_source]', replace=True)}\n")
+    print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
+{STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         fng_lines = fng_source.readlines()
@@ -223,7 +219,7 @@ def print_security_guides():
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
               encoding='utf8') as guides_source:
         for line in islice(guides_source, 24, None):
-            print(f" {S_BRIGHT}{line}" if line.startswith('[') else f"\
+            print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
   {line}", end='')
     sys.exit()
 
@@ -340,7 +336,7 @@ def url_analytics(is_global=False):
     print(f"\n{get_detail(stats_s, replace=True)} {'' if is_global else URL}\
 \n")
     for key, value in analysis_stats.items():
-        key = f"{S_BRIGHT}{key}{S_RESET}" if \
+        key = f"{STYLE[0]}{key}{STYLE[4]}" if \
             (not value or not key.startswith(' ')) else key
         print(f"{key}: {value}")
     sys.exit()
@@ -610,14 +606,14 @@ def csp_print_warnings(csp_values, csp_title, csp_desc, csp_refs):
     print_detail(f'{csp_refs}')
 
 
-def clean_shell_lines(reliable=True):
+def delete_lines(reliable=True):
     if not reliable:
-        sys.stdout.write(CLEAN_LINES)
-    sys.stdout.write(CLEAN_LINES)
+        sys.stdout.write(DELETE_LINES)
+    sys.stdout.write(DELETE_LINES)
 
 
 def print_export_path(filename, reliable):
-    clean_shell_lines(reliable=False) if reliable else clean_shell_lines()
+    delete_lines(reliable=False) if reliable else delete_lines()
     print("")
     print_detail_l('[report]')
     print(path.abspath(filename))
@@ -628,7 +624,7 @@ def print_nowarnings():
 
 
 def print_header(header):
-    print(f" {header}" if args.output else f"{S_BRIGHT_RED} {header}")
+    print(f" {header}" if args.output else f"{STYLE[1]} {header}")
 
 
 def print_fng_header(header):
@@ -636,14 +632,14 @@ def print_fng_header(header):
     if args.output:
         print(f" {header}")
     elif '[' in header:
-        print(f"{S_BRIGHT_RED} {prefix}{S_NORMAL}{SF_RESET} [{suffix}")
+        print(f"{STYLE[1]} {prefix}{STYLE[3]}{STYLE[5]} [{suffix}")
     else:
-        print(f"{S_BRIGHT_RED} {header}")
+        print(f"{STYLE[1]} {header}")
 
 
 def print_general_info(reliable):
     if not args.output:
-        clean_shell_lines(reliable=False) if reliable else clean_shell_lines()
+        delete_lines(reliable=False) if reliable else delete_lines()
         print("")
         print(BANNER)
         print(f" ({HUMBLE_GIT[1]} | v.{local_version})")
@@ -686,7 +682,7 @@ def print_response_headers():
     print(linesep.join(['']*2))
     print_detail_r('[0headers]')
     for key, value in sorted(headers.items()):
-        print(f" {key}:", value) if args.output else print(f" {S_CYAN}\
+        print(f" {key}:", value) if args.output else print(f" {STYLE[2]}\
 {key}:", value)
     print('\n')
 
@@ -717,7 +713,7 @@ def print_detail_l(id_mode, analytics=False):
 
 
 def print_detail_r(id_mode, is_red=False):
-    style_str = S_BRIGHT_RED if is_red else S_BRIGHT
+    style_str = STYLE[1] if is_red else STYLE[0]
     for i, line in enumerate(l10n_details):
         if line.startswith(id_mode):
             if not args.output:
@@ -822,7 +818,7 @@ def print_empty_headers(headers, l_empty):
 def print_browser_compatibility(browser_compat_header):
     for key in browser_compat_header:
         output_string = "  " if args.output == 'html' else " "
-        key_string = key if args.output else f"{S_CYAN}{key}{SF_RESET}"
+        key_string = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
         print(f"{output_string}{key_string}{CANIUSE_URL}\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 
@@ -887,8 +883,8 @@ def get_user_agent(user_agent_id):
 
 
 def print_user_agents(user_agents):
-    print(f"\n{S_BRIGHT}{get_detail('[ua_available]', replace=True)}\
-{S_RESET}{get_detail('[ua_source]', replace=True)}")
+    print(f"\n{STYLE[0]}{get_detail('[ua_available]', replace=True)}\
+{STYLE[4]}{get_detail('[ua_source]', replace=True)}")
     for line in user_agents:
         print(f' {line}')
     sys.exit()
@@ -1116,7 +1112,7 @@ def format_html_bold(ln):
 
 
 def print_http_exception(id_exception, exception_v):
-    clean_shell_lines()
+    delete_lines()
     print("")
     print_detail(id_exception)
     raise SystemExit from exception_v
@@ -1146,7 +1142,7 @@ def analysis_filename(args, export_date, file_ext):
 
 
 def handle_server_error(http_code, id_mode):
-    clean_shell_lines()
+    delete_lines()
     print()
     if (500 <= http_code <= 511) or (520 <= http_code <= 530):
         if detail := print_detail(id_mode, 0):
@@ -1394,7 +1390,6 @@ if args.brief and m_cnt != 0:
     print("")
 if m_cnt == 0:
     print_nowarnings()
-
 print("")
 
 # Section '2. Fingerprint HTTP Response Headers'
@@ -1411,7 +1406,6 @@ if args.brief and f_cnt != 0:
     print("")
 if f_cnt == 0:
     print_nowarnings()
-
 print("")
 
 # Section '3. Deprecated HTTP Response Headers/Protocols and Insecure Values'
@@ -1447,7 +1441,6 @@ l_acceptch_dep = ['content-dpr', 'dpr', 'sec-ch-ua-full-version',
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 l_cache = ['no-cache', 'no-store', 'must-revalidate']
-
 l_cachev = ['immutable', 'max-age', 'must-revalidate', 'must-understand',
             'no-cache', 'no-store', 'no-transform', 'private',
             'proxy-revalidate', 'public', 's-maxage', 'stale-if-error',
@@ -1465,12 +1458,9 @@ l_cencoding = ['br', 'compress', 'deflate', 'gzip', 'x-gzip', 'zstd']
 # https://www.w3.org/TR/CSP3/
 l_csp_broad = ['*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'https:',
                'https://*', 'https://*.*', 'schemes:', 'wss:', 'wss://']
-
 l_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
-
 l_csp_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
              'prefetch-src', 'referrer', 'report-uri', 'require-sri-for']
-
 l_csp_dirs = ['base-uri', 'child-src', 'connect-src', 'default-src',
               'fenced-frame-src', 'font-src', 'form-action', 'frame-ancestors',
               'frame-src', 'img-src', 'manifest-src', 'media-src',
@@ -1479,11 +1469,8 @@ l_csp_dirs = ['base-uri', 'child-src', 'connect-src', 'default-src',
               'script-src-attr', 'script-src-elem', 'style-src',
               'style-src-attr', 'style-src-elem', 'trusted-types',
               'upgrade-insecure-requests', 'webrtc', 'worker-src']
-
 l_csp_insecs = ['http:', 'ws:']
-
 l_csp_insecv = ['unsafe-eval', 'unsafe-inline']
-
 l_csp_ro_dep = ['violated-directive']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
@@ -1514,7 +1501,6 @@ l_legacy = ['application/javascript', 'application/ecmascript',
 # https://w3c.github.io/network-error-logging/#nel-response-header
 l_nel_dir = ['failure_fraction', 'include_subdomains', 'max_age', 'report_to',
              'request_headers', 'response_headers', 'success_fraction']
-
 l_nel_req = ['report_to', 'max_age']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/No-Vary-Search
@@ -1526,7 +1512,6 @@ l_origcluster = ['?1']
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 l_per_dep = ['document-domain', 'window-placement']
-
 l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'bluetooth', 'browsing-topics', 'camera', 'ch-ua', 'ch-ua-arch',
               'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
@@ -1558,19 +1543,16 @@ l_proxy_auth = ['AWS4-HMAC-SHA256', 'Basic', 'Bearer', 'Digest', 'DPoP',
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 l_ref_secure = ['strict-origin', 'strict-origin-when-cross-origin',
                 'no-referrer-when-downgrade', 'no-referrer']
-
 l_ref_values = ['no-referrer', 'no-referrer-when-downgrade', 'origin',
                 'origin-when-cross-origin', 'same-origin', 'strict-origin',
                 'strict-origin-when-cross-origin', 'unsafe-url']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 l_cookie_prf = ['__Host-', '__Secure-']
-
 l_cookie_sec = ['httponly', 'secure']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
 l_repdig_sec = ['sha-256', 'sha-512']
-
 l_repdig_ins = ['adler', 'crc32c', 'md5', 'sha-1', 'unixsum', 'unixcksum']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Login
@@ -2035,7 +2017,6 @@ if args.brief and i_cnt[0] != 0:
     print("")
 if i_cnt[0] == 0:
     print_nowarnings()
-
 print("")
 
 # Section '4. Empty HTTP Response Headers Values'
