@@ -743,7 +743,7 @@ Cabeceras de respuesta HTTP
  Nota : Se analizará la URL exacta, sin seguir redireccionamientos.
 
 [analysis_skipped_note]
- Nota : Omitidas comprobaciones de obsolescencia/valores para
+ Nota : Omitidas comprobaciones de obsolescencia/valores inseguros para
 
 [analysis_redirects]
  Nota : Se ha indicado expresamente analizar la URL exacta, sin seguir redirecciones.
@@ -1378,7 +1378,7 @@ Error: la ruta indicada de 'testssl.sh' es incorrecta.
 '-s' requiere, al menos, una cabecera HTTP de respuesta.
 
 [args_skipped_unknown]
-Elimina las siguientes cabeceras HTTP del parámetro '-s', ya que 'humble' no las comprueba:  
+Elimina estas cabeceras HTTP del parámetro '-s', ya que 'humble' no las comprueba: 
 
 [args_skipped_ko]
 -s' requiere, al menos, el nombre de una cabecera de respuesta HTTP..

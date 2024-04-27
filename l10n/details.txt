@@ -743,7 +743,7 @@ HTTP Response Headers
  Note : The exact URL will be analyzed, without following redirects.
 
 [analysis_skipped_note]
- Note : Omitted deprecated/value checks for
+ Note : Omitted deprecated/insecure checks for
 
 [analysis_output]
  Analyzing URL and saving the report, please wait ...
@@ -1378,7 +1378,7 @@ Error: The PATH for 'testssl.sh' is incorrect.
 '-s' requires at least the name of one HTTP response header.
 
 [args_skipped_unknown]
-Remove the following HTTP headers from the '-s' parameter as 'humble' does not check them: 
+Remove these HTTP headers from the '-s' parameter as 'humble' does not check them: 
 
 [args_skipped_ko]
 '-s' requires at least the name of one HTTP response header.
