@@ -72,6 +72,7 @@ CANIUSE_URL = ': https://caniuse.com/?search='
 CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat']
 DELETE_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
+FNG_PATTERN = r'\[(.*?)\]'
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HTTP_ERRORS = [' Ref  : https://developers.cloudflare.com/support/\
 troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/',
@@ -88,7 +89,6 @@ HUMBLE_GIT = ['https://raw.githubusercontent.com/rfc-st/humble/master/humble.p\
 y', 'https://github.com/rfc-st/humble']
 IP_PATTERN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
               r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
-LINE_PATTERN = r'\[(.*?)\]'
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ['CYMRU', 'GURU', 'PRU']
 PATH_PATTERN = (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
@@ -177,37 +177,36 @@ def fng_statistics_term(fng_term):
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         fng_lines = fng_source.readlines()
-    fng_group, term_count = fng_statistics_term_groups(fng_lines, fng_term)
-    if not fng_group:
+    fng_groups, term_count = fng_statistics_term_groups(fng_lines, fng_term)
+    if not fng_groups:
         print(f"{get_detail('[fng_zero]', replace=True)} '{fng_term}'.\n\n\
 {get_detail('[fng_zero_2]', replace=True)}.\n")
         sys.exit()
-    fng_statistics_term_content(fng_group, fng_term, term_count, fng_lines)
+    fng_statistics_term_content(fng_groups, fng_term, term_count, fng_lines)
 
 
 def fng_statistics_term_groups(fng_ln, fng_term):
-    fng_group = \
-        {match[1].strip()
-         for line in fng_ln if (match := re.search(LINE_PATTERN, line)) and
-         fng_term.lower() in match[1].lower()}
-    term_cnt = sum(bool((match := re.search(LINE_PATTERN, line)) and
-                        fng_term.lower() in match[1].lower()) for line in
-                   fng_ln)
-    return fng_group, term_cnt
+    fng_matches = [match for line in
+                   fng_ln if (match :=
+                              re.search(FNG_PATTERN, line)) and
+                   fng_term.lower() in match[1].lower()]
+    fng_groups = {match[1].strip() for match in fng_matches}
+    term_cnt = sum(bool(match) for match in fng_matches)
+    return fng_groups, term_cnt
 
 
-def fng_statistics_term_content(fng_group, fng_term, term_count, fng_lines):
-    excl_cnt = sum(line.startswith('#') for line in fng_lines) + 2
-    headers_cnt = len(fng_lines)-excl_cnt
+def fng_statistics_term_content(fng_groups, fng_term, term_count, fng_lines):
+    excl_cnt = Counter(line.startswith('#') for line in fng_lines)[True] + 2
+    headers_cnt = len(fng_lines) - excl_cnt
     fng_pct = round(term_count / headers_cnt * 100, 2)
     print(f"{get_detail('[fng_add]', replace=True)} '{fng_term}': {fng_pct}%\
  ({term_count}{get_detail('[pdf_footer2]', replace=True)} {headers_cnt})")
-    fng_statistics_term_sorted(fng_lines, fng_term, fng_group)
+    fng_statistics_term_sorted(fng_lines, fng_term, fng_groups)
 
 
-def fng_statistics_term_sorted(fng_lines, fng_term, fng_group):
+def fng_statistics_term_sorted(fng_lines, fng_term, fng_groups):
     fng_term_l = fng_term.lower()
-    for content in sorted(fng_group):
+    for content in sorted(fng_groups):
         print(f"\n [{STYLE[0]}{content}]")
         for line in fng_lines:
             line_l = line.lower()
