@@ -82,7 +82,8 @@ HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
 HUMBLE_DIRS = ['additional', 'l10n']
 HUMBLE_FILES = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'guides.txt', 'details_es.txt', 'details.txt',
-                'user_agents.txt', 'insecure.txt', 'html_template.html']
+                'user_agents.txt', 'insecure.txt', 'html_template.html',
+                'testssl.sh']
 HUMBLE_GIT = ['https://raw.githubusercontent.com/rfc-st/humble/master/humble.p\
 y', 'https://github.com/rfc-st/humble']
 IP_PATTERN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
@@ -101,7 +102,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-04-27', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-04-28', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -170,46 +171,47 @@ def fng_statistics_top_result(fng_content, headers_cnt):
         print(f" [{content}]: {padding_s}{fng_global_pct:.2f}% ({count})")
 
 
-def fng_statistics_term(term):
+def fng_statistics_term(fng_term):
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         fng_lines = fng_source.readlines()
-    fng_group, term_count = fng_statistics_term_groups(fng_lines, term)
+    fng_group, term_count = fng_statistics_term_groups(fng_lines, fng_term)
     if not fng_group:
-        print(f"{get_detail('[fng_zero]', replace=True)} '{term}'.\n\n\
+        print(f"{get_detail('[fng_zero]', replace=True)} '{fng_term}'.\n\n\
 {get_detail('[fng_zero_2]', replace=True)}.\n")
         sys.exit()
-    fng_statistics_term_content(fng_group, term, term_count, fng_lines)
+    fng_statistics_term_content(fng_group, fng_term, term_count, fng_lines)
 
 
-def fng_statistics_term_groups(fng_ln, term):
+def fng_statistics_term_groups(fng_ln, fng_term):
     fng_group = \
         {match[1].strip()
          for line in fng_ln if (match := re.search(LINE_PATTERN, line)) and
-         term.lower() in match[1].lower()}
+         fng_term.lower() in match[1].lower()}
     term_cnt = sum(bool((match := re.search(LINE_PATTERN, line)) and
-                        term.lower() in match[1].lower()) for line in fng_ln)
+                        fng_term.lower() in match[1].lower()) for line in
+                   fng_ln)
     return fng_group, term_cnt
 
 
-def fng_statistics_term_content(fng_group, term, term_count, fng_lines):
+def fng_statistics_term_content(fng_group, fng_term, term_count, fng_lines):
     excl_cnt = sum(line.startswith('#') for line in fng_lines) + 2
     headers_cnt = len(fng_lines)-excl_cnt
     fng_pct = round(term_count / headers_cnt * 100, 2)
-    print(f"{get_detail('[fng_add]', replace=True)} '{term}': {fng_pct}%\
+    print(f"{get_detail('[fng_add]', replace=True)} '{fng_term}': {fng_pct}%\
  ({term_count}{get_detail('[pdf_footer2]', replace=True)} {headers_cnt})")
-    fng_statistics_term_sorted(fng_lines, term, fng_group)
+    fng_statistics_term_sorted(fng_lines, fng_term, fng_group)
 
 
-def fng_statistics_term_sorted(fng_lines, term, fng_group):
-    term_l = term.lower()
+def fng_statistics_term_sorted(fng_lines, fng_term, fng_group):
+    fng_term_l = fng_term.lower()
     for content in sorted(fng_group):
         print(f"\n [{STYLE[0]}{content}]")
         for line in fng_lines:
             line_l = line.lower()
-            if f"[{content.lower()}]" in line_l and term_l in line_l:
+            if f"[{content.lower()}]" in line_l and fng_term_l in line_l:
                 print(f"  {line[:line.find('[')].strip()}")
     sys.exit()
 
@@ -224,25 +226,25 @@ def print_security_guides():
     sys.exit()
 
 
-def testssl_command(directory, uri):
-    directory = path.abspath(directory)
-    testssl_f = path.join(directory, 'testssl.sh')
-    if not path.isdir(directory):
+def testssl_command(testssl_temp_path, uri):
+    testssl_abs_path = path.abspath(testssl_temp_path)
+    if not path.isdir(testssl_abs_path):
         sys.exit(f"\n{get_detail('[notestssl_path]')}")
-    if not path.isfile(testssl_f):
+    testssl_final_path = path.join(testssl_abs_path, HUMBLE_FILES[9])
+    if not path.isfile(testssl_final_path):
         sys.exit(f"\n{get_detail('[notestssl_file]')}")
     else:
         uri_safe = quote(uri)
         # Check './testssl.sh --help' to choose your preferred options
-        command = [testssl_f, '-f', '-g', '-p', '-U', '-s', '--hints',
-                   uri_safe]
-        testssl_analysis(command)
+        testssl_command = [testssl_final_path, '-f', '-g', '-p', '-U', '-s',
+                           '--hints', uri_safe]
+        testssl_analysis(testssl_command)
     sys.exit()
 
 
-def testssl_analysis(command):
+def testssl_analysis(testssl_command):
     try:
-        process = subprocess.Popen(command, stdout=subprocess.PIPE,
+        process = subprocess.Popen(testssl_command, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE, text=True)
         while True:
             ln = process.stdout.readline()
@@ -1125,14 +1127,23 @@ def print_ru_message():
             sys.exit()
 
 
-def analysis_filename(args, export_date, file_ext):
+def get_temp_filename(args, export_date):
+    file_ext = ".txt" if args.output == 'txt' else "t.txt"
+    parsed_url = urlparse(args.URL)
+    temp_filename = build_temp_filename(args, export_date, file_ext,
+                                        parsed_url)
+    if args.output_path:
+        temp_filename = path.join(output_path, temp_filename)
+    return temp_filename
+
+
+def build_temp_filename(args, export_date, file_ext, parsed_url):
     url_str = tldextract.extract(args.URL)
-    url_sch = urlparse(args.URL).scheme
+    url_sch = parsed_url.scheme
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
     url_dom = f"{url_str.domain}."
     url_tld = url_str.suffix
-    url_prt = f"_{urlparse(args.URL).port}_" if urlparse(args.URL).port is not\
-        None else '_'
+    url_prt = f"_{parsed_url.port}_" if parsed_url.port is not None else '_'
     return f"{url_sch}{url_sub}{url_dom}{url_tld}{url_prt}{export_date}\
 {file_ext}"
 
@@ -1239,37 +1250,42 @@ parser = ArgumentParser(formatter_class=custom_help_formatter,
 v.{local_version}", epilog=epi_text)
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
-statistics of the performed analysis (will be global if '-u' is omitted)")
+statistics of the performed analysis; will be global if the '-u' parameter is \
+omitted")
 parser.add_argument("-b", dest='brief', action="store_true", help="Shows \
-overall findings (if omitted, details will be shown)")
+overall findings; if this parameter is omitted detailed ones will be shown")
 parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
- follow redirects (if omitted, the last redirection will be the one analyzed)")
-parser.add_argument("-e", nargs='?', type=str, dest='path', help="Shows \
-TLS/SSL checks (requires the PATH of https://testssl.sh/ and Linux/Unix OS)")
-parser.add_argument("-f", nargs='?', type=str, dest='term', help="Shows \
-fingerprint statistics (will be the Top 20 if \"TERM\", e.g. \"Google\", is \
-omitted)")
+ follow redirects; if this parameter is omitted the last redirection will be \
+the one analyzed")
+parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\
+s TLS/SSL checks; requires the 'TESTSSL_PATH' of https://testssl.sh/ and \
+Linux/Unix OS")
+parser.add_argument("-f", nargs='?', type=str, dest='fingerprint_term', help="\
+Shows fingerprint statistics; will be the Top 20 if \'FINGERPRINT_TERM\', e.g.\
+ \'Google\', is omitted")
 parser.add_argument("-g", dest='guides', action="store_true", help="Shows \
 guidelines for enabling security HTTP response headers on popular servers/\
 services")
 parser.add_argument("-l", dest='lang', choices=['es'], help="The language for \
-displaying analysis, errors and messages (if omitted it will be in English)")
+displaying analysis, errors and messages; will be in English if this parameter\
+ is omitted")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt'], help="Exports \
-analysis to 'scheme_host_port_yyyymmdd.ext' file (csv/json files will contain \
-a brief analysis)")
+analysis to 'scheme_host_port_yyyymmdd.ext' file; csv/json files will contain \
+a brief analysis")
 parser.add_argument("-op", dest='output_path', type=str, help="Exports \
-analysis to OUTPUT_PATH (if omitted, the PATH of 'humble.py' will be used)")
+analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py\
+' will be used")
 parser.add_argument("-r", dest='ret', action="store_true", help="Shows HTTP \
-response headers and a detailed analysis ('-b' parameter will take priority)")
-parser.add_argument("-s", dest='skipped_headers', nargs='*', type=str,
-                    help="Skip analysis of specified HTTP response headers, \
-separated by spaces")
+response headers and a detailed analysis; '-b' parameter will take priority")
+parser.add_argument("-s", dest='skipped_headers', nargs='*', type=str, help="S\
+kip analysis of HTTP response headers specified in 'SKIPPED_HEADERS' (separate\
+d by spaces)")
 parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
  analyze. E.g. https://google.com")
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
 from 'additional/user_agents.txt' to use. '0' will show all and '1' is the \
-default.")
+default")
 parser.add_argument("-v", "--version", action="store_true", help="Checks for \
 updates at https://github.com/rfc-st/humble")
 
@@ -1282,7 +1298,8 @@ if args.version:
     check_humble_updates(local_version)
 
 if '-f' in sys.argv:
-    fng_statistics_term(args.term) if args.term else fng_statistics_top()
+    fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \
+        fng_statistics_top()
 
 if '-ua' in sys.argv:
     ua_header = parse_user_agent(user_agent=True)
@@ -1293,7 +1310,7 @@ if '-e' in sys.argv:
     if system().lower() == 'windows':
         print_detail('[windows_ssltls]', 28)
         sys.exit()
-    if (args.path is None or args.URL is None):
+    if (args.testssl_path is None or args.URL is None):
         parser.error(get_detail('[args_notestssl]'))
 
 if args.lang and not (args.URL or args.URL_A) and not args.guides:
@@ -1324,11 +1341,11 @@ elif args.skipped_headers:
 
 URL = args.URL
 
-if args.guides or args.path or args.URL_A:
+if args.guides or args.testssl_path or args.URL_A:
     if args.guides:
         print_security_guides()
-    elif args.path:
-        testssl_command(args.path, args.URL)
+    elif args.testssl_path:
+        testssl_command(args.testssl_path, args.URL)
     elif args.URL_A:
         url_analytics() if args.URL else url_analytics(is_global=True)
 
@@ -1352,13 +1369,10 @@ requests.packages.urllib3.disable_warnings()
 
 headers, status_code, reliable, request_time = manage_http_request()
 
-# To export the results of the analysis (parameter '-o')
+# To export the results of the analysis
 if args.output:
     orig_stdout = sys.stdout
-    file_ext = ".txt" if args.output == 'txt' else "t.txt"
-    temp_filename = analysis_filename(args, export_date, file_ext)
-    if args.output_path:
-        temp_filename = path.join(output_path, temp_filename)
+    temp_filename = get_temp_filename(args, export_date)
     temp_filename_content = open(temp_filename, 'w', encoding='utf8')
     sys.stdout = temp_filename_content
 
