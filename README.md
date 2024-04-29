@@ -11,7 +11,7 @@
 
 <br />
 <br />
-A humble and <strong>fast</strong> HTTP Header <strong>Security</strong> Analyzer<br />
+A humble and <strong>fast</strong> HTTP Response Header <strong>Security</strong> Analyzer<br />
 <br />
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fast.JPG" alt="A quick analysis with 'humble'!" width=90% height=90%>
 <br />
