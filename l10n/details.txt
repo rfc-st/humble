@@ -1410,3 +1410,6 @@ examples:
   -u URL -r                   Analyzes the URL and reports detailed findings along with HTTP response headers
   -u URL -s ETag NEL          Analyzes the URL and skips checks associated with 'ETag' and 'NEL' HTTP response headers
   -u URL -ua 4                Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt'
+
+[fng_value]
+Value:

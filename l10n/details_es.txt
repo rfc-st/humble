@@ -1400,3 +1400,6 @@ Sección
 
 [csv_values]
 Valores
+
+[fng_value]
+Valor:

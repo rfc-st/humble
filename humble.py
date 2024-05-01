@@ -767,7 +767,8 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
         if not headers[header]:
             print(get_detail('[empty_fng]', replace=True))
         else:
-            print(f" {headers[header]}")
+            print(f" {get_detail('[fng_value]', replace=True)} \
+'{headers[header]}'")
         print("")
     else:
         print_header(header)
