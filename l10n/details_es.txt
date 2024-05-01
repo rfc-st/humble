@@ -725,7 +725,7 @@ Cabeceras de respuesta HTTP
 [4. Cabeceras de respuesta HTTP sin valor]
 
 [5compat]
-[5. Compatibilidad de navegadores con cabeceras HTTP de respuesta]
+[5. Compatibilidad de navegadores para cabeceras de seguridad HTTP habilitadas]
 
 [analysis]
  Analizando URL, espera por favor ...

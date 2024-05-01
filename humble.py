@@ -71,8 +71,7 @@ BOLD_SECTION = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
 CANIUSE_URL = ': https://caniuse.com/?search='
 CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat']
-DELETE_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
-FNG_PATTERN = r'\[(.*?)\]'
+DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HTTP_ERRORS = [' Ref  : https://developers.cloudflare.com/support/\
 troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/',
@@ -87,13 +86,14 @@ HUMBLE_FILES = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'testssl.sh']
 HUMBLE_GIT = ['https://raw.githubusercontent.com/rfc-st/humble/master/humble.p\
 y', 'https://github.com/rfc-st/humble']
-IP_PATTERN = (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
-              r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ['CYMRU', 'GURU', 'PRU']
-PATH_PATTERN = (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
-                r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
-                r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')
+RE_PATTERN = [r'\[(.*?)\]',
+              (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
+               r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$'),
+              (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
+               r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
+               r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')]
 REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 STYLE = [Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
@@ -102,7 +102,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-04-29', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-05-01', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -188,7 +188,7 @@ def fng_statistics_term(fng_term):
 def fng_statistics_term_groups(fng_ln, fng_term):
     fng_matches = [match for line in
                    fng_ln if (match :=
-                              re.search(FNG_PATTERN, line)) and
+                              re.search(RE_PATTERN[0], line)) and
                    fng_term.lower() in match[1].lower()]
     fng_groups = {match[1].strip() for match in fng_matches}
     term_cnt = sum(bool(match) for match in fng_matches)
@@ -609,8 +609,8 @@ def csp_print_warnings(csp_values, csp_title, csp_desc, csp_refs):
 
 def delete_lines(reliable=True):
     if not reliable:
-        sys.stdout.write(DELETE_LINES)
-    sys.stdout.write(DELETE_LINES)
+        sys.stdout.write(DELETED_LINES)
+    sys.stdout.write(DELETED_LINES)
 
 
 def print_export_path(filename, reliable):
@@ -728,12 +728,12 @@ def get_detail(id_mode, replace=False):
                 l10n_lines[i+1]
 
 
-def get_epilog_detail(id_mode):
-    epi_file_path = path.join(HUMBLE_DIRS[1], HUMBLE_FILES[5])
-    with open(epi_file_path, 'r', encoding='utf8') as epi_source:
-        epi_lines = epi_source.readlines()
-        epi_idx = epi_lines.index(id_mode + '\n')
-    return ''.join(epi_lines[epi_idx+1:epi_idx+12])
+def get_epilog_content(id_mode):
+    epilog_file_path = path.join(HUMBLE_DIRS[1], HUMBLE_FILES[5])
+    with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
+        epilog_lines = epilog_source.readlines()
+        epilog_idx = epilog_lines.index(id_mode + '\n')
+    return ''.join(epilog_lines[epilog_idx+1:epilog_idx+12])
 
 
 def get_fingerprint_headers():
@@ -811,8 +811,8 @@ def print_empty_headers(headers, l_empty):
     return e_cnt
 
 
-def print_browser_compatibility(browser_compat_header):
-    for key in browser_compat_header:
+def print_browser_compatibility(enabled_security_headers):
+    for key in enabled_security_headers:
         output_string = "  " if args.output == 'html' else " "
         key_string = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
         print(f"{output_string}{key_string}{CANIUSE_URL}\
@@ -820,7 +820,7 @@ def print_browser_compatibility(browser_compat_header):
 
 
 def check_path_traversal(path):
-    path_traversal_ptrn = re.compile(PATH_PATTERN)
+    path_traversal_ptrn = re.compile(RE_PATTERN[2])
     if path_traversal_ptrn.search(path):
         print(f"\n{get_detail('[args_path_traversal]', replace=True)} \
 ('{path}')")
@@ -1237,11 +1237,11 @@ def custom_help_formatter(prog):
 
 
 init(autoreset=True)
-epi_text = get_epilog_detail('[epilog_content]')
+epilog_content = get_epilog_content('[epilog_content]')
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
                         description=f"{HUMBLE_DESC} | {HUMBLE_GIT[1]} | \
-v.{local_version}", epilog=epi_text)
+v.{local_version}", epilog=epilog_content)
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
 statistics of the performed analysis; will be global if the '-u' parameter is \
@@ -1589,7 +1589,7 @@ l_permcross = ['all', 'by-content-only', 'by-ftp-only', 'master-only', 'none',
                'none-this-response']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
-l_xfo_dir = ['deny', 'sameorigin']
+l_xfo_dir = ['DENY', 'SAMEORIGIN']
 
 # https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 # https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
@@ -1603,7 +1603,7 @@ l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
 unsafe_scheme = True if URL.startswith(HTTP_SCHEMES[0]) else False
 
 if 'accept-ch' in headers_l and '1' not in skipped_list:
-    acceptch_header = headers['accept-ch']
+    acceptch_header = headers_l['accept-ch']
     if unsafe_scheme:
         print_details('[ixach_h]', '[ixach]', 'd', i_cnt)
     if any(value in acceptch_header for value in l_acceptch_dep):
@@ -1660,12 +1660,11 @@ if 'allow' in headers_l and '7' not in skipped_list:
         i_cnt[0] += 1
 
 cache_header = headers_l.get("cache-control", '')
-if cache_header and not any(elem in cache_header for elem in l_cachev) and \
-     '8' not in skipped_list:
-    print_details('[icachev_h]', '[icachev]', 'd', i_cnt)
-if cache_header and not all(elem in cache_header for elem in l_cache) and \
-     '8' not in skipped_list:
-    print_details('[icache_h]', '[icache]', 'd', i_cnt)
+if cache_header and '8' not in skipped_list:
+    if not any(elem in cache_header for elem in l_cachev):
+        print_details('[icachev_h]', '[icachev]', 'd', i_cnt)
+    if not all(elem in cache_header for elem in l_cache):
+        print_details('[icache_h]', '[icache]', 'd', i_cnt)
 
 if 'clear-site-data' in headers_l and '9' not in skipped_list:
     clsdata_header = headers_l['clear-site-data']
@@ -1702,10 +1701,10 @@ if 'content-security-policy' in headers_l and '12' not in skipped_list:
             if len(nonce_csp) < 32:
                 print_details('[icsnces_h]', '[icsnces]', 'd', i_cnt)
                 break
-    ip_mtch = re.findall(IP_PATTERN, csp_h)
+    ip_mtch = re.findall(RE_PATTERN[1], csp_h)
     if ip_mtch != ['127.0.0.1']:
         for match in ip_mtch:
-            if re.match(IP_PATTERN, match):
+            if re.match(RE_PATTERN[1], match):
                 print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
                 break
 
@@ -2042,7 +2041,7 @@ print("")
 # Section '5. Browser Compatibility for Enabled HTTP Security Headers'
 print_detail_r('[5compat]')
 
-l_sec = ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
+l_sec = {'Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
          'Access-Control-Max-Age', 'Cache-Control', 'Clear-Site-Data',
          'Content-Security-Policy', 'Content-Security-Policy-Report-Only',
          'Content-Type', 'Critical-CH', 'Cross-Origin-Embedder-Policy',
@@ -2054,12 +2053,13 @@ l_sec = ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
          'Strict-Transport-Security', 'Supports-Loading-Mode',
          'Timing-Allow-Origin', 'Trailer', 'Vary', 'WWW-Authenticate',
          'X-Content-Type-Options', 'X-DNS-Prefetch-Control',
-         'X-Frame-Options', 'X-XSS-Protection']
+         'X-Frame-Options', 'X-XSS-Protection'}
 
-browser_compat_header = [header for header in l_sec if header in headers]
+enabled_security_headers = sorted([header for header in l_sec if header in
+                                   headers])
 
-if browser_compat_header:
-    print_browser_compatibility(browser_compat_header)
+if enabled_security_headers:
+    print_browser_compatibility(enabled_security_headers)
 else:
     print_detail_l("[no_sec_headers]") if args.output else \
         print_detail_r("[no_sec_headers]", is_red=True)
