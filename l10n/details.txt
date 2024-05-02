@@ -1146,7 +1146,7 @@ Analysis done in
 [analysis_time_sec]
  seconds! (changes with respect to the last analysis in parentheses)
 
-[first_one]
+[first_analysis]
 First Analysis
 
 [stats_analysis]

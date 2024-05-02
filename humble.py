@@ -102,7 +102,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-05-01', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-05-02', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -190,7 +190,7 @@ def fng_statistics_term_groups(fng_ln, fng_term):
                    fng_ln if (match :=
                               re.search(RE_PATTERN[0], line)) and
                    fng_term.lower() in match[1].lower()]
-    fng_groups = {match[1].strip() for match in fng_matches}
+    fng_groups = sorted({match[1].strip() for match in fng_matches})
     term_cnt = sum(bool(match) for match in fng_matches)
     return fng_groups, term_cnt
 
@@ -201,16 +201,16 @@ def fng_statistics_term_content(fng_groups, fng_term, term_count, fng_lines):
     fng_pct = round(term_count / headers_cnt * 100, 2)
     print(f"{get_detail('[fng_add]', replace=True)} '{fng_term}': {fng_pct}%\
  ({term_count}{get_detail('[pdf_footer2]', replace=True)} {headers_cnt})")
-    fng_statistics_term_sorted(fng_lines, fng_term, fng_groups)
+    fng_statistics_term_sorted(fng_lines, fng_term.lower(), fng_groups)
 
 
 def fng_statistics_term_sorted(fng_lines, fng_term, fng_groups):
-    fng_term_l = fng_term.lower()
-    for content in sorted(fng_groups):
+    for content in fng_groups:
         print(f"\n [{STYLE[0]}{content}]")
+        content = content.lower()
         for line in fng_lines:
             line_l = line.lower()
-            if f"[{content.lower()}]" in line_l and fng_term_l in line_l:
+            if content in line_l and fng_term in line_l:
                 print(f"  {line[:line.find('[')].strip()}")
     sys.exit()
 
@@ -305,7 +305,7 @@ def get_analysis_totals(url_ln):
 def compare_analysis_results(*analysis_totals, m_cnt, f_cnt, i_cnt, e_cnt,
                              t_cnt):
     if analysis_totals[0] == "First":
-        return [get_detail('[first_one]', replace=True)] * 5
+        return [get_detail('[first_analysis]', replace=True)] * 5
     current = [int(val) for val in analysis_totals]
     totals = [m_cnt - current[0], f_cnt - current[1], i_cnt[0] - current[2],
               e_cnt - current[3], t_cnt - current[4]]
@@ -1288,7 +1288,7 @@ args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 l10n_lines = get_l10n_lines()
 check_python_version()
 
-# Checking parameters and their values
+# Checking arguments
 if args.version:
     check_humble_updates(local_version)
 
@@ -1366,7 +1366,7 @@ requests.packages.urllib3.disable_warnings()
 headers, status_code, reliable, request_time = manage_http_request()
 headers_l = {header.lower(): value for header, value in headers.items()}
 
-# To export the results of the analysis
+# Exporting analysis
 if args.output:
     orig_stdout = sys.stdout
     temp_filename = get_temp_filename(args, export_date)
@@ -2065,12 +2065,12 @@ else:
     print_detail_l("[no_sec_headers]") if args.output else \
         print_detail_r("[no_sec_headers]", is_red=True)
 
-# Print analysis totals
+# Printing results
 print(linesep.join(['']*2))
 end = time()
 get_analysis_results()
 
-# To export the results of the analysis (parameter '-o')
+# Exporting analysis
 if args.output:
     final_filename = f"{temp_filename[:-5]}.{args.output}"
     sys.stdout = orig_stdout

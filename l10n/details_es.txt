@@ -1147,10 +1147,10 @@ Cabeceras de respuesta HTTP
 Analisis realizado en 
 
 [analysis_time_sec]
- segundos! (cambios con respecto al ultimo analisis entre paréntesis)
+ segundos! (cambios con respecto al ultimo análisis entre paréntesis)
 
-[first_one]
-Primer analisis
+[first_analysis]
+Primer análisis
 
 [stats_analysis]
 Estadísticas de
