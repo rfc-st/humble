@@ -66,8 +66,8 @@ BANNER = '''  _                     _     _
  | | | | |_| | | | | | | |_) | |  __/
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
-BOLD_SECTION = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
-                "[Cabeceras")
+BOLD_STRING = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
+               "[Cabeceras")
 CANIUSE_URL = ': https://caniuse.com/?search='
 CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat']
@@ -330,16 +330,17 @@ def analysis_exists(filepath):
 
 
 def url_analytics(is_global=False):
+    analytics_scope = extract_global_metrics if is_global else \
+        get_analysis_metrics
     with open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
-        analysis_metrics = extract_global_metrics(all_analysis) if is_global \
-            else get_analysis_metrics(all_analysis)
-    stats_s = '[global_stats_analysis]' if is_global else '[stats_analysis]'
-    print(f"\n{get_detail(stats_s, replace=True)} {'' if is_global else URL}\
-\n")
+        analysis_metrics = analytics_scope(all_analysis)
+    l10n_det = '[global_stats_analysis]' if is_global else '[stats_analysis]'
+    url_string = '' if is_global else URL
+    print(f"\n{get_detail(l10n_det, replace=True)} {url_string}\n")
     for key, value in analysis_metrics.items():
-        key = f"{STYLE[0]}{key}{STYLE[4]}" if \
-            (not value or not key.startswith(' ')) else key
-        print(f"{key}: {value}")
+        key_style = f"{STYLE[0]}{key}{STYLE[4]}" if not value or not \
+            key.startswith(' ') else key
+        print(f"{key_style}: {value}")
     sys.exit()
 
 
@@ -988,18 +989,14 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
     return json_data
 
 
-def generate_pdf(temp_filename, pdf):
+def generate_pdf(pdf, pdf_links, pdf_prefixes, temp_filename):
     set_pdf_structure()
     with open(temp_filename, "r", encoding='utf8') as txt_source:
-        links_strings = (URL_STRING, REF_LINKS[2], REF_LINKS[3], CANIUSE_URL)
         for i in txt_source:
-            if '[' in i:
-                set_pdf_sections(i)
-            pdf.set_font(style='B' if any(s in i for s in BOLD_SECTION)
-                         else '')
-            for string in links_strings:
-                if string in i:
-                    set_pdf_links(i, string)
+            set_pdf_sections(i) if '[' in i else None
+            pdf.set_font(style='B' if any(s in i for s in BOLD_STRING) else '')
+            for string in pdf_links:
+                set_pdf_links(i, pdf_prefixes, string) if string in i else None
             pdf.set_text_color(0, 0, 0)
             pdf.multi_cell(197, 2.6, text=i, align='L')
     pdf.output(final_filename)
@@ -1037,15 +1034,14 @@ def set_pdf_sections(i):
         pdf.start_section(get_detail(section_dict[match]))
 
 
-def set_pdf_links(i, pdfstring):
-    link_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
+def set_pdf_links(i, pdf_prefixes, pdfstring):
     links_d = {URL_STRING: URL,
                REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
                REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
                CANIUSE_URL: i.partition(': ')[2].strip()}
     link_final = links_d.get(pdfstring)
     if pdfstring in (URL_STRING, REF_LINKS[2], REF_LINKS[3]):
-        prefix = link_prefixes.get(pdfstring, pdfstring)
+        prefix = pdf_prefixes.get(pdfstring, pdfstring)
         pdf.write(h=3, text=prefix)
     else:
         pdf.write(h=3, text=i[:i.index(": ")+2])
@@ -2105,7 +2101,9 @@ elif args.output == 'pdf':
             self.cell(0, 10, get_detail('[pdf_footer]') + str(self.page_no()) +
                       get_detail('[pdf_footer2]') + ' {nb}', align='C')
     pdf = PDF()
-    generate_pdf(temp_filename, pdf)
+    pdf_links = (URL_STRING, REF_LINKS[2], REF_LINKS[3], CANIUSE_URL)
+    pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
+    generate_pdf(pdf, pdf_links, pdf_prefixes, temp_filename)
 elif args.output == 'html':
     generate_html()
 
@@ -2128,7 +2126,7 @@ elif args.output == 'html':
             if 'rfc-st' in ln or URL_STRING in ln:
                 condition = 'rfc-st' if 'rfc-st' in ln else URL_STRING
                 format_html_info(condition, ln_stripped, sub_d)
-            elif any(s in ln for s in BOLD_SECTION):
+            elif any(s in ln for s in BOLD_STRING):
                 format_html_bold(ln_stripped)
             elif ok_string in ln or ko_string in ln:
                 condition = ok_string if ok_string in ln else ko_string
