@@ -639,10 +639,10 @@ def print_header(header):
 
 
 def print_fng_header(header):
-    prefix, _, suffix = [x.strip() for x in header.partition(' [')]
     if args.output:
         print(f" {header}")
     elif '[' in header:
+        prefix, _, suffix = header.partition(' [')
         print(f"{STYLE[1]} {prefix}{STYLE[3]}{STYLE[5]} [{suffix}")
     else:
         print(f"{STYLE[1]} {header}")
@@ -747,14 +747,12 @@ def get_epilog_content(id_mode):
 
 
 def get_fingerprint_headers():
-    l_fng, l_fng_ex = [], []
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
-        for line in islice(fng_source, 30, None):
-            if fng_stripped_ln := line.strip():
-                l_fng.append(line.partition(' [')[0].strip())
-                l_fng_ex.append(fng_stripped_ln)
-    return l_fng, l_fng_ex
+        l_fng_ex = [line.strip() for line in islice(fng_source, 30, None) if
+                    line.strip()]
+        l_fng = [line.split(' [')[0].strip() for line in l_fng_ex]
+        return l_fng, l_fng_ex
 
 
 def print_fingerprint_headers(headers_l, l_fng, l_fng_ex):
