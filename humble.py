@@ -37,6 +37,7 @@
 # Iván, Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Angel,
 # Montse, Naiara, Pablo, Sergio, Ricardo & Rubén!.
 
+# Standard Library
 from time import time
 from json import dumps
 from shlex import quote
@@ -47,18 +48,21 @@ from datetime import datetime
 from csv import writer, QUOTE_ALL
 from urllib.parse import urlparse
 from os import linesep, path, remove
-from colorama import Fore, Style, init
-from requests.adapters import HTTPAdapter
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
 import ssl
 import sys
-import requests
 import contextlib
-import tldextract
 import subprocess
 import concurrent.futures
+
+# Third-Party
+from colorama import Fore, Style, init
+from requests.adapters import HTTPAdapter
+import requests
+import tldextract
+
 
 BANNER = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
@@ -818,11 +822,11 @@ def print_empty_headers(headers, l_empty):
     return e_cnt
 
 
-def print_browser_compatibility(enabled_security_headers):
-    for key in enabled_security_headers:
-        output_string = "  " if args.output == 'html' else " "
-        key_string = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
-        print(f"{output_string}{key_string}{CANIUSE_URL}\
+def print_browser_compatibility(compat_headers):
+    style_blanks = "  " if args.output == 'html' else " "
+    for key in compat_headers:
+        styled_header = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
+        print(f"{style_blanks}{styled_header}{CANIUSE_URL}\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 
 
@@ -1289,7 +1293,7 @@ args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 l10n_lines = get_l10n_lines()
 check_python_version()
 
-# Checking arguments
+# Checking of parameters and their values
 if args.version:
     check_humble_updates(local_version)
 
@@ -1567,7 +1571,7 @@ l_repdig_ins = ['adler', 'crc32c', 'md5', 'sha-1', 'unixsum', 'unixcksum']
 l_setlogin = ['logged-in', 'logged-out']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
-l_sts_dir = ['includesubdomains', 'max-age']
+l_sts_dir = ['includeSubDomains', 'max-age']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
 l_support_mode = ['credentialed-prerender', 'fenced-frame']
@@ -1891,7 +1895,7 @@ if sts_header and '46' not in skipped_list:
             print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
         if not all(elem in sts_header for elem in l_sts_dir) or age < 31536000:
             print_details('[ists_h]', '[ists]', 'm', i_cnt)
-        if 'preload' in sts_header and ('includesubdomains' not in sts_header
+        if 'preload' in sts_header and (l_sts_dir[0] not in sts_header
                                         or age < 31536000):
             print_details('[istsr_h]', '[istsr]', 'd', i_cnt)
         if ',' in sts_header:
@@ -2057,21 +2061,20 @@ l_sec = {'Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
          'X-Content-Type-Options', 'X-DNS-Prefetch-Control',
          'X-Frame-Options', 'X-XSS-Protection'}
 
-enabled_security_headers = sorted([header for header in l_sec if header in
-                                   headers])
+compat_headers = sorted([header for header in l_sec if header in headers])
 
-if enabled_security_headers:
-    print_browser_compatibility(enabled_security_headers)
+if compat_headers:
+    print_browser_compatibility(compat_headers)
 else:
     print_detail_l("[no_sec_headers]") if args.output else \
         print_detail_r("[no_sec_headers]", is_red=True)
 
-# Printing results
+# Printing analysis results
 print(linesep.join(['']*2))
 end = time()
 get_analysis_results()
 
-# Exporting analysis
+# Exporting analysis results
 if args.output:
     final_filename = f"{temp_filename[:-5]}.{args.output}"
     sys.stdout = orig_stdout
@@ -2083,8 +2086,8 @@ elif args.output == 'csv':
 elif args.output == 'json':
     generate_json(temp_filename, final_filename)
 elif args.output == 'pdf':
-    # Lazy import of the dependency and logic associated with fpdf2, to
-    # slightly improve analysis times that do not require exporting to PDF.
+    # Optimized the loading of the third-party dependency and relevant logic
+    # for 'fpdf2', enhancing analysis speed for tasks not involving PDF export
     from fpdf import FPDF
 
     class PDF(FPDF):
