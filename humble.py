@@ -102,7 +102,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-05-10', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-05-11', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -757,21 +757,19 @@ def get_fingerprint_headers():
 
 def print_fingerprint_headers(headers_l, l_fng, l_fng_ex):
     f_cnt = 0
-    match_h = sorted([header for header in headers_l if any(elem.lower()
-                     in headers_l for elem in l_fng)])
-    l_fng = [x.title() for x in l_fng]
-    match_h = [x.title() for x in match_h]
-    for header in match_h:
-        if header in l_fng:
-            get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args)
+    sorted_headers = sorted({header.title() for header in headers_l})
+    titled_headers = [name.title() for name in l_fng]
+    for header in sorted_headers:
+        if header in titled_headers:
+            idx_fng = titled_headers.index(header)
+            get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args)
             f_cnt += 1
     return f_cnt
 
 
-def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
+def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
     if not args.brief:
-        index_fng = l_fng.index(header)
-        print_fng_header(l_fng_ex[index_fng])
+        print_fng_header(l_fng_ex[idx_fng])
         if not headers[header]:
             print(get_detail('[empty_fng]', replace=True))
         else:
@@ -784,12 +782,12 @@ def get_fingerprint_detail(header, headers, l_fng, l_fng_ex, args):
 
 def print_missing_headers(headers_l, l_detail, l_miss):
     m_cnt = 0
-    l_miss_lower = [header.lower() for header in l_miss]
-    for i, key in enumerate(l_miss_lower):
-        if key not in headers_l:
-            print_header(l_miss[i])
+    headers_set = set(headers_l)
+    for header, detail in zip(l_miss, l_detail):
+        if header.lower() not in headers_set:
+            print_header(header)
             if not args.brief:
-                print_detail(l_detail[i], 2)
+                print_detail(detail, 2)
             m_cnt += 1
     return m_cnt
 
