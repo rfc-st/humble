@@ -106,7 +106,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-05-11', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-05-14', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -864,16 +864,20 @@ def parse_user_agent(user_agent=False):
         return {'User-Agent': get_user_agent('1')}
     user_agent_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
     if not args.URL:
-        try:
-            if int(user_agent_id) != 0:
-                parser.error(get_detail('[args_useragent]'))
-            else:
-                return {'User-Agent': get_user_agent('0')}
-        except ValueError:
-            print(f'\n {get_detail("[ua_invalid]", replace=True)}')
-            sys.exit()
+        nourl_user_agent(user_agent_id)
     if args.URL:
         return {'User-Agent': get_user_agent(user_agent_id)}
+
+
+def nourl_user_agent(user_agent_id):
+    try:
+        if int(user_agent_id) != 0:
+            parser.error(get_detail('[args_useragent]'))
+        else:
+            return {'User-Agent': get_user_agent('0')}
+    except ValueError:
+        print(f'\n {get_detail("[ua_invalid]", replace=True)}')
+        sys.exit()
 
 
 def get_user_agent(user_agent_id):
