@@ -106,7 +106,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-05-14', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-05-18', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -883,7 +883,7 @@ def nourl_user_agent(user_agent_id):
 def get_user_agent(user_agent_id):
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
               encoding='utf8') as ua_source:
-        user_agents = [line.strip() for line in islice(ua_source, 42, None)]
+        user_agents = [line.strip() for line in islice(ua_source, 43, None)]
     if user_agent_id == str(0):
         print_user_agents(user_agents)
     for line in user_agents:
@@ -895,7 +895,7 @@ def get_user_agent(user_agent_id):
 
 def print_user_agents(user_agents):
     print(f"\n{STYLE[0]}{get_detail('[ua_available]', replace=True)}\
-{STYLE[4]}{get_detail('[ua_source]', replace=True)}")
+{STYLE[4]}{get_detail('[ua_source]', replace=True)}\n")
     for line in user_agents:
         print(f' {line}')
     sys.exit()
@@ -1004,14 +1004,7 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
 
 def generate_pdf(pdf, pdf_links, pdf_prefixes, temp_filename):
     set_pdf_structure()
-    with open(temp_filename, "r", encoding='utf8') as txt_source:
-        for i in txt_source:
-            set_pdf_sections(i) if '[' in i else None
-            pdf.set_font(style='B' if any(s in i for s in BOLD_STRING) else '')
-            for string in pdf_links:
-                set_pdf_links(i, pdf_prefixes, string) if string in i else None
-            pdf.set_text_color(0, 0, 0)
-            pdf.multi_cell(197, 2.6, text=i, align='L')
+    set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename)
     pdf.output(final_filename)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
@@ -1036,6 +1029,22 @@ def set_pdf_metadata():
     pdf.set_subject(get_detail('[pdf_meta_subject]', replace=True))
     pdf.set_title(title)
     pdf.set_producer(git_urlc)
+
+
+def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename):
+    with open(temp_filename, "r", encoding='utf8') as txt_source:
+        for line in txt_source:
+            if '[' in line:
+                set_pdf_sections(line)
+            if any(bold_str in line for bold_str in BOLD_STRING):
+                pdf.set_font(style='B')
+            else:
+                pdf.set_font(style='')
+            for string in pdf_links:
+                if string in line:
+                    set_pdf_links(line, pdf_prefixes, string)
+            pdf.set_text_color(0, 0, 0)
+            pdf.multi_cell(197, 2.6, text=line, align='L')
 
 
 def set_pdf_sections(i):
