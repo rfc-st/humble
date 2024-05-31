@@ -106,7 +106,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-05-24', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-05-31', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -534,8 +534,14 @@ def get_global_metrics(url_ln, url_lines):
     least_analyzed_c = url_lines[least_analyzed_u]
     least_analyzed_cu = f"({least_analyzed_c}) {least_analyzed_u}"
     most_warnings, least_warnings = get_global_warnings(url_ln)
+    most_missing, least_missing = get_global_missing(url_ln)
+    most_fng, least_fng = get_global_fingerprint(url_ln)
+    most_insecure, least_insecure = get_global_insecure(url_ln)
+    most_empty, least_empty = get_global_empty(url_ln)
     return (first_a, latest_a, unique_u, most_analyzed_cu, least_analyzed_cu,
-            most_warnings, least_warnings)
+            most_warnings, least_warnings, most_missing, least_missing,
+            most_fng, least_fng, most_insecure, least_insecure, most_empty,
+            least_empty)
 
 
 def get_global_warnings(url_ln):
@@ -550,6 +556,54 @@ def get_global_warnings(url_ln):
     return (most_warning_p, least_warnings_p)
 
 
+def get_global_missing(url_ln):
+    most_missing = max(url_ln, key=lambda line: int(line.split(' ; ')[2]))
+    least_missing = min(url_ln, key=lambda line: int(line.split(' ; ')[2]))
+    most_missing_c, most_missing_cu = most_missing.split(' ; ')[1], \
+        str(most_missing.split(' ; ')[2]).strip()
+    most_missing_p = f"({most_missing_cu}) {most_missing_c}"
+    least_missing_c, least_missing_cu = least_missing.split(' ; ')[1], \
+        str(least_missing.split(' ; ')[2]).strip()
+    least_missing_p = f"({least_missing_cu}) {least_missing_c}"
+    return (most_missing_p, least_missing_p)
+
+
+def get_global_fingerprint(url_ln):
+    most_fng = max(url_ln, key=lambda line: int(line.split(' ; ')[3]))
+    least_fng = min(url_ln, key=lambda line: int(line.split(' ; ')[3]))
+    most_fng_c, most_fng_cu = most_fng.split(' ; ')[1], \
+        str(most_fng.split(' ; ')[3]).strip()
+    most_fng_p = f"({most_fng_cu}) {most_fng_c}"
+    least_fng_c, least_fng_cu = least_fng.split(' ; ')[1], \
+        str(least_fng.split(' ; ')[3]).strip()
+    least_fng_p = f"({least_fng_cu}) {least_fng_c}"
+    return (most_fng_p, least_fng_p)
+
+
+def get_global_insecure(url_ln):
+    most_insecure = max(url_ln, key=lambda line: int(line.split(' ; ')[4]))
+    least_insecure = min(url_ln, key=lambda line: int(line.split(' ; ')[4]))
+    most_insecure_c, most_insecure_cu = most_insecure.split(' ; ')[1], \
+        str(most_insecure.split(' ; ')[4]).strip()
+    most_insecure_p = f"({most_insecure_cu}) {most_insecure_c}"
+    least_insecure_c, least_insecure_cu = least_insecure.split(' ; ')[1], \
+        str(least_insecure.split(' ; ')[4]).strip()
+    least_fng_p = f"({least_insecure_cu}) {least_insecure_c}"
+    return (most_insecure_p, least_fng_p)
+
+
+def get_global_empty(url_ln):
+    most_empty = max(url_ln, key=lambda line: int(line.split(' ; ')[5]))
+    least_empty = min(url_ln, key=lambda line: int(line.split(' ; ')[5]))
+    most_empty_c, most_empty_cu = most_empty.split(' ; ')[1], \
+        str(most_empty.split(' ; ')[5]).strip()
+    most_empty_p = f"({most_empty_cu}) {most_empty_c}"
+    least_empty_c, least_empty_cu = least_empty.split(' ; ')[1], \
+        str(least_empty.split(' ; ')[5]).strip()
+    least_fng_p = f"({least_empty_cu}) {least_empty_c}"
+    return (most_empty_p, least_fng_p)
+
+
 def get_basic_global_metrics(total_a, first_m):
     return {'[main]': "", '[total_analysis]': total_a,
             '[total_global_analysis]': str(first_m[2]),
@@ -557,6 +611,14 @@ def get_basic_global_metrics(total_a, first_m):
             '[latest_analysis]': f"{first_m[1]}\n",
             '[most_analyzed]': first_m[3],
             '[least_analyzed]': f"{first_m[4]}\n",
+            '[most_missing]': first_m[7],
+            '[least_missing]': f"{first_m[8]}\n",
+            '[most_fingerprints]': first_m[9],
+            '[least_fingerprints]': f"{first_m[10]}\n",
+            '[most_insecure]': first_m[11],
+            '[least_insecure]': f"{first_m[12]}\n",
+            '[most_empty]': first_m[13],
+            '[least_empty]': f"{first_m[14]}\n",
             '[most_warnings]': first_m[5],
             '[least_warnings]': f"{first_m[6]}\n"}
 

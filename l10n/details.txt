@@ -1156,25 +1156,49 @@ Statistics of
 Global statistics of all analyses performed
 
 [total_analysis]
- Analyses done   
+ Analyses done                     
 
 [first_analysis_a]
- First analysis  
+ First analysis                    
 
 [latest_analysis]
- Latest analysis 
+ Latest analysis                   
 
 [most_analyzed]
- Most analyzed   
+ Most analyzed                     
 
 [least_analyzed]
- Least analyzed  
+ Least analyzed                    
 
 [most_warnings]
- Most Warnings   
+ Most Warnings                     
 
 [least_warnings]
- Least Warnings  
+ Least Warnings                    
+
+[most_missing]
+ Most Missing Headers              
+
+[least_missing]
+ Least Missing Headers             
+
+[most_fingerprints]
+ Most Fingerprint Headers          
+
+[least_fingerprints]
+ Least Fingerprint Headers         
+
+[most_insecure]
+ Most Insecure/Deprecated Headers  
+
+[least_insecure]
+ Least Insecure/Deprecated Headers 
+
+[most_empty]
+ Most Empty Headers                
+
+[least_empty]
+ Least Empty Headers               
 
 [best_analysis]
  Best analysis   
@@ -1183,7 +1207,7 @@ Global statistics of all analyses performed
  Worst analysis  
 
 [total_global_analysis]
- URLs analyzed   
+ URLs analyzed                     
 
 [total_warnings]
 (Warnings: 

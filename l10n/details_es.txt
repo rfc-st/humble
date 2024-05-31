@@ -1156,28 +1156,52 @@ Primer análisis
 Estadísticas de
 
 [global_stats_analysis]
-Estadísticas globales de los análisis realizados
+Estadísticas globales de todos los análisis realizados
 
 [total_analysis]
- Análisis realizados 
+ Análisis realizados                            
 
 [first_analysis_a]
- Primer análisis     
+ Primer análisis                                
 
 [latest_analysis]
- Último análisis     
+ Último análisis                                
 
 [most_analyzed]
- Más analizadas      
+ Más analizadas                                 
 
 [least_analyzed]
- Menos analizadas    
+ Menos analizadas                               
 
 [most_warnings]
- Más advertencias    
+ Más advertencias                               
 
 [least_warnings]
- Menos advertencias  
+ Menos advertencias                             
+
+[most_missing]
+ Más cabeceras por habilitar                    
+
+[least_missing]
+ Menos cabeceras por habilitar                  
+
+[most_fingerprints]
+ Más huella digital por cabeceras               
+
+[least_fingerprints]
+ Menos huella digital por cabeceras             
+
+[most_insecure]
+ Más cabeceras/protocolos inseguros/obsoletos   
+
+[least_insecure]
+ Menos cabeceras/protocolos inseguros/obsoletos 
+
+[most_empty]
+ Más cabeceras vacías                           
+
+[least_empty]
+ Menos cabeceras vacías                         
 
 [best_analysis]
  Mejor análisis      
@@ -1186,7 +1210,7 @@ Estadísticas globales de los análisis realizados
  Peor análisis       
 
 [total_global_analysis]
- URLs analizadas     
+ URLs analizadas                                
 
 [total_warnings]
 (Advertencias: 
