@@ -1159,13 +1159,13 @@ Estadísticas de
 Estadísticas globales de todos los análisis realizados
 
 [total_analysis]
- Análisis realizados                            
+ Análisis realizados 
 
 [first_analysis_a]
- Primer análisis                                
+ Primer análisis     
 
 [latest_analysis]
- Último análisis                                
+ Último análisis     
 
 [most_analyzed]
  Más analizadas                                 
@@ -1210,7 +1210,7 @@ Estadísticas globales de todos los análisis realizados
  Peor análisis       
 
 [total_global_analysis]
- URLs analizadas                                
+ URLs analizadas     
 
 [total_warnings]
 (Advertencias: 

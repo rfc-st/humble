@@ -1156,13 +1156,13 @@ Statistics of
 Global statistics of all analyses performed
 
 [total_analysis]
- Analyses done                     
+ Analyses done   
 
 [first_analysis_a]
- First analysis                    
+ First analysis  
 
 [latest_analysis]
- Latest analysis                   
+ Latest analysis 
 
 [most_analyzed]
  Most analyzed                     
@@ -1207,7 +1207,7 @@ Global statistics of all analyses performed
  Worst analysis  
 
 [total_global_analysis]
- URLs analyzed                     
+ URLs analyzed   
 
 [total_warnings]
 (Warnings: 
