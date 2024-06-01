@@ -1167,6 +1167,9 @@ Estadísticas globales de todos los análisis realizados
 [latest_analysis]
  Último análisis     
 
+[urls]
+URLs
+
 [most_analyzed]
  Más analizadas                                 
 

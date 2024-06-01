@@ -556,7 +556,7 @@ def get_basic_global_metrics(total_a, first_m):
             '[total_global_analysis]': str(first_m[2]),
             '[first_analysis_a]': first_m[0],
             '[latest_analysis]': f"{first_m[1]}\n",
-            '[most_analyzed]': first_m[3],
+            '[urls]': "", '[most_analyzed]': first_m[3],
             '[least_analyzed]': f"{first_m[4]}\n",
             '[most_missing]': first_m[7],
             '[least_missing]': f"{first_m[8]}\n",
