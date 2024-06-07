@@ -549,6 +549,9 @@
 [ismap_m]
  SourceMap (Unsafe Funcionality)
 
+[ispec_m]
+ Speculation-Rules (Potentially Unsafe Header)
+
 [isdyn_h]
  Strict-Dynamic (Incorrect Header)
 
@@ -985,6 +988,11 @@ HTTP Response Headers
 [ismap]
  This header can expose sensitive information about the original source code.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
+
+[ispec]
+ Make sure this header do not allow unsafe speculative loading conditions.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Speculation-Rules
+ Ref: https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
 
 [isdyn]
  This is not a header, but a keyword of the 'Content-Security-Policy' header.

@@ -106,7 +106,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-06-01', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-06-07', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1459,15 +1459,15 @@ l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Credentials',
          'Observe-Browsing-Topics', 'Onion-Location', 'Origin-Agent-Cluster',
          'P3P', 'Pragma', 'Proxy-Authenticate', 'Public-Key-Pins',
          'Public-Key-Pins-Report-Only', 'Reporting-Endpoints', 'Repr-Digest',
-         'Set-Cookie', 'Server-Timing', 'SourceMap', 'Strict-Dynamic',
-         'Supports-Loading-Mode', 'Surrogate-Control', 'Timing-Allow-Origin',
-         'Tk', 'Trailer', 'Transfer-Encoding', 'Vary', 'WWW-Authenticate',
-         'Want-Digest', 'Warning', 'X-Content-Security-Policy',
-         'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
-         'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
-         'X-Pingback', 'X-Robots-Tag', 'X-Runtime', 'X-SourceMap',
-         'X-UA-Compatible', 'X-Webkit-CSP', 'X-Webkit-CSP-Report-Only',
-         'X-XSS-Protection']
+         'Set-Cookie', 'Server-Timing', 'SourceMap', 'Speculation-Rules',
+         'Strict-Dynamic', 'Supports-Loading-Mode', 'Surrogate-Control',
+         'Timing-Allow-Origin', 'Tk', 'Trailer', 'Transfer-Encoding', 'Vary',
+         'WWW-Authenticate', 'Want-Digest', 'Warning',
+         'X-Content-Security-Policy', 'X-Content-Security-Policy-Report-Only',
+         'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad',
+         'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Robots-Tag',
+         'X-Runtime', 'X-SourceMap', 'X-UA-Compatible', 'X-Webkit-CSP',
+         'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 l_acceptch_dep = ['content-dpr', 'dpr', 'sec-ch-ua-full-version',
@@ -1906,11 +1906,14 @@ if setlogin_header and not any(elem in setlogin_header for elem in l_setlogin)\
 if 'sourceMap' in headers_l and '44' not in skipped_list:
     print_details('[ismap_m]', '[ismap]', 'd', i_cnt)
 
-if 'strict-Dynamic' in headers_l and '45' not in skipped_list:
+if 'speculation-rules' in headers_l and '45' not in skipped_list:
+    print_details('[ispec_m]', '[ispec]', 'm', i_cnt)
+
+if 'strict-Dynamic' in headers_l and '46' not in skipped_list:
     print_details('[isdyn_h]', '[isdyn]', 'd', i_cnt)
 
 sts_header = headers_l.get('strict-transport-security', '')
-if sts_header and '46' not in skipped_list:
+if sts_header and '47' not in skipped_list:
     try:
         age = int(''.join(filter(str.isdigit, sts_header)))
         if unsafe_scheme:
@@ -1925,26 +1928,26 @@ if sts_header and '46' not in skipped_list:
     except ValueError:
         print_details('[ists_h]', '[ists]', 'm', i_cnt)
 
-if 'supports-loading-mode' in headers_l and '47' not in skipped_list:
+if 'supports-loading-mode' in headers_l and '48' not in skipped_list:
     support_mode_h = headers_l['supports-loading-mode']
     if unsafe_scheme:
         print_details('[islmodei_h]', '[islmodei]', 'd', i_cnt)
     if not any(elem in support_mode_h for elem in l_support_mode):
         print_details('[islmode_h]', '[islmode]', 'd', i_cnt)
 
-if 'surrogate-control' in headers_l and '48' not in skipped_list:
+if 'surrogate-control' in headers_l and '49' not in skipped_list:
     surrogate_mode_h = headers_l['surrogate-control']
     if not any(elem in surrogate_mode_h for elem in l_surrogate):
         print_details('[isurrmode_h]', '[isurrmode]', 'd', i_cnt)
 
-if headers_l.get('timing-allow-origin', '') == '*' and '49' not in \
+if headers_l.get('timing-allow-origin', '') == '*' and '50' not in \
  skipped_list:
     print_details('[itao_h]', '[itao]', 'd', i_cnt)
 
-if 'tk' in headers_l and '50' not in skipped_list:
+if 'tk' in headers_l and '51' not in skipped_list:
     print_details('[ixtk_h]', '[ixtkd]', 'd', i_cnt)
 
-if 'trailer' in headers_l and '51' not in skipped_list:
+if 'trailer' in headers_l and '52' not in skipped_list:
     trailer_h = headers_l['trailer']
     if any(elem in trailer_h for elem in l_trailer):
         print_detail_r('[itrailer_h]', is_red=True)
@@ -1955,47 +1958,47 @@ if 'trailer' in headers_l and '51' not in skipped_list:
             print_detail("[itrailer_d_r]")
         i_cnt[0] += 1
 
-if 'transfer-encoding' in headers_l and '52' not in skipped_list:
+if 'transfer-encoding' in headers_l and '53' not in skipped_list:
     transfer_h = headers_l['transfer-encoding']
     if not any(elem in transfer_h for elem in l_transfer):
         print_details('[ictrf_h]', '[itrf]', 'd', i_cnt)
 
-if 'vary' in headers_l and '53' not in skipped_list:
+if 'vary' in headers_l and '54' not in skipped_list:
     print_details('[ixvary_h]', '[ixvary]', 'm', i_cnt)
 
-if 'want-digest' in headers_l and '54' not in skipped_list:
+if 'want-digest' in headers_l and '55' not in skipped_list:
     print_details('[ixwandig_h]', '[ixwandig]', 'd', i_cnt)
 
 wwwa_header = headers_l.get('www-authenticate', '')
-if wwwa_header and unsafe_scheme and ('basic' in wwwa_header) and '55' not in \
+if wwwa_header and unsafe_scheme and ('basic' in wwwa_header) and '57' not in \
      skipped_list:
     print_details('[ihbas_h]', '[ihbas]', 'd', i_cnt)
 
 if 'warning' in headers_l and '56' not in skipped_list:
     print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
 
-if 'x-content-security-policy' in headers_l and '57' not in skipped_list:
+if 'x-content-security-policy' in headers_l and '58' not in skipped_list:
     print_details('[ixcsp_h]', '[ixcsp]', 'd', i_cnt)
 
-if 'x-content-security-policy-report-only' in headers_l and '58' not in \
+if 'x-content-security-policy-report-only' in headers_l and '59' not in \
      skipped_list:
     print_details('[ixcspr_h]', '[ixcspr]', 'd', i_cnt)
 
-if 'x-content-type-options' in headers_l and '59' not in skipped_list:
+if 'x-content-type-options' in headers_l and '60' not in skipped_list:
     if ',' in headers['X-Content-Type-Options']:
         print_details('[ictpd_h]', '[ictpd]', 'd', i_cnt)
     elif 'nosniff' not in headers['X-Content-Type-Options']:
         print_details('[ictp_h]', '[ictp]', 'd', i_cnt)
 
-if headers_l.get('x-dns-prefetch-control', '') == 'on' and '60' not in \
+if headers_l.get('x-dns-prefetch-control', '') == 'on' and '61' not in \
      skipped_list:
     print_details('[ixdp_h]', '[ixdp]', 'd', i_cnt)
 
-if 'x-download-options' in headers_l and '61' not in skipped_list:
+if 'x-download-options' in headers_l and '62' not in skipped_list:
     print_details('[ixdow_h]', '[ixdow]', 'm', i_cnt)
 
 xfo_header = headers_l.get('x-frame-options', '')
-if xfo_header and '62' not in skipped_list:
+if xfo_header and '63' not in skipped_list:
     if ',' in xfo_header:
         print_details('[ixfo_h]', '[ixfo]', 'm', i_cnt)
     if 'allow-from' in xfo_header:
@@ -2003,11 +2006,11 @@ if xfo_header and '62' not in skipped_list:
     if xfo_header not in l_xfo_dir:
         print_details('[ixfoi_h]', '[ixfodi]', 'm', i_cnt)
 
-if 'x-pad' in headers_l and '63' not in skipped_list:
+if 'x-pad' in headers_l and '64' not in skipped_list:
     print_details('[ixpad_h]', '[ixpad]', 'd', i_cnt)
 
 permcross_header = headers_l.get('x-permitted-cross-domain-policies', '')
-if permcross_header and '64' not in skipped_list:
+if permcross_header and '65' not in skipped_list:
     if not any(elem in permcross_header for elem in l_permcross):
         print_details('[ixpermcross_h]', '[ixpermcross]', 'm', i_cnt)
     if 'all' in permcross_header:
@@ -2015,33 +2018,33 @@ if permcross_header and '64' not in skipped_list:
     if ',' in permcross_header:
         print_details('[ixpermcrossd_h]', '[ixpermcrossd]', 'm', i_cnt)
 
-if headers_l.get('x-pingback', '').endswith('xmlrpc.php') and '65' not in \
+if headers_l.get('x-pingback', '').endswith('xmlrpc.php') and '66' not in \
      skipped_list:
     print_details('[ixpb_h]', '[ixpb]', 'd', i_cnt)
 
 robots_header = headers_l.get('x-robots-tag', '')
-if robots_header and '66' not in skipped_list:
+if robots_header and '67' not in skipped_list:
     if not any(elem in robots_header for elem in l_robots):
         print_details('[ixrobv_h]', '[ixrobv]', 'm', i_cnt)
     if 'all' in robots_header:
         print_details('[ixrob_h]', '[ixrob]', 'm', i_cnt)
 
-if 'x-runtime' in headers_l and '67' not in skipped_list:
+if 'x-runtime' in headers_l and '68' not in skipped_list:
     print_details('[ixrun_h]', '[ixrun]', 'd', i_cnt)
 
-if 'x-sourceMap' in headers_l and '68' not in skipped_list:
+if 'x-sourceMap' in headers_l and '69' not in skipped_list:
     print_details('[ixsrc_h]', '[ixsrc]', 'd', i_cnt)
 
-if 'x-ua-compatible' in headers_l and '69' not in skipped_list:
+if 'x-ua-compatible' in headers_l and '70' not in skipped_list:
     print_details('[ixuacom_h]', '[ixuacom]', 'm', i_cnt)
 
-if 'x-webkit-csp' in headers_l and '70' not in skipped_list:
+if 'x-webkit-csp' in headers_l and '71' not in skipped_list:
     print_details('[ixwcsp_h]', '[ixcsp]', 'd', i_cnt)
 
-if 'x-webkit-csp-report-only' in headers_l and '71' not in skipped_list:
+if 'x-webkit-csp-report-only' in headers_l and '72' not in skipped_list:
     print_details('[ixwcspr_h]', '[ixcspr]', 'd', i_cnt)
 
-if 'x-xss-protection' in headers_l and '72' not in skipped_list:
+if 'x-xss-protection' in headers_l and '73' not in skipped_list:
     print_details('[ixxpdp_h]', '[ixxpdp]', 'm', i_cnt)
     if '0' not in headers["X-XSS-Protection"]:
         print_details('[ixxp_h]', '[ixxp]', 'd', i_cnt)
@@ -2077,7 +2080,7 @@ l_sec = {'Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
          'Document-Policy', 'ETag', 'Feature-Policy', 'NEL',
          'Observe-Browsing-Topics', 'Origin-Agent-Cluster',
          'Permissions-Policy', 'Proxy-Authenticate', 'Referrer-Policy',
-         'Server-Timing', 'Set-Cookie', 'Set-Login',
+         'Server-Timing', 'Set-Cookie', 'Set-Login', 'Speculation-Rules',
          'Strict-Transport-Security', 'Supports-Loading-Mode',
          'Timing-Allow-Origin', 'Trailer', 'Vary', 'WWW-Authenticate',
          'X-Content-Type-Options', 'X-DNS-Prefetch-Control',

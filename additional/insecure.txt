@@ -91,6 +91,7 @@ Set-Cookie: Insecure Schemes
 Set-Cookie: Missing Attribute
 Set-Login: No Valid Directives
 SourceMap: Unsafe Funcionality
+Speculation-Rules: Potentially Unsafe Header
 Strict-Dynamic: Incorrect Header
 Strict-Transport-Security: Duplicated Values
 Strict-Transport-Security: Ignored Header via Unsafe Scheme

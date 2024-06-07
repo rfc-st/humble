@@ -549,6 +549,9 @@
 [ismap_m]
  SourceMap (Funcionalidad insegura)
 
+[ispec_m]
+ Speculation-Rules (Cabecera potencialmente insegura)
+
 [isdyn_h]
  Strict-Dynamic (Cabecera incorrecta)
 
@@ -988,6 +991,11 @@ Cabeceras de respuesta HTTP
 [ismap]
  Esta cabecera puede exponer información sensible sobre el código fuente original.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
+
+[ispec]
+ Asegúrese que esta cabecera no permita condiciones de carga especulativa inseguras.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Speculation-Rules
+ Ref: https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
 
 [isdyn]
  Esto no es una cabecera, sino una palabra clave de la cabecera 'Content-Security-Policy'.
