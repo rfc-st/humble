@@ -106,7 +106,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = '2024-06-08'
+local_version = datetime.strptime('2024-06-08', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -133,7 +133,8 @@ def check_python_version():
 def check_humble_updates(local_version):
     try:
         remote_repo = requests.get(HUMBLE_GIT[0], timeout=10).text
-        remote_version = re.search(re.escape(local_version), remote_repo)
+        remote_date = re.search(r"\d{4}-\d{2}-\d{2}", remote_repo).group()
+        remote_version = datetime.strptime(remote_date, '%Y-%m-%d').date()
         if remote_version > local_version:
             print(f"\n{get_detail('[humble_not_recent]')[:-1]}: \
 '{local_version}'"f"\n{get_detail('[github_humble]', replace=True)}")
