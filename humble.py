@@ -91,13 +91,14 @@ HUMBLE_FILES = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
 HUMBLE_GIT = ['https://raw.githubusercontent.com/rfc-st/humble/master/humble.p\
 y', 'https://github.com/rfc-st/humble']
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
+INCLUDED_FNG = 30
 NON_RU_TLD = ['CYMRU', 'GURU', 'PRU']
 RE_PATTERN = [r'\[(.*?)\]',
               (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
                r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$'),
               (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
                r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
-               r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216')]
+               r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\[([^\]]+)\]']
 REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 STYLE = [Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
@@ -106,7 +107,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-06-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-06-14', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -151,28 +152,26 @@ def fng_statistics_top():
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
-    fng_statistics_top_groups(fng_lines)
+    fng_incl = sum(1 for _ in islice(fng_lines, INCLUDED_FNG, None))
+    fng_statistics_top_groups(fng_lines, fng_incl)
     sys.exit()
 
 
-def fng_statistics_top_groups(fng_lines):
-    fng_top_ptrn = r'\[([^\]]+)\]'
-    fng_content = Counter(match.strip() for line in fng_lines for match in
-                          re.findall(fng_top_ptrn, line))
-    excl_cnt = sum(bool(line.startswith('#')) for line in fng_lines) + 2
-    headers_cnt = len(fng_lines) - excl_cnt
-    fng_statistics_top_result(fng_content, headers_cnt)
+def fng_statistics_top_groups(fng_lines, fng_incl):
+    fng_top_groups = Counter(match.strip() for line in fng_lines for match in
+                             re.findall(RE_PATTERN[3], line))
+    fng_statistics_top_result(fng_top_groups, fng_incl)
 
 
-def fng_statistics_top_result(fng_content, headers_cnt):
+def fng_statistics_top_result(fng_top_groups, fng_incl):
     max_ln_len = max(len(content) for content, _ in
-                     fng_content.most_common(20))
-    print(f"{get_detail('[fng_top]', replace=True)} {headers_cnt}\
+                     fng_top_groups.most_common(20))
+    print(f"{get_detail('[fng_top]', replace=True)} {fng_incl}\
 {get_detail('[fng_top_2]', replace=True)}\n")
-    for content, count in fng_content.most_common(20):
-        fng_global_pct = round(count / headers_cnt * 100, 2)
-        padding_s = ' ' * (max_ln_len - len(content))
-        print(f" [{content}]: {padding_s}{fng_global_pct:.2f}% ({count})")
+    for content, count in fng_top_groups.most_common(20):
+        fng_global_pct = round(count / fng_incl * 100, 2)
+        fng_padding = ' ' * (max_ln_len - len(content))
+        print(f" [{content}]: {fng_padding}{fng_global_pct:.2f}% ({count})")
 
 
 def fng_statistics_term(fng_term):
@@ -181,12 +180,12 @@ def fng_statistics_term(fng_term):
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         fng_lines = fng_source.readlines()
-    fng_groups, term_count = fng_statistics_term_groups(fng_lines, fng_term)
+    fng_groups, term_cnt = fng_statistics_term_groups(fng_lines, fng_term)
     if not fng_groups:
         print(f"{get_detail('[fng_zero]', replace=True)} '{fng_term}'.\n\n\
 {get_detail('[fng_zero_2]', replace=True)}.\n")
         sys.exit()
-    fng_statistics_term_content(fng_groups, fng_term, term_count, fng_lines)
+    fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_lines)
 
 
 def fng_statistics_term_groups(fng_ln, fng_term):
@@ -199,12 +198,11 @@ def fng_statistics_term_groups(fng_ln, fng_term):
     return fng_groups, term_cnt
 
 
-def fng_statistics_term_content(fng_groups, fng_term, term_count, fng_lines):
-    excl_cnt = Counter(line.startswith('#') for line in fng_lines)[True] + 2
-    headers_cnt = len(fng_lines) - excl_cnt
-    fng_pct = round(term_count / headers_cnt * 100, 2)
+def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_lines):
+    fng_incl = sum(1 for _ in islice(fng_lines, INCLUDED_FNG, None))
+    fng_pct = round(term_cnt / fng_incl * 100, 2)
     print(f"{get_detail('[fng_add]', replace=True)} '{fng_term}': {fng_pct}%\
- ({term_count}{get_detail('[pdf_footer2]', replace=True)} {headers_cnt})")
+ ({term_cnt}{get_detail('[pdf_footer2]', replace=True)} {fng_incl})")
     fng_statistics_term_sorted(fng_lines, fng_term.lower(), fng_groups)
 
 
@@ -762,8 +760,8 @@ def get_epilog_content(id_mode):
 def get_fingerprint_headers():
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
-        l_fng_ex = [line.strip() for line in islice(fng_source, 30, None) if
-                    line.strip()]
+        l_fng_ex = [line.strip() for line in
+                    islice(fng_source, INCLUDED_FNG, None) if line.strip()]
         l_fng = [line.split(' [')[0].strip() for line in l_fng_ex]
         return l_fng, l_fng_ex
 
