@@ -286,11 +286,11 @@ def get_analysis_results():
 
 
 def save_analysis_results(t_cnt):
-    with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as new_analysis, \
-         open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
-        new_analysis.write(f"{current_time} ; {URL} ; {m_cnt} ; {f_cnt} ; \
-{i_cnt[0]} ; {e_cnt} ; {t_cnt}\n")
+    with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as all_analysis:
+        all_analysis.seek(0)
         url_ln = [line for line in all_analysis if URL in line]
+        all_analysis.write(f"{current_time} ; {URL} ; {m_cnt} ; {f_cnt} ; \
+{i_cnt[0]} ; {e_cnt} ; {t_cnt}\n")
     return get_analysis_totals(url_ln) if url_ln else ("First",) * 5
 
 
@@ -308,9 +308,9 @@ def compare_analysis_results(*analysis_totals, m_cnt, f_cnt, i_cnt, e_cnt,
     if analysis_totals[0] == "First":
         return [get_detail('[first_analysis]', replace=True)] * 5
     current = [int(val) for val in analysis_totals]
-    totals = [m_cnt - current[0], f_cnt - current[1], i_cnt[0] - current[2],
-              e_cnt - current[3], t_cnt - current[4]]
-    return [f'+{total}' if total > 0 else str(total) for total in totals]
+    differences = [m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
+    return [str(d - c) if (d - c) <= 0 else f'+{d - c}' for d, c in
+            zip(differences, current)]
 
 
 def print_analysis_results(*diff, t_cnt):
