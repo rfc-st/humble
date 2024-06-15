@@ -107,7 +107,7 @@ URL_STRING = ' URL  : '
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-06-14', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-06-15', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -180,37 +180,36 @@ def fng_statistics_term(fng_term):
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         fng_lines = fng_source.readlines()
-    fng_groups, term_cnt = fng_statistics_term_groups(fng_lines, fng_term)
+    fng_incl = list(islice(fng_lines, INCLUDED_FNG, None))
+    fng_groups, term_cnt = fng_statistics_term_groups(fng_incl, fng_term)
     if not fng_groups:
         print(f"{get_detail('[fng_zero]', replace=True)} '{fng_term}'.\n\n\
 {get_detail('[fng_zero_2]', replace=True)}.\n")
         sys.exit()
-    fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_lines)
+    fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl)
 
 
-def fng_statistics_term_groups(fng_ln, fng_term):
-    fng_matches = [match for line in
-                   fng_ln if (match :=
-                              re.search(RE_PATTERN[0], line)) and
+def fng_statistics_term_groups(fng_incl, fng_term):
+    fng_matches = [match for line in fng_incl if
+                   (match := re.search(RE_PATTERN[0], line)) and
                    fng_term.lower() in match[1].lower()]
     fng_groups = sorted({match[1].strip() for match in fng_matches})
-    term_cnt = sum(bool(match) for match in fng_matches)
+    term_cnt = len(fng_matches)
     return fng_groups, term_cnt
 
 
-def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_lines):
-    fng_incl = sum(1 for _ in islice(fng_lines, INCLUDED_FNG, None))
-    fng_pct = round(term_cnt / fng_incl * 100, 2)
+def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl):
+    fng_pct = round(term_cnt / len(fng_incl) * 100, 2)
     print(f"{get_detail('[fng_add]', replace=True)} '{fng_term}': {fng_pct}%\
- ({term_cnt}{get_detail('[pdf_footer2]', replace=True)} {fng_incl})")
-    fng_statistics_term_sorted(fng_lines, fng_term.lower(), fng_groups)
+ ({term_cnt}{get_detail('[pdf_footer2]', replace=True)} {len(fng_incl)})")
+    fng_statistics_term_sorted(fng_incl, fng_term.lower(), fng_groups)
 
 
-def fng_statistics_term_sorted(fng_lines, fng_term, fng_groups):
+def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     for content in fng_groups:
         print(f"\n [{STYLE[0]}{content}]")
         content = content.lower()
-        for line in fng_lines:
+        for line in fng_incl:
             line_l = line.lower()
             if content in line_l and fng_term in line_l:
                 print(f"  {line[:line.find('[')].strip()}")
