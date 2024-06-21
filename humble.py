@@ -103,11 +103,11 @@ REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 STYLE = [Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET]
-URL_STRING = ' URL  : '
+URL_STRING = ['rfc-st', ' URL  : ', 'caniuse']
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-06-15', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-06-21', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -678,7 +678,7 @@ def print_basic_info():
     print_detail_r('[0section]')
     print_detail_l('[analysis_date]')
     print(f" {current_time}")
-    print(f'{URL_STRING}{URL}')
+    print(f'{URL_STRING[1]}{URL}')
 
 
 def print_extra_info(reliable):
@@ -1063,12 +1063,12 @@ def set_pdf_sections(i):
 
 
 def set_pdf_links(i, pdf_prefixes, pdfstring):
-    links_d = {URL_STRING: URL,
+    links_d = {URL_STRING[1]: URL,
                REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
                REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
                CANIUSE_URL: i.partition(': ')[2].strip()}
     link_final = links_d.get(pdfstring)
-    if pdfstring in (URL_STRING, REF_LINKS[2], REF_LINKS[3]):
+    if pdfstring in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
         prefix = pdf_prefixes.get(pdfstring, pdfstring)
         pdf.write(h=3, text=prefix)
     else:
@@ -1093,7 +1093,7 @@ def generate_html():
 
 
 def format_html_info(condition, ln, sub_d):
-    if condition == 'rfc-st':
+    if condition == URL_STRING[0]:
         html_final.write(f"{sub_d['ahref_s']}{ln[:32]}\
 {sub_d['close_t']}{ln[:32]}{sub_d['ahref_f']}{ln[32:]}")
     else:
@@ -2131,7 +2131,7 @@ elif args.output == 'pdf':
             self.cell(0, 10, get_detail('[pdf_footer]') + str(self.page_no()) +
                       get_detail('[pdf_footer2]') + ' {nb}', align='C')
     pdf = PDF()
-    pdf_links = (URL_STRING, REF_LINKS[2], REF_LINKS[3], CANIUSE_URL)
+    pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], CANIUSE_URL)
     pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
     generate_pdf(pdf, pdf_links, pdf_prefixes, temp_filename)
 elif args.output == 'html':
@@ -2153,8 +2153,9 @@ elif args.output == 'html':
 
         for ln in html_source:
             ln_stripped = ln.rstrip('\n')
-            if 'rfc-st' in ln or URL_STRING in ln:
-                condition = 'rfc-st' if 'rfc-st' in ln else URL_STRING
+            if URL_STRING[0] in ln or URL_STRING[1] in ln:
+                condition = URL_STRING[0] if URL_STRING[0] in ln else \
+                    URL_STRING[1]
                 format_html_info(condition, ln_stripped, sub_d)
             elif any(s in ln for s in BOLD_STRING):
                 format_html_bold(ln_stripped)
@@ -2165,7 +2166,7 @@ elif args.output == 'html':
                 condition = REF_LINKS[1] if REF_LINKS[1] in ln else \
                             REF_LINKS[0]
                 format_html_refs(condition, ln_stripped, sub_d)
-            elif 'caniuse' in ln:
+            elif URL_STRING[2] in ln:
                 format_html_caniuse(ln_stripped, sub_d)
             else:
                 for i in headers:
