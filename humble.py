@@ -90,18 +90,19 @@ RE_PATTERN = [r'\[(.*?)\]',
                r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$'),
               (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
                r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
-               r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\[([^\]]+)\]']
+               r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\[([^\]]+)\]',
+              r'\d{4}-\d{2}-\d{2}', r'\[(.*?)\]\n', r"'nonce-([^']+)'"]
 REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 STYLE = [Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET]
 TXT_SLICE = [30, 43, 25, 24]
-URL_STRING = ['rfc-st', ' URL  : ', 'caniuse']
 URL_LIST = [': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
 dflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflar\
 e-5xx-errors/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Sta\
 tus/', 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py', 'ht\
 tps://github.com/rfc-st/humble']
+URL_STRING = ['rfc-st', ' URL  : ', 'caniuse']
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
@@ -132,7 +133,7 @@ def check_python_version():
 def check_humble_updates(local_version):
     try:
         remote_repo = requests.get(URL_LIST[3], timeout=10).text
-        remote_date = re.search(r"\d{4}-\d{2}-\d{2}", remote_repo).group()
+        remote_date = re.search(RE_PATTERN[4], remote_repo).group()
         remote_version = datetime.strptime(remote_date, '%Y-%m-%d').date()
         if remote_version > local_version:
             print(f"\n{get_detail('[humble_not_recent]')[:-1]}: \
@@ -156,8 +157,9 @@ def fng_statistics_top():
 
 
 def fng_statistics_top_groups(fng_lines, fng_incl):
+    top_groups_pattern = re.compile(RE_PATTERN[3])
     fng_top_groups = Counter(match.strip() for line in fng_lines for match in
-                             re.findall(RE_PATTERN[3], line))
+                             top_groups_pattern.findall(line))
     fng_statistics_top_result(fng_top_groups, fng_incl)
 
 
@@ -972,7 +974,7 @@ def generate_json(temp_filename, final_filename):
     with (open(temp_filename, 'r', encoding='utf8') as txt_source,
           open(final_filename, 'w', encoding='utf8') as json_final):
         txt_content = txt_source.read()
-        txt_sections = re.split(r'\[(.*?)\]\n', txt_content)[1:]
+        txt_sections = re.split(RE_PATTERN[5], txt_content)[1:]
         data = {}
         parse_json_sections(txt_sections, data, section0, sectionh, section5)
         json_data = dumps(data, indent=4, ensure_ascii=False)
@@ -1720,7 +1722,7 @@ if 'content-security-policy' in headers_l and '12' not in skipped_list:
     if 'unsafe-hashes' in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
     if "'nonce-" in csp_h:
-        nonces_csp = re.findall(r"'nonce-([^']+)'", csp_h)
+        nonces_csp = re.findall(RE_PATTERN[6], csp_h)
         for nonce_csp in nonces_csp:
             if len(nonce_csp) < 32:
                 print_details('[icsnces_h]', '[icsnces]', 'd', i_cnt)
