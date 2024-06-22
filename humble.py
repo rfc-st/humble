@@ -331,10 +331,9 @@ def analysis_exists(filepath):
 
 
 def url_analytics(is_global=False):
-    analytics_scope = extract_global_metrics if is_global else \
-        get_analysis_metrics
+    url_scope = extract_global_metrics if is_global else get_analysis_metrics
     with open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
-        analysis_metrics = analytics_scope(all_analysis)
+        analysis_metrics = url_scope(all_analysis)
     l10n_det = '[global_stats_analysis]' if is_global else '[stats_analysis]'
     url_string = '' if is_global else URL
     print(f"\n{get_detail(l10n_det, replace=True)} {url_string}\n")
@@ -930,7 +929,7 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 def print_skipped_headers():
     print_detail_l("[analysis_skipped_note]")
-    print(f" {', '.join(args.skipped_headers)}")
+    print(" " + ", ".join(f"'{header}'" for header in args.skipped_headers))
 
 
 def print_unsupported_headers(unsupported_headers):
