@@ -72,15 +72,10 @@ BANNER = '''  _                     _     _
 '''
 BOLD_STRING = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
                "[Cabeceras")
-CANIUSE_URL = ': https://caniuse.com/?search='
 CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat']
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
-HTTP_ERRORS = [' Ref  : https://developers.cloudflare.com/support/\
-troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/',
-               ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
-Status/']
 HTTP_SCHEMES = ['http:', 'https:']
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
 HUMBLE_DIRS = ['additional', 'l10n']
@@ -88,10 +83,7 @@ HUMBLE_FILES = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'guides.txt', 'details_es.txt', 'details.txt',
                 'user_agents.txt', 'insecure.txt', 'html_template.html',
                 'testssl.sh']
-HUMBLE_GIT = ['https://raw.githubusercontent.com/rfc-st/humble/master/humble.p\
-y', 'https://github.com/rfc-st/humble']
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
-INCLUDED_FNG = 30
 NON_RU_TLD = ['CYMRU', 'GURU', 'PRU']
 RE_PATTERN = [r'\[(.*?)\]',
               (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
@@ -103,11 +95,17 @@ REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 STYLE = [Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET]
+TXT_SLICE = [30, 43, 25, 24]
 URL_STRING = ['rfc-st', ' URL  : ', 'caniuse']
+URL_LIST = [': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
+dflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflar\
+e-5xx-errors/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Sta\
+tus/', 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py', 'ht\
+tps://github.com/rfc-st/humble']
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-06-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-06-22', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -133,7 +131,7 @@ def check_python_version():
 
 def check_humble_updates(local_version):
     try:
-        remote_repo = requests.get(HUMBLE_GIT[0], timeout=10).text
+        remote_repo = requests.get(URL_LIST[3], timeout=10).text
         remote_date = re.search(r"\d{4}-\d{2}-\d{2}", remote_repo).group()
         remote_version = datetime.strptime(remote_date, '%Y-%m-%d').date()
         if remote_version > local_version:
@@ -152,7 +150,7 @@ def fng_statistics_top():
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
-    fng_incl = sum(1 for _ in islice(fng_lines, INCLUDED_FNG, None))
+    fng_incl = sum(1 for _ in islice(fng_lines, TXT_SLICE[0], None))
     fng_statistics_top_groups(fng_lines, fng_incl)
     sys.exit()
 
@@ -180,7 +178,7 @@ def fng_statistics_term(fng_term):
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         fng_lines = fng_source.readlines()
-    fng_incl = list(islice(fng_lines, INCLUDED_FNG, None))
+    fng_incl = list(islice(fng_lines, TXT_SLICE[0], None))
     fng_groups, term_cnt = fng_statistics_term_groups(fng_incl, fng_term)
     if not fng_groups:
         print(f"{get_detail('[fng_zero]', replace=True)} '{fng_term}'.\n\n\
@@ -220,7 +218,7 @@ def print_security_guides():
     print_detail('[security_guides]', 1)
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
               encoding='utf8') as guides_source:
-        for line in islice(guides_source, 24, None):
+        for line in islice(guides_source, TXT_SLICE[3], None):
             print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
   {line}", end='')
     sys.exit()
@@ -661,9 +659,9 @@ def print_fng_header(header):
 def print_general_info(reliable):
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
-        print(f"\n{BANNER}\n ({HUMBLE_GIT[1]} | v.{local_version})")
+        print(f"\n{BANNER}\n ({URL_LIST[4]} | v.{local_version})")
     elif args.output != 'pdf':
-        print(f"\n\n{HUMBLE_DESC}\n{HUMBLE_GIT[1]} | v.{local_version}\n")
+        print(f"\n\n{HUMBLE_DESC}\n{URL_LIST[4]} | v.{local_version}\n")
     print_basic_info()
     if args.output in ('csv', 'json'):
         print(get_detail('[limited_analysis_note]', replace=True))
@@ -686,7 +684,7 @@ def print_extra_info(reliable):
         id_mode = f"[http_{status_code}]"
         if detail := print_detail(id_mode, 0):
             print(detail)
-        print(f"{HTTP_ERRORS[1]}{status_code}")
+        print(f"{URL_LIST[2]}{status_code}")
     if reliable:
         print(get_detail('[unreliable_analysis_note]', replace=True))
     if args.redirects:
@@ -760,7 +758,7 @@ def get_fingerprint_headers():
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         l_fng_ex = [line.strip() for line in
-                    islice(fng_source, INCLUDED_FNG, None) if line.strip()]
+                    islice(fng_source, TXT_SLICE[0], None) if line.strip()]
         l_fng = [line.split(' [')[0].strip() for line in l_fng_ex]
         return l_fng, l_fng_ex
 
@@ -832,7 +830,7 @@ def print_browser_compatibility(compat_headers):
     style_blanks = "  " if args.output == 'html' else " "
     for key in compat_headers:
         styled_header = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
-        print(f"{style_blanks}{styled_header}{CANIUSE_URL}\
+        print(f"{style_blanks}{styled_header}{URL_LIST[0]}\
 {key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
 
 
@@ -889,7 +887,8 @@ def nourl_user_agent(user_agent_id):
 def get_user_agent(user_agent_id):
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
               encoding='utf8') as ua_source:
-        user_agents = [line.strip() for line in islice(ua_source, 43, None)]
+        user_agents = [line.strip() for line in islice(ua_source, TXT_SLICE[1],
+                                                       None)]
     if user_agent_id == str(0):
         print_user_agents(user_agents)
     for line in user_agents:
@@ -910,7 +909,7 @@ def print_user_agents(user_agents):
 def get_insecure_checks():
     headers_name = set()
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[7]), "r") as ins_source:
-        insecure_checks = islice(ins_source, 25, None)
+        insecure_checks = islice(ins_source, TXT_SLICE[2], None)
         for line in insecure_checks:
             insecure_header = line.split(':')[0]
             headers_name.add(insecure_header.strip().lower())
@@ -1026,7 +1025,7 @@ def set_pdf_structure():
 
 def set_pdf_metadata():
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
-    git_urlc = f"{HUMBLE_GIT[1]} | v.{local_version}"
+    git_urlc = f"{URL_LIST[4]} | v.{local_version}"
     pdf.set_author(git_urlc)
     pdf.set_creation_date = current_time
     pdf.set_creator(git_urlc)
@@ -1066,7 +1065,7 @@ def set_pdf_links(i, pdf_prefixes, pdfstring):
     links_d = {URL_STRING[1]: URL,
                REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
                REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
-               CANIUSE_URL: i.partition(': ')[2].strip()}
+               URL_LIST[0]: i.partition(': ')[2].strip()}
     link_final = links_d.get(pdfstring)
     if pdfstring in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
         prefix = pdf_prefixes.get(pdfstring, pdfstring)
@@ -1082,7 +1081,7 @@ def generate_html():
     html_replace = {"html_title": get_detail('[pdf_meta_subject]'),
                     "html_desc": get_detail('[pdf_meta_title]'),
                     "html_keywords": get_detail('[pdf_meta_keywords]'),
-                    "humble_URL": HUMBLE_GIT[1],
+                    "humble_URL": URL_LIST[4],
                     "humble_local_v": local_version, "URL_analyzed": URL,
                     "html_body": '<body><pre>', "}}": '}', "{{": '}'}
     with open(final_filename, "r+", encoding='utf8') as html_file:
@@ -1174,8 +1173,8 @@ def handle_server_error(http_code, id_mode):
         if detail := print_detail(id_mode, 0):
             print(detail)
         else:
-            print((HTTP_ERRORS[1] if (500 <= http_code <= 511) else
-                   HTTP_ERRORS[0]) + str(http_code))
+            print((URL_LIST[2] if (500 <= http_code <= 511) else
+                   URL_LIST[1]) + str(http_code))
     # For HTTP codes not in the ranges 500-511 or 520-530
     else:
         print_detail('[server_serror]', 1)
@@ -1265,7 +1264,7 @@ init(autoreset=True)
 epilog_content = get_epilog_content('[epilog_content]')
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
-                        description=f"{HUMBLE_DESC} | {HUMBLE_GIT[1]} | \
+                        description=f"{HUMBLE_DESC} | {URL_LIST[4]} | \
 v.{local_version}", epilog=epilog_content)
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
@@ -2121,7 +2120,7 @@ elif args.output == 'pdf':
             self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
                       new_y="NEXT", align='C')
             self.ln(1)
-            self.cell(0, 5, f"{HUMBLE_GIT[1]} | v.{local_version}", align='C')
+            self.cell(0, 5, f"{URL_LIST[4]} | v.{local_version}", align='C')
             self.ln(9 if self.page_no() == 1 else 13)
 
         def footer(self):
@@ -2131,7 +2130,7 @@ elif args.output == 'pdf':
             self.cell(0, 10, get_detail('[pdf_footer]') + str(self.page_no()) +
                       get_detail('[pdf_footer2]') + ' {nb}', align='C')
     pdf = PDF()
-    pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], CANIUSE_URL)
+    pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0])
     pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
     generate_pdf(pdf, pdf_links, pdf_prefixes, temp_filename)
 elif args.output == 'html':
