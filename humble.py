@@ -1826,7 +1826,7 @@ if 'origin-agent-cluster' in headers_l and '31' not in skipped_list:
 if 'p3p' in headers_l and '32' not in skipped_list:
     print_details('[ip3p_h]', '[ip3p]', 'd', i_cnt)
 
-if 'permissions-Policy' in headers_l and '33' not in skipped_list:
+if 'permissions-policy' in headers_l and '33' not in skipped_list:
     perm_header = headers_l['permissions-policy']
     if not any(elem in perm_header for elem in l_per_feat):
         print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
@@ -1900,13 +1900,13 @@ if setlogin_header and not any(elem in setlogin_header for elem in l_setlogin)\
      and '43' not in skipped_list:
     print_details('[islogin_h]', '[islogin]', 'd', i_cnt)
 
-if 'sourceMap' in headers_l and '44' not in skipped_list:
+if 'sourcemap' in headers_l and '44' not in skipped_list:
     print_details('[ismap_m]', '[ismap]', 'd', i_cnt)
 
 if 'speculation-rules' in headers_l and '45' not in skipped_list:
     print_details('[ispec_m]', '[ispec]', 'm', i_cnt)
 
-if 'strict-Dynamic' in headers_l and '46' not in skipped_list:
+if 'strict-dynamic' in headers_l and '46' not in skipped_list:
     print_details('[isdyn_h]', '[isdyn]', 'd', i_cnt)
 
 sts_header = headers_l.get('strict-transport-security', '')
@@ -2029,7 +2029,7 @@ if robots_header and '67' not in skipped_list:
 if 'x-runtime' in headers_l and '68' not in skipped_list:
     print_details('[ixrun_h]', '[ixrun]', 'd', i_cnt)
 
-if 'x-sourceMap' in headers_l and '69' not in skipped_list:
+if 'x-sourcemap' in headers_l and '69' not in skipped_list:
     print_details('[ixsrc_h]', '[ixsrc]', 'd', i_cnt)
 
 if 'x-ua-compatible' in headers_l and '70' not in skipped_list:
