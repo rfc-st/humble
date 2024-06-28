@@ -106,7 +106,7 @@ URL_STRING = ['rfc-st', ' URL  : ', 'caniuse']
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-06-22', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-06-28', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1050,7 +1050,7 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename):
                 if string in line:
                     set_pdf_links(line, pdf_prefixes, string)
             pdf.set_text_color(0, 0, 0)
-            pdf.multi_cell(197, 2.6, text=line, align='L')
+            pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
 
 
 def set_pdf_sections(i):
@@ -1070,11 +1070,11 @@ def set_pdf_links(i, pdf_prefixes, pdfstring):
     link_final = links_d.get(pdfstring)
     if pdfstring in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
         prefix = pdf_prefixes.get(pdfstring, pdfstring)
-        pdf.write(h=3, text=prefix)
+        pdf.write(h=6, text=prefix)
     else:
-        pdf.write(h=3, text=i[:i.index(": ")+2])
+        pdf.write(h=6, text=i[:i.index(": ")+2])
     pdf.set_text_color(0, 0, 255)
-    pdf.cell(w=2000, h=3, text=i[i.index(": ")+2:], align="L", link=link_final)
+    pdf.cell(w=2000, h=6, text=i[i.index(": ")+2:], align="L", link=link_final)
 
 
 def generate_html():
@@ -2110,7 +2110,7 @@ elif args.output == 'json':
 elif args.output == 'pdf':
     # Optimized the loading of the third-party dependency and relevant logic
     # for 'fpdf2', enhancing analysis speed for tasks not involving PDF export
-    from fpdf import FPDF
+    from fpdf import FPDF, YPos
 
     class PDF(FPDF):
 
