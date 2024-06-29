@@ -91,11 +91,12 @@ RE_PATTERN = [r'\[(.*?)\]',
               (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
                r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
                r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\[([^\]]+)\]',
-              r'\d{4}-\d{2}-\d{2}', r'\[(.*?)\]\n', r"'nonce-([^']+)'"]
+              r'\d{4}-\d{2}-\d{2}', r'\[(.*?)\]\n', r"'nonce-([^']+)'",
+              r'\(humble_pdf_style\)([^:]+):']
 REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 STYLE = [Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
-         Style.RESET_ALL, Fore.RESET]
+         Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)']
 TXT_SLICE = [30, 43, 25, 24]
 URL_LIST = [': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
 dflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflar\
@@ -106,7 +107,7 @@ URL_STRING = ['rfc-st', ' URL  : ', 'caniuse']
 
 export_date = datetime.now().strftime("%Y%m%d")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-06-28', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-06-29', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -697,9 +698,10 @@ def print_extra_info(reliable):
 def print_response_headers():
     print(linesep.join(['']*2))
     print_detail_r('[0headers]')
+    pdf_style = STYLE[6] if args.output == 'pdf' else ""
     for key, value in sorted(headers.items()):
-        print(f" {key}:", value) if args.output else print(f" {STYLE[2]}\
-{key}:", value)
+        print(f" {pdf_style}{key}:", value) if args.output else \
+            print(f" {STYLE[2]}{key}:", value)
     print('\n')
 
 
@@ -1049,8 +1051,16 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename):
             for string in pdf_links:
                 if string in line:
                     set_pdf_links(line, pdf_prefixes, string)
-            pdf.set_text_color(0, 0, 0)
-            pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+            set_pdf_color(pdf, line)
+
+
+def set_pdf_color(pdf, line):
+    if re.search(RE_PATTERN[7], line):
+        line = f" {line[19:]}"
+        pdf.set_text_color(102, 0, 51)
+    else:
+        pdf.set_text_color(0, 0, 0)
+    pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
 
 
 def set_pdf_sections(i):
