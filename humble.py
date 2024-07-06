@@ -105,9 +105,9 @@ tus/', 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py', 'ht\
 tps://github.com/rfc-st/humble']
 URL_STRING = ['rfc-st', ' URL  : ', 'caniuse']
 
-export_date = datetime.now().strftime("%Y%m%d")
+export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-06-29', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-07-06', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1167,14 +1167,12 @@ def get_temp_filename(args, export_date):
 
 
 def build_temp_filename(args, export_date, file_ext, parsed_url):
+    str_hum = f"{HUMBLE_DESC[1:7]}_"
     url_str = tldextract.extract(args.URL)
-    url_sch = parsed_url.scheme
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
-    url_dom = f"{url_str.domain}."
-    url_tld = url_str.suffix
     url_prt = f"_{parsed_url.port}_" if parsed_url.port is not None else '_'
-    return f"{url_sch}{url_sub}{url_dom}{url_tld}{url_prt}{export_date}\
-{file_ext}"
+    return f"{str_hum}{parsed_url.scheme}{url_sub}{url_str.domain}_\
+{url_str.suffix}{url_prt}{export_date}{file_ext}"
 
 
 def handle_server_error(http_code, id_mode):
