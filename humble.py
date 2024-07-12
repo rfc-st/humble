@@ -47,6 +47,7 @@ from itertools import islice
 from datetime import datetime
 from csv import writer, QUOTE_ALL
 from urllib.parse import urlparse
+from subprocess import PIPE, Popen
 from os import linesep, path, remove
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -54,7 +55,6 @@ import re
 import ssl
 import sys
 import contextlib
-import subprocess
 import concurrent.futures
 
 # Third-Party
@@ -245,22 +245,15 @@ def testssl_command(testssl_temp_path, uri):
 
 def testssl_analysis(testssl_command):
     try:
-        process = subprocess.Popen(testssl_command, stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE, text=True)
-        while True:
-            ln = process.stdout.readline()
-            if not ln:
-                break
+        process = Popen(testssl_command, stdout=PIPE, stderr=PIPE, text=True)
+        for ln in iter(process.stdout.readline, ''):
             print(ln, end='')
             if 'Done' in ln:
                 process.terminate()
                 process.wait()
-                sys.exit()
-        stdout, stderr = process.communicate()
-        print(stdout or '')
-        print(stderr or '')
-    except subprocess.CalledProcessError as e:
-        print(e.stderr)
+                break
+        if stderr := process.stderr.read():
+            print(stderr, end='')
     except Exception as e:
         print(f"Error running testssl.sh analysis!: {e}")
 
