@@ -107,7 +107,7 @@ URL_STRING = ['rfc-st', ' URL  : ', 'caniuse']
 
 export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-07-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-07-12', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
