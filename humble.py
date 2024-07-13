@@ -97,6 +97,8 @@ REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
 RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
 STYLE = [Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)']
+# Check https://testssl.sh/doc/testssl.1.html to choose your preferred options
+TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
 TXT_SLICE = [30, 43, 25, 24]
 URL_LIST = [': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
 dflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflar\
@@ -107,7 +109,7 @@ URL_STRING = ['rfc-st', ' URL  : ', 'caniuse']
 
 export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-07-12', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-07-13', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -228,17 +230,13 @@ def print_security_guides():
 
 
 def testssl_command(testssl_temp_path, uri):
-    testssl_abs_path = path.abspath(testssl_temp_path)
-    if not path.isdir(testssl_abs_path):
+    if not path.isdir(testssl_temp_path):
         sys.exit(f"\n{get_detail('[notestssl_path]')}")
-    testssl_final_path = path.join(testssl_abs_path, HUMBLE_FILES[9])
+    testssl_final_path = path.join(testssl_temp_path, HUMBLE_FILES[9])
     if not path.isfile(testssl_final_path):
         sys.exit(f"\n{get_detail('[notestssl_file]')}")
     else:
-        uri_safe = quote(uri)
-        # Check './testssl.sh --help' to choose your preferred options
-        testssl_command = [testssl_final_path, '-f', '-g', '-p', '-U', '-s',
-                           '--hints', uri_safe]
+        testssl_command = [testssl_final_path] + TESTSSL_OPTIONS + [quote(uri)]
         testssl_analysis(testssl_command)
     sys.exit()
 
@@ -1186,7 +1184,6 @@ def handle_server_error(http_code, id_mode):
 def make_http_request():
     try:
         start_time = time()
-        uri_safe = quote(URL)
         session = requests.Session()
         session.mount("https://", SSLContextAdapter())
         session.mount("http://", HTTPAdapter())
@@ -1198,7 +1195,7 @@ def make_http_request():
         # chosen to disable these checks so that in certain cases (e.g.
         # development environments, hosts with very old servers/software,
         # self-signed certificates, etc) the URL can still be analyzed.
-        r = session.get(uri_safe, allow_redirects=not args.redirects,
+        r = session.get(quote(URL), allow_redirects=not args.redirects,
                         verify=False, headers=ua_header, timeout=15)
         elapsed_time = time() - start_time
         return r, elapsed_time, None
@@ -1365,7 +1362,7 @@ if args.guides or args.testssl_path or args.URL_A:
     if args.guides:
         print_security_guides()
     elif args.testssl_path:
-        testssl_command(args.testssl_path, args.URL)
+        testssl_command(path.abspath(args.testssl_path), args.URL)
     elif args.URL_A:
         analysis_exists(HUMBLE_FILES[0])
         url_analytics() if args.URL else url_analytics(is_global=True)
