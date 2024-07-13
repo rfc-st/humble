@@ -190,14 +190,14 @@ https://github.com/rfc-st/humble/releases
 usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-l {es}] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r]
                  [-s [SKIPPED_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-04-28
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-07-13
 
 options:
   -h, --help                  show this help message and exit
   -a                          Shows statistics of the performed analysis; will be global if the '-u' parameter is omitted
   -b                          Shows overall findings; if this parameter is omitted detailed ones will be shown
   -df                         Do not follow redirects; if this parameter is omitted the last redirection will be the one analyzed
-  -e [TESTSSL_PATH]           Shows TLS/SSL checks; requires the 'TESTSSL_PATH' of https://testssl.sh/ and Linux/Unix OS
+  -e [TESTSSL_PATH]           Shows TLS/SSL checks; requires https://testssl.sh/
   -f [FINGERPRINT_TERM]       Shows fingerprint statistics; will be the Top 20 if 'FINGERPRINT_TERM', e.g. 'Google', is omitted
   -g                          Shows guidelines for enabling security HTTP response headers on popular servers/services
   -l {es}                     The language for displaying analysis, errors and messages; will be in English if this parameter is omitted

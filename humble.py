@@ -1275,8 +1275,7 @@ parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
  follow redirects; if this parameter is omitted the last redirection will be \
 the one analyzed")
 parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\
-s TLS/SSL checks; requires the 'TESTSSL_PATH' of https://testssl.sh/ and \
-Linux/Unix OS")
+s TLS/SSL checks; requires https://testssl.sh/")
 parser.add_argument("-f", nargs='?', type=str, dest='fingerprint_term', help="\
 Shows fingerprint statistics; will be the Top 20 if \'FINGERPRINT_TERM\', e.g.\
  \'Google\', is omitted")
