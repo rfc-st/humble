@@ -1317,10 +1317,10 @@ A destacar
  Diciembre
 
 [humble_not_recent]
- Tu versión no es reciente
+ Tu versión de 'humble' no es reciente
 
 [humble_recent]
- Tienes una versión reciente :).
+ Tienes una versión reciente de 'humble' :).
 
 [github_humble]
  Comprueba las actualizaciones en https://github.com/rfc-st/humble/

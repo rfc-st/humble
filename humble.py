@@ -135,12 +135,12 @@ def check_python_version():
 
 def check_humble_updates(local_version):
     try:
-        remote_repo = requests.get(URL_LIST[3], timeout=10).text
-        remote_date = re.search(RE_PATTERN[4], remote_repo).group()
-        remote_version = datetime.strptime(remote_date, '%Y-%m-%d').date()
-        if remote_version > local_version:
+        github_repo = requests.get(URL_LIST[3], timeout=10).text
+        github_date = re.search(RE_PATTERN[4], github_repo).group()
+        github_version = datetime.strptime(github_date, '%Y-%m-%d').date()
+        if github_version > local_version:
             print(f"\n{get_detail('[humble_not_recent]')[:-1]}: \
-'{local_version}'"f"\n{get_detail('[github_humble]', replace=True)}")
+'{local_version}'"f"\n\n{get_detail('[github_humble]', replace=True)}")
         else:
             print(f"\n{get_detail('[humble_recent]', replace=True)}")
     except requests.exceptions.RequestException:
@@ -256,10 +256,10 @@ def testssl_analysis(testssl_command):
         print(f"Error running testssl.sh analysis!: {e}")
 
 
-def get_l10n_lines():
-    l10n_file_path = path.join(HUMBLE_DIRS[1], HUMBLE_FILES[4] if args.lang ==
-                               'es' else HUMBLE_FILES[5])
-    with open(l10n_file_path, 'r', encoding='utf8') as l10n_source:
+def get_l10n_content():
+    l10n_path = path.join(HUMBLE_DIRS[1], HUMBLE_FILES[4] if args.lang == 'es'
+                          else HUMBLE_FILES[5])
+    with open(l10n_path, 'r', encoding='utf8') as l10n_source:
         return l10n_source.readlines()
 
 
@@ -705,39 +705,39 @@ def print_details(short_d, long_d, id_mode, i_cnt):
 
 
 def print_detail(id_mode, num_lines=1):
-    idx = l10n_lines.index(id_mode + '\n')
-    print(l10n_lines[idx+1], end='')
+    idx = l10n_content.index(id_mode + '\n')
+    print(l10n_content[idx+1], end='')
     for i in range(1, num_lines+1):
-        if idx+i+1 < len(l10n_lines):
-            print(l10n_lines[idx+i+1], end='')
+        if idx+i+1 < len(l10n_content):
+            print(l10n_content[idx+i+1], end='')
 
 
 def print_detail_l(id_mode, analytics=False):
-    for i, line in enumerate(l10n_lines):
+    for i, line in enumerate(l10n_content):
         if line.startswith(id_mode):
             if not analytics:
-                print(l10n_lines[i+1].replace('\n', ''), end='')
+                print(l10n_content[i+1].replace('\n', ''), end='')
             else:
-                return l10n_lines[i+1].replace('\n', '').replace(':', '')[1:]
+                return l10n_content[i+1].replace('\n', '').replace(':', '')[1:]
 
 
 def print_detail_r(id_mode, is_red=False):
     style_str = STYLE[1] if is_red else STYLE[0]
-    for i, line in enumerate(l10n_lines):
+    for i, line in enumerate(l10n_content):
         if line.startswith(id_mode):
             if not args.output:
-                print(f"{style_str}{l10n_lines[i+1]}", end='')
+                print(f"{style_str}{l10n_content[i+1]}", end='')
             else:
-                print(l10n_lines[i+1], end='')
+                print(l10n_content[i+1], end='')
             if not is_red:
                 print("")
 
 
 def get_detail(id_mode, replace=False):
-    for i, line in enumerate(l10n_lines):
+    for i, line in enumerate(l10n_content):
         if line.startswith(id_mode):
-            return (l10n_lines[i+1].replace('\n', '')) if replace else \
-                l10n_lines[i+1]
+            return (l10n_content[i+1].replace('\n', '')) if replace else \
+                l10n_content[i+1]
 
 
 def get_epilog_content(id_mode):
@@ -1307,12 +1307,11 @@ parser.add_argument("-v", "--version", action="store_true", help="Checks for \
 updates at https://github.com/rfc-st/humble")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
-l10n_lines = get_l10n_lines()
+l10n_content = get_l10n_content()
 check_python_version()
 
 # Checking of parameters and their values
-if args.version:
-    check_humble_updates(local_version)
+check_humble_updates(local_version) if args.version else None
 
 if '-f' in sys.argv:
     fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \

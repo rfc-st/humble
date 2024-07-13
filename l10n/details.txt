@@ -1314,13 +1314,13 @@ Highlights
  December
 
 [humble_not_recent]
- Your version is not recent
+ Your version of 'humble' is not recent
 
 [humble_recent]
- You have a recent version :).
+ You have a recent version of 'humble' :).
 
 [github_humble]
- Check for updates in https://github.com/rfc-st/humble/
+ Check for updates at https://github.com/rfc-st/humble/
 
 [update_error]
  There was an error checking if you are using the latest version; wait a few minutes and try again.
