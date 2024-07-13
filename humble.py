@@ -928,7 +928,8 @@ def print_skipped_headers():
 def print_unsupported_headers(unsupported_headers):
     print("")
     print_detail_l("[args_skipped_unknown]")
-    print(f"{' '.join(unsupported_headers)}")
+    unsupported_list = ", ".join(f"'{i}'" for i in unsupported_headers)
+    print(f"{unsupported_list}")
     sys.exit()
 
 
@@ -1351,8 +1352,8 @@ elif args.skipped_headers:
     insecure_headers = get_insecure_checks()
     unsupported_headers, skipped_list = \
         get_skipped_unsupported_headers(args, insecure_headers)
-    if unsupported_headers:
-        print_unsupported_headers(unsupported_headers)
+    print_unsupported_headers(unsupported_headers) if unsupported_headers else\
+        None
 
 URL = args.URL
 
