@@ -657,11 +657,7 @@ def print_general_info(reliable, export_filename):
     elif args.output != 'pdf':
         print(f"\n\n{HUMBLE_DESC}\n{URL_LIST[4]} | v.{local_version}\n")
     print_basic_info(export_filename)
-    if args.output in ('csv', 'json'):
-        print(get_detail('[limited_analysis_note]', replace=True))
-    if (status_code is not None and 400 <= status_code <= 451) or reliable or \
-       args.redirects or args.skipped_headers:
-        print_extra_info(reliable)
+    print_extended_info(args, reliable, status_code)
 
 
 def print_basic_info(export_filename):
@@ -674,6 +670,14 @@ def print_basic_info(export_filename):
     if export_filename:
         print_detail_l('[export_filename]')
         print(export_filename)
+
+
+def print_extended_info(args, reliable, status_code):
+    if args.output in ('csv', 'json'):
+        print(get_detail('[limited_analysis_note]', replace=True))
+    if (status_code is not None and 400 <= status_code <= 451) or reliable or \
+       args.redirects or args.skipped_headers:
+        print_extra_info(reliable)
 
 
 def print_extra_info(reliable):
