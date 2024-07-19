@@ -649,13 +649,13 @@ def print_fng_header(header):
         print(f"{STYLE[1]} {header}")
 
 
-def print_general_info(reliable):
+def print_general_info(reliable, export_filename):
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
         print(f"\n{BANNER}\n ({URL_LIST[4]} | v.{local_version})")
     elif args.output != 'pdf':
         print(f"\n\n{HUMBLE_DESC}\n{URL_LIST[4]} | v.{local_version}\n")
-    print_basic_info()
+    print_basic_info(export_filename)
     if args.output in ('csv', 'json'):
         print(get_detail('[limited_analysis_note]', replace=True))
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
@@ -663,13 +663,16 @@ def print_general_info(reliable):
         print_extra_info(reliable)
 
 
-def print_basic_info():
+def print_basic_info(export_filename):
     print(linesep.join(['']*2) if args.output == 'html' or not args.output
           else "")
     print_detail_r('[0section]')
     print_detail_l('[analysis_date]')
     print(f" {current_time}")
     print(f'{URL_STRING[1]}{URL}')
+    if export_filename:
+        print_detail_l('[export_filename]')
+        print(export_filename)
 
 
 def print_extra_info(reliable):
@@ -1388,14 +1391,17 @@ headers, status_code, reliable, request_time = manage_http_request()
 headers_l = {header.lower(): value for header, value in headers.items()}
 
 # Exporting analysis
+export_filename = None
+
 if args.output:
     orig_stdout = sys.stdout
     temp_filename = get_temp_filename(args, export_date)
     temp_filename_content = open(temp_filename, 'w', encoding='utf8')
     sys.stdout = temp_filename_content
+    export_filename = f"{temp_filename[:-5]}.{args.output}"
 
 # Section '0. Info & HTTP Response Headers'
-print_general_info(reliable)
+print_general_info(reliable, export_filename)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
 # Section '1. Missing HTTP Security Headers'
