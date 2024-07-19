@@ -72,44 +72,44 @@ BANNER = '''  _                     _     _
 '''
 BOLD_STRING = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
                "[Cabeceras")
-CSV_SECTION = ['0section', '0headers', '1missing', '2fingerprint',
-               '3depinsecure', '4empty', '5compat']
+CSV_SECTION = ('0section', '0headers', '1missing', '2fingerprint',
+               '3depinsecure', '4empty', '5compat')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
-HTTP_SCHEMES = ['http:', 'https:']
+HTTP_SCHEMES = ('http:', 'https:')
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
-HUMBLE_DIRS = ['additional', 'l10n']
-HUMBLE_FILES = ['analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
+HUMBLE_DIRS = ('additional', 'l10n')
+HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'guides.txt', 'details_es.txt', 'details.txt',
                 'user_agents.txt', 'insecure.txt', 'html_template.html',
-                'testssl.sh']
+                'testssl.sh')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
-NON_RU_TLD = ['CYMRU', 'GURU', 'PRU']
-RE_PATTERN = [r'\[(.*?)\]',
+NON_RU_TLD = ('CYMRU', 'GURU', 'PRU')
+RE_PATTERN = (r'\[(.*?)\]',
               (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
                r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$'),
               (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
                r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
                r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\[([^\]]+)\]',
               r'\d{4}-\d{2}-\d{2}', r'\[(.*?)\]\n', r"'nonce-([^']+)'",
-              r'\(humble_pdf_style\)([^:]+):']
-REF_LINKS = [' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ']
-RU_CHECKS = ['https://ipapi.co/country_name/', 'RU', 'Russia']
-STYLE = [Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
-         Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)']
+              r'\(humble_pdf_style\)([^:]+):')
+REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ')
+RU_CHECKS = ('https://ipapi.co/country_name/', 'RU', 'Russia')
+STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
+         Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)')
 # Check https://testssl.sh/doc/testssl.1.html to choose your preferred options
 TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
-TXT_SLICE = [30, 43, 25, 24]
-URL_LIST = [': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
+TXT_SLICE = (30, 43, 25, 24)
+URL_LIST = (': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
 dflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflar\
 e-5xx-errors/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Sta\
 tus/', 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py', 'ht\
-tps://github.com/rfc-st/humble']
-URL_STRING = ['rfc-st', ' URL  : ', 'caniuse']
+tps://github.com/rfc-st/humble')
+URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-07-13', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-07-19', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
