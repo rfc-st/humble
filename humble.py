@@ -75,6 +75,7 @@ BOLD_STRING = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
 CSV_SECTION = ('0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
+EXT_SLICE = (-4, -5)
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HTTP_SCHEMES = ('http:', 'https:')
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
@@ -1398,7 +1399,8 @@ if args.output:
     temp_filename = get_temp_filename(args, export_date)
     temp_filename_content = open(temp_filename, 'w', encoding='utf8')
     sys.stdout = temp_filename_content
-    export_filename = f"{temp_filename[:-5]}.{args.output}"
+    export_slice = EXT_SLICE[0] if args.output == 'txt' else EXT_SLICE[1]
+    export_filename = f"{temp_filename[:export_slice]}.{args.output}"
 
 # Section '0. Info & HTTP Response Headers'
 print_general_info(reliable, export_filename)
