@@ -37,7 +37,7 @@
 # Iván, Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Angel,
 # Montse, Naiara, Pablo, Sergio, Ricardo & Rubén!.
 
-# Standard Library
+# Standard Library imports
 from time import time
 from json import dumps
 from shlex import quote
@@ -57,7 +57,7 @@ import sys
 import contextlib
 import concurrent.futures
 
-# Third-Party
+# Third-Party imports
 from colorama import Fore, Style, init
 from requests.adapters import HTTPAdapter
 import requests
@@ -75,7 +75,6 @@ BOLD_STRING = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
 CSV_SECTION = ('0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
-EXT_SLICE = (-4, -5)
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HTTP_SCHEMES = ('http:', 'https:')
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
@@ -96,11 +95,11 @@ RE_PATTERN = (r'\[(.*?)\]',
               r'\(humble_pdf_style\)([^:]+):')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ')
 RU_CHECKS = ('https://ipapi.co/country_name/', 'RU', 'Russia')
+SLICE_INT = (30, 43, 25, 24, -4, -5)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)')
 # Check https://testssl.sh/doc/testssl.1.html to choose your preferred options
 TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
-TXT_SLICE = (30, 43, 25, 24)
 URL_LIST = (': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
 dflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflar\
 e-5xx-errors/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Sta\
@@ -108,9 +107,8 @@ tus/', 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py', 'ht\
 tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
-export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-07-19', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-07-20', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -155,7 +153,7 @@ def fng_statistics_top():
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
-    fng_incl = sum(1 for _ in islice(fng_lines, TXT_SLICE[0], None))
+    fng_incl = sum(1 for _ in islice(fng_lines, SLICE_INT[0], None))
     fng_statistics_top_groups(fng_lines, fng_incl)
     sys.exit()
 
@@ -184,7 +182,7 @@ def fng_statistics_term(fng_term):
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         fng_lines = fng_source.readlines()
-    fng_incl = list(islice(fng_lines, TXT_SLICE[0], None))
+    fng_incl = list(islice(fng_lines, SLICE_INT[0], None))
     fng_groups, term_cnt = fng_statistics_term_groups(fng_incl, fng_term)
     if not fng_groups:
         print(f"{get_detail('[fng_zero]', replace=True)} '{fng_term}'.\n\n\
@@ -224,7 +222,7 @@ def print_security_guides():
     print_detail('[security_guides]', 1)
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
               encoding='utf8') as guides_source:
-        for line in islice(guides_source, TXT_SLICE[3], None):
+        for line in islice(guides_source, SLICE_INT[3], None):
             print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
   {line}", end='')
     sys.exit()
@@ -669,7 +667,7 @@ def print_basic_info(export_filename):
     print(f'{URL_STRING[1]}{URL}')
     if export_filename:
         print_detail_l('[export_filename]')
-        print(export_filename)
+        print(f"'{export_filename}'")
 
 
 def print_extended_info(args, reliable, status_code):
@@ -760,7 +758,7 @@ def get_fingerprint_headers():
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         l_fng_ex = [line.strip() for line in
-                    islice(fng_source, TXT_SLICE[0], None) if line.strip()]
+                    islice(fng_source, SLICE_INT[0], None) if line.strip()]
         l_fng = [line.split(' [')[0].strip() for line in l_fng_ex]
         return l_fng, l_fng_ex
 
@@ -889,7 +887,7 @@ def nourl_user_agent(user_agent_id):
 def get_user_agent(user_agent_id):
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
               encoding='utf8') as ua_source:
-        user_agents = [line.strip() for line in islice(ua_source, TXT_SLICE[1],
+        user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
                                                        None)]
     if user_agent_id == str(0):
         print_user_agents(user_agents)
@@ -911,7 +909,7 @@ def print_user_agents(user_agents):
 def get_insecure_checks():
     headers_name = set()
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[7]), "r") as ins_source:
-        insecure_checks = islice(ins_source, TXT_SLICE[2], None)
+        insecure_checks = islice(ins_source, SLICE_INT[2], None)
         for line in insecure_checks:
             insecure_header = line.split(':')[0]
             headers_name.add(insecure_header.strip().lower())
@@ -1268,6 +1266,7 @@ def custom_help_formatter(prog):
     return RawDescriptionHelpFormatter(prog, max_help_position=30)
 
 
+# Main functionality for argparse
 init(autoreset=True)
 epilog_content = get_epilog_content('[epilog_content]')
 
@@ -1315,10 +1314,12 @@ parser.add_argument("-v", "--version", action="store_true", help="Checks for \
 updates at https://github.com/rfc-st/humble")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+
+# Multilingual messages and Python version checking
 l10n_content = get_l10n_content()
 check_python_version()
 
-# Checking of parameters and their values
+# Functionality for argparse parameters/values
 check_humble_updates(local_version) if args.version else None
 
 if '-f' in sys.argv:
@@ -1382,6 +1383,7 @@ if not args.URL_A:
     print("")
     print_detail(detail)
 
+# Retrieving HTTP response headers
 exception_d = {
     requests.exceptions.ConnectionError: '[e_404]',
     requests.exceptions.InvalidSchema: '[e_schema]',
@@ -1395,15 +1397,16 @@ requests.packages.urllib3.disable_warnings()
 headers, status_code, reliable, request_time = manage_http_request()
 headers_l = {header.lower(): value for header, value in headers.items()}
 
-# Exporting analysis
+# Export filename generation
 export_filename = None
 
 if args.output:
     orig_stdout = sys.stdout
+    export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
     temp_filename = get_temp_filename(args, export_date)
     temp_filename_content = open(temp_filename, 'w', encoding='utf8')
     sys.stdout = temp_filename_content
-    export_slice = EXT_SLICE[0] if args.output == 'txt' else EXT_SLICE[1]
+    export_slice = SLICE_INT[4] if args.output == 'txt' else SLICE_INT[5]
     export_filename = f"{temp_filename[:export_slice]}.{args.output}"
 
 # Section '0. Info & HTTP Response Headers'
@@ -2100,12 +2103,12 @@ else:
     print_detail_l("[no_sec_headers]") if args.output else \
         print_detail_r("[no_sec_headers]", is_red=True)
 
-# Printing analysis results
+# Printing analysis summary and the changes with respect to the previous one
 print(linesep.join(['']*2))
 end = time()
 get_analysis_results()
 
-# Exporting analysis results
+# Exporting analysis results based on file type
 if args.output:
     final_filename = f"{temp_filename[:-5]}.{args.output}"
     sys.stdout = orig_stdout
