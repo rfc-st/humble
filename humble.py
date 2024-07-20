@@ -1555,14 +1555,15 @@ l_origcluster = ['?1']
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 l_per_dep = ['document-domain', 'window-placement']
-l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
-              'bluetooth', 'browsing-topics', 'camera', 'ch-ua', 'ch-ua-arch',
+l_per_feat = ['accelerometer', 'ambient-light-sensor', 'attribution-reporting',
+              'autoplay', 'battery', 'bluetooth', 'browsing-topics', 'camera',
+              'captured-surface-control', 'ch-ua', 'ch-ua-arch',
               'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
               'ch-ua-mobile', 'ch-ua-model', 'ch-ua-platform',
               'ch-ua-platform-version', 'ch-ua-wow64', 'clipboard-read',
-              'clipboard-write', 'conversion-measurement',
-              'cross-origin-isolated', 'display-capture', 'encrypted-media',
-              'execution-while-not-rendered',
+              'clipboard-write', 'compute-pressure', 'conversion-measurement',
+              'cross-origin-isolated', 'direct-sockets', 'display-capture',
+              'encrypted-media', 'execution-while-not-rendered',
               'execution-while-out-of-viewport',
               'focus-without-user-activation', 'fullscreen', 'gamepad',
               'geolocation', 'gyroscope', 'hid', 'identity-credentials-get',
@@ -1572,10 +1573,10 @@ l_per_feat = ['accelerometer', 'ambient-light-sensor', 'autoplay', 'battery',
               'otp-credentials', 'payment', 'picture-in-picture',
               'publickey-credentials-create', 'publickey-credentials-get',
               'run-ad-auction', 'screen-wake-lock', 'serial',
-              'shared-autofill', 'speaker-selection', 'storage-access',
-              'sync-script', 'sync-xhr', 'trust-token-redemption', 'unload',
-              'usb', 'vertical-scroll', 'web-share', 'window-management',
-              'xr-spatial-tracking']
+              'shared-autofill', 'smart-card', 'speaker-selection',
+              'storage-access', 'sync-script', 'sync-xhr',
+              'trust-token-redemption', 'unload', 'usb', 'vertical-scroll',
+              'web-share', 'window-management', 'xr-spatial-tracking']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
 # https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
