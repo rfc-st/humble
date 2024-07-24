@@ -1441,3 +1441,18 @@ Valor:
 
 [export_filename]
  Fich.: 
+
+[d_grade]
+  Nota del análisis:                           D (Revisa 'Protocolos/Cabeceras obsoletas o inseguras')
+
+[c_grade]
+  Nota del análisis:                           C (Revisa 'Cabeceras no habilitadas')
+
+[b_grade]
+  Nota del análisis:                           B (Revisa 'Huella digital por cabeceras')
+
+[a_grade]
+  Nota del análisis:                           A (Revisa 'Cabeceras sin valor')
+
+[perfect_grade]
+  Nota del análisis:                           A+ (Increíble, enhorabuena!)

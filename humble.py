@@ -108,7 +108,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-07-20', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-07-24', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -274,6 +274,8 @@ def get_analysis_results():
                                              e_cnt=e_cnt, t_cnt=t_cnt)
     print("")
     print_analysis_results(*analysis_diff, t_cnt=t_cnt)
+    analysis_grade = grade_analysis(m_cnt, f_cnt, i_cnt, e_cnt)
+    print(f"{get_detail(analysis_grade)}")
 
 
 def save_analysis_results(t_cnt):
@@ -312,6 +314,28 @@ def print_analysis_results(*diff, t_cnt):
     print("")
     for literal, total in zip(literals, totals):
         print(f"{(print_detail_l(literal) or '')[:-1]}{total}")
+
+
+# 'humble' tries to be *strict*: both in checking HTTP response headers and
+# their values; some of these headers may be experimental and you may not agree
+# with all the results after analysis. And that's OK! :); you should *never*
+# blindly trust the results of security tools: there should be further work to
+# decide whether the risk is non-existent, potential or real depending on the
+# analyzed URL (its exposure, environment, etc).
+#
+# I will try to improve this function over time, to tune it as much as
+# possible to the reality of certain results and headers.
+#
+# In the meantime, feel free to use '-s' parameter to skip
+# 'Deprecated/Insecure' analysis of the HTTP response headers of your choice.
+def grade_analysis(m_cnt, f_cnt, i_cnt, e_cnt):
+    if i_cnt and sum(i_cnt) > 0:
+        return '[d_grade]'
+    if m_cnt > 0:
+        return '[c_grade]'
+    if f_cnt > 0:
+        return '[b_grade]'
+    return '[a_grade]' if e_cnt > 0 else '[perfect_grade]'
 
 
 def analysis_exists(filepath):

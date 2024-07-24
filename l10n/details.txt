@@ -1451,3 +1451,18 @@ Value:
 
 [export_filename]
  File : 
+
+[d_grade]
+  Analysis Grade:               D (Review 'Deprecated/Insecure headers')
+
+[c_grade]
+  Analysis Grade:               C (Review 'Missing headers')
+
+[b_grade]
+  Analysis Grade:               B (Review 'Fingerprint headers')
+
+[a_grade]
+  Analysis Grade:               A (Review 'Empty headers')
+
+[perfect_grade]
+  Analysis Grade:               A+ (Incredible, congratulations!)
