@@ -1876,7 +1876,7 @@ if 'permissions-policy' in headers_l and '33' not in skipped_list:
         if not args.brief:
             matches_perm = [x for x in l_per_dep if x in perm_header]
             print_detail_l("[ifpold_h_s]")
-            print(', '.join(matches_perm))
+            print(', '.join(f"'{x}'" for x in matches_perm))
             print_detail("[ifpold]")
         i_cnt[0] += 1
 
