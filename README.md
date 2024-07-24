@@ -35,7 +35,7 @@ A humble and <strong>fast</strong> HTTP Response Header <strong>Security</strong
 [Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
 [Checks: Empty Values](#checks-empty-values)<br />
 [Guidelines included](#guidelines-included-to-enable-security-http-headers)<br />
-[To-Do](#to-do-by-priority)<br />
+[To-Do](#to-do)<br />
 [Further Reading](#further-reading)<br />
 [Contribute](#contribute)<br />
 [Acknowledgements](#acknowledgements)<br />
