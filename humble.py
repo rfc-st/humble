@@ -1331,6 +1331,8 @@ services")
 parser.add_argument("-l", dest='lang', choices=['es'], help="The language for \
 displaying analysis, errors and messages; will be in English if this parameter\
  is omitted")
+parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
+the original license for 'humble', along with permissions and limitations.")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt'], help="Exports \
 analysis to 'scheme_host_port_yyyymmdd.ext' file; csv/json files will contain \
@@ -1359,6 +1361,10 @@ check_python_version()
 
 # Functionality for argparse parameters/values
 check_humble_updates(local_version) if args.version else None
+
+if '-lic' in sys.argv:
+    print_detail('[license]', 36)
+    sys.exit()
 
 if '-f' in sys.argv:
     fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \

@@ -187,7 +187,7 @@ https://github.com/rfc-st/humble/releases
 (Linux)   $ python3 humble.py
 (macOS)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-l {es}] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r]
+usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r]
                  [-s [SKIPPED_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
 'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-07-25
@@ -201,6 +201,7 @@ options:
   -f [FINGERPRINT_TERM]       Shows fingerprint statistics; will be the Top 20 if 'FINGERPRINT_TERM', e.g. 'Google', is omitted
   -g                          Shows guidelines for enabling security HTTP response headers on popular servers/services
   -l {es}                     The language for displaying analysis, errors and messages; will be in English if this parameter is omitted
+  -lic                        Shows the original license for 'humble', along with permissions and limitations.
   -o {csv,html,json,pdf,txt}  Exports analysis to 'scheme_host_port_yyyymmdd.ext' file; csv/json files will contain a brief analysis
   -op OUTPUT_PATH             Exports analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py' will be used
   -r                          Shows HTTP response headers and a detailed analysis; '-b' parameter will take priority
