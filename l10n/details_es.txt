@@ -746,7 +746,7 @@ Cabeceras de respuesta HTTP
  Nota : Se analizará la URL exacta, sin seguir redireccionamientos.
 
 [analysis_skipped_note]
- Nota : Omitidas comprobaciones de obsolescencia/valores inseguros para
+ Nota : Omitidas comprobaciones de cabeceras HTTP no habilitadas e inseguras/obsoletas para
 
 [analysis_redirects]
  Nota : Se ha indicado expresamente analizar la URL exacta, sin seguir redirecciones.

@@ -108,7 +108,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-07-24', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-07-25', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -812,26 +812,40 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
         print_header(header)
 
 
-def print_missing_headers(headers_l, l_detail, l_miss):
+def print_missing_headers(args, headers_l, l_detail, l_miss):
     m_cnt = 0
     headers_set = set(headers_l)
+    l_miss_set = {header.lower() for header in l_miss}
+    skipped_headers = args.skipped_headers if args.skipped_headers is not None\
+        else []
+    skipped_missing = {header.lower() for header in skipped_headers if
+                       header.lower() in l_miss_set}
     for header, detail in zip(l_miss, l_detail):
-        if header.lower() not in headers_set:
+        if header.lower() not in headers_set and header.lower() not in \
+         skipped_missing and 'x-frame-options' not in skipped_missing:
             print_header(header)
             if not args.brief:
                 print_detail(detail, 2)
             m_cnt += 1
-    return m_cnt
+    return m_cnt, skipped_missing
 
 
-def check_frame_options(headers, l_miss, m_cnt):
-    if not (headers.get('X-Frame-Options') or 'frame-ancestors' in
-            headers.get('Content-Security-Policy', '')):
+def check_frame_options(args, headers, l_miss, m_cnt, skipped_missing):
+    skipped_headers = args.skipped_headers if args.skipped_headers is not None\
+        else []
+    if 'x-frame-options' in (header.lower() for header in skipped_headers):
+        skipped_missing.add('x-frame-options')
+    if (
+        not headers.get('X-Frame-Options')
+        and 'frame-ancestors' not in headers.get('Content-Security-Policy', '')
+        and 'x-frame-options' not in skipped_missing
+    ):
         print_header('X-Frame-Options')
         if not args.brief:
             print_detail("[mxfo]", 2)
         m_cnt += 1
-    if all(elem.lower() not in headers for elem in l_miss):
+    if all(elem.lower() not in headers for elem in l_miss) and \
+       'x-frame-options' not in skipped_missing:
         print_header('X-Frame-Options')
         if not args.brief:
             print_detail("[mxfo]", 2)
@@ -1327,8 +1341,8 @@ analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py\
 parser.add_argument("-r", dest='ret', action="store_true", help="Shows HTTP \
 response headers and a detailed analysis; '-b' parameter will take priority")
 parser.add_argument("-s", dest='skipped_headers', nargs='*', type=str, help="S\
-kip analysis of HTTP response headers specified in 'SKIPPED_HEADERS' (separate\
-d by spaces)")
+kips deprecated/insecure and missing checks for the indicated \
+'SKIPPED_HEADERS' (separated by spaces)")
 parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
  analyze. E.g. https://google.com")
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
@@ -1450,8 +1464,9 @@ l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
             '[mcsp]', '[mnel]', '[mpermission]', '[mreferrer]', '[msts]',
             '[mxcto]', '[mxpcd]', '[mxfo]']
 
-m_cnt = print_missing_headers(headers_l, l_detail, l_miss)
-m_cnt = check_frame_options(headers, l_miss, m_cnt)
+m_cnt, skipped_missing = print_missing_headers(args, headers_l, l_detail,
+                                               l_miss)
+m_cnt = check_frame_options(args, headers, l_miss, m_cnt, skipped_missing)
 
 if args.brief and m_cnt != 0:
     print("")
