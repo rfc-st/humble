@@ -1485,13 +1485,13 @@ Valor:
 
  Permisos:
 
- - Uso comercial
  - Distribución
  - Modificación
+ - Uso comercial
  - Uso privado
 
 
  Limitaciones:
 
- - Responsabilidad
  - Garantía
+ - Responsabilidad

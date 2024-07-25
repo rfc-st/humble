@@ -218,6 +218,11 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     sys.exit()
 
 
+def print_license():
+    print_detail('[license]', 36)
+    sys.exit()
+
+
 def print_security_guides():
     print_detail('[security_guides]', 1)
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
@@ -1363,8 +1368,7 @@ check_python_version()
 check_humble_updates(local_version) if args.version else None
 
 if '-lic' in sys.argv:
-    print_detail('[license]', 36)
-    sys.exit()
+    print_license()
 
 if '-f' in sys.argv:
     fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \
