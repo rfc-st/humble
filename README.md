@@ -49,7 +49,7 @@ A humble and <strong>fast</strong> HTTP Response Header <strong>Security</strong
 ## Features
 
 :heavy_check_mark: 14 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
-:heavy_check_mark: 1131 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 1132 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 109 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: SSL/TLS checks (requires the **amazing** https://testssl.sh/).<br />
 :heavy_check_mark: Browser support references for enabled HTTP security headers.<br />
@@ -67,7 +67,7 @@ A humble and <strong>fast</strong> HTTP Response Header <strong>Security</strong
 :heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost<a> all the code under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
 :heavy_check_mark: Minimal <a href="https://github.com/rfc-st/humble/blob/master/requirements.txt" target="_blank">dependencies</a> required.<br />
-:heavy_check_mark: Featured on <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">OWASP</a>, <a href="https://pkg.kali.org/pkg/humble" target="_blank">Kali Linux</a>, <a href="https://github.com/CERT-Polska/Artemis/pull/705">Artemis</a>, <a href="https://defectdojo.github.io/django-DefectDojo/integrations/parsers/file/humble/">DefectDojo</a> and <a href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/special-http-headers">HackTricks</a>.<br />
+:heavy_check_mark: Featured on <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">OWASP</a>, <a href="https://pkg.kali.org/pkg/humble" target="_blank">Kali Linux</a>, <a href="https://artemis-scanner.readthedocs.io/en/latest/search.html?q=humble&check_keywords=yes&area=default">Artemis</a>, <a href="https://defectdojo.github.io/django-DefectDojo/integrations/parsers/file/humble/">DefectDojo</a> and <a href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/special-http-headers">HackTricks</a>.<br />
 :heavy_check_mark: Developed entirely in my spare time, no strings attached: feel <b>free</b> to try it out and integrate it into your projects!.<br />
 :heavy_check_mark: And with the <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA.PNG">approval</a> of <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_2.JPG">several</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_3.JPG">AI</a> :smile:!.<br />
 
