@@ -108,7 +108,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-07-25', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-07-26', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -837,20 +837,15 @@ def print_missing_headers(args, headers_l, l_detail, l_miss):
 
 def check_frame_options(args, headers, l_miss, m_cnt, skipped_missing):
     skipped_headers = args.skipped_headers if args.skipped_headers is not None\
-        else []
+          else []
     if 'x-frame-options' in (header.lower() for header in skipped_headers):
         skipped_missing.add('x-frame-options')
-    if (
-        not headers.get('X-Frame-Options')
-        and 'frame-ancestors' not in headers.get('Content-Security-Policy', '')
-        and 'x-frame-options' not in skipped_missing
-    ):
-        print_header('X-Frame-Options')
-        if not args.brief:
-            print_detail("[mxfo]", 2)
-        m_cnt += 1
-    if all(elem.lower() not in headers for elem in l_miss) and \
-       'x-frame-options' not in skipped_missing:
+    xfo_missing = 'x-frame-options' not in skipped_missing
+    csp_header = headers.get('Content-Security-Policy', '').lower()
+    fra_missing = 'frame-ancestors' not in csp_header
+    xfo_not_set = 'X-Frame-Options' not in headers
+    all_missing = all(elem.lower() not in headers for elem in l_miss)
+    if xfo_missing and (xfo_not_set and fra_missing or all_missing):
         print_header('X-Frame-Options')
         if not args.brief:
             print_detail("[mxfo]", 2)
