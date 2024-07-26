@@ -1459,6 +1459,8 @@ Valor:
 
 [license]
 
+ https://github.com/rfc-st/humble/blob/master/LICENSE
+
  Licencia MIT
 
  Copyright (c) 2020-2024 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
@@ -1495,3 +1497,8 @@ Valor:
 
  - Garantía
  - Responsabilidad
+
+
+ Condiciones:
+
+ - Licencia y copyright

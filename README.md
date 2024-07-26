@@ -205,7 +205,7 @@ options:
   -f [FINGERPRINT_TERM]       Shows fingerprint statistics; will be the Top 20 if 'FINGERPRINT_TERM', e.g. 'Google', is omitted
   -g                          Shows guidelines for enabling security HTTP response headers on popular servers/services
   -l {es}                     The language for displaying analysis, errors and messages; will be in English if this parameter is omitted
-  -lic                        Shows the original license for 'humble', along with permissions and limitations.
+  -lic                        Shows the license of this tool
   -o {csv,html,json,pdf,txt}  Exports analysis to 'scheme_host_port_yyyymmdd.ext' file; csv/json files will contain a brief analysis
   -op OUTPUT_PATH             Exports analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py' will be used
   -r                          Shows HTTP response headers and a detailed analysis; '-b' parameter will take priority

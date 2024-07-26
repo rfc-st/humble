@@ -219,7 +219,7 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
 
 
 def print_license():
-    print_detail('[license]', 36)
+    print_detail('[license]', 43)
     sys.exit()
 
 
@@ -1332,7 +1332,7 @@ parser.add_argument("-l", dest='lang', choices=['es'], help="The language for \
 displaying analysis, errors and messages; will be in English if this parameter\
  is omitted")
 parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
-the original license for 'humble', along with permissions and limitations.")
+the license of this tool")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt'], help="Exports \
 analysis to 'scheme_host_port_yyyymmdd.ext' file; csv/json files will contain \
