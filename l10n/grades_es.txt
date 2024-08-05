@@ -1,0 +1,54 @@
+# 'humble' (HTTP Headers Analyzer)
+# https://github.com/rfc-st/humble/
+#
+# MIT License
+#
+# Copyright (c) 2020-2024 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+[Sobre esta herramienta]
+
+'humble' intenta ser estricta: tanto en la comprobación de las cabeceras de
+respuesta HTTP como sus valores; algunas de estas cabeceras pueden ser
+experimentales y puede que no estés de acuerdo con los resultados del análisis.
+
+Y eso está bien :); nunca debes confiar ciegamente en los resultados de las
+herramientas de seguridad; debe haber un trabajo posterior que decida si el
+riesgo es inexistente, potencial o real en función de la URL analizada
+(exposición, entorno, etc).
+
+[Notas y comprobaciones asociadas]
+
+D: 'Protocolos/Cabeceras obsoletas o inseguras' en el análisis.
+C: 'Cabeceras no habilitadas' en el análisis
+B: 'Huella digital por cabeceras' en el análisis
+A: Sin advertencias en las secciones anteriores
+
+[Mejorando la nota]
+
+Evalúa las advertencias en relación a la exposición de la URL, su criticidad
+y la naturaleza de la cabecera HTTP (por ejemplo, experimental, según
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
+
+Usa el parámetro '-s' para excluir cabeceras HTTP del análisis (las exclusiones
+se mostrarán en los resultados).
+
+No te obsesiones con la nota :). Lo importante es mantener una postura de
+seguridad lo más segura posible, documentarla y actualizarla constantemente.

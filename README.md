@@ -191,10 +191,10 @@ https://github.com/rfc-st/humble/releases
 (Linux)   $ python3 humble.py
 (macOS)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r]
+usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r]
                  [-s [SKIPPED_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-07-25
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-08-05
 
 options:
   -h, --help                  show this help message and exit
@@ -204,6 +204,7 @@ options:
   -e [TESTSSL_PATH]           Shows TLS/SSL checks; requires https://testssl.sh/
   -f [FINGERPRINT_TERM]       Shows fingerprint statistics; will be the Top 20 if 'FINGERPRINT_TERM', e.g. 'Google', is omitted
   -g                          Shows guidelines for enabling security HTTP response headers on popular servers/services
+  -grd                        Shows the checks to grade an analysis, along with advice for improvement
   -l {es}                     The language for displaying analysis, errors and messages; will be in English if this parameter is omitted
   -lic                        Shows the license of this tool
   -o {csv,html,json,pdf,txt}  Exports analysis to 'scheme_host_port_yyyymmdd.ext' file; csv/json files will contain a brief analysis

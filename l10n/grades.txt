@@ -1,0 +1,55 @@
+# 'humble' (HTTP Headers Analyzer)
+# https://github.com/rfc-st/humble/
+#
+# MIT License
+#
+# Copyright (c) 2020-2024 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+[About this tool]
+
+'humble' tries to be strict: both in checking HTTP response headers and their
+values; some of these headers may be experimental and you may not agree with
+all the results after analysis.
+
+And that's OK! :); you should never blindly trust the results of security
+tools: there should be further work to decide whether the risk is
+non-existent, potential or real depending on the analyzed URL (exposure,
+environment, etc).
+
+[Grades and Associated Checks]
+
+D: 'Deprecated/Insecure headers' in the analysis
+C: 'Missing headers' in the analysis
+B: 'Fingerprint headers' in the analysis
+A: No warnings in the previous sections
+
+[Improving Grades]
+
+Evaluate the warnings in relation to the exposure of the URL, its criticality,
+and the nature of the HTTP header (e.g., experimental, as per
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
+
+Use the '-s' parameter to exclude HTTP headers from the analysis (the
+exclusions will be indicated in the results).
+
+Don't get obsessed with the grade :). The important thing is to maintain a
+constant security posture, as secure as possible, document it and update it
+constantly.

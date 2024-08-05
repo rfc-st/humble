@@ -82,7 +82,7 @@ HUMBLE_DIRS = ('additional', 'l10n')
 HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'guides.txt', 'details_es.txt', 'details.txt',
                 'user_agents.txt', 'insecure.txt', 'html_template.html',
-                'testssl.sh')
+                'testssl.sh', 'grades.txt', 'grades_es.txt')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ('CYMRU', 'GURU', 'PRU')
 RE_PATTERN = (r'\[(.*?)\]',
@@ -215,6 +215,16 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
             line_l = line.lower()
             if content in line_l and fng_term in line_l:
                 print(f"  {line[:line.find('[')].strip()}")
+    sys.exit()
+
+
+def print_grades(args):
+    grade_file = HUMBLE_FILES[11] if args.lang == 'es' else HUMBLE_FILES[10]
+    with open(path.join(HUMBLE_DIRS[1], grade_file), 'r',
+              encoding='utf8') as grades_source:
+        for line in islice(grades_source, SLICE_INT[3], None):
+            print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
+  {line}", end='')
     sys.exit()
 
 
@@ -1328,6 +1338,8 @@ Shows fingerprint statistics; will be the Top 20 if \'FINGERPRINT_TERM\', e.g.\
 parser.add_argument("-g", dest='guides', action="store_true", help="Shows \
 guidelines for enabling security HTTP response headers on popular servers/\
 services")
+parser.add_argument("-grd", dest='grades', action="store_true", help="Shows \
+the checks to grade an analysis, along with advice for improvement")
 parser.add_argument("-l", dest='lang', choices=['es'], help="The language for \
 displaying analysis, errors and messages; will be in English if this parameter\
  is omitted")
@@ -1361,6 +1373,9 @@ check_python_version()
 
 # Functionality for argparse parameters/values
 check_humble_updates(local_version) if args.version else None
+
+if '-grd' in sys.argv:
+    print_grades(args)
 
 if '-lic' in sys.argv:
     print_license()
