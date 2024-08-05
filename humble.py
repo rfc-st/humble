@@ -82,7 +82,8 @@ HUMBLE_DIRS = ('additional', 'l10n')
 HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'guides.txt', 'details_es.txt', 'details.txt',
                 'user_agents.txt', 'insecure.txt', 'html_template.html',
-                'testssl.sh', 'grades.txt', 'grades_es.txt')
+                'testssl.sh', 'grades.txt', 'grades_es.txt', 'lic.txt',
+                'lic_es.txt')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ('CYMRU', 'GURU', 'PRU')
 RE_PATTERN = (r'\[(.*?)\]',
@@ -219,8 +220,8 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
 
 
 def print_grades(args):
-    grade_file = HUMBLE_FILES[11] if args.lang == 'es' else HUMBLE_FILES[10]
-    with open(path.join(HUMBLE_DIRS[1], grade_file), 'r',
+    grade_l10n = HUMBLE_FILES[11] if args.lang == 'es' else HUMBLE_FILES[10]
+    with open(path.join(HUMBLE_DIRS[1], grade_l10n), 'r',
               encoding='utf8') as grades_source:
         for line in islice(grades_source, SLICE_INT[3], None):
             print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
@@ -228,8 +229,12 @@ def print_grades(args):
     sys.exit()
 
 
-def print_license():
-    print_detail('[license]', 43)
+def print_license(args):
+    license_l10n = HUMBLE_FILES[13] if args.lang == 'es' else HUMBLE_FILES[12]
+    with open(path.join(HUMBLE_DIRS[1], license_l10n), 'r',
+              encoding='utf8') as license_source:
+        for line in license_source:
+            print(f" {line}", end='')
     sys.exit()
 
 
@@ -1378,7 +1383,7 @@ if '-grd' in sys.argv:
     print_grades(args)
 
 if '-lic' in sys.argv:
-    print_license()
+    print_license(args)
 
 if '-f' in sys.argv:
     fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \
