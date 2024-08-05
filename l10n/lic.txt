@@ -26,18 +26,18 @@
 
  Permissions:
 
- - Commercial use
- - Distribution
- - Modification
- - Private use
+ * Commercial use
+ * Distribution
+ * Modification
+ * Private use
 
 
  Limitations:
 
- - Liability
- - Warranty
+ * Liability
+ * Warranty
 
 
  Conditions:
 
- - License and copyright notice
+ * License and copyright notice

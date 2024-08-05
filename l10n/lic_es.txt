@@ -27,18 +27,18 @@
 
  Permisos:
 
- - Distribución
- - Modificación
- - Uso comercial
- - Uso privado
+ * Distribución
+ * Modificación
+ * Uso comercial
+ * Uso privado
 
 
  Limitaciones:
 
- - Garantía
- - Responsabilidad
+ * Garantía
+ * Responsabilidad
 
 
  Condiciones:
 
- - Licencia y copyright
+ * Licencia y copyright
