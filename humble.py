@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-05', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-08-06', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -219,7 +219,7 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     sys.exit()
 
 
-def print_grades(args):
+def print_grades_guide(args):
     grade_l10n = HUMBLE_FILES[11] if args.lang == 'es' else HUMBLE_FILES[10]
     with open(path.join(HUMBLE_DIRS[1], grade_l10n), 'r',
               encoding='utf8') as grades_source:
@@ -234,7 +234,8 @@ def print_license(args):
     with open(path.join(HUMBLE_DIRS[1], license_l10n), 'r',
               encoding='utf8') as license_source:
         for line in license_source:
-            print(f" {line}", end='')
+            print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
+  {line}", end='')
     sys.exit()
 
 
@@ -336,18 +337,8 @@ def print_analysis_results(*diff, t_cnt):
         print(f"{(print_detail_l(literal) or '')[:-1]}{total}")
 
 
-# 'humble' tries to be *strict*: both in checking HTTP response headers and
-# their values; some of these headers may be experimental and you may not agree
-# with all the results after analysis. And that's OK! :); you should *never*
-# blindly trust the results of security tools: there should be further work to
-# decide whether the risk is non-existent, potential or real depending on the
-# analyzed URL (its exposure, environment, etc).
-#
-# I will try to improve this function over time, to tune it as much as
-# possible to the reality of certain results and headers.
-#
-# In the meantime, feel free to use '-s' parameter to skip
-# 'Deprecated/Insecure' analysis of the HTTP response headers of your choice.
+# Use '-grd' parameter to show the checks to grade an analysis, along with
+# advice for improvement.
 def grade_analysis(m_cnt, f_cnt, i_cnt, e_cnt):
     if i_cnt and sum(i_cnt) > 0:
         return '[d_grade]'
@@ -1380,7 +1371,7 @@ check_python_version()
 check_humble_updates(local_version) if args.version else None
 
 if '-grd' in sys.argv:
-    print_grades(args)
+    print_grades_guide(args)
 
 if '-lic' in sys.argv:
     print_license(args)
