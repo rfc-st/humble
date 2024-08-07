@@ -29,7 +29,7 @@
 respuesta HTTP como sus valores; algunas de estas cabeceras pueden ser
 experimentales y puede que no estés de acuerdo con los resultados del análisis.
 
-Y eso está bien :); nunca debes confiar ciegamente en los resultados de las
+!Y eso está bien :)!: nunca debes confiar ciegamente en los resultados de las
 herramientas de seguridad; debe haber un trabajo posterior que decida si el
 riesgo es inexistente, potencial o real en función de la URL analizada
 (exposición, entorno, etc).

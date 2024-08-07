@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-08-07', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1217,16 +1217,15 @@ def build_temp_filename(args, export_date, file_ext, parsed_url):
 {url_str.suffix}{url_prt}{export_date}{file_ext}"
 
 
-def handle_server_error(http_code, id_mode):
+def handle_server_error(http_status_code, l10n_id):
     delete_lines()
     print()
-    if (500 <= http_code <= 511) or (520 <= http_code <= 530):
-        if detail := print_detail(id_mode, 0):
+    if (500 <= http_status_code <= 511) or (520 <= http_status_code <= 530):
+        if detail := print_detail(l10n_id, 0):
             print(detail)
         else:
-            print((URL_LIST[2] if (500 <= http_code <= 511) else
-                   URL_LIST[1]) + str(http_code))
-    # For HTTP codes not in the ranges 500-511 or 520-530
+            print((URL_LIST[2] if (500 <= http_status_code <= 511) else
+                   URL_LIST[1]) + str(http_status_code))
     else:
         print_detail('[server_serror]', 1)
     sys.exit()
@@ -1234,7 +1233,6 @@ def handle_server_error(http_code, id_mode):
 
 def make_http_request():
     try:
-        start_time = time()
         session = requests.Session()
         session.mount("https://", SSLContextAdapter())
         session.mount("http://", HTTPAdapter())
@@ -1248,12 +1246,11 @@ def make_http_request():
         # self-signed certificates, etc) the URL can still be analyzed.
         r = session.get(quote(URL), allow_redirects=not args.redirects,
                         verify=False, headers=ua_header, timeout=15)
-        elapsed_time = time() - start_time
-        return r, elapsed_time, None
+        return r, None, None
     except requests.exceptions.SSLError:
         pass
     except requests.exceptions.RequestException as e:
-        return None, 0.0, e
+        return None, None, e
 
 
 def wait_http_request(future):
@@ -1267,10 +1264,10 @@ def handle_http_exception(r, exception_d):
     try:
         r.raise_for_status()
     except requests.exceptions.HTTPError as err_http:
-        http_code = err_http.response.status_code
-        id_mode = f"[server_{http_code}]"
-        if str(http_code).startswith('5'):
-            handle_server_error(http_code, id_mode)
+        http_status_code = err_http.response.status_code
+        l10n_id = f"[server_{http_status_code}]"
+        if str(http_status_code).startswith('5'):
+            handle_server_error(http_status_code, l10n_id)
     except tuple(exception_d.keys()) as e:
         ex = exception_d.get(type(e))
         if ex and (not callable(ex) or ex(e)):
@@ -1283,14 +1280,13 @@ def manage_http_request():
     headers = {}
     status_c = None
     reliable = None
-    request_time = 0.0
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future = executor.submit(make_http_request)
         wait_http_request(future)
         if not future.done():
             print(get_detail('[unreliable_analysis]'))
             reliable = 'No'
-        r, request_time, exception = future.result()
+        r, _, exception = future.result()
         if exception:
             exception_type = type(exception)
             if exception_type in exception_d:
@@ -1298,12 +1294,12 @@ def manage_http_request():
                 print_http_exception(error_string, exception)
             else:
                 print(f"Unhandled exception type: {exception_type}")
-            return headers, status_c, reliable, request_time
+            return headers, status_c, reliable
         handle_http_exception(r, exception_d)
         if r is not None:
             status_c = r.status_code
             headers = r.headers
-    return headers, status_c, reliable, request_time
+    return headers, status_c, reliable
 
 
 def custom_help_formatter(prog):
@@ -1448,7 +1444,7 @@ exception_d = {
 }
 requests.packages.urllib3.disable_warnings()
 
-headers, status_code, reliable, request_time = manage_http_request()
+headers, status_code, reliable = manage_http_request()
 headers_l = {header.lower(): value for header, value in headers.items()}
 
 # Export filename generation
