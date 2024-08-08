@@ -69,7 +69,7 @@ A humble and <strong>fast</strong> HTTP Response Header <strong>Security</strong
 :heavy_check_mark: Minimal <a href="https://github.com/rfc-st/humble/blob/master/requirements.txt" target="_blank">dependencies</a> required.<br />
 :heavy_check_mark: Featured on <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">OWASP</a>, <a href="https://pkg.kali.org/pkg/humble" target="_blank">Kali Linux</a>, <a href="https://artemis-scanner.readthedocs.io/en/latest/search.html?q=humble&check_keywords=yes&area=default">Artemis</a>, <a href="https://defectdojo.github.io/django-DefectDojo/integrations/parsers/file/humble/">DefectDojo</a> and <a href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/special-http-headers">HackTricks</a>.<br />
 :heavy_check_mark: Developed entirely in my spare time, no strings attached: feel <b>free</b> to try it out and integrate it into your projects!.<br />
-:heavy_check_mark: And with the <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA.PNG">approval</a> of <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_2.JPG">several</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_3.JPG">AI</a> :smile:!.<br />
+:heavy_check_mark: And with the <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA.PNG">approval</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_4.JPG">of</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_2.JPG">several</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_3.JPG">AI</a> :smile:!.<br />
 
 ## Screenshots
 
