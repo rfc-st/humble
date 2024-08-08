@@ -846,16 +846,16 @@ def check_missing_headers(m_cnt, l_miss, l_detail, headers_set, skip_missing):
     return m_cnt, skip_missing
 
 
-def check_frame_options(args, headers, l_miss, m_cnt, skip_missing):
-    skip_headers = args.skip_headers if args.skip_headers is not None else []
-    if 'x-frame-options' in (header.lower() for header in skip_headers):
+def check_frame_options(args, headers_l, l_miss, m_cnt, skip_missing):
+    skip_headers = {header.lower() for header in (args.skip_headers or [])}
+    if 'x-frame-options' in skip_headers:
         skip_missing.add('x-frame-options')
     xfo_missing = 'x-frame-options' not in skip_missing
-    csp_header = headers.get('Content-Security-Policy', '').lower()
-    fra_missing = 'frame-ancestors' not in csp_header
-    xfo_not_set = 'X-Frame-Options' not in headers
-    all_missing = all(elem.lower() not in headers for elem in l_miss)
-    if xfo_missing and (xfo_not_set and fra_missing or all_missing):
+    xfo_not_set = 'x-frame-options' not in headers_l
+    fra_missing = 'frame-ancestors' not in headers_l.get(
+        'content-security-policy', '')
+    all_missing = all(header.lower() not in headers_l for header in l_miss)
+    if xfo_missing and ((xfo_not_set and fra_missing) or all_missing):
         print_header('X-Frame-Options')
         if not args.brief:
             print_detail("[mxfo]", 2)
@@ -1481,7 +1481,7 @@ l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
             '[mxcto]', '[mxpcd]', '[mxfo]']
 
 m_cnt, skip_missing = print_missing_headers(args, headers_l, l_detail, l_miss)
-m_cnt = check_frame_options(args, headers, l_miss, m_cnt, skip_missing)
+m_cnt = check_frame_options(args, headers_l, l_miss, m_cnt, skip_missing)
 
 if args.brief and m_cnt != 0:
     print("")
