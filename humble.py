@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-07', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-08-08', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -709,7 +709,7 @@ def print_extended_info(args, reliable, status_code):
     if args.output in ('csv', 'json'):
         print(get_detail('[limited_analysis_note]', replace=True))
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
-       args.redirects or args.skipped_headers:
+       args.redirects or args.skip_headers:
         print_extra_info(reliable)
 
 
@@ -723,7 +723,7 @@ def print_extra_info(reliable):
         print(get_detail('[unreliable_analysis_note]', replace=True))
     if args.redirects:
         print(get_detail('[analysis_redirects_note]', replace=True))
-    if args.skipped_headers:
+    if args.skip_headers:
         print_skipped_headers()
 
 
@@ -827,26 +827,30 @@ def print_missing_headers(args, headers_l, l_detail, l_miss):
     m_cnt = 0
     headers_set = set(headers_l)
     l_miss_set = {header.lower() for header in l_miss}
-    skipped_headers = args.skipped_headers if args.skipped_headers is not None\
-        else []
-    skipped_missing = {header.lower() for header in skipped_headers if
-                       header.lower() in l_miss_set}
+    skip_headers = args.skip_headers if args.skip_headers is not None else []
+    skip_missing = {header.lower() for header in skip_headers if
+                    header.lower() in l_miss_set}
+    m_cnt, skip_missing = check_missing_headers(m_cnt, l_miss, l_detail,
+                                                headers_set, skip_missing)
+    return m_cnt, skip_missing
+
+
+def check_missing_headers(m_cnt, l_miss, l_detail, headers_set, skip_missing):
     for header, detail in zip(l_miss, l_detail):
         if header.lower() not in headers_set and header.lower() not in \
-         skipped_missing and 'x-frame-options' not in skipped_missing:
+         skip_missing and 'x-frame-options' not in skip_missing:
             print_header(header)
             if not args.brief:
                 print_detail(detail, 2)
             m_cnt += 1
-    return m_cnt, skipped_missing
+    return m_cnt, skip_missing
 
 
-def check_frame_options(args, headers, l_miss, m_cnt, skipped_missing):
-    skipped_headers = args.skipped_headers if args.skipped_headers is not None\
-          else []
-    if 'x-frame-options' in (header.lower() for header in skipped_headers):
-        skipped_missing.add('x-frame-options')
-    xfo_missing = 'x-frame-options' not in skipped_missing
+def check_frame_options(args, headers, l_miss, m_cnt, skip_missing):
+    skip_headers = args.skip_headers if args.skip_headers is not None else []
+    if 'x-frame-options' in (header.lower() for header in skip_headers):
+        skip_missing.add('x-frame-options')
+    xfo_missing = 'x-frame-options' not in skip_missing
     csp_header = headers.get('Content-Security-Policy', '').lower()
     fra_missing = 'frame-ancestors' not in csp_header
     xfo_not_set = 'X-Frame-Options' not in headers
@@ -963,7 +967,7 @@ def get_insecure_checks():
 
 def get_skipped_unsupported_headers(args, insecure_headers):
     insecure_set = {ins_header.strip().lower() for ins_header in
-                    args.skipped_headers}
+                    args.skip_headers}
     skip_list = [insecure_headers[insecure_header] for insecure_header in
                  insecure_set if insecure_header in insecure_headers]
     unsupported_headers = list(insecure_set - set(insecure_headers.keys()))
@@ -972,7 +976,7 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 def print_skipped_headers():
     print_detail_l("[analysis_skipped_note]")
-    print(" " + ", ".join(f"'{header}'" for header in args.skipped_headers))
+    print(" " + ", ".join(f"'{header}'" for header in args.skip_headers))
 
 
 def print_unsupported_headers(unsupported_headers):
@@ -1346,9 +1350,9 @@ analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py\
 ' will be used")
 parser.add_argument("-r", dest='ret', action="store_true", help="Shows HTTP \
 response headers and a detailed analysis; '-b' parameter will take priority")
-parser.add_argument("-s", dest='skipped_headers', nargs='*', type=str, help="S\
-kips deprecated/insecure and missing checks for the indicated \
-'SKIPPED_HEADERS' (separated by spaces)")
+parser.add_argument("-s", dest='skip_headers', nargs='*', type=str, help="S\
+kips deprecated/insecure and missing checks for the indicated 'SKIPPED_HEADERS\
+' (separated by spaces)")
 parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
  analyze. E.g. https://google.com")
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
@@ -1396,8 +1400,8 @@ if args.output_path is not None:
     check_output_path(args, output_path)
 
 if any([args.brief, args.output, args.ret, args.redirects,
-        args.skipped_headers]) and (args.URL is None or args.guides is None
-                                    or args.URL_A is None):
+        args.skip_headers]) and (args.URL is None or args.guides is None or
+                                 args.URL_A is None):
     parser.error(get_detail('[args_several]'))
 
 if args.output in ['csv', 'json'] and not args.brief:
@@ -1405,9 +1409,9 @@ if args.output in ['csv', 'json'] and not args.brief:
 
 skip_list, unsupported_headers = [], []
 
-if '-s' in sys.argv and len(args.skipped_headers) == 0:
+if '-s' in sys.argv and len(args.skip_headers) == 0:
     parser.error(get_detail('[args_skipped]'))
-elif args.skipped_headers:
+elif args.skip_headers:
     insecure_headers = get_insecure_checks()
     unsupported_headers, skip_list = \
         get_skipped_unsupported_headers(args, insecure_headers)
@@ -1476,9 +1480,8 @@ l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
             '[mcsp]', '[mnel]', '[mpermission]', '[mreferrer]', '[msts]',
             '[mxcto]', '[mxpcd]', '[mxfo]']
 
-m_cnt, skipped_missing = print_missing_headers(args, headers_l, l_detail,
-                                               l_miss)
-m_cnt = check_frame_options(args, headers, l_miss, m_cnt, skipped_missing)
+m_cnt, skip_missing = print_missing_headers(args, headers_l, l_detail, l_miss)
+m_cnt = check_frame_options(args, headers, l_miss, m_cnt, skip_missing)
 
 if args.brief and m_cnt != 0:
     print("")
