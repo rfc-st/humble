@@ -279,22 +279,8 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 
 
 ## Checks: Missing Headers
-<details>
 
-<br />
-
-<summary>Show / Hide</summary>
-
-||||
-| ------------- | ------------- | ------------- |
-| `Cache-Control` | `Clear-Site-Data` | `Content-Type` |
-| `Content-Security-Policy` | `Cross-Origin-Embedder-Policy` | `Cross-Origin-Opener-Policy` |
-| `Cross-Origin-Resource-Policy` | `NEL` | `Permissions-Policy` |
-| `Referrer-Policy` | `Strict-Transport-Security` | `X-Content-Type-Options` |
-| `X-Frame-Options` | `X-Permitted-Cross-Domain-Policies` ||
-||||
-
-</details>
+Check <a href="https://github.com/rfc-st/humble/blob/master/additional/missing.txt">this</a> file.
 
 ## Checks: Fingerprint headers
 
