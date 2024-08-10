@@ -1443,7 +1443,7 @@ examples:
   -u URL -l es                Analyzes the URL and reports (in Spanish) detailed findings
   -u URL -o pdf               Analyzes the URL and exports detailed findings to PDF
   -u URL -r                   Analyzes the URL and reports detailed findings along with HTTP response headers
-  -u URL -s ETag NEL          Analyzes the URL and skips deprecated/insecure and missing checks for 'ETag' and 'NEL' headers
+  -u URL -s ETag NEL          Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
   -u URL -ua 4                Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt'
 
 [fng_value]

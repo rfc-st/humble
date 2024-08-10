@@ -1351,8 +1351,8 @@ analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py\
 parser.add_argument("-r", dest='ret', action="store_true", help="Shows HTTP \
 response headers and a detailed analysis; '-b' parameter will take priority")
 parser.add_argument("-s", dest='skip_headers', nargs='*', type=str, help="S\
-kips deprecated/insecure and missing checks for the indicated 'SKIPPED_HEADERS\
-' (separated by spaces)")
+kips 'deprecated/insecure' and 'missing' checks for the indicated \
+'SKIP_HEADERS' (separated by spaces)")
 parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
  analyze. E.g. https://google.com")
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
