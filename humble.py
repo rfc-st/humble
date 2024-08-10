@@ -611,7 +611,7 @@ def csp_store_values(csp_header, l_csp_broad_s, l_csp_ins_s, i_cnt):
         csp_dir = directive.strip()
         csp_broad |= ({value for value in l_csp_broad_s if f' {value} ' in
                        f' {csp_dir} '})
-        csp_deprecated |= ({value for value in l_csp_dep if value in csp_dir})
+        csp_deprecated |= ({value for value in t_csp_dep if value in csp_dir})
         csp_insecure |= ({value for value in l_csp_ins_s if value in csp_dir})
     csp_check_values(csp_broad, csp_deprecated, csp_insecure, i_cnt)
     return i_cnt
@@ -1534,85 +1534,85 @@ l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Credentials',
          'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
-l_acceptch_dep = ['content-dpr', 'dpr', 'sec-ch-ua-full-version',
-                  'viewport-width', 'width']
+t_acceptch_dep = ('content-dpr', 'dpr', 'sec-ch-ua-full-version',
+                  'viewport-width', 'width')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
-l_cache = ['no-cache', 'no-store', 'must-revalidate']
-l_cachev = ['immutable', 'max-age', 'must-revalidate', 'must-understand',
+t_cache = ('no-cache', 'no-store', 'must-revalidate')
+t_cachev = ('immutable', 'max-age', 'must-revalidate', 'must-understand',
             'no-cache', 'no-store', 'no-transform', 'private',
             'proxy-revalidate', 'public', 's-maxage', 'stale-if-error',
-            'stale-while-revalidate']
+            'stale-while-revalidate')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
-l_csdata = ['cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
-            '*']
+t_csdata = ('cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
+            '*')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
-l_cencoding = ['br', 'compress', 'deflate', 'gzip', 'x-gzip', 'zstd']
+t_cencoding = ('br', 'compress', 'deflate', 'gzip', 'x-gzip', 'zstd')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 # https://www.w3.org/TR/CSP2/
 # https://www.w3.org/TR/CSP3/
-l_csp_broad = ['*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'https:',
-               'https://*', 'https://*.*', 'schemes:', 'wss:', 'wss://']
-l_csp_equal = ['nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri']
-l_csp_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
-             'prefetch-src', 'referrer', 'report-uri', 'require-sri-for']
-l_csp_dirs = ['base-uri', 'child-src', 'connect-src', 'default-src',
+t_csp_broad = ('*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'https:',
+               'https://*', 'https://*.*', 'schemes:', 'wss:', 'wss://')
+t_csp_equal = ('nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri')
+t_csp_dep = ('block-all-mixed-content', 'disown-opener', 'plugin-types',
+             'prefetch-src', 'referrer', 'report-uri', 'require-sri-for')
+t_csp_dirs = ('base-uri', 'child-src', 'connect-src', 'default-src',
               'fenced-frame-src', 'font-src', 'form-action', 'frame-ancestors',
               'frame-src', 'img-src', 'manifest-src', 'media-src',
               'navigate-to', 'object-src', 'report-to',
               'require-trusted-types-for', 'sandbox', 'script-src',
               'script-src-attr', 'script-src-elem', 'style-src',
               'style-src-attr', 'style-src-elem', 'trusted-types',
-              'upgrade-insecure-requests', 'webrtc', 'worker-src']
-l_csp_insecs = ['http:', 'ws:']
-l_csp_insecv = ['unsafe-eval', 'unsafe-inline']
-l_csp_ro_dep = ['violated-directive']
+              'upgrade-insecure-requests', 'webrtc', 'worker-src')
+t_csp_insecs = ('http:', 'ws:')
+t_csp_insecv = ('unsafe-eval', 'unsafe-inline')
+t_csp_ro_dep = ('violated-directive')
 t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',
                 'unsafe-hashes', 'nonce-', '127.0.0.1')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
-l_coep = ['credentialless', 'require-corp', 'unsafe-none']
+t_coep = ('credentialless', 'require-corp', 'unsafe-none')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
-l_coop = ['same-origin', 'same-origin-allow-popups', 'unsafe-none']
+t_coop = ('same-origin', 'same-origin-allow-popups', 'unsafe-none')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
-l_corp = ['cross-origin', 'same-origin', 'same-site']
+t_corp = ('cross-origin', 'same-origin', 'same-site')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
-l_excc = ['max-age', 's-maxage']
+t_excc = ('max-age', 's-maxage')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 # https://cyberwhite.co.uk/http-verbs-and-their-security-risks/
-l_methods = ['*', 'CONNECT', 'DEBUG', 'DELETE', 'HEAD', 'OPTIONS', 'PATCH',
-             'PUT', 'TRACE', 'TRACK']
+t_methods = ('*', 'CONNECT', 'DEBUG', 'DELETE', 'HEAD', 'OPTIONS', 'PATCH',
+             'PUT', 'TRACE', 'TRACK')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
-l_legacy = ['application/javascript', 'application/ecmascript',
+t_legacy = ('application/javascript', 'application/ecmascript',
             'application/x-ecmascript', 'application/x-javascript',
             'text/ecmascript', 'text/javascript1.0', 'text/javascript1.1',
             'text/javascript1.2', 'text/javascript1.3', 'text/javascript1.4',
             'text/javascript1.5', 'text/jscript', 'text/livescript',
-            'text/x-ecmascript', 'text/x-javascript']
+            'text/x-ecmascript', 'text/x-javascript')
 
 # https://w3c.github.io/network-error-logging/#nel-response-header
-l_nel_dir = ['failure_fraction', 'include_subdomains', 'max_age', 'report_to',
-             'request_headers', 'response_headers', 'success_fraction']
-l_nel_req = ['report_to', 'max_age']
+t_nel_dir = ('failure_fraction', 'include_subdomains', 'max_age', 'report_to',
+             'request_headers', 'response_headers', 'success_fraction')
+t_nel_req = ('report_to', 'max_age')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/No-Vary-Search
-l_nvarysearch = ['except', 'key-order', 'params']
+t_nvarysearch = ('except', 'key-order', 'params')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
-l_origcluster = ['?1']
+t_origcluster = ('?1')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
-l_per_dep = ['document-domain', 'window-placement']
-l_per_feat = ['accelerometer', 'ambient-light-sensor', 'attribution-reporting',
+t_per_dep = ('document-domain', 'window-placement')
+t_per_feat = ('accelerometer', 'ambient-light-sensor', 'attribution-reporting',
               'autoplay', 'battery', 'bluetooth', 'browsing-topics', 'camera',
               'captured-surface-control', 'ch-ua', 'ch-ua-arch',
               'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
@@ -1633,67 +1633,67 @@ l_per_feat = ['accelerometer', 'ambient-light-sensor', 'attribution-reporting',
               'shared-autofill', 'smart-card', 'speaker-selection',
               'storage-access', 'sync-script', 'sync-xhr',
               'trust-token-redemption', 'unload', 'usb', 'vertical-scroll',
-              'web-share', 'window-management', 'xr-spatial-tracking']
+              'web-share', 'window-management', 'xr-spatial-tracking')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
 # https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
-l_proxy_auth = ['AWS4-HMAC-SHA256', 'Basic', 'Bearer', 'Digest', 'DPoP',
+t_proxy_auth = ('AWS4-HMAC-SHA256', 'Basic', 'Bearer', 'Digest', 'DPoP',
                 'GNAP', 'HOBA', 'Mutual', 'Negotiate', 'OAuth',
-                'PrivateToken', 'SCRAM-SHA-1', 'SCRAM-SHA-256', 'vapid']
+                'PrivateToken', 'SCRAM-SHA-1', 'SCRAM-SHA-256', 'vapid')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
-l_ref_secure = ['strict-origin', 'strict-origin-when-cross-origin',
-                'no-referrer-when-downgrade', 'no-referrer']
-l_ref_values = ['no-referrer', 'no-referrer-when-downgrade', 'origin',
+t_ref_secure = ('strict-origin', 'strict-origin-when-cross-origin',
+                'no-referrer-when-downgrade', 'no-referrer')
+t_ref_values = ('no-referrer', 'no-referrer-when-downgrade', 'origin',
                 'origin-when-cross-origin', 'same-origin', 'strict-origin',
-                'strict-origin-when-cross-origin', 'unsafe-url']
+                'strict-origin-when-cross-origin', 'unsafe-url')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
-l_cookie_prf = ['__Host-', '__Secure-']
-l_cookie_sec = ['httponly', 'secure']
+t_cookie_prf = ('__Host-', '__Secure-')
+t_cookie_sec = ('httponly', 'secure')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
-l_repdig_sec = ['sha-256', 'sha-512']
-l_repdig_ins = ['adler', 'crc32c', 'md5', 'sha-1', 'unixsum', 'unixcksum']
+t_repdig_sec = ('sha-256', 'sha-512')
+t_repdig_ins = ('adler', 'crc32c', 'md5', 'sha-1', 'unixsum', 'unixcksum')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Login
-l_setlogin = ['logged-in', 'logged-out']
+t_setlogin = ('logged-in', 'logged-out')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
-l_sts_dir = ['includeSubDomains', 'max-age']
+t_sts_dir = ('includeSubDomains', 'max-age')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
-l_support_mode = ['credentialed-prerender', 'fenced-frame']
+t_support_mode = ('credentialed-prerender', 'fenced-frame')
 
 # https://www.w3.org/TR/edge-arch/
-l_surrogate = ['content', 'extension-directive', 'max-age', 'no-store',
-               'no-store-remote']
+t_surrogate = ('content', 'extension-directive', 'max-age', 'no-store',
+               'no-store-remote')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
-l_trailer = ['authorization', 'cache-control', 'content-encoding',
+t_trailer = ('authorization', 'cache-control', 'content-encoding',
              'content-length', 'content-type', 'content-range', 'host',
              'max-forwards', 'set-cookie', 'te', 'trailer',
-             'transfer-encoding']
+             'transfer-encoding')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
-l_transfer = ['chunked', 'compress', 'deflate', 'gzip', 'x-gzip']
+t_transfer = ('chunked', 'compress', 'deflate', 'gzip', 'x-gzip')
 
 # https://getbutterfly.com/security-headers-a-concise-guide/
 # https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
-l_permcross = ['all', 'by-content-only', 'by-ftp-only', 'master-only', 'none',
-               'none-this-response']
+t_permcross = ('all', 'by-content-only', 'by-ftp-only', 'master-only', 'none',
+               'none-this-response')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
-l_xfo_dir = ['DENY', 'SAMEORIGIN']
+t_xfo_dir = ('DENY', 'SAMEORIGIN')
 
 # https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 # https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
 # https://seranking.com/blog/guide-meta-tag-robots-x-robots-tag/
-l_robots = ['all', 'archive', 'follow', 'index', 'indexifembedded',
+t_robots = ('all', 'archive', 'follow', 'index', 'indexifembedded',
             'max-image-preview', 'max-snippet', 'max-video-preview',
             'noarchive', 'nocache', 'noodp', 'nofollow', 'noimageindex',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
-            'nosnippet', 'notranslate', 'noydir', 'unavailable_after']
+            'nosnippet', 'notranslate', 'noydir', 'unavailable_after')
 
 unsafe_scheme = True if URL.startswith(HTTP_SCHEMES[0]) else False
 
@@ -1701,10 +1701,10 @@ if 'accept-ch' in headers_l and '1' not in skip_list:
     acceptch_header = headers_l['accept-ch']
     if unsafe_scheme:
         print_details('[ixach_h]', '[ixach]', 'd', i_cnt)
-    if any(value in acceptch_header for value in l_acceptch_dep):
+    if any(value in acceptch_header for value in t_acceptch_dep):
         print_detail_r('[ixachd_h]', is_red=True)
         if not args.brief:
-            match_value = [x for x in l_acceptch_dep if x in acceptch_header]
+            match_value = [x for x in t_acceptch_dep if x in acceptch_header]
             match_value_str = ', '.join(match_value)
             print_detail_l("[ixachd_s]")
             print(match_value_str)
@@ -1720,10 +1720,10 @@ if accescred_header and accescred_header != 'true' and '3' not in skip_list:
 
 if 'access-control-allow-methods' in headers_l and '4' not in skip_list:
     methods = headers_l["access-control-allow-methods"]
-    if any(method in methods for method in l_methods):
+    if any(method in methods for method in t_methods):
         print_detail_r('[imethods_h]', is_red=True)
         if not args.brief:
-            match_method = [x for x in l_methods if x in methods]
+            match_method = [x for x in t_methods if x in methods]
             match_method_str = ', '.join(match_method)
             print_detail_l("[imethods_s]")
             print(match_method_str)
@@ -1743,10 +1743,10 @@ if accesma_header and int(accesma_header) > 86400 and '6' not in skip_list:
 
 if 'allow' in headers_l and '7' not in skip_list:
     methods = headers_l["allow"]
-    if any(method in methods for method in l_methods):
+    if any(method in methods for method in t_methods):
         print_detail_r('[imethods_hh]', is_red=True)
         if not args.brief:
-            match_method = [x for x in l_methods if x in methods]
+            match_method = [x for x in t_methods if x in methods]
             match_method_str = ', '.join(match_method)
             print_detail_l("[imethods_s]")
             print(match_method_str)
@@ -1755,34 +1755,34 @@ if 'allow' in headers_l and '7' not in skip_list:
 
 cache_header = headers_l.get("cache-control", '')
 if cache_header and '8' not in skip_list:
-    if not any(elem in cache_header for elem in l_cachev):
+    if not any(elem in cache_header for elem in t_cachev):
         print_details('[icachev_h]', '[icachev]', 'd', i_cnt)
-    if not all(elem in cache_header for elem in l_cache):
+    if not all(elem in cache_header for elem in t_cache):
         print_details('[icache_h]', '[icache]', 'd', i_cnt)
 
 if 'clear-site-data' in headers_l and '9' not in skip_list:
     clsdata_header = headers_l['clear-site-data']
     if unsafe_scheme:
         print_details('[icsd_h]', '[icsd]', 'd', i_cnt)
-    if not any(elem in clsdata_header for elem in l_csdata):
+    if not any(elem in clsdata_header for elem in t_csdata):
         print_details('[icsdn_h]', '[icsdn]', 'd', i_cnt)
 
 if 'content-dpr' in headers_l and '10' not in skip_list:
     print_details('[ixcdpr_h]', '[ixcdprd]', 'd', i_cnt)
 
 cencod_header = headers_l.get("content-enconding", '')
-if cencod_header and not any(elem in cencod_header for elem in l_cencoding) \
+if cencod_header and not any(elem in cencod_header for elem in t_cencoding) \
      and '11' not in skip_list:
     print_details('[icencod_h]', '[icencod]', 'd', i_cnt)
 
 if 'content-security-policy' in headers_l and '12' not in skip_list:
     csp_h = headers_l['content-security-policy']
-    if not any(elem in csp_h for elem in l_csp_dirs):
+    if not any(elem in csp_h for elem in t_csp_dirs):
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
-    if ('=' in csp_h) and not (any(elem in csp_h for elem in l_csp_equal)):
+    if ('=' in csp_h) and not (any(elem in csp_h for elem in t_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
-    csp_store_values(csp_h, l_csp_broad, l_csp_insecs, i_cnt)
-    if any(elem in csp_h for elem in l_csp_insecv):
+    csp_store_values(csp_h, t_csp_broad, t_csp_insecs, i_cnt)
+    if any(elem in csp_h for elem in t_csp_insecv):
         print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
     if t_csp_checks[0] in csp_h and t_csp_checks[1] not in headers:
         print_details('[icspi_h]', '[icspi]', 'm', i_cnt)
@@ -1802,11 +1802,11 @@ if 'content-security-policy' in headers_l and '12' not in skip_list:
                 break
 
 csp_ro_header = headers_l.get('content-security-policy-report-only', '')
-if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep) and \
+if csp_ro_header and any(elem in csp_ro_header for elem in t_csp_ro_dep) and \
      '13' not in skip_list:
     print_detail_r('[icsiro_d]', is_red=True)
     if not args.brief:
-        matches_csp_ro = [x for x in l_csp_ro_dep if x in csp_ro_header]
+        matches_csp_ro = [x for x in t_csp_ro_dep if x in csp_ro_header]
         print_detail_l("[icsi_d_s]")
         print(', '.join(matches_csp_ro))
         print_detail("[icsiro_d_r]")
@@ -1814,7 +1814,7 @@ if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep) and \
 
 ctype_header = headers_l.get('content-type', '')
 if ctype_header and '14' not in skip_list:
-    if any(elem in ctype_header for elem in l_legacy):
+    if any(elem in ctype_header for elem in t_legacy):
         print_details('[ictlg_h]', '[ictlg]', 'm', i_cnt)
     if 'html' not in ctype_header:
         print_details('[ictlhtml_h]', '[ictlhtml]', 'd', i_cnt)
@@ -1824,17 +1824,17 @@ if 'critical-ch' in headers_l and unsafe_scheme and '15' not in skip_list:
 
 if 'cross-origin-embedder-policy' in headers_l and '16' not in skip_list:
     coep_h = headers_l['cross-origin-embedder-policy']
-    if not any(elem in coep_h for elem in l_coep):
+    if not any(elem in coep_h for elem in t_coep):
         print_details('[icoep_h]', '[icoep]', 'd', i_cnt)
 
 if 'cross-origin-opener-policy' in headers_l and '17' not in skip_list:
     coop_h = headers_l['cross-origin-opener-policy']
-    if not any(elem in coop_h for elem in l_coop):
+    if not any(elem in coop_h for elem in t_coop):
         print_details('[icoop_h]', '[icoop]', 'd', i_cnt)
 
 if 'cross-origin-resource-policy' in headers_l and '18' not in skip_list:
     corp_h = headers_l['cross-origin-resource-policy']
-    if not any(elem in corp_h for elem in l_corp):
+    if not any(elem in corp_h for elem in t_corp):
         print_details('[icorp_h]', '[icorp]', 'd', i_cnt)
 
 if 'digest' in headers_l and '19' not in skip_list:
@@ -1847,7 +1847,7 @@ if 'expect-ct' in headers_l and '21' not in skip_list:
     print_details('[iexct_h]', '[iexct]', 'm', i_cnt)
 
 if 'expires' in headers_l and any(elem in headers_l.get('cache-control', '')
-                                  for elem in l_excc) and '22' \
+                                  for elem in t_excc) and '22' \
                                     not in skip_list:
     print_details('[iexpi_h]', '[iexpi]', 'd', i_cnt)
 
@@ -1867,14 +1867,14 @@ if 'large-allocation' in headers_l and '26' not in skip_list:
 
 if 'nel' in headers_l and '27' not in skip_list:
     nel_header = headers_l['nel']
-    if not any(elem in nel_header for elem in l_nel_dir):
+    if not any(elem in nel_header for elem in t_nel_dir):
         print_details('[inel_h]', '[inel]', 'd', i_cnt)
-    if not all(elem in nel_header for elem in l_nel_req):
+    if not all(elem in nel_header for elem in t_nel_req):
         print_details("[inelm_h]", "[inelm]", "d", i_cnt)
 
 if 'no-vary-search' in headers_l and '28' not in skip_list:
     nvarys_header = headers_l['no_vary-search']
-    if not any(elem in nvarys_header for elem in l_nvarysearch):
+    if not any(elem in nvarys_header for elem in t_nvarysearch):
         print_details('[ifnvarys_h]', '[ifnvarys]', 'd', i_cnt)
 
 observe_brows_header = headers_l.get('observe-browsing-topics', '')
@@ -1887,7 +1887,7 @@ if 'onion-location' in headers_l and '30' not in skip_list:
 
 if 'origin-agent-cluster' in headers_l and '31' not in skip_list:
     origin_cluster_h = headers_l['origin-agent-cluster']
-    if not any(elem in origin_cluster_h for elem in l_origcluster):
+    if not any(elem in origin_cluster_h for elem in t_origcluster):
         print_details('[iorigcluster_h]', '[iorigcluster]', 'd', i_cnt)
 
 if 'p3p' in headers_l and '32' not in skip_list:
@@ -1895,16 +1895,16 @@ if 'p3p' in headers_l and '32' not in skip_list:
 
 if 'permissions-policy' in headers_l and '33' not in skip_list:
     perm_header = headers_l['permissions-policy']
-    if not any(elem in perm_header for elem in l_per_feat):
+    if not any(elem in perm_header for elem in t_per_feat):
         print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
     if '*' in perm_header:
         print_details('[ifpol_h]', '[ifpol]', 'd', i_cnt)
     if 'none' in perm_header:
         print_details('[ifpoli_h]', '[ifpoli]', 'd', i_cnt)
-    if any(elem in perm_header for elem in l_per_dep):
+    if any(elem in perm_header for elem in t_per_dep):
         print_detail_r('[ifpold_h]', is_red=True)
         if not args.brief:
-            matches_perm = [x for x in l_per_dep if x in perm_header]
+            matches_perm = [x for x in t_per_dep if x in perm_header]
             print_detail_l("[ifpold_h_s]")
             print(', '.join(f"'{x}'" for x in matches_perm))
             print_detail("[ifpold]")
@@ -1917,7 +1917,7 @@ if 'proxy-authenticate' in headers_l and '35' not in skip_list:
     prxyauth_h = headers_l['proxy-authenticate']
     if 'basic' in prxyauth_h and unsafe_scheme:
         print_details('[iprxauth_h]', '[ihbas]', 'd', i_cnt)
-    if not any(elem in prxyauth_h for elem in l_proxy_auth):
+    if not any(elem in prxyauth_h for elem in t_proxy_auth):
         print_details('[iprxauthn_h]', '[iprxauthn]', 'd', i_cnt)
 
 if 'public-key-pins' in headers_l and '36' not in skip_list:
@@ -1928,11 +1928,11 @@ if 'public-key-pins-report-only' in headers_l and '37' not in skip_list:
 
 referrer_header = headers_l.get('referrer-policy', '')
 if referrer_header and '38' not in skip_list:
-    if not any(elem in referrer_header for elem in l_ref_secure):
+    if not any(elem in referrer_header for elem in t_ref_secure):
         print_details('[iref_h]', '[iref]', 'm', i_cnt)
     if 'unsafe-url' in referrer_header:
         print_details('[irefi_h]', '[irefi]', 'd', i_cnt)
-    if not any(elem in referrer_header for elem in l_ref_values):
+    if not any(elem in referrer_header for elem in t_ref_values):
         print_details('[irefn_h]', '[irefn]', 'd', i_cnt)
 
 report_h = headers_l.get('reporting-endpoints', '')
@@ -1941,9 +1941,9 @@ if report_h and '39' not in skip_list and HTTP_SCHEMES[0] in report_h:
 
 repdig_header = headers_l.get('repr-digest', '')
 if repdig_header and '40' not in skip_list:
-    if not any(elem in repdig_header for elem in l_repdig_sec):
+    if not any(elem in repdig_header for elem in t_repdig_sec):
         print_details('[irepdig_h]', '[irepdig]', 'd', i_cnt)
-    if any(elem in repdig_header for elem in l_repdig_ins):
+    if any(elem in repdig_header for elem in t_repdig_ins):
         print_details('[irepdigi_h]', '[irepdigi]', 'm', i_cnt)
 
 if 'server-timing' in headers_l and '41' not in skip_list:
@@ -1952,18 +1952,18 @@ if 'server-timing' in headers_l and '41' not in skip_list:
 stc_header = headers_l.get("set-cookie", '')
 if stc_header and '42' not in skip_list:
     if not unsafe_scheme and not all(elem in stc_header for elem in
-                                     l_cookie_sec):
+                                     t_cookie_sec):
         print_details("[iset_h]", "[iset]", "d", i_cnt)
     if unsafe_scheme:
         if 'secure' in stc_header:
             print_details("[iseti_h]", "[iseti]", "d", i_cnt)
-        if any(prefix in stc_header for prefix in l_cookie_prf):
+        if any(prefix in stc_header for prefix in t_cookie_prf):
             print_details("[ispref_m]", "[ispref]", "d", i_cnt)
     if "samesite=none" in stc_header and "secure" not in stc_header:
         print_details("[iseti_m]", "[isetm]", "d", i_cnt)
 
 setlogin_header = headers_l.get("set-login", '')
-if setlogin_header and not any(elem in setlogin_header for elem in l_setlogin)\
+if setlogin_header and not any(elem in setlogin_header for elem in t_setlogin)\
      and '43' not in skip_list:
     print_details('[islogin_h]', '[islogin]', 'd', i_cnt)
 
@@ -1982,9 +1982,9 @@ if sts_header and '47' not in skip_list:
         age = int(''.join(filter(str.isdigit, sts_header)))
         if unsafe_scheme:
             print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
-        if not all(elem in sts_header for elem in l_sts_dir) or age < 31536000:
+        if not all(elem in sts_header for elem in t_sts_dir) or age < 31536000:
             print_details('[ists_h]', '[ists]', 'm', i_cnt)
-        if 'preload' in sts_header and (l_sts_dir[0] not in sts_header
+        if 'preload' in sts_header and (t_sts_dir[0] not in sts_header
                                         or age < 31536000):
             print_details('[istsr_h]', '[istsr]', 'd', i_cnt)
         if ',' in sts_header:
@@ -1996,12 +1996,12 @@ if 'supports-loading-mode' in headers_l and '48' not in skip_list:
     support_mode_h = headers_l['supports-loading-mode']
     if unsafe_scheme:
         print_details('[islmodei_h]', '[islmodei]', 'd', i_cnt)
-    if not any(elem in support_mode_h for elem in l_support_mode):
+    if not any(elem in support_mode_h for elem in t_support_mode):
         print_details('[islmode_h]', '[islmode]', 'd', i_cnt)
 
 if 'surrogate-control' in headers_l and '49' not in skip_list:
     surrogate_mode_h = headers_l['surrogate-control']
-    if not any(elem in surrogate_mode_h for elem in l_surrogate):
+    if not any(elem in surrogate_mode_h for elem in t_surrogate):
         print_details('[isurrmode_h]', '[isurrmode]', 'd', i_cnt)
 
 if headers_l.get('timing-allow-origin', '') == '*' and '50' not in skip_list:
@@ -2012,10 +2012,10 @@ if 'tk' in headers_l and '51' not in skip_list:
 
 if 'trailer' in headers_l and '52' not in skip_list:
     trailer_h = headers_l['trailer']
-    if any(elem in trailer_h for elem in l_trailer):
+    if any(elem in trailer_h for elem in t_trailer):
         print_detail_r('[itrailer_h]', is_red=True)
         if not args.brief:
-            matches_trailer = [x for x in l_trailer if x in trailer_h]
+            matches_trailer = [x for x in t_trailer if x in trailer_h]
             print_detail_l("[itrailer_d_s]")
             print(', '.join(matches_trailer))
             print_detail("[itrailer_d_r]")
@@ -2023,7 +2023,7 @@ if 'trailer' in headers_l and '52' not in skip_list:
 
 if 'transfer-encoding' in headers_l and '53' not in skip_list:
     transfer_h = headers_l['transfer-encoding']
-    if not any(elem in transfer_h for elem in l_transfer):
+    if not any(elem in transfer_h for elem in t_transfer):
         print_details('[ictrf_h]', '[itrf]', 'd', i_cnt)
 
 if 'vary' in headers_l and '54' not in skip_list:
@@ -2066,7 +2066,7 @@ if xfo_header and '63' not in skip_list:
         print_details('[ixfo_h]', '[ixfo]', 'm', i_cnt)
     if 'allow-from' in xfo_header:
         print_details('[ixfod_h]', '[ixfod]', 'm', i_cnt)
-    if xfo_header not in l_xfo_dir:
+    if xfo_header not in t_xfo_dir:
         print_details('[ixfoi_h]', '[ixfodi]', 'm', i_cnt)
 
 if 'x-pad' in headers_l and '64' not in skip_list:
@@ -2074,7 +2074,7 @@ if 'x-pad' in headers_l and '64' not in skip_list:
 
 permcross_header = headers_l.get('x-permitted-cross-domain-policies', '')
 if permcross_header and '65' not in skip_list:
-    if not any(elem in permcross_header for elem in l_permcross):
+    if not any(elem in permcross_header for elem in t_permcross):
         print_details('[ixpermcross_h]', '[ixpermcross]', 'm', i_cnt)
     if 'all' in permcross_header:
         print_details('[ixpermcrossu_h]', '[ixcd]', 'm', i_cnt)
@@ -2087,7 +2087,7 @@ if headers_l.get('x-pingback', '').endswith('xmlrpc.php') and '66' not in \
 
 robots_header = headers_l.get('x-robots-tag', '')
 if robots_header and '67' not in skip_list:
-    if not any(elem in robots_header for elem in l_robots):
+    if not any(elem in robots_header for elem in t_robots):
         print_details('[ixrobv_h]', '[ixrobv]', 'm', i_cnt)
     if 'all' in robots_header:
         print_details('[ixrob_h]', '[ixrob]', 'm', i_cnt)
@@ -2135,7 +2135,7 @@ print("")
 # Section '5. Browser Compatibility for Enabled HTTP Security Headers'
 print_detail_r('[5compat]')
 
-l_sec = {'Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
+t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
          'Access-Control-Max-Age', 'Cache-Control', 'Clear-Site-Data',
          'Content-Security-Policy', 'Content-Security-Policy-Report-Only',
          'Content-Type', 'Critical-CH', 'Cross-Origin-Embedder-Policy',
@@ -2147,9 +2147,9 @@ l_sec = {'Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
          'Strict-Transport-Security', 'Supports-Loading-Mode',
          'Timing-Allow-Origin', 'Trailer', 'Vary', 'WWW-Authenticate',
          'X-Content-Type-Options', 'X-DNS-Prefetch-Control',
-         'X-Frame-Options', 'X-XSS-Protection'}
+         'X-Frame-Options', 'X-XSS-Protection')
 
-compat_headers = sorted([header for header in l_sec if header in headers])
+compat_headers = sorted(header for header in t_sec if header in headers)
 
 if compat_headers:
     print_browser_compatibility(compat_headers)
