@@ -41,6 +41,10 @@ C: 'Missing headers' in the analysis
 B: 'Fingerprint headers' in the analysis
 A: No warnings in the previous sections
 
+'Deprecated/Insecure headers':  /additional/insecure.txt
+'Missing headers'            :  /additional/missing.txt
+'Fingerprint headers'        :  /additional/fingerprint.txt
+
 [Improving Grades]
 
 Evaluate the warnings in relation to the exposure of the URL, its criticality,

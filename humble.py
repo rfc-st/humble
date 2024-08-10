@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-08-10', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1468,6 +1468,7 @@ print_general_info(reliable, export_filename)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
 # Section '1. Missing HTTP Security Headers'
+# Checks: /additional/missing.txt
 print_detail_r('[1missing]')
 
 l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
@@ -1490,7 +1491,7 @@ if m_cnt == 0:
 print("")
 
 # Section '2. Fingerprint HTTP Response Headers'
-# Source: /additional/fingerprint.txt
+# Checks: /additional/fingerprint.txt
 print_detail_r('[2fingerprint]')
 
 if not args.brief:
@@ -1506,7 +1507,7 @@ if f_cnt == 0:
 print("")
 
 # Section '3. Deprecated HTTP Response Headers/Protocols and Insecure Values'
-# Source: /additional/insecure.txt
+# Checks: /additional/insecure.txt
 print_detail_r('[3depinsecure]')
 i_cnt = [0]
 
