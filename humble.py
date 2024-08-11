@@ -1569,9 +1569,11 @@ t_csp_dirs = ('base-uri', 'child-src', 'connect-src', 'default-src',
               'upgrade-insecure-requests', 'webrtc', 'worker-src')
 t_csp_insecs = ('http:', 'ws:')
 t_csp_insecv = ('unsafe-eval', 'unsafe-inline')
-t_csp_ro_dep = ('violated-directive')
 t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',
                 'unsafe-hashes', 'nonce-', '127.0.0.1')
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
+l_csp_ro_dep = ['violated-directive']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
 t_coep = ('credentialless', 'require-corp', 'unsafe-none')
@@ -1607,7 +1609,7 @@ t_nel_req = ('report_to', 'max_age')
 t_nvarysearch = ('except', 'key-order', 'params')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
-t_origcluster = ('?1')
+l_origcluster = ['?1']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
@@ -1802,11 +1804,11 @@ if 'content-security-policy' in headers_l and '12' not in skip_list:
                 break
 
 csp_ro_header = headers_l.get('content-security-policy-report-only', '')
-if csp_ro_header and any(elem in csp_ro_header for elem in t_csp_ro_dep) and \
+if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep) and \
      '13' not in skip_list:
     print_detail_r('[icsiro_d]', is_red=True)
     if not args.brief:
-        matches_csp_ro = [x for x in t_csp_ro_dep if x in csp_ro_header]
+        matches_csp_ro = [x for x in l_csp_ro_dep if x in csp_ro_header]
         print_detail_l("[icsi_d_s]")
         print(', '.join(matches_csp_ro))
         print_detail("[icsiro_d_r]")
@@ -1887,7 +1889,7 @@ if 'onion-location' in headers_l and '30' not in skip_list:
 
 if 'origin-agent-cluster' in headers_l and '31' not in skip_list:
     origin_cluster_h = headers_l['origin-agent-cluster']
-    if not any(elem in origin_cluster_h for elem in t_origcluster):
+    if not any(elem in origin_cluster_h for elem in l_origcluster):
         print_details('[iorigcluster_h]', '[iorigcluster]', 'd', i_cnt)
 
 if 'p3p' in headers_l and '32' not in skip_list:
