@@ -1552,8 +1552,7 @@ t_csdata = ('cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
 t_cencoding = ('br', 'compress', 'deflate', 'gzip', 'x-gzip', 'zstd')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
-# https://www.w3.org/TR/CSP2/
-# https://www.w3.org/TR/CSP3/
+# https://www.w3.org/TR/CSP2/ & https://www.w3.org/TR/CSP3/
 t_csp_broad = ('*',  'blob:', 'data:', 'ftp:', 'filesystem:', 'https:',
                'https://*', 'https://*.*', 'schemes:', 'wss:', 'wss://')
 t_csp_equal = ('nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri')
@@ -1614,28 +1613,29 @@ l_origcluster = ['?1']
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 t_per_dep = ('document-domain', 'window-placement')
-t_per_feat = ('accelerometer', 'ambient-light-sensor', 'attribution-reporting',
-              'autoplay', 'battery', 'bluetooth', 'browsing-topics', 'camera',
-              'captured-surface-control', 'ch-ua', 'ch-ua-arch',
-              'ch-ua-bitness', 'ch-ua-full-version', 'ch-ua-full-version-list',
-              'ch-ua-mobile', 'ch-ua-model', 'ch-ua-platform',
-              'ch-ua-platform-version', 'ch-ua-wow64', 'clipboard-read',
-              'clipboard-write', 'compute-pressure', 'conversion-measurement',
-              'cross-origin-isolated', 'direct-sockets', 'display-capture',
-              'encrypted-media', 'execution-while-not-rendered',
-              'execution-while-out-of-viewport',
-              'focus-without-user-activation', 'fullscreen', 'gamepad',
-              'geolocation', 'gyroscope', 'hid', 'identity-credentials-get',
-              'idle-detection', 'interest-cohort', 'join-ad-interest-group',
-              'keyboard-map', 'layout-animations', 'local-fonts',
-              'magnetometer', 'microphone', 'midi', 'navigation-override',
-              'otp-credentials', 'payment', 'picture-in-picture',
-              'publickey-credentials-create', 'publickey-credentials-get',
-              'run-ad-auction', 'screen-wake-lock', 'serial',
-              'shared-autofill', 'smart-card', 'speaker-selection',
-              'storage-access', 'sync-script', 'sync-xhr',
-              'trust-token-redemption', 'unload', 'usb', 'vertical-scroll',
-              'web-share', 'window-management', 'xr-spatial-tracking')
+t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
+            'attribution-reporting', 'autoplay', 'battery', 'bluetooth',
+            'browsing-topics', 'camera', 'captured-surface-control', 'ch-ua',
+            'ch-ua-arch', 'ch-ua-bitness', 'ch-ua-full-version',
+            'ch-ua-full-version-list', 'ch-ua-mobile', 'ch-ua-model',
+            'ch-ua-platform', 'ch-ua-platform-version', 'ch-ua-wow64',
+            'clipboard-read', 'clipboard-write', 'compute-pressure',
+            'conversion-measurement', 'cross-origin-isolated',
+            'digital-credentials-get', 'direct-sockets', 'display-capture',
+            'encrypted-media', 'execution-while-not-rendered',
+            'execution-while-out-of-viewport',
+            'focus-without-user-activation', 'fullscreen', 'gamepad',
+            'geolocation', 'gyroscope', 'hid', 'identity-credentials-get',
+            'idle-detection', 'interest-cohort', 'join-ad-interest-group',
+            'keyboard-map', 'layout-animations', 'local-fonts',
+            'magnetometer', 'microphone', 'midi', 'navigation-override',
+            'otp-credentials', 'payment', 'picture-in-picture',
+            'publickey-credentials-create', 'publickey-credentials-get',
+            'run-ad-auction', 'screen-wake-lock', 'serial',
+            'shared-autofill', 'smart-card', 'speaker-selection',
+            'storage-access', 'sync-script', 'sync-xhr',
+            'trust-token-redemption', 'unload', 'usb', 'vertical-scroll',
+            'web-share', 'window-management', 'xr-spatial-tracking')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
 # https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
@@ -1897,7 +1897,7 @@ if 'p3p' in headers_l and '32' not in skip_list:
 
 if 'permissions-policy' in headers_l and '33' not in skip_list:
     perm_header = headers_l['permissions-policy']
-    if not any(elem in perm_header for elem in t_per_feat):
+    if not any(elem in perm_header for elem in t_per_ft):
         print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
     if '*' in perm_header:
         print_details('[ifpol_h]', '[ifpol]', 'd', i_cnt)
