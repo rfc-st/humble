@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-10', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-08-11', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -2203,7 +2203,7 @@ elif args.output == 'pdf':
 elif args.output == 'html':
     generate_html()
 
-    l_final = sorted(l_miss + l_ins)
+    l_final = sorted(set(l_miss + l_ins))
     l_fng_final = sorted(l_fng)
     l_fng_final_case = [x.casefold() for x in l_fng_final]
 
