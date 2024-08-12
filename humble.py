@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-11', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-08-12', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1574,6 +1574,10 @@ t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 l_csp_ro_dep = ['violated-directive']
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
+# https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
+t_ct_mime = ('application/xhtml+xml', 'text/html')
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
 t_coep = ('credentialless', 'require-corp', 'unsafe-none')
 
@@ -1820,6 +1824,9 @@ if ctype_header and '14' not in skip_list:
         print_details('[ictlg_h]', '[ictlg]', 'm', i_cnt)
     if 'html' not in ctype_header:
         print_details('[ictlhtml_h]', '[ictlhtml]', 'd', i_cnt)
+    if any(elem in ctype_header for elem in t_ct_mime) and ('charset' not in
+                                                            ctype_header):
+        print_details('[ictlchar_h]', '[ictlchar]', 'd', i_cnt)
 
 if 'critical-ch' in headers_l and unsafe_scheme and '15' not in skip_list:
     print_details('[icrch_h]', '[icrch]', 'd', i_cnt)

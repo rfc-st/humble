@@ -257,6 +257,13 @@
  La URL no es un documento HTML. Este análisis puede que no aplique en su totalidad.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
+[ictlchar_h]
+ Content-Type (Valor inseguro)
+
+[ictlchar]
+ El atributo 'charset' es necesario para evitar ataques XSS en páginas HTML.
+ Ref: https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
+
 [icrch_h]
  Critical-CH (Cabecera ignorada)
 
