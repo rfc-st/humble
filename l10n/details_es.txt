@@ -766,7 +766,7 @@ Cabeceras de respuesta HTTP
 
 [python_version]
 
- Este programa requiere, al menos, Python 3.9.
+ Error: Esta herramienta requiere, al menos, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [no_warnings]
@@ -1234,10 +1234,10 @@ URLs
 (Advertencias: 
 
 [no_analysis]
-Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análisis contra esa URL.
+Error: Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análisis contra esa URL.
 
 [no_global_analysis]
-Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análisis contra una URL.
+Error: Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análisis contra una URL.
 
 [no_missing]
  Sin cabeceras por habilitar                            
@@ -1420,10 +1420,7 @@ Error: la ruta indicada de 'testssl.sh' es incorrecta.
 '-s' requiere, al menos, una cabecera HTTP de respuesta.
 
 [args_skipped_unknown]
-Elimina estas cabeceras HTTP del parámetro '-s', ya que 'humble' no las comprueba: 
-
-[args_skipped_ko]
--s' requiere, al menos, el nombre de una cabecera de respuesta HTTP..
+Error: Elimina estas cabeceras HTTP del parámetro '-s', ya que 'humble' no las comprueba: 
 
 [args_nooutputfmt]
 '-op' requiere '-o'.
