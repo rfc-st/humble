@@ -894,8 +894,8 @@ def check_path_permissions(output_path):
     try:
         open(path.join(output_path, HUMBLE_FILES[1]), 'w')
     except PermissionError:
-        parser.error(f"{get_detail('[args_nowr]', replace=True)}\
-'{output_path}'")
+        print(f"\n{get_detail('[args_nowr]', replace=True)}'{output_path}'")
+        sys.exit()
     else:
         remove(path.join(output_path, HUMBLE_FILES[1]))
 
@@ -903,12 +903,14 @@ def check_path_permissions(output_path):
 def check_output_path(args, output_path):
     check_path_traversal(args.output_path)
     if args.output is None:
-        parser.error(get_detail('[args_nooutputfmt]'))
+        print(f"\n{get_detail('[args_nooutputfmt]', replace=True)}")
+        sys.exit()
     elif path.exists(output_path):
         check_path_permissions(output_path)
     else:
-        parser.error(f"{get_detail('[args_noexportpath]', replace=True)}\
-('{output_path}')")
+        print(f"\n{get_detail('[args_noexportpath]', replace=True)}\
+('{output_path}').")
+        sys.exit()
 
 
 def parse_user_agent(user_agent=False):
@@ -923,10 +925,10 @@ def parse_user_agent(user_agent=False):
 
 def nourl_user_agent(user_agent_id):
     try:
-        if int(user_agent_id) != 0:
-            parser.error(get_detail('[args_useragent]'))
-        else:
+        if int(user_agent_id) == 0:
             return {'User-Agent': get_user_agent('0')}
+        print(f"\n{get_detail('[args_useragent]', replace=True)}")
+        sys.exit()
     except ValueError:
         print(f'\n {get_detail("[ua_invalid]", replace=True)}')
         sys.exit()
@@ -1391,10 +1393,12 @@ if '-e' in sys.argv:
         print_detail('[windows_ssltls]', 28)
         sys.exit()
     if (args.testssl_path is None or args.URL is None):
-        parser.error(get_detail('[args_notestssl]'))
+        print(f"\n{get_detail('[args_notestssl]', replace=True)}")
+        sys.exit()
 
 if args.lang and not (args.URL or args.URL_A) and not args.guides:
-    parser.error(get_detail('[args_lang]'))
+    print(f"\n{get_detail('[args_lang]', replace=True)}")
+    sys.exit()
 
 if args.output_path is not None:
     output_path = path.abspath(args.output_path)
@@ -1403,15 +1407,18 @@ if args.output_path is not None:
 if any([args.brief, args.output, args.ret, args.redirects,
         args.skip_headers]) and (args.URL is None or args.guides is None or
                                  args.URL_A is None):
-    parser.error(get_detail('[args_several]'))
+    print(f"\n{get_detail('[args_several]', replace=True)}")
+    sys.exit()
 
 if args.output in ['csv', 'json'] and not args.brief:
-    parser.error(get_detail('[args_csv_json]'))
+    print(f"\n{get_detail('[args_csv_json]', replace=True)}")
+    sys.exit()
 
 skip_list, unsupported_headers = [], []
 
 if '-s' in sys.argv and len(args.skip_headers) == 0:
-    parser.error(get_detail('[args_skipped]'))
+    print(f"\n{get_detail('[args_skipped]', replace=True)}")
+    sys.exit()
 elif args.skip_headers:
     insecure_headers = get_insecure_checks()
     unsupported_headers, skip_list = \

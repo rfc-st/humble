@@ -1363,7 +1363,7 @@ A destacar
  (fuente: 'additional/user_agents.txt')
 
 [ua_invalid]
- Error: No existe ese ID de User-Agent; consulta los disponibles con '-ua 0'
+Error: No existe ese ID de User-Agent; consulta los disponibles con '-ua 0'
 
 [windows_ssltls]
 
@@ -1396,19 +1396,19 @@ Para ejecutar un análisis SSL/TLS en Windows (vía 'testssl.sh') recomiendo una
 -- Ej. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
 
 [args_notestssl]
-'-e' requiere la ruta de 'testssl.sh' y '-u'.
+Error: '-e' requiere la ruta de 'testssl.sh' y '-u'.
 
 [args_lang]
-'-l' requiere '-u' o '-a'.
+Error: '-l' requiere '-u' o '-a'.
 
 [args_useragent]
-'-ua' requiere '-u'.
+Error: '-ua' requiere '-u'.
 
 [args_several]
--b', '-df', -'o', '-r' y '-s' requieren '-u'.
+Error: '-b', '-df', -'o', '-r' y '-s' requieren '-u'.
 
 [args_csv_json]
-'-o csv' y '-o json' requieren '-b'.
+Error: '-o csv' y '-o json' requieren '-b'.
 
 [notestssl_file]
 Error: 'testssl.sh' no existe en la ruta indicada.
@@ -1417,19 +1417,19 @@ Error: 'testssl.sh' no existe en la ruta indicada.
 Error: la ruta indicada de 'testssl.sh' es incorrecta.
 
 [args_skipped]
-'-s' requiere, al menos, una cabecera HTTP de respuesta.
+Error: '-s' requiere, al menos, una cabecera HTTP de respuesta.
 
 [args_skipped_unknown]
 Error: Elimina estas cabeceras HTTP del parámetro '-s', ya que 'humble' no las comprueba: 
 
 [args_nooutputfmt]
-'-op' requiere '-o'.
+Error: '-op' requiere '-o'.
 
 [args_noexportpath]
-No existe la ruta indicada 
+Error: No existe la ruta indicada 
 
 [args_nowr]
-Este usuario no tiene permisos de escritura en 
+Erorr: Este usuario no tiene permisos de escritura en la ruta 
 
 [args_path_traversal]
 Error: La ruta indicada parece errónea
