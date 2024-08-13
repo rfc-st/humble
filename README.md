@@ -4,7 +4,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--08--12-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--08--13-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Official tool in OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-Tool-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
@@ -194,19 +194,19 @@ https://github.com/rfc-st/humble/releases
 usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r]
                  [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-08-10
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-08-13
 
 options:
   -h, --help                  show this help message and exit
   -a                          Shows statistics of the performed analysis; will be global if the '-u' parameter is omitted
   -b                          Shows overall findings; if this parameter is omitted detailed ones will be shown
   -df                         Do not follow redirects; if this parameter is omitted the last redirection will be the one analyzed
-  -e [TESTSSL_PATH]           Shows TLS/SSL checks; requires https://testssl.sh/
+  -e [TESTSSL_PATH]           Shows TLS/SSL checks; requires the PATH of https://testssl.sh/
   -f [FINGERPRINT_TERM]       Shows fingerprint statistics; will be the Top 20 if 'FINGERPRINT_TERM', e.g. 'Google', is omitted
   -g                          Shows guidelines for enabling security HTTP response headers on popular servers/services
   -grd                        Shows the checks to grade an analysis, along with advice for improvement
-  -l {es}                     The language for displaying analysis, errors and messages; will be in English if this parameter is omitted
-  -lic                        Shows the license of this tool
+  -l {es}                     Defines the language for displaying analysis, errors and messages; will be English if this parameter is omitted
+  -lic                        Shows the license for this tool, along with permissions, limitations and conditions.
   -o {csv,html,json,pdf,txt}  Exports analysis to 'scheme_host_port_yyyymmdd.ext' file; csv/json files will contain a brief analysis
   -op OUTPUT_PATH             Exports analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py' will be used
   -r                          Shows HTTP response headers and a detailed analysis; '-b' parameter will take priority

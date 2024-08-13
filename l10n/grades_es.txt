@@ -37,9 +37,9 @@ riesgo es inexistente, potencial o real en función de la URL analizada
 [Notas y comprobaciones asociadas]
 
 D: 'Protocolos/Cabeceras obsoletas o inseguras' en el análisis.
-C: 'Cabeceras no habilitadas' en el análisis
-B: 'Huella digital por cabeceras' en el análisis
-A: Sin advertencias en las secciones anteriores
+C: 'Cabeceras no habilitadas' en el análisis.
+B: 'Huella digital por cabeceras' en el análisis.
+A: Sin advertencias en las secciones anteriores.
 
 'Protocolos/Cabeceras obsoletas o inseguras':  /additional/insecure.txt
 'Cabeceras no habilitadas'                  :  /additional/missing.txt

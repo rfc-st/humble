@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-12', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-08-13', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1327,7 +1327,7 @@ parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
  follow redirects; if this parameter is omitted the last redirection will be \
 the one analyzed")
 parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\
-s TLS/SSL checks; requires https://testssl.sh/")
+s TLS/SSL checks; requires the PATH of https://testssl.sh/")
 parser.add_argument("-f", nargs='?', type=str, dest='fingerprint_term', help="\
 Shows fingerprint statistics; will be the Top 20 if \'FINGERPRINT_TERM\', e.g.\
  \'Google\', is omitted")
@@ -1336,11 +1336,12 @@ guidelines for enabling security HTTP response headers on popular servers/\
 services")
 parser.add_argument("-grd", dest='grades', action="store_true", help="Shows \
 the checks to grade an analysis, along with advice for improvement")
-parser.add_argument("-l", dest='lang', choices=['es'], help="The language for \
-displaying analysis, errors and messages; will be in English if this parameter\
- is omitted")
+parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
+language for displaying analysis, errors and messages; will be English if this\
+ parameter is omitted")
 parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
-the license of this tool")
+the license for this tool, along with permissions, limitations and conditions.\
+")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt'], help="Exports \
 analysis to 'scheme_host_port_yyyymmdd.ext' file; csv/json files will contain \

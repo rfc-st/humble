@@ -36,10 +36,10 @@ environment, etc).
 
 [Grades and Associated Checks]
 
-D: 'Deprecated/Insecure headers' in the analysis
-C: 'Missing headers' in the analysis
-B: 'Fingerprint headers' in the analysis
-A: No warnings in the previous sections
+D: 'Deprecated/Insecure headers' in the analysis.
+C: 'Missing headers' in the analysis.
+B: 'Fingerprint headers' in the analysis.
+A: No warnings in the previous sections.
 
 'Deprecated/Insecure headers':  /additional/insecure.txt
 'Missing headers'            :  /additional/missing.txt
