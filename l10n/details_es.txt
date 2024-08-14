@@ -1460,3 +1460,6 @@ Valor:
 
 [perfect_grade]
   Nota del análisis:                           A+ (Increíble, enhorabuena!)
+
+[testssl_error]
+Error en el análisis TLS/SSL.

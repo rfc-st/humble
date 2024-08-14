@@ -1470,3 +1470,6 @@ Value:
 
 [perfect_grade]
   Analysis Grade:               A+ (Incredible, congratulations!)
+
+[testssl_error]
+Error running TLS/SSL analysis.

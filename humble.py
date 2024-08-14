@@ -240,7 +240,7 @@ def print_license(args):
 
 
 def print_security_guides():
-    print_detail('[security_guides]', 1)
+    print_detail('[security_guides]')
     with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
               encoding='utf8') as guides_source:
         for line in islice(guides_source, SLICE_INT[3], None):
@@ -272,8 +272,8 @@ def testssl_analysis(testssl_command):
                 break
         if stderr := process.stderr.read():
             print(stderr, end='')
-    except Exception as e:
-        print(f"Error running testssl.sh analysis!: {e}")
+    except Exception:
+        print_error_detail('[testssl_error]')
 
 
 def get_l10n_content():
