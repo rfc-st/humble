@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-13', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-08-14', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -144,7 +144,7 @@ def check_humble_updates(local_version):
         else:
             print(f"\n{get_detail('[humble_recent]', replace=True)}")
     except requests.exceptions.RequestException:
-        print(f"\n{get_detail('[update_error]')}")
+        print_error_detail('[update_error]')
     sys.exit()
 
 
@@ -251,10 +251,10 @@ def print_security_guides():
 
 def testssl_command(testssl_temp_path, uri):
     if not path.isdir(testssl_temp_path):
-        sys.exit(f"\n{get_detail('[notestssl_path]')}")
+        print_error_detail('[notestssl_path]')
     testssl_final_path = path.join(testssl_temp_path, HUMBLE_FILES[9])
     if not path.isfile(testssl_final_path):
-        sys.exit(f"\n{get_detail('[notestssl_file]')}")
+        print_error_detail('[notestssl_file]')
     else:
         testssl_command = [testssl_final_path] + TESTSSL_OPTIONS + [quote(uri)]
         testssl_analysis(testssl_command)
@@ -352,8 +352,7 @@ def grade_analysis(m_cnt, f_cnt, i_cnt, e_cnt):
 def analysis_exists(filepath):
     if not path.exists(filepath):
         detail = '[no_analysis]' if args.URL else '[no_global_analysis]'
-        print(f"\n{get_detail(detail).strip()}\n")
-        sys.exit()
+        print_error_detail(detail)
 
 
 def url_analytics(is_global=False):
@@ -373,8 +372,7 @@ def url_analytics(is_global=False):
 def get_analysis_metrics(all_analysis):
     url_ln = [line for line in all_analysis if URL in line]
     if not url_ln:
-        print(f"\n{get_detail('[no_analysis]').strip()}\n")
-        sys.exit()
+        print_error_detail('[no_analysis]')
     total_a = len(url_ln)
     first_m = get_first_metrics(url_ln)
     second_m = [get_second_metrics(url_ln, i, total_a) for i in range(2, 6)]
@@ -525,8 +523,7 @@ def get_date_metrics(additional_m):
 def extract_global_metrics(all_analysis):
     url_ln = list(all_analysis)
     if not url_ln:
-        print(f"\n{get_detail('[no_global_analysis]').strip()}\n")
-        sys.exit()
+        print_error_detail('[no_global_analysis]')
     total_a = len(url_ln)
     first_m = get_global_first_metrics(url_ln)
     second_m = [get_second_metrics(url_ln, i, total_a) for i in range(2, 6)]
@@ -781,6 +778,11 @@ def get_detail(id_mode, replace=False):
                 l10n_content[i+1]
 
 
+def print_error_detail(id_mode):
+    print(f"\n{get_detail(id_mode, replace=True)}")
+    sys.exit()
+
+
 def get_epilog_content(id_mode):
     epilog_file_path = path.join(HUMBLE_DIRS[1], HUMBLE_FILES[5])
     with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
@@ -903,8 +905,7 @@ def check_path_permissions(output_path):
 def check_output_path(args, output_path):
     check_path_traversal(args.output_path)
     if args.output is None:
-        print(f"\n{get_detail('[args_nooutputfmt]', replace=True)}")
-        sys.exit()
+        print_error_detail('[args_nooutputfmt]')
     elif path.exists(output_path):
         check_path_permissions(output_path)
     else:
@@ -927,11 +928,9 @@ def nourl_user_agent(user_agent_id):
     try:
         if int(user_agent_id) == 0:
             return {'User-Agent': get_user_agent('0')}
-        print(f"\n{get_detail('[args_useragent]', replace=True)}")
-        sys.exit()
+        print_error_detail('[args_useragent]')
     except ValueError:
-        print(f'\n {get_detail("[ua_invalid]", replace=True)}')
-        sys.exit()
+        print_error_detail('[ua_invalid]')
 
 
 def get_user_agent(user_agent_id):
@@ -944,7 +943,7 @@ def get_user_agent(user_agent_id):
     for line in user_agents:
         if line.startswith(f"{user_agent_id}.-"):
             return line[4:]
-    print(f'\n {get_detail("[ua_invalid]", replace=True)}')
+    print_error_detail('[ua_invalid]')
     sys.exit()
 
 
@@ -1233,7 +1232,7 @@ def handle_server_error(http_status_code, l10n_id):
             print((URL_LIST[2] if (500 <= http_status_code <= 511) else
                    URL_LIST[1]) + str(http_status_code))
     else:
-        print_detail('[server_serror]', 1)
+        print_error_detail('[server_serror]')
     sys.exit()
 
 
@@ -1393,12 +1392,10 @@ if '-e' in sys.argv:
         print_detail('[windows_ssltls]', 28)
         sys.exit()
     if (args.testssl_path is None or args.URL is None):
-        print(f"\n{get_detail('[args_notestssl]', replace=True)}")
-        sys.exit()
+        print_error_detail('[args_notestssl]')
 
 if args.lang and not (args.URL or args.URL_A) and not args.guides:
-    print(f"\n{get_detail('[args_lang]', replace=True)}")
-    sys.exit()
+    print_error_detail('[args_lang]')
 
 if args.output_path is not None:
     output_path = path.abspath(args.output_path)
@@ -1407,18 +1404,15 @@ if args.output_path is not None:
 if any([args.brief, args.output, args.ret, args.redirects,
         args.skip_headers]) and (args.URL is None or args.guides is None or
                                  args.URL_A is None):
-    print(f"\n{get_detail('[args_several]', replace=True)}")
-    sys.exit()
+    print_error_detail('[args_several]')
 
 if args.output in ['csv', 'json'] and not args.brief:
-    print(f"\n{get_detail('[args_csv_json]', replace=True)}")
-    sys.exit()
+    print_error_detail('[args_csv_json]')
 
 skip_list, unsupported_headers = [], []
 
 if '-s' in sys.argv and len(args.skip_headers) == 0:
-    print(f"\n{get_detail('[args_skipped]', replace=True)}")
-    sys.exit()
+    print_error_detail('[args_skipped]')
 elif args.skip_headers:
     insecure_headers = get_insecure_checks()
     unsupported_headers, skip_list = \
