@@ -1277,33 +1277,34 @@ def handle_http_exception(r, exception_d):
         ex = exception_d.get(type(e))
         if ex and (not callable(ex) or ex(e)):
             print_http_exception(ex, e)
-    except requests.exceptions.RequestException as e:
-        raise SystemExit from e
 
 
 def manage_http_request():
     headers = {}
     status_c = None
     reliable = None
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        future = executor.submit(make_http_request)
-        wait_http_request(future)
-        if not future.done():
-            print(get_detail('[unreliable_analysis]'))
-            reliable = 'No'
-        r, _, exception = future.result()
-        if exception:
-            exception_type = type(exception)
-            if exception_type in exception_d:
-                error_string = exception_d[exception_type]
-                print_http_exception(error_string, exception)
-            else:
-                print(f"Unhandled exception type: {exception_type}")
-            return headers, status_c, reliable
-        handle_http_exception(r, exception_d)
-        if r is not None:
-            status_c = r.status_code
-            headers = r.headers
+    try:
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future = executor.submit(make_http_request)
+            wait_http_request(future)
+            if not future.done():
+                print(get_detail('[unreliable_analysis]'))
+                reliable = 'No'
+            r, _, exception = future.result()
+            if exception:
+                exception_type = type(exception)
+                if exception_type in exception_d:
+                    error_string = exception_d[exception_type]
+                    print_http_exception(error_string, exception)
+                else:
+                    print(f"Unhandled exception type: {exception_type}")
+                return headers, status_c, reliable
+            handle_http_exception(r, exception_d)
+            if r is not None:
+                status_c = r.status_code
+                headers = r.headers
+    except SystemExit:
+        sys.exit()
     return headers, status_c, reliable
 
 
