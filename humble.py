@@ -1341,12 +1341,11 @@ parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
 language for displaying analysis, errors and messages; will be English if this\
  parameter is omitted")
 parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
-the license for this tool, along with permissions, limitations and conditions.\
-")
+the license for 'humble', along with permissions, limitations and conditions.")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt'], help="Exports \
-analysis to 'scheme_host_port_yyyymmdd.ext' file; csv/json files will contain \
-a brief analysis")
+analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss.ext' file; csv/json will \
+have a brief analysis")
 parser.add_argument("-op", dest='output_path', type=str, help="Exports \
 analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py\
 ' will be used")

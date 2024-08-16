@@ -194,7 +194,7 @@ https://github.com/rfc-st/humble/releases
 usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r]
                  [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-08-13
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-08-16
 
 options:
   -h, --help                  show this help message and exit
@@ -206,8 +206,8 @@ options:
   -g                          Shows guidelines for enabling security HTTP response headers on popular servers/services
   -grd                        Shows the checks to grade an analysis, along with advice for improvement
   -l {es}                     Defines the language for displaying analysis, errors and messages; will be English if this parameter is omitted
-  -lic                        Shows the license for this tool, along with permissions, limitations and conditions.
-  -o {csv,html,json,pdf,txt}  Exports analysis to 'scheme_host_port_yyyymmdd.ext' file; csv/json files will contain a brief analysis
+  -lic                        Shows the license for 'humble', along with permissions, limitations and conditions.
+  -o {csv,html,json,pdf,txt}  Exports analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss.ext' file; csv/json will have a brief analysis
   -op OUTPUT_PATH             Exports analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py' will be used
   -r                          Shows HTTP response headers and a detailed analysis; '-b' parameter will take priority
   -s [SKIP_HEADERS ...]       Skips 'deprecated/insecure' and 'missing' checks for the indicated 'SKIP_HEADERS' (separated by spaces)
@@ -225,7 +225,7 @@ examples:
   -u URL -o pdf               Analyzes the URL and exports detailed findings to PDF
   -u URL -r                   Analyzes the URL and reports detailed findings along with HTTP response headers
   -u URL -s ETag NEL          Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
-  -u URL -ua 4                Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt'
+  -u URL -ua 4                Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt
 ```
 
 ## Advanced Usage
