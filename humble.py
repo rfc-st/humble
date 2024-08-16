@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-14', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-08-16', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -721,7 +721,7 @@ def print_extra_info(reliable):
     if args.redirects:
         print(get_detail('[analysis_redirects_note]', replace=True))
     if args.skip_headers:
-        print_skipped_headers()
+        print_skipped_headers(args)
 
 
 def print_response_headers():
@@ -797,16 +797,16 @@ def get_fingerprint_headers():
         l_fng_ex = [line.strip() for line in
                     islice(fng_source, SLICE_INT[0], None) if line.strip()]
         l_fng = [line.split(' [')[0].strip() for line in l_fng_ex]
-        return l_fng, l_fng_ex
+        titled_fng = [item.title() for item in l_fng]
+        return l_fng_ex, l_fng, titled_fng
 
 
-def print_fingerprint_headers(headers_l, l_fng, l_fng_ex):
+def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
     f_cnt = 0
     sorted_headers = sorted({header.title() for header in headers_l})
-    titled_headers = [name.title() for name in l_fng]
     for header in sorted_headers:
-        if header in titled_headers:
-            idx_fng = titled_headers.index(header)
+        if header in titled_fng:
+            idx_fng = titled_fng.index(header)
             get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args)
             f_cnt += 1
     return f_cnt
@@ -975,7 +975,7 @@ def get_skipped_unsupported_headers(args, insecure_headers):
     return unsupported_headers, skip_list
 
 
-def print_skipped_headers():
+def print_skipped_headers(args):
     print_detail_l("[analysis_skipped_note]")
     print(" " + ", ".join(f"'{header}'" for header in args.skip_headers))
 
@@ -983,8 +983,7 @@ def print_skipped_headers():
 def print_unsupported_headers(unsupported_headers):
     print("")
     print_detail_l("[args_skipped_unknown]")
-    unsupported_list = ", ".join(f"'{i}'" for i in unsupported_headers)
-    print(f"{unsupported_list}")
+    print(", ".join(f"'{header}'" for header in unsupported_headers))
     sys.exit()
 
 
@@ -1500,8 +1499,8 @@ print_detail_r('[2fingerprint]')
 if not args.brief:
     print_detail("[afgp]")
 
-l_fng, l_fng_ex = get_fingerprint_headers()
-f_cnt = print_fingerprint_headers(headers_l, l_fng, l_fng_ex)
+l_fng_ex, l_fng, titled_fng = get_fingerprint_headers()
+f_cnt = print_fingerprint_headers(headers_l, l_fng_ex, titled_fng)
 
 if args.brief and f_cnt != 0:
     print("")
