@@ -880,8 +880,9 @@ def print_browser_compatibility(compat_headers):
     style_blanks = "  " if args.output == 'html' else " "
     for key in compat_headers:
         styled_header = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
-        print(f"{style_blanks}{styled_header}{URL_LIST[0]}\
-{key.replace('Content-Security-Policy', 'contentsecuritypolicy2')}")
+        csp_key = 'contentsecuritypolicy2' if key == 'Content-Security-Policy'\
+            else key
+        print(f"{style_blanks}{styled_header}{URL_LIST[0]}{csp_key}")
 
 
 def check_path_traversal(path):
