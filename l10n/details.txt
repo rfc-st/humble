@@ -179,7 +179,7 @@
  X-Webkit-CSP-Report-Only (Deprecated Header)
 
 [ixcspr]
- This header is deprecated. Use instead "Content-Security-Policy-Report-Only".
+ This header is deprecated. Use instead 'Content-Security-Policy-Report-Only'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 
 [ionloc_h]
@@ -529,6 +529,9 @@
 [irefn_h]
  Referrer-Policy (Incorrect Value)
 
+[irept_h]
+ Report-To (Deprecated Header)
+
 [irepe_h]
  Reporting-Endpoints (Ignored Value)
 
@@ -699,7 +702,7 @@ HTTP Response Headers
  Guidelines for enabling security HTTP response headers on popular servers/services:
 
 [e_schema]
- Error: No "http" or "https" schema supplied. Check syntax and try again.
+ Error: No 'http' or 'https' schema supplied. Check syntax and try again.
 
 [e_invalid]
  Error: The URL is not valid. Check syntax and try again.
@@ -798,7 +801,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [mpermission]
- Previously called "Feature-Policy", allow and deny the use of browser features.
+ Previously called 'Feature-Policy', allow and deny the use of browser features.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
 [mnel]
@@ -814,7 +817,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [mxcto]
- Indicate that MIME types in the "Content-Type" headers should be followed.
+ Indicate that MIME types in the 'Content-Type' headers should be followed.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
 [mxfo]
@@ -895,7 +898,7 @@ HTTP Response Headers
  Ref: https://www.pentestpartners.com/security-blog/vulnerabilities-that-arent-etag-headers/
 
 [iffea]
- "Feature-Policy" has been renamed to "Permissions-Policy".
+ 'Feature-Policy' has been renamed to 'Permissions-Policy'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
 
 [ifnvarys]
@@ -963,6 +966,10 @@ HTTP Response Headers
 [irefn]
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
+[irept]
+ This header is deprecated. Use instead 'Reporting-Endpoints'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Report-To
 
 [irepe]
  Insecure endpoints ('http:') are ignored.
@@ -1039,7 +1046,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [ihbas]
- The "Basic" HTTP authentication scheme sends base64-encoded credentials, without encrypting them.
+ The 'Basic' HTTP authentication scheme sends base64-encoded credentials, without encrypting them.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
 
 [iexct]
@@ -1065,11 +1072,11 @@ HTTP Response Headers
  Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
 
 [ixcsp]
- This header is deprecated. Use instead "Content-Security-Policy".
+ This header is deprecated. Use instead 'Content-Security-Policy'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [ixdp]
- Enabling DNS prefetching could bypass "Content-Security-Policy" directives.
+ Enabling DNS prefetching could bypass 'Content-Security-Policy' directives.
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
 [ixdow]
@@ -1083,12 +1090,12 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
 [ixfod]
- "ALLOW-FROM" no longer works in modern browsers.
+ 'ALLOW-FROM' no longer works in modern browsers.
  Advice: Replace this header with the CSP 'frame-ancestors' directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
 [ixfodi]
- The only values allowed for this header are "DENY" or "SAMEORIGIN".
+ The only values allowed for this header are 'DENY' or 'SAMEORIGIN'.
  Advice: Replace this header with the CSP 'frame-ancestors' directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
@@ -1110,16 +1117,16 @@ HTTP Response Headers
  Ref: https://www.virtuesecurity.com/kb/x-runtime-header-timing-attacks/
 
 [ixsrc]
- This header is deprecated. Use instead "SourceMap".
+ This header is deprecated. Use instead 'SourceMap'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
 
 [ixxp]
- To mitigate XSS attacks, restrictively use the "Content-Security-Policy" header.
+ To mitigate XSS attacks, restrictively use the 'Content-Security-Policy' header.
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [ixxpdp]
  This header is deprecated in the three major web browsers.
- Instead, use the "Content-Security-Policy" header restrictively.
+ Instead, use the 'Content-Security-Policy' header restrictively.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
 [ixxpd]
@@ -1345,7 +1352,7 @@ Highlights
  No headers found related to
 
 [fng_zero_2]
- Tip: quote multiple words to search for exact matches; e.g. "Microsoft Azure Storage"
+ Tip: quote multiple words to search for exact matches; e.g. 'Microsoft Azure Storage'
 
 [fng_top]
  Top 20 groups of fingerprint headers in relation to the
@@ -1448,7 +1455,7 @@ examples:
   -u URL -o pdf               Analyzes the URL and exports detailed findings to PDF
   -u URL -r                   Analyzes the URL and reports detailed findings along with HTTP response headers
   -u URL -s ETag NEL          Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
-  -u URL -ua 4                Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt'
+  -u URL -ua 4                Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
 
 [fng_value]
 Value:
