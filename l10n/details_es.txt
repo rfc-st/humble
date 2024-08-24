@@ -179,7 +179,7 @@
  X-Webkit-CSP-Report-Only (Cabecera obsoleta)
 
 [ixcspr]
- Esta cabecera está obsoleta; utilice la cabecera 'Content-Security-Policy-Report-Only'.
+ Esta cabecera está obsoleta; utilice la cabecera "Content-Security-Policy-Report-Only".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 
 [ionloc_h]
@@ -319,7 +319,7 @@
  Keep-Alive (Cabecera ignorada)
 
 [ickeep]
- Esta cabecera se ignora si el valor de la cabecera 'Connection' no es 'keep-alive'.
+ Esta cabecera se ignora si el valor de la cabecera "Connection" no es 'keep-alive'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Keep-Alive
 
 [ixlalloc_h]
@@ -804,7 +804,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [mpermission]
- Anteriormente llamada 'Feature-Policy', permite o deniega funciones del navegador.
+ Anteriormente llamada "Feature-Policy", permite o deniega funciones del navegador.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
 [mnel]
@@ -820,7 +820,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [mxcto]
- Indica que se sigan los tipos MIME indicados en la cabecera 'Content-Type'.
+ Indica que se sigan los tipos MIME indicados en la cabecera "Content-Type".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
 [mxfo]
@@ -901,7 +901,7 @@ Cabeceras de respuesta HTTP
  Ref: https://www.pentestpartners.com/security-blog/vulnerabilities-that-arent-etag-headers/
 
 [iffea]
- 'Feature-Policy' ha pasado a llamarse 'Permissions-Policy'.
+ "Feature-Policy" ha pasado a llamarse "Permissions-Policy".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
 
 [ifnvarys]
@@ -971,7 +971,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 
 [irept]
- Esta cabecera está obsoleta; utilice en vez de ella 'Reporting-Endpoints'.
+ Esta cabecera está obsoleta; utilice en vez de ella "Reporting-Endpoints".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Report-To
 
 [irepe]
@@ -1012,7 +1012,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
 
 [isdyn]
- Esto no es una cabecera, sino una palabra clave de la cabecera 'Content-Security-Policy'.
+ Esto no es una cabecera, sino una palabra clave de la cabecera "Content-Security-Policy".
  Ref: https://content-security-policy.com/strict-dynamic/
 
 [ists]
@@ -1075,11 +1075,11 @@ Cabeceras de respuesta HTTP
  Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
 
 [ixcsp]
- Esta cabecera está obsoleta; utilice la cabecera 'Content-Security-Policy'.
+ Esta cabecera está obsoleta; utilice la cabecera "Content-Security-Policy".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [ixdp]
- Esta cabecera puede eludir las directivas de la cabecera 'Content-Security-Policy'.
+ Esta cabecera puede eludir las directivas de la cabecera "Content-Security-Policy".
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
 [ixdow]
@@ -1120,16 +1120,16 @@ Cabeceras de respuesta HTTP
  Ref: https://www.virtuesecurity.com/kb/x-runtime-header-timing-attacks/
 
 [ixsrc]
- Esta cabecera está obsoleta. Utiliza 'SourceMap'.
+ Esta cabecera está obsoleta. Utiliza "SourceMap".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
 
 [ixxp]
- Para mitigar ataques Cross-site scripting, habilite la cabecera 'Content-Security-Policy'.
+ Para mitigar ataques Cross-site scripting, habilite la cabecera "Content-Security-Policy".
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [ixxpdp]
  Esta cabecera está obsoleta en los tres principales navegadores.
- En su lugar, utilice de forma restrictiva la cabecera 'Content-Security-Policy'.
+ En su lugar, utilice de forma restrictiva la cabecera "Content-Security-Policy".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
 [ixxpd]

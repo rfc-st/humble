@@ -179,7 +179,7 @@
  X-Webkit-CSP-Report-Only (Deprecated Header)
 
 [ixcspr]
- This header is deprecated. Use instead 'Content-Security-Policy-Report-Only'.
+ This header is deprecated. Use instead "Content-Security-Policy-Report-Only".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 
 [ionloc_h]
@@ -319,7 +319,7 @@
  Keep-Alive (Ignored Header)
 
 [ickeep]
- This header is ignored if the value of the 'Connection' header is not 'keep-alive'.
+ This header is ignored if the value of the "Connection" header is not 'keep-alive'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Keep-Alive
 
 [ixlalloc_h]
@@ -801,7 +801,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [mpermission]
- Previously called 'Feature-Policy', allow and deny the use of browser features.
+ Previously called "Feature-Policy", allow and deny the use of browser features.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
 [mnel]
@@ -817,7 +817,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [mxcto]
- Indicate that MIME types in the 'Content-Type' headers should be followed.
+ Indicate that MIME types in the "Content-Type" headers should be followed.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
 [mxfo]
@@ -898,7 +898,7 @@ HTTP Response Headers
  Ref: https://www.pentestpartners.com/security-blog/vulnerabilities-that-arent-etag-headers/
 
 [iffea]
- 'Feature-Policy' has been renamed to 'Permissions-Policy'.
+ "Feature-Policy" has been renamed to "Permissions-Policy".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
 
 [ifnvarys]
@@ -968,7 +968,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 
 [irept]
- This header is deprecated. Use instead 'Reporting-Endpoints'.
+ This header is deprecated. Use instead "Reporting-Endpoints".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Report-To
 
 [irepe]
@@ -1072,11 +1072,11 @@ HTTP Response Headers
  Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
 
 [ixcsp]
- This header is deprecated. Use instead 'Content-Security-Policy'.
+ This header is deprecated. Use instead "Content-Security-Policy".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [ixdp]
- Enabling DNS prefetching could bypass 'Content-Security-Policy' directives.
+ Enabling DNS prefetching could bypass "Content-Security-Policy" directives.
  Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 
 [ixdow]
@@ -1117,16 +1117,16 @@ HTTP Response Headers
  Ref: https://www.virtuesecurity.com/kb/x-runtime-header-timing-attacks/
 
 [ixsrc]
- This header is deprecated. Use instead 'SourceMap'.
+ This header is deprecated. Use instead "SourceMap".
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
 
 [ixxp]
- To mitigate XSS attacks, restrictively use the 'Content-Security-Policy' header.
+ To mitigate XSS attacks, restrictively use the "Content-Security-Policy" header.
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [ixxpdp]
  This header is deprecated in the three major web browsers.
- Instead, use the 'Content-Security-Policy' header restrictively.
+ Instead, use the "Content-Security-Policy" header restrictively.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
 [ixxpd]

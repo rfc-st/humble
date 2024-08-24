@@ -2157,11 +2157,11 @@ t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
          'Document-Policy', 'ETag', 'Feature-Policy', 'NEL',
          'Observe-Browsing-Topics', 'Origin-Agent-Cluster',
          'Permissions-Policy', 'Proxy-Authenticate', 'Referrer-Policy',
-         'Server-Timing', 'Set-Cookie', 'Set-Login', 'Speculation-Rules',
-         'Strict-Transport-Security', 'Supports-Loading-Mode',
-         'Timing-Allow-Origin', 'Trailer', 'Vary', 'WWW-Authenticate',
-         'X-Content-Type-Options', 'X-DNS-Prefetch-Control',
-         'X-Frame-Options', 'X-XSS-Protection')
+         'Reporting-Endpoints', 'Server-Timing', 'Set-Cookie', 'Set-Login',
+         'Speculation-Rules', 'Strict-Transport-Security',
+         'Supports-Loading-Mode', 'Timing-Allow-Origin', 'Trailer', 'Vary',
+         'WWW-Authenticate', 'X-Content-Type-Options',
+         'X-DNS-Prefetch-Control', 'X-Frame-Options', 'X-XSS-Protection')
 
 compat_headers = sorted(header for header in t_sec if header in headers)
 
