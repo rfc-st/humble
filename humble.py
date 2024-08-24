@@ -1539,6 +1539,10 @@ l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Credentials',
 t_acceptch_dep = ('content-dpr', 'dpr', 'sec-ch-ua-full-version',
                   'viewport-width', 'width')
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+t_accecao = ('*', 'null')
+t_accecaov = ('.*', '*.')
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 t_cache = ('no-cache', 'no-store', 'must-revalidate')
 t_cachev = ('immutable', 'max-age', 'must-revalidate', 'must-understand',
@@ -1739,10 +1743,8 @@ if 'access-control-allow-methods' in headers_l and '4' not in skip_list:
         i_cnt[0] += 1
 
 accesso_header = headers_l.get("access-control-allow-origin", '')
-if accesso_header and ((accesso_header in ['*', 'null']) and
-                       (not any(val in accesso_header for
-                                val in ['.*', '*.']))) and '5' not in \
-                                    skip_list:
+if accesso_header and accesso_header in t_accecao and not any(
+ val in accesso_header for val in t_accecaov) and '5' not in skip_list:
     print_details('[iaccess_h]', '[iaccess]', 'd', i_cnt)
 
 accesma_header = headers_l.get("access-control-max-age", '')
