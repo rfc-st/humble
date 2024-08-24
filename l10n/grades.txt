@@ -41,9 +41,11 @@ C: 'Missing headers' in the analysis.
 B: 'Fingerprint headers' in the analysis.
 A: No warnings in the previous sections.
 
-'Deprecated/Insecure headers':  /additional/insecure.txt
-'Missing headers'            :  /additional/missing.txt
-'Fingerprint headers'        :  /additional/fingerprint.txt
+Source files of the checks:
+
+/additional/insecure.txt    ('Deprecated/Insecure headers')
+/additional/missing.txt     ('Missing headers')
+/additional/fingerprint.txt ('Fingerprint headers')
 
 [Improving Grades]
 
@@ -54,6 +56,5 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
 Use the '-s' parameter to exclude HTTP headers from the analysis (the
 exclusions will be indicated in the results).
 
-Don't get obsessed with the grade :). The important thing is to maintain a
-constant security posture, as secure as possible, document it and update it
-constantly.
+Don't get obsessed :). Maintain a constant security posture, as secure as
+possible, documenting and updating it constantly.

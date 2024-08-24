@@ -41,9 +41,11 @@ C: 'Cabeceras no habilitadas' en el análisis.
 B: 'Huella digital por cabeceras' en el análisis.
 A: Sin advertencias en las secciones anteriores.
 
-'Protocolos/Cabeceras obsoletas o inseguras':  /additional/insecure.txt
-'Cabeceras no habilitadas'                  :  /additional/missing.txt
-'Huella digital por cabeceras'              :  /additional/fingerprint.txt
+Ficheros fuente de las comprobaciones:
+
+/additional/insecure.txt    ('Protocolos/Cabeceras obsoletas o inseguras')
+/additional/missing.txt     ('Cabeceras no habilitadas')
+/additional/fingerprint.txt ('Huella digital por cabeceras')
 
 [Mejorando la nota]
 
@@ -54,5 +56,5 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
 Usa el parámetro '-s' para excluir cabeceras HTTP del análisis (las exclusiones
 se mostrarán en los resultados).
 
-No te obsesiones con la nota :). Lo importante es mantener una postura de
-seguridad lo más segura posible, documentarla y actualizarla constantemente.
+No te obsesiones :). Mantén una postura de seguridad constante, lo más segura
+posible, documentándola y actualizándola constantemente.
