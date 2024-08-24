@@ -1,4 +1,4 @@
-# humble
+<h1><p align="center">humble</p></h1>
 
 <p align=center>
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
