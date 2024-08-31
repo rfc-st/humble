@@ -1,24 +1,24 @@
 Contributing to 'humble' Open Source Project
 ============================================
 
-[humble](https://github.com/rfc-st/humble) welcomes contributions. When contributing, please follow the [Code of Conduct](https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md), especially the last section (<i>Update 2022/03/26</i>), on the war in Ukraine: is a <b>personal</b> decision that I hope you understand. Otherwise, and if you don't want to contribute to this project because you don't agree with my ideas, I will <b>deeply respect</b> it.
+<i>humble</i> welcomes contributions. When contributing please follow the [Code of Conduct](https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md), <b>especially</b> the last section (<i>Update 2022/03/26</i>) on the war in Ukraine and the limitations imposed on this tool: is a <b>personal</b> decision that I hope you understand. Otherwise, and if you don't want to contribute to this project because you don't agree with my decision, I will <b>deeply respect</b> it.
 
 Enhancement & Issues
 --------------------
 
-Feel free to submit [issues](https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=bug_report.md&title=) and [enhancement requests](https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=feature_request.md&title=).
+Feel free to submit [bugs](https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=bug_report.md&title=), [feature requests](https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=feature_request.md&title=), [security vulnerabilities](https://github.com/rfc-st/humble/security/policy) and your suggestions (to rafael.fcucalon@gmail.com).
 
 
 Contributing
 ------------
 
-Please note (before sending a Pull Request) that <i>humble</i> is a multi-language tool: take a look at [these](https://github.com/rfc-st/humble/tree/master/i10n) files.
+* Please note (before sending a Pull Request) that <i>humble</i> is a multi-language tool (for now only English and Spanish are supported): take a look at [these](https://github.com/rfc-st/humble/tree/master/l10n) files, those ending in '_es' are the Spanish translations. Therefore, each Pull Request that adds or modifies text strings must take into account both languages and update the corresponding files; also take a look at the functions <i>get_detail</i>, <i>get_l10n_content</i>, <i>print_detail</i>, <i>print_details</i>, <i>print_detail_l</i> and <i>print_detail_r</i>; they will help you understand how I handle literals and phrases.
 
-Therefore, every Pull Request sent must take into account both of them, and update them accordingly; also, take another look at the functions <i>get_detail</i>, <i>print_detail</i>, <i>print_details</i> and similar; they will help you understand how I handle literals and phrases.
+* In case of contributing functions these must be <b>brief and optimized</b>. My personal criteria is that every function must have, at least, a <b>60% Quality Score</b> in the Sourcery plugin (https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery) or similar plugins.
 
-And finally, I have my <i>quirks</i> :), and I may not accept your Pull Request for certain reasons that I will <b>always</b> explain in the request itself. That, of course, doesn't mean that I don't value your interest, your time or your code: <b>always</b>, if I end up implementing your idea, I <b>will mention you</b> in the [Acknowledgements](https://github.com/rfc-st/humble/#acknowledgements) section.
+* And finally, I have my <i>quirks</i> :), and I may not accept your Pull Request for certain reasons that I will <b>always</b> explain in the request itself. That, of course, doesn't mean that I don't value your interest, your time or your code: <b>always</b>, if I end up implementing your idea, I <b>will mention you</b> in the [Acknowledgements](https://github.com/rfc-st/humble/#acknowledgements) section.
 
-Thank you!.
+Thank you for your time!.
 
 Methodology
 -----------

@@ -327,6 +327,7 @@ https://webtechsurvey.com/common-response-headers<br />
 https://www.w3.org<br />
 
 ## Contribute
+* Read <a href="https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md">this</a> first!.
 * Report a <a href="https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=bug_report.md&title=">Bug</a>.
 * Create a <a href="https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=feature_request.md&title=">Feature request</a>.
 * Report a <a href="https://github.com/rfc-st/humble/security/policy">Security Vulnerability</a>.
