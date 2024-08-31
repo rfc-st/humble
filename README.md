@@ -49,7 +49,7 @@ A humble and <strong>fast</strong> HTTP Response Header <strong>Security</strong
 ## Features
 
 :heavy_check_mark: 14 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
-:heavy_check_mark: 1148 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 1161 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 111 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: SSL/TLS checks (requires the **amazing** https://testssl.sh/).<br />
 :heavy_check_mark: Browser support references for enabled HTTP security headers.<br />
