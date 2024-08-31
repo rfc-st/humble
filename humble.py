@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-24', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-08-31', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1524,16 +1524,17 @@ l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Credentials',
          'Keep-Alive', 'Large-Allocation', 'No-Vary-Search',
          'Observe-Browsing-Topics', 'Onion-Location', 'Origin-Agent-Cluster',
          'P3P', 'Pragma', 'Proxy-Authenticate', 'Public-Key-Pins',
-         'Public-Key-Pins-Report-Only', 'Reporting-Endpoints', 'Repr-Digest',
-         'Set-Cookie', 'Server-Timing', 'SourceMap', 'Speculation-Rules',
-         'Strict-Dynamic', 'Supports-Loading-Mode', 'Surrogate-Control',
-         'Timing-Allow-Origin', 'Tk', 'Trailer', 'Transfer-Encoding', 'Vary',
-         'WWW-Authenticate', 'Want-Digest', 'Warning',
-         'X-Content-Security-Policy', 'X-Content-Security-Policy-Report-Only',
-         'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad',
-         'X-Permitted-Cross-Domain-Policies', 'X-Pingback', 'X-Robots-Tag',
-         'X-Runtime', 'X-SourceMap', 'X-UA-Compatible', 'X-Webkit-CSP',
-         'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
+         'Public-Key-Pins-Report-Only', 'Report-To', 'Reporting-Endpoints',
+         'Repr-Digest', 'Set-Cookie', 'Server-Timing', 'SourceMap',
+         'Speculation-Rules', 'Strict-Dynamic', 'Supports-Loading-Mode',
+         'Surrogate-Control', 'Timing-Allow-Origin', 'Tk', 'Trailer',
+         'Transfer-Encoding', 'Vary', 'WWW-Authenticate', 'Want-Digest',
+         'Warning', 'X-Content-Security-Policy',
+         'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
+         'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
+         'X-Pingback', 'X-Robots-Tag', 'X-Runtime', 'X-SourceMap',
+         'X-UA-Compatible', 'X-Webkit-CSP', 'X-Webkit-CSP-Report-Only',
+         'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 t_acceptch_dep = ('content-dpr', 'dpr', 'sec-ch-ua-full-version',
