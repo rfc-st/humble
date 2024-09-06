@@ -1470,3 +1470,6 @@ Valor:
 
 [testssl_error]
 Error en el análisis TLS/SSL.
+
+[unhandled_exception]
+Excepción no gestionada:

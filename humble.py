@@ -1185,10 +1185,10 @@ def format_html_bold(ln):
     html_final.write(f'<strong>{ln}</strong><br>')
 
 
-def print_http_exception(id_exception, exception_v):
+def print_http_exception(exception_id, exception_v):
     delete_lines()
     print("")
-    print_detail(id_exception)
+    print_detail(exception_id)
     raise SystemExit from exception_v
 
 
@@ -1258,9 +1258,20 @@ def make_http_request():
         return None, None, e
 
 
+# Five seconds should be enough time to receive the HTTP response headers.
 def wait_http_request(future):
     with contextlib.suppress(concurrent.futures.TimeoutError):
         future.result(timeout=5)
+
+
+def manage_http_exception(exception):
+    exception_type = type(exception)
+    if exception_type in exception_d:
+        exception_id = exception_d[exception_type]
+        print_http_exception(exception_id, exception)
+    else:
+        print_detail_l('[unhandled_exception]')
+        print(f" {exception_type}")
 
 
 def handle_http_exception(r, exception_d):
@@ -1292,12 +1303,7 @@ def manage_http_request():
                 reliable = 'No'
             r, _, exception = future.result()
             if exception:
-                exception_type = type(exception)
-                if exception_type in exception_d:
-                    error_string = exception_d[exception_type]
-                    print_http_exception(error_string, exception)
-                else:
-                    print(f"Unhandled exception type: {exception_type}")
+                manage_http_exception(exception)
                 return headers, status_c, reliable
             handle_http_exception(r, exception_d)
             if r is not None:
@@ -1439,7 +1445,7 @@ if not args.URL_A:
     print("")
     print_detail(detail)
 
-# Retrieving HTTP response headers
+# Retrieving HTTP response headers and managing exceptions
 exception_d = {
     requests.exceptions.ConnectionError: '[e_404]',
     requests.exceptions.InvalidSchema: '[e_schema]',

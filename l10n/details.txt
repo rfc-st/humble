@@ -1480,3 +1480,6 @@ Value:
 
 [testssl_error]
 Error running TLS/SSL analysis.
+
+[unhandled_exception]
+Unhandled exception type:
