@@ -109,7 +109,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-08-31', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-09-06', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -699,7 +699,7 @@ def print_basic_info(export_filename):
     print(f'{URL_STRING[1]}{URL}')
     if export_filename:
         print_detail_l('[export_filename]')
-        print(f"'{export_filename}'")
+        print(f"{export_filename}")
 
 
 def print_extended_info(args, reliable, status_code):
