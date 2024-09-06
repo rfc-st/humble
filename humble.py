@@ -133,7 +133,7 @@ def check_python_version():
         else None
 
 
-def check_humble_updates(local_version):
+def check_updates(local_version):
     try:
         github_repo = requests.get(URL_LIST[3], timeout=10).text
         github_date = re.search(RE_PATTERN[4], github_repo).group()
@@ -1376,13 +1376,9 @@ l10n_content = get_l10n_content()
 check_python_version()
 
 # Functionality for argparse parameters/values
-check_humble_updates(local_version) if args.version else None
-
-if '-grd' in sys.argv:
-    print_grades_guide(args)
-
-if '-lic' in sys.argv:
-    print_license(args)
+check_updates(local_version) if '-v' in sys.argv else None
+print_grades_guide(args) if '-grd' in sys.argv else None
+print_license(args) if '-lic' in sys.argv else None
 
 if '-f' in sys.argv:
     fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \
@@ -2180,7 +2176,7 @@ else:
     print_detail_l("[no_sec_headers]") if args.output else \
         print_detail_r("[no_sec_headers]", is_red=True)
 
-# Printing analysis summary and the changes with respect to the previous one
+# Analysis summary and changes with respect to the previous one
 print(linesep.join(['']*2))
 end = time()
 get_analysis_results()
