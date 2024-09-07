@@ -40,7 +40,6 @@
 # Standard Library imports
 from time import time
 from json import dumps
-from shlex import quote
 from shutil import copyfile
 from platform import system
 from itertools import islice
@@ -109,7 +108,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-09-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-09-07', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -256,7 +255,7 @@ def testssl_command(testssl_temp_path, uri):
     if not path.isfile(testssl_final_path):
         print_error_detail('[notestssl_file]')
     else:
-        testssl_command = [testssl_final_path] + TESTSSL_OPTIONS + [quote(uri)]
+        testssl_command = [testssl_final_path] + TESTSSL_OPTIONS + [uri]
         testssl_analysis(testssl_command)
     sys.exit()
 
@@ -1249,7 +1248,7 @@ def make_http_request():
         # chosen to disable these checks so that in certain cases (e.g.
         # development environments, hosts with very old servers/software,
         # self-signed certificates, etc) the URL can still be analyzed.
-        r = session.get(quote(URL), allow_redirects=not args.redirects,
+        r = session.get(URL, allow_redirects=not args.redirects,
                         verify=False, headers=ua_header, timeout=15)
         return r, None, None
     except requests.exceptions.SSLError:
