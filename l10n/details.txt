@@ -701,20 +701,38 @@ HTTP Response Headers
 
  Guidelines for enabling security HTTP response headers on popular servers/services:
 
-[e_schema]
- Error: No 'http' or 'https' schema supplied. Check syntax and try again.
+[e_chunk]
+ Error: The server declared chunked encoding but sent an invalid chunk.
 
-[e_invalid]
- Error: The URL is not valid. Check syntax and try again.
+[e_decoding]
+ Error: Failed to decode response content.
+
+[e_mschema]
+ Error: Include a valid scheme ('http://' or 'https://') in the URL.
+
+[e_url]
+ Error: The URL is not valid. Check it and try again.
 
 [server_serror]
  Server error; wait a while and try again.
 
-[e_404]
- Error: URL not found. Check syntax and try again.
+[e_connection]
+ Error: The request timed out while trying to connect to the remote server. Check URL and try again.
+
+[e_ctimeout]
+ Error: The request timed out. Wait a while and try again.
+
+[e_redirect]
+ Error: Too many redirects.
+
+[e_rtimeout]
+ Error: The server did not send any data in the allotted amount of time.
 
 [e_timeout]
- Error: URL is taking too long to respond. Wait a while and try again.
+ Error: The request timed out.
+
+[e_ischema]
+ Error: The URL scheme provided is either invalid or unsupported.
 
 [report]
  Report saved to 

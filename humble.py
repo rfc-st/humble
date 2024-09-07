@@ -1442,12 +1442,17 @@ if not args.URL_A:
 
 # Retrieving HTTP response headers and managing exceptions
 exception_d = {
-    requests.exceptions.ConnectionError: '[e_404]',
-    requests.exceptions.InvalidSchema: '[e_schema]',
-    requests.exceptions.InvalidURL: '[e_invalid]',
-    requests.exceptions.MissingSchema: '[e_schema]',
+    requests.exceptions.ChunkedEncodingError: '[e_chunk]',
+    requests.exceptions.ConnectionError: '[e_connection]',
+    requests.exceptions.ConnectTimeout: '[e_ctimeout]',
+    requests.exceptions.ContentDecodingError: '[e_decoding]',
+    requests.exceptions.InvalidSchema: '[e_ischema]',
+    requests.exceptions.InvalidURL: '[e_url]',
+    requests.exceptions.MissingSchema: '[e_mschema]',
+    requests.exceptions.ReadTimeout: '[e_rtimeout]',
     requests.exceptions.SSLError: None,
     requests.exceptions.Timeout: '[e_timeout]',
+    requests.exceptions.TooManyRedirects: '[e_redirect]',
 }
 requests.packages.urllib3.disable_warnings()
 

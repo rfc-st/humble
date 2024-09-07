@@ -701,20 +701,38 @@ Cabeceras de respuesta HTTP
 
  Guías para habilitar cabeceras de respuesta HTTP de seguridad en servidores/servicios populares:
 
-[e_schema]
- Error: Incluye el esquema 'http' o 'https' en la URL a analizar.
+[e_chunk]
+ Error: El servidor declaró codificación por partes pero envió una incorrecta.
 
-[e_invalid]
- Error: La URL no resuelve. Revisa que sea correcta y prueba de nuevo.
+[e_decoding]
+ Error: Al descodificar el contenido de la respuesta.
+
+[e_mschema]
+ Error: Incluye un esquema válido ('http://' o 'https://') en la URL.
+
+[e_url]
+ Error: La URL no resuelve; revísala y prueba de nuevo.
 
 [server_serror]
  Error en servidor; espera unos minutos y prueba de nuevo.
 
-[e_404]
- Error: No se encuentra la URL. Revisa que sea correcta y prueba de nuevo.
+[e_connection]
+ Error: La solicitud ha expirado al intentar conectarse al servidor; revisa la URL y prueba de nuevo.
+
+[e_ctimeout]
+ Error: La solicitud ha caducado; espera unos minutos y prueba de nuevo.
+
+[e_redirect]
+ Error: Demasiadas redirecciones.
+
+[e_rtimeout]
+ Error: El servidor no ha enviado ningún dato en el tiempo previsto.
 
 [e_timeout]
- Error: Se ha superado el tiempo de espera. Prueba en unos minutos.
+ Error: Se ha superado el tiempo de espera; espera unos minutos y prueba de nuevo.
+
+[e_ischema]
+ Error: El esquema de la URL no es válido o no es compatible.
 
 [report]
  Informe guardado en 
