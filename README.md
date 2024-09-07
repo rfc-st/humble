@@ -53,7 +53,7 @@
 :heavy_check_mark: 1166 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 111 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: SSL/TLS checks (requires the **amazing** https://testssl.sh/).<br />
-:heavy_check_mark: Browser support references for enabled HTTP security headers.<br />
+:heavy_check_mark: Browser support references for enabled HTTP security headers (provided by https://caniuse.com/).<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
 :heavy_check_mark: Can export each analysis to CSV, HTML5, JSON, PDF 1.4 and TXT (and in the PATH of your choice).<br />
