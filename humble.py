@@ -1191,14 +1191,14 @@ def print_http_exception(exception_id, exception_v):
     raise SystemExit from exception_v
 
 
-def print_ru_message():
+def check_ru_scope():
     with contextlib.suppress(requests.exceptions.RequestException):
         requests.packages.urllib3.disable_warnings()
         sffx = tldextract.extract(URL).suffix[-2:].upper()
         cnty = requests.get(RU_CHECKS[0], verify=False, timeout=5).text.strip()
         if (sffx == RU_CHECKS[1] and sffx not in NON_RU_TLD) or cnty == \
                 RU_CHECKS[2]:
-            print_detail('[ru_analysis_message]', 3)
+            print_detail('[ru_check]', 3)
             sys.exit()
 
 
@@ -1433,7 +1433,9 @@ if args.guides or args.testssl_path or args.URL_A:
         url_analytics() if args.URL else url_analytics(is_global=True)
 
 start = time()
-print_ru_message()
+# My reasons for this check:
+# https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
+check_ru_scope()
 
 if not args.URL_A:
     detail = '[analysis_output]' if args.output else '[analysis]'
@@ -2156,6 +2158,7 @@ print("") if e_cnt != 0 else print_nowarnings()
 print("")
 
 # Section '5. Browser Compatibility for Enabled HTTP Security Headers'
+# Provided by https://caniuse.com/
 print_detail_r('[5compat]')
 
 t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',

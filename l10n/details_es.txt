@@ -1163,7 +1163,7 @@ Cabeceras de respuesta HTTP
 [aisc]
  Estas cabeceras, o protocolos, están obsoletos o sus valores son inseguros:
 
-[ru_analysis_message]
+[ru_check]
 
  'humble' no analizará dominios rusos (ni permitirá su uso desde Rusia) hasta que se retire de Ucrania.
  Por favor, lee esto: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326

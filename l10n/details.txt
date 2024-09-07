@@ -1160,7 +1160,7 @@ HTTP Response Headers
 [aisc]
  The following headers/protocols are deprecated or their values may be considered unsafe:
 
-[ru_analysis_message]
+[ru_check]
 
  'humble' will not analyze Russian domains (or allow their use from Russia) until it withdraws from Ukraine.
  Please, read this: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
