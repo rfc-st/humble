@@ -1446,12 +1446,10 @@ if not args.URL_A:
 exception_d = {
     requests.exceptions.ChunkedEncodingError: '[e_chunk]',
     requests.exceptions.ConnectionError: '[e_connection]',
-    requests.exceptions.ConnectTimeout: '[e_ctimeout]',
     requests.exceptions.ContentDecodingError: '[e_decoding]',
     requests.exceptions.InvalidSchema: '[e_ischema]',
     requests.exceptions.InvalidURL: '[e_url]',
     requests.exceptions.MissingSchema: '[e_mschema]',
-    requests.exceptions.ReadTimeout: '[e_rtimeout]',
     requests.exceptions.SSLError: None,
     requests.exceptions.Timeout: '[e_timeout]',
     requests.exceptions.TooManyRedirects: '[e_redirect]',

@@ -719,14 +719,8 @@ HTTP Response Headers
 [e_connection]
  Error: The request timed out while trying to connect to the remote server. Check URL and try again.
 
-[e_ctimeout]
- Error: The request timed out. Wait a while and try again.
-
 [e_redirect]
  Error: Too many redirects.
-
-[e_rtimeout]
- Error: The server did not send any data in the allotted amount of time.
 
 [e_timeout]
  Error: The request timed out.

@@ -719,14 +719,8 @@ Cabeceras de respuesta HTTP
 [e_connection]
  Error: La solicitud ha expirado al intentar conectarse al servidor; revisa la URL y prueba de nuevo.
 
-[e_ctimeout]
- Error: La solicitud ha caducado; espera unos minutos y prueba de nuevo.
-
 [e_redirect]
  Error: Demasiadas redirecciones.
-
-[e_rtimeout]
- Error: El servidor no ha enviado ningún dato en el tiempo previsto.
 
 [e_timeout]
  Error: Se ha superado el tiempo de espera; espera unos minutos y prueba de nuevo.
