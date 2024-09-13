@@ -1057,14 +1057,14 @@ def write_json_sections(section0, sectionh, section5, json_section, json_lns):
 
 
 def generate_pdf(pdf, pdf_links, pdf_prefixes, temp_filename):
-    set_pdf_structure()
+    set_pdf_file()
     set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename)
     pdf.output(final_filename)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
 
 
-def set_pdf_structure():
+def set_pdf_file():
     pdf.alias_nb_pages()
     set_pdf_metadata()
     pdf.set_display_mode(zoom=125)
@@ -1096,8 +1096,36 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename):
                 pdf.set_font(style='')
             for string in pdf_links:
                 if string in line:
-                    set_pdf_links(line, pdf_prefixes, string)
+                    format_pdf_links(line, pdf_prefixes, string)
             set_pdf_color(pdf, line)
+
+
+def set_pdf_sections(i):
+    pdf_section_d = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
+                     '[1.': '[1missing_s]', '[2.': '[2fingerprint_s]',
+                     '[3.': '[3depinsecure_s]', '[4.': '[4empty_s]',
+                     '[5.': '[5compat_s]', '[Cabeceras': '[0headers_s]'}
+    if match := next((x for x in pdf_section_d if i.startswith(x)), None):
+        pdf.start_section(get_detail(pdf_section_d[match]))
+
+
+def format_pdf_links(i, pdf_prefixes, pdf_string):
+    pdf_link = set_pdf_links(i, pdf_string)
+    if pdf_string in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
+        pdf_prefix = pdf_prefixes.get(pdf_string, pdf_string)
+        pdf.write(h=6, text=pdf_prefix)
+    else:
+        pdf.write(h=6, text=i[:i.index(": ")+2])
+    pdf.set_text_color(0, 0, 255)
+    pdf.cell(w=2000, h=6, text=i[i.index(": ")+2:], align="L", link=pdf_link)
+
+
+def set_pdf_links(i, pdf_string):
+    pdf_links_d = {URL_STRING[1]: URL,
+                   REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
+                   REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
+                   URL_LIST[0]: i.partition(': ')[2].strip()}
+    return pdf_links_d.get(pdf_string)
 
 
 def set_pdf_color(pdf, line):
@@ -1107,30 +1135,6 @@ def set_pdf_color(pdf, line):
     else:
         pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
-
-
-def set_pdf_sections(i):
-    section_dict = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
-                    '[1.': '[1missing_s]', '[2.': '[2fingerprint_s]',
-                    '[3.': '[3depinsecure_s]', '[4.': '[4empty_s]',
-                    '[5.': '[5compat_s]', '[Cabeceras': '[0headers_s]'}
-    if match := next((x for x in section_dict if i.startswith(x)), None):
-        pdf.start_section(get_detail(section_dict[match]))
-
-
-def set_pdf_links(i, pdf_prefixes, pdfstring):
-    links_d = {URL_STRING[1]: URL,
-               REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
-               REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
-               URL_LIST[0]: i.partition(': ')[2].strip()}
-    link_final = links_d.get(pdfstring)
-    if pdfstring in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
-        prefix = pdf_prefixes.get(pdfstring, pdfstring)
-        pdf.write(h=6, text=prefix)
-    else:
-        pdf.write(h=6, text=i[:i.index(": ")+2])
-    pdf.set_text_color(0, 0, 255)
-    pdf.cell(w=2000, h=6, text=i[i.index(": ")+2:], align="L", link=link_final)
 
 
 def generate_html():
