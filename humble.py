@@ -92,7 +92,9 @@ RE_PATTERN = (r'\[(.*?)\]',
                r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
                r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\[([^\]]+)\]',
               r'\d{4}-\d{2}-\d{2}', r'\[(.*?)\]\n', r"'nonce-([^']+)'",
-              r'\(humble_pdf_style\)([^:]+):')
+              r'\(humble_pdf_style\)([^:]+):',
+              r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s'
+              r'*/?>')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ')
 RU_CHECKS = ('https://ipapi.co/country_name/', 'RU', 'Russia')
 SLICE_INT = (30, 43, 25, 24, -4, -5)
@@ -108,7 +110,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-09-13', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-09-14', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1297,6 +1299,7 @@ def manage_http_request():
     headers = {}
     status_c = None
     reliable = None
+    body = None
     try:
         with concurrent.futures.ThreadPoolExecutor() as executor:
             future = executor.submit(make_http_request)
@@ -1307,14 +1310,15 @@ def manage_http_request():
             r, _, exception = future.result()
             if exception:
                 manage_http_exception(exception)
-                return headers, status_c, reliable
+                return headers, status_c, reliable, body
             handle_http_exception(r, exception_d)
             if r is not None:
                 status_c = r.status_code
                 headers = r.headers
+                body = r.text
     except SystemExit:
         sys.exit()
-    return headers, status_c, reliable
+    return headers, status_c, reliable, body
 
 
 def custom_help_formatter(prog):
@@ -1460,7 +1464,10 @@ exception_d = {
 }
 requests.packages.urllib3.disable_warnings()
 
-headers, status_code, reliable = manage_http_request()
+headers, status_code, reliable, body = manage_http_request()
+http_equiv = None
+if body:
+    http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)
 headers_l = {header.lower(): value for header, value in headers.items()}
 
 # Export filename generation
@@ -1843,6 +1850,12 @@ if ctype_header and '14' not in skip_list:
                                                             ctype_header):
         print_details('[ictlchar_h]', '[ictlchar]', 'd', i_cnt)
 
+if http_equiv:
+    ctype_meta = any('content-type' in item for item in http_equiv)
+    if ctype_meta and not any('text/html; charset=utf-8' in item for tuple in
+                              http_equiv for item in tuple):
+        print_details('[ictlmeta_h]', '[ictlmeta]', 'd', i_cnt)
+
 if 'critical-ch' in headers_l and unsafe_scheme and '15' not in skip_list:
     print_details('[icrch_h]', '[icrch]', 'd', i_cnt)
 
@@ -2127,6 +2140,12 @@ if 'x-sourcemap' in headers_l and '70' not in skip_list:
 
 if 'x-ua-compatible' in headers_l and '71' not in skip_list:
     print_details('[ixuacom_h]', '[ixuacom]', 'm', i_cnt)
+
+if http_equiv:
+    x_ua_meta = any('x-ua-compatible' in item for item in http_equiv)
+    if x_ua_meta and not any('IE=edge' in item for tuple in http_equiv for item
+                             in tuple):
+        print_details('[ixuameta_h]', '[ixuameta]', 'd', i_cnt)
 
 if 'x-webkit-csp' in headers_l and '72' not in skip_list:
     print_details('[ixwcsp_h]', '[ixcsp]', 'd', i_cnt)

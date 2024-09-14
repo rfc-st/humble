@@ -49,6 +49,7 @@ Content-Security-Policy: Unsafe Nonce
 Content-Security-Policy: Unsafe Values
 Content-Security-Policy-Report-Only: Deprecated Directives
 Content-Type: Deprecated Values
+Content-Type: Incorrect Value - Response body
 Content-Type: Non-HTML MIME type
 Content-Type: Unsafe Value
 Critical-CH: Ignored Header via Unsafe Scheme
@@ -129,6 +130,7 @@ X-Robots-Tag: No Valid Directives
 X-Runtime: Unsafe Value
 X-SourceMap: Deprecated Header
 X-UA-Compatible: Deprecated Header
+X-UA-Compatible: Incorrect Value - Response body
 X-Webkit-CSP: Deprecated Header
 X-Webkit-CSP-Report-Only: Deprecated Header
 X-XSS-Protection: Deprecated Header

@@ -655,6 +655,20 @@
 [ixxpd_h]
  X-XSS-Protection (Duplicated Values)
 
+[ictlmeta_h]
+ Content-Type (Incorrect Value: Response body)
+
+[ictlmeta]
+ The only allowed value is 'text/html; charset=utf-8'
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+
+[ixuameta_h]
+ X-UA-Compatible (Incorrect Value: Response body)
+
+[ixuameta]
+ The only allowed value is 'IE=edge'
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+
 [pdf_title]
 'humble' (HTTP Headers Analyzer)
 

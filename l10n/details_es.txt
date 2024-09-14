@@ -655,6 +655,21 @@
 [ixxpd_h]
  X-XSS-Protection (Valores duplicados)
 
+[ictlmeta_h]
+ Content-Type (Valor incorrecto: cuerpo de la respuesta)
+
+[ictlmeta]
+ El único valor permitido es 'text/html; charset=utf-8'
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+
+[ixuameta_h]
+ X-UA-Compatible (Valor incorrecto: cuerpo de la respuesta)
+
+[ixuameta]
+ El único valor permitido es 'IE=edge'
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+
+
 [pdf_title]
 'humble' (Analizador de cabeceras HTTP)
 
