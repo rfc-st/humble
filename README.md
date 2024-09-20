@@ -159,29 +159,38 @@ Options used: -f -g -p -U -s --hints
 > Python 3.9 or higher is required.
 
 ```bash
-# Install python3 and python3-pip if not exist
+# Requirements: python3 and python3-pip
 (Windows) https://www.python.org/downloads/windows/
 (Linux) if not installed by default, install them via, e.g. Synaptic, apt, dnf, yum ...
 (macOS) https://www.python.org/downloads/macos/
 
-# Install Git
+# Requirement: Git
 (Windows) https://git-scm.com/download/win
 (Linux) https://git-scm.com/download/linux
 (macOS) https://git-scm.com/download/mac
 
-# Clone this Git Repository
+# Setting up a Virtual Environment in Python (Pending how to do it in Windows)
+Note: '/home/bluesman/humble_venv' is a example path for the Virtual Environment.
+
+$ python3 -m venv /home/bluesman/humble_venv
+$ source /home/bluesman/humble_venv/bin/activate
+$ cd /home/bluesman/humble_venv/
 $ git clone https://github.com/rfc-st/humble.git
-
-# Change the working directory to 'humble'
 $ cd humble
-
-# Install the required dependencies
 $ pip3 install -r requirements.txt
 
-# (Recommended) Check for updates weekly, inside 'humble' directory
+# Deactivate the Virtual Environment after you have finished using 'humble'
+$ deactivate
+
+# Activate the Virtual Environment to analyze again with 'humble'
+$ cd /home/bluesman/humble_venv/
+$ source /home/bluesman/humble_venv/bin/activate
+$ cd humble
+
+# Updating (weekly): after activating the Virtual Environment and inside the folder where 'humble' is located.
 $ git pull
 
-# Or download the latest release, every four to five weeks
+# Updating (Release): after activating the Virtual Environmentans and inside folder where 'humble' is located, overwriting files.
 https://github.com/rfc-st/humble/releases
 ```
 
