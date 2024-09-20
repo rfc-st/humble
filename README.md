@@ -343,7 +343,7 @@ Thanks for downloading _'humble'_, for trying it and for your time!.
 * <a href="https://stackoverflow.com/users/8665970/aniket-navlur">Aniket Navlur</a> for <a href="https://stackoverflow.com/questions/19596750/is-there-a-way-to-clear-your-printed-text-in-python/52590238#52590238">this</a> gem.
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
 * <a href="https://github.com/bulaktm">bulaktm</a> for <a href="https://github.com/rfc-st/humble/issues/5">this</a> suggestion.
-* <a href="https://github.com/cr4zyfish">cr4zyfish </a> for <a href="https://github.com/rfc-st/humble/issues/19#issuecomment-2347202559">this</a> suggestion (check meta tags).
+* <a href="https://github.com/cr4zyfish">cr4zyfish </a> for some of <a href="https://github.com/rfc-st/humble/issues/19">these</a> suggestions.
 * <a href="https://www.linkedin.com/in/david-boronat/">David</a> for believing in the usefulness of this tool.
 * <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo</a> for the first Demo and the example <i>"(Linux) - Analyze multiple URLs and save the results as PDFs"</i>.
 * <a href="https://github.com/gl4nce">gl4nce</a> for <a href="https://github.com/rfc-st/humble/issues/6">this</a> suggestion.
