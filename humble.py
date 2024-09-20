@@ -110,7 +110,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-09-14', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-09-20', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -2156,7 +2156,7 @@ if 'x-webkit-csp-report-only' in headers_l and '73' not in skip_list:
 if 'x-xss-protection' in headers_l and '74' not in skip_list:
     print_details('[ixxpdp_h]', '[ixxpdp]', 'm', i_cnt)
     if '0' not in headers["X-XSS-Protection"]:
-        print_details('[ixxp_h]', '[ixxp]', 'd', i_cnt)
+        print_details('[ixxp_h]', '[ixxp]', 'm', i_cnt)
     if ',' in headers['X-XSS-Protection']:
         print_details('[ixxpd_h]', '[ixxpd]', 'd', i_cnt)
 

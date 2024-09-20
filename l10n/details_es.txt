@@ -1151,8 +1151,9 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
 
 [ixxp]
- Para mitigar ataques Cross-site scripting, habilite la cabecera "Content-Security-Policy".
- Ref: https://auth0.com/blog/defending-against-xss-with-csp/
+ En algunos casos, valores distintos de "0" pueden crear vulnerabilidades XSS.
+ En su lugar, utilice de forma restrictiva la cabecera "Content-Security-Policy".
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
 [ixxpdp]
  Esta cabecera está obsoleta en los tres principales navegadores.

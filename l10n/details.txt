@@ -1147,8 +1147,9 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
 
 [ixxp]
- To mitigate XSS attacks, restrictively use the "Content-Security-Policy" header.
- Ref: https://auth0.com/blog/defending-against-xss-with-csp/
+ In some cases values other than '0' can create XSS vulnerabilities.
+ Instead, use the "Content-Security-Policy" header restrictively.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 
 [ixxpdp]
  This header is deprecated in the three major web browsers.
