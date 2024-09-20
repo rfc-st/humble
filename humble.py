@@ -1208,23 +1208,23 @@ def check_ru_scope():
             sys.exit()
 
 
-def get_temp_filename(args, export_date):
+def get_tmp_file(args, export_date):
     file_ext = ".txt" if args.output == 'txt' else "t.txt"
-    parsed_url = urlparse(args.URL)
-    temp_filename = build_temp_filename(args, export_date, file_ext,
-                                        parsed_url)
+    url = urlparse(args.URL)
+    lang = '_es' if args.lang else '_en'
+    tmp_file = build_tmp_file(args, export_date, file_ext, lang, url)
     if args.output_path:
-        temp_filename = path.join(output_path, temp_filename)
-    return temp_filename
+        tmp_file = path.join(output_path, tmp_file)
+    return tmp_file
 
 
-def build_temp_filename(args, export_date, file_ext, parsed_url):
+def build_tmp_file(args, export_date, file_ext, lang, url):
     str_hum = f"{HUMBLE_DESC[1:7]}_"
     url_str = tldextract.extract(args.URL)
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
-    url_prt = f"_{parsed_url.port}_" if parsed_url.port is not None else '_'
-    return f"{str_hum}{parsed_url.scheme}{url_sub}{url_str.domain}_\
-{url_str.suffix}{url_prt}{export_date}{file_ext}"
+    url_prt = f"_{url.port}_" if url.port is not None else '_'
+    return f"{str_hum}{url.scheme}{url_sub}{url_str.domain}_{url_str.suffix}\
+{url_prt}{export_date}{lang}{file_ext}"
 
 
 def handle_server_error(http_status_code, l10n_id):
@@ -1358,8 +1358,8 @@ parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
 the license for 'humble', along with permissions, limitations and conditions.")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt'], help="Exports \
-analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss.ext' file; csv/json will \
-have a brief analysis")
+analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; \
+csv/json will have a brief analysis")
 parser.add_argument("-op", dest='output_path', type=str, help="Exports \
 analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py\
 ' will be used")
@@ -1476,11 +1476,11 @@ export_filename = None
 if args.output:
     orig_stdout = sys.stdout
     export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
-    temp_filename = get_temp_filename(args, export_date)
-    temp_filename_content = open(temp_filename, 'w', encoding='utf8')
-    sys.stdout = temp_filename_content
+    tmp_filename = get_tmp_file(args, export_date)
+    tmp_filename_content = open(tmp_filename, 'w', encoding='utf8')
+    sys.stdout = tmp_filename_content
     export_slice = SLICE_INT[4] if args.output == 'txt' else SLICE_INT[5]
-    export_filename = f"{temp_filename[:export_slice]}.{args.output}"
+    export_filename = f"{tmp_filename[:export_slice]}.{args.output}"
 
 # Section '0. Info & HTTP Response Headers'
 print_general_info(reliable, export_filename)
@@ -2211,15 +2211,15 @@ get_analysis_results()
 
 # Exporting analysis results based on file type
 if args.output:
-    final_filename = f"{temp_filename[:-5]}.{args.output}"
+    final_filename = f"{tmp_filename[:-5]}.{args.output}"
     sys.stdout = orig_stdout
-    temp_filename_content.close()
+    tmp_filename_content.close()
 if args.output == 'txt':
-    print_export_path(temp_filename, reliable)
+    print_export_path(tmp_filename, reliable)
 elif args.output == 'csv':
-    generate_csv(temp_filename, final_filename)
+    generate_csv(tmp_filename, final_filename)
 elif args.output == 'json':
-    generate_json(temp_filename, final_filename)
+    generate_json(tmp_filename, final_filename)
 elif args.output == 'pdf':
     # Optimized the loading of the third-party dependency and relevant logic
     # for 'fpdf2', enhancing analysis speed for tasks not involving PDF export
@@ -2246,7 +2246,7 @@ elif args.output == 'pdf':
     pdf = PDF()
     pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0])
     pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
-    generate_pdf(pdf, pdf_links, pdf_prefixes, temp_filename)
+    generate_pdf(pdf, pdf_links, pdf_prefixes, tmp_filename)
 elif args.output == 'html':
     generate_html()
 
@@ -2261,7 +2261,7 @@ elif args.output == 'html':
              'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
              'span_f': '</span>'}
 
-    with open(temp_filename, 'r', encoding='utf8') as html_source, \
+    with open(tmp_filename, 'r', encoding='utf8') as html_source, \
             open(final_filename, 'a', encoding='utf8') as html_final:
 
         for ln in html_source:
@@ -2310,4 +2310,4 @@ elif args.output == 'html':
         html_final.write('</pre></body></html>')
 
     print_export_path(final_filename, reliable)
-    remove(temp_filename)
+    remove(tmp_filename)
