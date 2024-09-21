@@ -25,14 +25,14 @@
 
 [Sobre esta herramienta]
 
-'humble' intenta ser estricta: tanto en la comprobación de las cabeceras de
-respuesta HTTP como sus valores; algunas de estas cabeceras pueden ser
-experimentales y puede que no estés de acuerdo con los resultados del análisis.
+'humble' es una herramienta estricta, comprobando cabeceras de respuesta HTTP
+y sus valores, incluyendo las 'Experimentales'. Se basa, en gran parte, en la
+información de https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 
-!Y eso está bien :)!: nunca debes confiar ciegamente en los resultados de las
-herramientas de seguridad; debe haber un trabajo posterior que decida si el
-riesgo es inexistente, potencial o real en función de la URL analizada
-(exposición, entorno, etc).
+Y puede que no estés de acuerdo con los resultados tras el análisis; !y eso es
+magnífico y necesario :)!: nunca deberías confiar ciegamente en herramientas de
+seguridad; siempre debe haber un trabajo posterior para evaluar el riesgo real:
+inexistente, potencial o certero en función de la URL, entorno y exposición.
 
 [Notas y comprobaciones asociadas]
 
@@ -56,5 +56,5 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
 Usa el parámetro '-s' para excluir cabeceras HTTP del análisis (las exclusiones
 se mostrarán en los resultados).
 
-No te obsesiones :). Mantén una postura de seguridad constante, lo más segura
+No te obsesiones :): mantén una postura de seguridad constante, lo más segura
 posible, documentándola y actualizándola constantemente.

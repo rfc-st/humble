@@ -25,14 +25,14 @@
 
 [About this tool]
 
-'humble' tries to be strict: both in checking HTTP response headers and their
-values; some of these headers may be experimental and you may not agree with
-all the results after the analysis.
+'humble' is a strict tool, checking HTTP response headers and their values,
+including the 'Experimental' ones. It is based, in large part, on the
+information from https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 
-And that's OK! :): you should never blindly trust the results of security
-tools; there should be further work to decide whether the risk is
-non-existent, potential or real depending on the analyzed URL (exposure,
-environment, etc).
+And you may not agree with the results after analysis; and that's great and
+necessary :)!: you should never blindly trust security tools; there must always
+be a subsequent work that evaluates the real risk: non-existent, potential or
+certain depending on the URL, environment and exposure.
 
 [Grades and Associated Checks]
 
