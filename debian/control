@@ -1,0 +1,16 @@
+Source: humble
+Section: misc
+Priority: optional
+Maintainer: Dario Camonita <danterolle@parrotsec.org>
+Rules-Requires-Root: no
+Build-Depends: debhelper-compat (= 13), python3-all, dh-sequence-python3, python3-setuptools, python3-all
+Standards-Version: 4.6.2
+Homepage: https://github.com/rfc-st/humble
+Vcs-Git: https://github.com/rfc-st/humble.git
+Vcs-Browser: https://github.com/rfc-st/humble
+
+Package: humble
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}, publicsuffix, python3-colorama, python3-requests, python3-tldextract
+Description: Humble - HTTP Headers Analyzer
+ A humble and fast HTTP Response Header Security Analyzer

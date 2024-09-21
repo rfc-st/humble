@@ -1,0 +1,5 @@
+humble (0.1-1) unstable; urgency=low
+
+  * First Debian package configuration.
+
+ -- Dario Camonita <danterolle@parrotsec.org>  Mon, 19 Aug 2024 10:57:00 +0200

@@ -1,0 +1,3 @@
+*.py *.txt usr/share/humble
+additional l10n usr/share/humble
+debian/helper-script/* usr/bin
