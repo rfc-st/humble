@@ -110,7 +110,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-09-20', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-09-21', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -2223,7 +2223,7 @@ elif args.output == 'json':
 elif args.output == 'pdf':
     # Optimized the loading of the third-party dependency and relevant logic
     # for 'fpdf2', enhancing analysis speed for tasks not involving PDF export
-    from fpdf import FPDF, YPos
+    from fpdf import FPDF, YPos  # type: ignore
 
     class PDF(FPDF):
 
