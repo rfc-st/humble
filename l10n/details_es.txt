@@ -1501,3 +1501,6 @@ Error en el análisis TLS/SSL.
 
 [unhandled_exception]
 Excepción no gestionada:
+
+[exp_header]
+ (Cabecera HTTP Experimental)

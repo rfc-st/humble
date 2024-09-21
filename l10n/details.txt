@@ -1510,3 +1510,6 @@ Error running TLS/SSL analysis.
 
 [unhandled_exception]
 Unhandled exception type:
+
+[exp_header]
+ (Experimental HTTP header)

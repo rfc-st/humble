@@ -74,6 +74,11 @@ BOLD_STRING = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
 CSV_SECTION = ('0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+EXP_HEADERS = ("critical-ch", "nel", "no-vary-search",
+               "observe-browsing-topics", "origin-agent-cluster",
+               "reporting-endpoints", "repr-digest", "set-login",
+               "speculation-rules", "supports-loading-mode")
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HTTP_SCHEMES = ('http:', 'https:')
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
@@ -842,7 +847,9 @@ def check_missing_headers(m_cnt, l_miss, l_detail, headers_set, skip_missing):
     for header, detail in zip(l_miss, l_detail):
         if header.lower() not in headers_set and header.lower() not in \
          skip_missing and 'x-frame-options' not in skip_missing:
-            print_header(header)
+            exp_s = get_detail('[exp_header]', replace=True) if header.lower()\
+                in EXP_HEADERS else ""
+            print_header(f"{header}{exp_s}")
             if not args.brief:
                 print_detail(detail, 2)
             m_cnt += 1
