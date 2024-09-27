@@ -353,6 +353,7 @@ Thanks for downloading _'humble'_, for trying it and for your time!.
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
 * <a href="https://github.com/bulaktm">bulaktm</a> for <a href="https://github.com/rfc-st/humble/issues/5">this</a> suggestion.
 * <a href="https://github.com/cr4zyfish">cr4zyfish </a> for some of <a href="https://github.com/rfc-st/humble/issues/19">these</a> suggestions.
+* <a href="https://parrotsec.org/team/">danterolle</a> for <a href="https://github.com/rfc-st/humble/commit/88a4e5e930083801b0ea2f4ab5f51730f72c9ebf">this</a>.
 * <a href="https://www.linkedin.com/in/david-boronat/">David</a> for believing in the usefulness of this tool.
 * <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo</a> for the first Demo and the example <i>"(Linux) - Analyze multiple URLs and save the results as PDFs"</i>.
 * <a href="https://github.com/gl4nce">gl4nce</a> for <a href="https://github.com/rfc-st/humble/issues/6">this</a> suggestion.
@@ -361,7 +362,7 @@ Thanks for downloading _'humble'_, for trying it and for your time!.
 * <a href="https://github.com/kazet">kazet</a> for <a href="https://github.com/rfc-st/humble/pull/18">this</a> suggestion.
 * <a href="https://github.com/manuel-sommer">manuel-sommer</a> for <a href="https://github.com/rfc-st/humble/issues/8">this</a>, <a href="https://github.com/rfc-st/humble/issues/10">this</a> and <a href="https://github.com/rfc-st/humble/issues/13">this</a>!.
 * <a href="https://github.com/n3bojs4">n3bojs4</a>, <a href="https://github.com/ehlewis">ehlewis</a> and <a href="https://github.com/dkadev">dkadev</a> for <a href="https://github.com/rfc-st/humble/issues/7">this</a> and <a href="https://github.com/rfc-st/humble/pull/16">this</a>.
-* <a href="https://www.kali.org/about-us/">sophie</a> for keeping 'humble' updated in <a href="https://www.kali.org/">Kali Linux</a>.
+* <a href="https://www.kali.org/about-us/">sophie</a> for keeping 'humble' updated in <a href="https://www.kali.org/">Kali Linux</a> and for <a href="https://github.com/rfc-st/humble/commit/88a4e5e930083801b0ea2f4ab5f51730f72c9ebf">this</a>.
 * <a href="https://github.com/stanley101music">stanley101music</a> for <a href="https://github.com/rfc-st/humble/issues/14">this</a>, <a href="https://github.com/rfc-st/humble/issues/15">this</a> and <a href="https://github.com/rfc-st/humble/issues/17">this</a>!.
 
 ## License
