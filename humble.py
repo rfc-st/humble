@@ -48,6 +48,7 @@ from csv import writer, QUOTE_ALL
 from urllib.parse import urlparse
 from subprocess import PIPE, Popen
 from os import linesep, path, remove
+from os.path import dirname, abspath
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
@@ -90,6 +91,7 @@ HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'lic_es.txt')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ('CYMRU', 'GURU', 'PRU')
+OS_PATH = dirname(abspath(__file__))
 RE_PATTERN = (r'\[(.*?)\]',
               (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
                r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$'),
@@ -115,7 +117,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-09-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-09-27', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -157,7 +159,7 @@ def check_updates(local_version):
 def fng_statistics_top():
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_f:
         fng_lines = fng_f.readlines()
     fng_incl = sum(1 for _ in islice(fng_lines, SLICE_INT[0], None))
@@ -186,7 +188,7 @@ def fng_statistics_top_result(fng_top_groups, fng_incl):
 def fng_statistics_term(fng_term):
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         fng_lines = fng_source.readlines()
     fng_incl = list(islice(fng_lines, SLICE_INT[0], None))
@@ -227,7 +229,7 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
 
 def print_grades_guide(args):
     grade_l10n = HUMBLE_FILES[11] if args.lang == 'es' else HUMBLE_FILES[10]
-    with open(path.join(HUMBLE_DIRS[1], grade_l10n), 'r',
+    with open(path.join(OS_PATH, HUMBLE_DIRS[1], grade_l10n), 'r',
               encoding='utf8') as grades_source:
         for line in islice(grades_source, SLICE_INT[3], None):
             print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
@@ -237,7 +239,7 @@ def print_grades_guide(args):
 
 def print_license(args):
     license_l10n = HUMBLE_FILES[13] if args.lang == 'es' else HUMBLE_FILES[12]
-    with open(path.join(HUMBLE_DIRS[1], license_l10n), 'r',
+    with open(path.join(OS_PATH, HUMBLE_DIRS[1], license_l10n), 'r',
               encoding='utf8') as license_source:
         for line in license_source:
             print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
@@ -247,7 +249,7 @@ def print_license(args):
 
 def print_security_guides():
     print_detail('[security_guides]')
-    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
               encoding='utf8') as guides_source:
         for line in islice(guides_source, SLICE_INT[3], None):
             print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
@@ -283,8 +285,8 @@ def testssl_analysis(testssl_command):
 
 
 def get_l10n_content():
-    l10n_path = path.join(HUMBLE_DIRS[1], HUMBLE_FILES[4] if args.lang == 'es'
-                          else HUMBLE_FILES[5])
+    l10n_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[4]
+                          if args.lang == 'es' else HUMBLE_FILES[5])
     with open(l10n_path, 'r', encoding='utf8') as l10n_source:
         return l10n_source.readlines()
 
@@ -790,7 +792,7 @@ def print_error_detail(id_mode):
 
 
 def get_epilog_content(id_mode):
-    epilog_file_path = path.join(HUMBLE_DIRS[1], HUMBLE_FILES[5])
+    epilog_file_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[5])
     with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
         epilog_lines = epilog_source.readlines()
         epilog_idx = epilog_lines.index(id_mode + '\n')
@@ -798,7 +800,7 @@ def get_epilog_content(id_mode):
 
 
 def get_fingerprint_headers():
-    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         l_fng_ex = [line.strip() for line in
                     islice(fng_source, SLICE_INT[0], None) if line.strip()]
@@ -943,7 +945,7 @@ def nourl_user_agent(user_agent_id):
 
 
 def get_user_agent(user_agent_id):
-    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
               encoding='utf8') as ua_source:
         user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
                                                        None)]
@@ -966,7 +968,8 @@ def print_user_agents(user_agents):
 
 def get_insecure_checks():
     headers_name = set()
-    with open(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[7]), "r") as ins_source:
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), "r") as \
+            ins_source:
         insecure_checks = islice(ins_source, SLICE_INT[2], None)
         for line in insecure_checks:
             insecure_header = line.split(':')[0]
@@ -1147,7 +1150,8 @@ def set_pdf_color(pdf, line):
 
 
 def generate_html():
-    copyfile(path.join(HUMBLE_DIRS[0], HUMBLE_FILES[8]), final_filename)
+    copyfile(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[8]),
+             final_filename)
     html_replace = {"html_title": get_detail('[pdf_meta_subject]'),
                     "html_desc": get_detail('[pdf_meta_title]'),
                     "html_keywords": get_detail('[pdf_meta_keywords]'),
