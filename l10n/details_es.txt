@@ -265,7 +265,7 @@
  Ref: https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
 
 [icrch_h]
- Critical-CH (Cabecera ignorada)
+ (*) Critical-CH (Cabecera ignorada)
 
 [icrch]
  Al acceder mediante HTTP los navegadores ignoran esta cabecera.
@@ -330,10 +330,10 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Large-Allocation
 
 [inel_h]
- NEL (Sin directivas adecuadas)
+ (*) NEL (Sin directivas adecuadas)
 
 [iobsb_h]
- Observe-Browsing-Topics (Sin directivas adecuadas)
+ (*) Observe-Browsing-Topics (Sin directivas adecuadas)
 
 [inel]
  Incluya, al menos, una directiva correcta.
@@ -344,7 +344,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Observe-Browsing-Topics
 
 [inelm_h]
- NEL (Directivas ausentes)
+ (*) NEL (Directivas ausentes)
 
 [inelm]
  Las directivas 'report_to' y 'max_age' son obligatorias.
@@ -491,7 +491,7 @@
  Permissions-Policy (Sin valores adecuados)
 
 [ifnvarys_h]
- No-Vary-Search (Sin directivas adecuadas)
+ (*) No-Vary-Search (Sin directivas adecuadas)
 
 [ifpol_h]
  Permissions-Policy (Valores muy permisivos)
@@ -521,7 +521,7 @@
  Referrer-Policy (Valores recomendados)
 
 [islogin_h]
- Set-Login (Sin directivas adecuadas)
+ (*) Set-Login (Sin directivas adecuadas)
 
 [irefi_h]
  Referrer-Policy (Valor inseguro)
@@ -533,13 +533,13 @@
  Report-To (Cabecera obsoleta)
 
 [irepe_h]
- Reporting-Endpoints (Valor ignorado)
+ (*) Reporting-Endpoints (Valor ignorado)
 
 [irepdig_h]
- Repr-Digest (Sin directivas adecuadas)
+ (*) Repr-Digest (Sin directivas adecuadas)
 
 [irepdigi_h]
- Repr-Digest (Valor inseguro)
+ (*) Repr-Digest (Valor inseguro)
 
 [itim_h]
  Server-Timing (Cabecera potencialmente insegura)
@@ -560,7 +560,7 @@
  SourceMap (Funcionalidad insegura)
 
 [ispec_m]
- Speculation-Rules (Cabecera potencialmente insegura)
+ (*) Speculation-Rules (Cabecera potencialmente insegura)
 
 [isdyn_h]
  Strict-Dynamic (Cabecera incorrecta)
@@ -587,16 +587,16 @@
  Transfer-Encoding (Sin directivas adecuadas)
 
 [islmodei_h]
- Supports-Loading-Mode (Cabecera ignorada)
+ (*) Supports-Loading-Mode (Cabecera ignorada)
 
 [islmode_h]
- Supports-Loading-Mode (Sin directivas adecuadas)
+ (*) Supports-Loading-Mode (Sin directivas adecuadas)
 
 [isurrmode_h]
  Surrogate-Control (Sin directivas adecuadas)
 
 [iorigcluster_h]
- Origin-Agent-Cluster (Sin directivas adecuadas)
+ (*) Origin-Agent-Cluster (Sin directivas adecuadas)
 
 [ihbas_h]
  WWW-Authenticate (Valor inseguro)
@@ -1503,4 +1503,7 @@ Error en el análisis TLS/SSL.
 Excepción no gestionada:
 
 [exp_header]
- (Cabecera HTTP Experimental)
+(*) 
+
+[experimental_header]
+  Significado de '(*)':                        Cabecera de respuesta HTTP experimental

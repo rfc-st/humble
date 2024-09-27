@@ -265,7 +265,7 @@
  Ref: https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
 
 [icrch_h]
- Critical-CH (Ignored Header)
+ (*) Critical-CH (Ignored Header)
 
 [icrch]
  This header is ignored by the browser when accessing via HTTP.
@@ -330,10 +330,10 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Large-Allocation
 
 [inel_h]
- NEL (No Valid Directives)
+ (*) NEL (No Valid Directives)
 
 [iobsb_h]
- Observe-Browsing-Topics (No Valid Directives)
+ (*) Observe-Browsing-Topics (No Valid Directives)
 
 [inel]
  Include at least one valid directive.
@@ -344,7 +344,7 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Observe-Browsing-Topics
 
 [inelm_h]
- NEL (Missing Directives)
+ (*) NEL (Missing Directives)
 
 [inelm]
  The 'report_to' and 'max_age' directives are mandatory.
@@ -491,7 +491,7 @@
  Permissions-Policy (No Valid Features)
 
 [ifnvarys_h]
- No-Vary-Search (No Valid Directives)
+ (*) No-Vary-Search (No Valid Directives)
 
 [ifpol_h]
  Permissions-Policy (Too Permissive Value)
@@ -521,7 +521,7 @@
  Referrer-Policy (Recommended Values)
 
 [islogin_h]
- Set-Login (No Valid Directives)
+ (*) Set-Login (No Valid Directives)
 
 [irefi_h]
  Referrer-Policy (Unsafe Value)
@@ -533,13 +533,13 @@
  Report-To (Deprecated Header)
 
 [irepe_h]
- Reporting-Endpoints (Ignored Value)
+ (*) Reporting-Endpoints (Ignored Value)
 
 [irepdig_h]
- Repr-Digest (No Valid Directives)
+ (*) Repr-Digest (No Valid Directives)
 
 [irepdigi_h]
- Repr-Digest (Unsafe Values)
+ (*) Repr-Digest (Unsafe Values)
 
 [itim_h]
  Server-Timing (Potentially Unsafe Header)
@@ -560,7 +560,7 @@
  SourceMap (Unsafe Funcionality)
 
 [ispec_m]
- Speculation-Rules (Potentially Unsafe Header)
+ (*) Speculation-Rules (Potentially Unsafe Header)
 
 [isdyn_h]
  Strict-Dynamic (Incorrect Header)
@@ -587,16 +587,16 @@
  Transfer-Encoding (No Valid Directives)
 
 [islmodei_h]
- Supports-Loading-Mode (Ignored Header)
+ (*) Supports-Loading-Mode (Ignored Header)
 
 [islmode_h]
- Supports-Loading-Mode (No Valid Directives)
+ (*) Supports-Loading-Mode (No Valid Directives)
 
 [isurrmode_h]
  Surrogate-Control (No Valid Directives)
 
 [iorigcluster_h]
- Origin-Agent-Cluster (No Valid Directives)
+ (*) Origin-Agent-Cluster (No Valid Directives)
 
 [ihbas_h]
  WWW-Authenticate (Unsafe Value)
@@ -1512,4 +1512,7 @@ Error running TLS/SSL analysis.
 Unhandled exception type:
 
 [exp_header]
- (Experimental HTTP header)
+(*) 
+
+[experimental_header]
+  '(*)' meaning:                Experimental HTTP response header

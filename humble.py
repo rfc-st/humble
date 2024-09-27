@@ -305,6 +305,7 @@ def get_analysis_results():
     print_analysis_results(*analysis_diff, t_cnt=t_cnt)
     analysis_grade = grade_analysis(m_cnt, f_cnt, i_cnt, e_cnt)
     print(f"{get_detail(analysis_grade)}")
+    print(f"{get_detail('[experimental_header]')}")
 
 
 def save_analysis_results(t_cnt):
@@ -851,7 +852,7 @@ def check_missing_headers(m_cnt, l_miss, l_detail, headers_set, skip_missing):
          skip_missing and 'x-frame-options' not in skip_missing:
             exp_s = get_detail('[exp_header]', replace=True) if header.lower()\
                 in EXP_HEADERS else ""
-            print_header(f"{header}{exp_s}")
+            print_header(f"{exp_s}{header}")
             if not args.brief:
                 print_detail(detail, 2)
             m_cnt += 1
