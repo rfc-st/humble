@@ -110,7 +110,7 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fng.jpg" alt="(Linux) - List of HTTP fingerprint headers based on a specific term" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Brief analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_http_facebook_com_20240706_201113.csv">Example.</a><br />
+.: (Linux) - Brief analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_facebook_com_20240928_175624_en.csv">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_csv_s.PNG" alt="(Linux) - Brief analysis saved as CSV" width=70% height=70%>
@@ -128,7 +128,7 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="(Linux) - Detailed analysis saved as HTML" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Brief analysis saved as JSON. <a href="http://jsonblob.com/1261345868962717696">Example.</a><br />
+.: (Linux) - Brief analysis saved as JSON. <a href="http://jsonblob.com/1289618254153506816">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="(Linux) - Brief analysis saved as JSON" width=70% height=70%>
