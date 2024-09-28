@@ -21,7 +21,9 @@
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fast.JPG" alt="A quick analysis with 'humble'!" width=90% height=90%>
 <br />
 <br />
-<i>"A journey of a thousand miles begins with a single step. - Lao Tzu"</i>
+<i>"千里之行，始於足下 - 老子"</i>
+<br />
+<i>"(A journey of a thousand miles begins with a single step. - Lao Tzu)"</i>
 <br />
 <br />
 <i>"And if you don't keep your feet, there's no knowing where you might be swept off to. - Bilbo Baggins"</i>
