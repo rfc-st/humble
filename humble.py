@@ -70,8 +70,8 @@ BANNER = '''  _                     _     _
  | | | | |_| | | | | | | |_) | |  __/
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
-BOLD_STRING = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[6.",
-               "[Cabeceras")
+BOLD_STRINGS = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[6.",
+                "[Cabeceras")
 CSV_SECTION = ('0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat', '6result')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
@@ -989,13 +989,13 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 def print_skipped_headers(args):
     print_detail_l("[analysis_skipped_note]")
-    print(" " + ", ".join(f"'{header}'" for header in args.skip_headers))
+    print(f" {', '.join(f'\'{header}\'' for header in args.skip_headers)}")
 
 
 def print_unsupported_headers(unsupported_headers):
     print("")
     print_detail_l("[args_skipped_unknown]")
-    print(", ".join(f"'{header}'" for header in unsupported_headers))
+    print(f"{', '.join(f'\'{header}\'' for header in unsupported_headers)}")
     sys.exit()
 
 
@@ -1013,13 +1013,12 @@ def generate_csv(temp_filename, final_filename):
 
 
 def parse_csv(csv_writer, csv_source, csv_section):
-    for i in csv_section:
-        if i in csv_source:
-            csv_content = csv_source.split(i)[1].split('[')[0]
-            info_list = [line.strip() for line in csv_content.split('\n') if
-                         line.strip()]
-            for csv_ln in info_list:
-                csv_writer.writerow([i, csv_ln])
+    for i in (item for item in csv_section if item in csv_source):
+        csv_content = csv_source.split(i)[1].split('[')[0]
+        info_list = [line.strip() for line in csv_content.split('\n') if
+                     line.strip()]
+        for csv_ln in info_list:
+            csv_writer.writerow([i, csv_ln])
 
 
 def generate_json(temp_filename, final_filename):
@@ -1097,7 +1096,7 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename):
         for line in txt_source:
             if '[' in line:
                 set_pdf_sections(line)
-            if any(bold_str in line for bold_str in BOLD_STRING):
+            if any(bold_str in line for bold_str in BOLD_STRINGS):
                 pdf.set_font(style='B')
             else:
                 pdf.set_font(style='')
@@ -2278,7 +2277,7 @@ elif args.output == 'html':
                 condition = URL_STRING[0] if URL_STRING[0] in ln else \
                     URL_STRING[1]
                 format_html_info(condition, ln_stripped, sub_d)
-            elif any(s in ln for s in BOLD_STRING):
+            elif any(s in ln for s in BOLD_STRINGS):
                 format_html_bold(ln_stripped)
             elif ok_string in ln or ko_string in ln:
                 condition = ok_string if ok_string in ln else ko_string

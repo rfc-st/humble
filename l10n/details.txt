@@ -788,7 +788,7 @@ HTTP Response Headers
  Note : The exact URL will be analyzed, without following redirects.
 
 [analysis_skipped_note]
- Note : Omitted missing and deprecated/insecure checks for
+ Note : Exclusion indicated in the analysis for
 
 [analysis_output]
  Analyzing URL and saving the report, please wait ...
@@ -1181,22 +1181,22 @@ HTTP Response Headers
  Please, read this: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
 [missing_cnt]
-  Missing headers:              
+ Missing headers:              
 
 [fng_cnt]
-  Fingerprint headers:          
+ Fingerprint headers:          
 
 [insecure_cnt]
-  Deprecated/Insecure headers:  
+ Deprecated/Insecure headers:  
 
 [empty_cnt]
-  Empty headers:                
+ Empty headers:                
 
 [total_cnt]
-  Findings to review:           
+ Findings to review:           
 
 [analysis_time]
-Analysis done in 
+ Done in 
 
 [analysis_time_sec]
  seconds! (changes with respect to the last analysis in parentheses)
@@ -1497,19 +1497,19 @@ Value:
  File : 
 
 [d_grade]
-  Analysis Grade:               D (Review 'Deprecated/Insecure headers')
+ Analysis Grade:               D (Review 'Deprecated/Insecure headers')
 
 [c_grade]
-  Analysis Grade:               C (Review 'Missing headers')
+ Analysis Grade:               C (Review 'Missing headers')
 
 [b_grade]
-  Analysis Grade:               B (Review 'Fingerprint headers')
+ Analysis Grade:               B (Review 'Fingerprint headers')
 
 [a_grade]
-  Analysis Grade:               A (Review 'Empty headers')
+ Analysis Grade:               A (Review 'Empty headers')
 
 [perfect_grade]
-  Analysis Grade:               A+ (Incredible, congratulations!)
+ Analysis Grade:               A+ (Incredible, congratulations!)
 
 [testssl_error]
 Error running TLS/SSL analysis.
@@ -1521,4 +1521,4 @@ Unhandled exception type:
 (*) 
 
 [experimental_header]
-  '(*)' meaning:                Experimental HTTP response header
+ '(*)' meaning:                Experimental HTTP response header
