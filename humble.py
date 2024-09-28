@@ -70,10 +70,10 @@ BANNER = '''  _                     _     _
  | | | | |_| | | | | | | |_) | |  __/
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
-BOLD_STRING = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.",
+BOLD_STRING = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[6.",
                "[Cabeceras")
 CSV_SECTION = ('0section', '0headers', '1missing', '2fingerprint',
-               '3depinsecure', '4empty', '5compat')
+               '3depinsecure', '4empty', '5compat', '6result')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 EXP_HEADERS = ("critical-ch", "nel", "no-vary-search",
@@ -117,7 +117,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-09-27', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-09-28', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -292,7 +292,6 @@ def get_l10n_content():
 
 
 def get_analysis_results():
-    print(".:\n")
     print_detail_l('[analysis_time]')
     print(round(end - start, 2), end="")
     print_detail_l('[analysis_time_sec]')
@@ -1019,13 +1018,8 @@ def parse_csv(csv_writer, csv_source, csv_section):
             csv_content = csv_source.split(i)[1].split('[')[0]
             info_list = [line.strip() for line in csv_content.split('\n') if
                          line.strip()]
-            exclude_ln = False
             for csv_ln in info_list:
-                if csv_ln.startswith('.:'):
-                    exclude_ln = True
-                    break
-                if not exclude_ln:
-                    csv_writer.writerow([i.strip('[]'), csv_ln])
+                csv_writer.writerow([i, csv_ln])
 
 
 def generate_json(temp_filename, final_filename):
@@ -1117,7 +1111,8 @@ def set_pdf_sections(i):
     pdf_section_d = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
                      '[1.': '[1missing_s]', '[2.': '[2fingerprint_s]',
                      '[3.': '[3depinsecure_s]', '[4.': '[4empty_s]',
-                     '[5.': '[5compat_s]', '[Cabeceras': '[0headers_s]'}
+                     '[5.': '[5compat_s]', '[6.': '[6result_s]',
+                     '[Cabeceras': '[0headers_s]'}
     if match := next((x for x in pdf_section_d if i.startswith(x)), None):
         pdf.start_section(get_detail(pdf_section_d[match]))
 
@@ -2219,6 +2214,7 @@ else:
 # Analysis summary and changes with respect to the previous one
 print(linesep.join(['']*2))
 end = time()
+print_detail_r('[6result]')
 get_analysis_results()
 
 # Exporting analysis results based on file type

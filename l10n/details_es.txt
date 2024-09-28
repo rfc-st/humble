@@ -712,6 +712,9 @@ Cabeceras de respuesta HTTP
 [5compat_s]
 5.- Compatibilidad de navegadores
 
+[6result_s]
+6.- Resultados del análisis
+
 [security_guides]
 
  Guías para habilitar cabeceras de respuesta HTTP de seguridad en servidores/servicios populares:
@@ -766,6 +769,9 @@ Cabeceras de respuesta HTTP
 
 [5compat]
 [5. Compatibilidad de navegadores para cabeceras de seguridad HTTP habilitadas]
+
+[6result]
+[6. Resultados del análisis]
 
 [analysis]
  Analizando URL, espera por favor ...

@@ -711,6 +711,9 @@ HTTP Response Headers
 [5compat_s]
 5.- Browser Compatibility
 
+[6result_s]
+6.- Analysis Results
+
 [security_guides]
 
  Guidelines for enabling security HTTP response headers on popular servers/services:
@@ -765,6 +768,9 @@ HTTP Response Headers
 
 [5compat]
 [5. Browser Compatibility for Enabled HTTP Security Headers]
+
+[6result]
+[6. Analysis Results]
 
 [analysis]
  Analyzing URL, please wait ...
