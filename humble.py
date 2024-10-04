@@ -1018,7 +1018,9 @@ def parse_csv(csv_writer, csv_source, csv_section):
         info_list = [line.strip() for line in csv_content.split('\n') if
                      line.strip()]
         for csv_ln in info_list:
-            csv_writer.writerow([i, csv_ln])
+            clean_ln = ": ".join([part.strip() for part in csv_ln.split(":",
+                                                                        1)])
+            csv_writer.writerow([i, clean_ln])
 
 
 def generate_json(temp_filename, final_filename):
