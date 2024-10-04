@@ -228,16 +228,16 @@ options:
   -v, --version               Checks for updates at https://github.com/rfc-st/humble
 
 examples:
-  -a -l es                    Shows statistics (in Spanish) of the analysis performed against all URLs
-  -f Google                   Shows HTTP fingerprint headers related to the term 'Google'
-  -u URL -a                   Shows statistics of the analysis performed against the URL
   -u URL -b                   Analyzes the URL and reports overall findings
-  -u URL -b -o csv            Analyzes the URL and exports overall findings to CSV
+  -u URL -b -o csv            Analyzes the URL and exports overall findings to CSV format
   -u URL -l es                Analyzes the URL and reports (in Spanish) detailed findings
-  -u URL -o pdf               Analyzes the URL and exports detailed findings to PDF
+  -u URL -o pdf               Analyzes the URL and exports detailed findings to PDF format
   -u URL -r                   Analyzes the URL and reports detailed findings along with HTTP response headers
   -u URL -s ETag NEL          Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
   -u URL -ua 4                Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
+  -a -l es                    Shows statistics (in Spanish) of the analysis performed against all URLs
+  -f Google                   Shows HTTP fingerprint headers related to the term 'Google'
+  -u URL -a                   Shows statistics of the analysis performed against the URL
 ```
 
 ## Advanced Usage
