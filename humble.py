@@ -70,8 +70,8 @@ BANNER = '''  _                     _     _
  | | | | |_| | | | | | | |_) | |  __/
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
-BOLD_STRINGS = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[6.",
-                "[Cabeceras")
+BOLD_STRINGS = ('[0.', 'HTTP R', '[1.', '[2.', '[3.', '[4.', '[5.', '[6.',
+                '[Cabeceras')
 CSV_SECTION = ('0section', '0headers', '1missing', '2fingerprint',
                '3depinsecure', '4empty', '5compat', '6result')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
@@ -721,7 +721,7 @@ def print_extended_info(args, reliable, status_code):
 
 def print_extra_info(reliable):
     if (status_code is not None and 400 <= status_code <= 451):
-        id_mode = f"[http_{status_code}]"
+        id_mode = f'[http_{status_code}]'
         if detail := print_detail(id_mode, 0):
             print(detail)
         print(f"{URL_LIST[2]}{status_code}")
@@ -871,7 +871,7 @@ def check_frame_options(args, headers_l, l_miss, m_cnt, skip_missing):
     if xfo_missing and ((xfo_not_set and fra_missing) or all_missing):
         print_header('X-Frame-Options')
         if not args.brief:
-            print_detail("[mxfo]", 2)
+            print_detail('[mxfo]', 2)
         m_cnt += 1
     l_miss.append('X-Frame-Options')
     return m_cnt
@@ -989,13 +989,13 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 
 def print_skipped_headers(args):
-    print_detail_l("[analysis_skipped_note]")
+    print_detail_l('[analysis_skipped_note]')
     print(f" {', '.join(f'\'{header}\'' for header in args.skip_headers)}")
 
 
 def print_unsupported_headers(unsupported_headers):
     print("")
-    print_detail_l("[args_skipped_unknown]")
+    print_detail_l('[args_skipped_unknown]')
     print(f"{', '.join(f'\'{header}\'' for header in unsupported_headers)}")
     sys.exit()
 
@@ -1039,7 +1039,7 @@ def generate_json(temp_filename, final_filename):
 
 def parse_json(txt_sections, data, section0, sectionh, section5, section6):
     for i in range(0, len(txt_sections), 2):
-        json_section = f"[{txt_sections[i]}]"
+        json_section = f'[{txt_sections[i]}]'
         json_lns = txt_sections[i + 1].strip().split('\n')
         json_data = write_json(section0, sectionh, section5, section6,
                                json_section, json_lns)
@@ -1298,7 +1298,7 @@ def handle_http_exception(r, exception_d):
         r.raise_for_status()
     except requests.exceptions.HTTPError as err_http:
         http_status_code = err_http.response.status_code
-        l10n_id = f"[server_{http_status_code}]"
+        l10n_id = f'[server_{http_status_code}]'
         if str(http_status_code).startswith('5'):
             handle_server_error(http_status_code, l10n_id)
     except tuple(exception_d.keys()) as e:
@@ -1526,7 +1526,7 @@ print("")
 print_detail_r('[2fingerprint]')
 
 if not args.brief:
-    print_detail("[afgp]")
+    print_detail('[afgp]')
 
 l_fng_ex, l_fng, titled_fng = get_fingerprint_headers()
 f_cnt = print_fingerprint_headers(headers_l, l_fng_ex, titled_fng)
@@ -1543,7 +1543,7 @@ print_detail_r('[3depinsecure]')
 i_cnt = [0]
 
 if not args.brief:
-    print_detail("[aisc]")
+    print_detail('[aisc]')
 
 l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Credentials',
          'Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
@@ -1748,7 +1748,7 @@ if 'accept-ch' in headers_l and '1' not in skip_list:
         if not args.brief:
             match_value = [x for x in t_acceptch_dep if x in acceptch_header]
             match_value_str = ', '.join(match_value)
-            print_detail_l("[ixachd_s]")
+            print_detail_l('[ixachd_s]')
             print(match_value_str)
             print_detail('[ixachd]')
         i_cnt[0] += 1
@@ -1767,9 +1767,9 @@ if 'access-control-allow-methods' in headers_l and '4' not in skip_list:
         if not args.brief:
             match_method = [x for x in t_methods if x in methods]
             match_method_str = ', '.join(match_method)
-            print_detail_l("[imethods_s]")
+            print_detail_l('[imethods_s]')
             print(match_method_str)
-            print_detail("[imethods]")
+            print_detail('[imethods]')
         i_cnt[0] += 1
 
 accesso_header = headers_l.get("access-control-allow-origin", '')
@@ -1788,9 +1788,9 @@ if 'allow' in headers_l and '7' not in skip_list:
         if not args.brief:
             match_method = [x for x in t_methods if x in methods]
             match_method_str = ', '.join(match_method)
-            print_detail_l("[imethods_s]")
+            print_detail_l('[imethods_s]')
             print(match_method_str)
-            print_detail("[imethods]")
+            print_detail('[imethods]')
         i_cnt[0] += 1
 
 cache_header = headers_l.get("cache-control", '')
@@ -1847,9 +1847,9 @@ if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep) and \
     print_detail_r('[icsiro_d]', is_red=True)
     if not args.brief:
         matches_csp_ro = [x for x in l_csp_ro_dep if x in csp_ro_header]
-        print_detail_l("[icsi_d_s]")
+        print_detail_l('[icsi_d_s]')
         print(', '.join(matches_csp_ro))
-        print_detail("[icsiro_d_r]")
+        print_detail('[icsiro_d_r]')
     i_cnt[0] += 1
 
 ctype_header = headers_l.get('content-type', '')
@@ -1919,7 +1919,7 @@ if 'nel' in headers_l and '27' not in skip_list:
     if not any(elem in nel_header for elem in t_nel_dir):
         print_details('[inel_h]', '[inel]', 'd', i_cnt)
     if not all(elem in nel_header for elem in t_nel_req):
-        print_details("[inelm_h]", "[inelm]", "d", i_cnt)
+        print_details('[inelm_h]', '[inelm]', "d", i_cnt)
 
 if 'no-vary-search' in headers_l and '28' not in skip_list:
     nvarys_header = headers_l['no_vary-search']
@@ -1954,9 +1954,9 @@ if 'permissions-policy' in headers_l and '33' not in skip_list:
         print_detail_r('[ifpold_h]', is_red=True)
         if not args.brief:
             matches_perm = [x for x in t_per_dep if x in perm_header]
-            print_detail_l("[ifpold_h_s]")
+            print_detail_l('[ifpold_h_s]')
             print(', '.join(f"'{x}'" for x in matches_perm))
-            print_detail("[ifpold]")
+            print_detail('[ifpold]')
         i_cnt[0] += 1
 
 if 'pragma' in headers_l and '34' not in skip_list:
@@ -2005,14 +2005,14 @@ stc_header = headers_l.get("set-cookie", '')
 if stc_header and '43' not in skip_list:
     if not unsafe_scheme and not all(elem in stc_header for elem in
                                      t_cookie_sec):
-        print_details("[iset_h]", "[iset]", "d", i_cnt)
+        print_details('[iset_h]', '[iset]', "d", i_cnt)
     if unsafe_scheme:
         if 'secure' in stc_header:
-            print_details("[iseti_h]", "[iseti]", "d", i_cnt)
+            print_details('[iseti_h]', '[iseti]', "d", i_cnt)
         if any(prefix in stc_header for prefix in t_cookie_prf):
-            print_details("[ispref_m]", "[ispref]", "d", i_cnt)
+            print_details('[ispref_m]', '[ispref]', "d", i_cnt)
     if "samesite=none" in stc_header and "secure" not in stc_header:
-        print_details("[iseti_m]", "[isetm]", "d", i_cnt)
+        print_details('[iseti_m]', '[isetm]', "d", i_cnt)
 
 setlogin_header = headers_l.get("set-login", '')
 if setlogin_header and not any(elem in setlogin_header for elem in t_setlogin)\
@@ -2068,9 +2068,9 @@ if 'trailer' in headers_l and '53' not in skip_list:
         print_detail_r('[itrailer_h]', is_red=True)
         if not args.brief:
             matches_trailer = [x for x in t_trailer if x in trailer_h]
-            print_detail_l("[itrailer_d_s]")
+            print_detail_l('[itrailer_d_s]')
             print(', '.join(matches_trailer))
-            print_detail("[itrailer_d_r]")
+            print_detail('[itrailer_d_r]')
         i_cnt[0] += 1
 
 if 'transfer-encoding' in headers_l and '54' not in skip_list:
@@ -2129,7 +2129,7 @@ if permcross_header and '66' not in skip_list:
     if not any(elem in permcross_header for elem in t_permcross):
         print_details('[ixpermcross_h]', '[ixpermcross]', 'm', i_cnt)
     if 'all' in permcross_header:
-        print_details('[ixpermcrossu_h]', '[ixcd]', 'm', i_cnt)
+        print_details('[ixpermcrossu_h]', '[ixpermcrossu]', 'm', i_cnt)
     if ',' in permcross_header:
         print_details('[ixpermcrossd_h]', '[ixpermcrossd]', 'm', i_cnt)
 
@@ -2183,7 +2183,7 @@ print_detail_r('[4empty]')
 l_empty = []
 
 if not args.brief:
-    print_detail("[aemp]")
+    print_detail('[aemp]')
 
 e_cnt = print_empty_headers(headers, l_empty)
 
@@ -2213,8 +2213,8 @@ compat_headers = sorted(header for header in t_sec if header in headers)
 if compat_headers:
     print_browser_compatibility(compat_headers)
 else:
-    print_detail_l("[no_sec_headers]") if args.output else \
-        print_detail_r("[no_sec_headers]", is_red=True)
+    print_detail_l('[no_sec_headers]') if args.output else \
+        print_detail_r('[no_sec_headers]', is_red=True)
 
 # Analysis summary and changes with respect to the previous one
 print(linesep.join(['']*2))
