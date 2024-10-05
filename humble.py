@@ -39,7 +39,7 @@
 
 # Standard Library imports
 from time import time
-from json import dumps
+from json import dump
 from shutil import copyfile
 from platform import system
 from itertools import islice
@@ -89,6 +89,7 @@ HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'user_agents.txt', 'insecure.txt', 'html_template.html',
                 'testssl.sh', 'grades.txt', 'grades_es.txt', 'lic.txt',
                 'lic_es.txt')
+JSON_SECTION = ('0section', '0headers', '5compat', '6result')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ('CYMRU', 'GURU', 'PRU')
 OS_PATH = dirname(abspath(__file__))
@@ -117,7 +118,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-04', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-10-05', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1024,43 +1025,46 @@ def parse_csv(csv_writer, csv_source, csv_section):
 
 
 def generate_json(temp_filename, final_filename):
-    section0, sectionh, section5 = [get_detail(f'[{i}]', replace=True) for i
-                                    in ['0section', '0headers', '5compat']]
-    with (open(temp_filename, 'r', encoding='utf8') as txt_source,
-          open(final_filename, 'w', encoding='utf8') as json_final):
-        txt_content = txt_source.read()
-        txt_sections = re.split(RE_PATTERN[5], txt_content)[1:]
+    section0, sectionh, section5, section6 = (
+        get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
+    with open(temp_filename, 'r', encoding='utf8') as txt_file, \
+         open(final_filename, 'w', encoding='utf8') as json_file:
+        txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
-        parse_json_sections(txt_sections, data, section0, sectionh, section5)
-        json_data = dumps(data, indent=4, ensure_ascii=False)
-        json_final.write(json_data)
+        parse_json(txt_sections, data, section0, sectionh, section5, section6)
+        dump(data, json_file, indent=4, ensure_ascii=False)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
 
 
-def parse_json_sections(txt_sections, data, section0, sectionh, section5):
+def parse_json(txt_sections, data, section0, sectionh, section5, section6):
     for i in range(0, len(txt_sections), 2):
         json_section = f"[{txt_sections[i]}]"
-        json_content = txt_sections[i + 1].strip()
-        if json_section == section5:
-            json_content = json_content.split('.:')[0].strip()
-        json_lns = json_content.split('\n')
-        json_data = write_json_sections(section0, sectionh, section5,
-                                        json_section, json_lns)
+        json_lns = txt_sections[i + 1].strip().split('\n')
+        json_data = write_json(section0, sectionh, section5, section6,
+                               json_section, json_lns)
         data[json_section] = json_data
 
 
-def write_json_sections(section0, sectionh, section5, json_section, json_lns):
-    if json_section in (section0, sectionh, section5):
+def write_json(section0, sectionh, section5, section6, json_section, json_lns):
+    if json_section in (section0, sectionh, section5, section6):
         json_data = {}
-        for line in json_lns:
-            if ':' in line:
-                key, value = line.split(':', 1)
-                json_data[key.strip()] = value.strip()
-            else:
-                json_data[line.strip()] = ""
+        format_json(json_data, json_lns)
     else:
         json_data = [line.strip() for line in json_lns if line.strip()]
+    return json_data
+
+
+def format_json(json_data, json_lns):
+    for line in json_lns:
+        stripped_line = line.strip()
+        if not stripped_line:
+            continue
+        if ':' in stripped_line:
+            key, value = stripped_line.split(':', 1)
+            json_data[key.strip()] = value.strip()
+        else:
+            json_data[stripped_line] = ""
     return json_data
 
 
