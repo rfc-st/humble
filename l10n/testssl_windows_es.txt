@@ -24,7 +24,7 @@
 # AGRAVIO O CUALQUIER OTRO MOTIVO, DERIVADAS DE, FUERA DE O EN CONEXIÓN CON EL
 # SOFTWARE O SU USO U OTRO TIPO DE ACCIONES EN EL SOFTWARE.
 
-Para ejecutar un análisis SSL/TLS en Windows (con 'testssl.sh') tienes tres opciones:
+Para ejecutar un análisis SSL/TLS en Windows con 'testssl.sh' tienes tres opciones:
 
 [Opción: Cygwin]
 

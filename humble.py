@@ -229,35 +229,18 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     sys.exit()
 
 
-def print_grades_guide(args):
-    grade_l10n = HUMBLE_FILES[11] if args.lang == 'es' else HUMBLE_FILES[10]
-    with open(path.join(OS_PATH, HUMBLE_DIRS[1], grade_l10n), 'r',
-              encoding='utf8') as grades_source:
-        grades_slice = SLICE_INT[2] if args.lang == 'es' else SLICE_INT[3]
-        for line in islice(grades_source, grades_slice, None):
-            print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
-  {line}", end='')
-    sys.exit()
-
-
-def print_license(args):
-    license_l10n = HUMBLE_FILES[13] if args.lang == 'es' else HUMBLE_FILES[12]
-    with open(path.join(OS_PATH, HUMBLE_DIRS[1], license_l10n), 'r',
-              encoding='utf8') as license_source:
-        for line in license_source:
-            print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
-  {line}", end='')
-    sys.exit()
-
-
-def print_testssl_windows(args):
-    grade_l10n = HUMBLE_FILES[15] if args.lang == 'es' else HUMBLE_FILES[14]
-    with open(path.join(OS_PATH, HUMBLE_DIRS[1], grade_l10n), 'r',
-              encoding='utf8') as testssl_windows_source:
-        testssl_slice = SLICE_INT[2] if args.lang == 'es' else SLICE_INT[3]
-        for line in islice(testssl_windows_source, testssl_slice, None):
-            print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
-  {line}", end='')
+def print_l10n_file(args, filename):
+    l10n_idxs = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15)}
+    lang_idx = 1 if args.lang == 'es' else 0
+    l10n_file = HUMBLE_FILES[l10n_idxs[filename][lang_idx]]
+    l10n_slice = SLICE_INT[2] if args.lang == 'es' else SLICE_INT[3]
+    with open(path.join(OS_PATH, HUMBLE_DIRS[1], l10n_file), 'r',
+              encoding='utf8') as file_source:
+        l10n_sliced = islice(file_source, l10n_slice, None) \
+            if filename in ['grades', 'testssl'] else file_source
+        for line in l10n_sliced:
+            print(f" {STYLE[0]}{line}" if line.startswith('[') else f"  \
+{line}", end='')
     sys.exit()
 
 
@@ -1409,8 +1392,8 @@ check_python_version()
 
 # Functionality for argparse parameters/values
 check_updates(local_version) if '-v' in sys.argv else None
-print_grades_guide(args) if '-grd' in sys.argv else None
-print_license(args) if '-lic' in sys.argv else None
+print_l10n_file(args, 'grades') if '-grd' in sys.argv else None
+print_l10n_file(args, 'license') if '-lic' in sys.argv else None
 
 if '-f' in sys.argv:
     fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \
@@ -1423,7 +1406,7 @@ elif args.URL:
 
 if '-e' in sys.argv:
     if system().lower() == 'windows':
-        print_testssl_windows(args)
+        print_l10n_file(args, 'testssl')
     if (args.testssl_path is None or args.URL is None):
         print_error_detail('[args_notestssl]')
 
