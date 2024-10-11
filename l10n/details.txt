@@ -1402,36 +1402,6 @@ Highlights
 [ua_invalid]
 Error: That User-Agent ID does not exist; check the available ones with '-ua 0'
 
-[windows_ssltls]
-
-To run an SSL/TLS scan on Windows (with 'testssl.sh') you have three options:
-
-1. Cygwin
-
-- Download and unzip the latest asset (Source code (zip)) from https://github.com/drwetter/testssl.sh/releases
-- Download the file 'setup-x86_64.exe' from https://www.cygwin.com/install.html
-- Run the file from the previous step, choosing in the installation the packages you want (be sure to select the 'bash' package)
-- Start the Cygwin Terminal
-- Change to the directory where 'testssl.sh' is located (first step) and run the analysis using 'bash':
--- Ex. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
-
-2. MSYS2
-
-- Download and unzip the latest asset (Source code (zip)) from https://github.com/drwetter/testssl.sh/releases
-- Download the .exe file from the 'Installation' section of https://www.msys2.org/
-- Run the file from the previous step
-- Start the MSYS2 MinGW 64-bit terminal
-- Change to the directory where 'testssl.sh' is located (first step) and run the analyisis using 'bash':
--- Ex. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
-
-3. WSL (Windows Subsystem for Linux)
-
-- Download and unzip the latest asset (Source code (zip)) from https://github.com/drwetter/testssl.sh/releases
-- Follow WSL instructions from https://learn.microsoft.com/en-us/windows/wsl/install
-- Open the installed Linux distribution from the 'Start' menu or use 'wsl' from the Command Prompt
-- Change to the directory where 'testssl.sh' is located (first step) and run the analyisis using 'bash':
--- Ex. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
-
 [args_notestssl]
 Error: '-e' requires the path of 'testssl.sh' and '-u'.
 

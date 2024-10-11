@@ -87,8 +87,9 @@ HUMBLE_DIRS = ('additional', 'l10n')
 HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'guides.txt', 'details_es.txt', 'details.txt',
                 'user_agents.txt', 'insecure.txt', 'html_template.html',
-                'testssl.sh', 'grades.txt', 'grades_es.txt', 'lic.txt',
-                'lic_es.txt')
+                'testssl.sh', 'analysis_grades.txt', 'analysis_grades_es.txt',
+                'license.txt', 'license_es.txt', 'testssl_windows.txt',
+                'testssl_windows_es.txt')
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ('CYMRU', 'GURU', 'PRU')
@@ -118,7 +119,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-05', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-10-11', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -232,7 +233,8 @@ def print_grades_guide(args):
     grade_l10n = HUMBLE_FILES[11] if args.lang == 'es' else HUMBLE_FILES[10]
     with open(path.join(OS_PATH, HUMBLE_DIRS[1], grade_l10n), 'r',
               encoding='utf8') as grades_source:
-        for line in islice(grades_source, SLICE_INT[3], None):
+        grades_slice = SLICE_INT[2] if args.lang == 'es' else SLICE_INT[3]
+        for line in islice(grades_source, grades_slice, None):
             print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
   {line}", end='')
     sys.exit()
@@ -243,6 +245,17 @@ def print_license(args):
     with open(path.join(OS_PATH, HUMBLE_DIRS[1], license_l10n), 'r',
               encoding='utf8') as license_source:
         for line in license_source:
+            print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
+  {line}", end='')
+    sys.exit()
+
+
+def print_testssl_windows(args):
+    grade_l10n = HUMBLE_FILES[15] if args.lang == 'es' else HUMBLE_FILES[14]
+    with open(path.join(OS_PATH, HUMBLE_DIRS[1], grade_l10n), 'r',
+              encoding='utf8') as testssl_windows_source:
+        testssl_slice = SLICE_INT[2] if args.lang == 'es' else SLICE_INT[3]
+        for line in islice(testssl_windows_source, testssl_slice, None):
             print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
   {line}", end='')
     sys.exit()
@@ -1410,8 +1423,7 @@ elif args.URL:
 
 if '-e' in sys.argv:
     if system().lower() == 'windows':
-        print_detail('[windows_ssltls]', 28)
-        sys.exit()
+        print_testssl_windows(args)
     if (args.testssl_path is None or args.URL is None):
         print_error_detail('[args_notestssl]')
 

@@ -12,7 +12,7 @@ Feel free to submit [bugs](https://github.com/rfc-st/humble/issues/new?assignees
 Contributing
 ------------
 
-* Please note (before sending a Pull Request) that <i>humble</i> is a multi-language tool (for now only English and Spanish are supported): take a look at [these](https://github.com/rfc-st/humble/tree/master/l10n) files, those ending in '_es' are the Spanish translations. Therefore, each Pull Request that adds or modifies text strings must take into account both languages and update the corresponding files; also take a look at the functions <i>get_detail</i>, <i>get_l10n_content</i>, <i>print_detail</i>, <i>print_details</i>, <i>print_detail_l</i> and <i>print_detail_r</i>; they will help you understand how I handle literals and phrases.
+* Please note (before sending a Pull Request) that <i>humble</i> is a multi-language tool (for now only English and Spanish are supported): take a look at [these](https://github.com/rfc-st/humble/tree/master/l10n) files, those ending in '_es.txt' are the Spanish translations. Therefore, each Pull Request that adds or modifies text strings must take into account both languages and update the corresponding files; also take a look at the functions <i>get_detail</i>, <i>get_l10n_content</i>, <i>print_detail</i>, <i>print_details</i>, <i>print_detail_l</i> and <i>print_detail_r</i>; they will help you understand how I handle literals and phrases.
 
 * In case of contributing functions these must be <b>brief and optimized</b>: my personal criteria is that every function must have, at least, a <b>60% Quality Score</b> in the [Sourcery](https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery) plugin or other similar.
 

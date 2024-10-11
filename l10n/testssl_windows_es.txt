@@ -1,0 +1,53 @@
+# 'humble' (HTTP Headers Analyzer)
+# https://github.com/rfc-st/humble/
+#
+# Licencia MIT
+#
+# Copyright (c) 2020-2024 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
+#
+# Por la presente se concede permiso, libre de cargos, a cualquier persona que
+# obtenga una copia de este software y de los archivos de documentación
+# asociados (el "Software"), a utilizar el Software sin restricción,
+# incluyendo sin limitación los derechos a usar, copiar, modificar, fusionar,
+# publicar, distribuir, sublicenciar, y/o vender copias del Software, y a
+# permitir a las personas a las que se les proporcione el Software a hacer lo
+# mismo, sujeto a las siguientes condiciones:
+
+# El aviso de copyright anterior y este aviso de permiso se incluirán en todas
+# las copias o partes sustanciales del Software.
+
+# EL SOFTWARE SE PROPORCIONA "COMO ESTÁ", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O
+# IMPLÍCITA, INCLUYENDO PERO NO LIMITADO A GARANTÍAS DE COMERCIALIZACIÓN,
+# IDONEIDAD PARA UN PROPÓSITO PARTICULAR E INCUMPLIMIENTO. EN NINGÚN CASO LOS
+# AUTORES O PROPIETARIOS DE LOS DERECHOS DE AUTOR SERÁN RESPONSABLES DE NINGUNA
+# RECLAMACIÓN, DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UNA ACCIÓN DE CONTRATO,
+# AGRAVIO O CUALQUIER OTRO MOTIVO, DERIVADAS DE, FUERA DE O EN CONEXIÓN CON EL
+# SOFTWARE O SU USO U OTRO TIPO DE ACCIONES EN EL SOFTWARE.
+
+Para ejecutar un análisis SSL/TLS en Windows (con 'testssl.sh') tienes tres opciones:
+
+[Opción: Cygwin]
+
+- Descarga y descomprime el asset más reciente (Source code (zip)) desde https://github.com/drwetter/testssl.sh/releases
+- Descarga el fichero 'setup-x86_64.exe' desde https://www.cygwin.com/install.html
+- Ejecuta el fichero del paso anterior, seleccionando los paquetes que desees (incluye en la selección el paquete 'bash')
+- Ejecuta Cygwin Terminal
+- Cambia al directorio donde esté 'testssl.sh' (primer paso) y ejecuta el análisis con 'bash':
+-- Ej. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
+
+[Opción: MSYS2]
+
+- Descarga y descomprime el asset más reciente (Source code (zip)) desde https://github.com/drwetter/testssl.sh/releases
+- Descarga el fichero .exe de la sección 'Installation' desde https://www.msys2.org/
+- Ejecuta el fichero del paso anterior
+- Ejecuta MSYS2 MinGW 64-bit terminal
+- Cambia al directorio donde esté 'testssl.sh' (primer paso) y ejecuta el análisis con 'bash':
+-- Ej. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
+
+[Opción: WSL (Subsistema de Windows para Linux)]
+
+- Descarga y descomprime el asset más reciente (Source code (zip)) desde https://github.com/drwetter/testssl.sh/releases
+- Revisa las indicaciones sobre WSL de https://learn.microsoft.com/en-us/windows/wsl/install
+- Ejecuta la distribución Linux desde el menú 'Inicio' o ejecuta 'wsl' desde el símbolo del sistema
+- Cambia al directorio donde esté 'testssl.sh' (primer paso) y ejecuta el análisis con 'bash':
+-- Ej. bash testssl.sh -f -g -p -U -s --hints https://www.spacex.com
