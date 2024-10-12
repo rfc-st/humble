@@ -3,7 +3,7 @@
 <br />
 
 <p align=center>
-<a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
+<a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.8-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--10--12-blue.svg?labelColor=343b41"></a>
@@ -158,7 +158,7 @@ Options used: -f -g -p -U -s --hints
 ## Installation & Update
 
 > [!NOTE]
-> Python 3.9 or higher is required.
+> Python 3.8 or higher is required.
 
 ```bash
 # Requirements: python3 and python3-pip
@@ -171,8 +171,8 @@ Options used: -f -g -p -U -s --hints
 (Linux) https://git-scm.com/download/linux
 (macOS) https://git-scm.com/download/mac
 
-# Setting up a Virtual Environment in Python (Pending how to do it in Windows)
-Note: '/home/bluesman/humble_venv' is a example path for the Virtual Environment.
+# Setting up a virtual environment in Python (pending how to do it in Windows)
+Note: '/home/bluesman/humble_venv' is a example path for the virtual environment.
 
 $ python3 -m venv /home/bluesman/humble_venv
 $ source /home/bluesman/humble_venv/bin/activate
@@ -181,18 +181,19 @@ $ git clone https://github.com/rfc-st/humble.git
 $ cd humble
 $ pip3 install -r requirements.txt
 
-# Deactivate the Virtual Environment after you have finished using 'humble'
+# Good practice: deactivate the virtual environment after you have finished using 'humble'
 $ deactivate
 
-# Activate the Virtual Environment to analyze again with 'humble'
+# Activate the virtual environment to analyze URLs again with 'humble'
 $ cd /home/bluesman/humble_venv/
 $ source /home/bluesman/humble_venv/bin/activate
 $ cd humble
 
-# Updating (weekly): after activating the Virtual Environment and inside the folder where 'humble' is located.
+# Updating (weekly): activate the virtual environment and from 'humble' folder
 $ git pull
 
-# Updating (Release): after activating the Virtual Environmentans and inside folder where 'humble' is located, overwriting files.
+# Updating (Release): activate the virtual environment, download the source code
+# .zip file of the most recent Asset and unzip it in the 'humble' folder, overwriting files.
 https://github.com/rfc-st/humble/releases
 ```
 

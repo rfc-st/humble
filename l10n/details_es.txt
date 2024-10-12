@@ -799,7 +799,7 @@ Cabeceras de respuesta HTTP
 
 [python_version]
 
- Error: Esta herramienta requiere, al menos, Python 3.9.
+ Error: Esta herramienta requiere, al menos, Python 3.8.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [no_warnings]

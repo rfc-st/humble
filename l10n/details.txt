@@ -794,7 +794,7 @@ HTTP Response Headers
 
 [python_version]
 
- Error: This tool requires, at least, Python 3.9.
+ Error: This tool requires, at least, Python 3.8.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [no_warnings]
