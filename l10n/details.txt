@@ -714,10 +714,6 @@ HTTP Response Headers
 [6result_s]
 6.- Analysis Results
 
-[security_guides]
-
- Guidelines for enabling security HTTP response headers on popular servers/services:
-
 [e_chunk]
  Error: The server declared chunked encoding but sent an invalid chunk.
 

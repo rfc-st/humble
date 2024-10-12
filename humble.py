@@ -89,9 +89,11 @@ HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'user_agents.txt', 'insecure.txt', 'html_template.html',
                 'testssl.sh', 'analysis_grades.txt', 'analysis_grades_es.txt',
                 'license.txt', 'license_es.txt', 'testssl_windows.txt',
-                'testssl_windows_es.txt')
+                'testssl_windows_es.txt', 'security_guides.txt',
+                'security_guides_es.txt')
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
-L10N_IDXS = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15)}
+L10N_IDXS = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15),
+             'security_guides': (16, 17)}
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ('CYMRU', 'GURU', 'PRU')
 OS_PATH = dirname(abspath(__file__))
@@ -241,16 +243,6 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
         for line in l10n_sliced:
             print(f" {STYLE[0]}{line}" if line.startswith('[') else f"  \
 {line}", end='')
-    sys.exit()
-
-
-def print_security_guides():
-    print_detail('[security_guides]')
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[3]), 'r',
-              encoding='utf8') as guides_source:
-        for line in islice(guides_source, SLICE_INT[3], None):
-            print(f" {STYLE[0]}{line}" if line.startswith('[') else f"\
-  {line}", end='')
     sys.exit()
 
 
@@ -1440,7 +1432,7 @@ URL = args.URL
 
 if args.guides or args.testssl_path or args.URL_A:
     if args.guides:
-        print_security_guides()
+        print_l10n_file(args, 'security_guides', slice_ln=True)
     elif args.testssl_path:
         testssl_command(path.abspath(args.testssl_path), args.URL)
     elif args.URL_A:

@@ -716,10 +716,6 @@ Cabeceras de respuesta HTTP
 [6result_s]
 6.- Resultados del análisis
 
-[security_guides]
-
- Guías para habilitar cabeceras de respuesta HTTP de seguridad en servidores/servicios populares:
-
 [e_chunk]
  Error: El servidor declaró codificación por partes pero envió una incorrecta.
 
