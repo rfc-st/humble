@@ -11,10 +11,10 @@
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="Official tool in OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-Tool-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
-<a target="_blank" href="https://artemis-scanner.readthedocs.io/en/latest/search.html?q=humble&check_keywords=yes&area=default" title="Featured on Artemis"><img src="https://img.shields.io/badge/Featured%20on-Artemis-blue?labelColor=343b41"></a>
-<a target="_blank" href="https://defectdojo.github.io/django-DefectDojo/integrations/parsers/file/humble/" title="Featured on DefectDojo"><img src="https://img.shields.io/badge/Featured%20on-DefectDojo-blue?labelColor=343b41"></a>
-<a target="_blank" href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/special-http-headers" title="Featured on HackTricks"><img src="https://img.shields.io/badge/Featured%20on-HackTricks-blue?labelColor=343b41"></a>
-
+<a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
+<a target="_blank" href="https://artemis-scanner.readthedocs.io/en/latest/search.html?q=humble&check_keywords=yes&area=default" title="Artemis vulnerability scanner"><img src="https://img.shields.io/badge/Artemis-blue"></a>
+<a target="_blank" href="https://defectdojo.github.io/django-DefectDojo/integrations/parsers/file/humble/" title="DefectDojo"><img src="https://img.shields.io/badge/DefectDojo-blue"></a>
+<a target="_blank" href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/special-http-headers" title="HackTricks"><img src="https://img.shields.io/badge/HackTricks-blue"></a>
 <br />
 <br />
 <br />
