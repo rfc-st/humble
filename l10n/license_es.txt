@@ -1,5 +1,5 @@
 
-'humble' (HTTP Headers Analyzer)
+'humble' (Analizador de cabeceras HTTP)
 https://github.com/rfc-st/humble/blob/master/LICENSE
 
 Licencia MIT

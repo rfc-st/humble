@@ -91,6 +91,7 @@ HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'license.txt', 'license_es.txt', 'testssl_windows.txt',
                 'testssl_windows_es.txt')
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
+L10N_IDXS = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15)}
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ('CYMRU', 'GURU', 'PRU')
 OS_PATH = dirname(abspath(__file__))
@@ -119,7 +120,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-11', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-10-12', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -229,15 +230,14 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     sys.exit()
 
 
-def print_l10n_file(args, filename):
-    l10n_idxs = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15)}
+def print_l10n_file(args, l10n_file, slice_ln=False):
     lang_idx = 1 if args.lang == 'es' else 0
-    l10n_file = HUMBLE_FILES[l10n_idxs[filename][lang_idx]]
+    l10n_file = HUMBLE_FILES[L10N_IDXS[l10n_file][lang_idx]]
     l10n_slice = SLICE_INT[2] if args.lang == 'es' else SLICE_INT[3]
     with open(path.join(OS_PATH, HUMBLE_DIRS[1], l10n_file), 'r',
-              encoding='utf8') as file_source:
-        l10n_sliced = islice(file_source, l10n_slice, None) \
-            if filename in ['grades', 'testssl'] else file_source
+              encoding='utf8') as l10n_source:
+        l10n_sliced = islice(l10n_source, l10n_slice, None) \
+            if slice_ln else l10n_source
         for line in l10n_sliced:
             print(f" {STYLE[0]}{line}" if line.startswith('[') else f"  \
 {line}", end='')
@@ -284,8 +284,8 @@ def testssl_analysis(testssl_command):
 def get_l10n_content():
     l10n_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[4]
                           if args.lang == 'es' else HUMBLE_FILES[5])
-    with open(l10n_path, 'r', encoding='utf8') as l10n_source:
-        return l10n_source.readlines()
+    with open(l10n_path, 'r', encoding='utf8') as l10n_content:
+        return l10n_content.readlines()
 
 
 def get_analysis_results():
@@ -748,39 +748,39 @@ def print_details(short_d, long_d, id_mode, i_cnt):
 
 
 def print_detail(id_mode, num_lines=1):
-    idx = l10n_content.index(id_mode + '\n')
-    print(l10n_content[idx+1], end='')
+    idx = l10n_main.index(id_mode + '\n')
+    print(l10n_main[idx+1], end='')
     for i in range(1, num_lines+1):
-        if idx+i+1 < len(l10n_content):
-            print(l10n_content[idx+i+1], end='')
+        if idx+i+1 < len(l10n_main):
+            print(l10n_main[idx+i+1], end='')
 
 
 def print_detail_l(id_mode, analytics=False):
-    for i, line in enumerate(l10n_content):
+    for i, line in enumerate(l10n_main):
         if line.startswith(id_mode):
             if not analytics:
-                print(l10n_content[i+1].replace('\n', ''), end='')
+                print(l10n_main[i+1].replace('\n', ''), end='')
             else:
-                return l10n_content[i+1].replace('\n', '').replace(':', '')[1:]
+                return l10n_main[i+1].replace('\n', '').replace(':', '')[1:]
 
 
 def print_detail_r(id_mode, is_red=False):
     style_str = STYLE[1] if is_red else STYLE[0]
-    for i, line in enumerate(l10n_content):
+    for i, line in enumerate(l10n_main):
         if line.startswith(id_mode):
             if not args.output:
-                print(f"{style_str}{l10n_content[i+1]}", end='')
+                print(f"{style_str}{l10n_main[i+1]}", end='')
             else:
-                print(l10n_content[i+1], end='')
+                print(l10n_main[i+1], end='')
             if not is_red:
                 print("")
 
 
 def get_detail(id_mode, replace=False):
-    for i, line in enumerate(l10n_content):
+    for i, line in enumerate(l10n_main):
         if line.startswith(id_mode):
-            return (l10n_content[i+1].replace('\n', '')) if replace else \
-                l10n_content[i+1]
+            return (l10n_main[i+1].replace('\n', '')) if replace else \
+                l10n_main[i+1]
 
 
 def print_error_detail(id_mode):
@@ -1387,12 +1387,12 @@ updates at https://github.com/rfc-st/humble")
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 # Multilingual messages and Python version checking
-l10n_content = get_l10n_content()
+l10n_main = get_l10n_content()
 check_python_version()
 
 # Functionality for argparse parameters/values
 check_updates(local_version) if '-v' in sys.argv else None
-print_l10n_file(args, 'grades') if '-grd' in sys.argv else None
+print_l10n_file(args, 'grades', slice_ln=True) if '-grd' in sys.argv else None
 print_l10n_file(args, 'license') if '-lic' in sys.argv else None
 
 if '-f' in sys.argv:
@@ -1406,7 +1406,7 @@ elif args.URL:
 
 if '-e' in sys.argv:
     if system().lower() == 'windows':
-        print_l10n_file(args, 'testssl')
+        print_l10n_file(args, 'testssl', slice_ln=True)
     if (args.testssl_path is None or args.URL is None):
         print_error_detail('[args_notestssl]')
 

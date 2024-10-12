@@ -25,9 +25,10 @@
 
 [About this tool]
 
-'humble' is a strict tool, checking HTTP response headers and their values,
-including the 'Experimental' ones. It is based, in large part, on the
-information from https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+'humble' (https://github.com/rfc-st/humble/) is a strict tool when analyzing
+HTTP response headers and their values, including the 'Experimental' ones.
+It is based in large part on the information provided by 'MDN Web Docs',
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers.
 
 And you may not agree with the results after analysis; and that's great and
 necessary :)!: you should never blindly trust security tools; there must always
@@ -50,8 +51,7 @@ Source files of the checks:
 [Improving Grades]
 
 Evaluate the warnings in relation to the exposure of the URL, its criticality,
-and the nature of the HTTP header (e.g., experimental, as per
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
+and the nature of the HTTP header (e.g., 'Experimental').
 
 Use the '-s' parameter to exclude HTTP headers from the analysis (the
 exclusions will be indicated in the results).

@@ -1,4 +1,4 @@
-# 'humble' (HTTP Headers Analyzer)
+# 'humble' (Analizador de cabeceras HTTP)
 # https://github.com/rfc-st/humble/
 #
 # Licencia MIT
@@ -26,9 +26,10 @@
 
 [Sobre esta herramienta]
 
-'humble' es una herramienta estricta, comprobando cabeceras de respuesta HTTP
-y sus valores, incluyendo las 'Experimentales'. Se basa, en gran parte, en la
-información de https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+'humble' (https://github.com/rfc-st/humble/) es una herramienta estricta
+analizando cabeceras de respuesta HTTP y sus valores, incluyendo las
+'Experimentales'. Se basa en gran parte en la información proporcionada por
+'MDN Web Docs', https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers.
 
 Y puede que no estés de acuerdo con los resultados tras el análisis; !y eso es
 magnífico y necesario :)!: nunca deberías confiar ciegamente en herramientas de
@@ -51,8 +52,7 @@ Ficheros fuente de las comprobaciones:
 [Mejorando la nota]
 
 Evalúa las advertencias en relación a la exposición de la URL, su criticidad
-y la naturaleza de la cabecera HTTP (por ejemplo, experimental, según
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
+y la naturaleza de la cabecera HTTP (por ejemplo, 'Experimental').
 
 Usa el parámetro '-s' para excluir cabeceras HTTP del análisis (las exclusiones
 se mostrarán en los resultados).
