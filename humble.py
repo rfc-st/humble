@@ -348,7 +348,7 @@ def grade_analysis(m_cnt, f_cnt, i_cnt, e_cnt):
 
 def analysis_exists(filepath):
     if not path.exists(filepath):
-        detail = '[no_analysis]' if args.URL else '[no_global_analysis]'
+        detail = '[no_analysis]' if URL else '[no_global_analysis]'
         print_error_detail(detail)
 
 
@@ -918,9 +918,9 @@ def parse_user_agent(user_agent=False):
     if not user_agent:
         return {'User-Agent': get_user_agent('1')}
     user_agent_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
-    if not args.URL:
+    if not URL:
         nourl_user_agent(user_agent_id)
-    if args.URL:
+    else:
         return {'User-Agent': get_user_agent(user_agent_id)}
 
 
@@ -1210,17 +1210,17 @@ def check_ru_scope():
 
 def get_tmp_file(args, export_date):
     file_ext = ".txt" if args.output == 'txt' else "t.txt"
-    url = urlparse(args.URL)
+    url = urlparse(URL)
     lang = '_es' if args.lang else '_en'
-    tmp_file = build_tmp_file(args, export_date, file_ext, lang, url)
+    tmp_file = build_tmp_file(export_date, file_ext, lang, url)
     if args.output_path:
         tmp_file = path.join(output_path, tmp_file)
     return tmp_file
 
 
-def build_tmp_file(args, export_date, file_ext, lang, url):
+def build_tmp_file(export_date, file_ext, lang, url):
     str_hum = f"{HUMBLE_DESC[1:7]}_"
-    url_str = tldextract.extract(args.URL)
+    url_str = tldextract.extract(URL)
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
     url_prt = f"_{url.port}_" if url.port is not None else '_'
     return f"{str_hum}{url.scheme}{url_sub}{url_str.domain}_{url_str.suffix}\
@@ -1391,18 +1391,20 @@ if '-f' in sys.argv:
     fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \
         fng_statistics_top()
 
+URL = args.URL
+
 if '-ua' in sys.argv:
     ua_header = parse_user_agent(user_agent=True)
-elif args.URL:
-    ua_header = parse_user_agent(user_agent=False)
+elif URL:
+    ua_header = parse_user_agent()
 
 if '-e' in sys.argv:
     if system().lower() == 'windows':
         print_l10n_file(args, 'testssl', slice_ln=True)
-    if (args.testssl_path is None or args.URL is None):
+    if (args.testssl_path is None or URL is None):
         print_error_detail('[args_notestssl]')
 
-if args.lang and not (args.URL or args.URL_A) and not args.guides:
+if args.lang and not (URL or args.URL_A) and not args.guides:
     print_error_detail('[args_lang]')
 
 if args.output_path is not None:
@@ -1410,7 +1412,7 @@ if args.output_path is not None:
     check_output_path(args, output_path)
 
 if any([args.brief, args.output, args.ret, args.redirects,
-        args.skip_headers]) and (args.URL is None or args.guides is None or
+        args.skip_headers]) and (URL is None or args.guides is None or
                                  args.URL_A is None):
     print_error_detail('[args_several]')
 
@@ -1428,16 +1430,15 @@ elif args.skip_headers:
     print_unsupported_headers(unsupported_headers) if unsupported_headers else\
         None
 
-URL = args.URL
+if args.guides:
+    print_l10n_file(args, 'security_guides', slice_ln=True)
 
-if args.guides or args.testssl_path or args.URL_A:
-    if args.guides:
-        print_l10n_file(args, 'security_guides', slice_ln=True)
-    elif args.testssl_path:
-        testssl_command(path.abspath(args.testssl_path), args.URL)
-    elif args.URL_A:
-        analysis_exists(HUMBLE_FILES[0])
-        url_analytics() if args.URL else url_analytics(is_global=True)
+if args.testssl_path:
+    testssl_command(path.abspath(args.testssl_path), URL)
+
+if args.URL_A:
+    analysis_exists(HUMBLE_FILES[0])
+    url_analytics() if URL else url_analytics(is_global=True)
 
 start = time()
 # My reasons for this check:
