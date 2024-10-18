@@ -799,7 +799,7 @@ Cabeceras de respuesta HTTP
 
 [python_version]
 
- Error: Esta herramienta requiere, al menos, Python 3.8.
+ Error: 'humble' requiere, al menos, Python 3.8.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [no_warnings]
@@ -1404,19 +1404,19 @@ A destacar
 Error: No existe ese ID de User-Agent; consulta los disponibles con '-ua 0'
 
 [args_notestssl]
-Error: '-e' requiere la ruta de 'testssl.sh' y '-u'.
+Error: El parámetro '-e' requiere la ruta de 'testssl.sh' y el parámetro '-u'.
 
 [args_lang]
-Error: '-l' requiere '-u' o '-a'.
+Error: El parámetro '-l' requiere de los parámetros '-u' o '-a'.
 
 [args_useragent]
-Error: '-ua' requiere '-u'.
+Error: El parámetro '-ua' requiere el parámetro '-u'.
 
 [args_several]
-Error: '-b', '-df', -'o', '-r' y '-s' requieren '-u'.
+Error: Los parámetros '-b', '-df', -'o', '-r' y '-s' requieren el parámetro '-u'.
 
 [args_csv_json]
-Error: '-o csv' y '-o json' requieren '-b'.
+Error: Los parámetros '-o csv' y '-o json' requieren el parámetro '-b'.
 
 [notestssl_file]
 Error: 'testssl.sh' no existe en la ruta indicada.
@@ -1425,13 +1425,13 @@ Error: 'testssl.sh' no existe en la ruta indicada.
 Error: la ruta indicada de 'testssl.sh' es incorrecta.
 
 [args_skipped]
-Error: '-s' requiere, al menos, una cabecera HTTP de respuesta.
+Error: El parámetro '-s' requiere, al menos, el nombre de una cabecera HTTP de respuesta.
 
 [args_skipped_unknown]
 Error: Elimina estas cabeceras HTTP del parámetro '-s', ya que 'humble' no las comprueba: 
 
 [args_nooutputfmt]
-Error: '-op' requiere '-o'.
+Error: El parámetro '-op' requiere el parámetro '-o'.
 
 [args_noexportpath]
 Error: No existe la ruta indicada 

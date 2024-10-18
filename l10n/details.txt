@@ -794,7 +794,7 @@ HTTP Response Headers
 
 [python_version]
 
- Error: This tool requires, at least, Python 3.8.
+ Error: 'humble' requires, at least, Python 3.8.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [no_warnings]
@@ -1399,19 +1399,19 @@ Highlights
 Error: That User-Agent ID does not exist; check the available ones with '-ua 0'
 
 [args_notestssl]
-Error: '-e' requires the path of 'testssl.sh' and '-u'.
+Error: The '-e' parameter requires the path of 'testssl.sh' and the parameter '-u'.
 
 [args_lang]
-Error: '-l' requires also '-u' or '-a'.
+Error: The '-l' parameter requires the parameters '-u' or '-a'.
 
 [args_useragent]
-Error: '-ua' requires also '-u'.
+Error: The '-ua' parameter requires the parameter '-u'.
 
 [args_several]
-Error: '-b', '-df', '-'o', '-r' and '-s' requires also '-u'.
+Error: The parameters '-b', '-df', '-'o', '-r' and '-s' require the parameter '-u'.
 
 [args_csv_json]
-Error: '-o csv' and '-o json' requires '-b'.
+Error: The parameters '-o csv' and '-o json' require the parameter '-b'.
 
 [notestssl_file]
 Error: 'testssl.sh' is not found in that PATH.
@@ -1420,10 +1420,10 @@ Error: 'testssl.sh' is not found in that PATH.
 Error: The PATH for 'testssl.sh' is incorrect.
 
 [args_nooutputfmt]
-Error: '-op' requires '-o'.
+Error: The parameter '-op' requires the parameter '-o'.
 
 [args_skipped]
-Error: '-s' requires at least the name of one HTTP response header.
+Error: The parameter '-s' requires at least the name of one HTTP response header.
 
 [args_skipped_unknown]
 Error: Remove these HTTP headers from the '-s' parameter as 'humble' does not check them: 
