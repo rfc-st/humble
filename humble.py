@@ -122,7 +122,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-18', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-10-19', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -853,10 +853,10 @@ def check_frame_options(args, headers_l, l_miss, m_cnt, skip_missing):
         skip_missing.add('x-frame-options')
     xfo_missing = 'x-frame-options' not in skip_missing
     xfo_not_set = 'x-frame-options' not in headers_l
-    fra_missing = 'frame-ancestors' not in headers_l.get(
+    csp_missing = 'frame-ancestors' not in headers_l.get(
         'content-security-policy', '')
     all_missing = all(header.lower() not in headers_l for header in l_miss)
-    if xfo_missing and ((xfo_not_set and fra_missing) or all_missing):
+    if xfo_missing and ((xfo_not_set and csp_missing) or all_missing):
         print_header('X-Frame-Options')
         if not args.brief:
             print_detail('[mxfo]', 2)
@@ -1188,6 +1188,44 @@ def format_html_caniuse(ln, sub_d):
 
 def format_html_bold(ln):
     html_final.write(f'<strong>{ln}</strong><br>')
+
+
+def format_html_headers(i, ln, sub_d):
+    if (str(f"{i}: ") in ln and 'Date:   ' not in ln):
+        ln = ln.replace(ln[: ln.index(":")],
+                        ((sub_d['span_h'] + ln[: ln.index(":")]) +
+                         sub_d['span_f']),)
+    return ln
+
+
+def format_html_lfngfinal(args, i, ln, sub_d):
+    if (ln and i in ln and not args.brief):
+        try:
+            idx = ln.index(' [')
+        except ValueError:
+            return
+        if 'class="ko"' not in ln:
+            ln = f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}{ln[idx:]}"
+    return ln
+
+
+def format_html_lfinalcase(args, i, ln, sub_d):
+    if (args.brief and i in ln.casefold() and ':' not in ln.casefold() and
+       'class="ko"' not in ln):
+        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+    return ln
+
+
+def format_html_lfinal(i, ln, sub_d):
+    if (ln and ((i in ln) and ('"' not in ln) or ('HTTP (' in ln))):
+        ln = ln.replace(ln, sub_d['span_ko'] + ln + sub_d['span_f'])
+    return ln
+
+
+def format_html_empty(i, ln, ln_stripped, sub_d):
+    if (i in ln_stripped and '[' not in ln_stripped):
+        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+    return ln
 
 
 def print_http_exception(exception_id, exception_v):
@@ -2284,30 +2322,17 @@ elif args.output == 'html':
                 format_html_caniuse(ln_stripped, sub_d)
             else:
                 for i in headers:
-                    if (str(i + ": ") in ln) and ('Date:   ' not in ln):
-                        ln = ln.replace(ln[0: ln.index(":")], sub_d['span_h'] +
-                                        ln[0: ln.index(":")] + sub_d['span_f'])
+                    ln = format_html_headers(i, ln, sub_d)
                 for i in l_fng_final:
-                    if i in ln and not args.brief:
-                        try:
-                            idx = ln.index(' [')
-                        except ValueError:
-                            continue
-                        if 'class="ko"' not in ln:
-                            ln = f"{sub_d['span_ko']}{ln[:idx]}\
-{sub_d['span_f']}{ln[idx:]}"
+                    ln = format_html_lfngfinal(args, i, ln, sub_d)
                 for i in l_fng_final_case:
-                    if args.brief and i in ln.casefold() and ':' not in \
-                     ln.casefold() and 'class="ko"' not in ln:
-                        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+                    ln = format_html_lfinalcase(args, i, ln, sub_d)
                 for i in l_final:
-                    if (i in ln) and ('"' not in ln) or ('HTTP (' in ln):
-                        ln = ln.replace(ln, sub_d['span_ko'] +
-                                        ln + sub_d['span_f'])
+                    ln = format_html_lfinal(i, ln, sub_d)
                 for i in l_empty:
-                    if i in ln_stripped and '[' not in ln_stripped:
-                        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
-                html_final.write(ln)
+                    ln = format_html_empty(i, ln, ln_stripped, sub_d)
+                if ln:
+                    html_final.write(ln)
         html_final.write('</pre></body></html>')
 
     print_export_path(final_filename, reliable)
