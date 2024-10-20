@@ -122,7 +122,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-19', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-10-20', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1198,25 +1198,22 @@ def format_html_headers(i, ln, sub_d):
     return ln
 
 
-def format_html_lfngfinal(args, i, ln, sub_d):
+def format_html_fingerprint(args, i, ln, sub_d):
     if (ln and i in ln and not args.brief):
         try:
             idx = ln.index(' [')
         except ValueError:
-            return
+            return ln
         if 'class="ko"' not in ln:
-            ln = f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}{ln[idx:]}"
+            return f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}{ln[idx:]}"
+    ln_lower, i_lower = ln.casefold(), i.casefold()
+    if args.brief and i_lower in ln_lower and ':' not in ln and \
+       'class="ko"' not in ln:
+        return f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
     return ln
 
 
-def format_html_lfinalcase(args, i, ln, sub_d):
-    if (args.brief and i in ln.casefold() and ':' not in ln.casefold() and
-       'class="ko"' not in ln):
-        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
-    return ln
-
-
-def format_html_lfinal(i, ln, sub_d):
+def format_html_total(i, ln, sub_d):
     if (ln and ((i in ln) and ('"' not in ln) or ('HTTP (' in ln))):
         ln = ln.replace(ln, sub_d['span_ko'] + ln + sub_d['span_f'])
     return ln
@@ -2289,9 +2286,7 @@ elif args.output == 'pdf':
 elif args.output == 'html':
     generate_html()
 
-    l_final = sorted(set(l_miss + l_ins))
-    l_fng_final = sorted(l_fng)
-    l_fng_final_case = [x.casefold() for x in l_fng_final]
+    l_total = sorted(set(l_miss + l_ins))
 
     ok_string, ko_string = [get_detail(f'[{i}]') for i
                             in ['no_warnings', 'no_sec_headers']]
@@ -2323,12 +2318,10 @@ elif args.output == 'html':
             else:
                 for i in headers:
                     ln = format_html_headers(i, ln, sub_d)
-                for i in l_fng_final:
-                    ln = format_html_lfngfinal(args, i, ln, sub_d)
-                for i in l_fng_final_case:
-                    ln = format_html_lfinalcase(args, i, ln, sub_d)
-                for i in l_final:
-                    ln = format_html_lfinal(i, ln, sub_d)
+                for i in sorted(l_fng):
+                    ln = format_html_fingerprint(args, i, ln, sub_d)
+                for i in l_total:
+                    ln = format_html_total(i, ln, sub_d)
                 for i in l_empty:
                     ln = format_html_empty(i, ln, ln_stripped, sub_d)
                 if ln:
