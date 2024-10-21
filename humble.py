@@ -82,6 +82,9 @@ EXP_HEADERS = ("critical-ch", "nel", "no-vary-search",
                "speculation-rules", "supports-loading-mode")
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HTTP_SCHEMES = ('http:', 'https:')
+HTTP_SERVER_CODES = (500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510,
+                     511, 520, 521, 522, 523, 524, 525, 526, 527, 528, 529,
+                     530)
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
 HUMBLE_DIRS = ('additional', 'l10n')
 HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
@@ -122,7 +125,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-20', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-10-21', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1163,14 +1166,14 @@ def format_html_info(condition, ln, sub_d):
 {sub_d['close_t']}{ln[8:]}{sub_d['ahref_f']}<br>")
 
 
-def format_html_okko(condition, ln, sub_d):
+def format_html_warnings(condition, ln, sub_d):
     if condition == ok_string:
         html_final.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
     else:
         html_final.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
 
 
-def format_html_refs(condition, ln, sub_d):
+def format_html_references(condition, ln, sub_d):
     if condition == REF_LINKS[1]:
         html_final.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}\
 {sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
@@ -1179,7 +1182,7 @@ def format_html_refs(condition, ln, sub_d):
 {sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
 
 
-def format_html_caniuse(ln, sub_d):
+def format_html_compatibility(ln, sub_d):
     ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: {sub_d['span_f']}\
 {sub_d['ahref_s']}{ln[ln.index(HTTP_SCHEMES[1]):]}{sub_d['close_t']}\
 {ln[ln.index(HTTP_SCHEMES[1]):]}{sub_d['ahref_f']}<br>"
@@ -1213,7 +1216,7 @@ def format_html_fingerprint(args, i, ln, sub_d):
     return ln
 
 
-def format_html_total(i, ln, sub_d):
+def format_html_totals(i, ln, sub_d):
     if (ln and ((i in ln) and ('"' not in ln) or ('HTTP (' in ln))):
         ln = ln.replace(ln, sub_d['span_ko'] + ln + sub_d['span_f'])
     return ln
@@ -1265,11 +1268,11 @@ def build_tmp_file(export_date, file_ext, lang, url):
 def handle_server_error(http_status_code, l10n_id):
     delete_lines()
     print()
-    if (500 <= http_status_code <= 511) or (520 <= http_status_code <= 530):
+    if http_status_code in HTTP_SERVER_CODES:
         if detail := print_detail(l10n_id, 0):
             print(detail)
         else:
-            print((URL_LIST[2] if (500 <= http_status_code <= 511) else
+            print((URL_LIST[2] if http_status_code in range(500, 512) else
                    URL_LIST[1]) + str(http_status_code))
     else:
         print_error_detail('[server_serror]')
@@ -1304,7 +1307,7 @@ def wait_http_request(future):
         future.result(timeout=5)
 
 
-def manage_http_exception(exception):
+def handle_requests_exception(exception):
     exception_type = type(exception)
     if exception_type in exception_d:
         exception_id = exception_d[exception_type]
@@ -1314,7 +1317,7 @@ def manage_http_exception(exception):
         print(f" {exception_type}")
 
 
-def handle_http_exception(r, exception_d):
+def handle_http_error(r, exception_d):
     if r is None:
         return
     try:
@@ -1343,10 +1346,13 @@ def manage_http_request():
                 print(get_detail('[unreliable_analysis]'))
                 reliable = 'No'
             r, _, exception = future.result()
+            # https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/
             if exception:
-                manage_http_exception(exception)
+                handle_requests_exception(exception)
                 return headers, status_c, reliable, body
-            handle_http_exception(r, exception_d)
+            # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors
+            # https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+            handle_http_error(r, exception_d)
             if r is not None:
                 status_c = r.status_code
                 headers = r.headers
@@ -1476,7 +1482,6 @@ if args.URL_A:
     url_analytics() if URL else url_analytics(is_global=True)
 
 start = time()
-# My reasons for this check:
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 check_ru_scope()
 
@@ -1485,7 +1490,6 @@ if not args.URL_A:
     print("")
     print_detail(detail)
 
-# Retrieving HTTP response headers and managing exceptions
 exception_d = {
     requests.exceptions.ChunkedEncodingError: '[e_chunk]',
     requests.exceptions.ConnectionError: '[e_connection]',
@@ -2285,12 +2289,9 @@ elif args.output == 'pdf':
     generate_pdf(pdf, pdf_links, pdf_prefixes, tmp_filename)
 elif args.output == 'html':
     generate_html()
-
     l_total = sorted(set(l_miss + l_ins))
-
     ok_string, ko_string = [get_detail(f'[{i}]') for i
                             in ['no_warnings', 'no_sec_headers']]
-
     sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
              'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
              'span_f': '</span>'}
@@ -2308,20 +2309,20 @@ elif args.output == 'html':
                 format_html_bold(ln_stripped)
             elif ok_string in ln or ko_string in ln:
                 condition = ok_string if ok_string in ln else ko_string
-                format_html_okko(condition, ln_stripped, sub_d)
+                format_html_warnings(condition, ln_stripped, sub_d)
             elif REF_LINKS[1] in ln or REF_LINKS[0] in ln:
                 condition = REF_LINKS[1] if REF_LINKS[1] in ln else \
                             REF_LINKS[0]
-                format_html_refs(condition, ln_stripped, sub_d)
+                format_html_references(condition, ln_stripped, sub_d)
             elif URL_STRING[2] in ln:
-                format_html_caniuse(ln_stripped, sub_d)
+                format_html_compatibility(ln_stripped, sub_d)
             else:
                 for i in headers:
                     ln = format_html_headers(i, ln, sub_d)
                 for i in sorted(l_fng):
                     ln = format_html_fingerprint(args, i, ln, sub_d)
                 for i in l_total:
-                    ln = format_html_total(i, ln, sub_d)
+                    ln = format_html_totals(i, ln, sub_d)
                 for i in l_empty:
                     ln = format_html_empty(i, ln, ln_stripped, sub_d)
                 if ln:
