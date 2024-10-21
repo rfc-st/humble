@@ -100,6 +100,7 @@ L10N_IDXS = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15),
 # https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 NON_RU_TLD = ('CYMRU', 'GURU', 'PRU')
 OS_PATH = dirname(abspath(__file__))
+PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
 RE_PATTERN = (r'\[(.*?)\]',
               (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
                r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$'),
@@ -1100,6 +1101,9 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename):
             for string in pdf_links:
                 if string in line:
                     format_pdf_links(line, pdf_prefixes, string)
+            if set_pdf_conditions(line):
+                continue
+            pdf.set_text_color(255, 0, 0)
             set_pdf_color(pdf, line)
 
 
@@ -1113,6 +1117,14 @@ def set_pdf_sections(i):
         pdf.start_section(get_detail(pdf_section_d[match]))
 
 
+def set_pdf_conditions(line):
+    return (all(condition not in line for condition in PDF_CONDITIONS[:3]) and
+            (PDF_CONDITIONS[3] in
+             line or any(item in line for item in (l_miss + l_ins + l_fng +
+                                                   titled_fng))) and
+            set_pdf_warnings(pdf, line))
+
+
 def format_pdf_links(i, pdf_prefixes, pdf_string):
     pdf_link = set_pdf_links(i, pdf_string)
     if pdf_string in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
@@ -1122,6 +1134,12 @@ def format_pdf_links(i, pdf_prefixes, pdf_string):
         pdf.write(h=6, text=i[:i.index(": ")+2])
     pdf.set_text_color(0, 0, 255)
     pdf.cell(w=2000, h=6, text=i[i.index(": ")+2:], align="L", link=pdf_link)
+
+
+def set_pdf_warnings(pdf, line):
+    pdf.set_text_color(255, 0, 0)
+    pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+    return True
 
 
 def set_pdf_links(i, pdf_string):
