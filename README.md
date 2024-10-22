@@ -225,10 +225,10 @@ $ docker rmi humble:1.42
 (Linux)   $ python3 humble.py
 (macOS)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt}] [-op OUTPUT_PATH] [-r]
-                 [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
+usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt}] [-of OUTPUT_FILE]
+                 [-op OUTPUT_PATH] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-09-20
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-10-22
 
 options:
   -h, --help                  show this help message and exit
@@ -242,6 +242,7 @@ options:
   -l {es}                     Defines the language for displaying analysis, errors and messages; will be English if this parameter is omitted
   -lic                        Shows the license for 'humble', along with permissions, limitations and conditions.
   -o {csv,html,json,pdf,txt}  Exports analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; csv/json will have a brief analysis
+  -of OUTPUT_FILE             Exports analysis to 'OUTPUT_FILE'; if this parameter is omitted the default filename of the parameter '-o' will be used
   -op OUTPUT_PATH             Exports analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py' will be used
   -r                          Shows HTTP response headers and a detailed analysis; '-b' parameter will take priority
   -s [SKIP_HEADERS ...]       Skips 'deprecated/insecure' and 'missing' checks for the indicated 'SKIP_HEADERS' (separated by spaces)

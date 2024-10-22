@@ -1266,6 +1266,8 @@ def check_ru_scope():
 
 def get_tmp_file(args, export_date):
     file_ext = ".txt" if args.output == 'txt' else "t.txt"
+    if args.output_file:
+        return args.output_file + file_ext
     url = urlparse(URL)
     lang = '_es' if args.lang else '_en'
     tmp_file = build_tmp_file(export_date, file_ext, lang, url)
@@ -1419,6 +1421,9 @@ parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt'], help="Exports \
 analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; \
 csv/json will have a brief analysis")
+parser.add_argument("-of", dest='output_file', type=str, help="Exports \
+analysis to 'OUTPUT_FILE'; if this parameter is omitted the default filename \
+of the parameter '-o' will be used")
 parser.add_argument("-op", dest='output_path', type=str, help="Exports \
 analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py\
 ' will be used")
@@ -1465,6 +1470,11 @@ if '-e' in sys.argv:
 
 if args.lang and not (URL or args.URL_A) and not args.guides:
     print_error_detail('[args_lang]')
+
+if args.output_file and args.output and URL:
+    output_file = args.output_file
+else:
+    print_error_detail('[args_customfile]')
 
 if args.output_path is not None:
     output_path = path.abspath(args.output_path)

@@ -1415,6 +1415,9 @@ Error: El parámetro '-ua' requiere el parámetro '-u'.
 [args_several]
 Error: Los parámetros '-b', '-df', -'o', '-r' y '-s' requieren el parámetro '-u'.
 
+[args_customfile]
+Error: El parámetro -of' requiere los parámetros '-u' y '-o'.
+
 [args_csv_json]
 Error: Los parámetros '-o csv' y '-o json' requieren el parámetro '-b'.
 
