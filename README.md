@@ -6,7 +6,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.8-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--10--21-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--10--22-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
@@ -36,6 +36,7 @@
 [Features](#features)<br />
 [Screenshots](#screenshots)<br />
 [Installation & Update](#installation--update)<br />
+[Installation & Update (Docker)](#installation--maintenance-docker)<br />
 [Usage](#usage)<br />
 [Advanced Usage](#advanced-usage)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
@@ -196,6 +197,25 @@ $ git pull
 # Updating (Release): activate the virtual environment, download the source code
 # .zip file of the most recent Asset and unzip it in the 'humble' folder, overwriting files.
 https://github.com/rfc-st/humble/releases
+```
+
+## Installation & Maintenance (Docker)
+
+> [!NOTE]
+> Python 3.8 will be used to build the image.
+
+```bash
+# Build the image, taking as TAG the latest Release of 'humble'; in this example it is 1.42
+# https://github.com/rfc-st/humble/releases
+$ docker build -t humble:1.42 .
+
+# Run an analysis, specifying the TAG of the Docker image and with the parameters you want
+# (Required) '-it' option: allocate a pseudo-TTY and keep the input interactive (required for colors and certain functions)
+# (Required) '-rm' option: automatically remove the container and its associated anonymous volumes when it exits
+$ docker run -it --rm --name humble humble:1.42 /bin/bash -c "python3 humble.py -u https://facebook.com"
+
+# Removing (and untagging) previous images of 'humble' after upgrading to the latest release
+$ docker rmi humble:1.42
 ```
 
 ## Usage
@@ -365,6 +385,7 @@ Thanks for downloading _'humble'_, for trying it and for your time!.
 * <a href="https://www.linkedin.com/in/jdelamo/">Julio</a> for testing on macOS.
 * <a href="https://github.com/kazet">kazet</a> for <a href="https://github.com/rfc-st/humble/pull/18">this</a> suggestion.
 * <a href="https://github.com/manuel-sommer">manuel-sommer</a> for <a href="https://github.com/rfc-st/humble/issues/8">this</a>, <a href="https://github.com/rfc-st/humble/issues/10">this</a> and <a href="https://github.com/rfc-st/humble/issues/13">this</a>!.
+* <a href="https://github.com/MikeAnast">MikeAnast</a> for <a href="https://github.com/rfc-st/humble/pull/22">this</a> suggestion.
 * <a href="https://github.com/n3bojs4">n3bojs4</a>, <a href="https://github.com/ehlewis">ehlewis</a> and <a href="https://github.com/dkadev">dkadev</a> for <a href="https://github.com/rfc-st/humble/issues/7">this</a> and <a href="https://github.com/rfc-st/humble/pull/16">this</a>.
 * <a href="https://www.kali.org/about-us/">sophie</a> for keeping 'humble' updated in <a href="https://www.kali.org/">Kali Linux</a> and for <a href="https://github.com/rfc-st/humble/commit/88a4e5e930083801b0ea2f4ab5f51730f72c9ebf">this</a>.
 * <a href="https://github.com/stanley101music">stanley101music</a> for <a href="https://github.com/rfc-st/humble/issues/14">this</a>, <a href="https://github.com/rfc-st/humble/issues/15">this</a> and <a href="https://github.com/rfc-st/humble/issues/17">this</a>!.

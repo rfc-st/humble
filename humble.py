@@ -126,7 +126,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-10-22', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -982,13 +982,13 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 def print_skipped_headers(args):
     print_detail_l('[analysis_skipped_note]')
-    print(f" {', '.join(f'\'{header}\'' for header in args.skip_headers)}")
+    print(f" {', '.join(f'{header}' for header in args.skip_headers)}")
 
 
 def print_unsupported_headers(unsupported_headers):
     print("")
     print_detail_l('[args_skipped_unknown]')
-    print(f"{', '.join(f'\'{header}\'' for header in unsupported_headers)}")
+    print(f"{', '.join(f'{header}' for header in unsupported_headers)}")
     sys.exit()
 
 
