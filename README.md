@@ -198,6 +198,15 @@ $ git pull
 https://github.com/rfc-st/humble/releases
 ```
 
+## Docker Version
+```bash
+# Build the docker image
+docker build -t humble .
+
+# Run humble through a Docker container
+docker run --rm humble /bin/bash -c "python3 humble.py -u https://www.spacex.com"
+```
+
 ## Usage
 
 ```console
