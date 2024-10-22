@@ -36,7 +36,7 @@
 [Features](#features)<br />
 [Screenshots](#screenshots)<br />
 [Installation & Update](#installation--update)<br />
-[Installation & Update (Docker)](#installation--maintenance-docker)<br />
+[Installation & Maintenance (Docker)](#installation--maintenance-docker)<br />
 [Usage](#usage)<br />
 [Advanced Usage](#advanced-usage)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
