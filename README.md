@@ -68,7 +68,7 @@
 :heavy_check_mark: Can display fingerprint statistics: either against a specific term or the Top 20.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a> and <a href="https://pypi.org/project/vermin/" target="_blank">vermin<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
-:heavy_check_mark: Tested on Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
+:heavy_check_mark: Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
 :heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost<a> all the code under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
 :heavy_check_mark: Minimal <a href="https://github.com/rfc-st/humble/blob/master/requirements.txt" target="_blank">dependencies</a> required.<br />
@@ -206,18 +206,18 @@ https://github.com/rfc-st/humble/releases
 
 ```bash
 # Install Docker, and make sure it's running.
-# E.g. https://www.kali.org/docs/containers/installing-docker-on-kali/
-# E.g. https://docs.docker.com/desktop/install/mac-install/
-# E.g. https://docs.docker.com/desktop/install/windows-install/
+# E.g. (Linux): https://www.kali.org/docs/containers/installing-docker-on-kali/
+# E.g. (macOs): https://docs.docker.com/desktop/install/mac-install/
+# E.g. (Windows): https://docs.docker.com/desktop/install/windows-install/
 
-# Build the image, taking as TAG the latest Release of 'humble'; in this example it is 1.42.
-# (Windows may require elevated console privileges)
+# Build the image, providing the TAG as the latest Release of 'humble': '1.42' in this example.
 # https://github.com/rfc-st/humble/releases
+# (Windows may require elevated console privileges)
 $ docker build -t humble:1.42 .
 
-# Run the analysis with the TAG of the Docker image, its required options and those you prefer for 'humble'.
+# Run the analysis specifying the above TAG, along with the specific options for 'humble'.
 # '-it', required: allocate a pseudo-TTY and keep the input interactive
-# '-rm', required: automatically remove the container and its associated anonymous volumes when it exits
+# '-rm', required: automatically remove the container and associated anonymous volumes when it exits
 
 # (Linux/macOS)
 $ docker run -it --rm --name humble humble:1.42 /bin/bash -c "python3 humble.py -u https://facebook.com -b"
