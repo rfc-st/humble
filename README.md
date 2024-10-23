@@ -202,19 +202,19 @@ https://github.com/rfc-st/humble/releases
 ## Installation & Maintenance (Docker)
 
 > [!NOTE]
-> Python 3.8 will be used to build the image.
+> Python 3.8 will be used to [build](https://github.com/rfc-st/humble/blob/master/Dockerfile) the image.
 
 ```bash
-# Build the image, taking as TAG the latest Release of 'humble'; in this example it is 1.42
+# Build the image, taking as TAG the latest Release of 'humble'; in this example it is 1.42.
 # https://github.com/rfc-st/humble/releases
 $ docker build -t humble:1.42 .
 
-# Run an analysis, specifying the TAG of the Docker image and with the parameters you want
-# (Required) '-it' option: allocate a pseudo-TTY and keep the input interactive (required for colors and certain functions)
-# (Required) '-rm' option: automatically remove the container and its associated anonymous volumes when it exits
-$ docker run -it --rm --name humble humble:1.42 /bin/bash -c "python3 humble.py -u https://facebook.com"
+# Run an analysis with the TAG of the Docker image, its required options and those you prefer for 'humble'.
+# '-it', required: allocate a pseudo-TTY and keep the input interactive
+# '-rm', required: automatically remove the container and its associated anonymous volumes when it exits
+$ docker run -it --rm --name humble humble:1.42 /bin/bash -c "python3 humble.py -u https://facebook.com -b"
 
-# Removing (and untagging) previous images of 'humble' after upgrading to the latest release
+# Removing (and untagging) previous images of 'humble' after upgrading to the latest release.
 $ docker rmi humble:1.42
 ```
 
