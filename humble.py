@@ -1265,12 +1265,13 @@ def check_ru_scope():
 
 
 def get_tmp_file(args, export_date):
-    file_ext = ".txt" if args.output == 'txt' else "t.txt"
+    file_ext = '.txt' if args.output == 'txt' else 't.txt'
     if args.output_file:
-        return args.output_file + file_ext
-    url = urlparse(URL)
-    lang = '_es' if args.lang else '_en'
-    tmp_file = build_tmp_file(export_date, file_ext, lang, url)
+        tmp_file = f'{args.output_file}{file_ext}'
+    else:
+        url = urlparse(URL)
+        lang = '_es' if args.lang else '_en'
+        tmp_file = build_tmp_file(export_date, file_ext, lang, url)
     if args.output_path:
         tmp_file = path.join(output_path, tmp_file)
     return tmp_file
