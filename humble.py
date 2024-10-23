@@ -126,7 +126,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-22', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-10-23', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1474,7 +1474,8 @@ if args.lang and not (URL or args.URL_A) and not args.guides:
 if args.output_file and args.output and URL:
     output_file = args.output_file
 else:
-    print_error_detail('[args_customfile]')
+    if args.output_file and (not args.output or not URL):
+        print_error_detail('[args_customfile]')
 
 if args.output_path is not None:
     output_path = path.abspath(args.output_path)
