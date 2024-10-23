@@ -205,14 +205,25 @@ https://github.com/rfc-st/humble/releases
 > Python 3.8 will be used to [build](https://github.com/rfc-st/humble/blob/master/Dockerfile) the image.
 
 ```bash
+# Install Docker, and make sure it's running.
+# E.g. https://www.kali.org/docs/containers/installing-docker-on-kali/
+# E.g. https://docs.docker.com/desktop/install/mac-install/
+# E.g. https://docs.docker.com/desktop/install/windows-install/
+
 # Build the image, taking as TAG the latest Release of 'humble'; in this example it is 1.42.
+# (Windows may require elevated console privileges)
 # https://github.com/rfc-st/humble/releases
 $ docker build -t humble:1.42 .
 
-# Run an analysis with the TAG of the Docker image, its required options and those you prefer for 'humble'.
+# Run the analysis with the TAG of the Docker image, its required options and those you prefer for 'humble'.
 # '-it', required: allocate a pseudo-TTY and keep the input interactive
 # '-rm', required: automatically remove the container and its associated anonymous volumes when it exits
+
+# (Linux/macOS)
 $ docker run -it --rm --name humble humble:1.42 /bin/bash -c "python3 humble.py -u https://facebook.com -b"
+
+# (Windows)
+$ docker run -it --rm --name humble humble:1.42 python3 humble.py -u https://facebook.com -b
 
 # Removing (and untagging) previous images of 'humble' after upgrading to the latest release.
 $ docker rmi humble:1.42
