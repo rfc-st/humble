@@ -60,7 +60,7 @@
 :heavy_check_mark: Browser support references for enabled HTTP security headers: provided by https://caniuse.com/.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
-:heavy_check_mark: Can export each analysis to CSV, HTML5, JSON, PDF 1.4 and TXT (and in the PATH of your choice).<br />
+:heavy_check_mark: Can export each analysis to CSV, HTML5, JSON, PDF 1.4 and TXT (and in a filename and path of your choice).<br />
 :heavy_check_mark: Each detailed analysis may include up to dozens of official links, references and technical articles.<br />
 :heavy_check_mark: l10n: can display each analysis, the messages and almost all errors in English or Spanish.<br />
 :heavy_check_mark: Saves each analysis, showing at the end the improvements or deficiencies in relation to the last one.<br />
@@ -262,16 +262,18 @@ options:
   -v, --version               Checks for updates at https://github.com/rfc-st/humble
 
 examples:
-  -u URL -b                   Analyzes the URL and reports overall findings
-  -u URL -b -o csv            Analyzes the URL and exports overall findings to CSV format
-  -u URL -l es                Analyzes the URL and reports (in Spanish) detailed findings
-  -u URL -o pdf               Analyzes the URL and exports detailed findings to PDF format
-  -u URL -r                   Analyzes the URL and reports detailed findings along with HTTP response headers
-  -u URL -s ETag NEL          Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
-  -u URL -ua 4                Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
+  -u URL -a                   Shows statistics of the analysis performed against the URL
+  -u URL -b                   Analyzes URL and reports overall findings
+  -u URL -b -o csv            Analyzes URL and exports overall findings to CSV format
+  -u URL -l es                Analyzes URL and reports (in Spanish) detailed findings
+  -u URL -o pdf               Analyzes URL and exports detailed findings to PDF format
+  -u URL -o html -of test     Analyzes URL and exports detailed findings to HTML format and 'test' filename
+  -u URL -o pdf -op D:/Tests  Analyzes URL and exports detailed findings to PDF format and 'D:/Tests' path
+  -u URL -r                   Analyzes URL and reports detailed findings along with HTTP response headers
+  -u URL -s ETag NEL          Analyzes URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
+  -u URL -ua 4                Analyzes URL using the fourth User-Agent of 'additional/user_agents.txt' file
   -a -l es                    Shows statistics (in Spanish) of the analysis performed against all URLs
   -f Google                   Shows HTTP fingerprint headers related to the term 'Google'
-  -u URL -a                   Shows statistics of the analysis performed against the URL
 ```
 
 ## Advanced Usage
