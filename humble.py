@@ -126,7 +126,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-23', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-10-25', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -888,11 +888,11 @@ def print_browser_compatibility(compat_headers):
         print(f"{style_blanks}{styled_header}{URL_LIST[0]}{csp_key}")
 
 
-def check_path_traversal(path):
-    path_traversal_ptrn = re.compile(RE_PATTERN[2])
-    if path_traversal_ptrn.search(path):
-        print(f"\n{get_detail('[args_path_traversal]', replace=True)} \
-('{path}')")
+def check_input_traversal(user_input):
+    input_traversal_ptrn = re.compile(RE_PATTERN[2])
+    if input_traversal_ptrn.search(user_input):
+        print(f"\n{get_detail('[args_input_traversal]', replace=True)}\
+: ('{user_input}')")
         sys.exit()
 
 
@@ -907,7 +907,7 @@ def check_path_permissions(output_path):
 
 
 def check_output_path(args, output_path):
-    check_path_traversal(args.output_path)
+    check_input_traversal(args.output_path)
     if args.output is None:
         print_error_detail('[args_nooutputfmt]')
     elif path.exists(output_path):
@@ -1396,26 +1396,25 @@ parser = ArgumentParser(formatter_class=custom_help_formatter,
 v.{local_version}", epilog=epilog_content)
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
-statistics of the performed analysis; will be global if the '-u' parameter is \
-omitted")
+statistics of the performed analysis; if the '-u' parameter is ommited they \
+will be global")
 parser.add_argument("-b", dest='brief', action="store_true", help="Shows \
-overall findings; if this parameter is omitted detailed ones will be shown")
+overall findings; if omitted detailed ones will be shown")
 parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
- follow redirects; if this parameter is omitted the last redirection will be \
-the one analyzed")
+ follow redirects; if omitted the last redirection will be the one analyzed")
 parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\
 s TLS/SSL checks; requires the PATH of https://testssl.sh/")
 parser.add_argument("-f", nargs='?', type=str, dest='fingerprint_term', help="\
-Shows fingerprint statistics; will be the Top 20 if \'FINGERPRINT_TERM\', e.g.\
- \'Google\', is omitted")
+Shows fingerprint statistics; if 'FINGERPRINT_TERM' (e.g., 'Google') is \
+omitted the top 20 results will be shown")
 parser.add_argument("-g", dest='guides', action="store_true", help="Shows \
 guidelines for enabling security HTTP response headers on popular servers/\
 services")
 parser.add_argument("-grd", dest='grades', action="store_true", help="Shows \
 the checks to grade an analysis, along with advice for improvement")
 parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
-language for displaying analysis, errors and messages; will be English if this\
- parameter is omitted")
+language for displaying analysis, errors and messages; if omitted, will be \
+shown in English")
 parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
 the license for 'humble', along with permissions, limitations and conditions.")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
@@ -1423,11 +1422,11 @@ parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
 analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; \
 csv/json will have a brief analysis")
 parser.add_argument("-of", dest='output_file', type=str, help="Exports \
-analysis to 'OUTPUT_FILE'; if this parameter is omitted the default filename \
-of the parameter '-o' will be used")
+analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
+'-o' will be used")
 parser.add_argument("-op", dest='output_path', type=str, help="Exports \
-analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py\
-' will be used")
+analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of \
+'humble.py' will be used")
 parser.add_argument("-r", dest='ret', action="store_true", help="Shows HTTP \
 response headers and a detailed analysis; '-b' parameter will take priority")
 parser.add_argument("-s", dest='skip_headers', nargs='*', type=str, help="S\
@@ -1474,6 +1473,7 @@ if args.lang and not (URL or args.URL_A) and not args.guides:
 
 if args.output_file and args.output and URL:
     output_file = args.output_file
+    check_input_traversal(args.output_file)
 else:
     if args.output_file and (not args.output or not URL):
         print_error_detail('[args_customfile]')

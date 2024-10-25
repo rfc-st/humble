@@ -1437,8 +1437,8 @@ Error: The indicated PATH does not exist
 [args_nowr]
 Error: This user does not have write permissions on the path 
 
-[args_path_traversal]
-Error: The indicated PATH seems wrong
+[args_input_traversal]
+Error: The indicated filename, or absolute path, seem wrong
 
 [csv_section]
 Section
