@@ -51,11 +51,13 @@ from os import linesep, path, remove
 from os.path import dirname, abspath
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from io import StringIO
 import re
 import ssl
 import sys
 import contextlib
 import concurrent.futures
+import email
 
 # Third-Party imports
 from colorama import Fore, Style, init
@@ -143,6 +145,26 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         context.set_ciphers(FORCED_CIPHERS)
         kwargs['ssl_context'] = context
         return super(SSLContextAdapter, self).init_poolmanager(*args, **kwargs)
+
+
+def determine_scheme_safety(url, is_offline=False):
+    result = False
+    try:
+        if is_offline:
+            if not args.brief:
+                print_detail_l('[offline_mode]')
+            return False
+        if not url or not isinstance(url, str):
+            if not args.brief:
+                print_detail_l('[invalid_url]')
+            return False
+        result = url.startswith(HTTP_SCHEMES[0])
+        if result and not args.brief:
+            print_detail_l('[unsafe_scheme]')
+    except Exception as e:
+        if not args.brief:
+            print_detail_l('[scheme_error]')
+    return result
 
 
 def check_python_version():
@@ -261,6 +283,26 @@ def testssl_command(testssl_temp_path, uri):
         testssl_analysis(testssl_command)
     sys.exit()
 
+def parse_offline_headers(raw_response):
+    lines = raw_response.split('\n')
+    headers_end = 0
+    for i, line in enumerate(lines):
+        if line.strip() == '':
+            headers_end = i
+            break
+    
+    status_line = lines[0]
+    try:
+        status_code = int(status_line.split()[1])
+    except (IndexError, ValueError):
+        print_error_detail('[input_invalid_status]')
+        
+    headers_text = '\n'.join(lines[1:headers_end])
+    msg = email.message_from_file(StringIO(headers_text))
+    headers = dict(msg.items())
+    
+    return headers, status_code
+
 
 def testssl_analysis(testssl_command):
     try:
@@ -301,10 +343,12 @@ def get_analysis_results():
 
 
 def save_analysis_results(t_cnt):
+    display_url = get_display_url(URL, args.input_file)
+    
     with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as all_analysis:
         all_analysis.seek(0)
-        url_ln = [line for line in all_analysis if URL in line]
-        all_analysis.write(f"{current_time} ; {URL} ; {m_cnt} ; {f_cnt} ; \
+        url_ln = [line for line in all_analysis if display_url in line]
+        all_analysis.write(f"{current_time} ; {display_url} ; {m_cnt} ; {f_cnt} ; \
 {i_cnt[0]} ; {e_cnt} ; {t_cnt}\n")
     return get_analysis_totals(url_ln) if url_ln else ("First",) * 5
 
@@ -371,7 +415,8 @@ def url_analytics(is_global=False):
 
 
 def get_analysis_metrics(all_analysis):
-    url_ln = [line for line in all_analysis if URL in line]
+    display_url = get_display_url(URL, args.input_file)
+    url_ln = [line for line in all_analysis if display_url in line]
     if not url_ln:
         print_error_detail('[no_analysis]')
     total_a = len(url_ln)
@@ -522,11 +567,12 @@ def get_date_metrics(additional_m):
 
 
 def extract_global_metrics(all_analysis):
+    display_url = get_display_url(URL, args.input_file)
     url_ln = list(all_analysis)
     if not url_ln:
         print_error_detail('[no_global_analysis]')
     total_a = len(url_ln)
-    first_m = get_global_first_metrics(url_ln)
+    first_m = get_global_first_metrics(url_ln, display_url)
     second_m = [get_second_metrics(url_ln, i, total_a) for i in range(2, 6)]
     third_m = get_third_metrics(url_ln)
     additional_m = get_additional_metrics(url_ln)
@@ -681,7 +727,7 @@ def print_fng_header(header):
         print(f"{STYLE[1]} {header}")
 
 
-def print_general_info(reliable, export_filename):
+def print_general_info(reliable, export_filename):   
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
         print(f"\n{BANNER}\n ({URL_LIST[4]} | v.{local_version})")
@@ -692,15 +738,28 @@ def print_general_info(reliable, export_filename):
 
 
 def print_basic_info(export_filename):
-    print(linesep.join(['']*2) if args.output == 'html' or not args.output
-          else "")
+    print(linesep.join(['']*2) if args.output == 'html' or not args.output else "")
     print_detail_r('[0section]')
     print_detail_l('[analysis_date]')
     print(f" {current_time}")
-    print(f'{URL_STRING[1]}{URL}')
+    
+    if args.input_file:
+        display_url = f'[Offline Analysis] File: {args.input_file}'
+    else:
+        display_url = URL
+        
+    print(f'{URL_STRING[1]}{display_url}')
+        
     if export_filename:
         print_detail_l('[export_filename]')
         print(f"{export_filename}")
+
+
+def get_display_url(url, input_file):
+    """Get URL to display in results - either actual URL or input filename"""
+    if input_file:
+        return f"[Offline Analysis] File: {input_file}"
+    return url if url else "Unknown URL"
 
 
 def print_extended_info(args, reliable, status_code):
@@ -1254,14 +1313,29 @@ def print_http_exception(exception_id, exception_v):
 
 
 def check_ru_scope():
-    with contextlib.suppress(requests.exceptions.RequestException):
+    if not URL or not isinstance(URL, str):
+        return
+        
+    try:
         requests.packages.urllib3.disable_warnings()
-        sffx = tldextract.extract(URL).suffix[-2:].upper()
-        cnty = requests.get(RU_CHECKS[0], verify=False, timeout=5).text.strip()
-        if (sffx == RU_CHECKS[1] and sffx not in NON_RU_TLD) or cnty == \
-                RU_CHECKS[2]:
+        
+        extracted = tldextract.extract(URL)
+        if not extracted.suffix:
+            return
+            
+        sffx = extracted.suffix[-2:].upper()
+        
+        try:
+            cnty = requests.get(RU_CHECKS[0], verify=False, timeout=5).text.strip()
+        except requests.exceptions.RequestException:
+            cnty = ""
+            
+        if (sffx == RU_CHECKS[1] and sffx not in NON_RU_TLD) or cnty == RU_CHECKS[2]:
             print_detail('[ru_check]', 3)
             sys.exit()
+            
+    except (AttributeError, IndexError, Exception) as e:
+        return
 
 
 def get_tmp_file(args, export_date):
@@ -1279,6 +1353,10 @@ def get_tmp_file(args, export_date):
 
 def build_tmp_file(export_date, file_ext, lang, url):
     str_hum = f"{HUMBLE_DESC[1:7]}_"
+    if args.input_file:
+        base_name = path.basename(args.input_file)
+        return f"{str_hum}offline_{base_name}_{export_date}{lang}{file_ext}"
+        
     url_str = tldextract.extract(URL)
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
     url_prt = f"_{url.port}_" if url.port is not None else '_'
@@ -1359,6 +1437,21 @@ def manage_http_request():
     status_c = None
     reliable = None
     body = None
+
+    if args.input_file:
+        try:
+            with open(args.input_file, 'r', encoding='utf8') as f:
+                raw_response = f.read()
+            headers, status_c = parse_offline_headers(raw_response)
+            reliable = 'Yes'
+            body = '\n'.join(raw_response.split('\n')[raw_response.split('\n').index('')+1:])
+            return headers, status_c, reliable, body
+        except FileNotFoundError:
+            print_error_detail('[input_file_not_found]')
+        except Exception as e:
+            print(f"\n{get_detail('[input_parse_error]', replace=True)}: {str(e)}")
+            sys.exit(1)    
+
     try:
         with concurrent.futures.ThreadPoolExecutor() as executor:
             future = executor.submit(make_http_request)
@@ -1394,6 +1487,8 @@ epilog_content = get_epilog_content('[epilog_content]')
 parser = ArgumentParser(formatter_class=custom_help_formatter,
                         description=f"{HUMBLE_DESC} | {URL_LIST[4]} | \
 v.{local_version}", epilog=epilog_content)
+
+group = parser.add_mutually_exclusive_group()
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
 statistics of the performed analysis; will be global if the '-u' parameter is \
@@ -1433,13 +1528,14 @@ response headers and a detailed analysis; '-b' parameter will take priority")
 parser.add_argument("-s", dest='skip_headers', nargs='*', type=str, help="S\
 kips 'deprecated/insecure' and 'missing' checks for the indicated \
 'SKIP_HEADERS' (separated by spaces)")
-parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
+group.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
  analyze. E.g. https://google.com")
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
 from 'additional/user_agents.txt' file to use. '0' will show all and '1' is \
 the default")
 parser.add_argument("-v", "--version", action="store_true", help="Checks for \
 updates at https://github.com/rfc-st/humble")
+group.add_argument("-if", "--input-file", type=str, help="Analyze headers from an input file containing raw HTTP response")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
@@ -1532,6 +1628,9 @@ exception_d = {
     requests.exceptions.TooManyRedirects: '[e_redirect]',
 }
 requests.packages.urllib3.disable_warnings()
+
+is_offline = bool(args.input_file)
+unsafe_scheme = determine_scheme_safety(URL, is_offline)
 
 headers, status_code, reliable, body = manage_http_request()
 http_equiv = None
@@ -1794,7 +1893,6 @@ t_robots = ('all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after')
 
-unsafe_scheme = True if URL.startswith(HTTP_SCHEMES[0]) else False
 
 if 'accept-ch' in headers_l and '1' not in skip_list:
     acceptch_header = headers_l['accept-ch']

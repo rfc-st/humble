@@ -1483,3 +1483,33 @@ Excepción no gestionada:
 
 [experimental_header]
  Significado de '(*)':                        Cabecera de respuesta HTTP experimental
+
+[offline_analysis_header]
+Análisis offline del archivo:
+
+[no_offline_analysis]
+No se encontró análisis previo para este archivo de entrada
+
+[input_invalid_status]
+Línea de estado inválida en el archivo de respuesta de entrada
+
+[input_file_not_found]
+Archivo de respuesta de entrada no encontrado
+
+[input_parse_error]
+Error al analizar el archivo de respuesta de entrada
+
+[mixed_mode_warning]
+Advertencia: Se proporcionaron tanto archivo de entrada como URL. Usando archivo de entrada.
+
+[offline_mode]
+Operando en modo offline - asumiendo esquema seguro
+
+[invalid_url]
+URL inválida proporcionada - asumiendo esquema seguro
+
+[unsafe_scheme]
+Detectado esquema HTTP inseguro
+
+[scheme_error]
+Error al determinar la seguridad del esquema - asumiendo esquema seguro
