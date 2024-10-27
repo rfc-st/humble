@@ -1442,8 +1442,8 @@ Error: No existe la ruta indicada
 [args_nowr]
 Erorr: Este usuario no tiene permisos de escritura en la ruta 
 
-[args_path_traversal]
-Error: La ruta indicada parece errónea
+[args_input_traversal]
+Error: El nombre del fichero, o la ruta absoluta, indicados parecen erróneos
 
 [csv_section]
 Sección

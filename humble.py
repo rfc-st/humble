@@ -128,7 +128,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-23', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-10-26', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -947,11 +947,11 @@ def print_browser_compatibility(compat_headers):
         print(f"{style_blanks}{styled_header}{URL_LIST[0]}{csp_key}")
 
 
-def check_path_traversal(path):
-    path_traversal_ptrn = re.compile(RE_PATTERN[2])
-    if path_traversal_ptrn.search(path):
-        print(f"\n{get_detail('[args_path_traversal]', replace=True)} \
-('{path}')")
+def check_input_traversal(user_input):
+    input_traversal_ptrn = re.compile(RE_PATTERN[2])
+    if input_traversal_ptrn.search(user_input):
+        print(f"\n{get_detail('[args_input_traversal]', replace=True)}\
+: ('{user_input}')")
         sys.exit()
 
 
@@ -966,7 +966,7 @@ def check_path_permissions(output_path):
 
 
 def check_output_path(args, output_path):
-    check_path_traversal(args.output_path)
+    check_input_traversal(args.output_path)
     if args.output is None:
         print_error_detail('[args_nooutputfmt]')
     elif path.exists(output_path):
@@ -1234,74 +1234,93 @@ def generate_html():
         html_file.write(replaced_html)
 
 
-def format_html_info(condition, ln, sub_d):
-    if condition == URL_STRING[0]:
-        html_final.write(f"{sub_d['ahref_s']}{ln[:32]}\
-{sub_d['close_t']}{ln[:32]}{sub_d['ahref_f']}{ln[32:]}")
-    else:
-        html_final.write(f"{ln[:8]}{sub_d['ahref_s']}{ln[8:]}\
-{sub_d['close_t']}{ln[8:]}{sub_d['ahref_f']}<br>")
+def format_html_info(ln_rstrip, sub_d, html_final):
+    if URL_STRING[0] in ln_rstrip:
+        html_final.write(f"{sub_d['ahref_s']}{ln_rstrip[:32]}\
+{sub_d['close_t']}{ln_rstrip[:32]}{sub_d['ahref_f']}{ln_rstrip[32:]}")
+        return True
+    if URL_STRING[1] in ln_rstrip:
+        html_final.write(f"{ln_rstrip[:8]}{sub_d['ahref_s']}\
+{ln_rstrip[8:]}{sub_d['close_t']}{ln_rstrip[8:]}{sub_d['ahref_f']}<br>")
+        return True
+    return False
 
 
-def format_html_warnings(condition, ln, sub_d):
-    if condition == ok_string:
-        html_final.write(f'<span class="ok">{ln}{sub_d["span_f"]}<br>')
-    else:
-        html_final.write(f"{sub_d['span_ko']}{ln}{sub_d['span_f']}<br>")
+def format_html_warnings(ln_rstrip, sub_d, ok_string, ko_string, html_final):
+    if ok_string in ln_rstrip:
+        html_final.write(f'<span class="ok">{ln_rstrip}{sub_d["span_f"]}<br>')
+        return True
+    if ko_string in ln_rstrip:
+        html_final.write(f"{sub_d['span_ko']}{ln_rstrip}{sub_d['span_f']}<br>")
+        return True
+    return False
 
 
-def format_html_references(condition, ln, sub_d):
-    if condition == REF_LINKS[1]:
-        html_final.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[6:]}\
-{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
-    else:
-        html_final.write(f"{ln[:6]}{sub_d['ahref_s']}{ln[8:]}\
-{sub_d['close_t']}{ln[6:]}{sub_d['ahref_f']}<br>")
+def format_html_references(ln_rstrip, sub_d, html_final):
+    if REF_LINKS[1] in ln_rstrip:
+        html_final.write(f"{ln_rstrip[:6]}{sub_d['ahref_s']}\
+{ln_rstrip[6:]}{sub_d['close_t']}{ln_rstrip[6:]}{sub_d['ahref_f']}<br>")
+        return True
+    if REF_LINKS[0] in ln_rstrip:
+        html_final.write(f"{ln_rstrip[:6]}{sub_d['ahref_s']}\
+{ln_rstrip[8:]}{sub_d['close_t']}{ln_rstrip[6:]}{sub_d['ahref_f']}<br>")
+        return True
+    return False
 
 
-def format_html_compatibility(ln, sub_d):
-    ln = f"{sub_d['span_h']}{ln[1:ln.index(': ')]}: {sub_d['span_f']}\
-{sub_d['ahref_s']}{ln[ln.index(HTTP_SCHEMES[1]):]}{sub_d['close_t']}\
-{ln[ln.index(HTTP_SCHEMES[1]):]}{sub_d['ahref_f']}<br>"
-    html_final.write(ln)
+def format_html_compatibility(ln_rstrip, sub_d, html_final):
+    if URL_STRING[2] in ln_rstrip:
+        html_final.write(f"{sub_d['span_h']}\
+{ln_rstrip[1:ln_rstrip.index(': ')]}: {sub_d['span_f']}{sub_d['ahref_s']}\
+{ln_rstrip[ln_rstrip.index(HTTP_SCHEMES[1]):]}{sub_d['close_t']}\
+{ln_rstrip[ln_rstrip.index(HTTP_SCHEMES[1]):]}{sub_d['ahref_f']}<br>")
+        return True
+    return False
 
 
-def format_html_bold(ln):
-    html_final.write(f'<strong>{ln}</strong><br>')
+def format_html_bold(ln_rstrip, html_final):
+    if any(s in ln_rstrip for s in BOLD_STRINGS):
+        html_final.write(f'<strong>{ln_rstrip}</strong><br>')
+        return True
+    return False
 
 
-def format_html_headers(i, ln, sub_d):
-    if (str(f"{i}: ") in ln and 'Date:   ' not in ln):
-        ln = ln.replace(ln[: ln.index(":")],
-                        ((sub_d['span_h'] + ln[: ln.index(":")]) +
-                         sub_d['span_f']),)
+def format_html_headers(ln, sub_d, headers):
+    for i in headers:
+        if (str(f"{i}: ") in ln and 'Date:   ' not in ln):
+            ln = ln.replace(ln[: ln.index(":")], ((sub_d['span_h'] +
+                                                   ln[: ln.index(":")]) +
+                                                  sub_d['span_f']),)
     return ln
 
 
-def format_html_fingerprint(args, i, ln, sub_d):
-    if (ln and i in ln and not args.brief):
-        try:
-            idx = ln.index(' [')
-        except ValueError:
-            return ln
-        if 'class="ko"' not in ln:
-            return f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}{ln[idx:]}"
-    ln_lower, i_lower = ln.casefold(), i.casefold()
-    if args.brief and i_lower in ln_lower and ':' not in ln and \
-       'class="ko"' not in ln:
-        return f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+def format_html_fingerprint(args, ln, sub_d, l_fng):
+    for i in l_fng:
+        if (ln and i in ln and not args.brief):
+            try:
+                idx = ln.index(' [')
+            except ValueError:
+                return ln
+            if 'class="ko"' not in ln:
+                ln = f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}{ln[idx:]}"
+        ln_lower, i_lower = ln.casefold(), i.casefold()
+        if args.brief and i_lower in ln_lower and ':' not in ln and \
+           '    class="ko"' not in ln:
+            ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
     return ln
 
 
-def format_html_totals(i, ln, sub_d):
-    if (ln and ((i in ln) and ('"' not in ln) or ('HTTP (' in ln))):
-        ln = ln.replace(ln, sub_d['span_ko'] + ln + sub_d['span_f'])
+def format_html_totals(ln, sub_d, l_total):
+    for i in l_total:
+        if (ln and ((i in ln) and ('"' not in ln) or ('HTTP (' in ln))):
+            ln = ln.replace(ln, sub_d['span_ko'] + ln + sub_d['span_f'])
     return ln
 
 
-def format_html_empty(i, ln, ln_stripped, sub_d):
-    if (i in ln_stripped and '[' not in ln_stripped):
-        ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+def format_html_empty(ln, ln_stripped, sub_d, l_empty):
+    for i in l_empty:
+        if (i in ln_stripped and '[' not in ln_stripped):
+            ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
     return ln
 
 
@@ -1491,26 +1510,25 @@ v.{local_version}", epilog=epilog_content)
 group = parser.add_mutually_exclusive_group()
 
 parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
-statistics of the performed analysis; will be global if the '-u' parameter is \
-omitted")
+statistics of the performed analysis; if the '-u' parameter is ommited they \
+will be global")
 parser.add_argument("-b", dest='brief', action="store_true", help="Shows \
-overall findings; if this parameter is omitted detailed ones will be shown")
+overall findings; if omitted detailed ones will be shown")
 parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
- follow redirects; if this parameter is omitted the last redirection will be \
-the one analyzed")
+ follow redirects; if omitted the last redirection will be the one analyzed")
 parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\
 s TLS/SSL checks; requires the PATH of https://testssl.sh/")
 parser.add_argument("-f", nargs='?', type=str, dest='fingerprint_term', help="\
-Shows fingerprint statistics; will be the Top 20 if \'FINGERPRINT_TERM\', e.g.\
- \'Google\', is omitted")
+Shows fingerprint statistics; if 'FINGERPRINT_TERM' (e.g., 'Google') is \
+omitted the top 20 results will be shown")
 parser.add_argument("-g", dest='guides', action="store_true", help="Shows \
 guidelines for enabling security HTTP response headers on popular servers/\
 services")
 parser.add_argument("-grd", dest='grades', action="store_true", help="Shows \
 the checks to grade an analysis, along with advice for improvement")
 parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
-language for displaying analysis, errors and messages; will be English if this\
- parameter is omitted")
+language for displaying analysis, errors and messages; if omitted, will be \
+shown in English")
 parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
 the license for 'humble', along with permissions, limitations and conditions.")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
@@ -1518,11 +1536,11 @@ parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
 analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; \
 csv/json will have a brief analysis")
 parser.add_argument("-of", dest='output_file', type=str, help="Exports \
-analysis to 'OUTPUT_FILE'; if this parameter is omitted the default filename \
-of the parameter '-o' will be used")
+analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
+'-o' will be used")
 parser.add_argument("-op", dest='output_path', type=str, help="Exports \
-analysis to 'OUTPUT_PATH'; if this parameter is omitted the PATH of 'humble.py\
-' will be used")
+analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of \
+'humble.py' will be used")
 parser.add_argument("-r", dest='ret', action="store_true", help="Shows HTTP \
 response headers and a detailed analysis; '-b' parameter will take priority")
 parser.add_argument("-s", dest='skip_headers', nargs='*', type=str, help="S\
@@ -1570,6 +1588,7 @@ if args.lang and not (URL or args.URL_A) and not args.guides:
 
 if args.output_file and args.output and URL:
     output_file = args.output_file
+    check_input_traversal(args.output_file)
 else:
     if args.output_file and (not args.output or not URL):
         print_error_detail('[args_customfile]')
@@ -2423,39 +2442,24 @@ elif args.output == 'html':
     sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
              'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
              'span_f': '</span>'}
-
     with open(tmp_filename, 'r', encoding='utf8') as html_source, \
             open(final_filename, 'a', encoding='utf8') as html_final:
-
         for ln in html_source:
-            ln_stripped = ln.rstrip('\n')
-            if URL_STRING[0] in ln or URL_STRING[1] in ln:
-                condition = URL_STRING[0] if URL_STRING[0] in ln else \
-                    URL_STRING[1]
-                format_html_info(condition, ln_stripped, sub_d)
-            elif any(s in ln for s in BOLD_STRINGS):
-                format_html_bold(ln_stripped)
-            elif ok_string in ln or ko_string in ln:
-                condition = ok_string if ok_string in ln else ko_string
-                format_html_warnings(condition, ln_stripped, sub_d)
-            elif REF_LINKS[1] in ln or REF_LINKS[0] in ln:
-                condition = REF_LINKS[1] if REF_LINKS[1] in ln else \
-                            REF_LINKS[0]
-                format_html_references(condition, ln_stripped, sub_d)
-            elif URL_STRING[2] in ln:
-                format_html_compatibility(ln_stripped, sub_d)
-            else:
-                for i in headers:
-                    ln = format_html_headers(i, ln, sub_d)
-                for i in sorted(l_fng):
-                    ln = format_html_fingerprint(args, i, ln, sub_d)
-                for i in l_total:
-                    ln = format_html_totals(i, ln, sub_d)
-                for i in l_empty:
-                    ln = format_html_empty(i, ln, ln_stripped, sub_d)
+            ln_rstrip = ln.rstrip('\n')
+            ln_formatted = (
+                format_html_info(ln_rstrip, sub_d, html_final)
+                or format_html_bold(ln_rstrip, html_final)
+                or format_html_warnings(ln_rstrip, sub_d, ok_string,
+                                        ko_string, html_final)
+                or format_html_references(ln_rstrip, sub_d, html_final)
+                or format_html_compatibility(ln_rstrip, sub_d, html_final))
+            if not ln_formatted:
+                ln = format_html_headers(ln, sub_d, headers)
+                ln = format_html_fingerprint(args, ln, sub_d, sorted(l_fng))
+                ln = format_html_totals(ln, sub_d, l_total)
+                ln = format_html_empty(ln, ln_rstrip, sub_d, l_empty)
                 if ln:
                     html_final.write(ln)
         html_final.write('</pre></body></html>')
-
     print_export_path(final_filename, reliable)
     remove(tmp_filename)
