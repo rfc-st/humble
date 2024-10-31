@@ -1062,7 +1062,8 @@ def format_json(json_data, json_lns):
 
 def generate_pdf(pdf, pdf_links, pdf_prefixes, temp_filename):
     set_pdf_file()
-    set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename)
+    ok_string = get_detail('[no_warnings]').rstrip()
+    set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string)
     pdf.output(final_filename)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
@@ -1089,7 +1090,7 @@ def set_pdf_metadata():
     pdf.set_producer(git_urlc)
 
 
-def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename):
+def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string):
     with open(temp_filename, "r", encoding='utf8') as txt_source:
         for line in txt_source:
             if '[' in line:
@@ -1102,6 +1103,9 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename):
                 if string in line:
                     format_pdf_links(line, pdf_prefixes, string)
             if set_pdf_conditions(line):
+                continue
+            if ok_string in line:
+                set_pdf_nowarnings(line)
                 continue
             pdf.set_text_color(255, 0, 0)
             set_pdf_color(pdf, line)
@@ -1140,6 +1144,11 @@ def set_pdf_warnings(pdf, line):
     pdf.set_text_color(255, 0, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
     return True
+
+
+def set_pdf_nowarnings(line):
+    pdf.set_text_color(0, 128, 0)
+    pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
 
 
 def set_pdf_links(i, pdf_string):
