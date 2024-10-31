@@ -1099,12 +1099,11 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string):
                 pdf.set_font(style='B')
             else:
                 pdf.set_font(style='')
-            for string in pdf_links:
-                if string in line:
-                    format_pdf_links(line, pdf_prefixes, string)
+            next((format_pdf_links(line, pdf_prefixes, string) for string in
+                  pdf_links if string in line), None)
             if set_pdf_conditions(line):
                 continue
-            if ok_string in line:
+            elif ok_string in line:
                 set_pdf_nowarnings(line)
                 continue
             pdf.set_text_color(255, 0, 0)
@@ -1126,7 +1125,7 @@ def set_pdf_conditions(line):
             (PDF_CONDITIONS[3] in
              line or any(item in line for item in (l_miss + l_ins + l_fng +
                                                    titled_fng))) and
-            set_pdf_warnings(pdf, line))
+            set_pdf_warnings(line))
 
 
 def format_pdf_links(i, pdf_prefixes, pdf_string):
@@ -1140,7 +1139,7 @@ def format_pdf_links(i, pdf_prefixes, pdf_string):
     pdf.cell(w=2000, h=6, text=i[i.index(": ")+2:], align="L", link=pdf_link)
 
 
-def set_pdf_warnings(pdf, line):
+def set_pdf_warnings(line):
     pdf.set_text_color(255, 0, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
     return True
