@@ -1493,3 +1493,33 @@ Unhandled exception type:
 
 [experimental_header]
  '(*)' meaning:                Experimental HTTP response header
+
+[offline_analysis_header]
+Offline Analysis of file:
+
+[no_offline_analysis]
+No previous analysis found for this input file
+
+[input_invalid_status]
+Invalid status line in input response file
+
+[input_file_not_found]
+Input response file not found
+
+[input_parse_error]
+Error parsing input response file
+
+[mixed_mode_warning]
+Warning: Both input file and URL provided. Using input file.
+
+[offline_mode]
+Operating in offline mode - assuming safe scheme
+
+[invalid_url]
+Invalid URL provided - assuming safe scheme
+
+[unsafe_scheme]
+Detected unsafe HTTP scheme
+
+[scheme_error]
+Error determining scheme safety - assuming safe scheme
