@@ -126,7 +126,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-10-31', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-11-01', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -789,7 +789,7 @@ def get_epilog_content(id_mode):
     with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
         epilog_lines = epilog_source.readlines()
         epilog_idx = epilog_lines.index(id_mode + '\n')
-    return ''.join(epilog_lines[epilog_idx+1:epilog_idx+12])
+    return ''.join(epilog_lines[epilog_idx+1:epilog_idx+14])
 
 
 def get_fingerprint_headers():
@@ -816,7 +816,13 @@ def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
 def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
     if not args.brief:
         print_fng_header(l_fng_ex[idx_fng])
-        if not headers[header]:
+        if '-if' in sys.argv:
+            if headers_l.get(header.lower()):
+                print(f" {get_detail('[fng_value]', replace=True)} \
+'{headers_l[header.lower()]}'")
+            else:
+                print(get_detail('[empty_fng]', replace=True))
+        elif not headers[header]:
             print(get_detail('[empty_fng]', replace=True))
         else:
             print(f" {get_detail('[fng_value]', replace=True)} \
@@ -1291,6 +1297,21 @@ def check_ru_scope():
             sys.exit()
 
 
+def parse_input_file(input_file):
+    if not path.exists(input_file):
+        print_error_detail('[args_inputnotfound]')
+    input_headers = {}
+    with open(input_file, 'r', encoding='utf8') as input_source:
+        for ln in input_source:
+            ln = ln.strip()
+            if ': ' in ln:
+                input_header, input_value = ln.split(': ', 1)
+                input_headers[input_header.title()] = input_value
+    reliable = False
+    status_code = 200
+    return input_headers, reliable, status_code
+
+
 def get_tmp_file(args, export_date):
     file_ext = '.txt' if args.output == 'txt' else 't.txt'
     if args.output_file:
@@ -1439,6 +1460,9 @@ guidelines for enabling security HTTP response headers on popular servers/\
 services")
 parser.add_argument("-grd", dest='grades', action="store_true", help="Shows \
 the checks to grade an analysis, along with advice for improvement")
+parser.add_argument("-if", dest='input_file', type=str, help="Analyzes \
+'INPUT_FILE': must contain HTTP response headers and values separated by ': ';\
+ E.g. 'server: nginx'.")
 parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
 language for displaying analysis, errors and messages; if omitted, will be \
 shown in English")
@@ -1483,6 +1507,17 @@ if '-f' in sys.argv:
         fng_statistics_top()
 
 URL = args.URL
+
+if '-if' in sys.argv:
+    if any([args.redirects, args.ret, args.user_agent]):
+        print_error_detail('[args_inputfile]')
+        sys.exit()
+    elif not args.URL:
+        print_error_detail('[args_urlinputfile]')
+        sys.exit()
+    else:
+        headers, reliable, status_code = parse_input_file(args.input_file)
+
 
 if '-ua' in sys.argv:
     ua_header = parse_user_agent(user_agent=True)
@@ -1560,11 +1595,15 @@ exception_d = {
 }
 requests.packages.urllib3.disable_warnings()
 
-headers, status_code, reliable, body = manage_http_request()
-http_equiv = None
-if body:
-    http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)
-headers_l = {header.lower(): value for header, value in headers.items()}
+if '-if' not in sys.argv:
+    headers, status_code, reliable, body = manage_http_request()
+    http_equiv = None
+    if body:
+        http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)
+    headers_l = {header.lower(): value for header, value in headers.items()}
+else:
+    http_equiv = None
+    headers_l = {header.lower(): value for header, value in headers.items()}
 
 # Export filename generation
 export_filename = None
@@ -2184,9 +2223,9 @@ if 'x-content-security-policy-report-only' in headers_l and '60' not in \
     print_details('[ixcspr_h]', '[ixcspr]', 'd', i_cnt)
 
 if 'x-content-type-options' in headers_l and '61' not in skip_list:
-    if ',' in headers['X-Content-Type-Options']:
+    if ',' in headers_l['x-content-type-options']:
         print_details('[ictpd_h]', '[ictpd]', 'd', i_cnt)
-    elif 'nosniff' not in headers['X-Content-Type-Options']:
+    elif 'nosniff' not in headers_l['x-content-type-options']:
         print_details('[ictp_h]', '[ictp]', 'd', i_cnt)
 
 if headers_l.get('x-dns-prefetch-control', '') == 'on' and '62' not in \
@@ -2251,9 +2290,9 @@ if 'x-webkit-csp-report-only' in headers_l and '73' not in skip_list:
 
 if 'x-xss-protection' in headers_l and '74' not in skip_list:
     print_details('[ixxpdp_h]', '[ixxpdp]', 'm', i_cnt)
-    if '0' not in headers["X-XSS-Protection"]:
+    if '0' not in headers_l['x-xss-protection']:
         print_details('[ixxp_h]', '[ixxp]', 'm', i_cnt)
-    if ',' in headers['X-XSS-Protection']:
+    if ',' in headers_l['x-xss-protection']:
         print_details('[ixxpd_h]', '[ixxpd]', 'd', i_cnt)
 
 if args.brief and i_cnt[0] != 0:

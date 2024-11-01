@@ -1406,6 +1406,15 @@ Error: No existe ese ID de User-Agent; consulta los disponibles con '-ua 0'
 [args_notestssl]
 Error: El parámetro '-e' requiere la ruta de 'testssl.sh' y el parámetro '-u'.
 
+[args_inputfile]
+Error: El parámetro '-if' no requiere los parámetros '-df', '-r' o -'ua'.
+
+[args_urlinputfile]
+Error: El parámetro '-if' requiere el parámetro '-u'.
+
+[args_inputnotfound]
+Error: No se encuentra el fichero en la ruta indicada.
+
 [args_lang]
 Error: El parámetro '-l' requiere de los parámetros '-u' o '-a'.
 

@@ -6,7 +6,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.8-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--10--31-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--11--01-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
@@ -61,6 +61,7 @@
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
 :heavy_check_mark: Can export each analysis to CSV, HTML5, JSON, PDF 1.4 and TXT (and in a filename and path of your choice).<br />
+:heavy_check_mark: Can analyze '_raw response files_': text files containing HTTP response headers and their values. Ex: curl option '<a href="https://curl.se/docs/manpage.html" target="_blank">--dump-header<a>'.<br />
 :heavy_check_mark: Each detailed analysis may include up to dozens of official links, references and technical articles.<br />
 :heavy_check_mark: l10n: can display each analysis, the messages and almost all errors in English or Spanish.<br />
 :heavy_check_mark: Saves each analysis, showing at the end the improvements or deficiencies in relation to the last one.<br />
@@ -94,6 +95,12 @@
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="(Linux) - Detailed analysis in Spanish" width=70% height=70%>
+</p>
+<br />
+.: (Linux) - Analysis of a '_raw response file_'. <a href="https://github.com/rfc-st/humble/raw/master/samples/github_input_file.txt">Example.</a><br />
+<p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_input.PNG" alt="(Linux) - Analysis of a raw response file" width=70% height=70%>
 </p>
 <br />
 .: (Linux) - SSL/TLS checks.<br />
@@ -236,10 +243,10 @@ $ docker rmi humble:1.42
 (Linux)   $ python3 humble.py
 (macOS)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt}] [-of OUTPUT_FILE]
+usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-if INPUT_FILE] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt}] [-of OUTPUT_FILE]
                  [-op OUTPUT_PATH] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-10-25
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-11-01
 
 options:
   -h, --help                  show this help message and exit
@@ -250,6 +257,7 @@ options:
   -f [FINGERPRINT_TERM]       Shows fingerprint statistics; if 'FINGERPRINT_TERM' (e.g., 'Google') is omitted the top 20 results will be shown
   -g                          Shows guidelines for enabling security HTTP response headers on popular servers/services
   -grd                        Shows the checks to grade an analysis, along with advice for improvement
+  -if INPUT_FILE              Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g. 'server: nginx'.
   -l {es}                     Defines the language for displaying analysis, errors and messages; if omitted, will be shown in English
   -lic                        Shows the license for 'humble', along with permissions, limitations and conditions.
   -o {csv,html,json,pdf,txt}  Exports analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; csv/json will have a brief analysis
