@@ -97,7 +97,7 @@
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="(Linux) - Detailed analysis in Spanish" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Analysis of a _raw response file_. <a href="https://github.com/rfc-st/humble/raw/master/samples/github_input_file.txt">Example.</a><br />
+.: (Linux) - Analysis of a "raw response file". <a href="https://github.com/rfc-st/humble/raw/master/samples/github_input_file.txt">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_input.PNG" alt="(Linux) - Analysis of a raw response file" width=70% height=70%>
