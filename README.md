@@ -398,6 +398,7 @@ Thanks for downloading _'humble'_, for trying it and for your time!.
 * <a href="https://stackoverflow.com/users/8665970/aniket-navlur">Aniket Navlur</a> for <a href="https://stackoverflow.com/questions/19596750/is-there-a-way-to-clear-your-printed-text-in-python/52590238#52590238">this</a> gem.
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
 * <a href="https://github.com/bulaktm">bulaktm</a> for <a href="https://github.com/rfc-st/humble/issues/5">this</a> suggestion.
+* <a href="https://github.com/confuciussayuhm">confuciussayuhm </a> for <a href="https://github.com/rfc-st/humble/pull/23">this</a> suggestion.
 * <a href="https://github.com/cr4zyfish">cr4zyfish </a> for some of <a href="https://github.com/rfc-st/humble/issues/19">these</a> suggestions.
 * <a href="https://parrotsec.org/team/">danterolle</a> for <a href="https://github.com/rfc-st/humble/commit/88a4e5e930083801b0ea2f4ab5f51730f72c9ebf">this</a>.
 * <a href="https://www.linkedin.com/in/david-boronat/">David</a> for believing in the usefulness of this tool.
