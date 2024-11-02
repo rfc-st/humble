@@ -816,17 +816,13 @@ def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
 def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
     if not args.brief:
         print_fng_header(l_fng_ex[idx_fng])
-        if '-if' in sys.argv:
-            if headers_l.get(header.lower()):
-                print(f" {get_detail('[fng_value]', replace=True)} \
-'{headers_l[header.lower()]}'")
-            else:
-                print(get_detail('[empty_fng]', replace=True))
-        elif not headers[header]:
-            print(get_detail('[empty_fng]', replace=True))
-        else:
+        header_value = headers_l.get(header.lower()) if '-if' in sys.argv else\
+            headers[header]
+        if header_value:
             print(f" {get_detail('[fng_value]', replace=True)} \
-'{headers[header]}'")
+'{header_value}'")
+        else:
+            print(get_detail('[empty_fng]', replace=True))
         print("")
     else:
         print_header(header)
@@ -1303,19 +1299,16 @@ def analyze_input_file(input_file):
     input_headers = {}
     try:
         with open(input_file, 'r', encoding='utf8') as input_source:
-            lines = input_source.readlines()
-            if all(': ' not in ln for ln in lines[1:]):
-                print_error_detail('[args_inputlines]')
-            for ln in lines[1:]:
+            for ln in input_source:
                 ln = ln.strip()
-                if ': ' in ln:
-                    input_header, input_value = ln.split(': ', 1)
-                    input_headers[input_header.title()] = input_value
+                if ':' in ln:
+                    input_header, input_value = ln.split(':', 1)
+                    input_headers[input_header.title()] = input_value.strip()
+            if not input_headers:
+                print_error_detail('[args_inputlines]')
     except UnicodeDecodeError:
         print_error_detail('[args_inputunicode]')
-    reliable = False
-    status_code = 200
-    return input_headers, reliable, status_code
+    return input_headers, False, 200
 
 
 def get_tmp_file(args, export_date):
@@ -1408,11 +1401,8 @@ def handle_http_error(r, exception_d):
             print_http_exception(ex, e)
 
 
-def manage_http_request():
+def manage_http_request(status_code, reliable, body):
     headers = {}
-    status_c = None
-    reliable = None
-    body = None
     try:
         with concurrent.futures.ThreadPoolExecutor() as executor:
             future = executor.submit(make_http_request)
@@ -1424,17 +1414,17 @@ def manage_http_request():
             # https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/
             if exception:
                 handle_requests_exception(exception)
-                return headers, status_c, reliable, body
+                return headers, status_code, reliable, body
             # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors
             # https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
             handle_http_error(r, exception_d)
             if r is not None:
-                status_c = r.status_code
+                status_code = r.status_code
                 headers = r.headers
                 body = r.text
     except SystemExit:
         sys.exit()
-    return headers, status_c, reliable, body
+    return headers, status_code, reliable, body
 
 
 def custom_help_formatter(prog):
@@ -1524,7 +1514,6 @@ if '-if' in sys.argv:
     else:
         headers, reliable, status_code = analyze_input_file(args.input_file)
 
-
 if '-ua' in sys.argv:
     ua_header = parse_user_agent(user_agent=True)
 elif URL:
@@ -1601,15 +1590,15 @@ exception_d = {
 }
 requests.packages.urllib3.disable_warnings()
 
+headers_l, http_equiv, status_code, reliable, body = {}, None, None, None, None
+
 if '-if' not in sys.argv:
-    headers, status_code, reliable, body = manage_http_request()
-    http_equiv = None
+    headers, status_code, reliable, body = manage_http_request(status_code,
+                                                               reliable, body)
     if body:
         http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)
-    headers_l = {header.lower(): value for header, value in headers.items()}
-else:
-    http_equiv = None
-    headers_l = {header.lower(): value for header, value in headers.items()}
+
+headers_l = {header.lower(): value for header, value in headers.items()}
 
 # Export filename generation
 export_filename = None

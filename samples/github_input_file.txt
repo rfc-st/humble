@@ -1,4 +1,4 @@
-HTTP/2 200 
+HTTP/2 200
 server: GitHub.com
 date: Fri, 01 Nov 2024 18:40:09 GMT
 content-type: text/html; charset=utf-8
