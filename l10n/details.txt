@@ -1410,6 +1410,12 @@ Error: The '-if' parameter requires the parameter '-u'.
 [args_inputnotfound]
 Error: The input file is not found in the indicated path.
 
+[args_inputunicode]
+Error: The input file does not contain valid unicode text in UTF-8 format or its a binary.
+
+[args_inputlines]
+Error: The input file does not contain lines with the format 'http header: value'. E.g. 'x-frame-options: deny'.
+
 [args_lang]
 Error: The '-l' parameter requires the parameters '-u' or '-a'.
 

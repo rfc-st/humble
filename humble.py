@@ -126,7 +126,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-11-01', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-11-02', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1297,16 +1297,22 @@ def check_ru_scope():
             sys.exit()
 
 
-def parse_input_file(input_file):
+def analyze_input_file(input_file):
     if not path.exists(input_file):
         print_error_detail('[args_inputnotfound]')
     input_headers = {}
-    with open(input_file, 'r', encoding='utf8') as input_source:
-        for ln in input_source:
-            ln = ln.strip()
-            if ': ' in ln:
-                input_header, input_value = ln.split(': ', 1)
-                input_headers[input_header.title()] = input_value
+    try:
+        with open(input_file, 'r', encoding='utf8') as input_source:
+            lines = input_source.readlines()
+            if all(': ' not in ln for ln in lines[1:]):
+                print_error_detail('[args_inputlines]')
+            for ln in lines[1:]:
+                ln = ln.strip()
+                if ': ' in ln:
+                    input_header, input_value = ln.split(': ', 1)
+                    input_headers[input_header.title()] = input_value
+    except UnicodeDecodeError:
+        print_error_detail('[args_inputunicode]')
     reliable = False
     status_code = 200
     return input_headers, reliable, status_code
@@ -1516,7 +1522,7 @@ if '-if' in sys.argv:
         print_error_detail('[args_urlinputfile]')
         sys.exit()
     else:
-        headers, reliable, status_code = parse_input_file(args.input_file)
+        headers, reliable, status_code = analyze_input_file(args.input_file)
 
 
 if '-ua' in sys.argv:

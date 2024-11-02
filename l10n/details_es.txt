@@ -1413,7 +1413,13 @@ Error: El parámetro '-if' no requiere los parámetros '-df', '-r' o -'ua'.
 Error: El parámetro '-if' requiere el parámetro '-u'.
 
 [args_inputnotfound]
-Error: No se encuentra el fichero en la ruta indicada.
+Error: No se encuentra el fichero de entrada en la ruta indicada.
+
+[args_inputunicode]
+Error: El fichero de entrada no contiene texto unicode válido en formato UTF-8 o es un binario.
+
+[args_inputlines]
+Error: El fichero de entrada no contiene líneas con el formato 'cabecera http: valor'. Ej. 'x-frame-options: deny'.
 
 [args_lang]
 Error: El parámetro '-l' requiere de los parámetros '-u' o '-a'.
