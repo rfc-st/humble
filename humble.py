@@ -1209,19 +1209,14 @@ def format_html_warnings(ln_rstrip, sub_d, ok_string, ko_string, html_final):
 
 
 def format_html_references(ln_rstrip, sub_d, html_final, lang_slice):
-    if REF_LINKS[1] in ln_rstrip:
-        html_final.write(f"{ln_rstrip[:6]}{sub_d['ahref_s']}\
-{ln_rstrip[6:]}{sub_d['close_t']}{ln_rstrip[6:]}{sub_d['ahref_f']}<br>")
-        return True
-    if REF_LINKS[0] in ln_rstrip:
-        html_final.write(f"{ln_rstrip[:6]}{sub_d['ahref_s']}\
-{ln_rstrip[8:]}{sub_d['close_t']}{ln_rstrip[6:]}{sub_d['ahref_f']}<br>")
-        return True
-    if REF_LINKS[4] in ln_rstrip:
-        html_final.write(f"{ln_rstrip[:lang_slice]}{sub_d['ahref_s']}\
-{ln_rstrip[lang_slice:]}{sub_d['close_t']}{ln_rstrip[lang_slice:]}\
-{sub_d['ahref_f']}<br>")
-        return True
+    for ref, ln_off, a_off in [(REF_LINKS[1], 6, 6),
+                               (REF_LINKS[0], 8, 8),
+                               (REF_LINKS[4], lang_slice, lang_slice)]:
+        if ref in ln_rstrip:
+            html_final.write(f"{ln_rstrip[:ln_off]}{sub_d['ahref_s']}\
+{ln_rstrip[a_off:].strip()}{sub_d['close_t']}\
+{ln_rstrip[a_off:].strip()}{sub_d['ahref_f']}<br>")
+            return True
     return False
 
 
