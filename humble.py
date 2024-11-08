@@ -78,8 +78,8 @@ DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 EXP_HEADERS = ("critical-ch", "nel", "no-vary-search",
                "observe-browsing-topics", "origin-agent-cluster",
-               "reporting-endpoints", "repr-digest", "set-login",
-               "speculation-rules", "supports-loading-mode")
+               "permissions-policy", "reporting-endpoints", "repr-digest",
+               "set-login", "speculation-rules", "supports-loading-mode")
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HTTP_SCHEMES = ('http:', 'https:')
 HTTP_SERVER_CODES = (500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510,
@@ -111,9 +111,9 @@ RE_PATTERN = (r'\[(.*?)\]',
               r'\(humble_pdf_style\)([^:]+):',
               r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s'
               r'*/?>')
-REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ')
+REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 RU_CHECKS = ('https://ipapi.co/country_name/', 'RU', 'Russia')
-SLICE_INT = (30, 43, 25, 24, -4, -5)
+SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)')
 # Check https://testssl.sh/doc/testssl.1.html to choose your preferred options
@@ -126,7 +126,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-11-02', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-11-08', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -297,7 +297,7 @@ def get_analysis_results():
     print_analysis_results(*analysis_diff, t_cnt=t_cnt)
     analysis_grade = grade_analysis(m_cnt, f_cnt, i_cnt, e_cnt)
     print(f"{get_detail(analysis_grade)}")
-    print(f"{get_detail('[experimental_header]')}")
+    print_detail('[experimental_header]', 2)
 
 
 def save_analysis_results(t_cnt):
@@ -1156,6 +1156,7 @@ def set_pdf_links(i, pdf_string):
     pdf_links_d = {URL_STRING[1]: URL,
                    REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
                    REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
+                   REF_LINKS[4]: i.partition(REF_LINKS[4])[2].strip(),
                    URL_LIST[0]: i.partition(': ')[2].strip()}
     return pdf_links_d.get(pdf_string)
 
@@ -1207,7 +1208,7 @@ def format_html_warnings(ln_rstrip, sub_d, ok_string, ko_string, html_final):
     return False
 
 
-def format_html_references(ln_rstrip, sub_d, html_final):
+def format_html_references(ln_rstrip, sub_d, html_final, lang_slice):
     if REF_LINKS[1] in ln_rstrip:
         html_final.write(f"{ln_rstrip[:6]}{sub_d['ahref_s']}\
 {ln_rstrip[6:]}{sub_d['close_t']}{ln_rstrip[6:]}{sub_d['ahref_f']}<br>")
@@ -1215,6 +1216,11 @@ def format_html_references(ln_rstrip, sub_d, html_final):
     if REF_LINKS[0] in ln_rstrip:
         html_final.write(f"{ln_rstrip[:6]}{sub_d['ahref_s']}\
 {ln_rstrip[8:]}{sub_d['close_t']}{ln_rstrip[6:]}{sub_d['ahref_f']}<br>")
+        return True
+    if REF_LINKS[4] in ln_rstrip:
+        html_final.write(f"{ln_rstrip[:lang_slice]}{sub_d['ahref_s']}\
+{ln_rstrip[lang_slice:]}{sub_d['close_t']}{ln_rstrip[lang_slice:]}\
+{sub_d['ahref_f']}<br>")
         return True
     return False
 
@@ -2375,7 +2381,8 @@ elif args.output == 'pdf':
             self.cell(0, 10, get_detail('[pdf_footer]') + str(self.page_no()) +
                       get_detail('[pdf_footer2]') + ' {nb}', align='C')
     pdf = PDF()
-    pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0])
+    pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
+                 REF_LINKS[4])
     pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
     generate_pdf(pdf, pdf_links, pdf_prefixes, tmp_filename)
 elif args.output == 'html':
@@ -2390,12 +2397,14 @@ elif args.output == 'html':
             open(final_filename, 'a', encoding='utf8') as html_final:
         for ln in html_source:
             ln_rstrip = ln.rstrip('\n')
+            lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
             ln_formatted = (
                 format_html_info(ln_rstrip, sub_d, html_final)
                 or format_html_bold(ln_rstrip, html_final)
                 or format_html_warnings(ln_rstrip, sub_d, ok_string,
                                         ko_string, html_final)
-                or format_html_references(ln_rstrip, sub_d, html_final)
+                or format_html_references(ln_rstrip, sub_d, html_final,
+                                          lang_slice)
                 or format_html_compatibility(ln_rstrip, sub_d, html_final))
             if not ln_formatted:
                 ln = format_html_headers(ln, sub_d, headers)

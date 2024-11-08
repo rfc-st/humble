@@ -488,19 +488,19 @@
  HTTP (URL Via Unsafe Scheme)
 
 [ifpoln_h]
- Permissions-Policy (No Valid Features)
+ (*) Permissions-Policy (No Valid Features)
 
 [ifnvarys_h]
  (*) No-Vary-Search (No Valid Directives)
 
 [ifpol_h]
- Permissions-Policy (Too Permissive Value)
+ (*) Permissions-Policy (Too Permissive Value)
 
 [ifpoli_h]
- Permissions-Policy (Incorrect Value)
+ (*) Permissions-Policy (Incorrect Value)
 
 [ifpold_h]
- Permissions-Policy (Deprecated Features)
+ (*) Permissions-Policy (Deprecated Features)
 
 [iprag_h]
  Pragma (Deprecated Header)
@@ -1508,3 +1508,4 @@ Unhandled exception type:
 
 [experimental_header]
  '(*)' meaning:                Experimental HTTP response header
+ '(*)' ref:                    https://mdn.io/Experimental_deprecated_obsolete

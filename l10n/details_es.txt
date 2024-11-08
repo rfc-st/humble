@@ -489,19 +489,19 @@
  HTTP (Esquema inseguro)
 
 [ifpoln_h]
- Permissions-Policy (Sin valores adecuados)
+ (*) Permissions-Policy (Sin valores adecuados)
 
 [ifnvarys_h]
  (*) No-Vary-Search (Sin directivas adecuadas)
 
 [ifpol_h]
- Permissions-Policy (Valores muy permisivos)
+ (*) Permissions-Policy (Valores muy permisivos)
 
 [ifpoli_h]
- Permissions-Policy (Valores incorrectos)
+ (*) Permissions-Policy (Valores incorrectos)
 
 [ifpold_h]
- Permissions-Policy (Valores obsoletos)
+ (*) Permissions-Policy (Valores obsoletos)
 
 [iprag_h]
  Pragma (Cabecera obsoleta)
@@ -1498,3 +1498,4 @@ Excepción no gestionada:
 
 [experimental_header]
  Significado de '(*)':                        Cabecera de respuesta HTTP experimental
+ '(*)' ref:                                   https://mdn.io/Experimental_deprecated_obsolete
