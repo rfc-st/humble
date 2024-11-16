@@ -698,23 +698,26 @@ Informe de cabeceras HTTP
 [0headers_s]
 Cabeceras de respuesta HTTP
 
-[1missing_s]
-1.- Cabeceras no habilitadas
+[1enabled_s]
+1.- Cabeceras habilitadas
 
-[2fingerprint_s]
-2.- Huella digital por cabeceras
+[2missing_s]
+2.- Cabeceras no habilitadas
 
-[3depinsecure_s]
-3.- Protocolos/Cabeceras obsoletas o inseguras
+[3fingerprint_s]
+3.- Huella digital por cabeceras
 
-[4empty_s]
-4.- Cabeceras sin valor
+[4depinsecure_s]
+4.- Protocolos/Cabeceras obsoletas o inseguras
 
-[5compat_s]
-5.- Compatibilidad de navegadores
+[5empty_s]
+5.- Cabeceras sin valor
 
-[6result_s]
-6.- Resultados del análisis
+[6compat_s]
+6.- Compatibilidad de navegadores
+
+[7result_s]
+7.- Resultados del análisis
 
 [e_chunk]
  Error: El servidor declaró codificación por partes pero envió una incorrecta.
@@ -752,23 +755,26 @@ Cabeceras de respuesta HTTP
 [0headers]
 [Cabeceras de respuesta HTTP]
 
-[1missing]
-[1. Cabeceras de respuesta HTTP no habilitadas]
+[1enabled]
+[1. Cabeceras de respuesta HTTP habilitadas]
 
-[2fingerprint]
-[2. Huella digital por cabeceras de respuesta HTTP]
+[2missing]
+[2. Cabeceras de respuesta HTTP no habilitadas]
 
-[3depinsecure]
-[3. Protocolos/Cabeceras de respuesta HTTP obsoletas o con valores inseguros]
+[3fingerprint]
+[3. Huella digital por cabeceras de respuesta HTTP]
 
-[4empty]
-[4. Cabeceras de respuesta HTTP sin valor]
+[4depinsecure]
+[4. Protocolos/Cabeceras de respuesta HTTP obsoletas o con valores inseguros]
 
-[5compat]
-[5. Compatibilidad de navegadores para cabeceras de seguridad HTTP habilitadas]
+[5empty]
+[5. Cabeceras de respuesta HTTP sin valor]
 
-[6result]
-[6. Resultados del análisis]
+[6compat]
+[6. Compatibilidad de navegadores para cabeceras de seguridad HTTP habilitadas]
+
+[7result]
+[7. Resultados del análisis]
 
 [analysis]
  Analizando URL, espera por favor ...

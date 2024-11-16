@@ -1,18 +1,22 @@
 <!DOCTYPE HTML><html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="description" content="HTTP headers analysis of
  https://facebook.com"><meta name="keywords" content="HTTP Headers, Analyzer, Analysis, Cybersecurity, Security-scanner, Security-Tools, Header-Parser
-"><meta name="author" content="https://github.com/rfc-st/humble | v.2024-10-19"><meta name="generator" content="https://github.com/rfc-st/humble | v.2024-10-19"><title>HTTP headers analysis
+"><meta name="author" content="https://github.com/rfc-st/humble | v.2024-11-16"><meta name="generator" content="https://github.com/rfc-st/humble | v.2024-11-16"><title>HTTP headers analysis
 </title><style>pre {overflow-x: auto; white-space: pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word; font-size: 13px;} a {color: blue; text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko {color: red;}</style></head><body><pre>
 
 'humble' (HTTP Headers Analyzer)
-<a href="https://github.com/rfc-st/humble">https://github.com/rfc-st/humble</a> | v.2024-10-19
+<a href="https://github.com/rfc-st/humble">https://github.com/rfc-st/humble</a> | v.2024-11-16
 
 
 <strong>[0. Info]</strong><br>
- Date : 2024/10/19 - 22:24:57
- URL  : <a href="https://facebook.com">https://facebook.com</a><br> File : humble_https_facebook_com_20241019_222457_en.html
+ Date : 2024/11/16 - 20:05:16
+ URL  : <a href="https://facebook.com">https://facebook.com</a><br> File : humble_https_facebook_com_20241116_200517_en.html
+ Note : The URL returns an error (HTTP code 400, 'Bad Request')
+ Ref  : <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400">https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400</a><br>
 
+<strong>[1. Enabled HTTP Security Headers]</strong><br>
+<span class='ok'> Cache-Control</span>:private, no-cache, no-store, must-revalidate</span><br><span class='ok'> Content-Security-Policy</span>:default-src data: blob: 'self' https://*.fbsbx.com *.facebook.com *.fbcdn.net;script-src *.facebook.com *.fbcdn.net 'unsafe-inline' blob: data: 'self' 'wasm-unsafe-eval';style-src *.fbcdn.net data: *.facebook.com 'unsafe-inline';connect-src *.facebook.com facebook.com *.fbcdn.net wss://*.facebook.com:* wss://*.fbcdn.net attachment.fbsbx.com blob: *.cdninstagram.com 'self' http://localhost:3103 wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d.facebook.com/ *.fbsbx.com;font-src data: *.facebook.com *.fbcdn.net *.fbsbx.com;img-src *.fbcdn.net *.facebook.com data: https://*.fbsbx.com facebook.com *.cdninstagram.com fbsbx.com fbcdn.net blob: android-webview-video-poster: *.oculuscdn.com https://paywithmybank.com/ https://*.paywithmybank.com/;media-src *.cdninstagram.com blob: *.fbcdn.net *.fbsbx.com www.facebook.com *.facebook.com data:;frame-src *.facebook.com *.fbsbx.com fbsbx.com data: *.fbcdn.net https://paywithmybank.com/ https://*.paywithmybank.com/;worker-src blob: *.facebook.com data:;block-all-mixed-content;upgrade-insecure-requests;report-uri https://www.facebook.com/csp/reporting/?m=c&minimize=0;</span><br><span class='ok'> Content-Type</span>:text/html; charset="utf-8"</span><br><span class='ok'> Cross-Origin-Opener-Policy</span>:same-origin-allow-popups</span><br><span class='ok'> Strict-Transport-Security</span>:max-age=15552000; preload</span><br><span class='ok'> X-Content-Type-Options</span>:nosniff</span><br><span class='ok'> X-Frame-Options</span>:DENY</span><br>
 
-<strong>[1. Missing HTTP Security Headers]</strong><br>
+<strong>[2. Missing HTTP Security Headers]</strong><br>
 <span class="ko"> Clear-Site-Data
 </span> Clears browsing data (cookies, storage, cache) associated with the requesting website.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data</a><br>
@@ -25,7 +29,7 @@
 <span class="ko"> (*) NEL
 </span> Enables web applications to declare a reporting policy to report errors.
  Ref: <a href="https://scotthelme.co.uk/network-error-logging-deep-dive/">https://scotthelme.co.uk/network-error-logging-deep-dive/</a><br>
-<span class="ko"> Permissions-Policy
+<span class="ko"> (*) Permissions-Policy
 </span> Previously called "Feature-Policy", allow and deny the use of browser features.
  Ref: <a href="https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/">https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/</a><br>
 <span class="ko"> Referrer-Policy
@@ -35,14 +39,14 @@
 </span> Limit which data external resources (e.g. Adobe Flash/PDF documents), can access on the domain.
  Ref: <a href="https://owasp.org/www-project-secure-headers/#div-headers">https://owasp.org/www-project-secure-headers/#div-headers</a><br>
 
-<strong>[2. Fingerprint HTTP Response Headers]</strong><br>
+<strong>[3. Fingerprint HTTP Response Headers]</strong><br>
  These headers can leak information about software, versions, hostnames or IP addresses:
 
 <span class="ko"> X-FB-Debug</span> [facebook.com Platform]
- Value: '5t3QAB53wRPIdH+sKbZ+X7QwvmPyHd2BOzhii8xTcMt+TKJw8oBaiU5WeoS4mOyc250nOmFsa3mQ0MMAaOYyvg=='
+ Value: 'Mc5EeqU5XiZhQ3CR+zMc/AMdqsopEWF6PIrawTtrXYovR4a/LVE24IEQdSh1yJnBq2BJUeURR+haaoW+mo3nZA=='
 
 
-<strong>[3. Deprecated HTTP Response Headers/Protocols and Insecure Values]</strong><br>
+<strong>[4. Deprecated HTTP Response Headers/Protocols and Insecure Values]</strong><br>
  The following headers/protocols are deprecated or their values may be considered unsafe:
 
 <span class="ko"> Content-Security-Policy (Deprecated Directives)
@@ -57,9 +61,6 @@
 <span class="ko"> Content-Security-Policy (Unsafe Values)
 </span> 'unsafe-inline' and 'unsafe-eval' negate most of the security benefits provided by this header.
  Ref: <a href="https://csper.io/blog/no-more-unsafe-inline">https://csper.io/blog/no-more-unsafe-inline</a><br> Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval</a><br>
-<span class="ko"> (*) Origin-Agent-Cluster (No Valid Directives)
-</span> The only valid value is '?1'.
- Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster</a><br>
 <span class="ko"> Pragma (Deprecated Header)
 </span> This header is deprecated.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma</a><br>
@@ -80,25 +81,25 @@
  Instead, use the "Content-Security-Policy" header restrictively.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection</a><br>
 
-<strong>[4. Empty HTTP Response Headers Values]</strong><br>
+<strong>[5. Empty HTTP Response Headers Values]</strong><br>
  Empty HTTP headers (and are therefore considered disabled):
 
 <span class="ok"> Nothing to report, all seems OK!</span><br>
 
-<strong>[5. Browser Compatibility for Enabled HTTP Security Headers]</strong><br>
+<strong>[6. Browser Compatibility for Enabled HTTP Security Headers]</strong><br>
 <span class="header"> Cache-Control: </span><a href="https://caniuse.com/?search=Cache-Control">https://caniuse.com/?search=Cache-Control</a><br><span class="header"> Content-Security-Policy: </span><a href="https://caniuse.com/?search=contentsecuritypolicy2">https://caniuse.com/?search=contentsecuritypolicy2</a><br><span class="header"> Content-Type: </span><a href="https://caniuse.com/?search=Content-Type">https://caniuse.com/?search=Content-Type</a><br><span class="header"> Cross-Origin-Opener-Policy: </span><a href="https://caniuse.com/?search=Cross-Origin-Opener-Policy">https://caniuse.com/?search=Cross-Origin-Opener-Policy</a><br><span class="header"> Origin-Agent-Cluster: </span><a href="https://caniuse.com/?search=Origin-Agent-Cluster">https://caniuse.com/?search=Origin-Agent-Cluster</a><br><span class="header"> Reporting-Endpoints: </span><a href="https://caniuse.com/?search=Reporting-Endpoints">https://caniuse.com/?search=Reporting-Endpoints</a><br><span class="header"> Strict-Transport-Security: </span><a href="https://caniuse.com/?search=Strict-Transport-Security">https://caniuse.com/?search=Strict-Transport-Security</a><br><span class="header"> Vary: </span><a href="https://caniuse.com/?search=Vary">https://caniuse.com/?search=Vary</a><br><span class="header"> X-Content-Type-Options: </span><a href="https://caniuse.com/?search=X-Content-Type-Options">https://caniuse.com/?search=X-Content-Type-Options</a><br><span class="header"> X-Frame-Options: </span><a href="https://caniuse.com/?search=X-Frame-Options">https://caniuse.com/?search=X-Frame-Options</a><br><span class="header"> X-XSS-Protection: </span><a href="https://caniuse.com/?search=X-XSS-Protection">https://caniuse.com/?search=X-XSS-Protection</a><br>
 
-<strong>[6. Analysis Results]</strong><br>
- Done in 0.6 seconds! (changes with respect to the last analysis in parentheses)
+<strong>[7. Analysis Results]</strong><br>
+ Done in 0.55 seconds! (changes with respect to the last analysis in parentheses)
 
- Missing headers:              7 (First Analysis)
- Fingerprint headers:          1 (First Analysis)
- Deprecated/Insecure headers:  11 (First Analysis)
- Empty headers:                0 (First Analysis)
+ Missing headers:              7 (0)
+ Fingerprint headers:          1 (0)
+ Deprecated/Insecure headers:  10 (0)
+ Empty headers:                0 (0)
 
- Findings to review:           19 (First Analysis)
+ Findings to review:           18 (0)
 
  Analysis Grade:               D (Review 'Deprecated/Insecure headers')
 
  '(*)' meaning:                Experimental HTTP response header
-</pre></body></html>
+ '(*)' ref:                    <a href="https://mdn.io/Experimental_deprecated_obsolete">https://mdn.io/Experimental_deprecated_obsolete</a><br></pre></body></html>

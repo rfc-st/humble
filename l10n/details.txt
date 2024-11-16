@@ -696,23 +696,26 @@ HTTP headers analysis
 [0headers_s]
 HTTP Response Headers
 
-[1missing_s]
-1.- Missing Headers
+[1enabled_s]
+1.- Enabled Headers
 
-[2fingerprint_s]
-2.- Fingerprint Headers
+[2missing_s]
+2.- Missing Headers
 
-[3depinsecure_s]
-3.- Deprecated/Insecure Headers
+[3fingerprint_s]
+3.- Fingerprint Headers
 
-[4empty_s]
-4.- Empty Headers
+[4depinsecure_s]
+4.- Deprecated/Insecure Headers
 
-[5compat_s]
-5.- Browser Compatibility
+[5empty_s]
+5.- Empty Headers
 
-[6result_s]
-6.- Analysis Results
+[6compat_s]
+6.- Browser Compatibility
+
+[7result_s]
+7.- Analysis Results
 
 [e_chunk]
  Error: The server declared chunked encoding but sent an invalid chunk.
@@ -750,23 +753,26 @@ HTTP Response Headers
 [0headers]
 [HTTP Response Headers]
 
-[1missing]
-[1. Missing HTTP Security Headers]
+[1enabled]
+[1. Enabled HTTP Security Headers]
 
-[2fingerprint]
-[2. Fingerprint HTTP Response Headers]
+[2missing]
+[2. Missing HTTP Security Headers]
 
-[3depinsecure]
-[3. Deprecated HTTP Response Headers/Protocols and Insecure Values]
+[3fingerprint]
+[3. Fingerprint HTTP Response Headers]
 
-[4empty]
-[4. Empty HTTP Response Headers Values]
+[4depinsecure]
+[4. Deprecated HTTP Response Headers/Protocols and Insecure Values]
 
-[5compat]
-[5. Browser Compatibility for Enabled HTTP Security Headers]
+[5empty]
+[5. Empty HTTP Response Headers Values]
 
-[6result]
-[6. Analysis Results]
+[6compat]
+[6. Browser Compatibility for Enabled HTTP Security Headers]
+
+[7result]
+[7. Analysis Results]
 
 [analysis]
  Analyzing URL, please wait ...

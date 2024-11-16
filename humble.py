@@ -71,9 +71,9 @@ BANNER = '''  _                     _     _
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 '''
 BOLD_STRINGS = ('[0.', 'HTTP R', '[1.', '[2.', '[3.', '[4.', '[5.', '[6.',
-                '[Cabeceras')
-CSV_SECTION = ('0section', '0headers', '1missing', '2fingerprint',
-               '3depinsecure', '4empty', '5compat', '6result')
+                '[7.', '[Cabeceras')
+CSV_SECTION = ('0section', '0headers', '1enabled', '2missing', '3fingerprint',
+               '4depinsecure', '5empty', '6compat', '7result')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 EXP_HEADERS = ("critical-ch", "nel", "no-vary-search",
@@ -110,12 +110,14 @@ RE_PATTERN = (r'\[(.*?)\]',
               r'\d{4}-\d{2}-\d{2}', r'\[(.*?)\]\n', r"'nonce-([^']+)'",
               r'\(humble_pdf_style\)([^:]+):',
               r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s'
-              r'*/?>')
+              r'*/?>', r'\(humble_sec_style\)([^:]+)',
+              r'\(humble_sec_style\)')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 RU_CHECKS = ('https://ipapi.co/country_name/', 'RU', 'Russia')
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
-         Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)')
+         Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
+         f"(humble_sec_style){Fore.GREEN}", '(humble_sec_style)')
 # Check https://testssl.sh/doc/testssl.1.html to choose your preferred options
 TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
 URL_LIST = (': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
@@ -126,7 +128,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-11-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-11-16', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -828,6 +830,33 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
         print_header(header)
 
 
+def get_enabled_headers(args, headers_l, l_miss):
+    headers_d = {key.title(): value for key, value in headers_l.items()}
+    l_miss = sorted({header.title() for header in l_miss +
+                     ['X-Frame-Options']})
+    sec_headers = [header for header in l_miss if header in headers_d]
+    for header in sec_headers:
+        print_enabled_headers(args, header, headers_d)
+    if not sec_headers:
+        print_detail_l('[no_sec_headers]') if args.output else \
+            print_detail_r('[no_sec_headers]', is_red=True)
+    print('\n')
+
+
+def print_enabled_headers(args, header, headers_d):
+    exp_s = get_detail('[exp_header]', replace=True) if header.lower() in\
+          EXP_HEADERS else ""
+    header_display = f'{STYLE[8]}{exp_s}{header}' if args.output in \
+        ('html', 'pdf') else f'{exp_s}{header}'
+    if args.output:
+        print(f' {header_display}' if args.brief else f' \
+{header_display}: {headers_d[header]}')
+    else:
+        styled_header = f'{STYLE[7]}{header_display}{STYLE[5]}'[18:]
+        print(f' {styled_header}' if args.brief else f' {styled_header}: \
+{headers_d[header]}')
+
+
 def print_missing_headers(args, headers_l, l_detail, l_miss):
     m_cnt = 0
     headers_set = set(headers_l)
@@ -1114,10 +1143,10 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string):
 
 def set_pdf_sections(i):
     pdf_section_d = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
-                     '[1.': '[1missing_s]', '[2.': '[2fingerprint_s]',
-                     '[3.': '[3depinsecure_s]', '[4.': '[4empty_s]',
-                     '[5.': '[5compat_s]', '[6.': '[6result_s]',
-                     '[Cabeceras': '[0headers_s]'}
+                     '[1.': '[1enabled_s]', '[2.': '[2missing_s]',
+                     '[3.': '[3fingerprint_s]', '[4.': '[4depinsecure_s]',
+                     '[5.': '[5empty_s]', '[6.': '[6compat_s]',
+                     '[7.': '[7result_s]', '[Cabeceras': '[0headers_s]'}
     if match := next((x for x in pdf_section_d if i.startswith(x)), None):
         pdf.start_section(get_detail(pdf_section_d[match]))
 
@@ -1142,9 +1171,10 @@ def format_pdf_links(i, pdf_prefixes, pdf_string):
 
 
 def set_pdf_warnings(line):
-    pdf.set_text_color(255, 0, 0)
-    pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
-    return True
+    if STYLE[8] not in line:
+        pdf.set_text_color(255, 0, 0)
+        pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+        return True
 
 
 def set_pdf_nowarnings(line):
@@ -1162,7 +1192,10 @@ def set_pdf_links(i, pdf_string):
 
 
 def set_pdf_color(pdf, line):
-    if re.search(RE_PATTERN[7], line):
+    if re.search(RE_PATTERN[10], line):
+        line = f" {line[19:]}"
+        pdf.set_text_color(0, 128, 0)
+    elif re.search(RE_PATTERN[7], line):
         line = f" {line[19:]}"
         pdf.set_text_color(102, 0, 51)
     else:
@@ -1274,6 +1307,20 @@ def format_html_empty(ln, ln_stripped, sub_d, l_empty):
         if (i in ln_stripped and '[' not in ln_stripped):
             ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
     return ln
+
+
+def format_html_enabled(ln, sub_d):
+    ln_enabled = STYLE[8] in ln
+    if ln_enabled:
+        ln = f" {ln[19:].rstrip()}"
+        if ':' in ln:
+            header, value = ln.split(":", 1)
+            ln = f"<span class='ok'> {header.strip()}{sub_d["span_f"]}:\
+{value.strip()}"
+        else:
+            ln = f"<span class='ok'> {ln.strip()}{sub_d["span_f"]}"
+        html_final.write(f'{ln}{sub_d["span_f"]}<br>')
+    return ln, ln_enabled
 
 
 def print_http_exception(exception_id, exception_v):
@@ -1617,15 +1664,21 @@ if args.output:
 print_general_info(reliable, export_filename)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
-# Section '1. Missing HTTP Security Headers'
+# Section '1. Enabled HTTP Security Headers'
 # Checks: /additional/missing.txt
-print_detail_r('[1missing]')
+print_detail_r('[1enabled]')
 
 l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
           'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
           'Cross-Origin-Resource-Policy', 'Content-Security-Policy', 'NEL',
           'Permissions-Policy', 'Referrer-Policy', 'Strict-Transport-Security',
           'X-Content-Type-Options', 'X-Permitted-Cross-Domain-Policies']
+
+get_enabled_headers(args, headers_l, l_miss)
+
+# Section '2. Missing HTTP Security Headers'
+# Checks: /additional/missing.txt
+print_detail_r('[2missing]')
 
 l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
             '[mcsp]', '[mnel]', '[mpermission]', '[mreferrer]', '[msts]',
@@ -1640,9 +1693,9 @@ if m_cnt == 0:
     print_nowarnings()
 print("")
 
-# Section '2. Fingerprint HTTP Response Headers'
+# Section '3. Fingerprint HTTP Response Headers'
 # Checks: /additional/fingerprint.txt
-print_detail_r('[2fingerprint]')
+print_detail_r('[3fingerprint]')
 
 if not args.brief:
     print_detail('[afgp]')
@@ -1656,9 +1709,9 @@ if f_cnt == 0:
     print_nowarnings()
 print("")
 
-# Section '3. Deprecated HTTP Response Headers/Protocols and Insecure Values'
+# Section '4. Deprecated HTTP Response Headers/Protocols and Insecure Values'
 # Checks: /additional/insecure.txt
-print_detail_r('[3depinsecure]')
+print_detail_r('[4depinsecure]')
 i_cnt = [0]
 
 if not args.brief:
@@ -2297,8 +2350,8 @@ if i_cnt[0] == 0:
     print_nowarnings()
 print("")
 
-# Section '4. Empty HTTP Response Headers Values'
-print_detail_r('[4empty]')
+# Section '5. Empty HTTP Response Headers Values'
+print_detail_r('[5empty]')
 l_empty = []
 
 if not args.brief:
@@ -2309,9 +2362,9 @@ e_cnt = print_empty_headers(headers, l_empty)
 print("") if e_cnt != 0 else print_nowarnings()
 print("")
 
-# Section '5. Browser Compatibility for Enabled HTTP Security Headers'
+# Section '6. Browser Compatibility for Enabled HTTP Security Headers'
 # Provided by https://caniuse.com/
-print_detail_r('[5compat]')
+print_detail_r('[6compat]')
 
 t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
          'Access-Control-Max-Age', 'Cache-Control', 'Clear-Site-Data',
@@ -2338,7 +2391,7 @@ else:
 # Analysis summary and changes with respect to the previous one
 print(linesep.join(['']*2))
 end = time()
-print_detail_r('[6result]')
+print_detail_r('[7result]')
 get_analysis_results()
 
 # Exporting analysis results based on file type
@@ -2402,11 +2455,14 @@ elif args.output == 'html':
                                           lang_slice)
                 or format_html_compatibility(ln_rstrip, sub_d, html_final))
             if not ln_formatted:
-                ln = format_html_headers(ln, sub_d, headers)
-                ln = format_html_fingerprint(args, ln, sub_d, sorted(l_fng))
-                ln = format_html_totals(ln, sub_d, l_total)
-                ln = format_html_empty(ln, ln_rstrip, sub_d, l_empty)
-                if ln:
+                ln, ln_enabled = format_html_enabled(ln, sub_d)
+                if not ln_enabled:
+                    ln = format_html_headers(ln, sub_d, headers)
+                    ln = format_html_fingerprint(args, ln, sub_d,
+                                                 sorted(l_fng))
+                    ln = format_html_totals(ln, sub_d, l_total)
+                    ln = format_html_empty(ln, ln_rstrip, sub_d, l_empty)
+                if ln and not ln_enabled:
                     html_final.write(ln)
         html_final.write('</pre></body></html>')
     print_export_path(final_filename, reliable)
