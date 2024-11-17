@@ -1315,10 +1315,10 @@ def format_html_enabled(ln, sub_d):
         ln = f" {ln[19:].rstrip()}"
         if ':' in ln:
             header, value = ln.split(":", 1)
-            ln = f"<span class='ok'> {header.strip()}{sub_d["span_f"]}:\
-{value.strip()}"
+            ln = f"<span class='ok'> {header.strip()}{sub_d['span_f']}:" \
+                 f"{value.strip()}"
         else:
-            ln = f"<span class='ok'> {ln.strip()}{sub_d["span_f"]}"
+            ln = f"<span class='ok'> {ln.strip()}{sub_d['span_f']}"
         html_final.write(f'{ln}{sub_d["span_f"]}<br>')
     return ln, ln_enabled
 
