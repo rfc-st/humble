@@ -128,7 +128,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-11-17', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-11-21', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1315,11 +1315,11 @@ def format_html_enabled(ln, sub_d):
         ln = f" {ln[19:].rstrip()}"
         if ':' in ln:
             header, value = ln.split(":", 1)
-            ln = f"<span class='ok'> {header.strip()}{sub_d['span_f']}:" \
+            ln = f"<span class='ok'> {header.strip()}{sub_d['span_f']}: " \
                  f"{value.strip()}"
         else:
             ln = f"<span class='ok'> {ln.strip()}{sub_d['span_f']}"
-        html_final.write(f'{ln}{sub_d["span_f"]}<br>')
+        html_final.write(f'{ln}<br>')
     return ln, ln_enabled
 
 
