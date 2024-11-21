@@ -830,11 +830,10 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
         print_header(header)
 
 
-def get_enabled_headers(args, headers_l, l_miss):
+def get_enabled_headers(args, headers_l, l_secure):
     headers_d = {key.title(): value for key, value in headers_l.items()}
-    l_miss = sorted({header.title() for header in l_miss +
-                     ['X-Frame-Options']})
-    sec_headers = [header for header in l_miss if header in headers_d]
+    l_secure = sorted({header.title() for header in l_secure})
+    sec_headers = [header for header in l_secure if header in headers_d]
     for header in sec_headers:
         print_enabled_headers(args, header, headers_d)
     if not sec_headers:
@@ -1665,20 +1664,30 @@ print_general_info(reliable, export_filename)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
 # Section '1. Enabled HTTP Security Headers'
-# Checks: /additional/missing.txt
 print_detail_r('[1enabled]')
+
+l_secure = ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
+            'Access-Control-Allow-Origin', 'Access-Control-Max-Age', 'Allow',
+            'Cache-Control', 'Clear-Site-Data', 'Content-Type',
+            'Content-Security-Policy', 'Content-Security-Policy-Report-Only',
+            'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
+            'Cross-Origin-Resource-Policy', 'NEL', 'Permissions-Policy',
+            'Proxy-Authenticate', 'Referrer-Policy', 'Set-Cookie', 'Set-Login',
+            'Strict-Transport-Security', 'Supports-Loading-Mode',
+            'X-Content-Type-Options', 'X-Frame-Options',
+            'X-Permitted-Cross-Domain-Policies']
+
+get_enabled_headers(args, headers_l, l_secure)
+
+# Section '2. Missing HTTP Security Headers'
+# Checks: /additional/missing.txt
+print_detail_r('[2missing]')
 
 l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
           'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
           'Cross-Origin-Resource-Policy', 'Content-Security-Policy', 'NEL',
           'Permissions-Policy', 'Referrer-Policy', 'Strict-Transport-Security',
           'X-Content-Type-Options', 'X-Permitted-Cross-Domain-Policies']
-
-get_enabled_headers(args, headers_l, l_miss)
-
-# Section '2. Missing HTTP Security Headers'
-# Checks: /additional/missing.txt
-print_detail_r('[2missing]')
 
 l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
             '[mcsp]', '[mnel]', '[mpermission]', '[mreferrer]', '[msts]',

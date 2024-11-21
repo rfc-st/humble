@@ -53,9 +53,10 @@
 
 ## Features
 
-:heavy_check_mark: 14 [checks](#checks-missing-headers) of missing HTTP response headers.<br />
-:heavy_check_mark: 1186 [checks](#checks-fingerprint-headers) of fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 113 [checks](#checks-deprecated-headersprotocols-and-insecure-values) of deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
+:heavy_check_mark: 24 [checks](#checks-secure-headers) for security HTTP response headers.<br />
+:heavy_check_mark: 14 [checks](#checks-missing-headers) for missing HTTP response headers (the ones I consider essential).<br />
+:heavy_check_mark: 1186 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 113 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: SSL/TLS checks: requires the **amazing** https://testssl.sh/.<br />
 :heavy_check_mark: Browser support references for enabled HTTP security headers: provided by https://caniuse.com/.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
@@ -334,6 +335,10 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_5.jpg" alt="Analyze multiple URLs and save the results as PDFs">
 
+
+## Checks: Secure Headers
+
+Check <a href="https://github.com/rfc-st/humble/blob/master/additional/secure.txt">this</a> file.
 
 ## Checks: Missing Headers
 
