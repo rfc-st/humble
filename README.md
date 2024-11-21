@@ -53,7 +53,7 @@
 
 ## Features
 
-:heavy_check_mark: 24 [checks](#checks-secure-headers) for security HTTP response headers.<br />
+:heavy_check_mark: 24 [checks](#checks-security-headers) for security HTTP response headers.<br />
 :heavy_check_mark: 14 [checks](#checks-missing-headers) for missing HTTP response headers (the ones I consider essential).<br />
 :heavy_check_mark: 1186 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 113 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
@@ -166,7 +166,7 @@ Options used: -f -g -p -U -s --hints
 </p>
 <br />
 
-## Installation & Update
+## Installation & update
 
 > [!NOTE]
 > Python 3.8 or higher is required.
@@ -208,7 +208,7 @@ $ git pull
 https://github.com/rfc-st/humble/releases
 ```
 
-## Installation & Maintenance (Docker)
+## Installation & maintenance (Docker)
 
 > [!NOTE]
 > Python 3.8 will be used to [build](https://github.com/rfc-st/humble/blob/master/Dockerfile) the image.
@@ -286,7 +286,7 @@ examples:
   -f Google                   Shows HTTP fingerprint headers related to the term 'Google'
 ```
 
-## Advanced Usage
+## Advanced usage
 
 .: (Linux) - Show only the analysis summary.<br />
 
@@ -336,19 +336,19 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_5.jpg" alt="Analyze multiple URLs and save the results as PDFs">
 
 
-## Checks: Secure Headers
+## Checks: security headers
 
-Check <a href="https://github.com/rfc-st/humble/blob/master/additional/secure.txt">this</a> file.
+Check <a href="https://github.com/rfc-st/humble/blob/master/additional/security.txt">this</a> file.
 
-## Checks: Missing Headers
+## Checks: missing headers
 
 Check <a href="https://github.com/rfc-st/humble/blob/master/additional/missing.txt">this</a> file.
 
-## Checks: Fingerprint headers
+## Checks: fingerprint headers
 
 Check <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt">this</a> file.
 
-## Checks: Deprecated headers/protocols and insecure values
+## Checks: deprecated headers/protocols and insecure values
 
 Check <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt">this</a> file.
 > [!NOTE]
@@ -356,7 +356,7 @@ Check <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.
 > 
 > And that's **OK**! :smiley:; you should **never** blindly trust the results of security tools: there should be further work to decide whether the risk is non-existent, potential or real depending on the analyzed URL (its exposure, environment, etc).
 
-## Checks: Empty values
+## Checks: empty values
 
 Any HTTP response header.
 
