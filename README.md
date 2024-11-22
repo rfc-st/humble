@@ -129,7 +129,7 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_csv_s.PNG" alt="(Linux) - Brief analysis saved as CSV" width=70% height=70%>
 </p>
 <br />
-.: (Windows) - Detailed analysis saved as PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_cnn_com_20241121_174939_en.pdf">Example.</a><br />
+.: (Windows) - Detailed analysis saved as PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_samsung_com_20241122_213022_en.pdf">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="(Windows) - Detailed analysis saved as PDF" width=70% height=70%>
