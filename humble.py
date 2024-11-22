@@ -128,7 +128,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-11-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-11-22', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -836,9 +836,7 @@ def get_enabled_headers(args, headers_l, l_secure):
     sec_headers = [header for header in l_secure if header in headers_d]
     for header in sec_headers:
         print_enabled_headers(args, header, headers_d)
-    if not sec_headers:
-        print_detail_l('[no_sec_headers]') if args.output else \
-            print_detail_r('[no_sec_headers]', is_red=True)
+    print_nosec_headers(args) if not sec_headers else None
     print('\n')
 
 
@@ -854,6 +852,11 @@ def print_enabled_headers(args, header, headers_d):
         styled_header = f'{STYLE[7]}{header_display}{STYLE[5]}'[18:]
         print(f' {styled_header}' if args.brief else f' {styled_header}: \
 {headers_d[header]}')
+
+
+def print_nosec_headers(args):
+    print_detail_l('[no_sec_headers]') if args.output else \
+            print_detail_r('[no_sec_headers]', is_red=True)
 
 
 def print_missing_headers(args, headers_l, l_detail, l_miss):
@@ -1192,14 +1195,26 @@ def set_pdf_links(i, pdf_string):
 
 def set_pdf_color(pdf, line):
     if re.search(RE_PATTERN[10], line):
-        line = f" {line[19:]}"
-        pdf.set_text_color(0, 128, 0)
+        set_pdf_style(pdf, line)
+        return
     elif re.search(RE_PATTERN[7], line):
         line = f" {line[19:]}"
         pdf.set_text_color(102, 0, 51)
     else:
         pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+
+
+def set_pdf_style(pdf, line):
+    pdf_line = line[19:]
+    c_index = pdf_line.find(': ')
+    if c_index != -1:
+        ln_header = f'<font color="#008000">{pdf_line[:c_index + 2]}</font>'
+        ln_value = f'<font color="#000000">{pdf_line[c_index + 2:]}</font>'
+        ln_final = f"&nbsp;{ln_header}{ln_value}<br><br>"
+    else:
+        ln_final = f'&nbsp;<font color="#008000">{pdf_line}</font><br><br>'
+    pdf.write_html(ln_final)
 
 
 def generate_html():
@@ -2391,11 +2406,8 @@ t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
 
 compat_headers = sorted(header for header in t_sec if header in headers)
 
-if compat_headers:
-    print_browser_compatibility(compat_headers)
-else:
-    print_detail_l('[no_sec_headers]') if args.output else \
-        print_detail_r('[no_sec_headers]', is_red=True)
+print_browser_compatibility(compat_headers) if compat_headers else \
+    print_nosec_headers(args)
 
 # Analysis summary and changes with respect to the previous one
 print(linesep.join(['']*2))
@@ -2423,7 +2435,7 @@ elif args.output == 'pdf':
 
         def header(self):
             self.set_font('Courier', 'B', 9)
-            self.set_y(15)
+            self.set_y(5)
             self.set_text_color(0, 0, 0)
             self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
                       new_y="NEXT", align='C')
