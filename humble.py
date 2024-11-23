@@ -93,7 +93,7 @@ HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'testssl.sh', 'analysis_grades.txt', 'analysis_grades_es.txt',
                 'license.txt', 'license_es.txt', 'testssl_windows.txt',
                 'testssl_windows_es.txt', 'security_guides.txt',
-                'security_guides_es.txt')
+                'security_guides_es.txt', 'security.txt')
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
 L10N_IDXS = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15),
              'security_guides': (16, 17)}
@@ -111,7 +111,7 @@ RE_PATTERN = (r'\[(.*?)\]',
               r'\(humble_pdf_style\)([^:]+):',
               r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s'
               r'*/?>', r'\(humble_sec_style\)([^:]+)',
-              r'\(humble_sec_style\)')
+              r'\(humble_sec_style\)', r'(?: Nota : | Note : )')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 RU_CHECKS = ('https://ipapi.co/country_name/', 'RU', 'Russia')
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31)
@@ -706,6 +706,8 @@ def print_basic_info(export_filename):
 
 
 def print_extended_info(args, reliable, status_code):
+    if args.skip_headers:
+        print_skipped_headers(args)
     if args.output in ('csv', 'json'):
         print(get_detail('[limited_analysis_note]', replace=True))
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
@@ -723,8 +725,6 @@ def print_extra_info(reliable):
         print(get_detail('[unreliable_analysis_note]', replace=True))
     if args.redirects:
         print(get_detail('[analysis_redirects_note]', replace=True))
-    if args.skip_headers:
-        print_skipped_headers(args)
 
 
 def print_response_headers():
@@ -830,13 +830,13 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
         print_header(header)
 
 
-def get_enabled_headers(args, headers_l, l_secure):
+def get_enabled_headers(args, headers_l, t_enabled):
     headers_d = {key.title(): value for key, value in headers_l.items()}
-    l_secure = sorted({header.title() for header in l_secure})
-    sec_headers = [header for header in l_secure if header in headers_d]
-    for header in sec_headers:
+    t_enabled = sorted({header.title() for header in t_enabled})
+    enabled_headers = [header for header in t_enabled if header in headers_d]
+    for header in enabled_headers:
         print_enabled_headers(args, header, headers_d)
-    print_nosec_headers(args) if not sec_headers else None
+    print_nosec_headers(args) if not enabled_headers else None
     print('\n')
 
 
@@ -1140,7 +1140,7 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string):
                 set_pdf_nowarnings(line)
                 continue
             pdf.set_text_color(255, 0, 0)
-            set_pdf_color(pdf, line)
+            set_pdf_style(pdf, line)
 
 
 def set_pdf_sections(i):
@@ -1193,19 +1193,19 @@ def set_pdf_links(i, pdf_string):
     return pdf_links_d.get(pdf_string)
 
 
-def set_pdf_color(pdf, line):
+def set_pdf_style(pdf, line):
     if re.search(RE_PATTERN[10], line):
-        set_pdf_style(pdf, line, '#008000', '#000000')
+        set_pdf_color(pdf, line, '#008000', '#000000')
         return
     elif re.search(RE_PATTERN[7], line):
-        set_pdf_style(pdf, line, '#660033', '#000000')
+        set_pdf_color(pdf, line, '#660033', '#000000')
         return
     else:
         pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
 
 
-def set_pdf_style(pdf, line, hcolor, vcolor):
+def set_pdf_color(pdf, line, hcolor, vcolor):
     pdf_line = line[19:]
     c_index = pdf_line.find(': ')
     if c_index != -1:
@@ -1311,7 +1311,8 @@ def format_html_fingerprint(args, ln, sub_d, l_fng):
 
 def format_html_totals(ln, sub_d, l_total):
     for i in l_total:
-        if (ln and ((i in ln) and ('"' not in ln) or ('HTTP (' in ln))):
+        if ln and (not re.search(RE_PATTERN[11], ln)) and (
+             (i in ln) and ('"' not in ln) or ('HTTP (' in ln)):
             ln = ln.replace(ln, sub_d['span_ko'] + ln + sub_d['span_f'])
     return ln
 
@@ -1679,20 +1680,14 @@ print_general_info(reliable, export_filename)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
 # Section '1. Enabled HTTP Security Headers'
+# Checks: /additional/security.txt
 print_detail_r('[1enabled]')
 
-l_secure = ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
-            'Access-Control-Allow-Origin', 'Access-Control-Max-Age', 'Allow',
-            'Cache-Control', 'Clear-Site-Data', 'Content-Type',
-            'Content-Security-Policy', 'Content-Security-Policy-Report-Only',
-            'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
-            'Cross-Origin-Resource-Policy', 'NEL', 'Permissions-Policy',
-            'Proxy-Authenticate', 'Referrer-Policy', 'Set-Cookie', 'Set-Login',
-            'Strict-Transport-Security', 'Supports-Loading-Mode',
-            'X-Content-Type-Options', 'X-Frame-Options',
-            'X-Permitted-Cross-Domain-Policies']
+with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[18]), 'r',
+          encoding='utf8') as sec_f:
+    t_ena = tuple(line.strip() for line in islice(sec_f, SLICE_INT[2], None))
 
-get_enabled_headers(args, headers_l, l_secure)
+get_enabled_headers(args, headers_l, t_ena)
 
 # Section '2. Missing HTTP Security Headers'
 # Checks: /additional/missing.txt

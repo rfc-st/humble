@@ -40,6 +40,7 @@ NEL
 Permissions-Policy
 Proxy-Authenticate
 Referrer-Policy
+Reporting-Endpoints
 Set-Cookie
 Set-Login
 Strict-Transport-Security
