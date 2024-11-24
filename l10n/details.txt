@@ -278,6 +278,14 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest
 
+[idocp_h]
+ Document-Policy (No Valid Directives)
+
+[idoc]
+ Include at least one valid directive.
+ Ref: https://wicg.github.io/document-policy/
+ Ref: https://github.com/WICG/document-policy/blob/main/document-policy-explainer.md
+
 [ixach_h]
  Accept-CH (Ignored Header)
 

@@ -279,6 +279,14 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest
 
+[idocp_h]
+ Document-Policy (Sin directivas adecuadas)
+
+[idoc]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://wicg.github.io/document-policy/
+ Ref: https://github.com/WICG/document-policy/blob/main/document-policy-explainer.md
+
 [ixachd_h]
  Accept-CH (Valores obsoletos)
 

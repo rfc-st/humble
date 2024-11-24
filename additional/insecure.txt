@@ -57,6 +57,7 @@ Cross-Origin-Embedder-Policy: No Valid Directives
 Cross-Origin-Opener-Policy: No Valid Directives
 Cross-Origin-Resource-Policy: No Valid Directives
 Digest: Deprecated Header
+Document-Policy: No Valid Directives
 Etag: Potentially Unsafe Header
 Expect-CT: Deprecated Header
 Expires: Ignored Header
