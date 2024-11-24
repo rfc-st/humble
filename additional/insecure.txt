@@ -30,6 +30,7 @@ Access-Control-Allow-Credentials: Incorrect Values
 Access-Control-Allow-Methods: Insecure Methods
 Access-Control-Allow-Origin: Unsafe Values
 Access-Control-Max-Age: Excessive Value
+Activate-Storage-Access: Incorrect Values
 Activate-Storage-Access: No Valid Directives
 Allow: Insecure Methods
 Cache-Control: No Valid Directives

@@ -456,6 +456,13 @@
  Ref: https://privacycg.github.io/storage-access-headers/#activate-storage-access-header
  Ref: https://developers.google.com/privacy-sandbox/blog/storage-access-api-headers-logic
 
+[iactr_h]
+ Activate-Storage-Access (Valores incorrectos)
+
+[iactr]
+ 'retry' requiere también 'allowed-origin'.
+ Ref: https://developers.google.com/privacy-sandbox/blog/storage-access-api-headers-logic
+
 [imethods_hh]
  Allow (Valores inseguros)
 

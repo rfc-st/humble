@@ -1988,6 +1988,8 @@ if 'activate-storage-access' in headers_l and '7' not in skip_list:
     act_h = headers_l['activate-storage-access']
     if not any(elem in act_h for elem in t_act):
         print_details('[iact_h]', '[iact]', 'm', i_cnt)
+    if ('retry' in act_h) and ('allowed-origin' not in act_h):
+        print_details('[iactr_h]', '[iactr]', 'd', i_cnt)
 
 if 'allow' in headers_l and '8' not in skip_list:
     methods = headers_l["allow"]
