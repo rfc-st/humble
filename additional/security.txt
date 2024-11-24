@@ -27,6 +27,7 @@ Access-Control-Allow-Credentials
 Access-Control-Allow-Methods
 Access-Control-Allow-Origin
 Access-Control-Max-Age
+Activate-Storage-Access
 Allow
 Cache-Control
 Clear-Site-Data

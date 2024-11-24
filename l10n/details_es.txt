@@ -448,6 +448,14 @@
 [iacessma_h]
  Access-Control-Max-Age (Valor excesivo)
 
+[iact_h]
+ Activate-Storage-Access (Sin directivas adecuadas)
+
+[iact]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://privacycg.github.io/storage-access-headers/#activate-storage-access-header
+ Ref: https://developers.google.com/privacy-sandbox/blog/storage-access-api-headers-logic
+
 [imethods_hh]
  Allow (Valores inseguros)
 

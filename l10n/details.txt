@@ -447,6 +447,14 @@
 [iacessma_h]
  Access-Control-Max-Age (Excessive Value)
 
+[iact_h]
+ Activate-Storage-Access (No Valid Directives)
+
+[iact]
+ Include at least one valid directive.
+ Ref: https://privacycg.github.io/storage-access-headers/#activate-storage-access-header
+ Ref: https://developers.google.com/privacy-sandbox/blog/storage-access-api-headers-logic
+
 [imethods_hh]
  Allow (Insecure Methods)
 
