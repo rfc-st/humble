@@ -129,7 +129,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-11-24', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-11-25', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -837,7 +837,7 @@ def get_enabled_headers(args, headers_l, t_enabled):
     enabled_headers = [header for header in t_enabled if header in headers_d]
     for header in enabled_headers:
         print_enabled_headers(args, header, headers_d)
-    print_nosec_headers(args) if not enabled_headers else None
+    None if enabled_headers else print_nosec_headers(args)
     print('\n')
 
 
@@ -1066,7 +1066,8 @@ def generate_json(temp_filename, final_filename):
 def parse_json(txt_sections, data, section0, sectionh, section5, section6):
     for i in range(0, len(txt_sections), 2):
         json_section = f'[{txt_sections[i]}]'
-        json_lns = txt_sections[i + 1].strip().split('\n')
+        json_lns = [line.strip() for line in txt_sections[i + 1].split('\n')
+                    if line.strip()]
         json_data = write_json(section0, sectionh, section5, section6,
                                json_section, json_lns)
         data[json_section] = json_data
@@ -1077,20 +1078,21 @@ def write_json(section0, sectionh, section5, section6, json_section, json_lns):
         json_data = {}
         format_json(json_data, json_lns)
     else:
-        json_data = [line.strip() for line in json_lns if line.strip()]
+        json_data = list(json_lns)
     return json_data
 
 
 def format_json(json_data, json_lns):
     for line in json_lns:
-        stripped_line = line.strip()
-        if not stripped_line:
-            continue
-        if ':' in stripped_line:
-            key, value = stripped_line.split(':', 1)
-            json_data[key.strip()] = value.strip()
-        else:
-            json_data[stripped_line] = ""
+        if ':' in line:
+            key, value = (part.strip() for part in line.split(':', 1))
+            if key in json_data:
+                if isinstance(json_data[key], list):
+                    json_data[key].append(value)
+                else:
+                    json_data[key] = [json_data[key], value]
+            else:
+                json_data[key] = value
     return json_data
 
 
@@ -1196,10 +1198,10 @@ def set_pdf_links(i, pdf_string):
 
 def set_pdf_style(pdf, line):
     if re.search(RE_PATTERN[10], line):
-        set_pdf_color(pdf, line, '#008000', '#000000')
+        set_pdf_color(pdf, line[19:], '#008000', '#000000')
         return
     elif re.search(RE_PATTERN[7], line):
-        set_pdf_color(pdf, line, '#660033', '#000000')
+        set_pdf_color(pdf, line[19:], '#660033', '#000000')
         return
     else:
         pdf.set_text_color(0, 0, 0)
@@ -1207,14 +1209,13 @@ def set_pdf_style(pdf, line):
 
 
 def set_pdf_color(pdf, line, hcolor, vcolor):
-    pdf_line = line[19:]
-    c_index = pdf_line.find(': ')
+    c_index = line.find(': ')
     if c_index != -1:
-        ln_header = f'<font color="{hcolor}">{pdf_line[:c_index + 2]}</font>'
-        ln_value = f'<font color="{vcolor}">{pdf_line[c_index + 2:]}</font>'
+        ln_header = f'<font color="{hcolor}">{line[:c_index + 2]}</font>'
+        ln_value = f'<font color="{vcolor}">{line[c_index + 2:]}</font>'
         ln_final = f"&nbsp;{ln_header}{ln_value}<br><br>"
     else:
-        ln_final = f'&nbsp;<font color="{hcolor}">{pdf_line}</font><br><br>'
+        ln_final = f'&nbsp;<font color="{hcolor}">{line}</font><br><br>'
     pdf.write_html(ln_final)
 
 
