@@ -1517,7 +1517,7 @@ Valor:
  Fich.: 
 
 [e_grade]
- Nota del análisi:                            E (Revisa 'Cabeceras habilitadas')
+ Nota del análisis:                           E (Revisa 'Cabeceras habilitadas')
 
 [d_grade]
  Nota del análisis:                           D (Revisa 'Protocolos/Cabeceras obsoletas o inseguras')

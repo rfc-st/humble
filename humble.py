@@ -314,6 +314,8 @@ def save_analysis_results(t_cnt):
 
 
 def get_analysis_totals(url_ln):
+    # To avoid errors with analyses performed before 11/28/204
+    # Ref: https://github.com/rfc-st/humble/commit/f7b376
     updated_lines = []
     for line in url_ln:
         fields = line.strip().split(' ; ')
@@ -371,8 +373,8 @@ def analysis_exists(filepath):
 
 
 def adjust_old_analysis(url_ln):
-    # To avoid errors with historic analyses performed before 28/11/2024
-    # Ref: git commit that ontroduces this change
+    # To avoid errors with analyses performed before 11/28/204
+    # Ref: https://github.com/rfc-st/humble/commit/f7b376
     updated_lines = []
     for i in url_ln:
         fields = i.strip().split(';')
