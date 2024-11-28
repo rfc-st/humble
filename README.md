@@ -53,7 +53,7 @@
 
 ## Features
 
-:heavy_check_mark: 28 [checks](#checks-security-headers) for security-related HTTP response headers.<br />
+:heavy_check_mark: 28 [checks](#checks-security-headers) for enabled security-related HTTP response headers.<br />
 :heavy_check_mark: 14 [checks](#checks-missing-headers) for missing security-related HTTP response headers (the ones I consider essential).<br />
 :heavy_check_mark: 1186 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 116 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
