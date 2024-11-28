@@ -1210,6 +1210,9 @@ Cabeceras de respuesta HTTP
  'humble' no analizará dominios rusos (ni permitirá su uso desde Rusia) hasta que se retire de Ucrania.
  Por favor, lee esto: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
+[enabled_cnt]
+ Cabeceras habilitadas:                       
+
 [missing_cnt]
  Cabeceras no habilitadas:                    
 
@@ -1264,6 +1267,12 @@ URLs
 [least_warnings]
  Menos advertencias                             
 
+[most_enabled]
+ Más cabeceras habilitadas                      
+
+[least_enabled]
+ Menos cabeceras habilitadas                    
+
 [most_missing]
  Más cabeceras por habilitar                    
 
@@ -1306,6 +1315,9 @@ Error: Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un
 [no_global_analysis]
 Error: Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análisis contra una URL.
 
+[no_enabled]
+ Sin cabeceras habilitadas                              
+
 [no_missing]
  Sin cabeceras por habilitar                            
 
@@ -1329,6 +1341,9 @@ Análisis
 
 [average_warnings_year]
  Advertencias por año                                   
+
+[average_enb]
+ Cabeceras habilitadas por análisis                     
 
 [average_miss]
  Cabeceras sin habilitar por análisis                   
@@ -1500,6 +1515,9 @@ Valor:
 
 [export_filename]
  Fich.: 
+
+[e_grade]
+ Nota del análisi:                            E (Revisa 'Cabeceras habilitadas')
 
 [d_grade]
  Nota del análisis:                           D (Revisa 'Protocolos/Cabeceras obsoletas o inseguras')

@@ -1205,6 +1205,9 @@ HTTP Response Headers
  'humble' will not analyze Russian domains (or allow their use from Russia) until it withdraws from Ukraine.
  Please, read this: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
+[enabled_cnt]
+ Enabled headers:              
+
 [missing_cnt]
  Missing headers:              
 
@@ -1259,6 +1262,12 @@ URLs
 [least_warnings]
  Least Warnings                    
 
+[most_enabled]
+ Most Enabled Headers              
+
+[least_enabled]
+ Least Enabled Headers             
+
 [most_missing]
  Most Missing Headers              
 
@@ -1301,6 +1310,9 @@ Error: To use this option ('-a') you must have run at least one scan against tha
 [no_global_analysis]
 Error: To use this option ('-a') you must have run at least one scan against any URL.
 
+[no_enabled]
+ Without enabled headers                             
+
 [no_missing]
  Without missing headers                             
 
@@ -1324,6 +1336,9 @@ Analysis
 
 [average_warnings_year]
  Warnings per year                                   
+
+[average_enb]
+ Enabled headers per analysis                        
 
 [average_miss]
  Missing headers per analysis                        
@@ -1510,6 +1525,9 @@ Value:
 
 [export_filename]
  File : 
+
+[e_grade]
+ Analysis Grade:               E (Review 'Enabled headers')
 
 [d_grade]
  Analysis Grade:               D (Review 'Deprecated/Insecure headers')
