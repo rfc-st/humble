@@ -297,14 +297,6 @@ $ python3 humble.py -u https://www.spacex.com | grep -A 8 "\!." | sed $'1i \n'
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux.jpg" alt="Show only the analysis summary (Linux)">
 
 
-.: (Windows) - Show only the analysis summary, in Spanish. PowerShell >= 7 required.<br />
-
-```
-$ py humble.py -u https://www.spacex.com -l es | Select-String -Pattern '!.' -Context 1,8 -NoEmphasis
-```
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_windows.jpg" alt="Show only the analysis summary (Windows, in Spanish. PowerShell >= 7 required)">
-
-
 .: (Linux) - Show only the URL, date and analysis summary.<br />
 
 ```
