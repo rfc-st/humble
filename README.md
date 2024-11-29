@@ -172,18 +172,18 @@ Options used: -f -g -p -U -s --hints
 > Python 3.8 or higher is required.
 
 ```bash
-# Requirements: python3 and python3-pip
-(Windows) https://www.python.org/downloads/windows/
-(Linux) if not installed by default, install them via, e.g. Synaptic, apt, dnf, yum ...
-(macOS) https://www.python.org/downloads/macos/
+# Install python3 and python3-pip:
+# (Windows) https://www.python.org/downloads/windows/
+# (Linux) if not installed by default, install them via, e.g. Synaptic, apt, dnf, yum ...
+# (macOS) https://www.python.org/downloads/macos/
 
-# Requirement: Git
-(Windows) https://git-scm.com/download/win
-(Linux) https://git-scm.com/download/linux
-(macOS) https://git-scm.com/download/mac
+# Install Git:
+# (Windows) https://git-scm.com/download/win
+# (Linux) https://git-scm.com/download/linux
+# (macOS) https://git-scm.com/download/mac
 
 # Setting up a virtual environment in Python (pending how to do it in Windows)
-Note: '/home/bluesman/humble_venv' is a example path for the virtual environment.
+# '/home/bluesman/humble_venv' is a example path for the virtual environment
 
 $ python3 -m venv /home/bluesman/humble_venv
 $ source /home/bluesman/humble_venv/bin/activate
@@ -214,24 +214,25 @@ https://github.com/rfc-st/humble/releases
 > Python 3.8 will be used to [build](https://github.com/rfc-st/humble/blob/master/Dockerfile) the image.
 
 ```bash
-# Install Docker, and make sure it's running.
+# Install Docker, and make sure it's running:
 # E.g. (Linux): https://www.kali.org/docs/containers/installing-docker-on-kali/
 # E.g. (macOs): https://docs.docker.com/desktop/install/mac-install/
 # E.g. (Windows): https://docs.docker.com/desktop/install/windows-install/
 
 # Build the image, providing the TAG as the latest Release of 'humble': '1.42' in this example.
-# https://github.com/rfc-st/humble/releases
-# (Windows may require elevated console privileges)
+# https://github.com/rfc-st/humble/releases (Windows may require elevated console privileges)
 $ docker build -t humble:1.42 .
 
-# Run the analysis specifying the above TAG, along with the specific options for 'humble'.
+# Run the analysis specifying the above TAG, along with the specific options for 'humble':
 # '-it', required: allocate a pseudo-TTY and keep the input interactive
 # '-rm', required: automatically remove the container and associated anonymous volumes when it exits
 
 # (Linux/macOS)
+# E.g. Analyze https://facebook with a brief analysis:
 $ docker run -it --rm --name humble humble:1.42 /bin/bash -c "python3 humble.py -u https://facebook.com -b"
 
 # (Windows)
+# E.g. Analyze https://facebook with a brief analysis:
 $ docker run -it --rm --name humble humble:1.42 python3 humble.py -u https://facebook.com -b
 
 # Removing (and untagging) previous images of 'humble' after upgrading to the latest release.
