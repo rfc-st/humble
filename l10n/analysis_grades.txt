@@ -37,21 +37,26 @@ certain depending on the URL, environment and exposure.
 
 [Grades and Associated Checks]
 
-D: 'Deprecated/Insecure headers' in the analysis.
-C: 'Missing headers' in the analysis.
-B: 'Fingerprint headers' in the analysis.
-A: No warnings in the previous sections.
+Ranked from worst to best:
+
+E:  No 'Enabled headers' in the analysis
+D:  'Deprecated/Insecure headers' in the analysis.
+C:  'Missing headers' in the analysis.
+B:  'Fingerprint headers' in the analysis.
+A:  No warnings in the previous checks.
+A+: No 'Empty headers' in the analysis.
 
 Source files of the checks:
 
+/additional/security.txt    ('Enabled headers')
 /additional/insecure.txt    ('Deprecated/Insecure headers')
 /additional/missing.txt     ('Missing headers')
 /additional/fingerprint.txt ('Fingerprint headers')
 
 [Improving Grades]
 
-Evaluate the warnings in relation to the exposure of the URL, its criticality,
-and the nature of the HTTP header (e.g., 'Experimental').
+Evaluate the grades in relation to the exposure of the URL, its criticality and
+the nature of the HTTP header: https://mdn.io/Experimental_deprecated_obsolete.
 
 Use the '-s' parameter to exclude HTTP headers from the analysis (the
 exclusions will be indicated in the results).

@@ -38,13 +38,18 @@ inexistente, potencial o certero en función de la URL, entorno y exposición.
 
 [Notas y comprobaciones asociadas]
 
-D: 'Protocolos/Cabeceras obsoletas o inseguras' en el análisis.
-C: 'Cabeceras no habilitadas' en el análisis.
-B: 'Huella digital por cabeceras' en el análisis.
-A: Sin advertencias en las secciones anteriores.
+Ordenadas de la peor a la mejor:
+
+E:  Sin 'Cabeceras habilitadas' en el análisis.
+D:  'Protocolos/Cabeceras obsoletas o inseguras' en el análisis.
+C:  'Cabeceras no habilitadas' en el análisis.
+B:  'Huella digital por cabeceras' en el análisis.
+A:  Sin advertencias en las secciones anteriores.
+A+: Sin 'Cabeceras sin valor' en el análisis.
 
 Ficheros fuente de las comprobaciones:
 
+/additional/security.txt    ('Cabeceras habilitadas')
 /additional/insecure.txt    ('Protocolos/Cabeceras obsoletas o inseguras')
 /additional/missing.txt     ('Cabeceras no habilitadas')
 /additional/fingerprint.txt ('Huella digital por cabeceras')
@@ -52,7 +57,7 @@ Ficheros fuente de las comprobaciones:
 [Mejorando la nota]
 
 Evalúa las advertencias en relación a la exposición de la URL, su criticidad
-y la naturaleza de la cabecera HTTP (por ejemplo, 'Experimental').
+y la naturaleza de la cabecera HTTP: https://mdn.io/Experimental_deprecated_obsolete.
 
 Usa el parámetro '-s' para excluir cabeceras HTTP del análisis (las exclusiones
 se mostrarán en los resultados).
