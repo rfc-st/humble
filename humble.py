@@ -129,16 +129,16 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-11-28', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-11-29', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
     def init_poolmanager(self, *args, **kwargs):
         # Yes, certificates and hosts must always be checked/verified on HTTPS
-        # connections. However, and within the scope of 'humble', I have
-        # chosen to disable these checks so that in certain cases (e.g.
-        # development environments, hosts with very old servers/software,
-        # self-signed certificates, etc) the URL can still be analyzed.
+        # connections. However, within the scope of 'humble', I have chosen to
+        # disable these checks to allow the analysis of URLs in certain cases
+        # (e.g., development environments, hosts with outdated
+        # servers/software, self-signed certificates, etc.).
         context = ssl._create_unverified_context()
         context.check_hostname = False
         context.verify_mode = ssl.CERT_NONE
@@ -308,13 +308,21 @@ def save_analysis_results(t_cnt):
     with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as all_analysis:
         all_analysis.seek(0)
         url_ln = [line for line in all_analysis if URL in line]
+        # Format of the analysis history file, ('analysis_h.txt'): Date, URL,
+        # Enabled, Missing, Fingerprint, Deprecated/Insecure, Empty headers and
+        # Total warnings (the four previous totals).
         all_analysis.write(f"{current_time} ; {URL} ; {en_cnt} ; {m_cnt} ; \
 {f_cnt} ; {i_cnt[0]} ; {e_cnt} ; {t_cnt}\n")
     return get_analysis_totals(url_ln) if url_ln else ("First",) * 6
 
 
 def get_analysis_totals(url_ln):
-    # To avoid errors with analyses performed before 11/28/204
+    # To avoid errors with analyses performed before 11/28/204, the date on
+    # which enabled security headers began being considered when calculating
+    # differences between analyses of the same URL.
+
+    # Therefore, analyses performed before that date are assumed to have no
+    # security headers enabled.
     # Ref: https://github.com/rfc-st/humble/commit/f7b376
     updated_lines = []
     for line in url_ln:
@@ -373,7 +381,13 @@ def analysis_exists(filepath):
 
 
 def adjust_old_analysis(url_ln):
-    # To avoid errors with analyses performed before 11/28/204
+    # To avoid errors with analyses performed before 11/28/204, the date on
+    # which enabled security headers began being written to the analysis
+    # history file ('analysis_h.txt') and considered for displaying statistics
+    # (via the '-a' parameter).
+
+    # Therefore, analyses performed before that date are assumed to have no
+    # security headers enabled.
     # Ref: https://github.com/rfc-st/humble/commit/f7b376
     updated_lines = []
     for i in url_ln:
@@ -403,9 +417,9 @@ def url_analytics(is_global=False):
 
 def get_analysis_metrics(all_analysis):
     url_ln = [line for line in all_analysis if URL in line]
-    adj_url_ln = adjust_old_analysis(url_ln)
     if not url_ln:
         print_error_detail('[no_analysis]')
+    adj_url_ln = adjust_old_analysis(url_ln)
     total_a = len(adj_url_ln)
     first_m = get_first_metrics(adj_url_ln)
     second_m = [get_second_metrics(adj_url_ln, i, total_a) for i
@@ -560,9 +574,9 @@ def get_date_metrics(additional_m):
 
 def extract_global_metrics(all_analysis):
     url_ln = list(all_analysis)
-    adj_url_ln = adjust_old_analysis(url_ln)
-    if not adj_url_ln:
+    if not url_ln:
         print_error_detail('[no_global_analysis]')
+    adj_url_ln = adjust_old_analysis(url_ln)
     total_a = len(adj_url_ln)
     first_m = get_global_first_metrics(adj_url_ln)
     second_m = [get_second_metrics(adj_url_ln, i, total_a) for i
@@ -1460,11 +1474,11 @@ def make_http_request():
         # If '-df' parameter is provided ('args.redirects') the exact URL will
         # be analyzed; otherwise the last redirected URL will be analyzed.
         #
-        # Yes, certificates must always be checked/verified by default on
-        # HTTPS connections. However, and within the scope of 'humble', I have
-        # chosen to disable these checks so that in certain cases (e.g.
-        # development environments, hosts with very old servers/software,
-        # self-signed certificates, etc) the URL can still be analyzed.
+        # Yes, certificates and hosts must always be checked/verified on HTTPS
+        # connections. However, within the scope of 'humble', I have chosen to
+        # disable these checks to allow the analysis of URLs in certain cases
+        # (e.g., development environments, hosts with outdated
+        # servers/software, self-signed certificates, etc.).
         r = session.get(URL, allow_redirects=not args.redirects,
                         verify=False, headers=ua_header, timeout=15)
         return r, None, None
@@ -1474,7 +1488,7 @@ def make_http_request():
         return None, None, e
 
 
-# Five seconds should be enough time to receive the HTTP response headers.
+# Five seconds should be sufficient to receive the HTTP response headers.
 def wait_http_request(future):
     with contextlib.suppress(concurrent.futures.TimeoutError):
         future.result(timeout=5)
@@ -2447,7 +2461,7 @@ print("") if e_cnt != 0 else print_nowarnings()
 print("")
 
 # Section '6. Browser Compatibility for Enabled HTTP Security Headers'
-# Provided by https://caniuse.com/
+# Ref: https://caniuse.com/
 print_detail_r('[6compat]')
 
 t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
@@ -2469,13 +2483,13 @@ compat_headers = sorted(header for header in t_sec if header in headers)
 print_browser_compatibility(compat_headers) if compat_headers else \
     print_nosec_headers(args)
 
-# Analysis summary and changes with respect to the previous one
+# Summary of the analysis and changes compared to the previous one
 print(linesep.join(['']*2))
 end = time()
 print_detail_r('[7result]')
 get_analysis_results()
 
-# Exporting analysis results based on file type
+# Exporting analysis results according to the file type
 if args.output:
     final_filename = f"{tmp_filename[:-5]}.{args.output}"
     sys.stdout = orig_stdout
@@ -2487,8 +2501,9 @@ elif args.output == 'csv':
 elif args.output == 'json':
     generate_json(tmp_filename, final_filename)
 elif args.output == 'pdf':
-    # Optimized the loading of the third-party dependency and relevant logic
-    # for 'fpdf2', enhancing analysis speed for tasks not involving PDF export
+    # Optimized the loading of third-party dependencies and relevant logic
+    # for 'fpdf2', improving analysis speed for tasks that do not involve PDF
+    # export.
     from fpdf import FPDF, YPos  # type: ignore
 
     class PDF(FPDF):
