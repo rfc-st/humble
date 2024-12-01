@@ -53,7 +53,7 @@
 
 ## Features
 
-:heavy_check_mark: 50 [checks](#checks-security-headers) for enabled security-related HTTP response headers.<br />
+:heavy_check_mark: 50 [checks](#checks-enabled-headers) for enabled security-related HTTP response headers.<br />
 :heavy_check_mark: 14 [checks](#checks-missing-headers) for missing security-related HTTP response headers (the ones I consider essential).<br />
 :heavy_check_mark: 1186 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 116 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
@@ -287,9 +287,9 @@ examples:
   -f Google                   Shows HTTP fingerprint headers related to the term 'Google'
 ```
 
-## Advanced usage
+## Advanced usage (Linux)
 
-.: (Linux) - Show only the analysis summary.<br />
+.: Show only the analysis summary.<br />
 
 ```
 $ python3 humble.py -u https://www.spacex.com | grep -A 8 "\!." | sed $'1i \n'
@@ -297,7 +297,7 @@ $ python3 humble.py -u https://www.spacex.com | grep -A 8 "\!." | sed $'1i \n'
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux.jpg" alt="Show only the analysis summary (Linux)">
 
 
-.: (Linux) - Show only the URL, date and analysis summary.<br />
+.: Show only the URL, date and analysis summary.<br />
 
 ```
 $ python3 humble.py -u https://www.spacex.com | grep -A8 -E "0. Info|\!." | grep -v "^\[1\." | sed 's/[--]//g' | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' | sed '5,6d' | sed '1i\'
@@ -305,7 +305,7 @@ $ python3 humble.py -u https://www.spacex.com | grep -A8 -E "0. Info|\!." | grep
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_2.jpg" alt="Show URL, date and the analysis summary (Linux)">
 
 
-.: (Linux) - Show only the deprecated headers/protocols and insecure values.<br />
+.: Show only the deprecated headers/protocols and insecure values.<br />
 
 ```
 $ python3 humble.py -u https://www.spacex.com | sed -n '/\[4/,/^\[5/ { /^\[5/!p }' | sed '$d' | sed $'1i \n'
@@ -313,7 +313,7 @@ $ python3 humble.py -u https://www.spacex.com | sed -n '/\[4/,/^\[5/ { /^\[5/!p 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_3.jpg" alt="Show only the deprecated headers/protocols and insecure values (Linux)">
 
 
-.: (Linux) - Check for HTTP client errors (4XX).<br />
+.: Check for HTTP client errors (4XX).<br />
 
 ```
 $ python3 humble.py -u https://my.prelude.software/demo/index.pl | grep -A1 -B5 'Note : \|Nota : ' --color=never
@@ -321,7 +321,7 @@ $ python3 humble.py -u https://my.prelude.software/demo/index.pl | grep -A1 -B5 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_4.jpg" alt="Check for HTTP client errors (4XX) (Linux)">
 
 
-.: (Linux) - Analyze multiple URLs and save the results as PDFs.<br />
+.: Analyze multiple URLs and save the results as PDFs.<br />
 
 ```
 $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'); for dataset in "${datasets[@]}"; do python3 humble.py -u "$dataset" -o pdf; done
@@ -329,7 +329,7 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_5.jpg" alt="Analyze multiple URLs and save the results as PDFs">
 
 
-## Checks: security headers
+## Checks: enabled headers
 
 Check <a href="https://github.com/rfc-st/humble/blob/master/additional/security.txt">this</a> file.
 
