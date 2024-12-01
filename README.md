@@ -38,7 +38,7 @@
 [Installation & Update](#installation--update)<br />
 [Installation & Maintenance (Docker)](#installation--maintenance-docker)<br />
 [Usage](#usage)<br />
-[Advanced Usage](#advanced-usage)<br />
+[Advanced Usage (Linux)](#advanced-usage-linux)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
 [Checks: Fingerprint Headers](#checks-fingerprint-headers)<br />
 [Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
