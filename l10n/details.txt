@@ -309,6 +309,13 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH-Lifetime
 
+[ixacp_h]
+ Accept-Patch (Potentially Unsafe Header)
+
+[ixacp]
+ Check that the HTTP PATCH method is really required to be enabled.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Patch
+
 [icred_h]
  Access-Control-Allow-Credentials (Incorrect Values)
 

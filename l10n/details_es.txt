@@ -310,6 +310,13 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH-Lifetime
 
+[ixacp_h]
+ Accept-Patch (Cabecera potencialmente insegura)
+
+[ixacp]
+ Asegúrese de que el método HTTP PATCH sea necesario
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Patch
+
 [icred_h]
  Access-Control-Allow-Credentials (Valores incorrectos)
 

@@ -26,6 +26,7 @@
 Accept-CH: Deprecated Value
 Accept-CH: Ignored Header via Unsafe Scheme
 Accept-CH-Lifetime: Deprecated Header
+Accept-Patch: Potentially Unsafe Header
 Access-Control-Allow-Credentials: Incorrect Values
 Access-Control-Allow-Methods: Insecure Methods
 Access-Control-Allow-Origin: Unsafe Values
