@@ -1792,9 +1792,11 @@ i_cnt = [0]
 if not args.brief:
     print_detail('[aisc]')
 
-l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Access-Control-Allow-Credentials',
-         'Access-Control-Allow-Methods', 'Access-Control-Allow-Origin',
-         'Access-Control-Max-Age', 'Allow', 'Content-DPR', 'Content-Encoding',
+l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Accept-Patch',
+         'Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
+         'Access-Control-Allow-Origin', 'Access-Control-Max-Age',
+         'Activate-Storage-Access', 'Allow', 'Content-Digest',
+         'Content-Disposition', 'Content-DPR', 'Content-Encoding',
          'Content-Security-Policy-Report-Only', 'Content-Type', 'Critical-CH',
          'Digest', 'Document-Policy', 'Etag', 'Expect-CT', 'Expires',
          'Feature-Policy', 'Keep-Alive', 'Large-Allocation', 'No-Vary-Search',
@@ -2583,6 +2585,6 @@ elif args.output == 'html':
                     ln = format_html_empty(ln, ln_rstrip, sub_d, l_empty)
                 if ln and not ln_enabled:
                     html_final.write(ln)
-        html_final.write('</pre></body></html>')
+        html_final.write('</pre><br></body></html>')
     print_export_path(final_filename, reliable)
     remove(tmp_filename)
