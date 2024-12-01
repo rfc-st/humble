@@ -38,6 +38,8 @@ Cache-Control: No Valid Directives
 Cache-Control: Recommended Values
 Clear-Site-Data: Ignored Header via Unsafe Scheme
 Clear-Site-Data: No Valid Directives
+Content-Digest: No Secure Algorithms
+Content-Digest: Unsafe Algorithms
 Content-DPR: Deprecated Header
 Content-Encoding: No Valid Directives
 Content-Security-Policy: Deprecated Directives
@@ -89,8 +91,8 @@ Referrer-Policy: Recommended Values
 Referrer-Policy: Unsafe Value
 Report-To: Deprecated Header
 Reporting-Endpoints: Ignored Value
-Repr-Digest: No Valid Directives
-Repr-Digest: Unsafe Values
+Repr-Digest: No Secure Algorithms
+Repr-Digest: Unsafe Algorithms
 Server-Timing: Potentially Unsafe Header
 Set-Cookie: Cookie Prefixes
 Set-Cookie: Insecure Attributes

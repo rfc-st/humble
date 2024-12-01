@@ -235,6 +235,20 @@
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
 
+[icontdig_h]
+ Content-Digest (No Secure Algorithms)
+
+[icontdig]
+ Include a secure algorithm.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Digest
+
+[icontdigi_h]
+ Content-Digest (Unsafe Algorithms)
+
+[icontdigi]
+ Unsafe algorithms should not be used as collisions can be forced.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Digest
+
 [icencod]
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
@@ -566,10 +580,10 @@
  (*) Reporting-Endpoints (Ignored Value)
 
 [irepdig_h]
- (*) Repr-Digest (No Valid Directives)
+ Repr-Digest (No Secure Algorithms)
 
 [irepdigi_h]
- (*) Repr-Digest (Unsafe Values)
+ Repr-Digest (Unsafe Algorithms)
 
 [itim_h]
  Server-Timing (Potentially Unsafe Header)
@@ -1040,11 +1054,11 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Reporting-Endpoints
 
 [irepdig]
- Include at least one valid directive.
+ Include a secure algorithm.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
 
 [irepdigi]
- Insecure algorithms should not be used as collisions can be forced.
+ Unsafe algorithms should not be used as collisions can be forced.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
 
 [iset]

@@ -34,6 +34,7 @@ Activate-Storage-Access
 Allow
 Cache-Control
 Clear-Site-Data
+Content-Digest
 Content-DPR
 Content-Security-Policy
 Content-Security-Policy-Report-Only
@@ -57,6 +58,7 @@ Public-Key-Pins-Report-Only
 Referrer-Policy
 Report-To
 Reporting-Endpoints
+Repr-Digest
 Server-Timing
 Set-Cookie
 Set-Login
