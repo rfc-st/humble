@@ -129,7 +129,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-11-30', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-01', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1869,7 +1869,8 @@ t_ct_mime = ('application/xhtml+xml', 'text/html')
 t_coep = ('credentialless', 'require-corp', 'unsafe-none')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
-t_coop = ('same-origin', 'same-origin-allow-popups', 'unsafe-none')
+t_coop = ('noopener-allow-popups', 'same-origin', 'same-origin-allow-popups',
+          'unsafe-none')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
 t_corp = ('cross-origin', 'same-origin', 'same-site')
@@ -1919,9 +1920,9 @@ t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
             'ch-ua-platform', 'ch-ua-platform-version', 'ch-ua-wow64',
             'clipboard-read', 'clipboard-write', 'compute-pressure',
             'conversion-measurement', 'cross-origin-isolated',
-            'digital-credentials-get', 'direct-sockets', 'display-capture',
-            'encrypted-media', 'execution-while-not-rendered',
-            'execution-while-out-of-viewport',
+            'deferred-fetch', 'digital-credentials-get', 'direct-sockets',
+            'display-capture', 'encrypted-media',
+            'execution-while-not-rendered', 'execution-while-out-of-viewport',
             'focus-without-user-activation', 'fullscreen', 'gamepad',
             'geolocation', 'gyroscope', 'hid', 'identity-credentials-get',
             'idle-detection', 'interest-cohort', 'join-ad-interest-group',
@@ -1937,8 +1938,8 @@ t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
 # https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
-t_proxy_auth = ('AWS4-HMAC-SHA256', 'Basic', 'Bearer', 'Digest', 'DPoP',
-                'GNAP', 'HOBA', 'Mutual', 'Negotiate', 'OAuth',
+t_proxy_auth = ('AWS4-HMAC-SHA256', 'Basic', 'Bearer', 'Concealed', 'Digest',
+                'DPoP', 'GNAP', 'HOBA', 'Mutual', 'Negotiate', 'OAuth',
                 'PrivateToken', 'SCRAM-SHA-1', 'SCRAM-SHA-256', 'vapid')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
@@ -1948,13 +1949,13 @@ t_ref_values = ('no-referrer', 'no-referrer-when-downgrade', 'origin',
                 'origin-when-cross-origin', 'same-origin', 'strict-origin',
                 'strict-origin-when-cross-origin', 'unsafe-url')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
-t_cookie_prf = ('__Host-', '__Secure-')
-t_cookie_sec = ('httponly', 'secure')
-
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
 t_repdig_sec = ('sha-256', 'sha-512')
 t_repdig_ins = ('adler', 'crc32c', 'md5', 'sha-1', 'unixsum', 'unixcksum')
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+t_cookie_prf = ('__Host-', '__Secure-')
+t_cookie_sec = ('httponly', 'secure')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Login
 t_setlogin = ('logged-in', 'logged-out')
