@@ -40,6 +40,7 @@ Clear-Site-Data: Ignored Header via Unsafe Scheme
 Clear-Site-Data: No Valid Directives
 Content-Digest: No Secure Algorithms
 Content-Digest: Unsafe Algorithms
+Content-Disposition: Potentially Unsafe Header
 Content-DPR: Deprecated Header
 Content-Encoding: No Valid Directives
 Content-Security-Policy: Deprecated Directives

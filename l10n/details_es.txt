@@ -345,6 +345,14 @@
  Esta cabecera está obsoleta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-DPR
 
+[ixcdisp_h]
+ Content-Disposition (Cabecera potencialmente insegura)
+
+[ixcdisp]
+ Codifica las URL de los archivos y sanitiza los caracteres '"', '/', '\r' y '\n'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
+ Ref: https://gist.github.com/motoyasu-saburi/1b19ef18e96776fe90ba1b9f910fa714
+
 [ickeep_h]
  Keep-Alive (Cabecera ignorada)
 

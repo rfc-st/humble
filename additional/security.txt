@@ -35,6 +35,7 @@ Allow
 Cache-Control
 Clear-Site-Data
 Content-Digest
+Content-Disposition
 Content-DPR
 Content-Security-Policy
 Content-Security-Policy-Report-Only

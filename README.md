@@ -53,10 +53,10 @@
 
 ## Features
 
-:heavy_check_mark: 53 [checks](#checks-enabled-headers) for enabled security-related HTTP response headers.<br />
+:heavy_check_mark: 54 [checks](#checks-enabled-headers) for enabled security-related HTTP response headers.<br />
 :heavy_check_mark: 14 [checks](#checks-missing-headers) for missing security-related HTTP response headers (the ones I consider essential).<br />
 :heavy_check_mark: 1186 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 119 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
+:heavy_check_mark: 120 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: SSL/TLS checks: requires the **amazing** https://testssl.sh/.<br />
 :heavy_check_mark: Browser support references for enabled HTTP security headers: provided by https://caniuse.com/.<br />
 :heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />

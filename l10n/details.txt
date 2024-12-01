@@ -344,6 +344,14 @@
  This header is deprecated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-DPR
 
+[ixcdisp_h]
+ Content-Disposition (Potentially Unsafe Header)
+
+[ixcdisp]
+ Encode file URLs and sanitize '"', '/', '\r', '\n' characters.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
+ Ref: https://gist.github.com/motoyasu-saburi/1b19ef18e96776fe90ba1b9f910fa714
+
 [ickeep_h]
  Keep-Alive (Ignored Header)
 
