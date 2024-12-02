@@ -114,7 +114,6 @@ RE_PATTERN = (r'\[(.*?)\]',
               r'*/?>', r'\(humble_sec_style\)([^:]+)',
               r'\(humble_sec_style\)', r'(?: Nota : | Note : )')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
-RU_CHECKS = ('https://ipapi.co/country_name/', 'RU', 'Russia')
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
@@ -129,7 +128,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-01', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-02', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1402,14 +1401,10 @@ def print_http_exception(exception_id, exception_v):
 
 
 def check_ru_scope():
-    with contextlib.suppress(requests.exceptions.RequestException):
-        requests.packages.urllib3.disable_warnings()
-        sffx = tldextract.extract(URL).suffix[-2:].upper()
-        cnty = requests.get(RU_CHECKS[0], verify=False, timeout=5).text.strip()
-        if (sffx == RU_CHECKS[1] and sffx not in NON_RU_TLD) or cnty == \
-                RU_CHECKS[2]:
-            print_detail('[ru_check]', 3)
-            sys.exit()
+    sffx = tldextract.extract(URL).suffix[-2:].upper()
+    if (sffx == 'RU' and sffx not in NON_RU_TLD):
+        print_detail('[ru_check]', 3)
+        sys.exit()
 
 
 def analyze_input_file(input_file):

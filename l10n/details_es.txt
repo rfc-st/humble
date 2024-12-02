@@ -1236,7 +1236,7 @@ Cabeceras de respuesta HTTP
 
 [ru_check]
 
- 'humble' no analizará dominios rusos (ni permitirá su uso desde Rusia) hasta que se retire de Ucrania.
+ 'humble' no analizará dominios rusos hasta que se retire de Ucrania.
  Por favor, lee esto: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
 [enabled_cnt]
