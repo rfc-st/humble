@@ -1620,7 +1620,8 @@ if '-f' in sys.argv:
 URL = args.URL
 
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
-check_ru_scope()
+if URL is not None:
+    check_ru_scope()
 
 if '-if' in sys.argv:
     if any([args.redirects, args.ret, args.user_agent]):

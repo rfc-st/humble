@@ -24,11 +24,15 @@
 # AGRAVIO O CUALQUIER OTRO MOTIVO, DERIVADAS DE, FUERA DE O EN CONEXIÓN CON EL
 # SOFTWARE O SU USO U OTRO TIPO DE ACCIONES EN EL SOFTWARE.
 
-Guías para habilitar cabeceras de respuesta HTTP de seguridad en servidores/servicios populares:
+Guías para habilitar cabeceras de respuesta HTTP de seguridad en frameworks, servidores y servicios populares:
 
 [Amazon Web Services]
 https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example-function-add-security-headers.html
 https://dev.to/kumo/deliver-perfect-http-security-headers-with-aws-cloudfront-4din
+
+[Angular]
+https://angular.dev/best-practices/security
+https://learn.microsoft.com/en-us/answers/questions/1376588/how-to-remove-unwanted-security-headers-for-my-ang
 
 [Apache HTTP Server]
 https://htaccessbook.com/important-security-headers/
@@ -39,7 +43,6 @@ https://www.digitalocean.com/community/tutorials/recommended-steps-to-harden-apa
 [Cloudflare]
 https://developers.cloudflare.com/workers/examples/security-headers/
 https://algustionesa.com/security-headers/
-https://ar0x.medium.com/hardening-the-http-security-headers-with-cloudflare-workers-27277cade977
 
 [LiteSpeed Web Server]
 https://docs.litespeedtech.com/lsws/security-headers/
@@ -57,6 +60,11 @@ https://www.getpagespeed.com/server-setup/nginx-security-headers-the-right-way
 https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html
 https://blog.logrocket.com/using-helmet-node-js-secure-application/
 https://blog.risingstack.com/node-js-security-checklist/
+
+[Spring]
+https://docs.spring.io/spring-security/reference/servlet/exploits/headers.html
+https://docs.spring.io/spring-security/reference/features/exploits/headers.html
+https://www.baeldung.com/spring-security-csp
 
 [WordPress]
 https://www.wpdownloadmanager.com/http-security-headers-on-wordpress/
