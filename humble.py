@@ -98,8 +98,6 @@ HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
 L10N_IDXS = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15),
              'security_guides': (16, 17)}
-# https://data.iana.org/TLD/tlds-alpha-by-domain.txt
-NON_RU_TLD = ('CYMRU', 'GURU', 'PRU')
 OS_PATH = dirname(abspath(__file__))
 PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
 RE_PATTERN = (r'\[(.*?)\]',
@@ -128,7 +126,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-02', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-03', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1401,8 +1399,11 @@ def print_http_exception(exception_id, exception_v):
 
 
 def check_ru_scope():
-    sffx = tldextract.extract(URL).suffix[-2:].upper()
-    if (sffx == 'RU' and sffx not in NON_RU_TLD):
+    try:
+        sff = urlparse(URL).netloc.split(':')[0].encode('ascii').decode('idna')
+    except UnicodeError:
+        sff = urlparse(URL).netloc.split(':')[0]
+    if sff.split('.')[-1].upper() in {'RU', 'РФ'}:
         print_detail('[ru_check]', 3)
         sys.exit()
 
@@ -1618,6 +1619,9 @@ if '-f' in sys.argv:
 
 URL = args.URL
 
+# https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
+check_ru_scope()
+
 if '-if' in sys.argv:
     if any([args.redirects, args.ret, args.user_agent]):
         print_error_detail('[args_inputfile]')
@@ -1683,8 +1687,6 @@ if args.URL_A:
     url_analytics() if URL else url_analytics(is_global=True)
 
 start = time()
-# https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
-check_ru_scope()
 
 if not args.URL_A:
     detail = '[analysis_output]' if args.output else '[analysis]'
