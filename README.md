@@ -69,6 +69,7 @@
 :heavy_check_mark: Saves each analysis, showing at the end the improvements or deficiencies in relation to the last one.<br />
 :heavy_check_mark: Can display analysis statistics: either against a specific URL or all of them.<br />
 :heavy_check_mark: Can display fingerprint statistics: either against a specific term or the Top 20.<br />
+:heavy_check_mark: Can display guidelines: for enabling security HTTP response headers on popular frameworks, servers and services.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarLint<a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a> and <a href="https://pypi.org/project/vermin/" target="_blank">vermin<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
@@ -249,7 +250,7 @@ $ docker rmi humble:1.42
 usage: humble.py [-h] [-a] [-b] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-if INPUT_FILE] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt}] [-of OUTPUT_FILE]
                  [-op OUTPUT_PATH] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-11-01
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-12-03
 
 options:
   -h, --help                  show this help message and exit
@@ -258,7 +259,7 @@ options:
   -df                         Do not follow redirects; if omitted the last redirection will be the one analyzed
   -e [TESTSSL_PATH]           Shows TLS/SSL checks; requires the PATH of https://testssl.sh/
   -f [FINGERPRINT_TERM]       Shows fingerprint statistics; if 'FINGERPRINT_TERM' (e.g., 'Google') is omitted the top 20 results will be shown
-  -g                          Shows guidelines for enabling security HTTP response headers on popular servers/services
+  -g                          Shows guidelines for enabling security HTTP response headers on popular frameworks, servers and services
   -grd                        Shows the checks to grade an analysis, along with advice for improvement
   -if INPUT_FILE              Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g. 'server: nginx'.
   -l {es}                     Defines the language for displaying analysis, errors and messages; if omitted, will be shown in English
@@ -355,12 +356,14 @@ Any HTTP response header.
 
 ## Guidelines included to enable security HTTP headers
 * Amazon Web Services
+* Angular
 * Apache HTTP Server
 * Cloudflare
 * LiteSpeed Web Server
 * Microsoft Internet Information Services
 * Nginx
 * Node.js
+* Spring
 * WordPress
 
 ## To-Do

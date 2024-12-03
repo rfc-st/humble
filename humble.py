@@ -1567,8 +1567,8 @@ parser.add_argument("-f", nargs='?', type=str, dest='fingerprint_term', help="\
 Shows fingerprint statistics; if 'FINGERPRINT_TERM' (e.g., 'Google') is \
 omitted the top 20 results will be shown")
 parser.add_argument("-g", dest='guides', action="store_true", help="Shows \
-guidelines for enabling security HTTP response headers on popular servers/\
-services")
+guidelines for enabling security HTTP response headers on popular frameworks, \
+servers and services")
 parser.add_argument("-grd", dest='grades', action="store_true", help="Shows \
 the checks to grade an analysis, along with advice for improvement")
 parser.add_argument("-if", dest='input_file', type=str, help="Analyzes \
