@@ -126,7 +126,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-03', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-04', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1355,6 +1355,7 @@ def format_html_fingerprint(args, ln, sub_d, l_fng):
                 return ln
             if 'class="ko"' not in ln:
                 ln = f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}{ln[idx:]}"
+                return ln
         ln_lower, i_lower = ln.casefold(), i.casefold()
         if args.brief and i_lower in ln_lower and ':' not in ln and \
            '    class="ko"' not in ln:
