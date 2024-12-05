@@ -56,6 +56,7 @@ import ssl
 import sys
 import contextlib
 import concurrent.futures
+import xml.etree.ElementTree as ET
 
 # Third-Party imports
 from colorama import Fore, Style, init
@@ -75,6 +76,12 @@ BOLD_STRINGS = ('[0.', 'HTTP R', '[1.', '[2.', '[3.', '[4.', '[5.', '[6.',
 CSV_SECTION = ('0section', '0headers', '1enabled', '2missing', '3fingerprint',
                '4depinsecure', '5empty', '6compat', '7result')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
+DTD_CONTENT = '''<!ELEMENT analysis (section+)>
+<!ELEMENT section (item*)>
+<!ATTLIST section name CDATA #REQUIRED>
+<!ELEMENT item (#PCDATA)>
+<!ATTLIST item name CDATA #IMPLIED>
+'''
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'nel', 'no-vary-search', 'observe-browsing-topics',
@@ -126,7 +133,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-04', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-05', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -758,7 +765,7 @@ def print_basic_info(export_filename):
 def print_extended_info(args, reliable, status_code):
     if args.skip_headers:
         print_skipped_headers(args)
-    if args.output in ('csv', 'json'):
+    if args.output in ('csv', 'json', 'xml'):
         print(get_detail('[limited_analysis_note]', replace=True))
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
        args.redirects or args.skip_headers:
@@ -1392,6 +1399,39 @@ def format_html_enabled(ln, sub_d):
     return ln, ln_enabled
 
 
+def generate_xml(temp_filename, final_filename):
+    dtd_declaration = f'<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>'
+    root = ET.Element('analysis')
+    with open(temp_filename, 'r', encoding='utf8') as txt_source:
+        section = None
+        stripped_txt = (line.strip() for line in txt_source)
+        parse_xml(root, section, stripped_txt)
+    xml_content = ET.tostring(root, encoding='unicode', xml_declaration=False)
+    with open(final_filename, 'wb') as xml_final:
+        xml_final.write(b'<?xml version="1.0" encoding="utf-8"?>\n')
+        xml_final.write(dtd_declaration.encode('utf-8'))
+        xml_final.write(xml_content.encode('utf-8'))
+    print_export_path(final_filename, reliable)
+    remove(temp_filename)
+
+
+def parse_xml(root, section, stripped_txt):
+    for line in stripped_txt:
+        if not line:
+            continue
+        if line.startswith('['):
+            section = ET.SubElement(root, 'section', {'name': line})
+        elif section is not None:
+            item = ET.SubElement(section, 'item')
+            if ': ' in line:
+                key, value = line.split(': ', 1)
+                item.set('name', key.strip())
+                item.text = value.strip()
+            else:
+                item.text = line
+    return section
+
+
 def print_http_exception(exception_id, exception_v):
     delete_lines()
     print("")
@@ -1544,7 +1584,7 @@ def manage_http_request(status_code, reliable, body):
 
 
 def custom_help_formatter(prog):
-    return RawDescriptionHelpFormatter(prog, max_help_position=30)
+    return RawDescriptionHelpFormatter(prog, max_help_position=34)
 
 
 # Main functionality for argparse
@@ -1581,9 +1621,9 @@ shown in English")
 parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
 the license for 'humble', along with permissions, limitations and conditions.")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
-                                                  'txt'], help="Exports \
-analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; \
-csv/json will have a brief analysis")
+                                                  'txt', 'xml'], help="Exports\
+ analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; \
+csv/json/xml will have a brief analysis")
 parser.add_argument("-of", dest='output_file', type=str, help="Exports \
 analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 '-o' will be used")
@@ -1664,8 +1704,8 @@ if any([args.brief, args.output, args.ret, args.redirects,
                                  args.URL_A is None):
     print_error_detail('[args_several]')
 
-if args.output in ['csv', 'json'] and not args.brief:
-    print_error_detail('[args_csv_json]')
+if args.output in ['csv', 'json', 'xml'] and not args.brief:
+    print_error_detail('[args_brief_filetype]')
 
 skip_list, unsupported_headers = [], []
 
@@ -2524,6 +2564,8 @@ elif args.output == 'csv':
     generate_csv(tmp_filename, final_filename)
 elif args.output == 'json':
     generate_json(tmp_filename, final_filename)
+elif args.output == 'xml':
+    generate_xml(tmp_filename, final_filename)
 elif args.output == 'pdf':
     # Optimized the loading of third-party dependencies and relevant logic
     # for 'fpdf2', improving analysis speed for tasks that do not involve PDF

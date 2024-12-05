@@ -836,7 +836,7 @@ HTTP Response Headers
  Note : The analysis may not be reliable because of the time it took for the URL to respond.
 
 [limited_analysis_note]
- Note : Exporting to CSV/JSON is currently limited to a brief analysis
+ Note : Exporting to CSV/JSON/XML is currently limited to a brief analysis
 
 [analysis_redirects_note]
  Note : The exact URL will be analyzed, without following redirects.
@@ -1501,8 +1501,8 @@ Error: The parameters '-b', '-df', '-'o', '-r' and '-s' require the parameter '-
 [args_customfile]
 Error: The parameter '-of' requires the parameters '-u' and '-o'.
 
-[args_csv_json]
-Error: The parameters '-o csv' and '-o json' require the parameter '-b'.
+[args_brief_filetype]
+Error: The parameters '-o csv', '-o json' and '-o xml' require the parameter '-b'.
 
 [notestssl_file]
 Error: 'testssl.sh' is not found in that PATH.
@@ -1536,18 +1536,18 @@ Values
 
 [epilog_content]
 examples:
-  -u URL -a                   Shows statistics of the analysis performed against the URL
-  -u URL -b                   Analyzes URL and reports overall findings
-  -u URL -b -o csv            Analyzes URL and exports overall findings to CSV format
-  -u URL -l es                Analyzes URL and reports (in Spanish) detailed findings
-  -u URL -o pdf               Analyzes URL and exports detailed findings to PDF format
-  -u URL -o html -of test     Analyzes URL and exports detailed findings to HTML format and 'test' filename
-  -u URL -o pdf -op D:/Tests  Analyzes URL and exports detailed findings to PDF format and 'D:/Tests' path
-  -u URL -r                   Analyzes URL and reports detailed findings along with HTTP response headers
-  -u URL -s ETag NEL          Analyzes URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
-  -u URL -ua 4                Analyzes URL using the fourth User-Agent of 'additional/user_agents.txt' file
-  -a -l es                    Shows statistics (in Spanish) of the analysis performed against all URLs
-  -f Google                   Shows HTTP fingerprint headers related to the term 'Google'
+  -u URL -a                       Shows statistics of the analysis performed against the URL
+  -u URL -b                       Analyzes URL and reports overall findings
+  -u URL -b -o csv                Analyzes URL and exports overall findings to CSV format
+  -u URL -l es                    Analyzes URL and reports (in Spanish) detailed findings
+  -u URL -o pdf                   Analyzes URL and exports detailed findings to PDF format
+  -u URL -o html -of test         Analyzes URL and exports detailed findings to HTML format and 'test' filename
+  -u URL -o pdf -op D:/Tests      Analyzes URL and exports detailed findings to PDF format and 'D:/Tests' path
+  -u URL -r                       Analyzes URL and reports detailed findings along with HTTP response headers
+  -u URL -s ETag NEL              Analyzes URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
+  -u URL -ua 4                    Analyzes URL using the fourth User-Agent of 'additional/user_agents.txt' file
+  -a -l es                        Shows statistics (in Spanish) of the analysis performed against all URLs
+  -f Google                       Shows HTTP fingerprint headers related to the term 'Google'
 
 [fng_value]
 Value:

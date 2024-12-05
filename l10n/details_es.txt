@@ -838,7 +838,7 @@ Cabeceras de respuesta HTTP
  Nota : El análisis puede no ser fiable por el tiempo que tardó en responder la URL.
 
 [limited_analysis_note]
- Nota: Exportar a CSV/JSON limita actualmente a un análisis breve
+ Nota: Exportar a CSV/JSON/XML limita actualmente a un análisis breve
 
 [analysis_redirects_note]
  Nota : Se analizará la URL exacta, sin seguir redireccionamientos.
@@ -1506,8 +1506,8 @@ Error: Los parámetros '-b', '-df', -'o', '-r' y '-s' requieren el parámetro '-
 [args_customfile]
 Error: El parámetro -of' requiere los parámetros '-u' y '-o'.
 
-[args_csv_json]
-Error: Los parámetros '-o csv' y '-o json' requieren el parámetro '-b'.
+[args_brief_filetype]
+Error: Los parámetros '-o csv', '-o json' y '-o xml' requieren el parámetro '-b'.
 
 [notestssl_file]
 Error: 'testssl.sh' no existe en la ruta indicada.
