@@ -19,7 +19,7 @@
 <br />
 <br />
 <br />
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fast.JPG" alt="A quick analysis with 'humble'!" width=90% height=90%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fast.JPG" alt="A quick analysis with 'humble'!" width=70% height=70%>
 <br />
 <br />
 <i>"千里之行，始於足下 - 老子"</i>
