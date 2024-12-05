@@ -57,6 +57,7 @@ Proxy-Authenticate
 Public-Key-Pins
 Public-Key-Pins-Report-Only
 Referrer-Policy
+Refresh
 Report-To
 Reporting-Endpoints
 Repr-Digest

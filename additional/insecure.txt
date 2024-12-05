@@ -90,6 +90,7 @@ Public-Key-Pins-Report-Only: Deprecated Header
 Referrer-Policy: Incorrect Value
 Referrer-Policy: Recommended Values
 Referrer-Policy: Unsafe Value
+Refresh: Potentially Unsafe Header
 Report-To: Deprecated Header
 Reporting-Endpoints: Ignored Value
 Repr-Digest: No Secure Algorithms

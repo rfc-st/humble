@@ -581,6 +581,9 @@
 [irefn_h]
  Referrer-Policy (Incorrect Value)
 
+[irefr_h]
+ Refresh (Potentially Unsafe Header)
+
 [irept_h]
  Report-To (Deprecated Header)
 
@@ -1052,6 +1055,10 @@ HTTP Response Headers
 [irefn]
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
+[irefr]
+ Email addresses in this HTTP header could facilitate Phishing Attacks
+ Ref: https://unit42.paloaltonetworks.com/rare-phishing-page-delivery-header-refresh/
 
 [irept]
  This header is deprecated. Use instead "Reporting-Endpoints".
