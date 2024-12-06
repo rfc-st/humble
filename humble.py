@@ -1928,10 +1928,11 @@ t_doci = ('isolate-and-credentialless', 'isolate-and-require-corp', 'none')
 
 # https://wicg.github.io/document-policy/
 # https://github.com/WICG/document-policy/blob/main/document-policy-explainer.md
-t_docp = ('bpp', 'document-write', 'frame-loading', 'forms',
-          'image-compression', 'max-image-bpp', 'modals', 'no-document-write',
-          'no-unsized-media', 'pointer-lock', 'popups', 'presentation-lock',
-          'report-to', 'scripts', 'unsized-media', 'vertical-scroll')
+t_docp = ('bpp', 'document-write', 'expect-no-linked-resources',
+          'frame-loading', 'forms', 'image-compression', 'max-image-bpp',
+          'modals', 'no-document-write', 'no-unsized-media', 'pointer-lock',
+          'popups', 'presentation-lock', 'report-to', 'scripts',
+          'unsized-media', 'vertical-scroll')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
 t_excc = ('max-age', 's-maxage')

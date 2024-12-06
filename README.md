@@ -378,17 +378,28 @@ Any HTTP response header.
 - [ ] Google Style Python Docstrings and documentation via <a href="https://www.sphinx-doc.org/en/master/">Sphinx</a>
 
 ## Further reading
+* Web browsers' experimental features, roadmaps, technology previews and trials:<br />
+<a href="https://chromestatus.com/roadmap">Google Chrome</a><br />
+<a href="https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials">Microsoft Edge</a><br />
+<a href="https://wiki.mozilla.org/Origin_Trials">Mozilla Firefox</a><br />
+<a href="https://blogs.opera.com/desktop/category/developer-2/">Opera</a><br />
+<a href="https://webkit.org/blog/">Safari</a><br />
 
-https://caniuse.com/<br />
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers<br />
-https://github.com/search?q=http+headers+analyze<br />
-https://github.com/search?q=http+headers+secure<br />
-https://github.com/search?q=http+headers+security<br />
-https://owasp.org/www-project-secure-headers/<br />
-https://securityheaders.com/<br />
-https://scotthelme.co.uk/<br />
-https://webtechsurvey.com/common-response-headers<br />
-https://www.w3.org<br />
+* Similar tools on GitHub:<br />
+<a href="https://github.com/search?q=http+headers+analyze">'HTTP Headers Analyze'</a><br />
+<a href="https://github.com/search?q=http+headers+secure">'HTTP Headers Secure'</a><br />
+<a href="https://github.com/search?q=http+headers+security">'HTTP Headers Security'</a><br />
+<a href="https://owasp.org/www-project-secure-headers/#div-technical">OWASP Secure Headers Project</a><br />
+
+* References and standards:<br />
+<a href="https://caniuse.com/">Can I use?</a><br />
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">Mozilla Developer Network</a><br />
+<a href="https://www.w3.org/TR/">World Wide Web Consortium</a><br />
+
+* Additional information:<br />
+<a href="https://webtechsurvey.com/common-response-headers">Common response headers</a><br />
+<a href="https://securityheaders.com/">Security Headers (HTTP response header analyzer)</a><br />
+<a href="https://scotthelme.co.uk/">Scott Helme (Security Researcher)</a><br />
 
 ## Contribute
 * Read <a href="https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md">this</a> first!.
