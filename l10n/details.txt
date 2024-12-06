@@ -300,6 +300,13 @@
  Ref: https://wicg.github.io/document-policy/
  Ref: https://github.com/WICG/document-policy/blob/main/document-policy-explainer.md
 
+[idocpi_h]
+ Document-Isolation-Policy (No Valid Directives)
+
+[idocpi]
+ Include at least one valid directive.
+ Ref: https://wicg.github.io/document-isolation-policy/
+
 [ixach_h]
  Accept-CH (Ignored Header)
 

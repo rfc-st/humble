@@ -301,6 +301,13 @@
  Ref: https://wicg.github.io/document-policy/
  Ref: https://github.com/WICG/document-policy/blob/main/document-policy-explainer.md
 
+[idocpi_h]
+ Document-Isolation-Policy (Sin directivas adecuadas)
+
+[idocpi]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://wicg.github.io/document-isolation-policy/
+
 [ixachd_h]
  Accept-CH (Valores obsoletos)
 

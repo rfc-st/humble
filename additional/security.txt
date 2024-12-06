@@ -45,6 +45,7 @@ Cross-Origin-Embedder-Policy-Report-Only
 Cross-Origin-Opener-Policy
 Cross-Origin-Opener-Policy-Report-Only
 Cross-Origin-Resource-Policy
+Document-Isolation-Policy
 Document-Policy
 Expect-CT
 Feature-Policy
