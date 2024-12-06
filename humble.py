@@ -133,7 +133,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-05', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-06', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):

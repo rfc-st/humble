@@ -26,15 +26,15 @@
 
 [Sobre esta herramienta]
 
-'humble' (https://github.com/rfc-st/humble/) es una herramienta estricta
-analizando cabeceras de respuesta HTTP y sus valores, incluyendo las
-'Experimentales'. Se basa en gran parte en la información proporcionada por
-'MDN Web Docs', https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers.
+'humble' es una herramienta estricta al comprobar cabeceras de respuesta HTTP
+y sus valores; algunas de estas cabeceras pueden ser experimentales y quizás no
+estés de acuerdo con todas las advertencias tras un análisis.
 
-Y puede que no estés de acuerdo con los resultados tras el análisis; !y eso es
-magnífico y necesario :)!: nunca deberías confiar ciegamente en herramientas de
-seguridad; siempre debe haber un trabajo posterior para evaluar el riesgo real:
-inexistente, potencial o certero en función de la URL, entorno y exposición.
+!Y eso está bien :)!; nunca se debe confiar ciegamente en los resultados de las
+herramientas de seguridad: se debe realizar un trabajo adicional para decidir si el
+riesgo reportado es inexistente, potencial o real en base a la URL analizada
+(su exposición, entorno, etc.).
+
 
 [Notas y comprobaciones asociadas]
 
@@ -54,13 +54,19 @@ Ficheros fuente de las comprobaciones:
 /additional/missing.txt     ('Cabeceras no habilitadas')
 /additional/fingerprint.txt ('Huella digital por cabeceras')
 
+
 [Mejorando la nota]
 
-Evalúa las advertencias en relación a la exposición de la URL, su criticidad
+* 'humble' sigue de forma estricta la documentación y especificaciones de
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers y https://www.w3.org/.
+Algunas cabeceras HTTP, y sus valores requeridos, distinguen entre mayúsculas y
+minúsculas y este puede ser motivo por el cual se muestren advertencias tras el análisis.
+
+* Evalúa las advertencias en relación a la exposición de la URL, su criticidad
 y la naturaleza de la cabecera HTTP: https://mdn.io/Experimental_deprecated_obsolete.
 
-Usa el parámetro '-s' para excluir cabeceras HTTP del análisis (las exclusiones
+* Usa el parámetro '-s' para excluir cabeceras HTTP del análisis (las exclusiones
 se mostrarán en los resultados).
 
-No te obsesiones :): mantén una postura de seguridad constante, lo más segura
+* No te obsesiones :): mantén una postura de seguridad constante, lo más segura
 posible, documentándola y actualizándola constantemente.

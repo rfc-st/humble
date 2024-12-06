@@ -25,15 +25,14 @@
 
 [About this tool]
 
-'humble' (https://github.com/rfc-st/humble/) is a strict tool when analyzing
-HTTP response headers and their values, including the 'Experimental' ones.
-It is based in large part on the information provided by 'MDN Web Docs',
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers.
+'humble' tries to be strict both in checking HTTP response headers and their
+values; some of these headers may be experimental and you may not agree with
+all the warnings after analysis.
 
-And you may not agree with the results after analysis; and that's great and
-necessary :)!: you should never blindly trust security tools; there must always
-be a subsequent work that evaluates the real risk: non-existent, potential or
-certain depending on the URL, environment and exposure.
+And that's OK! :); you should never blindly trust the results of security tools:
+there should be further work to decide whether the risk is non-existent,
+potential or real depending on the analyzed URL (its exposure, environment, etc).
+
 
 [Grades and Associated Checks]
 
@@ -53,13 +52,19 @@ Source files of the checks:
 /additional/missing.txt     ('Missing headers')
 /additional/fingerprint.txt ('Fingerprint headers')
 
+
 [Improving Grades]
 
-Evaluate the grades in relation to the exposure of the URL, its criticality and
+* 'humble' strictly follows the documentation and specifications of
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers and https://www.w3.org/.
+Some HTTP headers, and their required values, are case sensitive and this may be the
+reason for which warnings are displayed after analysis.
+
+* Evaluate the grades in relation to the exposure of the URL, its criticality and
 the nature of the HTTP header: https://mdn.io/Experimental_deprecated_obsolete.
 
-Use the '-s' parameter to exclude HTTP headers from the analysis (the
+* Use the '-s' parameter to exclude HTTP headers from the analysis (the
 exclusions will be indicated in the results).
 
-Don't get obsessed :). Maintain a constant security posture, as secure as
+* Don't get obsessed :). Maintain a constant security posture, as secure as
 possible, documenting and updating it constantly.
