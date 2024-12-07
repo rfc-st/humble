@@ -2556,14 +2556,16 @@ print("")
 # Ref: https://caniuse.com/
 print_detail_r('[6compat]')
 
-t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
+t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Headers',
+         'Access-Control-Allow-Methods', 'Access-Control-Expose-Headers',
          'Access-Control-Max-Age', 'Cache-Control', 'Clear-Site-Data',
-         'Content-Security-Policy', 'Content-Security-Policy-Report-Only',
-         'Content-Type', 'Critical-CH', 'Cross-Origin-Embedder-Policy',
-         'Cross-Origin-Opener-Policy', 'Cross-Origin-Resource-Policy',
-         'Document-Policy', 'ETag', 'Feature-Policy', 'NEL',
-         'Observe-Browsing-Topics', 'Origin-Agent-Cluster',
-         'Permissions-Policy', 'Proxy-Authenticate', 'Referrer-Policy',
+         'Content-Disposition', 'Content-Security-Policy',
+         'Content-Security-Policy-Report-Only', 'Content-Type', 'Critical-CH',
+         'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
+         'Cross-Origin-Resource-Policy', 'Document-Policy', 'ETag',
+         'Expect-CT', 'Feature-Policy', 'NEL', 'Observe-Browsing-Topics',
+         'Origin-Agent-Cluster', 'Permissions-Policy', 'Pragma',
+         'Proxy-Authenticate', 'Referrer-Policy', 'Refresh', 'Report-To',
          'Reporting-Endpoints', 'Server-Timing', 'Set-Cookie', 'Set-Login',
          'Speculation-Rules', 'Strict-Transport-Security',
          'Supports-Loading-Mode', 'Timing-Allow-Origin', 'Trailer', 'Vary',
