@@ -133,7 +133,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-07', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1012,18 +1012,18 @@ def check_output_path(args, output_path):
 
 def parse_user_agent(user_agent=False):
     if not user_agent:
-        return {'User-Agent': get_user_agent('1')}
+        return get_user_agent('1')
     user_agent_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
     if not URL:
         nourl_user_agent(user_agent_id)
     else:
-        return {'User-Agent': get_user_agent(user_agent_id)}
+        return get_user_agent(user_agent_id)
 
 
 def nourl_user_agent(user_agent_id):
     try:
         if int(user_agent_id) == 0:
-            return {'User-Agent': get_user_agent('0')}
+            return get_user_agent('0')
         print_error_detail('[args_useragent]')
     except ValueError:
         print_error_detail('[ua_invalid]')
@@ -1505,6 +1505,16 @@ def handle_server_error(http_status_code, l10n_id):
 
 def make_http_request():
     try:
+        custom_headers = {
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,\
+*/*;q=0.8',
+            'Accept-Encoding': 'gzip, deflate, br, zstd',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Upgrade-Insecure-Requests': '1',
+            'User-Agent': ua_header,
+        }
         session = requests.Session()
         session.mount("https://", SSLContextAdapter())
         session.mount("http://", HTTPAdapter())
@@ -1517,7 +1527,7 @@ def make_http_request():
         # (e.g., development environments, hosts with outdated
         # servers/software, self-signed certificates, etc.).
         r = session.get(URL, allow_redirects=not args.redirects,
-                        verify=False, headers=ua_header, timeout=15)
+                        verify=False, headers=custom_headers, timeout=15)
         return r, None, None
     except requests.exceptions.SSLError:
         pass
