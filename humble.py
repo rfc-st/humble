@@ -1841,27 +1841,28 @@ i_cnt = [0]
 if not args.brief:
     print_detail('[aisc]')
 
+# The headers of 'l_miss' are excluded here, but are included in 'l_total'.
 l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Accept-Patch',
          'Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
          'Access-Control-Allow-Origin', 'Access-Control-Max-Age',
          'Activate-Storage-Access', 'Allow', 'Content-Digest',
          'Content-Disposition', 'Content-DPR', 'Content-Encoding',
          'Content-Security-Policy-Report-Only', 'Content-Type', 'Critical-CH',
-         'Digest', 'Document-Policy', 'Etag', 'Expect-CT', 'Expires',
-         'Feature-Policy', 'Keep-Alive', 'Large-Allocation', 'No-Vary-Search',
-         'Observe-Browsing-Topics', 'Onion-Location', 'Origin-Agent-Cluster',
-         'P3P', 'Pragma', 'Proxy-Authenticate', 'Public-Key-Pins',
+         'Digest', 'Document-Isolation-Policy', 'Document-Policy', 'Etag',
+         'Expect-CT', 'Expires', 'Feature-Policy', 'Keep-Alive',
+         'Large-Allocation', 'No-Vary-Search', 'Observe-Browsing-Topics',
+         'Onion-Location', 'Origin-Agent-Cluster', 'P3P', 'Pragma',
+         'Proxy-Authenticate', 'Public-Key-Pins',
          'Public-Key-Pins-Report-Only', 'Report-To', 'Reporting-Endpoints',
-         'Repr-Digest', 'Set-Cookie', 'Server-Timing', 'SourceMap',
-         'Speculation-Rules', 'Strict-Dynamic', 'Supports-Loading-Mode',
-         'Surrogate-Control', 'Timing-Allow-Origin', 'Tk', 'Trailer',
-         'Transfer-Encoding', 'Vary', 'WWW-Authenticate', 'Want-Digest',
-         'Warning', 'X-Content-Security-Policy',
+         'Repr-Digest', 'Server-Timing', 'Set-Cookie', 'Set-Login',
+         'SourceMap', 'Speculation-Rules', 'Strict-Dynamic',
+         'Supports-Loading-Mode', 'Surrogate-Control', 'Timing-Allow-Origin',
+         'Tk', 'Trailer', 'Transfer-Encoding', 'Vary', 'Want-Digest',
+         'Warning', 'WWW-Authenticate', 'X-Content-Security-Policy',
          'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
-         'X-Download-Options', 'X-Pad', 'X-Permitted-Cross-Domain-Policies',
-         'X-Pingback', 'X-Robots-Tag', 'X-Runtime', 'X-SourceMap',
-         'X-UA-Compatible', 'X-Webkit-CSP', 'X-Webkit-CSP-Report-Only',
-         'X-XSS-Protection']
+         'X-Download-Options', 'X-Pad', 'X-Pingback', 'X-Robots-Tag',
+         'X-Runtime', 'X-SourceMap', 'X-UA-Compatible', 'X-Webkit-CSP',
+         'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
 t_acceptch_dep = ('content-dpr', 'dpr', 'sec-ch-ua-full-version',
