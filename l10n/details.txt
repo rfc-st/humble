@@ -450,6 +450,13 @@
 [icoep_h]
  Cross-Origin-Embedder-Policy (No Valid Directives)
 
+[icoepu_h]
+ Cross-Origin-Embedder-Policy (Potentially Unsafe Value)
+
+[icoepu]
+ Check that 'Opaque response blocking' and 'Private network access' are enabled.
+ Ref: https://html.spec.whatwg.org/multipage/browsers.html#coep-credentialless
+
 [icoep]
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy

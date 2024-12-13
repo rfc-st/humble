@@ -60,6 +60,7 @@ Content-Type: Non-HTML MIME type
 Content-Type: Unsafe Value
 Critical-CH: Ignored Header via Unsafe Scheme
 Cross-Origin-Embedder-Policy: No Valid Directives
+Cross-Origin-Embedder-Policy: Potentially Unsafe Value
 Cross-Origin-Opener-Policy: No Valid Directives
 Cross-Origin-Resource-Policy: No Valid Directives
 Digest: Deprecated Header

@@ -1932,8 +1932,9 @@ t_ct_mime = ('application/xhtml+xml', 'text/html')
 t_coep = ('credentialless', 'require-corp', 'unsafe-none')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+# https://html.spec.whatwg.org/multipage/browsers.html#cross-origin-opener-policies
 t_coop = ('noopener-allow-popups', 'same-origin', 'same-origin-allow-popups',
-          'unsafe-none')
+          'same-origin-plus-COEP', 'unsafe-none')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
 t_corp = ('cross-origin', 'same-origin', 'same-site')
@@ -2222,6 +2223,8 @@ if 'cross-origin-embedder-policy' in headers_l and '20' not in skip_list:
     coep_h = headers_l['cross-origin-embedder-policy']
     if not any(elem in coep_h for elem in t_coep):
         print_details('[icoep_h]', '[icoep]', 'd', i_cnt)
+    if 'credentialless' in coep_h:
+        print_details('[icoepu_h]', '[icoepu]', 'd', i_cnt)
 
 if 'cross-origin-opener-policy' in headers_l and '21' not in skip_list:
     coop_h = headers_l['cross-origin-opener-policy']
