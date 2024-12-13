@@ -604,6 +604,18 @@
 [irepdigi_h]
  Repr-Digest (Algoritmos inseguros)
 
+[iwcondig_h]
+ Want-Content-Digest (Sin algoritmos seguros)
+
+[iwcondigi_h]
+ Want-Content-Digest (Algoritmos inseguros)
+
+[iwreprdig_h]
+ Want-Repr-Digest (Sin algoritmos seguros)
+
+[iwreprdigi_h]
+ Want-Repr-Digest (Algoritmos inseguros)
+
 [itim_h]
  Server-Timing (Cabecera potencialmente insegura)
 
@@ -1087,6 +1099,22 @@ Cabeceras de respuesta HTTP
 [irepdigi]
  No use algoritmos inseguros, ya que se pueden forzar colisiones.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
+
+[iwcondig]
+ Incluya un algoritmo seguro.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Content-Digest
+
+[iwcondigi]
+ No use algoritmos inseguros, ya que se pueden forzar colisiones.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Content-Digest
+
+[iwreprdig]
+ Incluya un algoritmo seguro.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
+
+[iwreprdigi]
+ No use algoritmos inseguros, ya que se pueden forzar colisiones.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
 
 [iset]
  Habilite 'Secure' y 'HttpOnly': para enviarla mediante HTTPS y evitar que sea accedida por APIs.

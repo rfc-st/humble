@@ -117,7 +117,11 @@ Tk: Deprecated Header
 Trailer: Disallowed Directives
 Transfer-Encoding: No Valid Directives
 Vary: Potentially Unsafe Header
+Want-Content-Digest: No Secure Algorithms
+Want-Content-Digest: Unsafe Algorithms
 Want-Digest: Deprecated Header
+Want-Repr-Digest: No Secure Algorithms
+Want-Repr-Digest: Unsafe Algorithms
 Warning: Deprecated Header
 WWW-Authenticate: Unsafe Value
 X-Content-Security-Policy: Deprecated Header

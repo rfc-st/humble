@@ -67,6 +67,8 @@ Set-Cookie
 Set-Login
 Strict-Transport-Security
 Supports-Loading-Mode
+Want-Content-Digest
+Want-Repr-Digest
 WWW-Authenticate
 X-Content-Security-Policy
 X-Content-Security-Policy-Report-Only
