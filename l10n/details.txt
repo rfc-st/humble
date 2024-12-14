@@ -468,6 +468,13 @@
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
 
+[icoopi_h]
+ Cross-Origin-Opener-Policy (Unsafe value)
+
+[icoopi]
+ The value 'unsafe-none' is considered unsafe.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+
 [icorp_h]
  Cross-Origin-Resource-Policy (No Valid Directives)
 

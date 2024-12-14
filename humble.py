@@ -2230,6 +2230,8 @@ if 'cross-origin-opener-policy' in headers_l and '21' not in skip_list:
     coop_h = headers_l['cross-origin-opener-policy']
     if not any(elem in coop_h for elem in t_coop):
         print_details('[icoop_h]', '[icoop]', 'd', i_cnt)
+    if 'unsafe-none' in coop_h:
+        print_details('[icoopi_h]', '[icoopi]', 'd', i_cnt)
 
 if 'cross-origin-resource-policy' in headers_l and '22' not in skip_list:
     corp_h = headers_l['cross-origin-resource-policy']
