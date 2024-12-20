@@ -79,7 +79,7 @@ For answers to common questions about this code of conduct, see the FAQ at https
 
 Due to the invasion of Ukraine by Russia (started at the end of February 2022), I (the author of this software) took the decision to modify the code to block all analysis against Russian domains: all commits, from the first to the most recent, have been made by the same person (me), so the decision was unique and unanimous.
 
-I know that, unfortunately, this blocking goes against the very nature of Free Software, against this very Document and against the <b>freedom</b> of any individual to be able to analyze any domain. I also recognize that this blocking can be bypassed very easily: by modifying the code itself, using a VPN, a proxy, etc.
+I know that, unfortunately, this blocking goes against the very nature of Free Software, against this very Document and against the <b>freedom</b> of any individual to be able to analyze any domain. I also recognize that this blocking can be bypassed very easily by modifying the code.
 
 Sometimes, these blocks are the only possible (and <b>peaceful</b>) way to protest against certain behaviors, aggressions and threats. I <b>hope</b>, above all, that the invasion will end as soon as possible and that peace will return to Ukraine.
 

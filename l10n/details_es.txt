@@ -1551,13 +1551,13 @@ Error: El fichero de entrada no contiene texto unicode válido en formato UTF-8 
 Error: El fichero de entrada no contiene líneas con el formato 'cabecera http: valor'. Ej. 'x-frame-options: deny'.
 
 [args_lang]
-Error: El parámetro '-l' requiere de los parámetros '-u' o '-a'.
+Error: Los parámetros '-c' y '-l' requieren de los parámetros '-u' o '-a'.
 
 [args_useragent]
 Error: El parámetro '-ua' requiere el parámetro '-u'.
 
 [args_several]
-Error: Los parámetros '-b', '-df', -'o', '-r' y '-s' requieren el parámetro '-u'.
+Error: Los parámetros '-b', 'c', '-df', -'o', '-r' y '-s' requieren el parámetro '-u'.
 
 [args_customfile]
 Error: El parámetro -of' requiere los parámetros '-u' y '-o'.
@@ -1631,3 +1631,7 @@ Excepción no gestionada:
 [experimental_header]
  Significado de '(*)':                        Cabecera de respuesta HTTP experimental
  '(*)' ref:                                   https://mdn.io/Experimental_deprecated_obsolete
+
+[ko_owasp]
+ Las cabeceras HTTP de respuesta *no* cumplen con las buenas prácticas de OWASP 'Secure Headers Project'.
+ Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
