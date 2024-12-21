@@ -1630,8 +1630,19 @@ Excepción no gestionada:
 
 [experimental_header]
  Significado de '(*)':                        Cabecera de respuesta HTTP experimental
- '(*)' ref:                                   https://mdn.io/Experimental_deprecated_obsolete
+ Referencia de '(*)':                         https://mdn.io/Experimental_deprecated_obsolete
 
-[ko_owasp]
- Las cabeceras HTTP de respuesta *no* cumplen con las buenas prácticas de OWASP 'Secure Headers Project'.
+[comp_ko_owasp]
+ Las siguientes cabeceras de respuesta HTTP no cumplen con las mejores prácticas de OWASP 'Secure Headers Project'.
  Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
+
+[comp_ok_owasp]
+ Las cabeceras de respuesta HTTP cumplen con las mejores prácticas de OWASP 'Secure Headers Project'.
+ Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
+
+[comp_experimental]
+ Significado de '(*)': Cabecera de respuesta HTTP experimental
+ Referencia de '(*)':  https://mdn.io/Experimental_deprecated_obsolete
+
+[comp_header]
+(Cabecera no habilitada)

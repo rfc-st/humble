@@ -1642,6 +1642,17 @@ Unhandled exception type:
  '(*)' meaning:                Experimental HTTP response header
  '(*)' ref:                    https://mdn.io/Experimental_deprecated_obsolete
 
-[ko_owasp]
- The HTTP response headers do *not* comply with OWASP 'Secure Headers Project' Best Practices.
+[comp_ko_owasp]
+ The following HTTP response headers do not comply with the OWASP 'Secure Headers Project' best practices.
  Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
+
+[comp_ok_owasp]
+ The HTTP response headers comply with the OWASP 'Secure Headers Project' best practices.
+ Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
+
+[comp_experimental]
+ '(*)' meaning: Experimental HTTP response header
+ '(*)' ref:     https://mdn.io/Experimental_deprecated_obsolete
+
+ [comp_header]
+(Header not enabled)

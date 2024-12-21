@@ -133,7 +133,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-20', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-21', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1472,56 +1472,44 @@ def extract_compliance_headers(tmp_filename):
 
 
 def extract_compliance_values(enabled_headers):
-    check_cache = enabled_headers.get('cache-control', '')
-    check_clear = enabled_headers.get('clear-site-data', '')
-    check_csp = enabled_headers.get('content-security-policy', '')
-    check_coep = enabled_headers.get('cross-origin-embedder-policy', '')
-    check_coop = enabled_headers.get('cross-origin-opener-policy', '')
-    check_corp = enabled_headers.get('cross-origin-resource-policy', '')
-    check_perm = enabled_headers.get('(*) permissions-policy', '')
-    check_ref = enabled_headers.get('referrer-policy', '')
-    check_sts = enabled_headers.get('strict-transport-security', '')
-    check_xcto = enabled_headers.get('x-content-type-options', '')
-    check_xfo = enabled_headers.get('x-frame-options', '')
-    check_xpcd = enabled_headers.get('x-permitted-cross-domain-policies', '')
-    check_compliance_owasp(check_cache, check_clear, check_csp, check_coep,
-                           check_coop, check_corp, check_perm, check_ref,
-                           check_sts, check_xcto, check_xfo, check_xpcd)
+    header_keys = ['cache-control', 'clear-site-data',
+                   'content-security-policy', 'cross-origin-embedder-policy',
+                   'cross-origin-opener-policy',
+                   'cross-origin-resource-policy', '(*) permissions-policy',
+                   'referrer-policy', 'strict-transport-security',
+                   'x-content-type-options', 'x-frame-options',
+                   'x-permitted-cross-domain-policies',]
+
+    header_val = [enabled_headers.get(key, '') for key in header_keys]
+    compliance_val = [t_ocache, t_oclear, t_ocsp, t_ocoep, t_ocoop, t_ocorp,
+                      t_operm, t_oref, t_osts, t_oxcto, t_oxfo, t_oxpcd,]
+
+    check_compliance_owasp(header_keys, header_val, compliance_val)
 
 
-# Ashamed of this code... I promise to improve it!.
-def check_compliance_owasp(check_cache, check_clear, check_csp, check_coep,
-                           check_coop, check_corp, check_perm, check_ref,
-                           check_sts, check_xcto, check_xfo, check_xpcd):
-    c_cnt = 0
-    if not check_cache or any(elem not in check_cache for elem in t_ocache):
-        c_cnt += 1
-    if not check_clear or any(elem not in check_clear for elem in t_oclear):
-        c_cnt += 1
-    if not check_csp or any(elem not in check_csp for elem in t_ocsp):
-        c_cnt += 1
-    if not check_coep or any(elem not in check_coep for elem in t_ocoep):
-        c_cnt += 1
-    if not check_coop or any(elem not in check_coop for elem in t_ocoop):
-        c_cnt += 1
-    if not check_corp or any(elem not in check_corp for elem in t_ocorp):
-        c_cnt += 1
-    if not check_perm or any(elem not in check_perm for elem in t_operm):
-        c_cnt += 1
-    if not check_ref or any(elem not in check_ref for elem in t_oref):
-        c_cnt += 1
-    if not check_sts or any(elem not in check_sts for elem in t_osts):
-        c_cnt += 1
-    if not check_xcto or any(elem not in check_xcto for elem in t_oxcto):
-        c_cnt += 1
-    if not check_xfo or any(elem not in check_xfo for elem in t_oxfo):
-        c_cnt += 1
-    if not check_xpcd or any(elem not in check_xpcd for elem in t_oxpcd):
-        c_cnt += 1
-    if c_cnt > 0:
+def check_compliance_owasp(header_keys, header_val, compliance_val):
+    non_cnt = 0
+    non_rules = []
+
+    for key, value, rules in zip(header_keys, header_val, compliance_val):
+        if not value or any(elem not in value for elem in rules):
+            non_cnt += 1
+            header_v = value or get_detail('[comp_header]')
+            non_rules.append(f"{STYLE[2]}{key.title()}{STYLE[5]}: {header_v}")
+
+    print_compliance_owasp(non_cnt, non_rules)
+
+
+def print_compliance_owasp(non_cnt, non_rules):
+    if non_cnt > 0:
         print("")
-        print_detail('[ko_owasp]', num_lines=2)
+        print_detail('[comp_ko_owasp]', num_lines=2)
+        for rule in non_rules:
+            print(f" {rule}")
         print("")
+        print_detail('[comp_experimental]', 2)
+    else:
+        print_detail('[comp_ok_owasp]', num_lines=2)
 
 
 def analyze_input_file(input_file):
