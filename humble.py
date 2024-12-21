@@ -1452,13 +1452,11 @@ def check_ru_scope():
 
 def extract_compliance_headers(tmp_filename):
     file_path = path.abspath(tmp_filename)
-    start_sec = '[1.'
-    end_sec = '[2.'
+    start_sec, end_sec = '[1.', '[2.'
 
     with open(file_path, 'r', encoding='utf8') as source_file:
-        lines = source_file.readlines()
+        lines = [line.strip() for line in source_file if line.strip()]
 
-    lines = [line.strip() for line in lines if line.strip()]
     start_idx = next(i for i, line in enumerate(lines) if start_sec in line)
     end_idx = next(i for i, line in enumerate(lines) if end_sec in line)
     section_lines = lines[start_idx + 1:end_idx]
@@ -2697,7 +2695,8 @@ print_browser_compatibility(compat_headers) if compat_headers else \
 print(linesep.join(['']*2))
 end = time()
 print_detail_r('[7result]')
-get_analysis_results()
+if '-c' not in sys.argv:
+    get_analysis_results()
 
 # Exporting analysis results according to the file type
 if args.output:

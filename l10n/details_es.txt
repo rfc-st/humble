@@ -1633,7 +1633,7 @@ Excepción no gestionada:
  Referencia de '(*)':                         https://mdn.io/Experimental_deprecated_obsolete
 
 [comp_ko_owasp]
- Las siguientes cabeceras de respuesta HTTP no cumplen con las mejores prácticas de OWASP 'Secure Headers Project'.
+ Estas cabeceras de la URL no cumplen con las mejores prácticas de OWASP 'Secure Headers Project'.
  Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
 
 [comp_ok_owasp]
