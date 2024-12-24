@@ -123,7 +123,7 @@ Options used: -f -g -p -U -s --hints
 .: (Windows) - Compliance with OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">'Secure Headers Project'<a> best practices.<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.jpg" alt="(Windows) - Compliance with OWASP 'Secure Headers Project' best practices"  width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Windows) - Compliance with OWASP 'Secure Headers Project' best practices"  width=70% height=70%>
 </p>
 <br />
 .: (Linux) - List of HTTP fingerprint headers based on a specific term.<br />
