@@ -1644,5 +1644,11 @@ Excepción no gestionada:
  Significado de '(*)': Cabecera de respuesta HTTP experimental
  Referencia de '(*)':  https://mdn.io/Experimental_deprecated_obsolete
 
+[comp_rec]
+ Cabeceras recomendadas no habilitadas
+
+[comp_val]
+ Cabeceras habilitadas sin valores recomendados
+
 [comp_header]
 (Cabecera no habilitada)

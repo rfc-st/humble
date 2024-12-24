@@ -133,7 +133,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-24', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1502,8 +1502,20 @@ def print_compliance_owasp(non_cnt, non_rules):
     if non_cnt > 0:
         print("")
         print_detail('[comp_ko_owasp]', num_lines=2)
-        for rule in non_rules:
-            print(f" {rule}")
+        print("")
+        header_v = get_detail('[comp_header]')
+        miss_h = [rule for rule in non_rules if header_v in rule]
+        miss_val = [rule for rule in non_rules if header_v not in rule]
+        if miss_h:
+            print(f"{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
+            print("\n".join(f" {rule.split(':')[0].strip()}" for rule in
+                            miss_h))
+            print("")
+        print("")
+        if miss_val:
+            print(f"{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
+            print("\n".join(f" {rule}" for rule in miss_val))
+            print("")
         print("")
         print_detail('[comp_experimental]', 2)
     else:

@@ -1654,5 +1654,11 @@ Unhandled exception type:
  '(*)' meaning: Experimental HTTP response header
  '(*)' ref:     https://mdn.io/Experimental_deprecated_obsolete
 
+[comp_rec]
+ Recommended headers not enabled
+
+[comp_val]
+ Enabled headers without recommended values
+
 [comp_header]
 (Header not enabled)
