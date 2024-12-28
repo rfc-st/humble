@@ -133,7 +133,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-24', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-28', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -766,7 +766,7 @@ def print_basic_info(export_filename):
 def print_extended_info(args, reliable, status_code):
     if args.skip_headers:
         print_skipped_headers(args)
-    if args.output in ('csv', 'json', 'xml'):
+    if args.output in ('json', 'xml'):
         print(get_detail('[limited_analysis_note]', replace=True))
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
        args.redirects or args.skip_headers:
@@ -857,7 +857,7 @@ def get_fingerprint_headers():
               encoding='utf8') as fng_source:
         l_fng_ex = [line.strip() for line in
                     islice(fng_source, SLICE_INT[0], None) if line.strip()]
-        l_fng = [line.split(' [')[0].strip() for line in l_fng_ex]
+        l_fng = [line.split(' (')[0].strip() for line in l_fng_ex]
         titled_fng = [item.title() for item in l_fng]
         return l_fng_ex, l_fng, titled_fng
 
@@ -1358,7 +1358,7 @@ def format_html_fingerprint(args, ln, sub_d, l_fng):
     for i in l_fng:
         if (ln and i in ln and not args.brief):
             try:
-                idx = ln.index(' [')
+                idx = ln.index(' (')
             except ValueError:
                 return ln
             if 'class="ko"' not in ln:
@@ -1700,7 +1700,7 @@ parser.add_argument("-grd", dest='grades', action="store_true", help="Shows \
 the checks to grade an analysis, along with advice for improvement")
 parser.add_argument("-if", dest='input_file', type=str, help="Analyzes \
 'INPUT_FILE': must contain HTTP response headers and values separated by ': ';\
- E.g. 'server: nginx'.")
+ E.g. 'server: nginx'")
 parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
 language for displaying analysis, errors and messages; if omitted, will be \
 shown in English")
@@ -1709,7 +1709,7 @@ the license for 'humble', along with permissions, limitations and conditions.")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt', 'xml'], help="Exports\
  analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; \
-csv/json/xml will have a brief analysis")
+json/xml will have a brief analysis")
 parser.add_argument("-of", dest='output_file', type=str, help="Exports \
 analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 '-o' will be used")
@@ -1795,7 +1795,7 @@ if any([args.brief, args.output, args.ret, args.redirects,
                                  args.URL_A is None):
     print_error_detail('[args_several]')
 
-if args.output in ['csv', 'json', 'xml'] and not args.brief:
+if args.output in ['json', 'xml'] and not args.brief:
     print_error_detail('[args_brief_filetype]')
 
 skip_list, unsupported_headers = [], []

@@ -872,7 +872,7 @@ HTTP Response Headers
  Note : The analysis may not be reliable because of the time it took for the URL to respond.
 
 [limited_analysis_note]
- Note : Exporting to CSV/JSON/XML is currently limited to a brief analysis
+ Note : Exporting to JSON/XML is currently limited to a brief analysis
 
 [analysis_redirects_note]
  Note : The exact URL will be analyzed, without following redirects.
@@ -1558,7 +1558,7 @@ Error: The parameters '-b', '-c', '-df', '-'o', '-r' and '-s' require the parame
 Error: The parameter '-of' requires the parameters '-u' and '-o'.
 
 [args_brief_filetype]
-Error: The parameters '-o csv', '-o json' and '-o xml' require the parameter '-b'.
+Error: The parameters '-o json' and '-o xml' require the parameter '-b'.
 
 [notestssl_file]
 Error: 'testssl.sh' is not found in that PATH.
