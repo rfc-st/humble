@@ -150,7 +150,7 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="(Linux) - Detailed analysis saved as HTML" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Brief analysis saved as JSON. <a href="http://jsonblob.com/1310678759321559040">Example.</a><br />
+.: (Linux) - Brief analysis saved as JSON. <a href="http://jsonblob.com/1322654115905593344">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="(Linux) - Brief analysis saved as JSON" width=70% height=70%>
