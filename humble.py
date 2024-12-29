@@ -107,12 +107,12 @@ L10N_IDXS = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15),
              'security_guides': (16, 17)}
 OS_PATH = dirname(abspath(__file__))
 PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
-RE_PATTERN = (r'\[(.*?)\]',
+RE_PATTERN = (r'\((.*?)\)',
               (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
                r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$'),
               (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
                r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
-               r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\[([^\]]+)\]',
+               r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\(([^)]+)\)',
               r'\d{4}-\d{2}-\d{2}', r'\[(.*?)\]\n', r"'nonce-([^']+)'",
               r'\(humble_pdf_style\)([^:]+):',
               r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s'
@@ -133,7 +133,7 @@ tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-28', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-29', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -239,7 +239,7 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
         for line in fng_incl:
             line_l = line.lower()
             if content in line_l and fng_term in line_l:
-                print(f"  {line[:line.find('[')].strip()}")
+                print(f"  {line[:line.find('(')].strip()}")
     sys.exit()
 
 
