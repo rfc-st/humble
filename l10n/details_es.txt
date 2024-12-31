@@ -3,7 +3,7 @@
 #
 # Licencia MIT
 #
-# Copyright (c) 2020-2024 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
+# Copyright (c) 2020-2025 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
 #
 # Por la presente se concede permiso, libre de cargos, a cualquier persona que
 # obtenga una copia de este software y de los archivos de documentación
@@ -745,14 +745,14 @@
  X-XSS-Protection (Valores duplicados)
 
 [ictlmeta_h]
- Content-Type (Valor incorrecto: cuerpo de la respuesta)
+ Content-Type (Valor incorrecto - Cuerpo de la respuesta)
 
 [ictlmeta]
  El único valor permitido es 'text/html; charset=utf-8'
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
 
 [ixuameta_h]
- X-UA-Compatible (Valor incorrecto: cuerpo de la respuesta)
+ X-UA-Compatible (Valor incorrecto - Cuerpo de la respuesta)
 
 [ixuameta]
  El único valor permitido es 'IE=edge'
@@ -874,7 +874,7 @@ Cabeceras de respuesta HTTP
  Nota : El análisis puede no ser fiable por el tiempo que tardó en responder la URL.
 
 [limited_analysis_note]
- Nota: Exportar a JSON/XML limita actualmente a un análisis breve
+ Nota: Exportar a JSON limita actualmente a un análisis breve
 
 [analysis_redirects_note]
  Nota : Se analizará la URL exacta, sin seguir redireccionamientos.
@@ -1308,7 +1308,7 @@ Cabeceras de respuesta HTTP
  Protocolos/Cabeceras obsoletas o inseguras:  
 
 [empty_cnt]
- Cabeceras sin valor:                         
+ Cabeceras vacías:                            
 
 [total_cnt]
  Advertencias a revisar:                      
@@ -1563,7 +1563,7 @@ Error: Los parámetros '-b', 'c', '-df', -'o', '-r' y '-s' requieren el parámet
 Error: El parámetro -of' requiere los parámetros '-u' y '-o'.
 
 [args_brief_filetype]
-Error: Los parámetros '-o json' y '-o xml' requieren el parámetro '-b'.
+Error: El parámetro '-o json' requiere el parámetro '-b'.
 
 [notestssl_file]
 Error: 'testssl.sh' no existe en la ruta indicada.

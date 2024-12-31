@@ -5,7 +5,7 @@
 #
 # MIT License
 #
-# Copyright (c) 2020-2024 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
+# Copyright (c) 2020-2025 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -131,9 +131,10 @@ e-5xx-errors/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Sta\
 tus/', 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py', 'ht\
 tps://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
+XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-29', '%Y-%m-%d').date()
+local_version = datetime.strptime('2024-12-31', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -766,7 +767,7 @@ def print_basic_info(export_filename):
 def print_extended_info(args, reliable, status_code):
     if args.skip_headers:
         print_skipped_headers(args)
-    if args.output in ('json', 'xml'):
+    if args.output == 'json':
         print(get_detail('[limited_analysis_note]', replace=True))
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
        args.redirects or args.skip_headers:
@@ -1424,7 +1425,7 @@ def parse_xml(root, section, stripped_txt):
             section = ET.SubElement(root, 'section', {'name': line})
         elif section is not None:
             item = ET.SubElement(section, 'item')
-            if ': ' in line:
+            if ': ' in line and all(str not in line for str in XML_STRING):
                 key, value = line.split(': ', 1)
                 item.set('name', key.strip())
                 item.text = value.strip()
@@ -1708,8 +1709,8 @@ parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
 the license for 'humble', along with permissions, limitations and conditions.")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt', 'xml'], help="Exports\
- analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; \
-json/xml will have a brief analysis")
+ analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; json \
+will have a brief analysis")
 parser.add_argument("-of", dest='output_file', type=str, help="Exports \
 analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 '-o' will be used")
@@ -1795,7 +1796,7 @@ if any([args.brief, args.output, args.ret, args.redirects,
                                  args.URL_A is None):
     print_error_detail('[args_several]')
 
-if args.output in ['json', 'xml'] and not args.brief:
+if args.output == 'json' and not args.brief:
     print_error_detail('[args_brief_filetype]')
 
 skip_list, unsupported_headers = [], []

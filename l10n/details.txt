@@ -3,7 +3,7 @@
 #
 # MIT License
 #
-# Copyright (c) 2020-2024 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
+# Copyright (c) 2020-2025 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -744,14 +744,14 @@
  X-XSS-Protection (Duplicated Values)
 
 [ictlmeta_h]
- Content-Type (Incorrect Value: Response body)
+ Content-Type (Incorrect Value - Response body)
 
 [ictlmeta]
  The only allowed value is 'text/html; charset=utf-8'
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
 
 [ixuameta_h]
- X-UA-Compatible (Incorrect Value: Response body)
+ X-UA-Compatible (Incorrect Value - Response body)
 
 [ixuameta]
  The only allowed value is 'IE=edge'
@@ -872,7 +872,7 @@ HTTP Response Headers
  Note : The analysis may not be reliable because of the time it took for the URL to respond.
 
 [limited_analysis_note]
- Note : Exporting to JSON/XML is currently limited to a brief analysis
+ Note : Exporting to JSON is currently limited to a brief analysis
 
 [analysis_redirects_note]
  Note : The exact URL will be analyzed, without following redirects.
@@ -1558,7 +1558,7 @@ Error: The parameters '-b', '-c', '-df', '-'o', '-r' and '-s' require the parame
 Error: The parameter '-of' requires the parameters '-u' and '-o'.
 
 [args_brief_filetype]
-Error: The parameters '-o json' and '-o xml' require the parameter '-b'.
+Error: The parameter '-o json' requires the parameter '-b'.
 
 [notestssl_file]
 Error: 'testssl.sh' is not found in that PATH.

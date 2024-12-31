@@ -6,7 +6,7 @@
 <a target="_blank" href="https://www.python.org/downloads/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.8-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--12--29-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2024--12--31-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
@@ -264,7 +264,7 @@ $ docker rmi humble:1.42
 usage: humble.py [-h] [-a] [-b] [-c] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-if INPUT_FILE] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt,xml}]
                  [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-12-28
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-12-31
 
 options:
   -h, --help                      show this help message and exit
@@ -279,7 +279,7 @@ options:
   -if INPUT_FILE                  Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g. 'server: nginx'
   -l {es}                         Defines the language for displaying analysis, errors and messages; if omitted, will be shown in English
   -lic                            Shows the license for 'humble', along with permissions, limitations and conditions.
-  -o {csv,html,json,pdf,txt,xml}  Exports analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; json/xml will have a brief analysis
+  -o {csv,html,json,pdf,txt,xml}  Exports analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; json will have a brief analysis
   -of OUTPUT_FILE                 Exports analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter '-o' will be used
   -op OUTPUT_PATH                 Exports analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of 'humble.py' will be used
   -r                              Shows HTTP response headers and a detailed analysis; '-b' parameter will take priority
@@ -444,5 +444,5 @@ Thanks for downloading _'humble'_, for trying it and for your time!.
 
 ## License
 
-MIT © 2020-2024 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)<br/>
+MIT © 2020-2025 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)<br/>
 Original Creator - Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
