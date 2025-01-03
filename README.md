@@ -7,15 +7,18 @@
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--01--03-blue.svg?labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
 <a target="_blank" href="https://artemis-scanner.readthedocs.io/en/latest/search.html?q=humble&check_keywords=yes&area=default" title="Artemis vulnerability scanner"><img src="https://img.shields.io/badge/Artemis-blue"></a>
+<a target="_blank" href="https://blog.csdn.net/gitblog_01072/article/details/141745712" title="Chinese Software Developer Network"><img src="https://img.shields.io/badge/CSDN-blue"></a>
 <a target="_blank" href="https://docs.defectdojo.com/en/connecting_your_tools/parsers/file/humble/" title="DefectDojo vulnerability management tool"><img src="https://img.shields.io/badge/DefectDojo-blue"></a>
 <a target="_blank" href="https://github.com/HackTricks-wiki/hacktricks/blob/master/src/network-services-pentesting/pentesting-web/special-http-headers.md" title="HackTricks"><img src="https://img.shields.io/badge/HackTricks-blue"></a>
 <a target="_blank" href="https://headerscan.com/humble/" title="Security Header Scanner"><img src="https://img.shields.io/badge/HeaderScan-blue"></a>
+<a target="_blank" href="https://www.linux-magazin.de/ausgaben/2022/11/tooltipps/" title="Linux Magazin"><img src="https://img.shields.io/badge/Linux%20Magazin-blue"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-blue"></a>
+<br />
+<a target="_blank" href="https://github.com/rfc-st/humble/actions?query=workflow%3ACodeQL" title="Results of the last analysis of this tool with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="OpenSSF best practices analysis"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
 <br />
 <br />
@@ -78,7 +81,7 @@
 :heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost<a> all the code under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
 :heavy_check_mark: Minimal <a href="https://github.com/rfc-st/humble/blob/master/requirements.txt" target="_blank">dependencies</a> required.<br />
-:heavy_check_mark: Featured on <a href="https://artemis-scanner.readthedocs.io/en/latest/search.html?q=humble&check_keywords=yes&area=default">Artemis</a>, <a href="https://documentation.defectdojo.com/integrations/parsers/file/humble/">DefectDojo</a>, <a href="https://github.com/HackTricks-wiki/hacktricks/blob/master/src/network-services-pentesting/pentesting-web/special-http-headers.md">HackTricks</a>, <a href="https://pkg.kali.org/pkg/humble" target="_blank">Kali Linux</a> and <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">OWASP</a>.<br />
+:heavy_check_mark: Featured on <a href="https://artemis-scanner.readthedocs.io/en/latest/search.html?q=humble&check_keywords=yes&area=default">Artemis</a>, <a href="https://blog.csdn.net/gitblog_01072/article/details/141745712">Chinese Software Developer Network</a>, <a href="https://docs.defectdojo.com/en/connecting_your_tools/parsers/file/humble/">DefectDojo</a>, <a href="https://github.com/HackTricks-wiki/hacktricks/blob/master/src/network-services-pentesting/pentesting-web/special-http-headers.md">HackTricks</a>, <a href="https://pkg.kali.org/pkg/humble" target="_blank">Kali Linux</a>, <a href="https://www.linux-magazin.de/ausgaben/2022/11/tooltipps/" target="_blank">Linux Magazin</a> and <a href="https://owasp.org/www-project-secure-headers/#div-technical" target="_blank">OWASP</a>.<br />
 :heavy_check_mark: Developed entirely in my spare time, <b>no strings attached</b>: feel free to try it out and integrate it into your projects!.<br />
 :heavy_check_mark: And with the <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA.PNG">approval</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_4.JPG">of</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_2.JPG">several</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_3.JPG">AI</a> :smile:!.<br />
 
