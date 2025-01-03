@@ -1642,6 +1642,9 @@ Unhandled exception type:
  '(*)' meaning:                Experimental HTTP response header
  '(*)' ref:                    https://mdn.io/Experimental_deprecated_obsolete
 
+[compliance_output]
+ Analyzing the URL in relation to the OWASP 'Secure Headers Project' best practices, please wait ...
+
 [comp_ko_owasp]
  These URL headers do not comply with the OWASP 'Secure Headers Project' best practices.
  Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices

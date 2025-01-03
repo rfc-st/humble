@@ -134,7 +134,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2024-12-31', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-01-03', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1357,14 +1357,10 @@ def format_html_headers(ln, sub_d, headers):
 
 def format_html_fingerprint(args, ln, sub_d, l_fng):
     for i in l_fng:
-        if (ln and i in ln and not args.brief):
-            try:
-                idx = ln.index(' (')
-            except ValueError:
-                return ln
-            if 'class="ko"' not in ln:
-                ln = f"{sub_d['span_ko']}{ln[:idx]}{sub_d['span_f']}{ln[idx:]}"
-                return ln
+        if ln and (i in ln) and (not args.brief) and (': ' not in ln) and \
+         ('class="ko"' not in ln):
+            ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+            return ln
         ln_lower, i_lower = ln.casefold(), i.casefold()
         if args.brief and i_lower in ln_lower and ':' not in ln and \
            '    class="ko"' not in ln:
@@ -1823,7 +1819,10 @@ if args.URL_A:
 start = time()
 
 if not args.URL_A:
-    detail = '[analysis_output]' if args.output else '[analysis]'
+    if not args.compliance:
+        detail = '[analysis_output]' if args.output else '[analysis]'
+    else:
+        detail = '[compliance_output]'
     print("")
     print_detail(detail)
 

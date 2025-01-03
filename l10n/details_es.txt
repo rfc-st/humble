@@ -1632,6 +1632,9 @@ Excepción no gestionada:
  Significado de '(*)':                        Cabecera de respuesta HTTP experimental
  Referencia de '(*)':                         https://mdn.io/Experimental_deprecated_obsolete
 
+[compliance_output]
+ Analizando la URL en relación a las mejores prácticas de OWASP 'Secure Headers Project', espera por favor ...
+
 [comp_ko_owasp]
  Estas cabeceras de la URL no cumplen con las mejores prácticas de OWASP 'Secure Headers Project'.
  Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
