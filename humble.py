@@ -119,6 +119,8 @@ RE_PATTERN = (r'\((.*?)\)',
               r'*/?>', r'\(humble_sec_style\)([^:]+)',
               r'\(humble_sec_style\)', r'(?: Nota : | Note : )')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
+SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
+             '[empty_cnt]', '[total_cnt]')
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
@@ -134,7 +136,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-01-03', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-01-04', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -355,13 +357,11 @@ def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
 
 
 def print_analysis_results(*diff, t_cnt):
-    literals = ['[enabled_cnt]', '[missing_cnt]', '[fng_cnt]',
-                '[insecure_cnt]', '[empty_cnt]', '[total_cnt]']
     totals = [f"{en_cnt} ({diff[0]})\n", f"{m_cnt} ({diff[1]})",
               f"{f_cnt} ({diff[2]})", f"{i_cnt[0]} \
 ({diff[3]})", f"{e_cnt} ({diff[4]})", f"{t_cnt} ({diff[5]})\n"]
     print("")
-    for literal, total in zip(literals, totals):
+    for literal, total in zip(SECTION_S, totals):
         print(f"{(print_detail_l(literal) or '')[:-1]}{total}")
 
 
@@ -432,8 +432,9 @@ def get_analysis_metrics(all_analysis):
     third_m = get_third_metrics(adj_url_ln)
     additional_m = get_additional_metrics(adj_url_ln)
     fourth_m = get_highlights(adj_url_ln)
+    fifth_m = get_trends(adj_url_ln)
     return print_metrics(total_a, first_m, second_m, third_m, additional_m,
-                         fourth_m)
+                         fourth_m, fifth_m)
 
 
 def get_first_metrics(adj_url_ln):
@@ -508,10 +509,9 @@ def get_month_counts(year, url_ln):
 
 
 def get_highlights(adj_url_ln):
-    sections = ['[enabled_cnt]', '[missing_cnt]', '[fng_cnt]',
-                '[insecure_cnt]', '[empty_cnt]']
+    sections_h = SECTION_S[:-1]
     fields_h = [2, 3, 4, 5, 6]
-    return [f"{print_detail_l(sections[i], analytics=True)}\n"
+    return [f"{print_detail_l(sections_h[i], analytics=True)}\n"
             f"  {print_detail_l('[best_analysis]', analytics=True)}: \
 {calculate_highlights(adj_url_ln, fields_h[i], min if i != 0 else max)}\n"
             f"  {print_detail_l('[worst_analysis]', analytics=True)}: \
@@ -528,15 +528,48 @@ def calculate_highlights(url_ln, field_index, func):
     return target_line.split(';')[0].strip()
 
 
-def print_metrics(total_a, first_m, second_m, third_m, additional_m, fourth_m):
+def get_trends(adj_url_ln):
+    sections_t = SECTION_S[1:]
+    fields_t = [3, 4, 5, 6, 7]
+
+    trends = []
+    for section, field_idx in zip(sections_t, fields_t):
+        values = [int(parts[field_idx].strip()) for line in adj_url_ln
+                  if len((parts := line.strip().split(';'))) > field_idx]
+        trends.append(f"  {print_detail_l(section, analytics=True)}: \
+{calculate_trends(values)}")
+
+    return trends
+
+
+def calculate_trends(values):
+    # Calculates the trend of various checks (Missing, Fingerprint,
+    # Deprecated/Insecure, Empty headers & Total warnings) of a given URL.
+    #
+    # It is recommended to have analyzed the URL over several time periods to
+    # obtain a reliable result.
+    imp_trend = sum(values[i] > values[i - 1] for i in range(1, len(values)))
+    wrs_trend = len(values) - 1 - imp_trend
+
+    if wrs_trend > imp_trend:
+        return print_detail_l('[t_improving]', analytics=True)
+    if imp_trend > wrs_trend:
+        return print_detail_l('[t_worsening]', analytics=True)
+
+    return print_detail_l('[t_fluctuating]', analytics=True)
+
+
+def print_metrics(total_a, first_m, second_m, third_m, additional_m, fourth_m,
+                  fifth_m):
     basic_m = get_basic_metrics(total_a, first_m)
     error_m = get_security_metrics(second_m)
     warning_m = get_warnings_metrics(additional_m)
     averages_m = get_averages_metrics(third_m)
     fourth_m = get_highlights_metrics(fourth_m)
+    trend_m = get_trend_metrics(fifth_m)
     analysis_year_m = get_date_metrics(additional_m)
     totals_m = {**basic_m, **error_m, **warning_m, **averages_m, **fourth_m,
-                **analysis_year_m}
+                **trend_m, **analysis_year_m}
     return {get_detail(key, replace=True): value for key, value in
             totals_m.items()}
 
@@ -571,6 +604,10 @@ def get_averages_metrics(third_m):
 
 def get_highlights_metrics(fourth_m):
     return {'[highlights]': "\n" + "\n".join(fourth_m)}
+
+
+def get_trend_metrics(fifth_m):
+    return {'[trends]': "\n" + "\n".join(fifth_m) + "\n"}
 
 
 def get_date_metrics(additional_m):

@@ -1449,6 +1449,18 @@ Main
 [highlights]
 Highlights
 
+[trends]
+Trends
+
+[t_improving]
+ Improving
+
+[t_worsening]
+ Worsening
+
+[t_fluctuating]
+ Fluctuating
+
 [month_01]
  January
 

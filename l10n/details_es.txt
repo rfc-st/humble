@@ -1454,6 +1454,18 @@ Principales
 [highlights]
 A destacar
 
+[trends]
+Tendencias
+
+[t_improving]
+ Mejorando
+
+[t_worsening]
+ Empeorando
+
+[t_fluctuating]
+ Fluctuando
+
 [month_01]
  Enero
 
