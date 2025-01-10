@@ -543,6 +543,10 @@ def get_trends(adj_url_ln):
 
 
 def calculate_trends(values):
+    # Warning!: this functionality is experimental; do not make any decisions
+    # at this time based on these results. The calculation of trends is *very*
+    # basic and does not correctly take into account all variations over time.
+    #
     # Calculates the trend of various checks (Missing, Fingerprint,
     # Deprecated/Insecure, Empty headers & Total warnings) of a given URL.
     #
