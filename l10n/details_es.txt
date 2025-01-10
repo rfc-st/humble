@@ -1466,6 +1466,9 @@ Tendencias
 [t_fluctuating]
  Fluctuando
 
+[t_insufficient]
+ Analice la URL al menos 5 veces para mostrar tendencias fiables
+
 [month_01]
  Enero
 

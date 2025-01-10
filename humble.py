@@ -136,7 +136,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-01-04', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-01-10', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -546,8 +546,12 @@ def calculate_trends(values):
     # Calculates the trend of various checks (Missing, Fingerprint,
     # Deprecated/Insecure, Empty headers & Total warnings) of a given URL.
     #
-    # It is recommended to have analyzed the URL over several time periods to
-    # obtain a reliable result.
+    # It is required to have analyzed the URL at least 5 times to show
+    # reliable trends.
+
+    if len(values) < 5:
+        return print_detail_l('[t_insufficient]', analytics=True)
+
     imp_trend = sum(values[i] > values[i - 1] for i in range(1, len(values)))
     wrs_trend = len(values) - 1 - imp_trend
 
@@ -607,6 +611,9 @@ def get_highlights_metrics(fourth_m):
 
 
 def get_trend_metrics(fifth_m):
+    if '5' in fifth_m[0]:
+        trends_s = get_detail('[t_insufficient]')
+        return {'[trends]': "\n" + trends_s}
     return {'[trends]': "\n" + "\n".join(fifth_m) + "\n"}
 
 
@@ -1810,7 +1817,7 @@ if '-e' in sys.argv:
     if (args.testssl_path is None or URL is None):
         print_error_detail('[args_notestssl]')
 
-if args.lang and not (URL or args.URL_A) and not args.guides:
+if args.lang and not URL and not args.URL_A and not args.guides:
     print_error_detail('[args_lang]')
 
 if args.output_file and args.output and URL:
