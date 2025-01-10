@@ -267,7 +267,7 @@ $ docker rmi humble:1.42
 usage: humble.py [-h] [-a] [-b] [-c] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-if INPUT_FILE] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt,xml}]
                  [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2024-12-31
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-01-10
 
 options:
   -h, --help                      show this help message and exit
@@ -304,6 +304,10 @@ examples:
   -u URL -ua 4                    Analyzes URL using the fourth User-Agent of 'additional/user_agents.txt' file
   -a -l es                        Shows statistics (in Spanish) of the analysis performed against all URLs
   -f Google                       Shows HTTP fingerprint headers related to the term 'Google'
+
+want to contribute?:
+  https://github.com/rfc-st/humble/blob/master/LICENSE
+  https://github.com/rfc-st/humble/#contribute
 ```
 
 ## Advanced usage (Linux)

@@ -898,7 +898,7 @@ def get_epilog_content(id_mode):
     with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
         epilog_lines = epilog_source.readlines()
         epilog_idx = epilog_lines.index(id_mode + '\n')
-    return ''.join(epilog_lines[epilog_idx+1:epilog_idx+14])
+    return ''.join(epilog_lines[epilog_idx+1:epilog_idx+18])
 
 
 def get_fingerprint_headers():
