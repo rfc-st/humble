@@ -136,7 +136,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-01-10', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-01-11', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -543,25 +543,33 @@ def get_trends(adj_url_ln):
 
 
 def calculate_trends(values):
-    # Warning!: this functionality is experimental; do not make any decisions
-    # at this time based on these results. The calculation of trends is *very*
-    # basic and does not correctly take into account all variations over time.
+    # Calculates the trend of values for several checks (Missing, Fingerprint,
+    # Deprecated/Insecure, Empty headers, and Total warnings) for a given URL.
     #
-    # Calculates the trend of various checks (Missing, Fingerprint,
-    # Deprecated/Insecure, Empty headers & Total warnings) of a given URL.
+    # At least five analyses of the URL are required to calculate reliable
+    # trends, and only the five most recent analyses are considered. The
+    # possible trend results are:
     #
-    # It is required to have analyzed the URL at least 5 times to show
-    # reliable trends.
+    # 'Stable': All five values are identical.
+    # 'Improving': Values consistently decrease.
+    # 'Worsening': Values consistently increase.
+    # 'Fluctuating': No clear trend is detected; values alternate.
 
     if len(values) < 5:
         return print_detail_l('[t_insufficient]', analytics=True)
 
-    imp_trend = sum(values[i] > values[i - 1] for i in range(1, len(values)))
-    wrs_trend = len(values) - 1 - imp_trend
+    trends_list = values[-5:]
 
-    if wrs_trend > imp_trend:
+    if all(x == trends_list[0] for x in trends_list):
+        return print_detail_l('[t_stable]', analytics=True)
+
+    inc_trend = sum(trends_list[i] > trends_list[i - 1] for i in range(1, 5))
+    dec_trend = sum(trends_list[i] < trends_list[i - 1] for i in range(1, 5))
+
+    if dec_trend > inc_trend:
         return print_detail_l('[t_improving]', analytics=True)
-    if imp_trend > wrs_trend:
+
+    if inc_trend > dec_trend:
         return print_detail_l('[t_worsening]', analytics=True)
 
     return print_detail_l('[t_fluctuating]', analytics=True)

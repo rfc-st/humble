@@ -306,7 +306,6 @@ examples:
   -f Google                       Shows HTTP fingerprint headers related to the term 'Google'
 
 want to contribute?:
-  License                         https://github.com/rfc-st/humble/blob/master/LICENSE
   How to                          https://github.com/rfc-st/humble/#contribute
 ```
 
