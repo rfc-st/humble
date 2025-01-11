@@ -2148,8 +2148,10 @@ t_proxy_auth = ('AWS4-HMAC-SHA256', 'Basic', 'Bearer', 'Concealed', 'Digest',
                 'PrivateToken', 'SCRAM-SHA-1', 'SCRAM-SHA-256', 'vapid')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
-t_ref_secure = ('strict-origin', 'strict-origin-when-cross-origin',
-                'no-referrer-when-downgrade', 'no-referrer')
+# https://www.w3.org/TR/referrer-policy/#information-leakage
+t_ref_secure = ('same-origin', 'strict-origin',
+                'strict-origin-when-cross-origin', 'no-referrer',
+                'no-referrer-when-downgrade')
 t_ref_values = ('no-referrer', 'no-referrer-when-downgrade', 'origin',
                 'origin-when-cross-origin', 'same-origin', 'strict-origin',
                 'strict-origin-when-cross-origin', 'unsafe-url')
@@ -2502,8 +2504,10 @@ if 'public-key-pins-report-only' in headers_l and '43' not in skip_list:
 
 referrer_header = headers_l.get('referrer-policy', '')
 if referrer_header and '44' not in skip_list:
+    if ',' in referrer_header:
+        print_details('[irefd_h]', '[irefd]', 'd', i_cnt)
     if not any(elem in referrer_header for elem in t_ref_secure):
-        print_details('[iref_h]', '[iref]', 'm', i_cnt)
+        print_details('[iref_h]', '[iref]', 'd', i_cnt)
     if 'unsafe-url' in referrer_header:
         print_details('[irefi_h]', '[irefi]', 'd', i_cnt)
     if not any(elem in referrer_header for elem in t_ref_values):

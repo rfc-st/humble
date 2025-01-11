@@ -590,6 +590,9 @@
 [ipkpr_h]
  Public-Key-Pins-Report-Only (Deprecated Header)
 
+[irefd_h]
+ Referrer-Policy (Duplicated Values)
+
 [iref_h]
  Referrer-Policy (Recommended Values)
 
@@ -1072,10 +1075,13 @@ HTTP Response Headers
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
 
-[iref]
- Use 'strict-origin' or 'strict-origin-when-cross-origin' if there are sensitive resources.
- Or fall back to 'no-referrer-when-downgrade' or even 'no-referrer'.
+[irefd]
+ This header, or its values, may be duplicated.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
+[iref]
+ Use a restrictive value if there are sensitive resources in the URL.
+ Ref: https://www.w3.org/TR/referrer-policy/#information-leakage
 
 [islogin]
  Include at least one valid directive.

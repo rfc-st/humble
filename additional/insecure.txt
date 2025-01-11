@@ -90,6 +90,7 @@ Proxy-Authenticate: No Valid Directives
 Proxy-Authenticate: Unsafe Value
 Public-Key-Pins: Deprecated Header
 Public-Key-Pins-Report-Only: Deprecated Header
+Referrer-Policy: Duplicated Values
 Referrer-Policy: Incorrect Value
 Referrer-Policy: Recommended Values
 Referrer-Policy: Unsafe Value

@@ -591,6 +591,9 @@
 [ipkpr_h]
  Public-Key-Pins-Report-Only (Cabecera obsoleta)
 
+[irefd_h]
+ Referrer-Policy (Valores duplicados)
+
 [iref_h]
  Referrer-Policy (Valores recomendados)
 
@@ -1077,10 +1080,13 @@ Cabeceras de respuesta HTTP
  Incluya, al menos, una directiva correcta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
 
-[iref]
- Si hay datos sensibles utilice 'strict-origin' o 'strict-origin-when-cross-origin'.
- O incluso 'no-referrer-when-downgrade' o 'no-referrer'.
+[irefd]
+ Esta cabecera, o sus valores, pueden estar duplicados.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+
+[iref]
+ Utiliza un valor restrictivo si hay recursos sensibles en la URL.
+ Ref: https://www.w3.org/TR/referrer-policy/#information-leakage
 
 [islogin]
  Incluya, al menos, una directiva correcta.
