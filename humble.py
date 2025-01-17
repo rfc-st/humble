@@ -1092,11 +1092,15 @@ def get_user_agent(user_agent_id):
               encoding='utf8') as ua_source:
         user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
                                                        None)]
+
     if user_agent_id == str(0):
         print_user_agents(user_agents)
     for line in user_agents:
         if line.startswith(f"{user_agent_id}.-"):
-            return line[4:]
+            offset = len(user_agent_id) + 3 if len(user_agent_id) == 1 else \
+                len(user_agent_id) + 2
+            return line[offset:].strip()
+
     print_error_detail('[ua_invalid]')
     sys.exit()
 
