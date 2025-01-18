@@ -136,7 +136,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-01-17', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-01-18', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -548,7 +548,7 @@ def calculate_trends(values):
     #
     # At least five analyses of the URL are required to calculate reliable
     # trends, and only the five most recent analyses are considered. The
-    # possible trend results are:
+    # possible trends are:
     #
     # 'Stable': All five values are identical.
     # 'Improving': Values consistently decrease.
@@ -1080,7 +1080,7 @@ def parse_user_agent(user_agent=False):
 
 def nourl_user_agent(user_agent_id):
     try:
-        if int(user_agent_id) == 0:
+        if user_agent_id == '0':
             return get_user_agent('0')
         print_error_detail('[args_useragent]')
     except ValueError:
@@ -1093,14 +1093,11 @@ def get_user_agent(user_agent_id):
         user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
                                                        None)]
 
-    if user_agent_id == str(0):
+    if user_agent_id == '0':
         print_user_agents(user_agents)
     for line in user_agents:
         if line.startswith(f"{user_agent_id}.-"):
-            offset = len(user_agent_id) + 3 if len(user_agent_id) == 1 else \
-                len(user_agent_id) + 2
-            return line[offset:].strip()
-
+            return line[4:].strip()
     print_error_detail('[ua_invalid]')
     sys.exit()
 
@@ -1627,7 +1624,7 @@ def handle_server_error(http_status_code, l10n_id):
             print(detail)
         else:
             print((URL_LIST[2] if http_status_code in range(500, 512) else
-                   URL_LIST[1]) + str(http_status_code))
+                   URL_LIST[1]))
     else:
         print_error_detail('[server_serror]')
     sys.exit()
@@ -1689,7 +1686,7 @@ def handle_http_error(r, exception_d):
     except requests.exceptions.HTTPError as err_http:
         http_status_code = err_http.response.status_code
         l10n_id = f'[server_{http_status_code}]'
-        if str(http_status_code).startswith('5'):
+        if http_status_code // 100 == 5:
             handle_server_error(http_status_code, l10n_id)
     except tuple(exception_d.keys()) as e:
         ex = exception_d.get(type(e))
