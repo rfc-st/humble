@@ -1612,7 +1612,7 @@ def build_tmp_file(export_date, file_ext, lang, url):
     url_str = tldextract.extract(URL)
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
     url_prt = f"_{url.port}_" if url.port is not None else '_'
-    return f"{str_hum}{url.scheme}{url_sub}{url_str.domain}_{url_str.suffix}\
+    return f"{str_hum}{url.scheme}{url_sub}{url_str.domain}.{url_str.suffix}\
 {url_prt}{export_date}{lang}{file_ext}"
 
 
