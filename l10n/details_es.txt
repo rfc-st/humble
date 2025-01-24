@@ -766,7 +766,7 @@
 'humble' (Analizador de cabeceras HTTP)
 
 [pdf_footer]
-Página 
+Página
 
 [pdf_footer2]
  de
@@ -838,7 +838,7 @@ Cabeceras de respuesta HTTP
  Error: El esquema de la URL no es válido o no es compatible.
 
 [report]
- Informe guardado en 
+ Informe guardado en
 
 [0section]
 [0. Información]
@@ -1320,7 +1320,7 @@ Cabeceras de respuesta HTTP
  Advertencias a revisar:                      
 
 [analysis_time]
- Realizado en 
+ Realizado en
 
 [analysis_time_sec]
  segundos! (cambios con respecto al ultimo análisis entre paréntesis)
@@ -1599,16 +1599,16 @@ Error: la ruta indicada de 'testssl.sh' es incorrecta.
 Error: El parámetro '-s' requiere, al menos, el nombre de una cabecera HTTP de respuesta.
 
 [args_skipped_unknown]
-Error: Elimina estas cabeceras HTTP del parámetro '-s', ya que 'humble' no las comprueba: 
+Error: Elimine estas cabeceras HTTP del parámetro '-s' ya que no se analizan
 
 [args_nooutputfmt]
 Error: El parámetro '-op' requiere el parámetro '-o'.
 
 [args_noexportpath]
-Error: No existe la ruta indicada 
+Error: No existe la ruta indicada
 
 [args_nowr]
-Erorr: Este usuario no tiene permisos de escritura en la ruta 
+Erorr: Este usuario no tiene permisos de escritura en la ruta indicada
 
 [args_input_traversal]
 Error: El nombre del fichero, o la ruta absoluta, indicados parecen erróneos
@@ -1623,7 +1623,7 @@ Valores
 Valor:
 
 [export_filename]
- Fich.: 
+ Fich.:
 
 [e_grade]
  Nota del análisis:                           E (Revisa 'Cabeceras habilitadas')

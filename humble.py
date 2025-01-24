@@ -136,7 +136,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-01-18', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-01-24', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -295,16 +295,15 @@ def get_l10n_content():
 
 
 def get_analysis_results():
-    print_detail_l('[analysis_time]')
-    print(round(end - start, 2), end="")
-    print_detail_l('[analysis_time_sec]')
+    analysis_t = str(round(end - start, 2)).rstrip()
+    print(f"{get_detail('[analysis_time]', replace=True)} {analysis_t}\
+{get_detail('[analysis_time_sec]', replace=True)}")
     t_cnt = sum([m_cnt, f_cnt, i_cnt[0], e_cnt])
     analysis_totals = save_analysis_results(t_cnt)
     analysis_diff = compare_analysis_results(*analysis_totals, en_cnt=en_cnt,
                                              m_cnt=m_cnt, f_cnt=f_cnt,
                                              i_cnt=i_cnt, e_cnt=e_cnt,
                                              t_cnt=t_cnt)
-    print("")
     print_analysis_results(*analysis_diff, t_cnt=t_cnt)
     analysis_grade = grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt)
     print(f"{get_detail(analysis_grade)}")
@@ -775,9 +774,7 @@ def delete_lines(reliable=True):
 def print_export_path(filename, reliable):
     delete_lines(reliable=False) if reliable else delete_lines()
     if '-c' not in sys.argv:
-        print("")
-        print_detail_l('[report]')
-        print(path.abspath(filename))
+        print(f"{print_detail_s('[report]')} {path.abspath(filename)}")
 
 
 def print_nowarnings():
@@ -816,8 +813,8 @@ def print_basic_info(export_filename):
     print(f" {current_time}")
     print(f'{URL_STRING[1]}{URL}')
     if export_filename:
-        print_detail_l('[export_filename]')
-        print(f"{export_filename}")
+        print(f"{get_detail('[export_filename]', replace=True)} \
+{export_filename}")
 
 
 def print_extended_info(args, reliable, status_code):
@@ -887,6 +884,12 @@ def print_detail_r(id_mode, is_red=False):
                 print(l10n_main[i+1], end='')
             if not is_red:
                 print("")
+
+
+def print_detail_s(id_mode):
+    for i, line in enumerate(l10n_main):
+        if line.startswith(id_mode):
+            return f"\n{l10n_main[i+1].rstrip()}"
 
 
 def get_detail(id_mode, replace=False):
@@ -1050,7 +1053,8 @@ def check_path_permissions(output_path):
     try:
         open(path.join(output_path, HUMBLE_FILES[1]), 'w')
     except PermissionError:
-        print(f"\n{get_detail('[args_nowr]', replace=True)}'{output_path}'")
+        print(f"\n {get_detail('[args_nowr]', replace=True)} \
+('{output_path}')")
         sys.exit()
     else:
         remove(path.join(output_path, HUMBLE_FILES[1]))
@@ -1063,8 +1067,8 @@ def check_output_path(args, output_path):
     elif path.exists(output_path):
         check_path_permissions(output_path)
     else:
-        print(f"\n{get_detail('[args_noexportpath]', replace=True)}\
-('{output_path}').")
+        print(f"\n {get_detail('[args_noexportpath]', replace=True)} \
+('{output_path}')")
         sys.exit()
 
 
@@ -1137,9 +1141,8 @@ def print_skipped_headers(args):
 
 
 def print_unsupported_headers(unsupported_headers):
-    print("")
-    print_detail_l('[args_skipped_unknown]')
-    print(f"{', '.join(f'{header}' for header in unsupported_headers)}")
+    print(f"\n {get_detail('[args_skipped_unknown]', replace=True)} \
+({', '.join(f'\'{header}\'' for header in unsupported_headers)})")
     sys.exit()
 
 
@@ -2808,8 +2811,9 @@ elif args.output == 'pdf':
             self.set_y(-15)
             self.set_font('Helvetica', 'I', 8)
             self.set_text_color(0, 0, 0)
-            self.cell(0, 10, get_detail('[pdf_footer]') + str(self.page_no()) +
-                      get_detail('[pdf_footer2]') + ' {nb}', align='C')
+            self.cell(0, 10, print_detail_s('[pdf_footer]') + ' ' +
+                      str(self.page_no()) + get_detail('[pdf_footer2]') +
+                      ' {nb}', align='C')
     pdf = PDF()
     pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
                  REF_LINKS[4])

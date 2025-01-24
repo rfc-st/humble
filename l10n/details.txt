@@ -764,7 +764,7 @@
 'humble' (HTTP Headers Analyzer)
 
 [pdf_footer]
-Page 
+Page
 
 [pdf_footer2]
  of
@@ -836,7 +836,7 @@ HTTP Response Headers
  Error: The URL scheme provided is either invalid or unsupported.
 
 [report]
- Report saved to 
+ Report saved to
 
 [0section]
 [0. Info]
@@ -1315,7 +1315,7 @@ HTTP Response Headers
  Findings to review:           
 
 [analysis_time]
- Done in 
+ Done in
 
 [analysis_time_sec]
  seconds! (changes with respect to the last analysis in parentheses)
@@ -1597,13 +1597,13 @@ Error: The parameter '-op' requires the parameter '-o'.
 Error: The parameter '-s' requires at least the name of one HTTP response header.
 
 [args_skipped_unknown]
-Error: Remove these HTTP headers from the '-s' parameter as 'humble' does not check them: 
+Error: Remove these HTTP headers from the '-s' parameter as they are not analyzed
 
 [args_noexportpath]
-Error: The indicated PATH does not exist 
+Error: The indicated PATH does not exist
 
 [args_nowr]
-Error: This user does not have write permissions on the path 
+Error: This user does not have write permissions on the indicated PATH
 
 [args_input_traversal]
 Error: The indicated filename, or absolute path, seem wrong
@@ -1636,7 +1636,7 @@ want to contribute?:
 Value:
 
 [export_filename]
- File : 
+ File :
 
 [e_grade]
  Analysis Grade:               E (Review 'Enabled headers')
