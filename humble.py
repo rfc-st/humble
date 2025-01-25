@@ -1027,7 +1027,7 @@ def print_empty_headers(headers, l_empty):
     for key in sorted(headers):
         if not headers[key]:
             l_empty.append(f"{key}")
-            print_header(key)
+            print_header(key.title())
             e_cnt += 1
     return e_cnt
 
