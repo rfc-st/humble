@@ -1302,22 +1302,22 @@ Cabeceras de respuesta HTTP
  Por favor, lee esto: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
 [enabled_cnt]
- Cabeceras habilitadas:                       
+ Cabeceras habilitadas:
 
 [missing_cnt]
- Cabeceras no habilitadas:                    
+ Cabeceras no habilitadas:
 
 [fng_cnt]
- Huella digital por cabeceras:                
+ Huella digital por cabeceras:
 
 [insecure_cnt]
- Protocolos/Cabeceras obsoletas o inseguras:  
+ Protocolos/Cabeceras obsoletas o inseguras:
 
 [empty_cnt]
- Cabeceras vacías:                            
+ Cabeceras vacías:
 
 [total_cnt]
- Advertencias a revisar:                      
+ Advertencias a revisar:
 
 [analysis_time]
  Realizado en
@@ -1626,19 +1626,19 @@ Valor:
  Fich.:
 
 [e_grade]
- Nota del análisis:                           E (Revisa 'Cabeceras habilitadas')
+ Nota del análisis:                          E (Revisa 'Cabeceras habilitadas')
 
 [d_grade]
- Nota del análisis:                           D (Revisa 'Protocolos/Cabeceras obsoletas o inseguras')
+ Nota del análisis:                          D (Revisa 'Protocolos/Cabeceras obsoletas o inseguras')
 
 [c_grade]
- Nota del análisis:                           C (Revisa 'Cabeceras no habilitadas')
+ Nota del análisis:                          C (Revisa 'Cabeceras no habilitadas')
 
 [b_grade]
- Nota del análisis:                           B (Revisa 'Huella digital por cabeceras')
+ Nota del análisis:                          B (Revisa 'Huella digital por cabeceras')
 
 [a_grade]
- Nota del análisis:                           A (Revisa 'Cabeceras sin valor')
+ Nota del análisis:                          A (Revisa 'Cabeceras sin valor')
 
 [perfect_grade]
  Nota del análisis:                           A+ (Increíble, enhorabuena!)
@@ -1653,8 +1653,8 @@ Excepción no gestionada:
 (*) 
 
 [experimental_header]
- Significado de '(*)':                        Cabecera de respuesta HTTP experimental
- Referencia de '(*)':                         https://mdn.io/Experimental_deprecated_obsolete
+ Significado de '(*)':                       Cabecera de respuesta HTTP experimental
+ Referencia de '(*)':                        https://mdn.io/Experimental_deprecated_obsolete
 
 [compliance_output]
  Analizando la URL en relación a las mejores prácticas de OWASP 'Secure Headers Project', espera por favor ...

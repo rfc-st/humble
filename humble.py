@@ -136,7 +136,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-01-25', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-01-31', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -358,10 +358,11 @@ def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
 def print_analysis_results(*diff, t_cnt):
     totals = [f"{en_cnt} ({diff[0]})\n", f"{m_cnt} ({diff[1]})",
               f"{f_cnt} ({diff[2]})", f"{i_cnt[0]} \
-({diff[3]})", f"{e_cnt} ({diff[4]})", f"{t_cnt} ({diff[5]})\n"]
-    print("")
+({diff[3]})", f"{e_cnt} ({diff[4]})", f"{t_cnt} ({diff[5]})\n\n"]
+    max_secl = get_max_lnlength(SECTION_S)
     for literal, total in zip(SECTION_S, totals):
-        print(f"{(print_detail_l(literal) or '')[:-1]}{total}")
+        print(f"{(print_detail_s(literal, max_ln=True).ljust(max_secl))}\
+{total}", end='')
 
 
 # Use '-grd' parameter to show the checks to grade an analysis, along with
@@ -530,14 +531,13 @@ def calculate_highlights(url_ln, field_index, func):
 def get_trends(adj_url_ln):
     sections_t = SECTION_S[1:]
     fields_t = [3, 4, 5, 6, 7]
-
+    max_secl = (get_max_lnlength(SECTION_S))-2
     trends = []
     for section, field_idx in zip(sections_t, fields_t):
         values = [int(parts[field_idx].strip()) for line in adj_url_ln
                   if len((parts := line.strip().split(';'))) > field_idx]
-        trends.append(f"  {print_detail_l(section, analytics=True)}: \
-{calculate_trends(values)}")
-
+        trends.append(f"{(get_detail(section, replace=True).ljust(max_secl))}\
+ {calculate_trends(values)}")
     return trends
 
 
@@ -849,6 +849,16 @@ def print_response_headers():
     print('\n')
 
 
+def get_max_lnlength(section):
+    sec_val = []
+    max_secl = 0
+    for i in section:
+        sec_txt = get_detail(i)
+        sec_val.append(sec_txt)
+        max_secl = max(max_secl, len(sec_txt)+1)
+    return max_secl
+
+
 def print_details(short_d, long_d, id_mode, i_cnt):
     print_detail_r(short_d, is_red=True)
     if not args.brief:
@@ -886,10 +896,11 @@ def print_detail_r(id_mode, is_red=False):
                 print("")
 
 
-def print_detail_s(id_mode):
+def print_detail_s(id_mode, max_ln=False):
     for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
         if idmode_ln.startswith(id_mode):
-            return f"\n{idnext_ln.strip()}"
+            return f"\n{idnext_ln.rstrip()}" if max_ln else \
+                f"\n{idnext_ln.strip()}"
 
 
 def get_detail(id_mode, replace=False):

@@ -1297,22 +1297,22 @@ HTTP Response Headers
  Please, read this: https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 
 [enabled_cnt]
- Enabled headers:              
+ Enabled headers:
 
 [missing_cnt]
- Missing headers:              
+ Missing headers:
 
 [fng_cnt]
- Fingerprint headers:          
+ Fingerprint headers:
 
 [insecure_cnt]
- Deprecated/Insecure headers:  
+ Deprecated/Insecure headers:
 
 [empty_cnt]
- Empty headers:                
+ Empty headers:
 
 [total_cnt]
- Findings to review:           
+ Findings to review:
 
 [analysis_time]
  Done in
@@ -1639,22 +1639,22 @@ Value:
  File :
 
 [e_grade]
- Analysis Grade:               E (Review 'Enabled headers')
+ Analysis Grade:              E (Review 'Enabled headers')
 
 [d_grade]
- Analysis Grade:               D (Review 'Deprecated/Insecure headers')
+ Analysis Grade:              D (Review 'Deprecated/Insecure headers')
 
 [c_grade]
- Analysis Grade:               C (Review 'Missing headers')
+ Analysis Grade:              C (Review 'Missing headers')
 
 [b_grade]
- Analysis Grade:               B (Review 'Fingerprint headers')
+ Analysis Grade:              B (Review 'Fingerprint headers')
 
 [a_grade]
- Analysis Grade:               A (Review 'Empty headers')
+ Analysis Grade:              A (Review 'Empty headers')
 
 [perfect_grade]
- Analysis Grade:               A+ (Amazing, congratulations!)
+ Analysis Grade:              A+ (Amazing, congratulations!)
 
 [testssl_error]
 Error running TLS/SSL analysis.
@@ -1666,8 +1666,8 @@ Unhandled exception type:
 (*) 
 
 [experimental_header]
- '(*)' meaning:                Experimental HTTP response header
- '(*)' ref:                    https://mdn.io/Experimental_deprecated_obsolete
+ '(*)' meaning:               Experimental HTTP response header
+ '(*)' ref:                   https://mdn.io/Experimental_deprecated_obsolete
 
 [compliance_output]
  Analyzing the URL in relation to the OWASP 'Secure Headers Project' best practices, please wait ...
