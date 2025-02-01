@@ -238,9 +238,9 @@ https://github.com/rfc-st/humble/releases
 # E.g. (macOs): https://docs.docker.com/desktop/install/mac-install/
 # E.g. (Windows): https://docs.docker.com/desktop/install/windows-install/
 
-# Build the image, providing the TAG as the latest Release of 'humble': '1.42' in this example.
+# Build the image, providing the TAG as the latest Release of 'humble': '1.46' in this example.
 # https://github.com/rfc-st/humble/releases (Windows may require elevated console privileges)
-$ docker build -t humble:1.42 .
+$ docker build -t humble:1.46 .
 
 # Run the analysis specifying the above TAG, along with the specific options for 'humble':
 # '-it', required: allocate a pseudo-TTY and keep the input interactive
@@ -248,14 +248,14 @@ $ docker build -t humble:1.42 .
 
 # (Linux/macOS)
 # E.g. Analyze https://facebook with a brief analysis:
-$ docker run -it --rm --name humble humble:1.42 /bin/bash -c "python3 humble.py -u https://facebook.com -b"
+$ docker run -it --rm --name humble humble:1.46 /bin/bash -c "python3 humble.py -u https://facebook.com -b"
 
 # (Windows)
 # E.g. Analyze https://facebook with a brief analysis:
-$ docker run -it --rm --name humble humble:1.42 python3 humble.py -u https://facebook.com -b
+$ docker run -it --rm --name humble humble:1.46 python3 humble.py -u https://facebook.com -b
 
 # Removing (and untagging) previous images of 'humble' after upgrading to the latest release.
-$ docker rmi humble:1.42
+$ docker rmi humble:1.46
 ```
 
 ## Usage
