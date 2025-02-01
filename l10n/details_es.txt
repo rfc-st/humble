@@ -1347,46 +1347,46 @@ Estadísticas globales de todos los análisis realizados
 URLs
 
 [most_analyzed]
- Más analizadas                                 
+ Más analizadas
 
 [least_analyzed]
- Menos analizadas                               
+ Menos analizadas
 
 [most_warnings]
- Más advertencias                               
+ Más advertencias
 
 [least_warnings]
- Menos advertencias                             
+ Menos advertencias
 
 [most_enabled]
- Más cabeceras habilitadas                      
+ Más cabeceras habilitadas
 
 [least_enabled]
- Menos cabeceras habilitadas                    
+ Menos cabeceras habilitadas
 
 [most_missing]
- Más cabeceras por habilitar                    
+ Más cabeceras por habilitar
 
 [least_missing]
- Menos cabeceras por habilitar                  
+ Menos cabeceras por habilitar
 
 [most_fingerprints]
- Más huella digital por cabeceras               
+ Más huella digital por cabeceras
 
 [least_fingerprints]
- Menos huella digital por cabeceras             
+ Menos huella digital por cabeceras
 
 [most_insecure]
- Más cabeceras/protocolos inseguros/obsoletos   
+ Más cabeceras/protocolos inseguros/obsoletos
 
 [least_insecure]
- Menos cabeceras/protocolos inseguros/obsoletos 
+ Menos cabeceras/protocolos inseguros/obsoletos
 
 [most_empty]
- Más cabeceras vacías                           
+ Más cabeceras vacías
 
 [least_empty]
- Menos cabeceras vacías                         
+ Menos cabeceras vacías
 
 [best_analysis]
  Mejor análisis      
@@ -1626,19 +1626,19 @@ Valor:
  Fich.:
 
 [e_grade]
- Nota del análisis:                          E (Revisa 'Cabeceras habilitadas')
+ Nota del análisis:                           E (Revisa 'Cabeceras habilitadas')
 
 [d_grade]
- Nota del análisis:                          D (Revisa 'Protocolos/Cabeceras obsoletas o inseguras')
+ Nota del análisis:                           D (Revisa 'Protocolos/Cabeceras obsoletas o inseguras')
 
 [c_grade]
- Nota del análisis:                          C (Revisa 'Cabeceras no habilitadas')
+ Nota del análisis:                           C (Revisa 'Cabeceras no habilitadas')
 
 [b_grade]
- Nota del análisis:                          B (Revisa 'Huella digital por cabeceras')
+ Nota del análisis:                           B (Revisa 'Huella digital por cabeceras')
 
 [a_grade]
- Nota del análisis:                          A (Revisa 'Cabeceras sin valor')
+ Nota del análisis:                           A (Revisa 'Cabeceras sin valor')
 
 [perfect_grade]
  Nota del análisis:                           A+ (Increíble, enhorabuena!)
@@ -1653,8 +1653,8 @@ Excepción no gestionada:
 (*) 
 
 [experimental_header]
- Significado de '(*)':                       Cabecera de respuesta HTTP experimental
- Referencia de '(*)':                        https://mdn.io/Experimental_deprecated_obsolete
+ Significado de '(*)':                        Cabecera de respuesta HTTP experimental
+ Referencia de '(*)':                         https://mdn.io/Experimental_deprecated_obsolete
 
 [compliance_output]
  Analizando la URL en relación a las mejores prácticas de OWASP 'Secure Headers Project', espera por favor ...

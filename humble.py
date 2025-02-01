@@ -119,6 +119,11 @@ RE_PATTERN = (r'\((.*?)\)',
               r'*/?>', r'\(humble_sec_style\)([^:]+)',
               r'\(humble_sec_style\)', r'(?: Nota : | Note : )')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
+SECTION_A = ('[most_analyzed]', '[least_analyzed]', '[most_warnings]',
+             '[least_warnings]', '[most_enabled]', '[least_enabled]',
+             '[most_missing]', '[least_missing]', '[most_fingerprints]',
+             '[least_fingerprints]', '[most_insecure]', '[least_insecure]',
+             '[most_empty]', '[least_empty]')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31)
@@ -136,7 +141,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-01-31', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-02-01', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -361,8 +366,8 @@ def print_analysis_results(*diff, t_cnt):
 ({diff[3]})", f"{e_cnt} ({diff[4]})", f"{t_cnt} ({diff[5]})\n\n"]
     max_secl = get_max_lnlength(SECTION_S)
     for literal, total in zip(SECTION_S, totals):
-        print(f"{(print_detail_s(literal, max_ln=True).ljust(max_secl))}\
-{total}", end='')
+        print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} {total}",
+              end='')
 
 
 # Use '-grd' parameter to show the checks to grade an analysis, along with
@@ -684,29 +689,31 @@ def get_global_totals(url_ln, field):
     return (most_totals_p, least_totals_p)
 
 
-def get_basic_global_metrics(total_a, first_m):
+def get_basic_global_metrics(analytics_l, total_a, first_m):
     return {'[main]': "", '[total_analysis]': total_a,
             '[total_global_analysis]': str(first_m[2]),
             '[first_analysis_a]': first_m[0],
             '[latest_analysis]': f"{first_m[1]}\n",
-            '[urls]': "", '[most_analyzed]': first_m[3],
-            '[least_analyzed]': f"{first_m[4]}\n",
-            '[most_enabled]': first_m[7],
-            '[least_enabled]': f"{first_m[8]}\n",
-            '[most_missing]': first_m[9],
-            '[least_missing]': f"{first_m[10]}\n",
-            '[most_fingerprints]': first_m[11],
-            '[least_fingerprints]': f"{first_m[12]}\n",
-            '[most_insecure]': first_m[13],
-            '[least_insecure]': f"{first_m[14]}\n",
-            '[most_empty]': first_m[15],
-            '[least_empty]': f"{first_m[16]}\n",
-            '[most_warnings]': first_m[5],
-            '[least_warnings]': f"{first_m[6]}\n"}
+            '[urls]': "",
+            '[most_analyzed]': f"{' ' * (analytics_l[0])}{first_m[3]}",
+            '[least_analyzed]': f"{' ' * (analytics_l[1])}{first_m[4]}\n",
+            '[most_enabled]': f"{' ' * (analytics_l[4])}{first_m[7]}",
+            '[least_enabled]': f"{' ' * (analytics_l[5])}{first_m[8]}\n",
+            '[most_missing]': f"{' ' * (analytics_l[6])}{first_m[9]}",
+            '[least_missing]': f"{' ' * (analytics_l[7])}{first_m[10]}\n",
+            '[most_fingerprints]': f"{' ' * (analytics_l[8])}{first_m[11]}",
+            '[least_fingerprints]': f"{' ' * (analytics_l[9])}{first_m[12]}\n",
+            '[most_insecure]': f"{' ' * (analytics_l[10])}{first_m[13]}",
+            '[least_insecure]': f"{' ' * (analytics_l[11])}{first_m[14]}\n",
+            '[most_empty]': f"{' ' * (analytics_l[12])}{first_m[15]}",
+            '[least_empty]': f"{' ' * (analytics_l[13])}{first_m[16]}\n",
+            '[most_warnings]': f"{' ' * (analytics_l[2])}{first_m[5]}",
+            '[least_warnings]': f"{' ' * (analytics_l[3])}{first_m[6]}\n"}
 
 
 def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
-    basic_m = get_basic_global_metrics(total_a, first_m)
+    analytics_l = get_analytics_length(SECTION_A)
+    basic_m = get_basic_global_metrics(analytics_l, total_a, first_m)
     error_m = get_security_metrics(second_m)
     warning_m = get_warnings_metrics(additional_m)
     averages_m = get_averages_metrics(third_m)
@@ -857,6 +864,15 @@ def get_max_lnlength(section):
         sec_val.append(sec_txt)
         max_secl = max(max_secl, len(sec_txt)+1)
     return max_secl
+
+
+def get_analytics_length(section):
+    basic_l = get_max_lnlength(section)-1
+    analytics_l = []
+    for i in section:
+        analytics_l_item = basic_l - len(get_detail(i))
+        analytics_l.append(analytics_l_item)
+    return analytics_l
 
 
 def print_details(short_d, long_d, id_mode, i_cnt):

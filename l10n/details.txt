@@ -1342,46 +1342,46 @@ Global statistics of all analyses performed
 URLs
 
 [most_analyzed]
- Most analyzed                     
+ Most analyzed
 
 [least_analyzed]
- Least analyzed                    
+ Least analyzed
 
 [most_warnings]
- Most Warnings                     
+ Most Warnings
 
 [least_warnings]
- Least Warnings                    
+ Least Warnings
 
 [most_enabled]
- Most Enabled Headers              
+ Most Enabled Headers
 
 [least_enabled]
- Least Enabled Headers             
+ Least Enabled Headers
 
 [most_missing]
- Most Missing Headers              
+ Most Missing Headers
 
 [least_missing]
- Least Missing Headers             
+ Least Missing Headers
 
 [most_fingerprints]
- Most Fingerprint Headers          
+ Most Fingerprint Headers
 
 [least_fingerprints]
- Least Fingerprint Headers         
+ Least Fingerprint Headers
 
 [most_insecure]
- Most Insecure/Deprecated Headers  
+ Most Insecure/Deprecated Headers
 
 [least_insecure]
- Least Insecure/Deprecated Headers 
+ Least Insecure/Deprecated Headers
 
 [most_empty]
- Most Empty Headers                
+ Most Empty Headers
 
 [least_empty]
- Least Empty Headers               
+ Least Empty Headers
 
 [best_analysis]
  Best analysis   
@@ -1639,22 +1639,22 @@ Value:
  File :
 
 [e_grade]
- Analysis Grade:              E (Review 'Enabled headers')
+ Analysis Grade:               E (Review 'Enabled headers')
 
 [d_grade]
- Analysis Grade:              D (Review 'Deprecated/Insecure headers')
+ Analysis Grade:               D (Review 'Deprecated/Insecure headers')
 
 [c_grade]
- Analysis Grade:              C (Review 'Missing headers')
+ Analysis Grade:               C (Review 'Missing headers')
 
 [b_grade]
- Analysis Grade:              B (Review 'Fingerprint headers')
+ Analysis Grade:               B (Review 'Fingerprint headers')
 
 [a_grade]
- Analysis Grade:              A (Review 'Empty headers')
+ Analysis Grade:               A (Review 'Empty headers')
 
 [perfect_grade]
- Analysis Grade:              A+ (Amazing, congratulations!)
+ Analysis Grade:               A+ (Amazing, congratulations!)
 
 [testssl_error]
 Error running TLS/SSL analysis.
@@ -1666,8 +1666,8 @@ Unhandled exception type:
 (*) 
 
 [experimental_header]
- '(*)' meaning:               Experimental HTTP response header
- '(*)' ref:                   https://mdn.io/Experimental_deprecated_obsolete
+ '(*)' meaning:                Experimental HTTP response header
+ '(*)' ref:                    https://mdn.io/Experimental_deprecated_obsolete
 
 [compliance_output]
  Analyzing the URL in relation to the OWASP 'Secure Headers Project' best practices, please wait ...
