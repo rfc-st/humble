@@ -141,7 +141,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-02-01', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-02-07', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1169,7 +1169,7 @@ def print_skipped_headers(args):
 
 def print_unsupported_headers(unsupported_headers):
     print(f"\n {get_detail('[args_skipped_unknown]', replace=True)} \
-({', '.join(f'\'{header}\'' for header in unsupported_headers)})")
+({', '.join(f'{header}' for header in unsupported_headers)})")
     sys.exit()
 
 
