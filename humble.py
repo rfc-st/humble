@@ -1585,22 +1585,21 @@ def check_compliance_owasp(header_keys, header_val, compliance_val):
 def print_compliance_owasp(non_cnt, non_rules):
     if non_cnt > 0:
         print("")
-        print_detail('[comp_ko_owasp]', num_lines=2)
-        print("")
+        print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
+        print(f'  URL: {URL}')
+        print(f" {get_detail('[comp_ko_owasp]')}")
         header_v = get_detail('[comp_header]')
         miss_h = [rule for rule in non_rules if header_v in rule]
         miss_val = [rule for rule in non_rules if header_v not in rule]
         if miss_h:
             print(f"{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
-            print("\n".join(f" {rule.split(':')[0].strip()}" for rule in
+            print("\n".join(f"  {rule.split(':')[0].strip()}" for rule in
                             miss_h))
             print("")
-        print("")
         if miss_val:
             print(f"{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
-            print("\n".join(f" {rule}" for rule in miss_val))
+            print("\n".join(f"  {rule}" for rule in miss_val))
             print("")
-        print("")
         print_detail('[comp_experimental]', 2)
     else:
         print_detail('[comp_ok_owasp]', num_lines=2)

@@ -1672,8 +1672,10 @@ Unhandled exception type:
 [compliance_output]
  Analyzing the URL in relation to the OWASP 'Secure Headers Project' best practices, please wait ...
 
+[comp_analysis]
+ Compliance with OWASP 'Secure Headers Project' best practices:
+
 [comp_ko_owasp]
- These URL headers do not comply with the OWASP 'Secure Headers Project' best practices.
  Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
 
 [comp_ok_owasp]
@@ -1685,10 +1687,10 @@ Unhandled exception type:
  '(*)' ref:     https://mdn.io/Experimental_deprecated_obsolete
 
 [comp_rec]
- Recommended headers not enabled
+ Recommended HTTP response headers not enabled:
 
 [comp_val]
- Enabled headers without recommended values
+ Enabled HTTP response headers without recommended values:
 
 [comp_header]
 (Header not enabled)
