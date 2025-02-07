@@ -445,7 +445,7 @@ Thanks for downloading _'humble'_, for trying it and for your time!.
 * <a href="https://github.com/manuel-sommer">manuel-sommer</a> for <a href="https://github.com/rfc-st/humble/issues/8">this</a>, <a href="https://github.com/rfc-st/humble/issues/10">this</a> and <a href="https://github.com/rfc-st/humble/issues/13">this</a>!.
 * <a href="https://github.com/MikeAnast">MikeAnast</a> for <a href="https://github.com/rfc-st/humble/pull/22">several</a> suggestions.
 * <a href="https://github.com/n3bojs4">n3bojs4</a>, <a href="https://github.com/ehlewis">ehlewis</a> and <a href="https://github.com/dkadev">dkadev</a> for <a href="https://github.com/rfc-st/humble/issues/7">this</a> and <a href="https://github.com/rfc-st/humble/pull/16">this</a>.
-* <a href="https://www.kali.org/about-us/">Sophie Brun</a> for keeping 'humble' updated in <a href="https://www.kali.org/">Kali Linux</a> and for <a href="https://github.com/rfc-st/humble/commit/88a4e5e930083801b0ea2f4ab5f51730f72c9ebf">this</a>.
+* <a href="https://www.kali.org/about-us/">Sophie Brun</a> for keeping 'humble' updated in <a href="https://pkg.kali.org/pkg/humble">Kali Linux</a> and for <a href="https://github.com/rfc-st/humble/commit/88a4e5e930083801b0ea2f4ab5f51730f72c9ebf">this</a>.
 * <a href="https://github.com/stanley101music">stanley101music</a> for <a href="https://github.com/rfc-st/humble/issues/14">this</a>, <a href="https://github.com/rfc-st/humble/issues/15">this</a> and <a href="https://github.com/rfc-st/humble/issues/17">this</a>!.
 * <a href="https://github.com/vincentcox">vincentcox</a> for <a href="https://github.com/rfc-st/humble/issues/19#issuecomment-2466643368">this</a> and <a href="https://github.com/rfc-st/humble/pull/24">this</a>.
 
