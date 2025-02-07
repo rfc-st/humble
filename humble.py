@@ -161,7 +161,7 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
 
 
 def check_python_version():
-    exit(print_detail('[python_version]', 3)) if sys.version_info < (3, 8) \
+    exit(print_detail('[python_version]', 3)) if sys.version_info < (3, 9) \
         else None
 
 

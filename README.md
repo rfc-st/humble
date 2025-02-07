@@ -3,7 +3,7 @@
 <br />
 
 <p align=center>
-<a target="_blank" href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_python.PNG" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.8-blue?labelColor=343b41"></a>
+<a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--02--07-blue.svg?labelColor=343b41"></a>
@@ -188,7 +188,7 @@ Options used: -f -g -p -U -s --hints
 ## Installation & update
 
 > [!NOTE]
-> Python 3.8 or higher is required.
+> Python 3.9 or higher is required.
 
 ```bash
 # Install python3 and python3-pip:
@@ -230,7 +230,7 @@ https://github.com/rfc-st/humble/releases
 ## Installation & maintenance (Docker)
 
 > [!NOTE]
-> Python 3.8 will be used to [build](https://github.com/rfc-st/humble/blob/master/Dockerfile) the image.
+> Python 3.9 will be used to [build](https://github.com/rfc-st/humble/blob/master/Dockerfile) the image.
 
 ```bash
 # Install Docker, and make sure it's running:

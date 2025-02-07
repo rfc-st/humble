@@ -896,7 +896,7 @@ Cabeceras de respuesta HTTP
 
 [python_version]
 
- Error: 'humble' requiere, al menos, Python 3.8.
+ Error: 'humble' requiere, al menos, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [no_warnings]

@@ -891,7 +891,7 @@ HTTP Response Headers
 
 [python_version]
 
- Error: 'humble' requires, at least, Python 3.8.
+ Error: 'humble' requires, at least, Python 3.9.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [no_warnings]
