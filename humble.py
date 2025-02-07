@@ -328,7 +328,7 @@ def save_analysis_results(t_cnt):
 
 
 def get_analysis_totals(url_ln):
-    # To avoid errors with analyses performed before 11/28/204, the date on
+    # To avoid errors with analyses performed before 11/28/2024, the date on
     # which enabled security headers began being considered when calculating
     # differences between analyses of the same URL.
 
@@ -391,7 +391,7 @@ def analysis_exists(filepath):
 
 
 def adjust_old_analysis(url_ln):
-    # To avoid errors with analyses performed before 11/28/204, the date on
+    # To avoid errors with analyses performed before 11/28/2024, the date on
     # which enabled security headers began being written to the analysis
     # history file ('analysis_h.txt') and considered for displaying statistics
     # (via the '-a' parameter).
@@ -695,20 +695,20 @@ def get_basic_global_metrics(analytics_l, total_a, first_m):
             '[first_analysis_a]': first_m[0],
             '[latest_analysis]': f"{first_m[1]}\n",
             '[urls]': "",
-            '[most_analyzed]': f"{' ' * (analytics_l[0])}{first_m[3]}",
-            '[least_analyzed]': f"{' ' * (analytics_l[1])}{first_m[4]}\n",
-            '[most_enabled]': f"{' ' * (analytics_l[4])}{first_m[7]}",
-            '[least_enabled]': f"{' ' * (analytics_l[5])}{first_m[8]}\n",
-            '[most_missing]': f"{' ' * (analytics_l[6])}{first_m[9]}",
-            '[least_missing]': f"{' ' * (analytics_l[7])}{first_m[10]}\n",
-            '[most_fingerprints]': f"{' ' * (analytics_l[8])}{first_m[11]}",
-            '[least_fingerprints]': f"{' ' * (analytics_l[9])}{first_m[12]}\n",
-            '[most_insecure]': f"{' ' * (analytics_l[10])}{first_m[13]}",
-            '[least_insecure]': f"{' ' * (analytics_l[11])}{first_m[14]}\n",
-            '[most_empty]': f"{' ' * (analytics_l[12])}{first_m[15]}",
-            '[least_empty]': f"{' ' * (analytics_l[13])}{first_m[16]}\n",
-            '[most_warnings]': f"{' ' * (analytics_l[2])}{first_m[5]}",
-            '[least_warnings]': f"{' ' * (analytics_l[3])}{first_m[6]}\n"}
+            '[most_analyzed]': f"{analytics_l[0]}{first_m[3]}",
+            '[least_analyzed]': f"{analytics_l[1]}{first_m[4]}\n",
+            '[most_enabled]': f"{analytics_l[4]}{first_m[7]}",
+            '[least_enabled]': f"{analytics_l[5]}{first_m[8]}\n",
+            '[most_missing]': f"{analytics_l[6]}{first_m[9]}",
+            '[least_missing]': f"{analytics_l[7]}{first_m[10]}\n",
+            '[most_fingerprints]': f"{analytics_l[8]}{first_m[11]}",
+            '[least_fingerprints]': f"{analytics_l[9]}{first_m[12]}\n",
+            '[most_insecure]': f"{analytics_l[10]}{first_m[13]}",
+            '[least_insecure]': f"{analytics_l[11]}{first_m[14]}\n",
+            '[most_empty]': f"{analytics_l[12]}{first_m[15]}",
+            '[least_empty]': f"{analytics_l[13]}{first_m[16]}\n",
+            '[most_warnings]': f"{analytics_l[2]}{first_m[5]}",
+            '[least_warnings]': f"{analytics_l[3]}{first_m[6]}\n"}
 
 
 def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
@@ -867,10 +867,10 @@ def get_max_lnlength(section):
 
 
 def get_analytics_length(section):
-    basic_l = get_max_lnlength(section)-1
+    basic_l = get_max_lnlength(section) - 1
     analytics_l = []
     for i in section:
-        analytics_l_item = basic_l - len(get_detail(i))
+        analytics_l_item = ' ' * (basic_l - len(get_detail(i)))
         analytics_l.append(analytics_l_item)
     return analytics_l
 
