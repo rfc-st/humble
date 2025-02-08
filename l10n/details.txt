@@ -1402,19 +1402,19 @@ Error: To use this option ('-a') you must have run at least one scan against tha
 Error: To use this option ('-a') you must have run at least one scan against any URL.
 
 [no_enabled]
- Without enabled headers                             
+ Without enabled headers
 
 [no_missing]
- Without missing headers                             
+ Without missing headers
 
 [no_fingerprint]
- Without fingerprint headers                         
+ Without fingerprint headers
 
 [no_ins_deprecated]
- Without insecure/deprecated headers/protocols       
+ Without insecure/deprecated headers/protocols
 
 [no_empty]
- Without empty headers                               
+ Without empty headers
 
 [analysis_year_month]
 Timeline
@@ -1423,25 +1423,25 @@ Timeline
 Analysis
 
 [average_warnings]
- Warnings per analysis                               
+ Warnings per analysis
 
 [average_warnings_year]
- Warnings per year                                   
+ Warnings per year
 
 [average_enb]
- Enabled headers per analysis                        
+ Enabled headers per analysis
 
 [average_miss]
- Missing headers per analysis                        
+ Missing headers per analysis
 
 [average_fng]
- Fingerprint headers per analysis                    
+ Fingerprint headers per analysis
 
 [average_dep]
- Insecure/deprecated headers/protocols per analysis  
+ Insecure/deprecated headers/protocols per analysis
 
 [average_ety]
- Empty headers per analysis                          
+ Empty headers per analysis
 
 [averages]
 Averages

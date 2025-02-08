@@ -119,13 +119,17 @@ RE_PATTERN = (r'\((.*?)\)',
               r'*/?>', r'\(humble_sec_style\)([^:]+)',
               r'\(humble_sec_style\)', r'(?: Nota : | Note : )')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
-SECTION_A = ('[most_analyzed]', '[least_analyzed]', '[most_warnings]',
+SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
+             '[empty_cnt]', '[total_cnt]')
+SECTION_V = ('[no_enabled]', '[no_missing]', '[no_fingerprint]',
+             '[no_ins_deprecated]', '[no_empty]', '[average_warnings]',
+             '[average_warnings_year]', '[average_enb]', '[average_miss]',
+             '[average_fng]', '[average_dep]', '[average_ety]',
+             '[most_analyzed]', '[least_analyzed]', '[most_warnings]',
              '[least_warnings]', '[most_enabled]', '[least_enabled]',
              '[most_missing]', '[least_missing]', '[most_fingerprints]',
              '[least_fingerprints]', '[most_insecure]', '[least_insecure]',
              '[most_empty]', '[least_empty]')
-SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
-             '[empty_cnt]', '[total_cnt]')
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
@@ -438,8 +442,10 @@ def get_analysis_metrics(all_analysis):
     additional_m = get_additional_metrics(adj_url_ln)
     fourth_m = get_highlights(adj_url_ln)
     fifth_m = get_trends(adj_url_ln)
-    return print_metrics(total_a, first_m, second_m, third_m, additional_m,
-                         fourth_m, fifth_m)
+    analytics_s = get_analytics_length(SECTION_V[:5])
+    analytics_w = get_analytics_length(SECTION_V[5:12])
+    return print_metrics(analytics_s, analytics_w, total_a, first_m, second_m,
+                         third_m, additional_m, fourth_m, fifth_m)
 
 
 def get_first_metrics(adj_url_ln):
@@ -579,12 +585,12 @@ def calculate_trends(values):
     return print_detail_l('[t_fluctuating]', analytics=True)
 
 
-def print_metrics(total_a, first_m, second_m, third_m, additional_m, fourth_m,
-                  fifth_m):
+def print_metrics(analytics_s, analytics_w, total_a, first_m, second_m,
+                  third_m, additional_m, fourth_m, fifth_m):
     basic_m = get_basic_metrics(total_a, first_m)
-    error_m = get_security_metrics(second_m)
-    warning_m = get_warnings_metrics(additional_m)
-    averages_m = get_averages_metrics(third_m)
+    error_m = get_security_metrics(analytics_s, second_m)
+    warning_m = get_warnings_metrics(additional_m, analytics_w)
+    averages_m = get_averages_metrics(analytics_w, third_m)
     fourth_m = get_highlights_metrics(fourth_m)
     trend_m = get_trend_metrics(fifth_m)
     analysis_year_m = get_date_metrics(additional_m)
@@ -603,23 +609,27 @@ def get_basic_metrics(total_a, first_m):
 {get_detail('[total_warnings]', replace=True)}{first_m[5]})\n"}
 
 
-def get_security_metrics(second_m):
-    return {'[analysis_y]': "", '[no_enabled]': second_m[0],
-            '[no_missing]': second_m[1], '[no_fingerprint]': second_m[2],
-            '[no_ins_deprecated]': second_m[3],
-            '[no_empty]': f"{second_m[4]}\n"}
+def get_security_metrics(analytics_s, second_m):
+    return {'[analysis_y]': "",
+            '[no_enabled]': f"{analytics_s[0]}{second_m[0]}",
+            '[no_missing]': f"{analytics_s[1]}{second_m[1]}",
+            '[no_fingerprint]': f"{analytics_s[2]}{second_m[2]}",
+            '[no_ins_deprecated]': f"{analytics_s[3]}{second_m[3]}",
+            '[no_empty]': f"{analytics_s[4]}{second_m[4]}\n"}
 
 
-def get_warnings_metrics(additional_m):
-    return {'[averages]': "", '[average_warnings]': f"{additional_m[0]}",
-            '[average_warnings_year]': f"{additional_m[2]}\n"}
+def get_warnings_metrics(additional_m, analytics_w):
+    return {'[averages]': "",
+            '[average_warnings]': f"{analytics_w[0]}{additional_m[0]}",
+            '[average_warnings_year]': f"{analytics_w[1]}{additional_m[2]}\n"}
 
 
-def get_averages_metrics(third_m):
-    return {'[average_enb]': f"{third_m[0]}",
-            '[average_miss]': f"{third_m[1]}",
-            '[average_fng]': f"{third_m[2]}", '[average_dep]': f"{third_m[3]}",
-            '[average_ety]': f"{third_m[4]}\n"}
+def get_averages_metrics(analytics_w, third_m):
+    return {'[average_enb]': f"{analytics_w[2]}{third_m[0]}",
+            '[average_miss]': f"{analytics_w[3]}{third_m[1]}",
+            '[average_fng]': f"{analytics_w[4]}{third_m[2]}",
+            '[average_dep]': f"{analytics_w[5]}{third_m[3]}",
+            '[average_ety]': f"{analytics_w[6]}{third_m[4]}\n"}
 
 
 def get_highlights_metrics(fourth_m):
@@ -648,8 +658,11 @@ def extract_global_metrics(all_analysis):
                 in range(2, 7)]
     third_m = get_third_metrics(adj_url_ln)
     additional_m = get_additional_metrics(adj_url_ln)
-    return print_global_metrics(total_a, first_m, second_m, third_m,
-                                additional_m)
+    analytics_l = get_analytics_length(SECTION_V[12:26])
+    analytics_s = get_analytics_length(SECTION_V[:5])
+    analytics_w = get_analytics_length(SECTION_V[5:12])
+    return print_global_metrics(analytics_l, analytics_s, analytics_w, total_a,
+                                first_m, second_m, third_m, additional_m)
 
 
 def get_global_first_metrics(adj_url_ln):
@@ -711,12 +724,12 @@ def get_basic_global_metrics(analytics_l, total_a, first_m):
             '[least_warnings]': f"{analytics_l[3]}{first_m[6]}\n"}
 
 
-def print_global_metrics(total_a, first_m, second_m, third_m, additional_m):
-    analytics_l = get_analytics_length(SECTION_A)
+def print_global_metrics(analytics_l, analytics_s, analytics_w,
+                         total_a, first_m, second_m, third_m, additional_m):
     basic_m = get_basic_global_metrics(analytics_l, total_a, first_m)
-    error_m = get_security_metrics(second_m)
-    warning_m = get_warnings_metrics(additional_m)
-    averages_m = get_averages_metrics(third_m)
+    error_m = get_security_metrics(analytics_s, second_m)
+    warning_m = get_warnings_metrics(additional_m, analytics_w)
+    averages_m = get_averages_metrics(analytics_w, third_m)
     analysis_year_m = get_date_metrics(additional_m)
     totals_m = {**basic_m, **error_m, **warning_m, **averages_m,
                 **analysis_year_m}
@@ -868,11 +881,11 @@ def get_max_lnlength(section):
 
 def get_analytics_length(section):
     basic_l = get_max_lnlength(section) - 1
-    analytics_l = []
+    section_l = []
     for i in section:
-        analytics_l_item = ' ' * (basic_l - len(get_detail(i)))
-        analytics_l.append(analytics_l_item)
-    return analytics_l
+        section_l_item = ' ' * (basic_l - len(get_detail(i)))
+        section_l.append(section_l_item)
+    return section_l
 
 
 def print_details(short_d, long_d, id_mode, i_cnt):
