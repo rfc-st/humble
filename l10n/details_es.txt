@@ -1514,11 +1514,24 @@ Tendencias
 [month_12]
  Diciembre
 
+[humble_latest]
+ Última versión :
+
+[humble_local]
+Tu versión     :
+
 [humble_not_recent]
- Tu versión de 'humble' no es reciente
+ Tu versión de 'humble' no es reciente.
 
 [humble_recent]
- Tienes una versión reciente de 'humble' :).
+
+ Utilizas una versión reciente de 'humble' - ¡genial! :)
+
+ Mantener tus herramientas de seguridad (como ésta) actualizadas te permite:
+
+ .- Utilizar las últimas funciones, ej. nuevas comprobaciones de Protocolos/Cabeceras obsoletas o inseguras en "additional/insecure.txt".
+ .- Trabajar con listados actualizados, ej. nuevas huellas digitales en "additional/fingerprint.txt".
+ .- Encontrarte con, !espero!, menos errores :).
 
 [github_humble]
  Comprueba las actualizaciones en https://github.com/rfc-st/humble/

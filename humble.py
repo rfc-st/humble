@@ -145,7 +145,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-02-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-02-13', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -174,14 +174,26 @@ def check_updates(local_version):
         github_repo = requests.get(URL_LIST[3], timeout=10).text
         github_date = re.search(RE_PATTERN[4], github_repo).group()
         github_version = datetime.strptime(github_date, '%Y-%m-%d').date()
-        if github_version > local_version:
-            print(f"\n{get_detail('[humble_not_recent]')[:-1]}: \
-'{local_version}'"f"\n\n{get_detail('[github_humble]', replace=True)}")
-        else:
-            print(f"\n{get_detail('[humble_recent]', replace=True)}")
+        days_diff = (github_version - local_version).days
+        check_updates_diff(days_diff, github_version, local_version)
     except requests.exceptions.RequestException:
         print_error_detail('[update_error]')
     sys.exit()
+
+
+def check_updates_diff(days_diff, github_version, local_version):
+    # Three weeks without updating 'humble' is too long ;)
+    if days_diff > 21:
+        print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
+{github_version} \n {get_detail('[humble_local]', replace=True)} \
+{local_version}{STYLE[4]}")
+        print(f"\n{get_detail('[humble_not_recent]')}\n\
+{get_detail('[github_humble]', replace=True)}\n")
+    else:
+        print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
+{github_version} \n {get_detail('[humble_local]', replace=True)} \
+{local_version}{STYLE[4]}")
+        print_detail('[humble_recent]', 8)
 
 
 def fng_statistics_top():

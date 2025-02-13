@@ -1509,11 +1509,24 @@ Trends
 [month_12]
  December
 
+[humble_latest]
+ Latest version :
+
+[humble_local]
+Your version   :
+
 [humble_not_recent]
- Your version of 'humble' is not recent
+ Your version of 'humble' is not recent.
 
 [humble_recent]
- You have a recent version of 'humble' :).
+
+ You're using a recent version of 'humble' - cool! :)
+
+ Keeping your security tools (such as this one) updated allows you to:
+
+ .- Use the latest features, e.g., new Deprecated/Insecure checks in 'additional/insecure.txt'.
+ .- Working with updated lists, e.g., new Fingerprints in 'additional/fingerprint.txt'.
+ .- Hopefully, fewer bugs! :).
 
 [github_humble]
  Check for updates at https://github.com/rfc-st/humble/
