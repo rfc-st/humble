@@ -184,7 +184,7 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_global_analytics.jpg" alt="(Linux) - Statistics of the analysis performed against all URLs in Spanish">
 </p>
 <br />
-.: (Wimdows) - Checking for updates<br />
+.: (Windows) - Checking for updates<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_update.PNG" alt="(Windows) - Checking for updates">
