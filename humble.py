@@ -183,16 +183,13 @@ def check_updates(local_version):
 
 def check_updates_diff(days_diff, github_version, local_version):
     # Three weeks without updating 'humble' is too long ;)
-    if days_diff > 21:
-        print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
+    print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
 {github_version} \n {get_detail('[humble_local]', replace=True)} \
 {local_version}{STYLE[4]}")
+    if days_diff > 21:
         print(f"\n{get_detail('[humble_not_recent]')}\n\
 {get_detail('[github_humble]', replace=True)}\n")
     else:
-        print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
-{github_version} \n {get_detail('[humble_local]', replace=True)} \
-{local_version}{STYLE[4]}")
         print_detail('[humble_recent]', 8)
 
 
@@ -590,7 +587,6 @@ def calculate_trends(values):
 
     if dec_trend > inc_trend:
         return print_detail_l('[t_improving]', analytics=True)
-
     if inc_trend > dec_trend:
         return print_detail_l('[t_worsening]', analytics=True)
 
@@ -1007,21 +1003,21 @@ def get_enabled_headers(args, headers_l, t_enabled):
     t_enabled = sorted({header.title() for header in t_enabled})
     enabled_headers = [header for header in t_enabled if header in headers_d]
     for header in enabled_headers:
-        print_enabled_headers(args, header, headers_d)
+        exp_s = get_detail('[exp_header]', replace=True) if header.lower() in\
+          EXP_HEADERS else ""
+        print_enabled_headers(args, exp_s, header, headers_d)
     None if enabled_headers else print_nosec_headers(args)
     en_cnt = len(enabled_headers)
     print('\n')
     return en_cnt
 
 
-def print_enabled_headers(args, header, headers_d):
-    exp_s = get_detail('[exp_header]', replace=True) if header.lower() in\
-          EXP_HEADERS else ""
+def print_enabled_headers(args, exp_s, header, headers_d):
     header_display = f'{STYLE[8]}{exp_s}{header}' if args.output in \
         ('html', 'pdf') else f'{exp_s}{header}'
     if args.output:
-        print(f' {header_display}' if args.brief else f' \
-{header_display}: {headers_d[header]}')
+        print(f' {header_display}' if args.brief else f' {header_display}: \
+{headers_d[header]}')
     else:
         styled_header = f'{STYLE[7]}{header_display}{STYLE[5]}'[18:]
         print(f' {styled_header}' if args.brief else f' {styled_header}: \
@@ -1040,18 +1036,21 @@ def print_missing_headers(args, headers_l, l_detail, l_miss):
     skip_headers = args.skip_headers if args.skip_headers is not None else []
     skip_missing = {header.lower() for header in skip_headers if
                     header.lower() in l_miss_set}
+    merged_set = headers_set | skip_missing
+    x_frame_skip = 'x-frame-options' in skip_missing
     m_cnt, skip_missing = check_missing_headers(m_cnt, l_miss, l_detail,
-                                                headers_set, skip_missing)
+                                                merged_set, skip_missing,
+                                                x_frame_skip)
     return m_cnt, skip_missing
 
 
-def check_missing_headers(m_cnt, l_miss, l_detail, headers_set, skip_missing):
+def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, skip_missing,
+                          x_frame_skip):
     for header, detail in zip(l_miss, l_detail):
-        if header.lower() not in headers_set and header.lower() not in \
-         skip_missing and 'x-frame-options' not in skip_missing:
-            exp_s = get_detail('[exp_header]', replace=True) if header.lower()\
-                in EXP_HEADERS else ""
-            print_header(f"{exp_s}{header}")
+        lower_header = header.lower()
+        if lower_header not in merged_set and not x_frame_skip:
+            print_header(f"{get_detail('[exp_header]', replace=True) if
+                            lower_header in EXP_HEADERS else ''}{header}")
             if not args.brief:
                 print_detail(detail, 2)
             m_cnt += 1
@@ -1059,14 +1058,13 @@ def check_missing_headers(m_cnt, l_miss, l_detail, headers_set, skip_missing):
 
 
 def check_frame_options(args, headers_l, l_miss, m_cnt, skip_missing):
-    skip_headers = {header.lower() for header in (args.skip_headers or [])}
-    if 'x-frame-options' in skip_headers:
+    if any(h.lower() == 'x-frame-options' for h in (args.skip_headers or [])):
         skip_missing.add('x-frame-options')
     xfo_missing = 'x-frame-options' not in skip_missing
     xfo_not_set = 'x-frame-options' not in headers_l
-    csp_missing = 'frame-ancestors' not in headers_l.get(
-        'content-security-policy', '')
-    all_missing = all(header.lower() not in headers_l for header in l_miss)
+    csp_missing = 'frame-ancestors' not in \
+        headers_l.get('content-security-policy', '')
+    all_missing = all(h.lower() not in headers_l for h in l_miss)
     if xfo_missing and ((xfo_not_set and csp_missing) or all_missing):
         print_header('X-Frame-Options')
         if not args.brief:
