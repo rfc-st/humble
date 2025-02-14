@@ -145,7 +145,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-02-13', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-02-14', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -844,6 +844,8 @@ def print_basic_info(export_filename):
     print_detail_l('[analysis_date]')
     print(f" {current_time}")
     print(f'{URL_STRING[1]}{URL}')
+    if args.input_file:
+        print(f"{get_detail('[input_filename]')} {args.input_file}")
     if export_filename:
         print(f"{get_detail('[export_filename]', replace=True)} \
 {export_filename}")

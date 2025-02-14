@@ -1693,3 +1693,6 @@ Excepción no gestionada:
 
 [comp_header]
 (Cabecera no habilitada)
+
+[input_filename]
+ Input:
