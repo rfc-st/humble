@@ -145,7 +145,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-02-14', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-02-15', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1033,44 +1033,39 @@ def print_missing_headers(args, headers_l, l_detail, l_miss):
     m_cnt = 0
     headers_set = set(headers_l)
     l_miss_set = {header.lower() for header in l_miss}
-    skip_headers = args.skip_headers if args.skip_headers is not None else []
-    skip_missing = {header.lower() for header in skip_headers if
-                    header.lower() in l_miss_set}
+    skip_headers = [h.lower() for h in (args.skip_headers or [])]
+    skip_missing = {header for header in skip_headers if header in l_miss_set}
     merged_set = headers_set | skip_missing
-    x_frame_skip = 'x-frame-options' in skip_missing
-    m_cnt, skip_missing = check_missing_headers(m_cnt, l_miss, l_detail,
-                                                merged_set, skip_missing,
-                                                x_frame_skip)
+    xfo_skipped = 'x-frame-options' in skip_missing
+    m_cnt = check_missing_headers(m_cnt, l_miss, l_detail, merged_set,
+                                  xfo_skipped)
+    m_cnt = check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers)
     return m_cnt, skip_missing
 
 
-def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, skip_missing,
-                          x_frame_skip):
+def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
     for header, detail in zip(l_miss, l_detail):
         lower_header = header.lower()
-        if lower_header not in merged_set and not x_frame_skip:
+        if lower_header not in merged_set and not xfo_skipped:
             print_header(f"{get_detail('[exp_header]', replace=True) if
                             lower_header in EXP_HEADERS else ''}{header}")
             if not args.brief:
                 print_detail(detail, 2)
             m_cnt += 1
-    return m_cnt, skip_missing
+    return m_cnt
 
 
-def check_frame_options(args, headers_l, l_miss, m_cnt, skip_missing):
-    if any(h.lower() == 'x-frame-options' for h in (args.skip_headers or [])):
-        skip_missing.add('x-frame-options')
-    xfo_missing = 'x-frame-options' not in skip_missing
-    xfo_not_set = 'x-frame-options' not in headers_l
-    csp_missing = 'frame-ancestors' not in \
+def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
+    xfo_needed = ('x-frame-options' not in skip_headers) and \
+        ('x-frame-options' not in headers_l)
+    fa_needed = 'frame-ancestors' not in \
         headers_l.get('content-security-policy', '')
-    all_missing = all(h.lower() not in headers_l for h in l_miss)
-    if xfo_missing and ((xfo_not_set and csp_missing) or all_missing):
+    if xfo_needed and fa_needed:
+        l_miss.append('X-Frame-Options')
+        m_cnt += 1
         print_header('X-Frame-Options')
         if not args.brief:
             print_detail('[mxfo]', 2)
-        m_cnt += 1
-    l_miss.append('X-Frame-Options')
     return m_cnt
 
 
@@ -1189,7 +1184,7 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 def print_skipped_headers(args):
     print_detail_l('[analysis_skipped_note]')
-    print(f" {', '.join(f'{header}' for header in args.skip_headers)}")
+    print(f" {', '.join(header.lower() for header in args.skip_headers)}")
 
 
 def print_unsupported_headers(unsupported_headers):
@@ -2001,7 +1996,6 @@ l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
             '[mxcto]', '[mxpcd]', '[mxfo]']
 
 m_cnt, skip_missing = print_missing_headers(args, headers_l, l_detail, l_miss)
-m_cnt = check_frame_options(args, headers_l, l_miss, m_cnt, skip_missing)
 
 if args.brief and m_cnt != 0:
     print("")
