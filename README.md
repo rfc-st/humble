@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--02--15-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--02--21-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -40,8 +40,9 @@
 
 [Features](#features)<br />
 [Screenshots](#screenshots)<br />
-[Installation & Update](#installation--update)<br />
+[Installation & Update (Source code)](#installation--update-source-code)<br />
 [Installation & Maintenance (Docker)](#installation--maintenance-docker)<br />
+[Installation & Update (Kali Linux)](#installation--update-kali-linux)<br />
 [Usage](#usage)<br />
 [Advanced Usage (Linux)](#advanced-usage-linux)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
@@ -192,7 +193,7 @@ Options used: -f -g -p -U -s --hints
 <br />
 
 
-## Installation & update
+## Installation & update (Source code)
 
 > [!NOTE]
 > Python 3.9 or higher is required.
@@ -217,6 +218,7 @@ $ cd /home/bluesman/humble_venv/
 $ git clone https://github.com/rfc-st/humble.git
 $ cd humble
 $ pip3 install -r requirements.txt
+$ python3 humble.py -u https://google.com
 
 # Good practice: deactivate the virtual environment after you have finished using 'humble'
 $ deactivate
@@ -229,8 +231,8 @@ $ cd humble
 # Updating (weekly): activate the virtual environment and from 'humble' folder
 $ git pull
 
-# Updating (Release): activate the virtual environment, download the source code
-# .zip file of the most recent Asset and unzip it in the 'humble' folder, overwriting files.
+# Updating (Release): activate the virtual environment, download the latest source code file
+# and decompress it in the 'humble' folder, overwriting files.
 https://github.com/rfc-st/humble/releases
 ```
 
@@ -245,7 +247,11 @@ https://github.com/rfc-st/humble/releases
 # E.g. (macOs): https://docs.docker.com/desktop/install/mac-install/
 # E.g. (Windows): https://docs.docker.com/desktop/install/windows-install/
 
-# Build the image, providing the TAG as the latest Release of 'humble': '1.46' in this example.
+# Clone the repository *or* download & decompress the latest release:
+$ git clone https://github.com/rfc-st/humble.git
+https://github.com/rfc-st/humble/releases
+
+# Build the image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' ()'1.46' in this example).
 # https://github.com/rfc-st/humble/releases (Windows may require elevated console privileges)
 $ docker build -t humble:1.46 .
 
@@ -263,6 +269,28 @@ $ docker run -it --rm --name humble humble:1.46 python3 humble.py -u https://fac
 
 # Removing (and untagging) previous images of 'humble' after upgrading to the latest release.
 $ docker rmi humble:1.46
+```
+
+## Installation & update (Kali Linux)
+
+> [!NOTE]
+> Python 3.9 or higher is required.
+
+```bash
+# Verify that the 'humble' package contains 'Homepage: https://github.com/rfc-st/humble'
+$ apt show humble
+
+# Install it and grant permissions (e.g. to enable analysis history and export analysis)
+$ sudo apt install humble
+$ sudo chmod -R a+rwx /usr/share/humble
+
+# Analyze! :)
+$ cd /usr/share/humble
+$ python3 humble.py -u https://google.com
+
+# Updating (monthly):
+$ sudo apt update
+$ sudo apt install --only-upgrade humble
 ```
 
 ## Usage

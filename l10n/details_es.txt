@@ -1566,6 +1566,12 @@ Tu versión     :
 [ua_source]
  (fuente: 'additional/user_agents.txt')
 
+[ua_custom]
+ Nota : Seleccionado el User-Agent
+
+[ua_custom2]
+ del fichero '/additional/user_agents.txt'
+
 [ua_invalid]
 Error: No existe ese ID de User-Agent; consulta los disponibles con '-ua 0'
 

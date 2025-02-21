@@ -145,7 +145,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-02-15', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-02-21', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -840,6 +840,9 @@ def print_basic_info(export_filename):
     print_detail_l('[analysis_date]')
     print(f" {current_time}")
     print(f'{URL_STRING[1]}{URL}')
+    if args.user_agent not in (None, '', '0'):
+        print(f"{get_detail('[ua_custom]', replace=True)} '{args.user_agent}'\
+{get_detail('[ua_custom2]', replace=True)}")
     if args.input_file:
         print(f"{get_detail('[input_filename]')} {args.input_file}")
     if export_filename:
@@ -1143,7 +1146,6 @@ def get_user_agent(user_agent_id):
               encoding='utf8') as ua_source:
         user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
                                                        None)]
-
     if user_agent_id == '0':
         print_user_agents(user_agents)
     for line in user_agents:
