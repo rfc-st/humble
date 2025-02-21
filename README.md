@@ -201,7 +201,7 @@ Options used: -f -g -p -U -s --hints
 ```bash
 # Install python3 and python3-pip:
 # (Windows) https://www.python.org/downloads/windows/
-# (Linux) if not installed by default, install them via, e.g. Synaptic, apt, dnf, yum ...
+# (Linux) if not available, install them: e.g. Synaptic, apt, dnf, yum ...
 # (macOS) https://www.python.org/downloads/macos/
 
 # Install Git:
@@ -209,16 +209,18 @@ Options used: -f -g -p -U -s --hints
 # (Linux) https://git-scm.com/download/linux
 # (macOS) https://git-scm.com/download/mac
 
-# Setting up a virtual environment in Python (pending how to do it in Windows)
+# Set up a virtual environment (pending how to do it in Windows), download 'humble' and its dependencies
 # '/home/bluesman/humble_venv' is a example path for the virtual environment
-
 $ python3 -m venv /home/bluesman/humble_venv
 $ source /home/bluesman/humble_venv/bin/activate
 $ cd /home/bluesman/humble_venv/
 $ git clone https://github.com/rfc-st/humble.git
 $ cd humble
 $ pip3 install -r requirements.txt
+
+# Analyze! :). Linux and Windows examples
 $ python3 humble.py -u https://google.com
+$ py humble.py -u https://google.com
 
 # Good practice: deactivate the virtual environment after you have finished using 'humble'
 $ deactivate
