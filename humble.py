@@ -145,7 +145,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-02-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-02-22', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1613,18 +1613,20 @@ def print_compliance_owasp(non_cnt, non_rules):
         header_v = get_detail('[comp_header]')
         miss_h = [rule for rule in non_rules if header_v in rule]
         miss_val = [rule for rule in non_rules if header_v not in rule]
-        if miss_h:
-            print(f"{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
-            print("\n".join(f"  {rule.split(':')[0].strip()}" for rule in
-                            miss_h))
-            print("")
-        if miss_val:
-            print(f"{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
-            print("\n".join(f"  {rule}" for rule in miss_val))
-            print("")
-        print_detail('[comp_experimental]', 2)
+        print_details_owasp(miss_h, miss_val)
     else:
         print_detail('[comp_ok_owasp]', num_lines=2)
+
+
+def print_details_owasp(miss_h, miss_val):
+    print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
+    print(f"{"\n".join(f'  {rule.split(':')[0].strip()}' for rule in
+                       miss_h)}\n" if miss_h else f" \
+{get_detail('[no_warnings]')}")
+    print(f"\n{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
+    print(f"{"\n".join(f'  {rule}' for rule in miss_val)}\n\n" if miss_val
+          else f" {get_detail('[no_warnings]')}\n")
+    print_detail('[comp_experimental]', 2)
 
 
 def analyze_input_file(input_file):
