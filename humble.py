@@ -145,7 +145,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-02-22', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-03-01', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1629,6 +1629,21 @@ def print_details_owasp(miss_h, miss_val):
     print_detail('[comp_experimental]', 2)
 
 
+# https://github.com/rfc-st/humble/?tab=readme-ov-file#to-do
+def extract_csp_content(csp_h):
+    csp_dirs_vals = {}
+    csp_dirs = []
+    for csp_directive in (directive.strip() for directive in csp_h.split(";")):
+        if not csp_directive:
+            continue
+        csp_parts = csp_directive.split(" ", 1)
+        csp_dir = csp_parts[0]
+        csp_dir_val = csp_parts[1] if len(csp_parts) > 1 else ""
+        csp_dirs_vals[csp_dir] = csp_dir_val
+        csp_dirs.append(csp_dir)
+    return csp_dirs_vals, csp_dirs
+
+
 def analyze_input_file(input_file):
     if not path.exists(input_file):
         print_error_detail('[args_inputnotfound]')
@@ -2383,6 +2398,7 @@ if cencod_header and not any(elem in cencod_header for elem in t_cencoding) \
 
 if 'content-security-policy' in headers_l and '16' not in skip_list:
     csp_h = headers_l['content-security-policy']
+    csp_dirs_vals, csp_dirs = extract_csp_content(csp_h)
     if not any(elem in csp_h for elem in t_csp_dirs):
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
     if ('=' in csp_h) and not (any(elem in csp_h for elem in t_csp_equal)):
