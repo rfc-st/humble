@@ -482,6 +482,15 @@
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
 
+[icspmb_h]
+ Content-Security-Policy ('base-uri' Directive Missing)
+
+[icspmo_h]
+ Content-Security-Policy ('object-src' Directive Missing)
+
+[icspmr_h]
+ (*) Content-Security-Policy ('require-trusted-types-for' Directive Missing)
+
 [icsp_h]
  Content-Security-Policy (Unsafe Values)
 
@@ -968,6 +977,18 @@ HTTP Response Headers
 [icachev]
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+
+[icspmb]
+ This directive prevents base tag injection; set it to 'none' or 'self'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/base-uri
+
+[icspmo]
+ This directive prevents plugin injection; set it to 'none'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/object-src
+
+[icspmr]
+ This directive prevents DOM XSS injection in scripts.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/require-trusted-types-for
 
 [icsp]
  'unsafe-inline' and 'unsafe-eval' negate most of the security benefits provided by this header.
@@ -1685,7 +1706,7 @@ Unhandled exception type:
 (*) 
 
 [experimental_header]
- '(*)' meaning:                Experimental HTTP response header
+ '(*)' meaning:                Experimental HTTP response directive or header
  '(*)' ref:                    https://mdn.io/Experimental_deprecated_obsolete
 
 [compliance_output]

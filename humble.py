@@ -145,7 +145,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-03-01', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-03-07', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -745,20 +745,32 @@ def print_global_metrics(analytics_l, analytics_s, analytics_w,
             totals_m.items()}
 
 
-def csp_store_values(csp_header, l_csp_broad_s, l_csp_ins_s, i_cnt):
+def csp_analyze_content(csp_header, l_csp_broad_s, l_csp_ins_s, i_cnt):
     csp_broad, csp_deprecated, csp_insecure = set(), set(), set()
-    csp_directives = csp_header.split(';')
-    for directive in csp_directives:
-        csp_dir = directive.strip()
+    csp_directives = {directive.split()[0].strip() for directive in
+                      csp_header.split(';') if directive.strip()}
+    csp_dirs_vals = csp_header.split(';')
+    for dir_vals in csp_dirs_vals:
+        csp_dir = dir_vals.strip()
         csp_broad |= ({value for value in l_csp_broad_s if f' {value} ' in
                        f' {csp_dir} '})
         csp_deprecated |= ({value for value in t_csp_dep if value in csp_dir})
         csp_insecure |= ({value for value in l_csp_ins_s if value in csp_dir})
-    csp_check_values(csp_broad, csp_deprecated, csp_insecure, i_cnt)
+    i_cnt = csp_check_missing(csp_directives, i_cnt)
+    csp_print_warnings(csp_broad, csp_deprecated, csp_insecure, i_cnt)
     return i_cnt
 
 
-def csp_check_values(csp_broad, csp_deprecated, csp_insecure, i_cnt):
+def csp_check_missing(csp_directives, i_cnt):
+    csp_refs = [('[icspmb_h]', '[icspmb]'), ('[icspmo_h]', '[icspmo]'),
+                ('[icspmr_h]', '[icspmr]')]
+    for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs):
+        if directive not in csp_directives:
+            csp_print_missing(csp_ref, csp_ref_brief)
+    return i_cnt
+
+
+def csp_print_warnings(csp_broad, csp_deprecated, csp_insecure, i_cnt):
     csp_print_deprecated(csp_deprecated) if csp_deprecated else None
     csp_print_insecure(csp_insecure) if csp_insecure else None
     csp_print_broad(csp_broad) if csp_broad else None
@@ -769,23 +781,31 @@ def csp_check_values(csp_broad, csp_deprecated, csp_insecure, i_cnt):
 
 def csp_print_deprecated(csp_deprecated):
     print_detail_r('[icsi_d]', is_red=True) if args.brief else \
-        csp_print_warnings(csp_deprecated, '[icsi_d]', '[icsi_d_s]',
-                           '[icsi_d_r]')
+        csp_print_details(csp_deprecated, '[icsi_d]', '[icsi_d_s]',
+                          '[icsi_d_r]')
 
 
 def csp_print_insecure(csp_insecure):
     print_detail_r('[icsh_h]', is_red=True) if args.brief else \
-        csp_print_warnings(csp_insecure, '[icsh_h]', '[icsh]', '[icsh_b]')
+        csp_print_details(csp_insecure, '[icsh_h]', '[icsh]', '[icsh_b]')
     if not args.brief:
         print("")
 
 
+def csp_print_missing(csp_ref, csp_ref_brief):
+    if args.brief:
+        i_cnt[0] += 1
+        print_detail_r(csp_ref_brief, is_red=True)
+    else:
+        print_details(csp_ref_brief, csp_ref, 'd', i_cnt)
+
+
 def csp_print_broad(csp_broad):
     print_detail_r('[icsw_h]', is_red=True) if args.brief else \
-        csp_print_warnings(csp_broad, '[icsw_h]', '[icsw]', '[icsw_b]')
+        csp_print_details(csp_broad, '[icsw_h]', '[icsw]', '[icsw_b]')
 
 
-def csp_print_warnings(csp_values, csp_title, csp_desc, csp_refs):
+def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
     csp_values = ', '.join(f"'{value}'" for value in csp_values)
     print_detail_r(f'{csp_title}', is_red=True)
     print_detail_l(f'{csp_desc}')
@@ -1629,21 +1649,6 @@ def print_details_owasp(miss_h, miss_val):
     print_detail('[comp_experimental]', 2)
 
 
-# https://github.com/rfc-st/humble/?tab=readme-ov-file#to-do
-def extract_csp_content(csp_h):
-    csp_dirs_vals = {}
-    csp_dirs = []
-    for csp_directive in (directive.strip() for directive in csp_h.split(";")):
-        if not csp_directive:
-            continue
-        csp_parts = csp_directive.split(" ", 1)
-        csp_dir = csp_parts[0]
-        csp_dir_val = csp_parts[1] if len(csp_parts) > 1 else ""
-        csp_dirs_vals[csp_dir] = csp_dir_val
-        csp_dirs.append(csp_dir)
-    return csp_dirs_vals, csp_dirs
-
-
 def analyze_input_file(input_file):
     if not path.exists(input_file):
         print_error_detail('[args_inputnotfound]')
@@ -2123,6 +2128,7 @@ t_csp_dirs = ('base-uri', 'child-src', 'connect-src', 'default-src',
               'upgrade-insecure-requests', 'webrtc', 'worker-src')
 t_csp_insecs = ('http:', 'ws:')
 t_csp_insecv = ('unsafe-eval', 'unsafe-inline')
+t_csp_miss = ('base-uri', 'object-src', 'require-trusted-types-for')
 t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',
                 'unsafe-hashes', 'nonce-', '127.0.0.1')
 
@@ -2398,12 +2404,11 @@ if cencod_header and not any(elem in cencod_header for elem in t_cencoding) \
 
 if 'content-security-policy' in headers_l and '16' not in skip_list:
     csp_h = headers_l['content-security-policy']
-    csp_dirs_vals, csp_dirs = extract_csp_content(csp_h)
     if not any(elem in csp_h for elem in t_csp_dirs):
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
     if ('=' in csp_h) and not (any(elem in csp_h for elem in t_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
-    csp_store_values(csp_h, t_csp_broad, t_csp_insecs, i_cnt)
+    csp_analyze_content(csp_h, t_csp_broad, t_csp_insecs, i_cnt)
     if any(elem in csp_h for elem in t_csp_insecv):
         print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
     if t_csp_checks[0] in csp_h and t_csp_checks[1] not in headers:

@@ -43,6 +43,9 @@ Content-Digest: Unsafe Algorithms
 Content-Disposition: Potentially Unsafe Header
 Content-DPR: Deprecated Header
 Content-Encoding: No Valid Directives
+Content-Security-Policy: 'base-uri' Directive Missing
+Content-Security-Policy: 'object-src' Directive Missing
+Content-Security-Policy: 'require-trusted-types-for' Directive Missing
 Content-Security-Policy: Deprecated Directives
 Content-Security-Policy: Incorrect Values
 Content-Security-Policy: Insecure Schemes

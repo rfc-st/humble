@@ -483,6 +483,15 @@
  Incluya, al menos, una directiva correcta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
 
+[icspmb_h]
+ Content-Security-Policy (Directiva 'base-uri' ausente)
+
+[icspmo_h]
+ Content-Security-Policy (Directiva 'object-src' ausente)
+
+[icspmr_h]
+ (*) Content-Security-Policy (Directiva 'require-trusted-types-for' ausente)
+
 [icsp_h]
  Content-Security-Policy (Valores inseguros)
 
@@ -973,6 +982,18 @@ Cabeceras de respuesta HTTP
 [icachev]
  Incluya, al menos, una directiva correcta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+
+[icspmb]
+ Esta directiva evita inyección de etiquetas base; habilítala con 'none' o 'self'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/base-uri
+
+[icspmo]
+ Esta directiva evita inyección de plugins; habilítala con 'none'.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/object-src
+
+[icspmr]
+ Esta directiva evita inyección de XSS en el DOM en los scripts.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/require-trusted-types-for
 
 [icsp]
  'unsafe-inline' y 'unsafe-eval' anulan las principales ventajas de esta cabecera.
