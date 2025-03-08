@@ -145,7 +145,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-03-07', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-03-08', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -763,7 +763,7 @@ def csp_analyze_content(csp_header, l_csp_broad_s, l_csp_ins_s, i_cnt):
 
 def csp_check_missing(csp_directives, i_cnt):
     csp_refs = [('[icspmb_h]', '[icspmb]'), ('[icspmo_h]', '[icspmo]'),
-                ('[icspmr_h]', '[icspmr]')]
+                ('[icspmr_h]', '[icspmr]'), ('[icspms_h]', '[icspms]')]
     for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs):
         if directive not in csp_directives:
             csp_print_missing(csp_ref, csp_ref_brief)
@@ -2128,7 +2128,8 @@ t_csp_dirs = ('base-uri', 'child-src', 'connect-src', 'default-src',
               'upgrade-insecure-requests', 'webrtc', 'worker-src')
 t_csp_insecs = ('http:', 'ws:')
 t_csp_insecv = ('unsafe-eval', 'unsafe-inline')
-t_csp_miss = ('base-uri', 'object-src', 'require-trusted-types-for')
+t_csp_miss = ('base-uri', 'object-src', 'require-trusted-types-for',
+              'script-src')
 t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',
                 'unsafe-hashes', 'nonce-', '127.0.0.1')
 

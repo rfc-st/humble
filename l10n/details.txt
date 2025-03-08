@@ -491,6 +491,9 @@
 [icspmr_h]
  (*) Content-Security-Policy ('require-trusted-types-for' Directive Missing)
 
+[icspms_h]
+ Content-Security-Policy ('script-src' Directive Missing)
+
 [icsp_h]
  Content-Security-Policy (Unsafe Values)
 
@@ -979,19 +982,23 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 [icspmb]
- This directive prevents base tag injection; set it to 'none' or 'self'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/base-uri
+ This directive prevents base tag injection; try to set it to 'none' or 'self'.
+ Ref: https://csplite.com/csp95/
 
 [icspmo]
- This directive prevents plugin injection; set it to 'none'.
+ This directive prevents plugin injection; try to set it to 'none'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/object-src
 
 [icspmr]
- This directive prevents DOM XSS injection in scripts.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/require-trusted-types-for
+ This directive prevents DOM XSS injection in scripts; try to set it to 'script'.
+ Ref: https://content-security-policy.com/require-trusted-types-for/
+
+[icspms]
+ This directive, if enabled securely, prevents XSS attacks by restricting script sources.
+ Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [icsp]
- 'unsafe-inline' and 'unsafe-eval' negate most of the security benefits provided by this header.
+ 'unsafe-inline'/'unsafe-eval' allow unsafe scripts, event handlers, and code, increasing XSS risk.
  Ref: https://csper.io/blog/no-more-unsafe-inline
  Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
 
