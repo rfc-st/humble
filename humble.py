@@ -117,7 +117,8 @@ RE_PATTERN = (r'\((.*?)\)',
               r'\(humble_pdf_style\)([^:]+):',
               r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s'
               r'*/?>', r'\(humble_sec_style\)([^:]+)',
-              r'\(humble_sec_style\)', r'(?: Nota : | Note : )')
+              r'\(humble_sec_style\)', r'(?: Nota : | Note : )',
+              r'^[A-Za-z0-9+/=]+$', r'^[0-9a-fA-F]{32}$')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
@@ -757,6 +758,7 @@ def csp_analyze_content(csp_header, l_csp_broad_s, l_csp_ins_s, i_cnt):
         csp_deprecated |= ({value for value in t_csp_dep if value in csp_dir})
         csp_insecure |= ({value for value in l_csp_ins_s if value in csp_dir})
     i_cnt = csp_check_missing(csp_directives, i_cnt)
+    i_cnt = csp_check_nonces(csp_header, i_cnt)
     csp_print_warnings(csp_broad, csp_deprecated, csp_insecure, i_cnt)
     return i_cnt
 
@@ -767,6 +769,18 @@ def csp_check_missing(csp_directives, i_cnt):
     for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs):
         if directive not in csp_directives:
             csp_print_missing(csp_ref, csp_ref_brief)
+    return i_cnt
+
+
+def csp_check_nonces(csp_h, i_cnt):
+    nonces_csp = re.findall(RE_PATTERN[6], csp_h)
+    for nonce in nonces_csp:
+        # Checks for Hexadecimal and Base64 nonces
+        # https://content-security-policy.com/nonce/
+        if (len(nonce) < 32 and re.match(RE_PATTERN[12], nonce)) or \
+           (len(nonce) < 24 and re.match(RE_PATTERN[11], nonce)):
+            print_details('[icsnces_h]', '[icsnces]', 'd', i_cnt)
+            break
     return i_cnt
 
 
@@ -2417,11 +2431,7 @@ if 'content-security-policy' in headers_l and '16' not in skip_list:
     if t_csp_checks[2] in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
     if t_csp_checks[3] in csp_h:
-        nonces_csp = re.findall(RE_PATTERN[6], csp_h)
-        for nonce_csp in nonces_csp:
-            if len(nonce_csp) < 32:
-                print_details('[icsnces_h]', '[icsnces]', 'd', i_cnt)
-                break
+        csp_check_nonces(csp_h, i_cnt)
     ip_mtch = re.findall(RE_PATTERN[1], csp_h)
     if ip_mtch != t_csp_checks[4]:
         for match in ip_mtch:

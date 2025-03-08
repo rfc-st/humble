@@ -1030,7 +1030,7 @@ HTTP Response Headers
  Ref: https://content-security-policy.com/unsafe-hashes/
 
 [icsnces]
- Nonces should have at least 128 bits of entropy (32 hex/24 base64 characters).
+ Nonces should have at least 128 bits of entropy (32 hex characters / 24 base64 characters).
  Ref: https://content-security-policy.com/nonce/
 
 [icsipa]

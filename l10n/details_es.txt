@@ -1035,7 +1035,7 @@ Cabeceras de respuesta HTTP
  Ref: https://content-security-policy.com/unsafe-hashes/
 
 [icsnces]
- Los Nonces deben tener al menos 128 bits de entropía (32 caracteres hexadecimales/24 caracteres base64).
+ Los nonces deben tener al menos 128 bits de entropía (32 caracteres hexadecimales/24 en base64).
  Ref: https://content-security-policy.com/nonce/
 
 [icsipa]

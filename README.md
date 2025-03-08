@@ -427,7 +427,6 @@ Any HTTP response header.
 
 ## To-Do
 - [ ] Add more Header/Value checks (only security-oriented)
-- [ ] A new detailed analysis of all CSP directives/values (W3C Level <a href="https://www.w3.org/TR/CSP2/">2</a> & <a href="https://www.w3.org/TR/CSP3/">3</a>)
 - [ ] Google Style Python Docstrings and documentation via <a href="https://www.sphinx-doc.org/en/master/">Sphinx</a>
 
 ## Further reading
