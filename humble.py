@@ -54,6 +54,7 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
 import ssl
 import sys
+import base64
 import contextlib
 import concurrent.futures
 import xml.etree.ElementTree as ET
@@ -107,18 +108,21 @@ L10N_IDXS = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15),
              'security_guides': (16, 17)}
 OS_PATH = dirname(abspath(__file__))
 PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
-RE_PATTERN = (r'\((.*?)\)',
-              (r'^(?:\d{1,3}\.){3}\d{1,3}$|'
-               r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$'),
-              (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
-               r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
-               r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\(([^)]+)\)',
-              r'\d{4}-\d{2}-\d{2}', r'\[(.*?)\]\n', r"'nonce-([^']+)'",
-              r'\(humble_pdf_style\)([^:]+):',
-              r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s'
-              r'*/?>', r'\(humble_sec_style\)([^:]+)',
-              r'\(humble_sec_style\)', r'(?: Nota : | Note : )',
-              r'^[A-Za-z0-9+/=]+$', r'^[0-9a-fA-F]{32}$')
+RE_PATTERN = (
+    r'\((.*?)\)',
+    (r'^(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.'
+     r'(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})$|'
+     r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|'
+     r'^[0-9a-fA-F:]+$|'
+     r'^(?:[0-9a-fA-F]{1,4}:){1,7}:$|^::(?:[0-9a-fA-F]{1,4}:){1,7}$'),
+    (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
+     r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
+     r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\(([^)]+)\)',
+    r'\d{4}-\d{2}-\d{2}', r'\[(.*?)\]\n', r"'nonce-([^']+)'",
+    r'\(humble_pdf_style\)([^:]+):',
+    r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
+    r'\(humble_sec_style\)([^:]+)', r'\(humble_sec_style\)',
+    r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{32}$', r'^[A-Za-z0-9+/=]+$')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
@@ -146,7 +150,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-03-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-03-14', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -773,14 +777,27 @@ def csp_check_missing(csp_directives, i_cnt):
 
 
 def csp_check_nonces(csp_h, i_cnt):
+    csp_refs = ('[icsnces_h]', '[icsnces]')
     nonces_csp = re.findall(RE_PATTERN[6], csp_h)
     for nonce in nonces_csp:
-        # Checks for Hexadecimal and Base64 nonces
-        # https://content-security-policy.com/nonce/
-        if (len(nonce) < 32 and re.match(RE_PATTERN[12], nonce)) or \
-           (len(nonce) < 24 and re.match(RE_PATTERN[11], nonce)):
-            print_details('[icsnces_h]', '[icsnces]', 'd', i_cnt)
+        if re.match(RE_PATTERN[12], nonce) and len(nonce) < 32:
+            print_details(*csp_refs, 'd', i_cnt)
             break
+        elif re.match(RE_PATTERN[13], nonce):
+            try:
+                if len(base64.b64decode(nonce, validate=True)) < 16:
+                    print_details(*csp_refs, 'd', i_cnt)
+                    break
+            except Exception:
+                print_details(*csp_refs, 'd', i_cnt)
+                break
+    return i_cnt
+
+
+def csp_check_ip(csp_h, i_cnt):
+    ip_mtch = re.findall(RE_PATTERN[1], csp_h)
+    if ip_mtch != t_csp_checks[4]:
+        print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
     return i_cnt
 
 
@@ -2432,12 +2449,8 @@ if 'content-security-policy' in headers_l and '16' not in skip_list:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
     if t_csp_checks[3] in csp_h:
         csp_check_nonces(csp_h, i_cnt)
-    ip_mtch = re.findall(RE_PATTERN[1], csp_h)
-    if ip_mtch != t_csp_checks[4]:
-        for match in ip_mtch:
-            if re.match(RE_PATTERN[1], match):
-                print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
-                break
+    if re.search(RE_PATTERN[1], csp_h):
+        csp_check_ip(csp_h, i_cnt)
 
 csp_ro_header = headers_l.get('content-security-policy-report-only', '')
 if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep) and \
