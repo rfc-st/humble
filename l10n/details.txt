@@ -328,7 +328,7 @@
 
 [ixacld]
  This header is deprecated.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH-Lifetime
+ Ref: https://http.dev/content-negotiation#accept-ch-lifetime
 
 [ixacp_h]
  Accept-Patch (Potentially Unsafe Header)
@@ -371,7 +371,7 @@
 
 [ixallocd]
  This header is deprecated.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Large-Allocation
+ Ref: https://github.com/mdn/content/issues/14407
 
 [inel_h]
  (*) NEL (No Valid Directives)
@@ -1011,7 +1011,7 @@ HTTP Response Headers
 [icspi]
  'upgrade-insecure-requests' without 'HSTS' header could lead to SSL Stripping attacks.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
- Ref: https://www.ssldragon.com/blog/ssl-stripping/
+ Ref: https://robotecture.com/http-topics/http-headers/upgrade-insecure-requests/
 
 [icsi]
  Include at least one valid directive.

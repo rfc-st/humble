@@ -329,7 +329,7 @@
 
 [ixacld]
  Esta cabecera está obsoleta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH-Lifetime
+ Ref: https://http.dev/content-negotiation#accept-ch-lifetime
 
 [ixacp_h]
  Accept-Patch (Cabecera potencialmente insegura)
@@ -372,7 +372,7 @@
 
 [ixallocd]
  Esta cabecera está obsoleta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Large-Allocation
+ Ref: https://github.com/mdn/content/issues/14407
 
 [inel_h]
  (*) NEL (Sin directivas adecuadas)
@@ -1016,7 +1016,7 @@ Cabeceras de respuesta HTTP
 [icspi]
  'upgrade-insecure-requests' sin la cabecera 'HSTS' podría facilitar ataques SSL Stripping.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
- Ref: https://www.ssldragon.com/blog/ssl-stripping/
+ Ref: https://robotecture.com/http-topics/http-headers/upgrade-insecure-requests/
 
 [icsi]
  Incluya, al menos, una directiva correcta.
