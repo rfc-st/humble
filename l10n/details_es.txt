@@ -448,6 +448,12 @@
 [imethods_s]
  Asegúrese de que estos métodos HTTP habilitados son necesarios: 
 
+[icsp_s]
+ Revise las directivas
+
+[icsp_si]
+ Revise la directiva
+
 [icoep_h]
  Cross-Origin-Embedder-Policy (Sin directivas adecuadas)
 

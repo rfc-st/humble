@@ -447,6 +447,12 @@
 [imethods_s]
  Make sure these enabled HTTP methods are needed: 
 
+[icsp_s]
+ Review the directives
+
+[icsp_si]
+ Review the directive
+
 [icoep_h]
  Cross-Origin-Embedder-Policy (No Valid Directives)
 

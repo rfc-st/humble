@@ -150,7 +150,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-03-14', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-03-15', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -762,8 +762,8 @@ def csp_analyze_content(csp_header, l_csp_broad_s, l_csp_ins_s, i_cnt):
         csp_deprecated |= ({value for value in t_csp_dep if value in csp_dir})
         csp_insecure |= ({value for value in l_csp_ins_s if value in csp_dir})
     i_cnt = csp_check_missing(csp_directives, i_cnt)
-    i_cnt = csp_check_nonces(csp_header, i_cnt)
     csp_print_warnings(csp_broad, csp_deprecated, csp_insecure, i_cnt)
+    csp_print_unsafe(csp_dirs_vals, i_cnt)
     return i_cnt
 
 
@@ -773,6 +773,23 @@ def csp_check_missing(csp_directives, i_cnt):
     for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs):
         if directive not in csp_directives:
             csp_print_missing(csp_ref, csp_ref_brief)
+    return i_cnt
+
+
+def csp_print_unsafe(csp_dirs_vals, i_cnt):
+    csp_unsafe_dirs = []
+    for dir_vals in csp_dirs_vals:
+        csp_dir_s = dir_vals.strip()
+        csp_dir_name = csp_dir_s.split()[0] if ' ' in csp_dir_s else csp_dir_s
+        if any(f"'{unsafe_val}'" in csp_dir_s for unsafe_val in t_csp_insecv):
+            csp_unsafe_dirs.append(csp_dir_name)
+    print_detail_r('[icsp_h]', is_red=True)
+    if not args.brief:
+        print_detail_l('[icsp_s]' if len(csp_unsafe_dirs) > 1 else '[icsp_si]')
+        print(f" {', '.join([f"'{csp_directive}'" for csp_directive in
+                             csp_unsafe_dirs])}.")
+        print_detail('[icsp]', num_lines=3)
+    i_cnt[0] += 1
     return i_cnt
 
 
@@ -2441,8 +2458,6 @@ if 'content-security-policy' in headers_l and '16' not in skip_list:
     if ('=' in csp_h) and not (any(elem in csp_h for elem in t_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
     csp_analyze_content(csp_h, t_csp_broad, t_csp_insecs, i_cnt)
-    if any(elem in csp_h for elem in t_csp_insecv):
-        print_details('[icsp_h]', '[icsp]', 'm', i_cnt)
     if t_csp_checks[0] in csp_h and t_csp_checks[1] not in headers:
         print_details('[icspi_h]', '[icspi]', 'm', i_cnt)
     if t_csp_checks[2] in csp_h:
