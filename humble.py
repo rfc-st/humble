@@ -150,7 +150,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-03-15', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-03-21', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -752,48 +752,43 @@ def print_global_metrics(analytics_l, analytics_s, analytics_w,
 
 def csp_analyze_content(csp_header, l_csp_broad_s, l_csp_ins_s, i_cnt):
     csp_broad, csp_deprecated, csp_insecure = set(), set(), set()
-    csp_directives = {directive.split()[0].strip() for directive in
-                      csp_header.split(';') if directive.strip()}
-    csp_dirs_vals = csp_header.split(';')
-    for dir_vals in csp_dirs_vals:
-        csp_dir = dir_vals.strip()
+    csp_dirs = {dir.split()[0].strip() for dir in csp_header.split(';') if
+                dir.strip()}
+    csp_dirs_vals = [dir.strip() for dir in csp_header.split(';')]
+    for csp_dir in csp_dirs_vals:
         csp_broad |= ({value for value in l_csp_broad_s if f' {value} ' in
                        f' {csp_dir} '})
         csp_deprecated |= ({value for value in t_csp_dep if value in csp_dir})
         csp_insecure |= ({value for value in l_csp_ins_s if value in csp_dir})
-    i_cnt = csp_check_missing(csp_directives, i_cnt)
-    csp_print_warnings(csp_broad, csp_deprecated, csp_insecure, i_cnt)
-    csp_print_unsafe(csp_dirs_vals, i_cnt)
-    return i_cnt
+    csp_check_missing(csp_dirs)
+    csp_print_warnings(csp_broad, csp_deprecated, csp_insecure)
+    if any(insecv in dir for dir in csp_dirs_vals for insecv in t_csp_insecv):
+        csp_print_unsafe(csp_dirs_vals, i_cnt)
 
 
-def csp_check_missing(csp_directives, i_cnt):
+def csp_check_missing(csp_dirs):
     csp_refs = [('[icspmb_h]', '[icspmb]'), ('[icspmo_h]', '[icspmo]'),
                 ('[icspmr_h]', '[icspmr]'), ('[icspms_h]', '[icspms]')]
     for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs):
-        if directive not in csp_directives:
+        if directive not in csp_dirs:
             csp_print_missing(csp_ref, csp_ref_brief)
-    return i_cnt
 
 
 def csp_print_unsafe(csp_dirs_vals, i_cnt):
     csp_unsafe_dirs = []
     for dir_vals in csp_dirs_vals:
-        csp_dir_s = dir_vals.strip()
-        csp_dir_name = csp_dir_s.split()[0] if ' ' in csp_dir_s else csp_dir_s
-        if any(f"'{unsafe_val}'" in csp_dir_s for unsafe_val in t_csp_insecv):
+        csp_dir_name = dir_vals.split()[0] if ' ' in dir_vals else dir_vals
+        if any(f"'{unsafe_val}'" in dir_vals for unsafe_val in t_csp_insecv):
             csp_unsafe_dirs.append(csp_dir_name)
     print_detail_r('[icsp_h]', is_red=True)
     if not args.brief:
         print_detail_l('[icsp_s]' if len(csp_unsafe_dirs) > 1 else '[icsp_si]')
-        print(f" {', '.join([f"'{csp_directive}'" for csp_directive in
-                             csp_unsafe_dirs])}.")
+        print(f" {', '.join([f"'{dir}'" for dir in csp_unsafe_dirs])}.")
         print_detail('[icsp]', num_lines=3)
     i_cnt[0] += 1
-    return i_cnt
 
 
-def csp_check_nonces(csp_h, i_cnt):
+def csp_check_nonces(csp_h):
     csp_refs = ('[icsnces_h]', '[icsnces]')
     nonces_csp = re.findall(RE_PATTERN[6], csp_h)
     for nonce in nonces_csp:
@@ -808,17 +803,15 @@ def csp_check_nonces(csp_h, i_cnt):
             except Exception:
                 print_details(*csp_refs, 'd', i_cnt)
                 break
-    return i_cnt
 
 
-def csp_check_ip(csp_h, i_cnt):
-    ip_mtch = re.findall(RE_PATTERN[1], csp_h)
-    if ip_mtch != t_csp_checks[4]:
+def csp_check_ip(csp_h):
+    ip_match = re.findall(RE_PATTERN[1], csp_h)
+    if ip_match != t_csp_checks[4]:
         print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
-    return i_cnt
 
 
-def csp_print_warnings(csp_broad, csp_deprecated, csp_insecure, i_cnt):
+def csp_print_warnings(csp_broad, csp_deprecated, csp_insecure):
     csp_print_deprecated(csp_deprecated) if csp_deprecated else None
     csp_print_insecure(csp_insecure) if csp_insecure else None
     csp_print_broad(csp_broad) if csp_broad else None
@@ -2463,9 +2456,9 @@ if 'content-security-policy' in headers_l and '16' not in skip_list:
     if t_csp_checks[2] in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
     if t_csp_checks[3] in csp_h:
-        csp_check_nonces(csp_h, i_cnt)
+        csp_check_nonces(csp_h)
     if re.search(RE_PATTERN[1], csp_h):
-        csp_check_ip(csp_h, i_cnt)
+        csp_check_ip(csp_h)
 
 csp_ro_header = headers_l.get('content-security-policy-report-only', '')
 if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep) and \

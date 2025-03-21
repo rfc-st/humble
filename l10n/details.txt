@@ -1004,7 +1004,7 @@ HTTP Response Headers
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [icsp]
- 'unsafe-inline'/'unsafe-eval' allow unsafe scripts, event handlers, and code, increasing XSS risk.
+ Enabling 'unsafe-inline' or 'unsafe-eval' increases Cross-site scripting risk.
  Ref: https://csper.io/blog/no-more-unsafe-inline
  Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
 
