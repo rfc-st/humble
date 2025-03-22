@@ -1029,7 +1029,7 @@ HTTP Response Headers
  Ref: https://http.dev/wss
 
 [icsw]
- Limit these permissive origins: 
+ Limit these permissive sources: 
 
 [icsu]
  Avoid using 'unsafe-hashes', and move all the logic associated with it to a JavaScript file.
