@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-To run an SSL/TLS scan on Windows with 'testssl.sh' you have three options:
+To run an SSL/TLS scan on Windows with 'testssl' you have three options:
 
 [Option: Cygwin]
 

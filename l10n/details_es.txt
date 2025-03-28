@@ -1610,7 +1610,7 @@ Tu versión     :
 Error: No existe ese ID de User-Agent; consulta los disponibles con '-ua 0'
 
 [args_notestssl]
-Error: El parámetro '-e' requiere la ruta de 'testssl.sh' y el parámetro '-u'.
+Error: El parámetro '-e' requiere la ruta de 'testssl' y el parámetro '-u'.
 
 [args_inputfile]
 Error: El parámetro '-if' no requiere los parámetros '-df', '-r' o -'ua'.
@@ -1643,10 +1643,10 @@ Error: El parámetro -of' requiere los parámetros '-u' y '-o'.
 Error: El parámetro '-o json' requiere el parámetro '-b'.
 
 [notestssl_file]
-Error: 'testssl.sh' no existe en la ruta indicada.
+Error: 'testssl' no existe en la ruta indicada.
 
 [notestssl_path]
-Error: la ruta indicada de 'testssl.sh' es incorrecta.
+Error: la ruta indicada de 'testssl' es incorrecta.
 
 [args_skipped]
 Error: El parámetro '-s' requiere, al menos, el nombre de una cabecera HTTP de respuesta.

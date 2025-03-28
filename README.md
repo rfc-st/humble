@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--03--22-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--03--28-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -305,7 +305,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-if INPUT_FILE] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt,xml}]
                  [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-01-10
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-03-28
 
 options:
   -h, --help                      show this help message and exit
@@ -313,7 +313,7 @@ options:
   -b                              Shows overall findings; if omitted detailed ones will be shown
   -c                              Checks URL response HTTP headers for compliance with OWASP 'Secure Headers Project' best practices
   -df                             Do not follow redirects; if omitted the last redirection will be the one analyzed
-  -e [TESTSSL_PATH]               Shows TLS/SSL checks; requires the PATH of https://testssl.sh/
+  -e [TESTSSL_PATH]               Shows only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
   -f [FINGERPRINT_TERM]           Shows fingerprint statistics; if 'FINGERPRINT_TERM' (e.g., 'Google') is omitted the top 20 results will be shown
   -g                              Shows guidelines for enabling security HTTP response headers on popular frameworks, servers and services
   -grd                            Shows the checks to grade an analysis, along with advice for improvement

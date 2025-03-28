@@ -99,13 +99,13 @@ HUMBLE_DIRS = ('additional', 'l10n')
 HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'guides.txt', 'details_es.txt', 'details.txt',
                 'user_agents.txt', 'insecure.txt', 'html_template.html',
-                'testssl.sh', 'analysis_grades.txt', 'analysis_grades_es.txt',
-                'license.txt', 'license_es.txt', 'testssl_windows.txt',
+                'analysis_grades.txt', 'analysis_grades_es.txt', 'license.txt',
+                'license_es.txt', 'testssl_windows.txt',
                 'testssl_windows_es.txt', 'security_guides.txt',
                 'security_guides_es.txt', 'security.txt')
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
-L10N_IDXS = {'grades': (10, 11), 'license': (12, 13), 'testssl': (14, 15),
-             'security_guides': (16, 17)}
+L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
+             'security_guides': (15, 16)}
 OS_PATH = dirname(abspath(__file__))
 PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
 RE_PATTERN = (
@@ -139,6 +139,7 @@ SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
          f"(humble_sec_style){Fore.GREEN}", '(humble_sec_style)')
+TESTSSL_FILE = ("testssl", "testssl.sh")
 # Check https://testssl.sh/doc/testssl.1.html to choose your preferred options
 TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
 URL_LIST = (': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
@@ -150,7 +151,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-03-22', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-03-28', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -286,12 +287,14 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
 def testssl_command(testssl_temp_path, uri):
     if not path.isdir(testssl_temp_path):
         print_error_detail('[notestssl_path]')
-    testssl_final_path = path.join(testssl_temp_path, HUMBLE_FILES[9])
-    if not path.isfile(testssl_final_path):
+    testssl_path = next((path.join(testssl_temp_path, filename) for filename
+                         in TESTSSL_FILE if
+                         path.isfile(path.join(testssl_temp_path, filename))),
+                        None)
+    if not testssl_path:
         print_error_detail('[notestssl_file]')
-    else:
-        testssl_command = [testssl_final_path] + TESTSSL_OPTIONS + [uri]
-        testssl_analysis(testssl_command)
+    testssl_command = [testssl_path] + TESTSSL_OPTIONS + [uri]
+    testssl_analysis(testssl_command)
     sys.exit()
 
 
@@ -1878,7 +1881,7 @@ best practices")
 parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
  follow redirects; if omitted the last redirection will be the one analyzed")
 parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\
-s TLS/SSL checks; requires the PATH of https://testssl.sh/")
+s only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)")
 parser.add_argument("-f", nargs='?', type=str, dest='fingerprint_term', help="\
 Shows fingerprint statistics; if 'FINGERPRINT_TERM' (e.g., 'Google') is \
 omitted the top 20 results will be shown")
@@ -2061,7 +2064,7 @@ print_response_headers() if args.ret else print(linesep.join([''] * 2))
 # Checks: /additional/security.txt
 print_detail_r('[1enabled]')
 
-with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[18]), 'r',
+with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[17]), 'r',
           encoding='utf8') as sec_f:
     t_ena = tuple(line.strip() for line in islice(sec_f, SLICE_INT[2], None))
 
