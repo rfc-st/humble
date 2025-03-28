@@ -2153,7 +2153,7 @@ t_accecaov = ('.*', '*.')
 t_act = ('allowed-origin', 'load', 'retry')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
-t_cache = ('no-cache', 'no-store', 'must-revalidate')
+t_cache = ('no-cache', 'no-store')
 t_cachev = ('immutable', 'max-age', 'must-revalidate', 'must-understand',
             'no-cache', 'no-store', 'no-transform', 'private',
             'proxy-revalidate', 'public', 's-maxage', 'stale-if-error',

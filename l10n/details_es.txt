@@ -985,7 +985,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
 
 [icache]
- Si hay datos sensibles, habilite 'no-cache', 'no-store', y 'must-revalidate'.
+ Habilite 'no-cache' y 'no-store' si hay datos sensibles en la URL analizada.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 [icachev]
