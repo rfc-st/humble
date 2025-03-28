@@ -878,6 +878,23 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
     print_detail(f'{csp_refs}')
 
 
+def permissions_analyze_content(perm_header, i_cnt):
+    perm_broad_dir = [
+        dir.split('=')[0].strip() for dir in perm_header.split(',')
+        if any(broadp in dir.split('=')[1].strip() for broadp in t_per_broad)]
+    if perm_broad_dir:
+        permissions_print_broad(perm_broad_dir, i_cnt)
+
+
+def permissions_print_broad(perm_broad_dir, i_cnt):
+    print_detail_r('[ifpol_h]', is_red=True)
+    if not args.brief:
+        print_detail_l('[icsp_s]' if len(perm_broad_dir) > 1 else '[icsp_si]')
+        print(f" {', '.join(f"'{dir}'" for dir in perm_broad_dir)}.")
+        print_detail('[ifpol]', num_lines=2)
+    i_cnt[0] += 1
+
+
 def delete_lines(reliable=True):
     if not reliable:
         sys.stdout.write(DELETED_LINES)
@@ -2257,6 +2274,7 @@ l_origcluster = ['?1']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+t_per_broad = ('*', ' * ')
 t_per_dep = ('document-domain', 'window-placement')
 t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
             'attribution-reporting', 'autoplay', 'battery', 'bluetooth',
@@ -2604,8 +2622,7 @@ if 'permissions-policy' in headers_l and '39' not in skip_list:
     perm_header = headers_l['permissions-policy']
     if not any(elem in perm_header for elem in t_per_ft):
         print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
-    if '*' in perm_header:
-        print_details('[ifpol_h]', '[ifpol]', 'd', i_cnt)
+    permissions_analyze_content(perm_header, i_cnt)
     if 'none' in perm_header:
         print_details('[ifpoli_h]', '[ifpoli]', 'd', i_cnt)
     if any(elem in perm_header for elem in t_per_dep):

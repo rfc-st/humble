@@ -1075,7 +1075,7 @@ Cabeceras de respuesta HTTP
  Ref: https://csplite.com/fp/
 
 [ifpol]
- El valor '(*)' permite el uso de la funcionalidad independientemente de su origen.
+ '*' permite la directiva en cualquier fuente, independientemente de su origen.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpoli]

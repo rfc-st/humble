@@ -1070,7 +1070,7 @@ HTTP Response Headers
  Ref: https://csplite.com/fp/
 
 [ifpol]
- The value '(*)' allows the feature in this document and iframes, regardless of their origin.
+ '*' allows the directive in any source, regardless of their origin.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpoli]
