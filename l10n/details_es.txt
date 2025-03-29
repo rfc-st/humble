@@ -440,10 +440,10 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 
 [icsi_d_s]
- Evite utilizar directivas obsoletas: 
+ Evite directivas obsoletas: 
 
 [itrailer_d_s]
- Evite utilizar directivas no permitidas: 
+ Evite directivas no permitidas: 
 
 [imethods_s]
  Asegúrese de que estos métodos HTTP habilitados son necesarios: 
@@ -1040,7 +1040,7 @@ Cabeceras de respuesta HTTP
  Limite estos orígenes permisivos: 
 
 [icsu]
- Evita utilizar 'unsafe-hashes', y traslada toda la lógica asociada a ella a un fichero Javascript.
+ Evite 'unsafe-hashes', y traslade toda su lógica a un fichero Javascript.
  Ref: https://content-security-policy.com/unsafe-hashes/
 
 [icsnces]
@@ -1090,7 +1090,7 @@ Cabeceras de respuesta HTTP
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
 [ifpold_h_s]
- Evite utilizar valores obsoletos: 
+ Evite valores obsoletos: 
 
 [ifpold]
  Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md

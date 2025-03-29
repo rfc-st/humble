@@ -439,10 +439,10 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 
 [icsi_d_s]
- Avoid using deprecated directives: 
+ Avoid deprecated directives: 
 
 [itrailer_d_s]
- Avoid using disallowed directives: 
+ Avoid disallowed directives: 
 
 [imethods_s]
  Make sure these enabled HTTP methods are needed: 
@@ -1035,7 +1035,7 @@ HTTP Response Headers
  Limit these permissive sources: 
 
 [icsu]
- Avoid using 'unsafe-hashes', and move all the logic associated with it to a JavaScript file.
+ Avoid 'unsafe-hashes', and move all the logic associated with it to a JavaScript file.
  Ref: https://content-security-policy.com/unsafe-hashes/
 
 [icsnces]
@@ -1085,7 +1085,7 @@ HTTP Response Headers
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
 
 [ifpold_h_s]
- Avoid using deprecated features: 
+ Avoid deprecated features: 
 
 [ifpold]
  Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md

@@ -753,21 +753,17 @@ def print_global_metrics(analytics_l, analytics_s, analytics_w,
             totals_m.items()}
 
 
-def csp_analyze_content(csp_header, i_cnt):
+def csp_analyze_content(csp_header):
     csp_deprecated = set()
     csp_dirs = {dir.split()[0].strip() for dir in csp_header.split(';') if
                 dir.strip()}
     csp_dirs_vals = [dir.strip() for dir in csp_header.split(';')]
     for csp_dir in csp_dirs_vals:
         csp_deprecated |= ({value for value in t_csp_dep if value in csp_dir})
+    if csp_deprecated:
+        csp_print_deprecated(csp_deprecated)
     csp_check_missing(csp_dirs)
-    csp_print_warnings(csp_deprecated)
-    if any(broadv in dir for dir in csp_dirs_vals for broadv in t_csp_broad):
-        csp_print_broad(csp_dirs_vals, i_cnt)
-    if any(insecv in dir for dir in csp_dirs_vals for insecv in t_csp_insecs):
-        csp_print_insecure(csp_dirs_vals)
-    if any(unsafv in dir for dir in csp_dirs_vals for unsafv in t_csp_insecv):
-        csp_print_unsafe(csp_dirs_vals, i_cnt)
+    csp_check_additional(csp_dirs_vals)
 
 
 def csp_check_missing(csp_dirs):
@@ -778,12 +774,76 @@ def csp_check_missing(csp_dirs):
             csp_print_missing(csp_ref, csp_ref_brief)
 
 
-def csp_print_unsafe(csp_dirs_vals, i_cnt):
+def csp_print_missing(csp_ref, csp_ref_brief):
+    if args.brief:
+        i_cnt[0] += 1
+        print_detail_r(csp_ref_brief, is_red=True)
+    else:
+        print_details(csp_ref_brief, csp_ref, 'd', i_cnt)
+
+
+def csp_check_additional(csp_dirs_vals):
+    if any(broadv in dir for dir in csp_dirs_vals for broadv in t_csp_broad):
+        csp_check_broad(csp_dirs_vals)
+    if any(insecv in dir for dir in csp_dirs_vals for insecv in t_csp_insecs):
+        csp_check_insecure(csp_dirs_vals)
+    if any(unsafv in dir for dir in csp_dirs_vals for unsafv in t_csp_insecv):
+        csp_check_unsafe(csp_dirs_vals)
+
+
+def csp_check_broad(csp_dirs_vals):
+    csp_broad_v = set(token for dir_vals in csp_dirs_vals if dir_vals.strip()
+                      for token in dir_vals.split()[1:]
+                      if f" {token} " in t_csp_broad)
+    csp_broad_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
+                      if any(f" {token} " in t_csp_broad for token in
+                             dir_vals.split()[1:])}
+    csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt)
+
+
+def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
+    print_detail_r('[icsw_h]', is_red=True)
+    if not args.brief:
+        print_detail_l('[icsp_s]' if len(csp_broad_dirs) > 1 else '[icsp_si]')
+        print(f" {', '.join(f"'{dir}'" for dir in sorted(csp_broad_dirs))}.")
+        print_detail_l('[icsw]')
+        print(', '.join(f"'{value}'" for value in csp_broad_v))
+        print_detail('[icsw_b]', num_lines=1)
+    i_cnt[0] += 1
+
+
+def csp_check_insecure(csp_dirs_vals):
+    csp_insec_v = {value for value in t_csp_insecs if
+                   any(value in dir for dir in csp_dirs_vals)}
+    csp_insec_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
+                      if any(unsafe_val in dir_vals for unsafe_val in
+                             t_csp_insecs)}
+    csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt)
+
+
+def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
+    print_detail_r('[icsh_h]', is_red=True)
+    if not args.brief:
+        csp_values = ', '.join(f"'{value}'" for value in csp_insec_v)
+        print_detail_l('[icsp_s]' if len(csp_insec_dirs) > 1 else
+                       '[icsp_si]')
+        print(f" {', '.join(f"'{dir}'" for dir in sorted(csp_insec_dirs))}.")
+        print_detail_l('[icsh]')
+        print(csp_values)
+        print_detail('[icsh_b]', num_lines=2)
+    i_cnt[0] += 1
+
+
+def csp_check_unsafe(csp_dirs_vals):
     csp_unsafe_dirs = []
     for dir_vals in csp_dirs_vals:
         csp_dir_name = dir_vals.split()[0] if ' ' in dir_vals else dir_vals
         if any(f"'{unsafe_val}'" in dir_vals for unsafe_val in t_csp_insecv):
             csp_unsafe_dirs.append(csp_dir_name)
+    csp_print_unsafe(csp_unsafe_dirs, i_cnt)
+
+
+def csp_print_unsafe(csp_unsafe_dirs, i_cnt):
     print_detail_r('[icsp_h]', is_red=True)
     if not args.brief:
         print_detail_l('[icsp_s]' if len(csp_unsafe_dirs) > 1 else '[icsp_si]')
@@ -815,59 +875,11 @@ def csp_check_ip(csp_h):
         print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
 
 
-def csp_print_warnings(csp_deprecated):
-    csp_print_deprecated(csp_deprecated) if csp_deprecated else None
-    i_cnt[0] += sum(bool(csp) for csp in (csp_deprecated))
-    return i_cnt
-
-
 def csp_print_deprecated(csp_deprecated):
+    i_cnt[0] += 1
     print_detail_r('[icsi_d]', is_red=True) if args.brief else \
         csp_print_details(csp_deprecated, '[icsi_d]', '[icsi_d_s]',
                           '[icsi_d_r]')
-
-
-def csp_print_insecure(csp_dirs_vals):
-    csp_insecure_v = {value for value in t_csp_insecs if
-                      any(value in dir for dir in csp_dirs_vals)}
-    csp_insecure_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
-                         if any(unsafe_val in dir_vals for unsafe_val in
-                                t_csp_insecs)}
-    print_detail_r('[icsh_h]', is_red=True)
-    if not args.brief:
-        csp_values = ', '.join(f"'{value}'" for value in csp_insecure_v)
-        print_detail_l('[icsp_s]' if len(csp_insecure_dirs) > 1 else
-                       '[icsp_si]')
-        print(f" {', '.join(f"'{dir}'" for dir in
-                            sorted(csp_insecure_dirs))}.")
-        print_detail_l('[icsh]')
-        print(csp_values)
-        print_detail('[icsh_b]', num_lines=2)
-
-
-def csp_print_missing(csp_ref, csp_ref_brief):
-    if args.brief:
-        i_cnt[0] += 1
-        print_detail_r(csp_ref_brief, is_red=True)
-    else:
-        print_details(csp_ref_brief, csp_ref, 'd', i_cnt)
-
-
-def csp_print_broad(csp_dirs_vals, i_cnt):
-    csp_broad_v = set(token for dir_vals in csp_dirs_vals if dir_vals.strip()
-                      for token in dir_vals.split()[1:]
-                      if f" {token} " in t_csp_broad)
-    csp_broad_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
-                      if any(f" {token} " in t_csp_broad for token in
-                             dir_vals.split()[1:])}
-    print_detail_r('[icsw_h]', is_red=True)
-    if not args.brief:
-        print_detail_l('[icsp_s]' if len(csp_broad_dirs) > 1 else '[icsp_si]')
-        print(f" {', '.join(f"'{dir}'" for dir in sorted(csp_broad_dirs))}.")
-        print_detail_l('[icsw]')
-        print(', '.join(f"'{value}'" for value in csp_broad_v))
-        print_detail('[icsw_b]', num_lines=1)
-    i_cnt[0] += 1
 
 
 def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
@@ -2503,7 +2515,7 @@ if 'content-security-policy' in headers_l and '16' not in skip_list:
         print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
     if ('=' in csp_h) and not (any(elem in csp_h for elem in t_csp_equal)):
         print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
-    csp_analyze_content(csp_h, i_cnt)
+    csp_analyze_content(csp_h)
     if t_csp_checks[0] in csp_h and t_csp_checks[1] not in headers:
         print_details('[icspi_h]', '[icspi]', 'm', i_cnt)
     if t_csp_checks[2] in csp_h:
