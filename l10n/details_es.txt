@@ -588,6 +588,9 @@
 [ifpol_h]
  (*) Permissions-Policy (Valores muy permisivos)
 
+[ifpolf_h]
+ (*) Permissions-Policy (Formato incorrecto)
+
 [ifpoli_h]
  (*) Permissions-Policy (Valores incorrectos)
 
@@ -1075,8 +1078,12 @@ Cabeceras de respuesta HTTP
  Ref: https://csplite.com/fp/
 
 [ifpol]
- '*' permite la directiva en cualquier fuente, independientemente de su origen.
+ '*' permite una directiva en cualquier origen, incluso en <iframe>.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
+
+[ifpolf]
+ Las directivas deben separarse ùnicamente con una coma.
+ https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
 
 [ifpoli]
  Utilice '=()' en vez de 'none'.

@@ -587,6 +587,9 @@
 [ifpol_h]
  (*) Permissions-Policy (Too Permissive Value)
 
+[ifpolf_h]
+ (*) Permissions-Policy (Incorrect Format)
+
 [ifpoli_h]
  (*) Permissions-Policy (Incorrect Value)
 
@@ -1070,8 +1073,12 @@ HTTP Response Headers
  Ref: https://csplite.com/fp/
 
 [ifpol]
- '*' allows the directive in any source, regardless of their origin.
+ '*' allows a directive in any source, including <iframe>.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
+
+[ifpolf]
+ The directives must be separated by a comma only.
+ https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
 
 [ifpoli]
  Use '=()' instead of 'none'.

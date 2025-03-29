@@ -879,18 +879,28 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
 
 
 def permissions_analyze_content(perm_header, i_cnt):
-    perm_broad_dir = [
-        dir.split('=')[0].strip() for dir in perm_header.split(',')
-        if any(broadp in dir.split('=')[1].strip() for broadp in t_per_broad)]
-    if perm_broad_dir:
-        permissions_print_broad(perm_broad_dir, i_cnt)
+    perm_broad_dirs = []
+    if 'none' in perm_header:
+        print_details('[ifpoli_h]', '[ifpoli]', 'd', i_cnt)
+    perm_dirs = sum(bool(perm_dir in perm_header) for perm_dir in t_per_ft)
+    try:
+        if perm_dirs >= 2:
+            perm_broad_dirs = [
+                dir.split('=')[0].strip() for dir in perm_header.split(',')
+                if any(broadp in dir.split('=')[1].strip() for broadp in
+                       t_per_broad)]
+    except IndexError:
+        print_details('[ifpolf_h]', '[ifpolf]', "d", i_cnt)
+        return
+    if perm_broad_dirs:
+        permissions_print_broad(perm_broad_dirs, i_cnt)
 
 
-def permissions_print_broad(perm_broad_dir, i_cnt):
+def permissions_print_broad(perm_broad_dirs, i_cnt):
     print_detail_r('[ifpol_h]', is_red=True)
     if not args.brief:
-        print_detail_l('[icsp_s]' if len(perm_broad_dir) > 1 else '[icsp_si]')
-        print(f" {', '.join(f"'{dir}'" for dir in perm_broad_dir)}.")
+        print_detail_l('[icsp_s]' if len(perm_broad_dirs) > 1 else '[icsp_si]')
+        print(f" {', '.join(f"'{dir}'" for dir in perm_broad_dirs)}.")
         print_detail('[ifpol]', num_lines=2)
     i_cnt[0] += 1
 
@@ -2623,8 +2633,6 @@ if 'permissions-policy' in headers_l and '39' not in skip_list:
     if not any(elem in perm_header for elem in t_per_ft):
         print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
     permissions_analyze_content(perm_header, i_cnt)
-    if 'none' in perm_header:
-        print_details('[ifpoli_h]', '[ifpoli]', 'd', i_cnt)
     if any(elem in perm_header for elem in t_per_dep):
         print_detail_r('[ifpold_h]', is_red=True)
         if not args.brief:

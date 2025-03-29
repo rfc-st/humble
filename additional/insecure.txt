@@ -87,6 +87,7 @@ Origin-Agent-Cluster: No Valid Directives
 P3P: Deprecated Header
 Permissions-Policy: Deprecated Features
 Permissions-Policy: Incorrect Values
+Permissions-Policy: Incorrect Format
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value
 Pragma: Deprecated Header
