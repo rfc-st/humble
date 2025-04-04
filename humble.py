@@ -151,7 +151,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-03-29', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-04-04', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -792,11 +792,11 @@ def csp_check_additional(csp_dirs_vals):
 
 
 def csp_check_broad(csp_dirs_vals):
-    csp_broad_v = set(token for dir_vals in csp_dirs_vals if dir_vals.strip()
-                      for token in dir_vals.split()[1:]
-                      if f" {token} " in t_csp_broad)
+    csp_broad_v = sorted({value for dir_vals in csp_dirs_vals if
+                          dir_vals.strip() for value in dir_vals.split()[1:]
+                          if f" {value} " in t_csp_broad})
     csp_broad_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
-                      if any(f" {token} " in t_csp_broad for token in
+                      if any(f" {broad_val} " in t_csp_broad for broad_val in
                              dir_vals.split()[1:])}
     csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt)
 
@@ -813,8 +813,8 @@ def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
 
 
 def csp_check_insecure(csp_dirs_vals):
-    csp_insec_v = {value for value in t_csp_insecs if
-                   any(value in dir for dir in csp_dirs_vals)}
+    csp_insec_v = sorted({value for value in t_csp_insecs if
+                          any(value in dir for dir in csp_dirs_vals)})
     csp_insec_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
                       if any(unsafe_val in dir_vals for unsafe_val in
                              t_csp_insecs)}
@@ -891,21 +891,35 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
 
 
 def permissions_analyze_content(perm_header, i_cnt):
-    perm_broad_dirs = []
+    if any(value in perm_header for value in t_per_dep):
+        permissions_print_deprecated(perm_header)
     if 'none' in perm_header:
         print_details('[ifpoli_h]', '[ifpoli]', 'd', i_cnt)
+    perm_broad_dirs = permissions_check_broad(perm_header)
+    if perm_broad_dirs:
+        permissions_print_broad(perm_broad_dirs, i_cnt)
+
+
+def permissions_print_deprecated(perm_header):
+    print_detail_r('[ifpold_h]', is_red=True)
+    if not args.brief:
+        matches_perm = [x for x in t_per_dep if x in perm_header]
+        print_detail_l('[ifpold_h_s]')
+        print(', '.join(f"'{x}'" for x in matches_perm))
+        print_detail('[ifpold]')
+    i_cnt[0] += 1
+
+
+def permissions_check_broad(perm_header):
     perm_dirs = sum(bool(perm_dir in perm_header) for perm_dir in t_per_ft)
     try:
         if perm_dirs >= 2:
-            perm_broad_dirs = [
-                dir.split('=')[0].strip() for dir in perm_header.split(',')
-                if any(broadp in dir.split('=')[1].strip() for broadp in
-                       t_per_broad)]
+            return [dir.split('=')[0].strip() for dir in perm_header.split(',')
+                    if any(broadp in dir.split('=')[1].strip() for broadp in
+                           t_per_broad)]
     except IndexError:
         print_details('[ifpolf_h]', '[ifpolf]', "d", i_cnt)
         return
-    if perm_broad_dirs:
-        permissions_print_broad(perm_broad_dirs, i_cnt)
 
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
@@ -2645,14 +2659,6 @@ if 'permissions-policy' in headers_l and '39' not in skip_list:
     if not any(elem in perm_header for elem in t_per_ft):
         print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
     permissions_analyze_content(perm_header, i_cnt)
-    if any(elem in perm_header for elem in t_per_dep):
-        print_detail_r('[ifpold_h]', is_red=True)
-        if not args.brief:
-            matches_perm = [x for x in t_per_dep if x in perm_header]
-            print_detail_l('[ifpold_h_s]')
-            print(', '.join(f"'{x}'" for x in matches_perm))
-            print_detail('[ifpold]')
-        i_cnt[0] += 1
 
 if 'pragma' in headers_l and '40' not in skip_list:
     print_details('[iprag_h]', '[iprag]', 'd', i_cnt)
