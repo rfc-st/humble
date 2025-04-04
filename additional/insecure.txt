@@ -65,6 +65,7 @@ Content-Type: Unsafe Value
 Critical-CH: Ignored Header via Unsafe Scheme
 Cross-Origin-Embedder-Policy: No Valid Directives
 Cross-Origin-Embedder-Policy: Potentially Unsafe Value
+Cross-Origin-Embedder-Policy-Report-Only: No Valid Directives
 Cross-Origin-Opener-Policy: No Valid Directives
 Cross-Origin-Opener-Policy: Unsafe value
 Cross-Origin-Resource-Policy: No Valid Directives
