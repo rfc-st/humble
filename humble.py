@@ -144,9 +144,9 @@ TESTSSL_FILE = ("testssl", "testssl.sh")
 TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
 URL_LIST = (': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
 dflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflar\
-e-5xx-errors/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/Sta\
-tus/', 'https://raw.githubusercontent.com/rfc-st/humble/master/humble.py', 'ht\
-tps://github.com/rfc-st/humble')
+e-5xx-errors/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
+Reference/Status', 'https://raw.githubusercontent.com/rfc-st/humble/master/\
+humble.py', 'https://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
@@ -783,12 +783,12 @@ def csp_print_missing(csp_ref, csp_ref_brief):
 
 
 def csp_check_additional(csp_dirs_vals):
-    if any(broadv in dir for dir in csp_dirs_vals for broadv in t_csp_broad):
-        csp_check_broad(csp_dirs_vals)
-    if any(insecv in dir for dir in csp_dirs_vals for insecv in t_csp_insecs):
-        csp_check_insecure(csp_dirs_vals)
-    if any(unsafv in dir for dir in csp_dirs_vals for unsafv in t_csp_insecv):
-        csp_check_unsafe(csp_dirs_vals)
+    checks = [(t_csp_broad, csp_check_broad),
+              (t_csp_insecs, csp_check_insecure),
+              (t_csp_insecv, csp_check_unsafe)]
+    for match, csp_func in checks:
+        if any(val in dir for dir in csp_dirs_vals for val in match):
+            csp_func(csp_dirs_vals)
 
 
 def csp_check_broad(csp_dirs_vals):
@@ -1698,10 +1698,8 @@ def check_ru_scope():
 def extract_compliance_headers(tmp_filename):
     file_path = path.abspath(tmp_filename)
     start_sec, end_sec = '[1.', '[2.'
-
     with open(file_path, 'r', encoding='utf8') as source_file:
         lines = [line.strip() for line in source_file if line.strip()]
-
     start_idx = next(i for i, line in enumerate(lines) if start_sec in line)
     end_idx = next(i for i, line in enumerate(lines) if end_sec in line)
     section_lines = lines[start_idx + 1:end_idx]
