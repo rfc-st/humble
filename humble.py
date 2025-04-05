@@ -138,7 +138,8 @@ SECTION_V = ('[no_enabled]', '[no_missing]', '[no_fingerprint]',
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
-         f"(humble_sec_style){Fore.GREEN}", '(humble_sec_style)')
+         f"(humble_sec_style){Fore.GREEN}", '(humble_sec_style)',
+         f"{Style.RESET_ALL}{Fore.RESET}")
 TESTSSL_FILE = ("testssl", "testssl.sh")
 # Check https://testssl.sh/doc/testssl.1.html to choose your preferred options
 TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
@@ -1720,28 +1721,25 @@ def extract_compliance_values(enabled_headers):
                    'referrer-policy', 'strict-transport-security',
                    'x-content-type-options', 'x-frame-options',
                    'x-permitted-cross-domain-policies',]
-
     header_val = [enabled_headers.get(key, '') for key in header_keys]
     compliance_val = [t_ocache, t_oclear, t_ocsp, t_ocoep, t_ocoop, t_ocorp,
                       t_operm, t_oref, t_osts, t_oxcto, t_oxfo, t_oxpcd,]
+    check_owasp_compliance(header_keys, header_val, compliance_val)
 
-    check_compliance_owasp(header_keys, header_val, compliance_val)
 
-
-def check_compliance_owasp(header_keys, header_val, compliance_val):
+def check_owasp_compliance(header_keys, header_val, compliance_val):
     non_cnt = 0
-    non_rules = []
-
+    non_rules, non_rulesc = [], []
     for key, value, rules in zip(header_keys, header_val, compliance_val):
         if not value or any(elem not in value for elem in rules):
             non_cnt += 1
             header_v = value or get_detail('[comp_header]')
-            non_rules.append(f"{STYLE[2]}{key.title()}{STYLE[5]}: {header_v}")
+            non_rulesc.append(key.title().replace("(*) ", ""))
+            non_rules.append(f"{STYLE[1]}{key.title()}{STYLE[9]}: {header_v}")
+    print_owasp_compliance(non_cnt, non_rules, non_rulesc)
 
-    print_compliance_owasp(non_cnt, non_rules)
 
-
-def print_compliance_owasp(non_cnt, non_rules):
+def print_owasp_compliance(non_cnt, non_rules, non_rulesc):
     if non_cnt > 0:
         print("")
         print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
