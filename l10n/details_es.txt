@@ -489,6 +489,13 @@
  El valor 'unsafe-none' se considera inseguro.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
 
+[icoopr_h]
+ Cross-Origin-Opener-Policy-Report-Only (Sin directivas adecuadas)
+
+[icoopr]
+ Incluya, al menos, una directiva correcta.
+ Ref: https://html.spec.whatwg.org/dev/browsers.html#the-coop-headers
+
 [icorp_h]
  Cross-Origin-Resource-Policy (Sin directivas adecuadas)
 

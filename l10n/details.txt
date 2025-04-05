@@ -488,6 +488,13 @@
  The value 'unsafe-none' is considered unsafe.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
 
+[icoopr_h]
+ Cross-Origin-Opener-Policy-Report-Only (No Valid Directives)
+
+[icoopr]
+ Include at least one valid directive.
+ Ref: https://html.spec.whatwg.org/dev/browsers.html#the-coop-headers
+
 [icorp_h]
  Cross-Origin-Resource-Policy (No Valid Directives)
 
@@ -1080,7 +1087,7 @@ HTTP Response Headers
  Ref: https://csplite.com/fp/
 
 [ifpol]
- '*' allows a directive in any source, including <iframe>.
+ '*' allows a directive in any source, including iframe.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpolf]

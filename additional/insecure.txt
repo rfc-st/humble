@@ -68,6 +68,7 @@ Cross-Origin-Embedder-Policy: Potentially Unsafe Value
 Cross-Origin-Embedder-Policy-Report-Only: No Valid Directives
 Cross-Origin-Opener-Policy: No Valid Directives
 Cross-Origin-Opener-Policy: Unsafe value
+Cross-Origin-Opener-Policy-Report-Only: No Valid Directives
 Cross-Origin-Resource-Policy: No Valid Directives
 Digest: Deprecated Header
 Document-Isolation-Policy: No Valid Directives
