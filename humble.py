@@ -1603,15 +1603,16 @@ def format_html_headers(ln, sub_d, headers):
 
 
 def format_html_fingerprint(args, ln, sub_d, l_fng):
+    if not ln:
+        return ln
     for i in l_fng:
-        if ln and (i in ln) and (not args.brief) and (': ' not in ln) and \
-         ('class="ko"' not in ln):
-            ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
-            return ln
-        ln_lower, i_lower = ln.casefold(), i.casefold()
-        if args.brief and i_lower in ln_lower and ':' not in ln and \
-           '    class="ko"' not in ln:
-            ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+        if not args.brief:
+            if i in ln and ': ' not in ln and 'class="ko"' not in ln:
+                return f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+        else:
+            if i.casefold() in ln.casefold() and ':' not in ln and \
+                 '    class="ko"' not in ln:
+                return f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
     return ln
 
 

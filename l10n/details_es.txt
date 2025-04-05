@@ -1092,7 +1092,7 @@ Cabeceras de respuesta HTTP
  Ref: https://csplite.com/fp/
 
 [ifpol]
- '*' permite una directiva en cualquier origen, incluso en <iframe>.
+ '*' permite una directiva en cualquier origen, incluso en iframe.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpolf]
