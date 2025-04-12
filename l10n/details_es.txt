@@ -998,7 +998,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
 
 [iaccessma]
- El valor de esta cabecera es superior al máximo limitado por navegadores populares.
+ El valor de esta cabecera supera el máximo permitido (86400) en los navegadores más utilizados.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
 
 [icache]

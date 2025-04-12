@@ -993,7 +993,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
 
 [iaccessma]
- The value of this header is higher than the maximum limited by popular browsers.
+ The value of this header exceeds the maximum allowed (86400) in the main browsers.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
 
 [icache]
