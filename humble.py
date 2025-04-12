@@ -102,7 +102,8 @@ HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'analysis_grades.txt', 'analysis_grades_es.txt', 'license.txt',
                 'license_es.txt', 'testssl_windows.txt',
                 'testssl_windows_es.txt', 'security_guides.txt',
-                'security_guides_es.txt', 'security.txt')
+                'security_guides_es.txt', 'security.txt',
+                'owasp_best_practices.txt')
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
 L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
              'security_guides': (15, 16)}
@@ -135,11 +136,11 @@ SECTION_V = ('[no_enabled]', '[no_missing]', '[no_fingerprint]',
              '[most_missing]', '[least_missing]', '[most_fingerprints]',
              '[least_fingerprints]', '[most_insecure]', '[least_insecure]',
              '[most_empty]', '[least_empty]')
-SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31)
+SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
          f"(humble_sec_style){Fore.GREEN}", '(humble_sec_style)',
-         f"{Style.RESET_ALL}{Fore.RESET}")
+         f"{Style.RESET_ALL}{Fore.RESET}", Fore.GREEN)
 TESTSSL_FILE = ("testssl", "testssl.sh")
 # Check https://testssl.sh/doc/testssl.1.html to choose your preferred options
 TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
@@ -152,7 +153,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-04-05', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-04-12', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -392,8 +393,6 @@ def print_analysis_results(*diff, t_cnt):
               end='')
 
 
-# Use '-grd' parameter to show the checks to grade an analysis, along with
-# advice for improvement.
 def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
     if en_cnt == 0:
         return '[e_grade]'
@@ -896,8 +895,7 @@ def permissions_analyze_content(perm_header, i_cnt):
         permissions_print_deprecated(perm_header)
     if 'none' in perm_header:
         print_details('[ifpoli_h]', '[ifpoli]', 'd', i_cnt)
-    perm_broad_dirs = permissions_check_broad(perm_header)
-    if perm_broad_dirs:
+    if perm_broad_dirs := permissions_check_broad(perm_header):
         permissions_print_broad(perm_broad_dirs, i_cnt)
 
 
@@ -912,7 +910,7 @@ def permissions_print_deprecated(perm_header):
 
 
 def permissions_check_broad(perm_header):
-    perm_dirs = sum(bool(perm_dir in perm_header) for perm_dir in t_per_ft)
+    perm_dirs = sum(perm_dir in perm_header for perm_dir in t_per_ft)
     try:
         if perm_dirs >= 2:
             return [dir.split('=')[0].strip() for dir in perm_header.split(',')
@@ -1607,13 +1605,12 @@ def format_html_fingerprint(args, ln, sub_d, l_fng):
     if not ln:
         return ln
     for i in l_fng:
-        if not args.brief:
-            if i in ln and ': ' not in ln and 'class="ko"' not in ln:
-                return f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
-        else:
+        if args.brief:
             if i.casefold() in ln.casefold() and ':' not in ln and \
                  '    class="ko"' not in ln:
                 return f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+        elif i in ln and ': ' not in ln and 'class="ko"' not in ln:
+            return f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
     return ln
 
 
@@ -1696,72 +1693,66 @@ def check_ru_scope():
         sys.exit()
 
 
-def extract_compliance_headers(tmp_filename):
-    file_path = path.abspath(tmp_filename)
-    start_sec, end_sec = '[1.', '[2.'
-    with open(file_path, 'r', encoding='utf8') as source_file:
-        lines = [line.strip() for line in source_file if line.strip()]
-    start_idx = next(i for i, line in enumerate(lines) if start_sec in line)
-    end_idx = next(i for i, line in enumerate(lines) if end_sec in line)
-    section_lines = lines[start_idx + 1:end_idx]
-    enabled_headers = {}
-    for line in section_lines:
-        if ': ' in line:
-            key, value = line.split(': ', 1)
-            enabled_headers[key.lower()] = value
+def check_owasp_compliance(tmp_filename):
     remove(tmp_filename)
-    extract_compliance_values(enabled_headers)
-
-
-def extract_compliance_values(enabled_headers):
-    header_keys = ['cache-control', 'clear-site-data',
-                   'content-security-policy', 'cross-origin-embedder-policy',
-                   'cross-origin-opener-policy',
-                   'cross-origin-resource-policy', '(*) permissions-policy',
-                   'referrer-policy', 'strict-transport-security',
-                   'x-content-type-options', 'x-frame-options',
-                   'x-permitted-cross-domain-policies',]
-    header_val = [enabled_headers.get(key, '') for key in header_keys]
-    compliance_val = [t_ocache, t_oclear, t_ocsp, t_ocoep, t_ocoop, t_ocorp,
-                      t_operm, t_oref, t_osts, t_oxcto, t_oxfo, t_oxpcd,]
-    check_owasp_compliance(header_keys, header_val, compliance_val)
-
-
-def check_owasp_compliance(header_keys, header_val, compliance_val):
-    non_cnt = 0
-    non_rules, non_rulesc = [], []
-    for key, value, rules in zip(header_keys, header_val, compliance_val):
-        if not value or any(elem not in value for elem in rules):
-            non_cnt += 1
-            header_v = value or get_detail('[comp_header]')
-            non_rulesc.append(key.title().replace("(*) ", ""))
-            non_rules.append(f"{STYLE[1]}{key.title()}{STYLE[9]}: {header_v}")
-    print_owasp_compliance(non_cnt, non_rules, non_rulesc)
-
-
-def print_owasp_compliance(non_cnt, non_rules, non_rulesc):
-    if non_cnt > 0:
-        print("")
-        print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
-        print(f'  URL: {URL}')
-        print(f" {get_detail('[comp_ko_owasp]')}")
-        header_v = get_detail('[comp_header]')
-        miss_h = [rule for rule in non_rules if header_v in rule]
-        miss_val = [rule for rule in non_rules if header_v not in rule]
-        print_details_owasp(miss_h, miss_val)
-    else:
-        print_detail('[comp_ok_owasp]', num_lines=2)
-
-
-def print_details_owasp(miss_h, miss_val):
-    print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
-    print(f"{"\n".join(f'  {rule.split(':')[0].strip()}' for rule in
-                       miss_h)}\n" if miss_h else f" \
-{get_detail('[no_warnings]')}")
-    print(f"\n{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
-    print(f"{"\n".join(f'  {rule}' for rule in miss_val)}\n\n" if miss_val
-          else f" {get_detail('[no_warnings]')}\n")
+    header_list = []
+    header_dict = {}
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[18]), 'r',
+              encoding='utf8') as owasp_file:
+        for line in islice(owasp_file, SLICE_INT[8], None):
+            line = line.strip()
+            header_name, header_val = map(str, line.split(': ', 1))
+            header_list.append(header_name.lower())
+            header_dict[header_name] = header_val
+    print_owasp_missing(header_list)
+    print_owasp_wrong(header_dict)
+    print(linesep.join(['']*2))
     print_detail('[comp_experimental]', 2)
+
+
+def print_owasp_missing_old(header_list):
+    print(linesep.join(['']*2))
+    print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
+    print(f'  URL: {URL}')
+    print(f" {get_detail('[comp_ko_owasp]')}")
+    print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
+    if missing_owasp := [header for header in header_list if header not in
+                         headers_l]:
+        for header in missing_owasp:
+            prefix = "(*) " if header.title() == "Permissions-Policy" else ""
+            print(f"{STYLE[1]}  {prefix}{header.title()}{STYLE[5]}")
+
+
+def print_owasp_missing(header_list):
+    print(linesep.join(['']*2))
+    print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
+    print(f'  URL: {URL}')
+    print(f" {get_detail('[comp_ko_owasp]')}")
+    print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
+    if missing_owasp := [header for header in header_list if header not in
+                         headers_l]:
+        for header in missing_owasp:
+            prefix = "(*) " if header.title() == "Permissions-Policy" else ""
+            print(f"{STYLE[1]}  {prefix}{header.title()}{STYLE[5]}")
+    else:
+        print(f"{STYLE[10]}  {get_detail('[no_warnings]')}{STYLE[5]}", end="")
+
+
+def print_owasp_wrong(header_dict):
+    wrong_owasp = [
+        (header, header_val)
+        for header, header_val in headers_l.items()
+        if (owasp_value := header_dict.get(header.title())) and header_val !=
+        owasp_value]
+    if wrong_owasp:
+        print(f"\n\n{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
+        for header, value in sorted(wrong_owasp):
+            header_title = header.title()
+            prefix = f"{'(*) ' if header_title == 'Permissions-Policy' else
+                        ''}"
+            print(f"{STYLE[1]}  {prefix}{header_title}{STYLE[4]}: {value}")
+    else:
+        print(f"{STYLE[10]}  {get_detail('[no_warnings]')}{STYLE[5]}", end="")
 
 
 def analyze_input_file(input_file):
@@ -2398,32 +2389,6 @@ t_robots = ('all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after')
 
-# OWASP 'Secure Headers Project' Best Practices
-# Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
-t_ocache = ('no-store', 'max-age=0')
-t_oclear = ('"cache"', '"cookies"', '"storage"')
-t_ocsp = ("default-src 'self';", "form-action 'self';", "object-src 'none';",
-          "frame-ancestors 'none';", "upgrade-insecure-requests;",
-          "block-all-mixed-content")
-t_ocoep = ('require-corp')
-t_ocoop = ('same-origin')
-t_ocorp = ('same-origin')
-t_operm = ('accelerometer=()', 'autoplay=()', 'camera=()',
-           'cross-origin-isolated=()', 'display-capture=()',
-           'encrypted-media=()', 'fullscreen=()', 'geolocation=()',
-           'gyroscope=()', 'keyboard-map=()', 'magnetometer=()',
-           'microphone=()', 'midi=()', 'payment=()', 'picture-in-picture=()',
-           'publickey-credentials-get=()', 'screen-wake-lock=()',
-           'sync-xhr=(self)', 'usb=()', 'web-share=()',
-           'xr-spatial-tracking=()', 'clipboard-read=()',
-           'clipboard-write=()', 'gamepad=()', 'hid=()', 'idle-detection=()',
-           'interest-cohort=()', 'serial=()', 'unload=()')
-t_oref = ('no-referrer')
-t_osts = ("max-age=31536000;", "includeSubDomains")
-t_oxcto = ('nosniff')
-t_oxfo = ('deny')
-t_oxpcd = ('none')
-
 unsafe_scheme = True if URL.startswith(HTTP_SCHEMES[0]) else False
 
 if 'accept-ch' in headers_l and '1' not in skip_list:
@@ -2965,7 +2930,7 @@ if args.output:
 if args.output == 'txt':
     print_export_path(tmp_filename, reliable)
     if '-c' in sys.argv:
-        enabled_headers = extract_compliance_headers(tmp_filename)
+        check_owasp_compliance(tmp_filename)
 elif args.output == 'csv':
     generate_csv(tmp_filename, final_filename)
 elif args.output == 'json':
