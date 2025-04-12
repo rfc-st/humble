@@ -1836,7 +1836,7 @@ def make_http_request():
                         verify=False, headers=custom_headers, timeout=15)
         return r, None, None
     except requests.exceptions.SSLError:
-        pass
+        return None, None, None
     except requests.exceptions.RequestException as e:
         return None, None, e
 
