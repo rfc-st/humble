@@ -1026,9 +1026,11 @@ Cabeceras de respuesta HTTP
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [icsp]
- Habilitar 'unsafe-inline' o 'unsafe-eval' aumenta el riesgo de Cross-site scripting.
+ 'unsafe-inline' o 'unsafe-eval' aumentan el riesgo de Cross-site scripting.
  Ref: https://csper.io/blog/no-more-unsafe-inline
  Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
+ Ref: https://content-security-policy.com/hash/
+ Ref: https://content-security-policy.com/nonce/
 
 [icspi]
  'upgrade-insecure-requests' sin la cabecera 'HSTS' podría facilitar ataques SSL Stripping.

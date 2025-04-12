@@ -1021,9 +1021,11 @@ HTTP Response Headers
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [icsp]
- Enabling 'unsafe-inline' or 'unsafe-eval' increases Cross-site scripting risk.
+ 'unsafe-inline' or 'unsafe-eval' increases Cross-site scripting risk.
  Ref: https://csper.io/blog/no-more-unsafe-inline
  Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
+ Ref: https://content-security-policy.com/hash/
+ Ref: https://content-security-policy.com/nonce/
 
 [icspi]
  'upgrade-insecure-requests' without 'HSTS' header could lead to SSL Stripping attacks.
