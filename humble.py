@@ -153,7 +153,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-04-12', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-04-16', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1710,19 +1710,6 @@ def check_owasp_compliance(tmp_filename):
     print_detail('[comp_experimental]', 2)
 
 
-def print_owasp_missing_old(header_list):
-    print(linesep.join(['']*2))
-    print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
-    print(f'  URL: {URL}')
-    print(f" {get_detail('[comp_ko_owasp]')}")
-    print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
-    if missing_owasp := [header for header in header_list if header not in
-                         headers_l]:
-        for header in missing_owasp:
-            prefix = "(*) " if header.title() == "Permissions-Policy" else ""
-            print(f"{STYLE[1]}  {prefix}{header.title()}{STYLE[5]}")
-
-
 def print_owasp_missing(header_list):
     print(linesep.join(['']*2))
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
@@ -2215,7 +2202,8 @@ t_digest_ins = ('adler', 'crc32c', 'md5', 'sha-1', 'unixsum', 'unixcksum')
 t_contdisp = ('filename', 'filename*')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
-t_cencoding = ('br', 'compress', 'deflate', 'gzip', 'x-gzip', 'zstd')
+t_cencoding = ('br', 'compress', 'dcb', 'dcz', 'deflate', 'gzip', 'x-gzip',
+               'zstd')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 # https://www.w3.org/TR/CSP2/ & https://www.w3.org/TR/CSP3/
@@ -2241,7 +2229,9 @@ t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',
                 'unsafe-hashes', 'nonce-', '127.0.0.1')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
-l_csp_ro_dep = ['violated-directive']
+l_csp_ro_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
+                'prefetch-src', 'referrer', 'report-uri', 'require-sri-for',
+                'sandbox', 'violated-directive']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
 # https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
@@ -2505,16 +2495,19 @@ if 'content-security-policy' in headers_l and '16' not in skip_list:
     if re.search(RE_PATTERN[1], csp_h):
         csp_check_ip(csp_h)
 
-csp_ro_header = headers_l.get('content-security-policy-report-only', '')
-if csp_ro_header and any(elem in csp_ro_header for elem in l_csp_ro_dep) and \
-     '17' not in skip_list:
-    print_detail_r('[icsiro_d]', is_red=True)
-    if not args.brief:
-        matches_csp_ro = [x for x in l_csp_ro_dep if x in csp_ro_header]
-        print_detail_l('[icsi_d_s]')
-        print(', '.join(matches_csp_ro))
-        print_detail('[icsiro_d_r]')
-    i_cnt[0] += 1
+if 'content-security-policy-report-only' in headers_l and '17' not in \
+     skip_list:
+    csp_ro_header = headers_l['content-security-policy-report-only']
+    if any(elem in csp_ro_header for elem in l_csp_ro_dep):
+        print_detail_r('[icsiro_d]', is_red=True)
+        if not args.brief:
+            matches_csp_ro = [x for x in l_csp_ro_dep if x in csp_ro_header]
+            print_detail_l('[icsi_d_s]')
+            print(', '.join(f"'{x}'" for x in matches_csp_ro))
+            print_detail('[icsiro_d_r]')
+        i_cnt[0] += 1
+    if 'report-to' not in csp_ro_header:
+        print_details('[icsiroi_d]', '[icsiroi]', 'd', i_cnt)
 
 ctype_header = headers_l.get('content-type', '')
 if ctype_header and '18' not in skip_list:

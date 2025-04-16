@@ -433,13 +433,20 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
 
 [icsiro_d]
- Content-Security-Policy-Report-Only (Deprecated Directives)
+ Content-Security-Policy-Report-Only (Ignored Directives)
 
 [icsiro_d_r]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 
 [icsi_d_s]
- Avoid deprecated directives: 
+ Avoid deprecated or ignored directives: 
+
+[icsiroi_d]
+ Content-Security-Policy-Report-Only (Ignored Header)
+
+[icsiroi]
+ Use the 'report-to' directive or this header has no effect.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 
 [itrailer_d_s]
  Avoid disallowed directives: 

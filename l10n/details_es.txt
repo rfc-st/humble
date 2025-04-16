@@ -434,13 +434,20 @@
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
 
 [icsiro_d]
- Content-Security-Policy-Report-Only (Directivas obsoletas)
+ Content-Security-Policy-Report-Only (Directivas ignoradas)
 
 [icsiro_d_r]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 
 [icsi_d_s]
- Evite directivas obsoletas: 
+ Evite directivas ignoradas u obsoletas: 
+
+[icsiroi_d]
+ Content-Security-Policy-Report-Only (Cabecera ignorada)
+
+[icsiroi]
+ Utilice la directiva 'report-to' o esta cabecera no tendrá efecto.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 
 [itrailer_d_s]
  Evite directivas no permitidas: 

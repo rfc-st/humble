@@ -57,7 +57,8 @@ Content-Security-Policy: Unsafe Directive
 Content-Security-Policy: Unsafe Funcionality
 Content-Security-Policy: Unsafe Nonce
 Content-Security-Policy: Unsafe Values
-Content-Security-Policy-Report-Only: Deprecated Directives
+Content-Security-Policy-Report-Only: Ignored Directives
+Content-Security-Policy-Report-Only: Ignored Header
 Content-Type: Deprecated Values
 Content-Type: Incorrect Value - Response body
 Content-Type: Non-HTML MIME type
