@@ -2,3 +2,5 @@
 .vscode/
 
 humble.code-workspace
+
+releases.sh
