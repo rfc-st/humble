@@ -901,9 +901,11 @@ def check_unsafe_cookies():
         cookies_total = len(unsafe_cookies)
     if unsafe_cookies:
         print_detail_r('[iset_h]', is_red=True)
-        print_detail_l('[icooks_s]' if cookies_total > 1 else '[icook_s]')
-        print(f"{', '.join([f'\'{cookie}\'' for cookie in unsafe_cookies])}.")
-        print_detail('[iset]', num_lines=2)
+        if not args.brief:
+            print_detail_l('[icooks_s]' if cookies_total > 1 else '[icook_s]')
+            print(f"{', '.join([f'\'{cookie}\'' for cookie in
+                                unsafe_cookies])}.")
+            print_detail('[iset]', num_lines=2)
         i_cnt[0] += 1
 
 
