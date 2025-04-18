@@ -460,6 +460,12 @@
 [icsp_si]
  Review the directive
 
+[icooks_s]
+ Review the cookies 
+
+[icook_s]
+ Review the cookie 
+
 [icoep_h]
  Cross-Origin-Embedder-Policy (No Valid Directives)
 
@@ -1196,7 +1202,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
 
 [iset]
- Enable 'Secure' and 'HttpOnly': to send it via HTTPS and not be accessed by client APIs.
+ Enable 'Secure' and 'HttpOnly' if the cookie is associated with sensitive data.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [iseti]

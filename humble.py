@@ -123,7 +123,8 @@ RE_PATTERN = (
     r'\(humble_pdf_style\)([^:]+):',
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r'\(humble_sec_style\)([^:]+)', r'\(humble_sec_style\)',
-    r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{32}$', r'^[A-Za-z0-9+/=]+$')
+    r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{32}$', r'^[A-Za-z0-9+/=]+$',
+    r', (?=[^;,]+?=)')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
@@ -153,7 +154,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-04-17', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-04-18', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -888,6 +889,22 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
     print_detail_l(f'{csp_desc}')
     print(csp_values)
     print_detail(f'{csp_refs}')
+
+
+def check_unsafe_cookies():
+    unsafe_cookies = []
+    cookies = re.split(RE_PATTERN[14], stc_header)
+    for cookie in cookies:
+        if any(val not in cookie.lower() for val in t_cookie_sec):
+            cookie_name = cookie.split('=', 1)[0].strip()
+            unsafe_cookies.append(cookie_name)
+        cookies_total = len(unsafe_cookies)
+    if unsafe_cookies:
+        print_detail_r('[iset_h]', is_red=True)
+        print_detail_l('[icooks_s]' if cookies_total > 1 else '[icook_s]')
+        print(f"{', '.join([f'\'{cookie}\'' for cookie in unsafe_cookies])}.")
+        print_detail('[iset]', num_lines=2)
+        i_cnt[0] += 1
 
 
 def permissions_analyze_content(perm_header, i_cnt):
@@ -2682,9 +2699,8 @@ if 'server-timing' in headers_l and '51' not in skip_list:
 
 stc_header = headers_l.get("set-cookie", '')
 if stc_header and '52' not in skip_list:
-    if not unsafe_scheme and not all(elem in stc_header for elem in
-                                     t_cookie_sec):
-        print_details('[iset_h]', '[iset]', "d", i_cnt)
+    if not unsafe_scheme:
+        check_unsafe_cookies()
     if unsafe_scheme:
         if 'secure' in stc_header:
             print_details('[iseti_h]', '[iseti]', "d", i_cnt)

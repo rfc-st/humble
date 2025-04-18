@@ -461,6 +461,12 @@
 [icsp_si]
  Revise la directiva
 
+[icooks_s]
+ Revise las cookies 
+
+[icook_s]
+ Revise la cookie 
+
 [icoep_h]
  Cross-Origin-Embedder-Policy (Sin directivas adecuadas)
 
@@ -1201,7 +1207,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
 
 [iset]
- Habilite 'Secure' y 'HttpOnly': para enviarla mediante HTTPS y evitar que sea accedida por APIs.
+ Habilite 'Secure' and 'HttpOnly' si la cookie está asociada con datos sensibles.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [iseti]
