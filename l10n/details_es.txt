@@ -1207,7 +1207,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
 
 [iset]
- Habilite 'Secure' and 'HttpOnly' si la cookie está asociada con datos sensibles.
+ Habilite 'Secure' y 'HttpOnly' en cada una si está asociada a datos sensibles.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [iseti]

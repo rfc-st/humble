@@ -1202,7 +1202,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
 
 [iset]
- Enable 'Secure' and 'HttpOnly' if the cookie is associated with sensitive data.
+ Enable 'Secure' and 'HttpOnly' on each if it is associated with sensitive data.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [iseti]

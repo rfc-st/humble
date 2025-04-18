@@ -1163,7 +1163,7 @@ def get_enabled_headers(args, headers_l, t_enabled):
         exp_s = get_detail('[exp_header]', replace=True) if header.lower() in\
           EXP_HEADERS else ""
         print_enabled_headers(args, exp_s, header, headers_d)
-    None if enabled_headers else print_nosec_headers(args)
+    None if enabled_headers else print_nosec_headers()
     en_cnt = len(enabled_headers)
     print('\n')
     return en_cnt
@@ -1181,7 +1181,7 @@ def print_enabled_headers(args, exp_s, header, headers_d):
 {headers_d[header]}')
 
 
-def print_nosec_headers(args):
+def print_nosec_headers():
     print_detail_l('[no_sec_headers]') if args.output else \
             print_detail_r('[no_sec_headers]', is_red=True)
 
@@ -1619,8 +1619,6 @@ def format_html_headers(ln, sub_d, headers):
 
 
 def format_html_fingerprint(args, ln, sub_d, l_fng):
-    if not ln:
-        return ln
     for i in l_fng:
         if args.brief:
             if i.casefold() in ln.casefold() and ':' not in ln and \
@@ -1633,7 +1631,7 @@ def format_html_fingerprint(args, ln, sub_d, l_fng):
 
 def format_html_totals(ln, sub_d, l_total):
     for i in l_total:
-        if ln and (not re.search(RE_PATTERN[11], ln)) and (
+        if (not re.search(RE_PATTERN[11], ln)) and (
              (i in ln) and ('"' not in ln) or ('HTTP (' in ln)):
             ln = ln.replace(ln, sub_d['span_ko'] + ln + sub_d['span_f'])
     return ln
@@ -2922,7 +2920,7 @@ t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Headers',
 compat_headers = sorted(header for header in t_sec if header in headers)
 
 print_browser_compatibility(compat_headers) if compat_headers else \
-    print_nosec_headers(args)
+    print_nosec_headers()
 
 # Summary of the analysis and changes compared to the previous one
 print(linesep.join(['']*2))
@@ -2999,13 +2997,12 @@ elif args.output == 'html':
                 or format_html_compatibility(ln_rstrip, sub_d, html_final))
             if not ln_formatted:
                 ln, ln_enabled = format_html_enabled(ln, sub_d)
-                if not ln_enabled:
+                if ln and not ln_enabled:
                     ln = format_html_headers(ln, sub_d, headers)
                     ln = format_html_fingerprint(args, ln, sub_d,
                                                  sorted(l_fng))
                     ln = format_html_totals(ln, sub_d, l_total)
                     ln = format_html_empty(ln, ln_rstrip, sub_d, l_empty)
-                if ln and not ln_enabled:
                     html_final.write(ln)
         html_final.write('</pre><br></body></html>')
     print_export_path(final_filename, reliable)
