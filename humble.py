@@ -154,7 +154,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-04-18', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-04-19', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1073,10 +1073,12 @@ def print_detail(id_mode, num_lines=1):
             print(l10n_main[idx+i+1], end='')
 
 
-def print_detail_l(id_mode, analytics=False):
+def print_detail_l(id_mode, analytics=False, no_headers=False):
     for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
         if idmode_ln.startswith(id_mode):
-            if not analytics:
+            if no_headers:
+                print(idnext_ln, end='')
+            elif not analytics:
                 print(idnext_ln.replace('\n', ''), end='')
             else:
                 return idnext_ln.replace('\n', '').replace(':', '')[1:]
@@ -1184,7 +1186,7 @@ def print_enabled_headers(args, exp_s, header, headers_d):
 
 
 def print_nosec_headers():
-    print_detail_l('[no_sec_headers]') if args.output else \
+    print_detail_l('[no_sec_headers]', no_headers=True) if args.output else \
             print_detail_r('[no_sec_headers]', is_red=True)
 
 
@@ -1424,7 +1426,9 @@ def format_json(json_data, json_lns):
 def generate_pdf(pdf, pdf_links, pdf_prefixes, temp_filename):
     set_pdf_file()
     ok_string = get_detail('[no_warnings]').rstrip()
-    set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string)
+    no_headers = get_detail('[no_sec_headers]').strip()
+    set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string,
+                    no_headers)
     pdf.output(final_filename)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
@@ -1451,9 +1455,13 @@ def set_pdf_metadata():
     pdf.set_producer(git_urlc)
 
 
-def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string):
+def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string,
+                    no_headers):
     with open(temp_filename, "r", encoding='utf8') as txt_source:
         for line in txt_source:
+            if no_headers in line:
+                set_pdf_warnings(line)
+                continue
             if '[' in line:
                 set_pdf_sections(line)
             if any(bold_str in line for bold_str in BOLD_STRINGS):
