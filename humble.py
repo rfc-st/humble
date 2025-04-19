@@ -1729,6 +1729,17 @@ def check_owasp_compliance(tmp_filename):
             header_name, header_val = map(str, line.split(': ', 1))
             header_list.append(header_name.lower())
             header_dict[header_name] = header_val
+    print_owasp_findings(header_dict, header_list)
+
+
+def print_owasp_findings(header_dict, header_list):
+    print(linesep.join(['']*2))
+    print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
+    print(" ", end='')
+    print_detail_l('[analysis_date]')
+    print(f" {current_time}")
+    print(f'  URL  : {URL}')
+    print(f" {get_detail('[comp_ko_owasp]').replace(':', '  :', 1)}")
     print_owasp_missing(header_list)
     print_owasp_wrong(header_dict)
     print(linesep.join(['']*2))
@@ -1736,10 +1747,6 @@ def check_owasp_compliance(tmp_filename):
 
 
 def print_owasp_missing(header_list):
-    print(linesep.join(['']*2))
-    print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
-    print(f'  URL: {URL}')
-    print(f" {get_detail('[comp_ko_owasp]')}")
     print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
     if missing_owasp := [header for header in header_list if header not in
                          headers_l]:

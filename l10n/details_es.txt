@@ -1749,7 +1749,7 @@ Excepción no gestionada:
  Analizando la URL en relación a las mejores prácticas de OWASP 'Secure Headers Project', espera por favor ...
 
 [comp_analysis]
- Cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project':
+ [Cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project']
 
 [comp_ko_owasp]
  Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
@@ -1762,10 +1762,10 @@ Excepción no gestionada:
  Referencia de '(*)':  https://mdn.io/Experimental_deprecated_obsolete
 
 [comp_rec]
- Cabeceras de respuesta HTTP recomendadas sin habilitar:
+ [Cabeceras de respuesta HTTP recomendadas sin habilitar]
 
 [comp_val]
- Cabeceras de respuesta HTTP habilitadas sin valores recomendados:
+ [Cabeceras de respuesta HTTP habilitadas sin valores recomendados]
 
 [comp_header]
 (Cabecera no habilitada)
