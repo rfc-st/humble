@@ -154,7 +154,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-04-19', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-04-25', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1186,8 +1186,9 @@ def print_enabled_headers(args, exp_s, header, headers_d):
 
 
 def print_nosec_headers():
-    print_detail_l('[no_sec_headers]', no_headers=True) if args.output else \
-            print_detail_r('[no_sec_headers]', is_red=True)
+    id_mode = '[no_sec_headers]'
+    print_detail_l(id_mode, no_headers=True) if args.output else \
+        print_detail_r(id_mode, is_red=True)
 
 
 def print_missing_headers(args, headers_l, l_detail, l_miss):
@@ -1670,7 +1671,8 @@ def format_html_enabled(ln, sub_d):
 
 def generate_xml(temp_filename, final_filename):
     dtd_declaration = f'<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>'
-    root = ET.Element('analysis')
+    root = ET.Element('analysis', {'version': f"{URL_LIST[4]} | \
+v.{local_version}", 'generated': current_time})
     with open(temp_filename, 'r', encoding='utf8') as txt_source:
         section = None
         stripped_txt = (line.strip() for line in txt_source)
@@ -1690,14 +1692,16 @@ def parse_xml(root, section, stripped_txt):
             continue
         if line.startswith('['):
             section = ET.SubElement(root, 'section', {'name': line})
-        elif section is not None:
-            item = ET.SubElement(section, 'item')
-            if ': ' in line and all(str not in line for str in XML_STRING):
-                key, value = line.split(': ', 1)
-                item.set('name', key.strip())
-                item.text = value.strip()
-            else:
-                item.text = line
+            continue
+        if section is None:
+            continue
+        item = ET.SubElement(section, 'item')
+        if ': ' in line and all(sub not in line for sub in XML_STRING):
+            key, value = line.split(': ', 1)
+            item.set('name', key.strip())
+            item.text = value.strip()
+        else:
+            item.text = line
     return section
 
 
