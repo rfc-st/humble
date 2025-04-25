@@ -17,8 +17,9 @@ Contributing
 * When contributing code, it must be <b>optimized</b>. My personal criterion is that every class, function, and method must achieve at least a <b>B</b> score in [radon's](https://radon.readthedocs.io/en/latest/commandline.html#the-cc-command) Cyclomatic Complexity analysis. To check this, you can use the following command — it should return no results; if it does, please optimize and simplify the code accordingly:
 <pre>radon cc humble.py -nc</pre>
 
+* And your contributions (e.g., functions) must score at least <b>60%</b> in [sourcery](https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery) quality score [checks](https://docs.sourcery.ai/Coding-Assistant/Reference/Metrics/#quality-score): sourcery is free for open source projects.
 
-* And finally, I have my <i>quirks</i> :), and I may not accept your Pull Request for certain reasons that I will <b>always</b> explain in the request itself. That, of course, doesn't mean that I don't value your interest, your time or your code: <b>always</b>, if I end up implementing your idea, I <b>will mention you</b> in the [Acknowledgements](https://github.com/rfc-st/humble/#acknowledgements) section.
+* Finally, I have my <i>quirks</i> :), and I may not accept your Pull Request for certain reasons that I will <b>always</b> explain in the request itself. That, of course, doesn't mean that I don't value your interest, your time or your code: <b>always</b>, if I end up implementing your idea, I <b>will mention you</b> in the [Acknowledgements](https://github.com/rfc-st/humble/#acknowledgements) section.
 
 Thank you for your time!.
 
