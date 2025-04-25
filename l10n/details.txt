@@ -683,6 +683,9 @@
 [itim_h]
  Server-Timing (Potentially Unsafe Header)
 
+[itwall_h]
+ Service-Worker-Allowed (Too Permissive Value)
+
 [iset_h]
  Set-Cookie (Insecure Attributes)
 
@@ -1283,6 +1286,11 @@ HTTP Response Headers
 [itim]
  This header should not expose sensitive application or infrastructure information.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing
+
+[itwall]
+ The '/' scope is too permissive; consider narrowing it.
+ Ref: https://www.zeepalm.com/blog/service-worker-security-best-practices-2024-guide
+ Ref: https://shorturl.at/F7A71
 
 [ixpermcrossu]
  The value 'all' could permit any cross-domain requests from Flash and PDF documents.

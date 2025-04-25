@@ -108,6 +108,7 @@ Reporting-Endpoints: Ignored Value
 Repr-Digest: No Secure Algorithms
 Repr-Digest: Unsafe Algorithms
 Server-Timing: Potentially Unsafe Header
+Service-Worker-Allowed: Unsafe Value
 Set-Cookie: Cookie Prefixes
 Set-Cookie: Insecure Attributes
 Set-Cookie: Insecure Schemes

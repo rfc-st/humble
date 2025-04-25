@@ -684,6 +684,9 @@
 [itim_h]
  Server-Timing (Cabecera potencialmente insegura)
 
+[itwall_h]
+ Service-Worker-Allowed (Valores muy permisivos)
+
 [iset_h]
  Set-Cookie (Atributos inseguros)
 
@@ -1288,6 +1291,11 @@ Cabeceras de respuesta HTTP
 [itim]
  Esta cabecera no debe exponer datos sensibles o de infraestructura.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing
+
+[itwall]
+ El ámbito '/' es muy permisivo; evalúa el acotarlo.
+ Ref: https://www.zeepalm.com/blog/service-worker-security-best-practices-2024-guide
+ Ref: https://shorturl.at/F7A71
 
 [ixpermcrossu]
  El valor 'all' permite peticiones de documentos Flash y PDF entre dominios.
