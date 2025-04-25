@@ -78,6 +78,8 @@ CSV_SECTION = ('0section', '0headers', '1enabled', '2missing', '3fingerprint',
                '4depinsecure', '5empty', '6compat', '7result')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 DTD_CONTENT = '''<!ELEMENT analysis (section+)>
+<!ATTLIST analysis version CDATA #REQUIRED>
+<!ATTLIST analysis generated CDATA #REQUIRED>
 <!ELEMENT section (item*)>
 <!ATTLIST section name CDATA #REQUIRED>
 <!ELEMENT item (#PCDATA)>
