@@ -748,7 +748,7 @@
  X-Content-Security-Policy (Cabecera obsoleta)
 
 [ictpd_h]
- X-Content-Type-Options (Valores duplicados)
+ X-Content-Type-Options (Cabecera/Valores duplicados)
 
 [ictp_h]
  X-Content-Type-Options (Valor incorrecto)
@@ -1089,8 +1089,9 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
 [ictpd]
- Esta cabecera, o sus valores, pueden estar duplicados.
+ Valores distintos, o varias cabeceras con ellos, podrían hacer que los navegadores las ignoren.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+ Ref: https://shorturl.at/F7A71
 
 [ieta]
  Aunque el riesgo pueda ser mínimo, esta cabecera no debe incluir datos de inodes.

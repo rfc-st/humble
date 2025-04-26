@@ -747,7 +747,7 @@
  X-Content-Security-Policy (Deprecated Header)
 
 [ictpd_h]
- X-Content-Type-Options (Duplicated Values)
+ X-Content-Type-Options (Duplicated Header/Values)
 
 [ictp_h]
  X-Content-Type-Options (Incorrect Value)
@@ -1084,8 +1084,9 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 
 [ictpd]
- This header, or its values, may be duplicated.
+ Conflicting values or repeated headers with them could cause browsers to ignore all.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+ Ref: https://shorturl.at/F7A71
 
 [ieta]
  Although unlikely to be exploited, this header should not include inode information.

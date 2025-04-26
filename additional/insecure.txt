@@ -138,7 +138,7 @@ Warning: Deprecated Header
 WWW-Authenticate: Unsafe Value
 X-Content-Security-Policy: Deprecated Header
 X-Content-Security-Policy-Report-Only: Deprecated Header
-X-Content-Type-Options: Duplicated Values
+X-Content-Type-Options: Duplicated Header/Values
 X-Content-Type-Options: Incorrect Value
 X-DNS-Prefetch-Control: Potentially Unsafe Header
 X-Download-Options: Deprecated Header
