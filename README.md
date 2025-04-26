@@ -381,7 +381,7 @@ $ python3 humble.py -u https://my.prelude.software/demo/index.pl | grep -A1 -B5 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_4.jpg" alt="Check for HTTP client errors (4XX) (Linux)">
 
 
-.: Analyze multiple URLs and save the results as PDFs.<br />
+.: Analyze multiple URLs and save the results as PDFs; thanks <a href="https://www.linkedin.com/in/eduardo-boronat/">Eduardo</a> for this example!.<br />
 
 ```
 $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'); for dataset in "${datasets[@]}"; do python3 humble.py -u "$dataset" -o pdf; done
