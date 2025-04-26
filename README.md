@@ -253,24 +253,24 @@ https://github.com/rfc-st/humble/releases
 $ git clone https://github.com/rfc-st/humble.git
 https://github.com/rfc-st/humble/releases
 
-# Build the image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' ()'1.46' in this example).
+# Build the image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.48).
 # https://github.com/rfc-st/humble/releases (Windows may require elevated console privileges)
-$ docker build -t humble:1.46 .
+$ docker build -t humble:1.48 .
 
 # Run the analysis specifying the above TAG, along with the specific options for 'humble':
-# '-it', required: allocate a pseudo-TTY and keep the input interactive
-# '-rm', required: automatically remove the container and associated anonymous volumes when it exits
+# '-it', required: allocate a pseudo-TTY and keep the input interactive.
+# '-rm', required: automatically remove the container and associated anonymous volumes when it exits.
 
 # (Linux/macOS)
 # E.g. Analyze https://facebook with a brief analysis:
-$ docker run -it --rm --name humble humble:1.46 /bin/bash -c "python3 humble.py -u https://facebook.com -b"
+$ docker run -it --rm --name humble humble:1.48 /bin/bash -c "python3 humble.py -u https://facebook.com -b"
 
 # (Windows)
 # E.g. Analyze https://facebook with a brief analysis:
-$ docker run -it --rm --name humble humble:1.46 python3 humble.py -u https://facebook.com -b
+$ docker run -it --rm --name humble humble:1.48 python3 humble.py -u https://facebook.com -b
 
 # Removing (and untagging) previous images of 'humble' after upgrading to the latest release.
-$ docker rmi humble:1.46
+$ docker rmi humble:1.48
 ```
 
 ## Installation & update (Kali Linux)
