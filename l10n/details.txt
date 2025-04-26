@@ -1794,3 +1794,6 @@ Unhandled exception type:
 
 [input_filename]
  Input:
+
+[json_gen]
+Generator

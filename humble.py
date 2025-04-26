@@ -156,7 +156,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-04-25', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-04-26', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1361,9 +1361,12 @@ def generate_csv(temp_filename, final_filename):
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
         csv_source = txt_source.read()
         csv_writer = writer(csv_final, quoting=QUOTE_ALL)
+        csv_writer.writerow([get_detail('[csv_section]', replace=True),
+                             get_detail('[csv_values]', replace=True)])
+        csv_writer.writerow([get_detail('[0section]', replace=True),
+                             f"{get_detail('[json_gen]')}: {URL_LIST[4]} | \
+v.{local_version}"])
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
-        csv_writer.writerow([get_detail(f'[{i}]', replace=True) for i in
-                             ['csv_section', 'csv_values']])
         parse_csv(csv_writer, csv_source, csv_section)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
@@ -1407,6 +1410,9 @@ def write_json(section0, sectionh, section5, section6, json_section, json_lns):
     if json_section in (section0, sectionh, section5, section6):
         json_data = {}
         format_json(json_data, json_lns)
+        if json_section == section0:
+            json_data = {get_detail('[json_gen]'): f"{URL_LIST[4]} | \
+v.{local_version}", **json_data}
     else:
         json_data = list(json_lns)
     return json_data

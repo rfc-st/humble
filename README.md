@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--04--25-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--04--26-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -137,7 +137,7 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fng.jpg" alt="(Linux) - List of HTTP fingerprint headers based on a specific term" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Detailed analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_facebook_com_20241228_202046_en.csv">Example.</a><br />
+.: (Linux) - Brief analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_facebook.com_20250426_191942_en.csv">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_csv_s.PNG" alt="(Linux) - Brief analysis saved as CSV" width=70% height=70%>
@@ -155,7 +155,7 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="(Linux) - Detailed analysis saved as HTML" width=70% height=70%>
 </p>
 <br />
-.: (Linux) - Brief analysis saved as JSON. <a href="http://jsonblob.com/1322654115905593344">Example.</a><br />
+.: (Linux) - Brief analysis saved as JSON. <a href="http://jsonblob.com/1365739609765634048">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="(Linux) - Brief analysis saved as JSON" width=70% height=70%>

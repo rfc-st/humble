@@ -1780,3 +1780,6 @@ Excepción no gestionada:
 
 [input_filename]
  Input:
+
+[json_gen]
+Generador
