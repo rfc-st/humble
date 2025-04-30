@@ -64,24 +64,25 @@
 :heavy_check_mark: 14 [checks](#checks-missing-headers) for missing security-related HTTP response headers (the ones I consider essential).<br />
 :heavy_check_mark: 1225 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 138 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
-:heavy_check_mark: Checks compliance with OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">'Secure Headers Project'<a> Best Practices.<br />
-:heavy_check_mark: SSL/TLS checks: requires the **amazing** https://testssl.sh/.<br />
-:heavy_check_mark: Browser support references for enabled HTTP security headers: provided by https://caniuse.com/.<br />
-:heavy_check_mark: Two types of analysis: brief and detailed, along with HTTP response headers.<br />
+:heavy_check_mark: 14 [checks](https://github.com/rfc-st/humble/blob/ddfa0d1ded26ee678fd7e3e084d91b4b325df516/additional/insecure.txt#L46-L59) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
+:heavy_check_mark: Can check for compliance with the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">Secure Headers Project<a> Best Practices.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
+:heavy_check_mark: Can analyze _raw response files_: text files with HTTP response headers and values. Ex: curl option '<a href="https://curl.se/docs/manpage.html" target="_blank">--dump-header<a>'.<br />
 :heavy_check_mark: Can export each analysis to CSV, HTML5, JSON, PDF 1.4, TXT and XML (and in a filename and path of your choice).<br />
-:heavy_check_mark: Can analyze '_raw response files_': text files with HTTP response headers and values. Ex: curl option '<a href="https://curl.se/docs/manpage.html" target="_blank">--dump-header<a>'.<br />
+:heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** https://testssl.sh/.<br />
+:heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
+:heavy_check_mark: Includes browser support references for enabled HTTP security headers: provided by https://caniuse.com/.<br />
 :heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental<a> headers in each analysis.<br />
 :heavy_check_mark: Each detailed analysis may include up to dozens of official links, references and technical articles.<br />
-:heavy_check_mark: l10n: can display each analysis, the messages and almost all errors in English or Spanish.<br />
-:heavy_check_mark: Saves each analysis, showing at the end the improvements or deficiencies in relation to the last one.<br />
-:heavy_check_mark: Can display analysis statistics: either against a specific URL or all of them.<br />
-:heavy_check_mark: Can display fingerprint statistics: either against a specific term or the Top 20.<br />
-:heavy_check_mark: Can display guidelines: for enabling security HTTP response headers on popular frameworks, servers and services.<br />
+:heavy_check_mark: Can display analysis, messages, and most errors in either English or Spanish.<br />
+:heavy_check_mark: Saves each analysis and highlights improvements or deficiencies compared to the previous one.<br />
+:heavy_check_mark: Can display analysis statistics for a specific URL or across all of them.<br />
+:heavy_check_mark: Can display fingerprint statistics for a specific term or the Top 20.<br />
+:heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a> and <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
-:heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost<a> all the <a href="https://github.com/rfc-st/humble/blob/master/additional/owasp_best_practices.txt" target="_blank">code<a> under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
+:heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost<a> all the <a href="https://github.com/rfc-st/humble/blob/master/additional/owasp_best_practices.txt" target="_blank">code<a> available under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
 :heavy_check_mark: Minimal <a href="https://github.com/rfc-st/humble/blob/master/requirements.txt" target="_blank">dependencies</a> required.<br />
 :heavy_check_mark: Developed entirely in my spare time, <b>no strings attached</b>: feel free to try it out and integrate it into your projects!.<br />
