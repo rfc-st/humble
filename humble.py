@@ -156,7 +156,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-04-26', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-04-30', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1638,12 +1638,11 @@ def format_html_headers(ln, sub_d, headers):
 
 
 def format_html_fingerprint(args, ln, sub_d, l_fng):
+    ln_cf = ln.casefold() if args.brief else ln
     for i in l_fng:
-        if args.brief:
-            if i.casefold() in ln.casefold() and ':' not in ln and \
-                 '    class="ko"' not in ln:
-                return f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
-        elif i in ln and ': ' not in ln and 'class="ko"' not in ln:
+        i_match = i.casefold() if args.brief else i
+        if i_match in ln_cf and ':' not in ln and 'class="ko"' not in ln and \
+           '    class="ko"' not in ln:
             return f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
     return ln
 
