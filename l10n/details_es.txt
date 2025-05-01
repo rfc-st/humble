@@ -591,6 +591,9 @@
 [icsnces_h]
  Content-Security-Policy (Nonce inseguro)
 
+[icsncei_h]
+ Content-Security-Policy (Nonce incorrecto)
+
 [ieta_h]
  Etag (Cabecera potencialmente insegura)
 
@@ -1078,6 +1081,10 @@ Cabeceras de respuesta HTTP
 [icsnces]
  Los nonces deben tener al menos 128 bits de entropía (32 caracteres hexadecimales/24 en base64).
  Ref: https://content-security-policy.com/nonce/
+
+[icsncei]
+ Los nonces deben ir entre comillas simples.
+ Ref: https://portswigger.net/research/using-form-hijacking-to-bypass-csp
 
 [icsipa]
  Los estándares desaconsejan las direcciones IP como valores (excepto para 127.0.0.1).

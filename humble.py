@@ -126,7 +126,7 @@ RE_PATTERN = (
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r'\(humble_sec_style\)([^:]+)', r'\(humble_sec_style\)',
     r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{32}$', r'^[A-Za-z0-9+/=]+$',
-    r', (?=[^;,]+?=)')
+    r', (?=[^;,]+?=)', r"'nonce-[^']+'")
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
@@ -156,7 +156,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-04-30', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-01', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -276,16 +276,17 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
 
 
 def print_l10n_file(args, l10n_file, slice_ln=False):
-    lang_idx = 1 if args.lang == 'es' else 0
+    lang_es = args.lang == 'es'
+    lang_idx = 1 if lang_es else 0
     l10n_file = HUMBLE_FILES[L10N_IDXS[l10n_file][lang_idx]]
-    l10n_slice = SLICE_INT[2] if args.lang == 'es' else SLICE_INT[3]
-    with open(path.join(OS_PATH, HUMBLE_DIRS[1], l10n_file), 'r',
-              encoding='utf8') as l10n_source:
-        l10n_sliced = islice(l10n_source, l10n_slice, None) \
-            if slice_ln else l10n_source
-        for line in l10n_sliced:
-            print(f" {STYLE[0]}{line}" if line.startswith('[') else f"  \
-{line}", end='')
+    l10n_slice = SLICE_INT[2 if lang_es else 3]
+    file_path = path.join(OS_PATH, HUMBLE_DIRS[1], l10n_file)
+    with open(file_path, 'r', encoding='utf8') as l10n_source:
+        l10n_lines = islice(l10n_source, l10n_slice, None) if slice_ln else \
+            l10n_source
+        for line in l10n_lines:
+            prefix = f" {STYLE[0]}" if line.startswith('[') else "  "
+            print(f"{prefix}{line}", end='')
     sys.exit()
 
 
@@ -408,7 +409,7 @@ def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
     return '[a_grade]' if e_cnt > 0 else '[perfect_grade]'
 
 
-def analysis_exists(filepath):
+def check_analysis(filepath):
     if not path.exists(filepath):
         detail = '[no_analysis]' if URL else '[no_global_analysis]'
         print_error_detail(detail)
@@ -857,8 +858,10 @@ def csp_print_unsafe(csp_unsafe_dirs, i_cnt):
 
 def csp_check_nonces(csp_h):
     csp_refs = ('[icsnces_h]', '[icsnces]')
-    nonces_csp = re.findall(RE_PATTERN[6], csp_h)
-    for nonce in nonces_csp:
+    if not re.search(RE_PATTERN[15], csp_h):
+        print_details('[icsncei_h]', '[icsncei]', 'd', i_cnt)
+    nonces = re.findall(RE_PATTERN[6], csp_h)
+    for nonce in nonces:
         if re.match(RE_PATTERN[12], nonce) and len(nonce) < 32:
             print_details(*csp_refs, 'd', i_cnt)
             break
@@ -886,7 +889,7 @@ def csp_print_deprecated(csp_deprecated):
 
 
 def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
-    csp_values = ', '.join(f"'{value}'" for value in csp_values)
+    csp_values = ', '.join(f"'{value}'" for value in sorted(csp_values))
     print_detail_r(f'{csp_title}', is_red=True)
     print_detail_l(f'{csp_desc}')
     print(csp_values)
@@ -2079,7 +2082,7 @@ if args.testssl_path:
     testssl_command(path.abspath(args.testssl_path), URL)
 
 if args.URL_A:
-    analysis_exists(HUMBLE_FILES[0])
+    check_analysis(HUMBLE_FILES[0])
     url_analytics() if URL else url_analytics(is_global=True)
 
 start = time()
@@ -2250,9 +2253,9 @@ t_cencoding = ('br', 'compress', 'dcb', 'dcz', 'deflate', 'gzip', 'x-gzip',
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 # https://www.w3.org/TR/CSP2/ & https://www.w3.org/TR/CSP3/
-t_csp_broad = (' * ',  ' blob: ', ' data: ', ' ftp: ', 'filesystem:',
-               ' https: ', ' https://* ', ' https://*.* ', ' mailto: ',
-               'schemes:', ' tel: ', ' wss: ', 'wss://')
+t_csp_broad = (' *', '* ', ' * ',  ' blob: ', ' data: ', ' ftp: ',
+               'filesystem:', ' https: ', ' https://* ', ' https://*.* ',
+               ' mailto: ', 'schemes:', ' tel: ', ' wss: ', 'wss://')
 t_csp_equal = ('nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri')
 t_csp_dep = ('block-all-mixed-content', 'disown-opener', 'plugin-types',
              'prefetch-src', 'referrer', 'report-uri', 'require-sri-for')

@@ -590,6 +590,9 @@
 [icsnces_h]
  Content-Security-Policy (Unsafe Nonce)
 
+[icsncei_h]
+ Content-Security-Policy (Incorrect Nonce)
+
 [ieta_h]
  Etag (Potentially Unsafe Header)
 
@@ -1073,6 +1076,10 @@ HTTP Response Headers
 [icsnces]
  Nonces should have at least 128 bits of entropy (32 hex characters / 24 base64 characters).
  Ref: https://content-security-policy.com/nonce/
+
+[icsncei]
+ Nonces must be enclosed in single quotes.
+ Ref: https://portswigger.net/research/using-form-hijacking-to-bypass-csp
 
 [icsipa]
  The standards discourage IP addresses as values (except for 127.0.0.1).
