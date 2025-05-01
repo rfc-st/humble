@@ -857,21 +857,21 @@ def csp_print_unsafe(csp_unsafe_dirs, i_cnt):
 
 
 def csp_check_nonces(csp_h):
-    csp_refs = ('[icsnces_h]', '[icsnces]')
+    csp_nonce_refs = ('[icsnces_h]', '[icsnces]')
     if not re.search(RE_PATTERN[15], csp_h):
         print_details('[icsncei_h]', '[icsncei]', 'd', i_cnt)
-    nonces = re.findall(RE_PATTERN[6], csp_h)
-    for nonce in nonces:
-        if re.match(RE_PATTERN[12], nonce) and len(nonce) < 32:
-            print_details(*csp_refs, 'd', i_cnt)
-            break
+    for nonce in re.findall(RE_PATTERN[6], csp_h):
+        if re.match(RE_PATTERN[12], nonce):
+            if len(nonce) < 32:
+                print_details(*csp_nonce_refs, 'd', i_cnt)
+                break
         elif re.match(RE_PATTERN[13], nonce):
             try:
                 if len(base64.b64decode(nonce, validate=True)) < 16:
-                    print_details(*csp_refs, 'd', i_cnt)
+                    print_details(*csp_nonce_refs, 'd', i_cnt)
                     break
             except Exception:
-                print_details(*csp_refs, 'd', i_cnt)
+                print_details(*csp_nonce_refs, 'd', i_cnt)
                 break
 
 
@@ -2435,7 +2435,7 @@ if 'accept-ch' in headers_l and '1' not in skip_list:
         print_detail_r('[ixachd_h]', is_red=True)
         if not args.brief:
             match_value = [x for x in t_acceptch_dep if x in acceptch_header]
-            match_value_str = ', '.join(match_value)
+            match_value_str = ', '.join(f"'{x}'" for x in match_value)
             print_detail_l('[ixachd_s]')
             print(match_value_str)
             print_detail('[ixachd]')
