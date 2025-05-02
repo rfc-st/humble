@@ -1067,7 +1067,7 @@ HTTP Response Headers
  Ref: https://http.dev/wss
 
 [icsw]
- Limit these permissive sources: 
+ And limit permissive sources: 
 
 [icsu]
  Avoid 'unsafe-hashes', and move all the logic associated with it to a JavaScript file.
@@ -1213,7 +1213,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
 
 [iset]
- Enable 'Secure' and 'HttpOnly' on each if it is associated with sensitive data.
+ 'Secure' and 'HttpOnly' must be set on any cookie associated with sensitive data.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [iseti]

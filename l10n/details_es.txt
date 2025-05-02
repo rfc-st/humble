@@ -1072,7 +1072,7 @@ Cabeceras de respuesta HTTP
  Ref: https://http.dev/wss
 
 [icsw]
- Limite estos orígenes permisivos: 
+ Y limite orígenes permisivos: 
 
 [icsu]
  Evite 'unsafe-hashes', y traslade toda su lógica a un fichero Javascript.
@@ -1218,7 +1218,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
 
 [iset]
- Habilite 'Secure' y 'HttpOnly' en cada una si está asociada a datos sensibles.
+ Cualquier cookie asociada a datos sensibles debe incluir 'Secure' y 'HttpOnly'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 [iseti]

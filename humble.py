@@ -156,7 +156,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-01', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-02', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -896,20 +896,17 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
     print_detail(f'{csp_refs}')
 
 
-def check_unsafe_cookies():
-    unsafe_cookies = []
-    cookies = re.split(RE_PATTERN[14], stc_header)
-    for cookie in cookies:
-        if any(val not in cookie.lower() for val in t_cookie_sec):
-            cookie_name = cookie.split('=', 1)[0].strip()
-            unsafe_cookies.append(cookie_name)
-        cookies_total = len(unsafe_cookies)
+def check_unsafe_cookies():  # sourcery skip: use-named-expression
+    unsafe_cookies = [cookie.split('=', 1)[0].strip() for cookie in
+                      re.split(RE_PATTERN[14], stc_header) if
+                      any(val not in cookie.lower() for val in t_cookie_sec)]
     if unsafe_cookies:
         print_detail_r('[iset_h]', is_red=True)
         if not args.brief:
-            print_detail_l('[icooks_s]' if cookies_total > 1 else '[icook_s]')
-            print(f"{', '.join([f'\'{cookie}\'' for cookie in
-                                unsafe_cookies])}.")
+            print_detail_l('[icooks_s]' if len(unsafe_cookies) > 1 else
+                           '[icook_s]')
+            print(f"{', '.join(f'\'{cookie}\'' for cookie in
+                               sorted(unsafe_cookies))}.")
             print_detail('[iset]', num_lines=2)
         i_cnt[0] += 1
 
