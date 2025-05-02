@@ -1577,7 +1577,17 @@ def generate_html():
         html_file.write(replaced_html)
 
 
-def format_html_info(ln_rstrip, sub_d, html_final):
+def format_html_lines(ln, html_final):
+    lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
+    ln_rstrip = ln.rstrip('\n')
+    return (format_html_info(ln_rstrip, html_final)
+            or format_html_bold(ln_rstrip, html_final)
+            or format_html_warnings(ln_rstrip, html_final)
+            or format_html_references(ln_rstrip, html_final, lang_slice)
+            or format_html_compatibility(ln_rstrip, html_final))
+
+
+def format_html_info(ln_rstrip, html_final):
     if URL_STRING[0] in ln_rstrip:
         html_final.write(f"{sub_d['ahref_s']}{ln_rstrip[:32]}\
 {sub_d['close_t']}{ln_rstrip[:32]}{sub_d['ahref_f']}{ln_rstrip[32:]}")
@@ -1589,7 +1599,7 @@ def format_html_info(ln_rstrip, sub_d, html_final):
     return False
 
 
-def format_html_warnings(ln_rstrip, sub_d, ok_string, ko_string, html_final):
+def format_html_warnings(ln_rstrip, html_final):
     if ok_string in ln_rstrip:
         html_final.write(f'<span class="ok">{ln_rstrip}{sub_d["span_f"]}<br>')
         return True
@@ -1599,7 +1609,7 @@ def format_html_warnings(ln_rstrip, sub_d, ok_string, ko_string, html_final):
     return False
 
 
-def format_html_references(ln_rstrip, sub_d, html_final, lang_slice):
+def format_html_references(ln_rstrip, html_final, lang_slice):
     for ref, ln_off, a_off in [(REF_LINKS[1], 6, 6),
                                (REF_LINKS[0], 8, 8),
                                (REF_LINKS[4], lang_slice, lang_slice)]:
@@ -1611,7 +1621,7 @@ def format_html_references(ln_rstrip, sub_d, html_final, lang_slice):
     return False
 
 
-def format_html_compatibility(ln_rstrip, sub_d, html_final):
+def format_html_compatibility(ln_rstrip, html_final):
     if URL_STRING[2] in ln_rstrip:
         html_final.write(f"{sub_d['span_h']}\
 {ln_rstrip[1:ln_rstrip.index(': ')]}: {sub_d['span_f']}{sub_d['ahref_s']}\
@@ -1628,7 +1638,7 @@ def format_html_bold(ln_rstrip, html_final):
     return False
 
 
-def format_html_headers(ln, sub_d, headers):
+def format_html_headers(ln):
     for i in headers:
         if (str(f"{i}: ") in ln and 'Date:   ' not in ln):
             ln = ln.replace(ln[: ln.index(":")], ((sub_d['span_h'] +
@@ -1637,7 +1647,7 @@ def format_html_headers(ln, sub_d, headers):
     return ln
 
 
-def format_html_fingerprint(args, ln, sub_d, l_fng):
+def format_html_fingerprint(args, ln, l_fng):
     ln_cf = ln.casefold() if args.brief else ln
     for i in l_fng:
         i_match = i.casefold() if args.brief else i
@@ -1647,7 +1657,7 @@ def format_html_fingerprint(args, ln, sub_d, l_fng):
     return ln
 
 
-def format_html_totals(ln, sub_d, l_total):
+def format_html_totals(ln, l_total):
     for i in l_total:
         if (not re.search(RE_PATTERN[11], ln)) and (
              (i in ln) and ('"' not in ln) or ('HTTP (' in ln)):
@@ -1655,14 +1665,26 @@ def format_html_totals(ln, sub_d, l_total):
     return ln
 
 
-def format_html_empty(ln, ln_stripped, sub_d, l_empty):
+def format_html_empty(ln, ln_stripped, l_empty):
     for i in l_empty:
         if (i in ln_stripped and '[' not in ln_stripped):
             ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
     return ln
 
 
-def format_html_enabled(ln, sub_d):
+def format_html_rest(ln, l_empty):
+    l_total = sorted(set(l_miss + l_ins))
+    ln, ln_enabled = format_html_enabled(ln)
+    ln_rstrip = ln.rstrip('\n')
+    if ln and not ln_enabled:
+        ln = format_html_headers(ln)
+        ln = format_html_fingerprint(args, ln, sorted(l_fng))
+        ln = format_html_totals(ln, l_total)
+        ln = format_html_empty(ln, ln_rstrip, l_empty)
+        html_final.write(ln)
+
+
+def format_html_enabled(ln):
     ln_enabled = STYLE[8] in ln
     if ln_enabled:
         ln = f" {ln[19:].rstrip()}"
@@ -3009,7 +3031,6 @@ elif args.output == 'pdf':
     generate_pdf(pdf, pdf_links, pdf_prefixes, tmp_filename)
 elif args.output == 'html':
     generate_html()
-    l_total = sorted(set(l_miss + l_ins))
     ok_string, ko_string = [get_detail(f'[{i}]').rstrip() for i
                             in ['no_warnings', 'no_sec_headers']]
     sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
@@ -3018,25 +3039,9 @@ elif args.output == 'html':
     with open(tmp_filename, 'r', encoding='utf8') as html_source, \
             open(final_filename, 'a', encoding='utf8') as html_final:
         for ln in html_source:
-            ln_rstrip = ln.rstrip('\n')
-            lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
-            ln_formatted = (
-                format_html_info(ln_rstrip, sub_d, html_final)
-                or format_html_bold(ln_rstrip, html_final)
-                or format_html_warnings(ln_rstrip, sub_d, ok_string,
-                                        ko_string, html_final)
-                or format_html_references(ln_rstrip, sub_d, html_final,
-                                          lang_slice)
-                or format_html_compatibility(ln_rstrip, sub_d, html_final))
+            ln_formatted = format_html_lines(ln, html_final)
             if not ln_formatted:
-                ln, ln_enabled = format_html_enabled(ln, sub_d)
-                if ln and not ln_enabled:
-                    ln = format_html_headers(ln, sub_d, headers)
-                    ln = format_html_fingerprint(args, ln, sub_d,
-                                                 sorted(l_fng))
-                    ln = format_html_totals(ln, sub_d, l_total)
-                    ln = format_html_empty(ln, ln_rstrip, sub_d, l_empty)
-                    html_final.write(ln)
+                format_html_rest(ln, l_empty)
         html_final.write('</pre><br></body></html>')
     print_export_path(final_filename, reliable)
     remove(tmp_filename)
