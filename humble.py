@@ -152,11 +152,11 @@ dflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflar\
 e-5xx-errors/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
 Reference/Status', 'https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py', 'https://github.com/rfc-st/humble')
-URL_STRING = ('rfc-st', ' URL  : ', 'caniuse')
+URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-02', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-08', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1622,13 +1622,14 @@ def format_html_references(ln_rstrip, html_final, lang_slice):
 
 
 def format_html_compatibility(ln_rstrip, html_final):
-    if URL_STRING[2] in ln_rstrip:
-        html_final.write(f"{sub_d['span_h']}\
-{ln_rstrip[1:ln_rstrip.index(': ')]}: {sub_d['span_f']}{sub_d['ahref_s']}\
-{ln_rstrip[ln_rstrip.index(HTTP_SCHEMES[1]):]}{sub_d['close_t']}\
-{ln_rstrip[ln_rstrip.index(HTTP_SCHEMES[1]):]}{sub_d['ahref_f']}<br>")
-        return True
-    return False
+    if URL_STRING[2] not in ln_rstrip:
+        return False
+    prefix, _, link = ln_rstrip.partition(': ')
+    html_final.write(
+        f"{sub_d['span_h']}{prefix[1:]}: {sub_d['span_f']}"
+        f"{sub_d['ahref_s']}{link}{sub_d['close_t']}{link}{sub_d['ahref_f']}\
+<br>")
+    return True
 
 
 def format_html_bold(ln_rstrip, html_final):
@@ -1639,11 +1640,12 @@ def format_html_bold(ln_rstrip, html_final):
 
 
 def format_html_headers(ln):
-    for i in headers:
-        if (str(f"{i}: ") in ln and 'Date:   ' not in ln):
-            ln = ln.replace(ln[: ln.index(":")], ((sub_d['span_h'] +
-                                                   ln[: ln.index(":")]) +
-                                                  sub_d['span_f']),)
+    for header in headers:
+        header_str = f"{header}: "
+        if header_str in ln:
+            header_pos = ln.index(":")
+            ln = ln.replace(ln[:header_pos], f"{sub_d['span_h']}\
+{ln[:header_pos]}{sub_d['span_f']}")
     return ln
 
 
