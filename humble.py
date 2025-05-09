@@ -1701,20 +1701,28 @@ def format_html_enabled(ln):
 
 
 def generate_xml(temp_filename, final_filename):
-    dtd_declaration = f'<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>'
-    root = ET.Element('analysis', {'version': f"{URL_LIST[4]} | \
-v.{local_version}", 'generated': current_time})
+    root = ET.Element('analysis', {
+        'version': f"{URL_LIST[4]} | v.{local_version}",
+        'generated': current_time})
     with open(temp_filename, 'r', encoding='utf8') as txt_source:
-        section = None
-        stripped_txt = (line.strip() for line in txt_source)
-        parse_xml(root, section, stripped_txt)
-    xml_content = ET.tostring(root, encoding='unicode', xml_declaration=False)
+        parse_xml(root, None, (line.strip() for line in txt_source))
+    xml_decl = '<?xml version="1.0" encoding="utf-8"?>\n'.encode('utf-8')
+    xml_content = ET.tostring(root, encoding='utf-8', xml_declaration=False)
+    xml_dtd = f'<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n'.encode('utf-8')
     with open(final_filename, 'wb') as xml_final:
-        xml_final.write(b'<?xml version="1.0" encoding="utf-8"?>\n')
-        xml_final.write(dtd_declaration.encode('utf-8'))
-        xml_final.write(xml_content.encode('utf-8'))
+        xml_final.write(xml_decl + xml_dtd + xml_content)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
+
+
+def add_xml_item(section, line):
+    item = ET.SubElement(section, 'item')
+    if ': ' in line and all(sub not in line for sub in XML_STRING):
+        key, value = line.split(': ', 1)
+        item.set('name', key.strip())
+        item.text = value.strip()
+    else:
+        item.text = line
 
 
 def parse_xml(root, section, stripped_txt):
@@ -1726,13 +1734,7 @@ def parse_xml(root, section, stripped_txt):
             continue
         if section is None:
             continue
-        item = ET.SubElement(section, 'item')
-        if ': ' in line and all(sub not in line for sub in XML_STRING):
-            key, value = line.split(': ', 1)
-            item.set('name', key.strip())
-            item.text = value.strip()
-        else:
-            item.text = line
+        add_xml_item(section, line)
     return section
 
 
