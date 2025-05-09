@@ -156,7 +156,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-09', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1783,30 +1783,29 @@ def print_owasp_findings(header_dict, header_list):
 
 def print_owasp_missing(header_list):
     print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
-    if missing_owasp := [header for header in header_list if header not in
-                         headers_l]:
-        for header in missing_owasp:
-            prefix = "(*) " if header.title() == "Permissions-Policy" else ""
-            print(f"{STYLE[1]}  {prefix}{header.title()}{STYLE[5]}")
-    else:
+    missing_owasp = [header.title() for header in header_list if header not in
+                     headers_l]
+    if not missing_owasp:
         print(f"{STYLE[10]}  {get_detail('[no_warnings]')}{STYLE[5]}", end="")
+        return
+    for header in missing_owasp:
+        prefix = "(*) " if header == "Permissions-Policy" else ""
+        print(f"{STYLE[1]}  {prefix}{header}{STYLE[5]}")
 
 
 def print_owasp_wrong(header_dict):
     wrong_owasp = [
-        (header, header_val)
-        for header, header_val in headers_l.items()
-        if (owasp_value := header_dict.get(header.title())) and header_val !=
+        (header.title(), value)
+        for header, value in headers_l.items()
+        if (owasp_value := header_dict.get(header.title())) and value !=
         owasp_value]
-    if wrong_owasp:
-        print(f"\n\n{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
-        for header, value in sorted(wrong_owasp):
-            header_title = header.title()
-            prefix = f"{'(*) ' if header_title == 'Permissions-Policy' else
-                        ''}"
-            print(f"{STYLE[1]}  {prefix}{header_title}{STYLE[4]}: {value}")
-    else:
+    if not wrong_owasp:
         print(f"{STYLE[10]}  {get_detail('[no_warnings]')}{STYLE[5]}", end="")
+        return
+    print(f"\n\n{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
+    for header, value in sorted(wrong_owasp):
+        prefix = "(*) " if header == "Permissions-Policy" else ""
+        print(f"{STYLE[1]}  {prefix}{header}{STYLE[4]}: {value}")
 
 
 def analyze_input_file(input_file):
