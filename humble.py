@@ -147,9 +147,9 @@ STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
 TESTSSL_FILE = ("testssl", "testssl.sh")
 # Check https://testssl.sh/doc/testssl.1.html to choose your preferred options
 TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
-URL_LIST = (': https://caniuse.com/?search=', ' Ref  : https://developers.clou\
-dflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflar\
-e-5xx-errors/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
+URL_LIST = (': https://caniuse.com/?search=', ' Ref  : https://developers.\
+cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
+/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
 Reference/Status', 'https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py', 'https://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
@@ -1896,7 +1896,7 @@ def make_http_request():
         return None, None, e
 
 
-# Five seconds should be sufficient to receive the HTTP response headers.
+# Five seconds should be enough to receive the HTTP response headers.
 def wait_http_request(future):
     with contextlib.suppress(concurrent.futures.TimeoutError):
         future.result(timeout=5)
@@ -1943,7 +1943,7 @@ def manage_http_request(status_code, reliable, body):
                 handle_requests_exception(exception)
                 return headers, status_code, reliable, body
             # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors
-            # https://developers.cloudflare.com/support/troubleshooting/cloudflare-errors/troubleshooting-cloudflare-5xx-errors/
+            # https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/
             handle_http_error(r, exception_d)
             if r is not None:
                 status_code = r.status_code
