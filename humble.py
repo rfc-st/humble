@@ -1176,15 +1176,13 @@ def get_enabled_headers(args, headers_l, t_enabled):
 
 
 def print_enabled_headers(args, exp_s, header, headers_d):
-    header_display = f'{STYLE[8]}{exp_s}{header}' if args.output in \
-        ('html', 'pdf') else f'{exp_s}{header}'
-    if args.output:
-        print(f' {header_display}' if args.brief else f' {header_display}: \
-{headers_d[header]}')
-    else:
-        styled_header = f'{STYLE[7]}{header_display}{STYLE[5]}'[18:]
-        print(f' {styled_header}' if args.brief else f' {styled_header}: \
-{headers_d[header]}')
+    prefix = STYLE[8] if args.output in ('html', 'pdf') else ''
+    header_display = f"{prefix}{exp_s}{header}"
+    if not args.output:
+        header_display = f"{STYLE[7]}{header_display}{STYLE[5]}"[18:]
+    output_str = f" {header_display}" if args.brief else f" {header_display}: \
+{headers_d[header]}"
+    print(output_str)
 
 
 def print_nosec_headers():

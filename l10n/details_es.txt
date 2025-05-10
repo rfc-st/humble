@@ -901,22 +901,22 @@ Cabeceras de respuesta HTTP
 [Cabeceras de respuesta HTTP]
 
 [1enabled]
-[1. Cabeceras de respuesta HTTP habilitadas]
+[1. Cabeceras HTTP de seguridad habilitadas]
 
 [2missing]
-[2. Cabeceras de respuesta HTTP no habilitadas]
+[2. Cabeceras HTTP de seguridad ausentes]
 
 [3fingerprint]
 [3. Huella digital por cabeceras de respuesta HTTP]
 
 [4depinsecure]
-[4. Protocolos/Cabeceras de respuesta HTTP obsoletas o con valores inseguros]
+[4. Protocolos/Cabeceras HTTP de seguridad obsoletas o con valores inseguros]
 
 [5empty]
 [5. Cabeceras de respuesta HTTP sin valor]
 
 [6compat]
-[6. Compatibilidad de navegadores para cabeceras de seguridad HTTP habilitadas]
+[6. Compatibilidad de navegadores para cabeceras HTTP de seguridad habilitadas]
 
 [7result]
 [7. Resultados del análisis]
