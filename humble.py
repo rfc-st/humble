@@ -1432,12 +1432,11 @@ def format_json(json_data, json_lns):
     return json_data
 
 
-def generate_pdf(pdf, pdf_links, pdf_prefixes, temp_filename):
+def generate_pdf(temp_filename):
     set_pdf_file()
     ok_string = get_detail('[no_warnings]').rstrip()
     no_headers = get_detail('[no_sec_headers]').strip()
-    set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string,
-                    no_headers)
+    set_pdf_content(temp_filename, ok_string, no_headers)
     pdf.output(final_filename)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
@@ -1464,8 +1463,7 @@ def set_pdf_metadata():
     pdf.set_producer(git_urlc)
 
 
-def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string,
-                    no_headers):
+def set_pdf_content(temp_filename, ok_string, no_headers):
     with open(temp_filename, "r", encoding='utf8') as txt_source:
         for line in txt_source:
             if no_headers in line:
@@ -1477,7 +1475,7 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string,
                 pdf.set_font(style='B')
             else:
                 pdf.set_font(style='')
-            next((format_pdf_links(line, pdf_prefixes, string) for string in
+            next((format_pdf_links(line, string) for string in
                   pdf_links if string in line), None)
             if set_pdf_conditions(line):
                 continue
@@ -1485,7 +1483,7 @@ def set_pdf_content(pdf, pdf_links, pdf_prefixes, temp_filename, ok_string,
                 set_pdf_nowarnings(line)
                 continue
             pdf.set_text_color(255, 0, 0)
-            set_pdf_style(pdf, line)
+            set_pdf_style(line)
 
 
 def set_pdf_sections(i):
@@ -1499,14 +1497,14 @@ def set_pdf_sections(i):
 
 
 def set_pdf_conditions(line):
-    return (all(condition not in line for condition in PDF_CONDITIONS[:3]) and
-            (PDF_CONDITIONS[3] in
-             line or any(item in line for item in (l_miss + l_ins + l_fng +
-                                                   titled_fng))) and
-            set_pdf_warnings(line))
+    combined_h = l_miss + l_ins + l_fng + titled_fng
+    return (
+        all(condition not in line for condition in PDF_CONDITIONS[:3]) and
+        (PDF_CONDITIONS[3] in line or any(item in line for item in combined_h))
+        and set_pdf_warnings(line))
 
 
-def format_pdf_links(i, pdf_prefixes, pdf_string):
+def format_pdf_links(i, pdf_string):
     pdf_link = set_pdf_links(i, pdf_string)
     if pdf_string in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
         pdf_prefix = pdf_prefixes.get(pdf_string, pdf_string)
@@ -1538,19 +1536,19 @@ def set_pdf_links(i, pdf_string):
     return pdf_links_d.get(pdf_string)
 
 
-def set_pdf_style(pdf, line):
+def set_pdf_style(line):
     if re.search(RE_PATTERN[10], line):
-        set_pdf_color(pdf, line[19:], '#008000', '#000000')
+        set_pdf_color(line[19:], '#008000', '#000000')
         return
     elif re.search(RE_PATTERN[7], line):
-        set_pdf_color(pdf, line[19:], '#660033', '#000000')
+        set_pdf_color(line[19:], '#660033', '#000000')
         return
     else:
         pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
 
 
-def set_pdf_color(pdf, line, hcolor, vcolor):
+def set_pdf_color(line, hcolor, vcolor):
     c_index = line.find(': ')
     if c_index != -1:
         ln_header = f'<font color="{hcolor}">{line[:c_index + 2]}</font>'
@@ -3031,7 +3029,7 @@ elif args.output == 'pdf':
     pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
                  REF_LINKS[4])
     pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
-    generate_pdf(pdf, pdf_links, pdf_prefixes, tmp_filename)
+    generate_pdf(tmp_filename)
 elif args.output == 'html':
     generate_html()
     ok_string, ko_string = [get_detail(f'[{i}]').rstrip() for i
