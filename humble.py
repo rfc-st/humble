@@ -897,18 +897,20 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
 
 
 def check_unsafe_cookies():  # sourcery skip: use-named-expression
-    unsafe_cookies = [cookie.split('=', 1)[0].strip() for cookie in
-                      re.split(RE_PATTERN[14], stc_header) if
-                      any(val not in cookie.lower() for val in t_cookie_sec)]
-    if unsafe_cookies:
+    unsafe_cks = [ck.split('=', 1)[0].strip() for ck in
+                  re.split(RE_PATTERN[14], stc_header) if
+                  any(val not in ck.lower() for val in t_cookie_sec)]
+    if unsafe_cks:
         print_detail_r('[iset_h]', is_red=True)
         if not args.brief:
-            print_detail_l('[icooks_s]' if len(unsafe_cookies) > 1 else
-                           '[icook_s]')
-            print(f"{', '.join(f'\'{cookie}\'' for cookie in
-                               sorted(unsafe_cookies))}.")
-            print_detail('[iset]', num_lines=2)
-        i_cnt[0] += 1
+            print_unsafe_cookies(unsafe_cks)
+    i_cnt[0] += 1
+
+
+def print_unsafe_cookies(unsafe_cks):
+    print_detail_l('[icooks_s]' if len(unsafe_cks) > 1 else '[icook_s]')
+    print(f"{', '.join(f'\'{ck}\'' for ck in sorted(unsafe_cks))}.")
+    print_detail('[iset]', num_lines=2)
 
 
 def permissions_analyze_content(perm_header, i_cnt):
