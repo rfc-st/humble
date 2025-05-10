@@ -156,7 +156,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-09', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-10', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1842,11 +1842,11 @@ def get_tmp_file(args, export_date):
 
 
 def build_tmp_file(export_date, file_ext, lang, url):
-    str_hum = f"{HUMBLE_DESC[1:7]}_"
+    str_hum = HUMBLE_DESC[1:7]
     url_str = tldextract.extract(URL)
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
-    url_prt = f"_{url.port}_" if url.port is not None else '_'
-    return f"{str_hum}{url.scheme}{url_sub}{url_str.domain}.{url_str.suffix}\
+    url_prt = f"_{url.port}_" if url.port else '_'
+    return f"{str_hum}_{url.scheme}{url_sub}{url_str.domain}.{url_str.suffix}\
 {url_prt}{export_date}{lang}{file_ext}"
 
 
@@ -1896,9 +1896,9 @@ def make_http_request():
         return None, None, e
 
 
-# Five seconds should be enough to receive the HTTP response headers.
 def wait_http_request(future):
     with contextlib.suppress(concurrent.futures.TimeoutError):
+        # Five seconds should be enough to receive the HTTP response headers.
         future.result(timeout=5)
 
 

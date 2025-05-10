@@ -14,10 +14,11 @@ Contributing
 
 * Please note (before sending a Pull Request) that <i>humble</i> is a multi-language tool (for now only English and Spanish are supported): take a look at [these](https://github.com/rfc-st/humble/tree/master/l10n) files, those ending in '_es.txt' are the Spanish translations. Therefore, each Pull Request that adds or modifies text strings must take into account both languages and update the corresponding files; also take a look at the functions <i>get_detail</i>, <i>get_l10n_content</i>, <i>print_detail</i>, <i>print_details</i>, <i>print_detail_l</i> and <i>print_detail_r</i>; they will help you understand how I handle literals and phrases.
 
-* When contributing code, it must be <b>optimized</b>. My personal criterion is that every class, function, and method must achieve at least a <b>B</b> score in [radon's](https://radon.readthedocs.io/en/latest/commandline.html#the-cc-command) Cyclomatic Complexity analysis. To check this, you can use the following command — it should return no results; if it does, please optimize and simplify the code accordingly:
-<pre>radon cc humble.py -nc</pre>
+* When contributing code, it must be <b>optimized</b>. My personal criterion is that every class, function, and method must achieve at least a <b>B</b> rank in [Radon's](https://radon.readthedocs.io/en/latest/commandline.html#the-cc-command) Cyclomatic Complexity analysis; otherwise review your changes and try to optimize and simplify them:
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_radon.PNG" alt="Radon analysis shows no objects with a rank worse than 'B'." width=70% height=70%>
 
-* And your contributions (e.g., functions) must score at least <b>60%</b> in [sourcery](https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery) quality score [checks](https://docs.sourcery.ai/Coding-Assistant/Reference/Metrics/#quality-score): sourcery is free for open source projects.
+* Also make sure that the functions you add or modify achieve at least a <b>64%</b> Quality Score in [Sourcery](https://docs.sourcery.ai/Coding-Assistant/Reference/Metrics/#quality-score) analysis; otherwise review your changes and try to optimize and simplify them:
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_sourcery.PNG" alt="Sourcery analysis shows a Quality Score of 64%" width=70% height=70%>
 
 * Finally, I have my <i>quirks</i> :), and I may not accept your Pull Request for certain reasons that I will <b>always</b> explain in the request itself. That, of course, doesn't mean that I don't value your interest, your time or your code: <b>always</b>, if I end up implementing your idea, I <b>will mention you</b> in the [Acknowledgements](https://github.com/rfc-st/humble/#acknowledgements) section.
 
