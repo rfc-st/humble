@@ -856,22 +856,39 @@ def csp_print_unsafe(csp_unsafe_dirs, i_cnt):
 
 
 def csp_check_nonces(csp_h):
-    csp_nonce_refs = ('[icsnces_h]', '[icsnces]')
     if not re.search(RE_PATTERN[15], csp_h):
         print_details('[icsncei_h]', '[icsncei]', 'd', i_cnt)
+        return
+    nonce_refs = ('[icsncei_h]', '[icsncesn]', '[icsnces]')
     for nonce in re.findall(RE_PATTERN[6], csp_h):
-        if re.match(RE_PATTERN[12], nonce):
-            if len(nonce) < 32:
-                print_details(*csp_nonce_refs, 'd', i_cnt)
-                break
-        elif re.match(RE_PATTERN[13], nonce):
-            try:
-                if len(base64.b64decode(nonce, validate=True)) < 16:
-                    print_details(*csp_nonce_refs, 'd', i_cnt)
-                    break
-            except Exception:
-                print_details(*csp_nonce_refs, 'd', i_cnt)
-                break
+        if (re.match(RE_PATTERN[12], nonce) and
+            csp_hex_nonce(nonce, nonce_refs, i_cnt)) or \
+           (re.match(RE_PATTERN[13], nonce) and
+           csp_base64_nonce(nonce, nonce_refs, i_cnt)):
+            return
+
+
+def csp_hex_nonce(nonce, nonce_refs, i_cnt):
+    return csp_print_nonce(nonce, nonce_refs, i_cnt) \
+        if len(nonce) < 32 else False
+
+
+def csp_base64_nonce(nonce, nonce_refs, i_cnt):
+    try:
+        return csp_print_nonce(nonce, nonce_refs, i_cnt) if \
+            len(base64.b64decode(nonce, validate=True)) < 16 else False
+    except Exception:
+        return csp_print_nonce(nonce, nonce_refs, i_cnt)
+
+
+def csp_print_nonce(nonce, nonce_refs, i_cnt):
+    print_detail_r(nonce_refs[0], is_red=True)
+    if not args.brief:
+        print_detail_l(nonce_refs[1])
+        print(f"'{nonce}'.")
+        print_detail(nonce_refs[2], num_lines=2)
+    i_cnt[0] += 1
+    return True
 
 
 def csp_check_ip(csp_h):

@@ -1073,8 +1073,11 @@ HTTP Response Headers
  Avoid 'unsafe-hashes', and move all the logic associated with it to a JavaScript file.
  Ref: https://content-security-policy.com/unsafe-hashes/
 
+[icsncesn]
+ Rewiew the nonce 
+
 [icsnces]
- Nonces should have at least 128 bits of entropy (32 hex characters / 24 base64 characters).
+ All should have at least 128 bits of entropy (32 hex characters / 24 base64 characters).
  Ref: https://content-security-policy.com/nonce/
 
 [icsncei]
