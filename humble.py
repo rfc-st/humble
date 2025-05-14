@@ -859,7 +859,7 @@ def csp_check_nonces(csp_h):
     if not re.search(RE_PATTERN[15], csp_h):
         print_details('[icsncei_h]', '[icsncei]', 'd', i_cnt)
         return
-    nonce_refs = ('[icsncei_h]', '[icsncesn]', '[icsnces]')
+    nonce_refs = ('[icsnces_h]', '[icsncesn]', '[icsnces]')
     for nonce in re.findall(RE_PATTERN[6], csp_h):
         if (re.match(RE_PATTERN[12], nonce) and
             csp_hex_nonce(nonce, nonce_refs, i_cnt)) or \
