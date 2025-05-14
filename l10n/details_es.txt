@@ -649,7 +649,7 @@
  Referrer-Policy (Valores recomendados)
 
 [islogin_h]
- (*) Set-Login (Sin directivas adecuadas)
+ Set-Login (Sin directivas adecuadas)
 
 [irefi_h]
  Referrer-Policy (Valor inseguro)
@@ -664,7 +664,7 @@
  Report-To (Cabecera obsoleta)
 
 [irepe_h]
- (*) Reporting-Endpoints (Valor ignorado)
+ Reporting-Endpoints (Valor ignorado)
 
 [irepdig_h]
  Repr-Digest (Sin algoritmos seguros)
@@ -742,7 +742,7 @@
  Surrogate-Control (Sin directivas adecuadas)
 
 [iorigcluster_h]
- (*) Origin-Agent-Cluster (Sin directivas adecuadas)
+ Origin-Agent-Cluster (Sin directivas adecuadas)
 
 [ihbas_h]
  WWW-Authenticate (Valor inseguro)

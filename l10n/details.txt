@@ -648,7 +648,7 @@
  Referrer-Policy (Recommended Values)
 
 [islogin_h]
- (*) Set-Login (No Valid Directives)
+ Set-Login (No Valid Directives)
 
 [irefi_h]
  Referrer-Policy (Unsafe Value)
@@ -663,7 +663,7 @@
  Report-To (Deprecated Header)
 
 [irepe_h]
- (*) Reporting-Endpoints (Ignored Value)
+ Reporting-Endpoints (Ignored Value)
 
 [irepdig_h]
  Repr-Digest (No Secure Algorithms)
@@ -741,7 +741,7 @@
  Surrogate-Control (No Valid Directives)
 
 [iorigcluster_h]
- (*) Origin-Agent-Cluster (No Valid Directives)
+ Origin-Agent-Cluster (No Valid Directives)
 
 [ihbas_h]
  WWW-Authenticate (Unsafe Value)

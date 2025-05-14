@@ -88,8 +88,7 @@ DTD_CONTENT = '''<!ELEMENT analysis (section+)>
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'nel', 'no-vary-search', 'observe-browsing-topics',
-               'origin-agent-cluster', 'permissions-policy',
-               'reporting-endpoints', 'set-login', 'speculation-rules',
+               'permissions-policy', 'speculation-rules',
                'supports-loading-mode')
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HTTP_SCHEMES = ('http:', 'https:')
@@ -156,7 +155,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-10', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-14', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
