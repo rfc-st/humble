@@ -1070,15 +1070,15 @@ HTTP Response Headers
  And limit permissive sources: 
 
 [icsu]
- Avoid 'unsafe-hashes', and move all the logic associated with it to a JavaScript file.
+ Avoid 'unsafe-hashes' and move all the logic associated with it to a JavaScript file.
  Ref: https://content-security-policy.com/unsafe-hashes/
 
 [icsncesn]
  Rewiew the nonce 
 
 [icsnces]
- All should have at least 128 bits of entropy (32 hex characters / 24 base64 characters).
- Ref: https://content-security-policy.com/nonce/
+ All should be at least 128 bits long (32 hex characters / 24 base64 characters).
+ Ref: https://www.w3.org/TR/CSP3/#security-nonces
 
 [icsncei]
  Nonces must be enclosed in single quotes.

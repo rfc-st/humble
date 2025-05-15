@@ -155,7 +155,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-14', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-15', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -584,23 +584,17 @@ def calculate_trends(values):
     # 'Improving': Values consistently decrease.
     # 'Worsening': Values consistently increase.
     # 'Fluctuating': No clear trend is detected; values alternate.
-
     if len(values) < 5:
         return print_detail_l('[t_insufficient]', analytics=True)
-
     trends_list = values[-5:]
-
     if all(x == trends_list[0] for x in trends_list):
         return print_detail_l('[t_stable]', analytics=True)
-
     inc_trend = sum(trends_list[i] > trends_list[i - 1] for i in range(1, 5))
     dec_trend = sum(trends_list[i] < trends_list[i - 1] for i in range(1, 5))
-
     if dec_trend > inc_trend:
         return print_detail_l('[t_improving]', analytics=True)
     if inc_trend > dec_trend:
         return print_detail_l('[t_worsening]', analytics=True)
-
     return print_detail_l('[t_fluctuating]', analytics=True)
 
 
@@ -982,7 +976,10 @@ def print_export_path(filename, reliable):
 
 
 def print_nowarnings():
-    print_detail('[no_warnings]')
+    if not args.output:
+        print(f"{STYLE[10]}{get_detail('[no_warnings]')}{STYLE[5]}")
+    else:
+        print_detail('[no_warnings]')
 
 
 def print_header(header):
