@@ -155,7 +155,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-15', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-16', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1550,15 +1550,34 @@ def set_pdf_links(i, pdf_string):
 
 
 def set_pdf_style(line):
-    if re.search(RE_PATTERN[10], line):
+    if len(line) > 101:
+        chunks = [line[i:i + 101] for i in range(0, len(line), 101)]
+        print_pdf_chunks(chunks)
+        pdf.ln(h=2)
+    elif re.search(RE_PATTERN[10], line):
         set_pdf_color(line[19:], '#008000', '#000000')
-        return
     elif re.search(RE_PATTERN[7], line):
         set_pdf_color(line[19:], '#660033', '#000000')
-        return
     else:
         pdf.set_text_color(0, 0, 0)
-    pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+        pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+
+
+def print_pdf_chunks(chunks):
+    for i, chunk in enumerate(chunks):
+        if re.search(RE_PATTERN[10], chunk):
+            set_pdf_color(chunk[19:], '#008000', '#000000')
+        elif re.search(RE_PATTERN[7], chunk):
+            set_pdf_color(chunk[19:], '#660033', '#000000')
+        else:
+            pdf.set_text_color(0, 0, 0)
+            if i > 0:
+                chunk = f' {chunk}'
+            if i == 1:
+                current_y = pdf.get_y()
+                pdf.set_y(current_y - 1.5)
+            pdf.cell(104, 6, text=chunk, align='L')
+            pdf.ln(h=6)
 
 
 def set_pdf_color(line, hcolor, vcolor):
