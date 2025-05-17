@@ -155,7 +155,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-16', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-17', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1496,7 +1496,7 @@ def set_pdf_content(temp_filename, ok_string, no_headers):
                 set_pdf_nowarnings(line)
                 continue
             pdf.set_text_color(255, 0, 0)
-            set_pdf_style(line)
+            format_pdf_lines(line)
 
 
 def set_pdf_sections(i):
@@ -1549,46 +1549,55 @@ def set_pdf_links(i, pdf_string):
     return pdf_links_d.get(pdf_string)
 
 
-def set_pdf_style(line):
+def format_pdf_lines(line):
+    i, chunks = None, None
     if len(line) > 101:
         chunks = [line[i:i + 101] for i in range(0, len(line), 101)]
-        print_pdf_chunks(chunks)
+        set_pdf_chunks(chunks)
         pdf.ln(h=2)
     elif re.search(RE_PATTERN[10], line):
-        set_pdf_color(line[19:], '#008000', '#000000')
+        color_pdf_line(line[19:], '#008000', '#000000', chunks, i)
     elif re.search(RE_PATTERN[7], line):
-        set_pdf_color(line[19:], '#660033', '#000000')
+        color_pdf_line(line[19:], '#660033', '#000000', chunks, i)
     else:
         pdf.set_text_color(0, 0, 0)
         pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
 
 
-def print_pdf_chunks(chunks):
+def set_pdf_chunks(chunks):
+    chunk_s = None
     for i, chunk in enumerate(chunks):
+        prev_chunk_s = chunk_s
         if re.search(RE_PATTERN[10], chunk):
-            set_pdf_color(chunk[19:], '#008000', '#000000')
+            chunk_s = color_pdf_line(chunk[19:], '#008000', '#000000', chunks,
+                                     i)
         elif re.search(RE_PATTERN[7], chunk):
-            set_pdf_color(chunk[19:], '#660033', '#000000')
+            chunk_s = color_pdf_line(chunk[19:], '#660033', '#000000', chunks,
+                                     i)
         else:
-            pdf.set_text_color(0, 0, 0)
-            if i > 0:
-                chunk = f' {chunk}'
-            if i == 1:
-                current_y = pdf.get_y()
-                pdf.set_y(current_y - 1.5)
-            pdf.cell(104, 6, text=chunk, align='L')
-            pdf.ln(h=6)
+            format_pdf_chunks(chunk, chunks, i, prev_chunk_s)
 
 
-def set_pdf_color(line, hcolor, vcolor):
+def format_pdf_chunks(chunk, chunks, i, prev_chunk_s):
+    pdf.set_text_color(0, 0, 0)
+    chunk = f' {chunk}' if i > 0 else chunk
+    if len(chunks) == 2 and i == 1 and prev_chunk_s != '#660033':
+        pdf.set_y(pdf.get_y() + 1.5)
+    if i == 1:
+        pdf.set_y(pdf.get_y() - 1.5)
+    pdf.cell(104, 6, text=chunk, align='L')
+    pdf.ln(h=6)
+
+
+def color_pdf_line(line, hcolor, vcolor, chunks, i):
     c_index = line.find(': ')
-    if c_index != -1:
-        ln_header = f'<font color="{hcolor}">{line[:c_index + 2]}</font>'
-        ln_value = f'<font color="{vcolor}">{line[c_index + 2:]}</font>'
-        ln_final = f"&nbsp;{ln_header}{ln_value}<br><br>"
-    else:
-        ln_final = f'&nbsp;<font color="{hcolor}">{line}</font><br><br>'
+    ln_final = (
+        f'&nbsp;<font color="{hcolor}">{line}</font><br><br>'
+        if c_index == -1
+        else f'&nbsp;<font color="{hcolor}">{line[:c_index + 2]}</font>'
+             f'<font color="{vcolor}">{line[c_index + 2:]}</font><br><br>')
     pdf.write_html(ln_final)
+    return hcolor if chunks and len(chunks) == 2 and i == 0 else None
 
 
 def generate_html():
