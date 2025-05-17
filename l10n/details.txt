@@ -890,7 +890,7 @@ HTTP Response Headers
  Error: The URL scheme provided is either invalid or unsupported.
 
 [report]
- Report saved to
+  saved to
 
 [0section]
 [0. Info]

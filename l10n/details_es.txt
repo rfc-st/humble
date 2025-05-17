@@ -892,7 +892,7 @@ Cabeceras de respuesta HTTP
  Error: El esquema de la URL no es válido o no es compatible.
 
 [report]
- Informe guardado en
+ guardado en
 
 [0section]
 [0. Información]

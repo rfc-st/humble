@@ -972,7 +972,8 @@ def delete_lines(reliable=True):
 def print_export_path(filename, reliable):
     delete_lines(reliable=False) if reliable else delete_lines()
     if '-c' not in sys.argv:
-        print(f"{print_detail_s('[report]')} {path.abspath(filename)}")
+        print(f"\n {args.output.upper()} {print_detail_s('[report]').lstrip()}\
+ '{path.abspath(filename)}'.")
 
 
 def print_nowarnings():
