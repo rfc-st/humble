@@ -155,7 +155,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-17', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-23', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -943,15 +943,16 @@ def permissions_print_deprecated(perm_header):
 
 
 def permissions_check_broad(perm_header):
-    perm_dirs = sum(perm_dir in perm_header for perm_dir in t_per_ft)
+    if sum(dir in perm_header for dir in t_per_ft) < 2:
+        return None
     try:
-        if perm_dirs >= 2:
-            return [dir.split('=')[0].strip() for dir in perm_header.split(',')
-                    if any(broadp in dir.split('=')[1].strip() for broadp in
-                           t_per_broad)]
-    except IndexError:
+        return [directive.split('=')[0].strip()
+                for directive in perm_header.split(',')
+                if any(broad in directive.split('=')[1].strip() for broad in
+                       t_per_broad)]
+    except (IndexError, ValueError):
         print_details('[ifpolf_h]', '[ifpolf]', "d", i_cnt)
-        return
+        return None
 
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
@@ -2410,19 +2411,19 @@ t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
             'ch-ua-platform', 'ch-ua-platform-version', 'ch-ua-wow64',
             'clipboard-read', 'clipboard-write', 'compute-pressure',
             'conversion-measurement', 'cross-origin-isolated',
-            'deferred-fetch', 'digital-credentials-get', 'direct-sockets',
-            'display-capture', 'encrypted-media',
-            'execution-while-not-rendered', 'execution-while-out-of-viewport',
-            'focus-without-user-activation', 'fullscreen', 'gamepad',
-            'geolocation', 'gyroscope', 'hid', 'identity-credentials-get',
-            'idle-detection', 'interest-cohort', 'join-ad-interest-group',
-            'keyboard-map', 'layout-animations', 'local-fonts',
-            'magnetometer', 'microphone', 'midi', 'navigation-override',
-            'otp-credentials', 'payment', 'picture-in-picture',
-            'publickey-credentials-create', 'publickey-credentials-get',
-            'run-ad-auction', 'screen-wake-lock', 'serial',
-            'shared-autofill', 'smart-card', 'speaker-selection',
-            'storage-access', 'sync-script', 'sync-xhr',
+            'deferred-fetch', 'deferred-fetch-minimal',
+            'digital-credentials-get', 'direct-sockets', 'display-capture',
+            'encrypted-media', 'execution-while-not-rendered',
+            'execution-while-out-of-viewport', 'focus-without-user-activation',
+            'fullscreen', 'gamepad', 'geolocation', 'gyroscope', 'hid',
+            'identity-credentials-get', 'idle-detection', 'interest-cohort',
+            'join-ad-interest-group', 'keyboard-map', 'layout-animations',
+            'local-fonts', 'magnetometer', 'microphone', 'midi',
+            'navigation-override', 'otp-credentials', 'payment',
+            'picture-in-picture', 'publickey-credentials-create',
+            'publickey-credentials-get', 'run-ad-auction', 'screen-wake-lock',
+            'serial', 'shared-autofill', 'smart-card', 'speaker-selection',
+            'storage-access', 'summarizer', 'sync-script', 'sync-xhr',
             'trust-token-redemption', 'unload', 'usb', 'vertical-scroll',
             'web-share', 'window-management', 'xr-spatial-tracking')
 
