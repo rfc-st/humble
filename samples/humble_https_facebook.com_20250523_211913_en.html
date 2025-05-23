@@ -1,0 +1,120 @@
+<!DOCTYPE HTML><html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="description" content="HTTP headers analysis of
+ https://facebook.com"><meta name="keywords" content="HTTP Headers, Analyzer, Analysis, Cybersecurity, Security-scanner, Security-Tools, Header-Parser
+"><meta name="author" content="https://github.com/rfc-st/humble | v.2025-05-23"><meta name="generator" content="https://github.com/rfc-st/humble | v.2025-05-23"><title>HTTP headers analysis
+</title><style>pre {overflow-x: auto; white-space: pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word; font-size: 13px;} a {color: blue; text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko {color: red;}</style></head><body><pre>
+
+'humble' (HTTP Headers Analyzer)
+<a href="https://github.com/rfc-st/humble">https://github.com/rfc-st/humble</a> | v.2025-05-23
+
+
+<strong>[0. Info]</strong><br>
+ Date : 2025/05/23 - 21:19:13
+ URL  : <a href="https://facebook.com">https://facebook.com</a><br> File : humble_https_facebook.com_20250523_211913_en.html
+ Note : The URL returns an error (HTTP code 400, 'Bad Request')
+ Ref  : <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status400">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status400</a><br>
+
+<strong>[1. Enabled HTTP Security Headers]</strong><br>
+<span class='ok'> Cache-Control</span>: private, no-cache, no-store, must-revalidate<br><span class='ok'> Content-Security-Policy</span>: <strong>default-src</strong> blob: 'self' https://*.fbsbx.com *.facebook.com *.fbcdn.net;<strong>script-src</strong> *.facebook.com *.fbcdn.net 127.0.0.1:* 'nonce-obH9laIV' blob: data: 'self' 'wasm-unsafe-eval';<strong>style-src</strong> *.fbcdn.net data: *.facebook.com 'unsafe-inline';<strong>connect-src</strong> *.facebook.com facebook.com *.fbcdn.net wss://*.facebook.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' http://localhost:3103 wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d.facebook.com/ *.fbsbx.com *.fb.com;<strong>font-src</strong> data: *.facebook.com *.fbcdn.net *.fbsbx.com;<strong>img-src</strong> *.fbcdn.net *.facebook.com data: https://*.fbsbx.com facebook.com *.cdninstagram.com fbsbx.com fbcdn.net blob: android-webview-video-poster: *.fb.com *.oculuscdn.com https://paywithmybank.com/ https://*.paywithmybank.com/;<strong>media-src</strong> *.cdninstagram.com blob: *.fbcdn.net *.fbsbx.com www.facebook.com *.facebook.com data:;<strong>child-src</strong> data: blob: 'self' https://*.fbsbx.com *.facebook.com *.fbcdn.net;<strong>frame-src</strong> *.facebook.com *.fbsbx.com fbsbx.com data: www.instagram.com *.fbcdn.net accounts.meta.com https://paywithmybank.com/ https://*.paywithmybank.com/;<strong>manifest-src</strong> data: blob: 'self' https://*.fbsbx.com *.facebook.com *.fbcdn.net;<strong>object-src</strong> data: blob: 'self' https://*.fbsbx.com *.facebook.com *.fbcdn.net;<strong>worker-src</strong> blob: *.facebook.com data:;block-all-mixed-content;<strong>upgrade-insecure-requests</strong>;report-uri https://www.facebook.com/csp/reporting/?m=c&minimize=0;<br><span class='ok'> Content-Type</span>: text/html; charset="utf-8"<br><span class='ok'> Cross-Origin-Embedder-Policy-Report-Only</span>: require-corp;report-to="coep_report"<br><span class='ok'> Cross-Origin-Opener-Policy</span>: same-origin-allow-popups;report-to="coop_report"<br><span class='ok'> Origin-Agent-Cluster</span>: ?1<br><span class='ok'> Pragma</span>: no-cache<br><span class='ok'> Report-To</span>: {"max_age":2592000,"endpoints":[{"url":"https:\/\/www.facebook.com\/browser_reporting\/coop\/?minimize=0"}],"group":"coop_report","include_subdomains":true}, {"max_age":259200,"endpoints":[{"url":"https:\/\/www.facebook.com\/ajax\/browser_error_reports\/?device_level=unknown&brsid=7507722887575313942&cpp=C3&cv=1023141079&st=1748027952693"}]}<br><span class='ok'> Reporting-Endpoints</span>: coop_report="https://www.facebook.com/browser_reporting/coop/?minimize=0", default="https://www.facebook.com/ajax/browser_error_reports/?device_level=unknown&brsid=7507722887575313942&cpp=C3&cv=1023141079&st=1748027952693"<br><span class='ok'> Strict-Transport-Security</span>: max-age=15552000; preload<br><span class='ok'> X-Content-Type-Options</span>: nosniff<br><span class='ok'> X-Frame-Options</span>: DENY<br><span class='ok'> X-Xss-Protection</span>: 0<br>
+
+<strong>[2. Missing HTTP Security Headers]</strong><br>
+<span class="ko"> Clear-Site-Data
+</span> Clears browsing data (cookies, storage, cache) associated with the requesting website.
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data</a><br>
+<span class="ko"> Cross-Origin-Embedder-Policy
+</span> Prevents documents and workers from loading non-same-origin requests unless allowed.
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy</a><br>
+<span class="ko"> Cross-Origin-Resource-Policy
+</span> Protect servers against certain cross-origin or cross-site embedding of the returned source.
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)">https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)</a><br>
+<span class="ko"> (*) NEL
+</span> Enables web applications to declare a reporting policy to report errors.
+ Ref: <a href="https://scotthelme.co.uk/network-error-logging-deep-dive/">https://scotthelme.co.uk/network-error-logging-deep-dive/</a><br>
+<span class="ko"> (*) Permissions-Policy
+</span> Previously called "Feature-Policy", allow and deny the use of browser features.
+ Ref: <a href="https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/">https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/</a><br>
+<span class="ko"> Referrer-Policy
+</span> Controls how much referrer information should be included with requests.
+ Ref: <a href="https://scotthelme.co.uk/a-new-security-header-referrer-policy/">https://scotthelme.co.uk/a-new-security-header-referrer-policy/</a><br>
+<span class="ko"> X-Permitted-Cross-Domain-Policies
+</span> Limit which data external resources (e.g. Adobe Flash/PDF documents), can access on the domain.
+ Ref: <a href="https://owasp.org/www-project-secure-headers/#div-headers">https://owasp.org/www-project-secure-headers/#div-headers</a><br>
+
+<strong>[3. Fingerprint HTTP Response Headers]</strong><br>
+ These headers can leak information about software, versions, hostnames or IP addresses:
+
+<span class="ko"> X-FB-Debug (facebook.com Platform)
+</span> Value: 'SvuvlM7WsVej9fyDskhSLgR3tObbyuFT3LmjRO4LF1VeiDjNL+tWSXHYTb+NaBa+JxySDyQkaywGiDWcXe0pJQ=='
+
+
+<strong>[4. Deprecated HTTP Response Headers/Protocols and Insecure Values]</strong><br>
+ The following headers/protocols are deprecated or their values may be considered unsafe:
+
+<span class="ko"> Content-Security-Policy (Deprecated Directives)
+</span> Avoid deprecated or ignored directives: 'block-all-mixed-content', 'report-uri'
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy</a><br>
+<span class="ko"> Content-Security-Policy ('base-uri' Directive Missing)
+</span> This directive prevents base tag injection; try to set it to 'none' or 'self'.
+ Ref: <a href="https://csplite.com/csp95/">https://csplite.com/csp95/</a><br>
+<span class="ko"> (*) Content-Security-Policy ('require-trusted-types-for' Directive Missing)
+</span> This directive prevents DOM XSS injection in scripts; try to set it to 'script'.
+ Ref: <a href="https://content-security-policy.com/require-trusted-types-for/">https://content-security-policy.com/require-trusted-types-for/</a><br>
+<span class="ko"> Content-Security-Policy (Too Permissive Sources)
+</span> Review the directives 'child-src', 'connect-src', 'default-src', 'font-src', 'frame-src', 'img-src', 'manifest-src', 'media-src', 'object-src', 'script-src', 'style-src', 'worker-src'.
+ And limit permissive sources: 'blob:', 'data:'
+ Ref: <a href="https://content-security-policy.com/">https://content-security-policy.com/</a><br>
+<span class="ko"> Content-Security-Policy (Insecure Schemes)
+</span> Review the directive 'connect-src'.
+ And do not allow insecure, unencrypted schemes: 'http:', 'ws:'
+ Ref: <a href="https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/">https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/</a><br> Ref: <a href="https://http.dev/wss">https://http.dev/wss</a><br>
+<span class="ko"> Content-Security-Policy (Unsafe Values)
+</span> Review the directive 'style-src'.
+ The values 'unsafe-inline' or 'unsafe-eval' increase the risk of Cross-site scripting.
+ Ref: <a href="https://csper.io/blog/no-more-unsafe-inline">https://csper.io/blog/no-more-unsafe-inline</a><br> Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval</a><br> Ref: <a href="https://content-security-policy.com/hash/">https://content-security-policy.com/hash/</a><br> Ref: <a href="https://content-security-policy.com/nonce/">https://content-security-policy.com/nonce/</a><br>
+<span class="ko"> Content-Security-Policy (Unsafe Nonce)
+</span> Rewiew the nonce 'obH9laIV'.
+ All should be at least 128 bits long (32 hex characters / 24 base64 characters).
+ Ref: <a href="https://www.w3.org/TR/CSP3/#security-nonces">https://www.w3.org/TR/CSP3/#security-nonces</a><br>
+<span class="ko"> Pragma (Deprecated Header)
+</span> This header is deprecated.
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma</a><br>
+<span class="ko"> Report-To (Deprecated Header)
+</span> This header is deprecated. Use instead "Reporting-Endpoints".
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Report-To">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Report-To</a><br>
+<span class="ko"> Strict-Transport-Security (Recommended Values)
+</span> Add 'includeSubDomains' and 'max-age' (with 31536000 -one year- as minimum).
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security</a><br> Ref: <a href="https://https.cio.gov/hsts/">https://https.cio.gov/hsts/</a><br>
+<span class="ko"> Strict-Transport-Security (Required Values)
+</span> 'preload' requires 'includeSubDomains' and 'max-age' (with 31536000 -one year- as minimum).
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security</a><br>
+<span class="ko"> Vary (Potentially Unsafe Header)
+</span> The values of this header may expose others, facilitating attacks if user input is accepted.
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary</a><br> Ref: <a href="https://www.yeswehack.com/fr/learn-bug-bounty/http-header-exploitation">https://www.yeswehack.com/fr/learn-bug-bounty/http-header-exploitation</a><br>
+<span class="ko"> X-XSS-Protection (Deprecated Header)
+</span> This header is deprecated in the three major web browsers.
+ Instead, use the "Content-Security-Policy" header restrictively.
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection</a><br>
+
+<strong>[5. Empty HTTP Response Headers Values]</strong><br>
+ Empty HTTP headers (and are therefore considered disabled):
+
+<span class="ok"> Nothing to report, all seems OK!</span><br>
+
+<strong>[6. Browser Compatibility for Enabled HTTP Security Headers]</strong><br>
+<span class="header"> Cache-Control: </span><a href="https://caniuse.com/?search=Cache-Control">https://caniuse.com/?search=Cache-Control</a><br><span class="header"> Content-Security-Policy: </span><a href="https://caniuse.com/?search=contentsecuritypolicy2">https://caniuse.com/?search=contentsecuritypolicy2</a><br><span class="header"> Content-Type: </span><a href="https://caniuse.com/?search=Content-Type">https://caniuse.com/?search=Content-Type</a><br><span class="header"> Cross-Origin-Opener-Policy: </span><a href="https://caniuse.com/?search=Cross-Origin-Opener-Policy">https://caniuse.com/?search=Cross-Origin-Opener-Policy</a><br><span class="header"> Origin-Agent-Cluster: </span><a href="https://caniuse.com/?search=Origin-Agent-Cluster">https://caniuse.com/?search=Origin-Agent-Cluster</a><br><span class="header"> Pragma: </span><a href="https://caniuse.com/?search=Pragma">https://caniuse.com/?search=Pragma</a><br><span class="header"> Report-To: </span><a href="https://caniuse.com/?search=Report-To">https://caniuse.com/?search=Report-To</a><br><span class="header"> Reporting-Endpoints: </span><a href="https://caniuse.com/?search=Reporting-Endpoints">https://caniuse.com/?search=Reporting-Endpoints</a><br><span class="header"> Strict-Transport-Security: </span><a href="https://caniuse.com/?search=Strict-Transport-Security">https://caniuse.com/?search=Strict-Transport-Security</a><br><span class="header"> Vary: </span><a href="https://caniuse.com/?search=Vary">https://caniuse.com/?search=Vary</a><br><span class="header"> X-Content-Type-Options: </span><a href="https://caniuse.com/?search=X-Content-Type-Options">https://caniuse.com/?search=X-Content-Type-Options</a><br><span class="header"> X-Frame-Options: </span><a href="https://caniuse.com/?search=X-Frame-Options">https://caniuse.com/?search=X-Frame-Options</a><br><span class="header"> X-XSS-Protection: </span><a href="https://caniuse.com/?search=X-XSS-Protection">https://caniuse.com/?search=X-XSS-Protection</a><br>
+
+<strong>[7. Analysis Results]</strong><br>
+ Done in 0.26 seconds! (changes with respect to the last analysis in parentheses)
+
+ Enabled headers:              13 (First Analysis)
+
+ Missing headers:              7 (First Analysis)
+ Fingerprint headers:          1 (First Analysis)
+ Deprecated/Insecure headers:  13 (First Analysis)
+ Empty headers:                0 (First Analysis)
+ Findings to review:           21 (First Analysis)
+
+ Analysis Grade:               D (Review 'Deprecated/Insecure headers')
+
+ '(*)' meaning:                Experimental HTTP response directive or header
+ '(*)' ref:                    <a href="https://mdn.io/Experimental_deprecated_obsolete">https://mdn.io/Experimental_deprecated_obsolete</a><br>
+</pre><br></body></html>

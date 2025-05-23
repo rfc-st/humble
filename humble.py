@@ -125,7 +125,7 @@ RE_PATTERN = (
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r'\(humble_sec_style\)([^:]+)', r'\(humble_sec_style\)',
     r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{32}$', r'^[A-Za-z0-9+/=]+$',
-    r', (?=[^;,]+?=)', r"'nonce-[^']+'")
+    r', (?=[^;,]+?=)', r"'nonce-[^']+'", r'(^|[\s;])({directive})($|[\s;])')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
@@ -1686,7 +1686,23 @@ def format_html_headers(ln):
         if header_str in ln:
             header_pos = ln.index(":")
             ln = ln.replace(ln[:header_pos], f"{sub_d['span_h']}\
-{ln[:header_pos]}{sub_d['span_f']}")
+{ln[:header_pos]}{sub_d['span_f']}", 1)
+            ln = format_html_csp(ln)
+    return ln
+
+
+def format_html_csp(ln):
+    csp_value = next((v for k, v in headers.items() if k.lower() ==
+                      "content-security-policy"), None)
+    if not csp_value:
+        return ln
+    matched_dirs = [d for d in t_csp_dirs if
+                    re.search(RE_PATTERN[16].format(directive=re.escape(d)),
+                              csp_value)]
+    for directive in matched_dirs:
+        pattern = RE_PATTERN[16].format(directive=re.escape(directive))
+        ln = re.sub(pattern, lambda m: f"{m.group(1)}<strong>{m.group(2)}\
+</strong>{m.group(3)}", ln)
     return ln
 
 
@@ -1737,6 +1753,7 @@ def format_html_enabled(ln):
                  f"{value.strip()}"
         else:
             ln = f"<span class='ok'> {ln.strip()}{sub_d['span_f']}"
+        ln = format_html_csp(ln)
         html_final.write(f'{ln}<br>')
     return ln, ln_enabled
 
