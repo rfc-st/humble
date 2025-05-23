@@ -1060,7 +1060,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icsh]
- Do not allow insecure, unencrypted schemes: 
+ And do not allow insecure, unencrypted schemes: 
 
 [icsh_b]
  Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/

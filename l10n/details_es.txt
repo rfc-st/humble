@@ -1065,7 +1065,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icsh]
- No permita esquemas inseguros, sin encriptar: 
+ Y no permita esquemas inseguros, sin encriptar: 
 
 [icsh_b]
  Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
