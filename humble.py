@@ -125,7 +125,7 @@ RE_PATTERN = (
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r'\(humble_sec_style\)([^:]+)', r'\(humble_sec_style\)',
     r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{32}$', r'^[A-Za-z0-9+/=]+$',
-    r', (?=[^;,]+?=)', r"'nonce-[^']+'", r'(^|[\s;])({directive})($|[\s;])')
+    r', (?=[^;,]+?=)', r"'nonce-[^']+'", r'(^|[\s;])({dir})($|[\s;])')
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
@@ -138,7 +138,7 @@ SECTION_V = ('[no_enabled]', '[no_missing]', '[no_fingerprint]',
              '[most_missing]', '[least_missing]', '[most_fingerprints]',
              '[least_fingerprints]', '[most_insecure]', '[least_insecure]',
              '[most_empty]', '[least_empty]')
-SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6)
+SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
          f"(humble_sec_style){Fore.GREEN}", '(humble_sec_style)',
@@ -155,7 +155,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-23', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-24', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -368,7 +368,7 @@ def get_analysis_totals(url_ln):
             fields.insert(2, '0')
         updated_lines.append(' ; '.join(fields))
     url_ln = updated_lines
-    analysis_date = max(line.split(" ; ")[0] for line in url_ln)
+    analysis_date = max(line[:SLICE_INT[9]] for line in url_ln)
     for line in url_ln:
         if analysis_date in line:
             *totals, = line.strip().split(' ; ')
@@ -469,10 +469,10 @@ def get_analysis_metrics(all_analysis):
 
 
 def get_first_metrics(adj_url_ln):
-    first_a = min(f"{line.split(' ; ')[0]}" for line in adj_url_ln)
-    latest_a = max(f"{line.split(' ; ')[0]}" for line in adj_url_ln)
-    date_w = [(line.split(" ; ")[0],
-               int(line.strip().split(" ; ")[-1])) for line in adj_url_ln]
+    first_a = min(line[:SLICE_INT[9]] for line in adj_url_ln)
+    latest_a = max(line[:SLICE_INT[9]] for line in adj_url_ln)
+    date_w = [(line[:SLICE_INT[9]], int(line.strip().split(" ; ")[-1]))
+              for line in adj_url_ln]
     best_d, best_w = min(date_w, key=lambda x: x[1])
     worst_d, worst_w = max(date_w, key=lambda x: x[1])
     return (first_a, latest_a, best_d, best_w, worst_d, worst_w)
@@ -507,10 +507,9 @@ def get_additional_metrics(adj_url_ln):
 def extract_date_metrics(url_ln):
     year_cnt, year_wng = defaultdict(int), defaultdict(int)
     for line in url_ln:
-        date_str = line.split(' ; ')[0].split()[0]
-        year, _, _ = map(int, date_str.split('/'))
+        year = int(line[:SLICE_INT[11]])
         year_cnt[year] += 1
-        year_wng[year] += int(line.split(' ; ')[-1])
+        year_wng[year] += int(line.rsplit(' ; ', 1)[-1])
     years_str = generate_date_groups(year_cnt, url_ln)
     avg_wng_y = sum(year_wng.values()) // len(year_wng)
     return years_str, avg_wng_y, year_wng
@@ -532,7 +531,7 @@ def generate_date_groups(year_cnt, url_ln):
 def get_month_counts(year, url_ln):
     month_cnts = defaultdict(int)
     for line in url_ln:
-        date_str = line.split(' ; ')[0].split()[0]
+        date_str = line[:SLICE_INT[10]]
         line_year, line_month, _ = map(int, date_str.split('/'))
         if line_year == year:
             month_cnts[get_detail(f'[month_{line_month:02d}]')] += 1
@@ -688,8 +687,8 @@ def get_global_first_metrics(adj_url_ln):
 
 
 def get_global_metrics(url_ln, url_lines):
-    first_a = min(f"{line.split(' ; ')[0]}" for line in url_ln)
-    latest_a = max(f"{line.split(' ; ')[0]}" for line in url_ln)
+    first_a = min(line[:SLICE_INT[9]] for line in url_ln)
+    latest_a = max(line[:SLICE_INT[9]] for line in url_ln)
     unique_u = len({line.split(' ; ')[1] for line in url_ln})
     most_analyzed_u = max(url_lines, key=url_lines.get)
     most_analyzed_c = url_lines[most_analyzed_u]
@@ -1696,11 +1695,8 @@ def format_html_csp(ln):
                       "content-security-policy"), None)
     if not csp_value:
         return ln
-    matched_dirs = [d for d in t_csp_dirs if
-                    re.search(RE_PATTERN[16].format(directive=re.escape(d)),
-                              csp_value)]
-    for directive in matched_dirs:
-        pattern = RE_PATTERN[16].format(directive=re.escape(directive))
+    for directive in t_csp_dirs:
+        pattern = RE_PATTERN[16].format(dir=re.escape(directive))
         ln = re.sub(pattern, lambda m: f"{m.group(1)}<strong>{m.group(2)}\
 </strong>{m.group(3)}", ln)
     return ln
