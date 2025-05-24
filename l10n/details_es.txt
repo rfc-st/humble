@@ -453,7 +453,7 @@
  Evite directivas no permitidas: 
 
 [imethods_s]
- Asegúrese de que estos métodos HTTP habilitados son necesarios: 
+ Asegúrese de que estos métodos HTTP son necesarios: 
 
 [icsp_s]
  Revise las directivas
@@ -1380,7 +1380,7 @@ Cabeceras de respuesta HTTP
  Cabeceras HTTP vacías (y por ello se consideran deshabilitadas):
 
 [afgp]
- Estas cabeceras pueden exponer datos sensibles (software, versiones, hosts, etc):
+ Estas cabeceras pueden exponer IPs, hostnames, software o sus versiones:
 
 [aisc]
  Estas cabeceras, o protocolos, están obsoletos o sus valores son inseguros:

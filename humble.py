@@ -2533,7 +2533,7 @@ if 'access-control-allow-methods' in headers_l and '5' not in skip_list:
         print_detail_r('[imethods_h]', is_red=True)
         if not args.brief:
             match_method = [x for x in t_methods if x in methods]
-            match_method_str = ', '.join(match_method)
+            match_method_str = f"{', '.join(f"'{m}'" for m in match_method)}."
             print_detail_l('[imethods_s]')
             print(match_method_str)
             print_detail('[imethods]')

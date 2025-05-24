@@ -452,7 +452,7 @@
  Avoid disallowed directives: 
 
 [imethods_s]
- Make sure these enabled HTTP methods are needed: 
+ Make sure these HTTP methods are needed: 
 
 [icsp_s]
  Review the directives
@@ -1375,7 +1375,7 @@ HTTP Response Headers
  Empty HTTP headers (and are therefore considered disabled):
 
 [afgp]
- These headers can leak information about software, versions, hostnames or IP addresses:
+ These headers can expose IPs, hostnames, software or their versions:
 
 [aisc]
  The following headers/protocols are deprecated or their values may be considered unsafe:
