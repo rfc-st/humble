@@ -902,7 +902,7 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
     print_detail_r(f'{csp_title}', is_red=True)
     print_detail_l(f'{csp_desc}')
     print(csp_values)
-    print_detail(f'{csp_refs}')
+    print_detail(csp_refs, num_lines=2)
 
 
 def check_unsafe_cookies():  # sourcery skip: use-named-expression
@@ -2330,8 +2330,9 @@ t_cencoding = ('br', 'compress', 'dcb', 'dcz', 'deflate', 'gzip', 'x-gzip',
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 # https://www.w3.org/TR/CSP2/ & https://www.w3.org/TR/CSP3/
 t_csp_broad = (' *', '* ', ' * ',  ' blob: ', ' data: ', ' ftp: ',
-               'filesystem:', ' https: ', ' https://* ', ' https://*.* ',
-               ' mailto: ', 'schemes:', ' tel: ', ' wss: ', 'wss://')
+               ' filesystem: ', ' https: ', ' https://* ', ' https://*.* ',
+               ' mailto: ', ' mediastream: ', ' schemes: ', ' tel: ', ' wss: ',
+               'wss://')
 t_csp_equal = ('nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri')
 t_csp_dep = ('block-all-mixed-content', 'disown-opener', 'plugin-types',
              'prefetch-src', 'referrer', 'report-uri', 'require-sri-for')
@@ -2984,9 +2985,15 @@ if 'x-webkit-csp-report-only' in headers_l and '85' not in skip_list:
     print_details('[ixwcspr_h]', '[ixcspr]', 'd', i_cnt)
 
 if 'x-xss-protection' in headers_l and '86' not in skip_list:
-    print_details('[ixxpdp_h]', '[ixxpdp]', 'm', i_cnt)
+    print_detail_r('[ixxpdp_h]', is_red=True)
+    i_cnt[0] += 1
+    if not args.brief:
+        print_detail('[ixxpdp]', num_lines=6)
     if '0' not in headers_l['x-xss-protection']:
-        print_details('[ixxp_h]', '[ixxp]', 'm', i_cnt)
+        print_detail_r('[ixxp_h]', is_red=True)
+        i_cnt[0] += 1
+        if not args.brief:
+            print_detail('[ixxp]', num_lines=6)
     if ',' in headers_l['x-xss-protection']:
         print_details('[ixxpd_h]', '[ixxpd]', 'd', i_cnt)
 

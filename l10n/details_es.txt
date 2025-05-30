@@ -428,7 +428,8 @@
  No hay cabeceras de seguridad HTTP habilitadas.
 
 [icsi_d_r]
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ Ref: https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
+ Ref: https://centralcsp.com/docs/csp-directives
 
 [itrailer_d_r]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
@@ -1364,13 +1365,19 @@ Cabeceras de respuesta HTTP
 
 [ixxp]
  En algunos casos, valores distintos de "0" pueden crear vulnerabilidades XSS.
- En su lugar, utilice de forma restrictiva la cabecera "Content-Security-Policy".
+ En su lugar habilita una cabecera "Content-Security-Policy" estricta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://web.dev/articles/strict-csp
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
 
 [ixxpdp]
- Esta cabecera está obsoleta en los tres principales navegadores.
- En su lugar, utilice de forma restrictiva la cabecera "Content-Security-Policy".
+ Esta cabecera está obsoleta en los principales navegadores web.
+ En su lugar habilita una cabecera "Content-Security-Policy" estricta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://web.dev/articles/strict-csp
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
 
 [ixxpd]
  Esta cabecera, o sus valores, pueden estar duplicados.

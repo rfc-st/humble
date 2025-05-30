@@ -427,7 +427,8 @@
  No HTTP security headers are enabled.
 
 [icsi_d_r]
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ Ref: https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
+ Ref: https://centralcsp.com/docs/csp-directives
 
 [itrailer_d_r]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
@@ -1359,13 +1360,19 @@ HTTP Response Headers
 
 [ixxp]
  In some cases values other than '0' can create XSS vulnerabilities.
- Instead, use the "Content-Security-Policy" header restrictively.
+ Instead, enforce a strict "Content-Security-Policy" header.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://web.dev/articles/strict-csp
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
 
 [ixxpdp]
- This header is deprecated in the three major web browsers.
- Instead, use the "Content-Security-Policy" header restrictively.
+ This header is deprecated in the major web browsers.
+ Instead, enforce a strict "Content-Security-Policy" header.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://web.dev/articles/strict-csp
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
 
 [ixxpd]
  This header, or its values, may be duplicated.
