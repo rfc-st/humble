@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--05--24-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--05--30-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -79,7 +79,7 @@
 :heavy_check_mark: Can display analysis statistics for a specific URL or across all of them.<br />
 :heavy_check_mark: Can display fingerprint statistics for a specific term or the Top 20.<br />
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
-:heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a> and <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE<a>.<br />
+:heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
 :heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost<a> all the <a href="https://github.com/rfc-st/humble/blob/master/additional/owasp_best_practices.txt" target="_blank">code<a> available under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
@@ -466,7 +466,7 @@ Any HTTP response header.
 Thanks for downloading _'humble'_, for trying it and for your time!.
 
 ## Acknowledgements
-* <a href="https://pypi.org/project/bandit/">Bandit</a>, <a href="https://github.com/tartley/colorama">colorama</a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8">Flake8</a>, <a href="https://github.com/py-pdf/fpdf2">fpdf2</a>, <a href="https://github.com/joerick/pyinstrument">pyinstrument</a>, <a href="https://github.com/psf/requests">requests</a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode">SonarQube for IDE</a>, <a href="https://github.com/drwetter/testssl.sh">testssl.sh</a> and <a href="https://github.com/john-kurkowski/tldextract">tldextract</a> authors/teams: you rock :metal:!.
+* <a href="https://pypi.org/project/bandit/">Bandit</a>, <a href="https://github.com/tartley/colorama">colorama</a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8">Flake8</a>, <a href="https://github.com/py-pdf/fpdf2">fpdf2</a>, <a href="https://github.com/joerick/pyinstrument">pyinstrument</a>, <a href="https://github.com/psf/requests">requests</a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode">SonarQube for IDE</a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>, <a href="https://github.com/drwetter/testssl.sh">testssl.sh</a> and <a href="https://github.com/john-kurkowski/tldextract">tldextract</a> authors/teams: you rock :metal:!.
 * <a href="https://stackoverflow.com/users/8665970/aniket-navlur">Aniket Navlur</a> for <a href="https://stackoverflow.com/questions/19596750/is-there-a-way-to-clear-your-printed-text-in-python/52590238#52590238">this</a> gem.
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.
 * <a href="https://github.com/bulaktm">bulaktm</a> for <a href="https://github.com/rfc-st/humble/issues/5">this</a> suggestion.
