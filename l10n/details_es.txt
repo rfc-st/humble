@@ -1315,8 +1315,11 @@ Cabeceras de respuesta HTTP
  Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
 
 [ixcsp]
- Esta cabecera está obsoleta; utilice la cabecera "Content-Security-Policy".
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ Esta cabecera está obsoleta; en su lugar habilite una cabecera "Content-Security-Policy" estricta.
+ Ref: https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html
+ Ref: https://web.dev/articles/strict-csp
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
 
 [ixdp]
  Esta cabecera puede eludir las directivas de la cabecera "Content-Security-Policy".
@@ -1365,7 +1368,7 @@ Cabeceras de respuesta HTTP
 
 [ixxp]
  En algunos casos, valores distintos de "0" pueden crear vulnerabilidades XSS.
- En su lugar habilita una cabecera "Content-Security-Policy" estricta.
+ En su lugar habilite una cabecera "Content-Security-Policy" estricta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
  Ref: https://web.dev/articles/strict-csp
  Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
@@ -1373,7 +1376,7 @@ Cabeceras de respuesta HTTP
 
 [ixxpdp]
  Esta cabecera está obsoleta en los principales navegadores web.
- En su lugar habilita una cabecera "Content-Security-Policy" estricta.
+ En su lugar habilite una cabecera "Content-Security-Policy" estricta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
  Ref: https://web.dev/articles/strict-csp
  Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP

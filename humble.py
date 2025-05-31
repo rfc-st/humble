@@ -155,7 +155,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-30', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-05-31', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -2912,7 +2912,10 @@ if wwwa_header and unsafe_scheme and ('basic' in wwwa_header) and '70' not in \
     print_details('[ihbas_h]', '[ihbas]', 'd', i_cnt)
 
 if 'x-content-security-policy' in headers_l and '71' not in skip_list:
-    print_details('[ixcsp_h]', '[ixcsp]', 'd', i_cnt)
+    print_detail_r('[ixcsp_h]', is_red=True)
+    i_cnt[0] += 1
+    if not args.brief:
+        print_detail('[ixcsp]', num_lines=5)
 
 if 'x-content-security-policy-report-only' in headers_l and '72' not in \
      skip_list:
@@ -2979,7 +2982,10 @@ if http_equiv:
         print_details('[ixuameta_h]', '[ixuameta]', 'd', i_cnt)
 
 if 'x-webkit-csp' in headers_l and '84' not in skip_list:
-    print_details('[ixwcsp_h]', '[ixcsp]', 'd', i_cnt)
+    print_detail_r('[ixwcsp_h]', is_red=True)
+    i_cnt[0] += 1
+    if not args.brief:
+        print_detail('[ixcsp]', num_lines=5)
 
 if 'x-webkit-csp-report-only' in headers_l and '85' not in skip_list:
     print_details('[ixwcspr_h]', '[ixcspr]', 'd', i_cnt)

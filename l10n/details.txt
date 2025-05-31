@@ -1310,8 +1310,11 @@ HTTP Response Headers
  Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
 
 [ixcsp]
- This header is deprecated. Use instead "Content-Security-Policy".
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ This header is deprecated; instead, enforce a strict "Content-Security-Policy" header.
+ Ref: https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html
+ Ref: https://web.dev/articles/strict-csp
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
 
 [ixdp]
  Enabling DNS prefetching could bypass "Content-Security-Policy" directives.
