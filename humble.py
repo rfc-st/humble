@@ -850,12 +850,11 @@ def csp_print_eval(csp_unsafe_dirs, i_cnt):
 
 
 def csp_check_inline(csp_dirs_vals):
-    csp_unsafe_dirs = []
-    for dir_vals in csp_dirs_vals:
-        if "'unsafe-inline'" in dir_vals:
-            csp_dir_name = dir_vals.split()[0] if ' ' in dir_vals else dir_vals
-            csp_unsafe_dirs.append(csp_dir_name)
-    csp_print_inline(csp_unsafe_dirs, i_cnt)
+    csp_unsafe_dirs = [
+        dir_vals.split()[0] if ' ' in dir_vals else dir_vals
+        for dir_vals in csp_dirs_vals if 'unsafe-inline' in dir_vals]
+    if csp_unsafe_dirs:
+        csp_print_inline(csp_unsafe_dirs, i_cnt)
 
 
 def csp_print_inline(csp_unsafe_dirs, i_cnt):
