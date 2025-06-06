@@ -155,7 +155,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-05-31', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-06-06', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -780,11 +780,12 @@ def csp_print_missing(csp_ref, csp_ref_brief):
 
 def csp_check_additional(csp_dirs_vals):
     checks = [(t_csp_broad, csp_check_broad),
-              (t_csp_insecs, csp_check_insecure),
-              (t_csp_insecv, csp_check_unsafe)]
+              (t_csp_insecs, csp_check_insecure)]
     for match, csp_func in checks:
         if any(val in dir for dir in csp_dirs_vals for val in match):
             csp_func(csp_dirs_vals)
+    csp_check_eval(csp_dirs_vals)
+    csp_check_inline(csp_dirs_vals)
 
 
 def csp_check_broad(csp_dirs_vals):
@@ -830,16 +831,34 @@ def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
     i_cnt[0] += 1
 
 
-def csp_check_unsafe(csp_dirs_vals):
+def csp_check_eval(csp_dirs_vals):
+    csp_unsafe_dirs = [
+        dir_vals.split()[0] if ' ' in dir_vals else dir_vals
+        for dir_vals in csp_dirs_vals
+        if 'unsafe-eval' in dir_vals and 'wasm-unsafe-eval' not in dir_vals]
+    if csp_unsafe_dirs:
+        csp_print_eval(csp_unsafe_dirs, i_cnt)
+
+
+def csp_print_eval(csp_unsafe_dirs, i_cnt):
+    print_detail_r('[icspe_h]', is_red=True)
+    if not args.brief:
+        print_detail_l('[icsp_s]' if len(csp_unsafe_dirs) > 1 else '[icsp_si]')
+        print(f" {', '.join([f"'{dir}'" for dir in csp_unsafe_dirs])}.")
+        print_detail('[icspev]', num_lines=4)
+    i_cnt[0] += 1
+
+
+def csp_check_inline(csp_dirs_vals):
     csp_unsafe_dirs = []
     for dir_vals in csp_dirs_vals:
-        csp_dir_name = dir_vals.split()[0] if ' ' in dir_vals else dir_vals
-        if any(f"'{unsafe_val}'" in dir_vals for unsafe_val in t_csp_insecv):
+        if "'unsafe-inline'" in dir_vals:
+            csp_dir_name = dir_vals.split()[0] if ' ' in dir_vals else dir_vals
             csp_unsafe_dirs.append(csp_dir_name)
-    csp_print_unsafe(csp_unsafe_dirs, i_cnt)
+    csp_print_inline(csp_unsafe_dirs, i_cnt)
 
 
-def csp_print_unsafe(csp_unsafe_dirs, i_cnt):
+def csp_print_inline(csp_unsafe_dirs, i_cnt):
     print_detail_r('[icsp_h]', is_red=True)
     if not args.brief:
         print_detail_l('[icsp_s]' if len(csp_unsafe_dirs) > 1 else '[icsp_si]')
@@ -2345,7 +2364,6 @@ t_csp_dirs = ('base-uri', 'child-src', 'connect-src', 'default-src',
               'style-src-attr', 'style-src-elem', 'trusted-types',
               'upgrade-insecure-requests', 'webrtc', 'worker-src')
 t_csp_insecs = ('http:', 'ws:')
-t_csp_insecv = ('unsafe-eval', 'unsafe-inline')
 t_csp_miss = ('base-uri', 'object-src', 'require-trusted-types-for',
               'script-src')
 t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',

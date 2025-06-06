@@ -55,9 +55,10 @@ Content-Security-Policy: IP detected
 Content-Security-Policy: No Valid Directives
 Content-Security-Policy: Too Permissive Sources
 Content-Security-Policy: Unsafe Directive
+Content-Security-Policy: Unsafe Eval
+Content-Security-Policy: Unsafe Inline
 Content-Security-Policy: Unsafe Funcionality
 Content-Security-Policy: Unsafe Nonce
-Content-Security-Policy: Unsafe Values
 Content-Security-Policy-Report-Only: Ignored Directives
 Content-Security-Policy-Report-Only: Ignored Header
 Content-Type: Deprecated Values

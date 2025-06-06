@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--05--31-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--06--06-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -63,8 +63,8 @@
 :heavy_check_mark: 58 [checks](#checks-enabled-headers) for enabled security-related HTTP response headers.<br />
 :heavy_check_mark: 14 [checks](#checks-missing-headers) for missing security-related HTTP response headers (the ones I consider essential).<br />
 :heavy_check_mark: 1234 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 139 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
-:heavy_check_mark: 15 [checks](https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L46-L60) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
+:heavy_check_mark: 140 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
+:heavy_check_mark: 16 [checks](https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L46-L61) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
 :heavy_check_mark: Can check for compliance with the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">Secure Headers Project<a> Best Practices.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
 :heavy_check_mark: Can analyze _raw response files_: text files with HTTP response headers and values. Ex: curl option '<a href="https://curl.se/docs/manpage.html" target="_blank">--dump-header<a>'.<br />
