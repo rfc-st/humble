@@ -1437,6 +1437,9 @@ Cabeceras de respuesta HTTP
 [first_analysis]
 Primer análisis
 
+[no_changes]
+Sin cambios
+
 [stats_analysis]
 Estadísticas de
 

@@ -382,14 +382,14 @@ def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
         return [get_detail('[first_analysis]', replace=True)] * 6
     current = [int(val) for val in analysis_totals]
     differences = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
-    return [str(d - c) if (d - c) <= 0 else f'+{d - c}' for d, c in
-            zip(differences, current)]
+    return [get_detail('[no_changes]', replace=True) if (d - c) == 0
+            else f"{d - c:+d}" for d, c in zip(differences, current)]
 
 
 def print_analysis_results(*diff, t_cnt):
-    totals = [f"{en_cnt} ({diff[0]})\n", f"{m_cnt} ({diff[1]})",
-              f"{f_cnt} ({diff[2]})", f"{i_cnt[0]} \
-({diff[3]})", f"{e_cnt} ({diff[4]})", f"{t_cnt} ({diff[5]})\n\n"]
+    totals = [f"{en_cnt:>2} ({diff[0]})\n", f"{m_cnt:>2} ({diff[1]})",
+              f"{f_cnt:>2} ({diff[2]})", f"{i_cnt[0]:>2} \
+({diff[3]})", f"{e_cnt:>2} ({diff[4]})", f"{t_cnt:>2} ({diff[5]})\n\n"]
     max_secl = get_max_lnlength(SECTION_S)
     for literal, total in zip(SECTION_S, totals):
         print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} {total}",

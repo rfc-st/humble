@@ -1432,6 +1432,9 @@ HTTP Response Headers
 [first_analysis]
 First Analysis
 
+[no_changes]
+No changes
+
 [stats_analysis]
 Statistics of
 
