@@ -837,7 +837,7 @@ def csp_check_eval(csp_dirs_vals):
         for dir_vals in csp_dirs_vals
         if 'unsafe-eval' in dir_vals and 'wasm-unsafe-eval' not in dir_vals]
     if csp_unsafe_dirs:
-        csp_print_unsafe(csp_unsafe_dirs, '[icspe_h]', '[icspev]', 4, i_cnt)
+        csp_print_unsafe(csp_unsafe_dirs, '[icspe_h]', '[icspev]', 5, i_cnt)
 
 
 def csp_check_inline(csp_dirs_vals):

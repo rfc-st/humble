@@ -1050,7 +1050,8 @@ Cabeceras de respuesta HTTP
 
 [icspev]
  El valor 'unsafe-eval' incrementa el riesgo de Cross-site scripting (XSS).
- Elimínalo y utiliza 'wasm-unsafe-eval' si necesitas need WebAssembly.
+ Utiliza el valor 'wasm-unsafe-eval' si necesitas need WebAssembly,
+ o elimina las funciones que evaluen código a partir de cadenas, como eval().
  Ref: https://mdn.io/eval
  Ref: https://mdn.io/script-src
 
