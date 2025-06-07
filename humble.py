@@ -1370,7 +1370,8 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 def print_skipped_headers(args):
     print_detail_l('[analysis_skipped_note]')
-    print(f" {', '.join(header.lower() for header in args.skip_headers)}")
+    print(f" {', '.join([f"'{h.title()}'" for h in sorted(args.skip_headers,
+                                                          key=str.lower)])}.")
 
 
 def print_unsupported_headers(unsupported_headers):

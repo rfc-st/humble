@@ -941,7 +941,7 @@ Cabeceras de respuesta HTTP
  Nota : Se analizará la URL exacta, sin seguir redireccionamientos.
 
 [analysis_skipped_note]
- Nota : Exclusión indicada en el análisis para
+ Nota : Las cabeceras HTTP excluidas expresamente en este análisis son
 
 [analysis_redirects]
  Nota : Se ha indicado expresamente analizar la URL exacta, sin seguir redirecciones.
