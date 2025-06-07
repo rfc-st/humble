@@ -155,7 +155,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-06-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-06-07', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -837,16 +837,7 @@ def csp_check_eval(csp_dirs_vals):
         for dir_vals in csp_dirs_vals
         if 'unsafe-eval' in dir_vals and 'wasm-unsafe-eval' not in dir_vals]
     if csp_unsafe_dirs:
-        csp_print_eval(csp_unsafe_dirs, i_cnt)
-
-
-def csp_print_eval(csp_unsafe_dirs, i_cnt):
-    print_detail_r('[icspe_h]', is_red=True)
-    if not args.brief:
-        print_detail_l('[icsp_s]' if len(csp_unsafe_dirs) > 1 else '[icsp_si]')
-        print(f" {', '.join([f"'{dir}'" for dir in csp_unsafe_dirs])}.")
-        print_detail('[icspev]', num_lines=4)
-    i_cnt[0] += 1
+        csp_print_unsafe(csp_unsafe_dirs, '[icspe_h]', '[icspev]', 4, i_cnt)
 
 
 def csp_check_inline(csp_dirs_vals):
@@ -854,15 +845,15 @@ def csp_check_inline(csp_dirs_vals):
         dir_vals.split()[0] if ' ' in dir_vals else dir_vals
         for dir_vals in csp_dirs_vals if 'unsafe-inline' in dir_vals]
     if csp_unsafe_dirs:
-        csp_print_inline(csp_unsafe_dirs, i_cnt)
+        csp_print_unsafe(csp_unsafe_dirs, '[icsp_h]', '[icsp]', 5, i_cnt)
 
 
-def csp_print_inline(csp_unsafe_dirs, i_cnt):
-    print_detail_r('[icsp_h]', is_red=True)
+def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
+    print_detail_r(detail_t, is_red=True)
     if not args.brief:
         print_detail_l('[icsp_s]' if len(csp_unsafe_dirs) > 1 else '[icsp_si]')
         print(f" {', '.join([f"'{dir}'" for dir in csp_unsafe_dirs])}.")
-        print_detail('[icsp]', num_lines=5)
+        print_detail(detail_d, num_lines=lines_n)
     i_cnt[0] += 1
 
 
@@ -931,7 +922,7 @@ def check_unsafe_cookies():  # sourcery skip: use-named-expression
         print_detail_r('[iset_h]', is_red=True)
         if not args.brief:
             print_unsafe_cookies(unsafe_cks)
-    i_cnt[0] += 1
+        i_cnt[0] += 1
 
 
 def print_unsafe_cookies(unsafe_cks):
