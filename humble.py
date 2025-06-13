@@ -91,6 +91,7 @@ EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'permissions-policy', 'speculation-rules',
                'supports-loading-mode')
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
+HASH_CHARS = {'sha256': 44, 'sha384': 64, 'sha512': 88}
 HTTP_SCHEMES = ('http:', 'https:')
 HTTP_SERVER_CODES = (500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510,
                      511, 520, 521, 522, 523, 524, 525, 526, 527, 528, 529,
@@ -125,7 +126,8 @@ RE_PATTERN = (
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r'\(humble_sec_style\)([^:]+)', r'\(humble_sec_style\)',
     r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{32}$', r'^[A-Za-z0-9+/=]+$',
-    r', (?=[^;,]+?=)', r"'nonce-[^']+'", r'(^|[\s;])({dir})($|[\s;])')
+    r', (?=[^;,]+?=)', r"'nonce-[^']+'", r'(^|[\s;])({dir})($|[\s;])',
+    r"'(sha256|sha384|sha512)-([A-Za-z0-9+/=]+)'")
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
@@ -858,6 +860,21 @@ def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
               ".")
         print_detail(detail_d, num_lines=lines_n)
     i_cnt[0] += 1
+
+
+def csp_check_hashes(csp_h: str):
+    invalid_algos = set()
+    csp_hashes = re.findall(RE_PATTERN[17], csp_h)
+    for algo, b64hash in csp_hashes:
+        expected_len = HASH_CHARS[algo]
+        if len(b64hash) != expected_len:
+            invalid_algos.add(algo)
+    if invalid_algos:
+        print_detail_r('[icshash_h]', is_red=True)
+        i_cnt[0] += 1
+        if not args.brief:
+            print(get_detail('[icshash_f]', replace=True))
+            print_detail('[icshashr_f]')
 
 
 def csp_check_nonces(csp_h):
@@ -2628,6 +2645,7 @@ if 'content-security-policy' in headers_l and '16' not in skip_list:
         print_details('[icspi_h]', '[icspi]', 'm', i_cnt)
     if t_csp_checks[2] in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
+    csp_check_hashes(csp_h)
     if t_csp_checks[3] in csp_h:
         csp_check_nonces(csp_h)
     if re.search(RE_PATTERN[1], csp_h):

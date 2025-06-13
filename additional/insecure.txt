@@ -48,6 +48,7 @@ Content-Security-Policy: 'object-src' Directive Missing
 Content-Security-Policy: 'require-trusted-types-for' Directive Missing
 Content-Security-Policy: 'script-src' Directive Missing
 Content-Security-Policy: Deprecated Directives
+Content-Security-Policy: Incorrect Hash
 Content-Security-Policy: Incorrect Nonce
 Content-Security-Policy: Incorrect Values
 Content-Security-Policy: Insecure Schemes

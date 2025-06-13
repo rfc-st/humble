@@ -598,6 +598,9 @@
 [icsncei_h]
  Content-Security-Policy (Nonce incorrecto)
 
+[icshash_h]
+ Content-Security-Policy (Hash incorrecto)
+
 [ieta_h]
  Etag (Cabecera potencialmente insegura)
 
@@ -1092,9 +1095,18 @@ Cabeceras de respuesta HTTP
 [icsncesn]
  Revise el nonce 
 
+[icshash_f]
+ Revisa los hashes; al menos uno de ellos no tiene la longitud requerida.
+
+[icshashr_f]
+ 'sha256' requiere 44 caracteres, 'sha384' requiere 64 y 'sha512' requiere 88.
+
 [icsnces]
  Todos deben tener un tamaño de al menos 128 bits (32 caracteres hexadecimales / 24 en base64).
  Ref: https://www.w3.org/TR/CSP3/#security-nonces
+
+[icshash]
+ Revisa los hashes;
 
 [icsncei]
  Los nonces deben ir entre comillas simples.

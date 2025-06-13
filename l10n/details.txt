@@ -597,6 +597,9 @@
 [icsncei_h]
  Content-Security-Policy (Incorrect Nonce)
 
+[icshash_h]
+ Content-Security-Policy (Incorrect Hash)
+
 [ieta_h]
  Etag (Potentially Unsafe Header)
 
@@ -1087,9 +1090,18 @@ HTTP Response Headers
 [icsncesn]
  Rewiew the nonce 
 
+[icshash_f]
+ Review the hashes; at least one does not have the required length.
+
+[icshashr_f]
+ 'sha256' requires 44 chars, 'sha384' requires 64 and 'sha512' requires 88.
+
 [icsnces]
  All should be at least 128 bits long (32 hex characters / 24 base64 characters).
  Ref: https://www.w3.org/TR/CSP3/#security-nonces
+
+[icshash]
+ Review the hashes;
 
 [icsncei]
  Nonces must be enclosed in single quotes.
