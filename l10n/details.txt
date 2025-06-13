@@ -949,7 +949,7 @@ HTTP Response Headers
 
 [python_version]
 
- Error: 'humble' requires, at least, Python 3.9.
+ Error: 'humble' requires, at least, Python 3.11.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [no_warnings]

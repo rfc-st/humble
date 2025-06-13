@@ -954,7 +954,7 @@ Cabeceras de respuesta HTTP
 
 [python_version]
 
- Error: 'humble' requiere, al menos, Python 3.9.
+ Error: 'humble' requiere, al menos, Python 3.11.
  Ref: https://github.com/rfc-st/humble#installation--update
 
 [no_warnings]

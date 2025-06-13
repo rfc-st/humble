@@ -3,10 +3,10 @@
 <br />
 
 <p align=center>
-<a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.9-blue?labelColor=343b41"></a>
+<a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--06--07-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--06--13-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -197,7 +197,7 @@ Options used: -f -g -p -U -s --hints
 ## Installation & update (Source code)
 
 > [!NOTE]
-> Python 3.9 or higher is required.
+> Python 3.11 or higher is required.
 
 ```bash
 # Install python3 and python3-pip:
@@ -242,7 +242,7 @@ https://github.com/rfc-st/humble/releases
 ## Installation & maintenance (Docker)
 
 > [!NOTE]
-> Python 3.9 will be used to [build](https://github.com/rfc-st/humble/blob/master/Dockerfile) the image.
+> Python 3.11 will be used to [build](https://github.com/rfc-st/humble/blob/master/Dockerfile) the image.
 
 ```bash
 # Install Docker, and make sure it's running:
@@ -277,7 +277,7 @@ $ docker rmi humble:1.48
 ## Installation & update (Kali Linux)
 
 > [!NOTE]
-> Python 3.9 or higher is required.
+> Python 3.11 or higher is required.
 
 ```bash
 # Verify that the 'humble' package contains 'Homepage: https://github.com/rfc-st/humble'

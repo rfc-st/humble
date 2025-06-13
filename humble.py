@@ -155,7 +155,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-06-07', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-06-13', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -175,7 +175,7 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
 
 
 def check_python_version():
-    exit(print_detail('[python_version]', 3)) if sys.version_info < (3, 9) \
+    exit(print_detail('[python_version]', 3)) if sys.version_info < (3, 11) \
         else None
 
 
@@ -802,7 +802,8 @@ def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
     print_detail_r('[icsw_h]', is_red=True)
     if not args.brief:
         print_detail_l('[icsp_s]' if len(csp_broad_dirs) > 1 else '[icsp_si]')
-        print(f" {', '.join(f"'{dir}'" for dir in sorted(csp_broad_dirs))}.")
+        print(" " + ", ".join(f"'{dir}'" for dir in sorted(csp_broad_dirs)) +
+              ".")
         print_detail_l('[icsw]')
         print(', '.join(f"'{value}'" for value in csp_broad_v))
         print_detail('[icsw_b]', num_lines=1)
@@ -824,7 +825,8 @@ def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
         csp_values = ', '.join(f"'{value}'" for value in csp_insec_v)
         print_detail_l('[icsp_s]' if len(csp_insec_dirs) > 1 else
                        '[icsp_si]')
-        print(f" {', '.join(f"'{dir}'" for dir in sorted(csp_insec_dirs))}.")
+        print(" " + ", ".join(f"'{dir}'" for dir in sorted(csp_insec_dirs)) +
+              ".")
         print_detail_l('[icsh]')
         print(csp_values)
         print_detail('[icsh_b]', num_lines=2)
@@ -852,7 +854,8 @@ def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
     print_detail_r(detail_t, is_red=True)
     if not args.brief:
         print_detail_l('[icsp_s]' if len(csp_unsafe_dirs) > 1 else '[icsp_si]')
-        print(f" {', '.join([f"'{dir}'" for dir in csp_unsafe_dirs])}.")
+        print(" " + ", ".join(f"'{dir}'" for dir in sorted(csp_unsafe_dirs)) +
+              ".")
         print_detail(detail_d, num_lines=lines_n)
     i_cnt[0] += 1
 
@@ -967,7 +970,7 @@ def permissions_print_broad(perm_broad_dirs, i_cnt):
     print_detail_r('[ifpol_h]', is_red=True)
     if not args.brief:
         print_detail_l('[icsp_s]' if len(perm_broad_dirs) > 1 else '[icsp_si]')
-        print(f" {', '.join(f"'{dir}'" for dir in perm_broad_dirs)}.")
+        print(" " + ", ".join(f"'{dir}'" for dir in perm_broad_dirs) + ".")
         print_detail('[ifpol]', num_lines=2)
     i_cnt[0] += 1
 
@@ -1234,8 +1237,9 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
     for header, detail in zip(l_miss, l_detail):
         lower_header = header.lower()
         if lower_header not in merged_set and not xfo_skipped:
-            print_header(f"{get_detail('[exp_header]', replace=True) if
-                            lower_header in EXP_HEADERS else ''}{header}")
+            print_header(
+                f"{get_detail('[exp_header]', replace=True)}{header}"
+                if lower_header in EXP_HEADERS else header)
             if not args.brief:
                 print_detail(detail, 2)
             m_cnt += 1
@@ -1368,15 +1372,17 @@ def get_skipped_unsupported_headers(args, insecure_headers):
     return unsupported_headers, skip_list
 
 
-def print_skipped_headers(args):
+def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
     print_detail_l('[analysis_skipped_note]')
-    print(f" {', '.join([f"'{h.title()}'" for h in sorted(args.skip_headers,
-                                                          key=str.lower)])}.")
+    print(" " + ", ".join("'{}'".format(h.title()) for h in
+                          sorted(args.skip_headers, key=str.lower)) + ".")
 
 
 def print_unsupported_headers(unsupported_headers):
+    # sourcery skip: use-fstring-for-concatenation
+    quoted = ", ".join("'" + h + "'" for h in unsupported_headers)
     print(f"\n {get_detail('[args_skipped_unknown]', replace=True)} \
-({', '.join(f'{header}' for header in unsupported_headers)})")
+({quoted})")
     sys.exit()
 
 
