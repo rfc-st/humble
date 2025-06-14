@@ -1002,7 +1002,8 @@ def permissions_print_broad(perm_broad_dirs, i_cnt):
     print_detail_r('[ifpol_h]', is_red=True)
     if not args.brief:
         print_detail_l('[icsp_s]' if len(perm_broad_dirs) > 1 else '[icsp_si]')
-        print(" " + ", ".join(f"'{dir}'" for dir in perm_broad_dirs) + ".")
+        print(" " + ", ".join(f"'{dir}'" for dir in sorted(perm_broad_dirs)) +
+              ".")
         print_detail('[ifpol]', num_lines=2)
     i_cnt[0] += 1
 
@@ -2427,12 +2428,14 @@ t_doci = ('isolate-and-credentialless', 'isolate-and-require-corp', 'none')
 
 # https://wicg.github.io/document-policy/
 # https://github.com/WICG/document-policy/blob/main/document-policy-explainer.md
-t_docp = ('bpp', 'document-write', 'escape-in-popups',
-          'expect-no-linked-resources', 'frame-loading', 'forms',
+# https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/PerformanceControlOfEmbeddedContent/explainer.md
+t_docp = ('basic', 'bpp', 'document-write', 'early-script', 'escape-in-popups',
+          'expect-no-linked-resources', 'frame-loading', 'forms', 'globals',
           'image-compression', 'include-js-call-stacks-in-crash-reports',
           'max-image-bpp', 'modals', 'no-document-write', 'no-scripts',
           'no-unsized-media', 'pointer-lock', 'popups', 'presentation-lock',
-          'report-to', 'scripts', 'unsized-media', 'vertical-scroll')
+          'report-to', 'script', 'scripts', 'unsized-media', 'vertical-scroll',
+          'viewport-capture')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
 t_excc = ('max-age', 's-maxage')
