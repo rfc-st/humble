@@ -42,6 +42,7 @@ from time import time
 from json import dump
 from shutil import copyfile
 from platform import system
+from base64 import b64decode
 from itertools import islice
 from datetime import datetime
 from csv import writer, QUOTE_ALL
@@ -54,7 +55,6 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
 import ssl
 import sys
-import base64
 import contextlib
 import concurrent.futures
 import xml.etree.ElementTree as ET
@@ -159,7 +159,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-06-13', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-06-15', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -870,7 +870,7 @@ def csp_check_hashes(csp_h):
     csp_hashes = re.findall(RE_PATTERN[17], csp_h)
     for algo, b64hash in csp_hashes:
         try:
-            decoded = base64.b64decode(b64hash, validate=True)
+            decoded = b64decode(b64hash, validate=True)
             if len(decoded) != HASH_CHARS[algo]:
                 invalid_algos.add(algo)
         except Exception:
@@ -913,7 +913,7 @@ def csp_hex_nonce(nonce, nonce_refs, i_cnt):
 def csp_base64_nonce(nonce, nonce_refs, i_cnt):
     try:
         return csp_print_nonce(nonce, nonce_refs, i_cnt) if \
-            len(base64.b64decode(nonce, validate=True)) < 16 else False
+            len(b64decode(nonce, validate=True)) < 16 else False
     except Exception:
         return csp_print_nonce(nonce, nonce_refs, i_cnt)
 
@@ -2427,11 +2427,12 @@ t_doci = ('isolate-and-credentialless', 'isolate-and-require-corp', 'none')
 
 # https://wicg.github.io/document-policy/
 # https://github.com/WICG/document-policy/blob/main/document-policy-explainer.md
-t_docp = ('bpp', 'document-write', 'expect-no-linked-resources',
-          'frame-loading', 'forms', 'image-compression', 'max-image-bpp',
-          'modals', 'no-document-write', 'no-unsized-media', 'pointer-lock',
-          'popups', 'presentation-lock', 'report-to', 'scripts',
-          'unsized-media', 'vertical-scroll')
+t_docp = ('bpp', 'document-write', 'escape-in-popups',
+          'expect-no-linked-resources', 'frame-loading', 'forms',
+          'image-compression', 'include-js-call-stacks-in-crash-reports',
+          'max-image-bpp', 'modals', 'no-document-write', 'no-scripts',
+          'no-unsized-media', 'pointer-lock', 'popups', 'presentation-lock',
+          'report-to', 'scripts', 'unsized-media', 'vertical-scroll')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
 t_excc = ('max-age', 's-maxage')
