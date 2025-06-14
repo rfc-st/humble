@@ -1091,17 +1091,15 @@ HTTP Response Headers
  Rewiew the nonce 
 
 [icshash_f]
- Review the hashes; at least one does not have the required length.
+ Review the format and length of the hashes.
 
 [icshashr_f]
- 'sha256' requires 44 chars, 'sha384' requires 64 and 'sha512' requires 88.
+ All must be single-quoted and 32, 48, or 64 bytes (sha256, sha384, or sha512).
+ Ref: https://content-security-policy.com/hash/
 
 [icsnces]
  All should be at least 128 bits long (32 hex characters / 24 base64 characters).
  Ref: https://www.w3.org/TR/CSP3/#security-nonces
-
-[icshash]
- Review the hashes;
 
 [icsncei]
  Nonces must be enclosed in single quotes.

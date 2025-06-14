@@ -1096,17 +1096,15 @@ Cabeceras de respuesta HTTP
  Revise el nonce 
 
 [icshash_f]
- Revisa los hashes; al menos uno de ellos no tiene la longitud requerida.
+ Revise el formato y longitud de los hashes.
 
 [icshashr_f]
- 'sha256' requiere 44 caracteres, 'sha384' requiere 64 y 'sha512' requiere 88.
+ Deben estar entre comillas simples y tener 32, 48 o 64 bytes (sha256, sha384 o sha512).
+ Ref: https://content-security-policy.com/hash/
 
 [icsnces]
  Todos deben tener un tamaño de al menos 128 bits (32 caracteres hexadecimales / 24 en base64).
  Ref: https://www.w3.org/TR/CSP3/#security-nonces
-
-[icshash]
- Revisa los hashes;
 
 [icsncei]
  Los nonces deben ir entre comillas simples.

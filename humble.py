@@ -91,7 +91,7 @@ EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'permissions-policy', 'speculation-rules',
                'supports-loading-mode')
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
-HASH_CHARS = {'sha256': 44, 'sha384': 64, 'sha512': 88}
+HASH_CHARS = {'sha256': 32, 'sha384': 48, 'sha512': 64}
 HTTP_SCHEMES = ('http:', 'https:')
 HTTP_SERVER_CODES = (500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510,
                      511, 520, 521, 522, 523, 524, 525, 526, 527, 528, 529,
@@ -126,8 +126,10 @@ RE_PATTERN = (
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r'\(humble_sec_style\)([^:]+)', r'\(humble_sec_style\)',
     r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{32}$', r'^[A-Za-z0-9+/=]+$',
-    r', (?=[^;,]+?=)', r"'nonce-[^']+'", r'(^|[\s;])({dir})($|[\s;])',
-    r"'(sha256|sha384|sha512)-([A-Za-z0-9+/=]+)'")
+    r', (?=[^;,]+?=)', r"'nonce-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
+    r"'(sha256|sha384|sha512)-([A-Za-z0-9+/=]+)'",
+    r"(?<!')\b(sha256|sha384|sha512)-[A-Za-z0-9+/=]+(?!')"
+)
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
@@ -862,19 +864,32 @@ def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
     i_cnt[0] += 1
 
 
-def csp_check_hashes(csp_h: str):
+def csp_check_hashes(csp_h):
+    csp_unquoted_hashes(csp_h)
     invalid_algos = set()
     csp_hashes = re.findall(RE_PATTERN[17], csp_h)
     for algo, b64hash in csp_hashes:
-        expected_len = HASH_CHARS[algo]
-        if len(b64hash) != expected_len:
+        try:
+            decoded = base64.b64decode(b64hash, validate=True)
+            if len(decoded) != HASH_CHARS[algo]:
+                invalid_algos.add(algo)
+        except Exception:
             invalid_algos.add(algo)
     if invalid_algos:
         print_detail_r('[icshash_h]', is_red=True)
         i_cnt[0] += 1
         if not args.brief:
             print(get_detail('[icshash_f]', replace=True))
-            print_detail('[icshashr_f]')
+            print_detail('[icshashr_f]', num_lines=2)
+
+
+def csp_unquoted_hashes(csp_h):
+    if re.search(RE_PATTERN[18], csp_h):
+        print_detail_r('[icshash_h]', is_red=True)
+        i_cnt[0] += 1
+        if not args.brief:
+            print(get_detail('[icshash_f]', replace=True))
+            print_detail('[icshashr_f]', num_lines=2)
 
 
 def csp_check_nonces(csp_h):
