@@ -55,7 +55,6 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
 import ssl
 import sys
-import contextlib
 import concurrent.futures
 import xml.etree.ElementTree as ET
 
@@ -1999,12 +1998,6 @@ def make_http_request():
         return None, None, e
 
 
-def wait_http_request(future):
-    with contextlib.suppress(concurrent.futures.TimeoutError):
-        # Five seconds should be enough to receive the HTTP response headers.
-        future.result(timeout=5)
-
-
 def handle_requests_exception(exception):
     exception_type = type(exception)
     if exception_type in exception_d:
@@ -2034,12 +2027,13 @@ def handle_http_error(r, exception_d):
 def manage_http_request(status_code, reliable, body):
     headers = {}
     try:
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
             future = executor.submit(make_http_request)
-            wait_http_request(future)
-            if not future.done():
+            # Five seconds should be enough to receive HTTP response headers.
+            done, _ = concurrent.futures.wait([future], timeout=5)
+            if not done:
                 print(get_detail('[unreliable_analysis]'))
-                reliable = 'No'
+                return headers, status_code, 'No', body
             r, _, exception = future.result()
             # https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/
             if exception:
@@ -2048,7 +2042,7 @@ def manage_http_request(status_code, reliable, body):
             # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors
             # https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/
             handle_http_error(r, exception_d)
-            if r is not None:
+            if r:
                 status_code = r.status_code
                 headers = r.headers
                 body = r.text
