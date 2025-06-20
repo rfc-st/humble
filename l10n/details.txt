@@ -930,7 +930,7 @@ HTTP Response Headers
  Analyzing URL, please wait ...
 
 [unreliable_analysis]
- (The analysis is taking longer than usual -may be due to network connectivity, WAF, etc- and may not be reliable)
+ (The URL isn't responding within the usual time — possibly due to network issues or WAF — analysis may be unreliable)
 
 [unreliable_analysis_note]
  Note : The analysis may not be reliable because of the time it took for the URL to respond.
