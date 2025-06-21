@@ -62,7 +62,6 @@ import xml.etree.ElementTree as ET
 from colorama import Fore, Style, init
 from requests.adapters import HTTPAdapter
 import requests
-import tldextract
 
 
 BANNER = '''  _                     _     _
@@ -158,7 +157,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-06-20', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-06-21', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1599,40 +1598,41 @@ def set_pdf_links(i, pdf_string):
 
 
 def format_pdf_lines(line):
-    i, chunks = None, None
     if len(line) > 101:
         chunks = [line[i:i + 101] for i in range(0, len(line), 101)]
         set_pdf_chunks(chunks)
         pdf.ln(h=2)
-    elif re.search(RE_PATTERN[10], line):
-        color_pdf_line(line[19:], '#008000', '#000000', chunks, i)
-    elif re.search(RE_PATTERN[7], line):
-        color_pdf_line(line[19:], '#660033', '#000000', chunks, i)
-    else:
-        pdf.set_text_color(0, 0, 0)
-        pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+        return
+    if re.search(RE_PATTERN[10], line):
+        color_pdf_line(line[19:], '#008000', '#000000', None, None)
+        return
+    if re.search(RE_PATTERN[7], line):
+        color_pdf_line(line[19:], '#660033', '#000000', None, None)
+        return
+    pdf.set_text_color(0, 0, 0)
+    pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
 
 
 def set_pdf_chunks(chunks):
-    chunk_s = None
+    chunk_c = None
     for i, chunk in enumerate(chunks):
-        prev_chunk_s = chunk_s
         if re.search(RE_PATTERN[10], chunk):
-            chunk_s = color_pdf_line(chunk[19:], '#008000', '#000000', chunks,
-                                     i)
+            chunk_c = color_pdf_line(chunk[19:], '#008000', '#000000',
+                                     chunks, i)
         elif re.search(RE_PATTERN[7], chunk):
-            chunk_s = color_pdf_line(chunk[19:], '#660033', '#000000', chunks,
-                                     i)
+            chunk_c = color_pdf_line(chunk[19:], '#660033', '#000000',
+                                     chunks, i)
         else:
-            format_pdf_chunks(chunk, chunks, i, prev_chunk_s)
+            format_pdf_chunks(chunk, chunks, i, chunk_c)
 
 
-def format_pdf_chunks(chunk, chunks, i, prev_chunk_s):
+def format_pdf_chunks(chunk, chunks, i, chunk_c):
     pdf.set_text_color(0, 0, 0)
-    chunk = f' {chunk}' if i > 0 else chunk
-    if len(chunks) == 2 and i == 1 and prev_chunk_s != '#660033':
+    if i > 0:
+        chunk = f' {chunk}'
+    if len(chunks) == 2 and i == 1 and chunk_c != '#660033':
         pdf.set_y(pdf.get_y() + 1.5)
-    if i == 1:
+    elif i == 1:
         pdf.set_y(pdf.get_y() - 1.5)
     pdf.cell(104, 6, text=chunk, align='L')
     pdf.ln(h=6)
@@ -1944,6 +1944,8 @@ def get_tmp_file(args, export_date):
 
 
 def build_tmp_file(export_date, file_ext, lang, url):
+    # Tiny optimization, lady-loading tldextract
+    import tldextract
     str_hum = HUMBLE_DESC[1:7]
     url_str = tldextract.extract(URL)
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
@@ -3116,9 +3118,7 @@ elif args.output == 'json':
 elif args.output == 'xml':
     generate_xml(tmp_filename, final_filename)
 elif args.output == 'pdf':
-    # Optimized the loading of third-party dependencies and relevant logic
-    # for 'fpdf2', improving analysis speed for tasks that do not involve PDF
-    # export.
+    # Important optimization, lazy-loading fpdf2.
     from fpdf import FPDF, YPos  # type: ignore
 
     class PDF(FPDF):
