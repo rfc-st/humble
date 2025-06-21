@@ -337,7 +337,8 @@ def get_analysis_results():
                                              m_cnt=m_cnt, f_cnt=f_cnt,
                                              i_cnt=i_cnt, e_cnt=e_cnt,
                                              t_cnt=t_cnt)
-    print_analysis_results(*analysis_diff, t_cnt=t_cnt)
+    en_cnt_w = '1' if en_cnt == 0 else None
+    print_analysis_results(*analysis_diff, en_cnt_w=en_cnt_w, t_cnt=t_cnt)
     analysis_grade = grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt)
     print(f"{get_detail(analysis_grade)}")
     print_detail('[experimental_header]', 2)
@@ -388,14 +389,26 @@ def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
             else f"{d - c:+d}" for d, c in zip(differences, current)]
 
 
-def print_analysis_results(*diff, t_cnt):
+def print_analysis_results(*diff, en_cnt_w, t_cnt):
     totals = [f"{en_cnt:>2} ({diff[0]})\n", f"{m_cnt:>2} ({diff[1]})",
-              f"{f_cnt:>2} ({diff[2]})", f"{i_cnt[0]:>2} \
-({diff[3]})", f"{e_cnt:>2} ({diff[4]})", f"{t_cnt:>2} ({diff[5]})\n\n"]
+              f"{f_cnt:>2} ({diff[2]})", f"{i_cnt[0]:>2} ({diff[3]})",
+              f"{e_cnt:>2} ({diff[4]})", f"{t_cnt:>2} ({diff[5]})\n\n"]
     max_secl = get_max_lnlength(SECTION_S)
-    for literal, total in zip(SECTION_S, totals):
-        print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} {total}",
-              end='')
+    for idx, (literal, total) in enumerate(zip(SECTION_S, totals)):
+        print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} \
+{total}", end='')
+        if idx == 0 and en_cnt_w:
+            print_warning_enabled(max_secl)
+
+
+def print_warning_enabled(max_secl):
+    if not args.output:
+        delete_lines(warning=True)
+        print(f"{print_detail_s('[enabled_cnt_w]', max_ln=True):<{max_secl}} \
+{get_detail('[enabled_cnt_wt]')}", end='')
+    else:
+        print(f"{print_detail_s('[enabled_cnt_w]', max_ln=True):<{max_secl}} \
+{get_detail('[enabled_cnt_wt]')}", end='')
 
 
 def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
@@ -1006,7 +1019,10 @@ def permissions_print_broad(perm_broad_dirs, i_cnt):
     i_cnt[0] += 1
 
 
-def delete_lines(reliable=True):
+def delete_lines(reliable=True, warning=False):
+    if warning:
+        sys.stdout.write(DELETED_LINES[:6])
+        return
     if not reliable:
         sys.stdout.write(DELETED_LINES)
     sys.stdout.write(DELETED_LINES)

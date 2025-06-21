@@ -1423,6 +1423,12 @@ Cabeceras de respuesta HTTP
 [enabled_cnt]
  Cabeceras habilitadas:
 
+[enabled_cnt_w]
+ Nota (cabeceras habilitadas):
+
+[enabled_cnt_wt]
+ Puede que la URL bloquee esta herramienta o tu IP.
+
 [missing_cnt]
  Cabeceras no habilitadas:
 

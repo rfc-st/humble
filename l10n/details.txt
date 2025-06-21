@@ -1418,6 +1418,12 @@ HTTP Response Headers
 [enabled_cnt]
  Enabled headers:
 
+[enabled_cnt_w]
+ Note (enabled headers):
+
+[enabled_cnt_wt]
+ The URL may be blocking your IP address or this tool
+
 [missing_cnt]
  Missing headers:
 
