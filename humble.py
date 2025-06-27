@@ -157,7 +157,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-06-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-06-27', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -338,7 +338,7 @@ def get_analysis_results():
                                              i_cnt=i_cnt, e_cnt=e_cnt,
                                              t_cnt=t_cnt)
     en_cnt_w = '1' if en_cnt == 0 else None
-    print_analysis_results(*analysis_diff, en_cnt_w=en_cnt_w, t_cnt=t_cnt)
+    format_analysis_results(*analysis_diff, en_cnt_w=en_cnt_w, t_cnt=t_cnt)
     analysis_grade = grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt)
     print(f"{get_detail(analysis_grade)}")
     print_detail('[experimental_header]', 2)
@@ -389,25 +389,22 @@ def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
             else f"{d - c:+d}" for d, c in zip(differences, current)]
 
 
-def print_analysis_results(*diff, en_cnt_w, t_cnt):
-    totals = [f"{en_cnt:>2} ({diff[0]})\n", f"{m_cnt:>2} ({diff[1]})",
-              f"{f_cnt:>2} ({diff[2]})", f"{i_cnt[0]:>2} ({diff[3]})",
-              f"{e_cnt:>2} ({diff[4]})", f"{t_cnt:>2} ({diff[5]})\n\n"]
+def format_analysis_results(*diff, en_cnt_w, t_cnt):
+    results = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
+    new_ln = ["\n" if int(en_cnt) > 0 else "", "", "", "", "", "\n\n"]
+    totals = [f"{val:>2} ({diff[i]}){new_ln[i]}" for i, val in
+              enumerate(results)]
     max_secl = get_max_lnlength(SECTION_S)
+    print_analysis_results(totals, max_secl, en_cnt_w)
+
+
+def print_analysis_results(totals, max_secl, en_cnt_w):
     for idx, (literal, total) in enumerate(zip(SECTION_S, totals)):
-        print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} \
-{total}", end='')
+        print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} {total}",
+              end='')
         if idx == 0 and en_cnt_w:
-            print_warning_enabled(max_secl)
-
-
-def print_warning_enabled(max_secl):
-    if not args.output:
-        delete_lines(warning=True)
-        print(f"{print_detail_s('[enabled_cnt_w]', max_ln=True):<{max_secl}} \
-{get_detail('[enabled_cnt_wt]')}", end='')
-    else:
-        print(f"{print_detail_s('[enabled_cnt_w]', max_ln=True):<{max_secl}} \
+            print(f"{print_detail_s('[enabled_cnt_w]',
+                                    max_ln=True):<{max_secl}} \
 {get_detail('[enabled_cnt_wt]')}", end='')
 
 
@@ -1108,6 +1105,10 @@ def print_extra_info(reliable):
 def print_response_headers():
     print(linesep.join(['']*2))
     print_detail_r('[0headers]')
+    if not headers:
+        print_nosec_headers(enabled=False)
+        print('\n')
+        return
     pdf_style = STYLE[6] if args.output == 'pdf' else ""
     for key, value in sorted(headers.items()):
         print(f" {pdf_style}{key}:", value) if args.output else \
@@ -1260,9 +1261,11 @@ def print_enabled_headers(args, exp_s, header, headers_d):
     print(output_str)
 
 
-def print_nosec_headers():
-    id_mode = '[no_sec_headers]'
-    print_detail_l(id_mode, no_headers=True) if args.output else \
+def print_nosec_headers(enabled=True):
+    id_mode = '[no_sec_headers]' if enabled else '[no_enb_headers]'
+    if args.output:
+        print_detail_l(id_mode, no_headers=True)
+    else:
         print_detail_r(id_mode, is_red=True)
 
 
@@ -1512,7 +1515,8 @@ def format_json(json_data, json_lns):
 def generate_pdf(temp_filename):
     set_pdf_file()
     ok_string = get_detail('[no_warnings]').rstrip()
-    no_headers = get_detail('[no_sec_headers]').strip()
+    no_headers = [get_detail(f'[{i}]').strip() for i in ['no_sec_headers',
+                                                         'no_enb_headers']]
     set_pdf_content(temp_filename, ok_string, no_headers)
     pdf.output(final_filename)
     print_export_path(final_filename, reliable)
@@ -1543,7 +1547,7 @@ def set_pdf_metadata():
 def set_pdf_content(temp_filename, ok_string, no_headers):
     with open(temp_filename, "r", encoding='utf8') as txt_source:
         for line in txt_source:
-            if no_headers in line:
+            if any(no_header in line for no_header in no_headers):
                 set_pdf_warnings(line)
                 continue
             if '[' in line:
@@ -1707,7 +1711,7 @@ def format_html_warnings(ln_rstrip, html_final):
     if ok_string in ln_rstrip:
         html_final.write(f'<span class="ok">{ln_rstrip}{sub_d["span_f"]}<br>')
         return True
-    if ko_string in ln_rstrip:
+    if any(ko in ln_rstrip for ko in ko_strings):
         html_final.write(f"{sub_d['span_ko']}{ln_rstrip}{sub_d['span_f']}<br>")
         return True
     return False
@@ -3163,8 +3167,9 @@ elif args.output == 'pdf':
     generate_pdf(tmp_filename)
 elif args.output == 'html':
     generate_html()
-    ok_string, ko_string = [get_detail(f'[{i}]').rstrip() for i
-                            in ['no_warnings', 'no_sec_headers']]
+    ok_string = get_detail('[no_warnings]').rstrip()
+    ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
+                                                          'no_enb_headers']]
     sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
              'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
              'span_f': '</span>'}

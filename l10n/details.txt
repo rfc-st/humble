@@ -424,7 +424,10 @@
  Ref: https://www.yeswehack.com/fr/learn-bug-bounty/http-header-exploitation
 
 [no_sec_headers]
- No HTTP security headers are enabled.
+ No HTTP security headers are present.
+
+[no_enb_headers]
+ No HTTP response headers were received.
 
 [icsi_d_r]
  Ref: https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
@@ -1422,7 +1425,7 @@ HTTP Response Headers
  Note (enabled headers):
 
 [enabled_cnt_wt]
- The URL may be blocking your IP address or this tool
+ Zero may indicate a block of your IP/this tool.
 
 [missing_cnt]
  Missing headers:

@@ -427,6 +427,9 @@
 [no_sec_headers]
  No hay cabeceras de seguridad HTTP habilitadas.
 
+[no_enb_headers]
+ No se recibieron cabeceras de respuesta HTTP.
+
 [icsi_d_r]
  Ref: https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
  Ref: https://centralcsp.com/docs/csp-directives
@@ -1427,7 +1430,7 @@ Cabeceras de respuesta HTTP
  Nota (cabeceras habilitadas):
 
 [enabled_cnt_wt]
- Puede que la URL bloquee esta herramienta o tu IP.
+ Cero puede indicar bloqueo de tu IP/esta herramienta.
 
 [missing_cnt]
  Cabeceras no habilitadas:
