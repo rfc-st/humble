@@ -770,8 +770,23 @@ def csp_analyze_content(csp_header):
         csp_deprecated |= ({value for value in t_csp_dep if value in csp_dir})
     if csp_deprecated:
         csp_print_deprecated(csp_deprecated)
+    if "'strict-dynamic'" in csp_header:
+        csp_check_ignored(csp_header)
     csp_check_missing(csp_dirs)
     csp_check_additional(csp_dirs_vals)
+
+
+def csp_check_ignored(csp_header):
+    hash_p = bool(re.search(RE_PATTERN[17], csp_header))
+    nonce_p = bool(re.search(RE_PATTERN[6], csp_header))
+    if not (hash_p or nonce_p):
+        i_cnt[0] += 1
+        if args.brief:
+            print_detail_r('[icsig_d]', is_red=True)
+        else:
+            print_detail_r('[icsig_d]', is_red=True)
+            print_detail('[icsig]', num_lines=2)
+    return False
 
 
 def csp_check_missing(csp_dirs):

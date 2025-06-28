@@ -598,6 +598,9 @@
 [icsi_d]
  Content-Security-Policy (Directivas obsoletas)
 
+[icsig_d]
+ Content-Security-Policy (Keyword ignorada)
+
 [icsn_h]
  Content-Security-Policy (Valores incorrectos)
 
@@ -1120,6 +1123,10 @@ Cabeceras de respuesta HTTP
 [icsi]
  Incluya, al menos, una directiva correcta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+
+[icsig]
+ 'strict-dynamic' requiere un hash/nonce; sin ellos los navegadores ignoran esta keyword.
+ Ref: https://content-security-policy.com/strict-dynamic/
 
 [icsn]
  '=', en el contexto de esta cabecera, puede ser un valor incorrecto.

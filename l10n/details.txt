@@ -597,6 +597,9 @@
 [icsi_d]
  Content-Security-Policy (Deprecated Directives)
 
+[icsig_d]
+ Content-Security-Policy (Ignored Keyword)
+
 [icsn_h]
  Content-Security-Policy (Incorrect Values)
 
@@ -1115,6 +1118,10 @@ HTTP Response Headers
 [icsi]
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+
+[icsig]
+ 'strict-dynamic' requires a hash/nonce; without them browsers ignore it.
+ Ref: https://content-security-policy.com/strict-dynamic/
 
 [icsn]
  '=' could be an incorrect value in the definition of this header.
