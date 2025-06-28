@@ -44,9 +44,15 @@ Content-Disposition: Potentially Unsafe Header
 Content-DPR: Deprecated Header
 Content-Encoding: No Valid Directives
 Content-Security-Policy: 'base-uri' Directive Missing
+Content-Security-Policy: 'child-src' Directive Missing
+Content-Security-Policy: 'form-action' Directive Missing
+Content-Security-Policy: 'frame-ancestors' Directive Missing
+Content-Security-Policy: 'img-src' Directive Missing
 Content-Security-Policy: 'object-src' Directive Missing
 Content-Security-Policy: 'require-trusted-types-for' Directive Missing
 Content-Security-Policy: 'script-src' Directive Missing
+Content-Security-Policy: 'style-src' Directive Missing
+Content-Security-Policy: 'trusted-types' Directive Missing
 Content-Security-Policy: Deprecated Directives
 Content-Security-Policy: Incorrect Hash
 Content-Security-Policy: Incorrect Nonce

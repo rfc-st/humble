@@ -523,6 +523,18 @@
 [icspmb_h]
  Content-Security-Policy (Directiva 'base-uri' ausente)
 
+[icspmc_h]
+ Content-Security-Policy (Directiva 'child-src' ausente)
+
+[icspmf_h]
+ Content-Security-Policy (Directiva 'form-action' ausente)
+
+[icspmfa_h]
+ Content-Security-Policy (Directiva 'frame-ancestors' ausente)
+
+[icspmi_h]
+ Content-Security-Policy (Directiva 'img-src' ausente)
+
 [icspmo_h]
  Content-Security-Policy (Directiva 'object-src' ausente)
 
@@ -531,6 +543,12 @@
 
 [icspms_h]
  Content-Security-Policy (Directiva 'script-src' ausente)
+
+[icspmst_h]
+ Content-Security-Policy (Directiva 'style-src' ausente)
+
+[icspmstt_h]
+ (*) Content-Security-Policy (Directiva 'trusted-types' ausente)
 
 [icspe_h]
  Content-Security-Policy (Eval inseguro)
@@ -1039,20 +1057,46 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 [icspmb]
- Esta directiva evita inyección de etiquetas base; intenta habilitarla con 'none' o 'self'.
+ Evita inyección de etiquetas base; intenta habilitarla con 'none' o 'self'.
  Ref: https://csplite.com/csp95/
 
+[icspmc]
+ Evita ejecutar código malicioso vía workers/frames; intenta habilitarla con 'self'.
+ Ref: https://centralcsp.com/docs/child-src
+
+[icspmf]
+ Evita ataques Cross-Site Request Forgery; intenta habilitarla con 'self'.
+ Ref: https://centralcsp.com/docs/form-action
+
+[icspmfa]
+ Evita ataques de clickjacking; intenta habilitarla con 'none'.
+ Puedes ignorar este aviso si está habilitada la cabecera HTTP 'X-Frame-Options'.
+ Ref: https://centralcsp.com/docs/frame-ancestors
+ Ref: https://www.w3.org/TR/CSP3/#frame-ancestors-and-frame-options
+
+[icspmi]
+ Evita ataques vía imágenes; intenta habilitarla con 'self'.
+ Ref: https://centralcsp.com/docs/img-src
+
 [icspmo]
- Esta directiva evita inyección de plugins; intenta habilitarla con 'none'.
+ Evita inyección de plugins; intenta habilitarla con 'none'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/object-src
 
 [icspmr]
- Esta directiva evita inyección de XSS en el DOM en los scripts; intenta habilitarla con 'script'.
+ Evita inyección de XSS en el DOM en los scripts; intenta habilitarla con 'script'.
  Ref: https://content-security-policy.com/require-trusted-types-for/
 
 [icspms]
- Esta directiva, habilitada de forma segura, previene ataques XSS.
+ Habilitada de forma segura evita ataques XSS.
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
+
+[icspmst]
+ Evita ataques vía hojas de estilo; intenta habilitarla con 'self'.
+ Ref: https://centralcsp.com/docs/style-src
+
+[icspmstt]
+ Evita ataques XSS; intenta habilitarla con 'none' o una política segura.
+ Ref: https://centralcsp.com/docs/trusted-types
 
 [icspev]
  El valor 'unsafe-eval' incrementa el riesgo de Cross-site scripting (XSS).

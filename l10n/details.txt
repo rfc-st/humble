@@ -522,6 +522,18 @@
 [icspmb_h]
  Content-Security-Policy ('base-uri' Directive Missing)
 
+[icspmc_h]
+ Content-Security-Policy ('child-src' Directive Missing)
+
+[icspmf_h]
+ Content-Security-Policy ('form-action' Directive Missing)
+
+[icspmfa_h]
+ Content-Security-Policy ('frame-ancestors' Directive Missing)
+
+[icspmi_h]
+ Content-Security-Policy ('img-src' Directive Missing)
+
 [icspmo_h]
  Content-Security-Policy ('object-src' Directive Missing)
 
@@ -530,6 +542,12 @@
 
 [icspms_h]
  Content-Security-Policy ('script-src' Directive Missing)
+
+[icspmst_h]
+ Content-Security-Policy ('style-src' Directive Missing)
+
+[icspmstt_h]
+ (*) Content-Security-Policy ('trusted-types' Directive Missing)
 
 [icspe_h]
  Content-Security-Policy (Unsafe Eval)
@@ -1034,20 +1052,46 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 [icspmb]
- This directive prevents base tag injection; try to set it to 'none' or 'self'.
+ Prevents base tag injection; try to set it to 'none' or 'self'.
  Ref: https://csplite.com/csp95/
 
+[icspmc]
+ Prevents malicious code execution through workers/frames; try to set it to 'self'.
+ Ref: https://centralcsp.com/docs/child-src
+
+[icspmf]
+ Prevents Cross-Site Request Forgery attacks; try to set it to 'self'.
+ Ref: https://centralcsp.com/docs/form-action
+
+[icspmfa]
+ Prevents clickjacking attacks; try to set it to 'none'.
+ You can ignore this warning if the 'X-Frame-Options' HTTP header is enabled.
+ Ref: https://centralcsp.com/docs/frame-ancestors
+ Ref: https://www.w3.org/TR/CSP3/#frame-ancestors-and-frame-options
+
+[icspmi]
+ Prevents image-based attacks; try to set it to 'self'.
+ Ref: https://centralcsp.com/docs/img-src
+
 [icspmo]
- This directive prevents plugin injection; try to set it to 'none'.
+ Prevents plugin injection; try to set it to 'none'.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/object-src
 
 [icspmr]
- This directive prevents DOM XSS injection in scripts; try to set it to 'script'.
+ Prevents DOM XSS injection in scripts; try to set it to 'script'.
  Ref: https://content-security-policy.com/require-trusted-types-for/
 
 [icspms]
- This directive, if enabled securely, prevents XSS attacks by restricting script sources.
+ If enabled securely prevents XSS attacks by restricting script sources.
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
+
+[icspmst]
+ Prevents CSS-based attacks; try to set it to 'self'.
+ Ref: https://centralcsp.com/docs/style-src
+
+[icspmstt]
+ Prevents XSS attacks; try to set it to 'none' or a secure policy.
+ Ref: https://centralcsp.com/docs/trusted-types
 
 [icspev]
  The value 'unsafe-eval' increases the risk of Cross-site Scripting (XSS).
