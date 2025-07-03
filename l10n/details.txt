@@ -525,6 +525,12 @@
 [icspmc_h]
  Content-Security-Policy ('child-src' Directive Missing)
 
+[icspmcn_h]
+ Content-Security-Policy ('connect-src' Directive Missing)
+
+[icspmfo_h]
+ Content-Security-Policy ('font-src' Directive Missing)
+
 [icspmf_h]
  Content-Security-Policy ('form-action' Directive Missing)
 
@@ -548,6 +554,9 @@
 
 [icspmstt_h]
  (*) Content-Security-Policy ('trusted-types' Directive Missing)
+
+[icspmsw_h]
+ Content-Security-Policy ('worker-src' Directive Missing)
 
 [icspe_h]
  Content-Security-Policy (Unsafe Eval)
@@ -1055,12 +1064,20 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 [icspmb]
- Prevents base tag injection; try to set it to 'none' or 'self'.
- Ref: https://csplite.com/csp95/
+ Prevents base URL tampering and redirects to harmful endpoints; try to set it to 'self'.
+ Ref: https://centralcsp.com/docs/base-uri
 
 [icspmc]
  Prevents malicious code execution through workers/frames; try to set it to 'self'.
  Ref: https://centralcsp.com/docs/child-src
+
+[icspmcn]
+ Protects against unauthorized data exfiltration; try to set it to 'self'.
+ Ref: https://centralcsp.com/docs/connect-src
+
+[icspmfo]
+ Prevents loading malicious web fonts; try to set it to 'self'.
+ Ref: https://centralcsp.com/docs/font-src
 
 [icspmf]
  Prevents Cross-Site Request Forgery attacks; try to set it to 'self'.
@@ -1095,6 +1112,10 @@ HTTP Response Headers
 [icspmstt]
  Prevents XSS attacks; try to set it to 'none' or a secure policy.
  Ref: https://centralcsp.com/docs/trusted-types
+
+[icspmsw]
+ Prevents unauthorized worker scripts from being loaded; try to set it to 'self'.
+ Ref: https://centralcsp.com/docs/worker-src
 
 [icspev]
  The value 'unsafe-eval' increases the risk of Cross-site Scripting (XSS).

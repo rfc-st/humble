@@ -526,6 +526,12 @@
 [icspmc_h]
  Content-Security-Policy (Directiva 'child-src' ausente)
 
+[icspmcn_h]
+ Content-Security-Policy (Directiva 'connect-src' ausente)
+
+[icspmfo_h]
+ Content-Security-Policy (Directiva 'font-src' ausente)
+
 [icspmf_h]
  Content-Security-Policy (Directiva 'form-action' ausente)
 
@@ -540,6 +546,9 @@
 
 [icspmr_h]
  (*) Content-Security-Policy (Directiva 'require-trusted-types-for' ausente)
+
+[icspmsw_h]
+ Content-Security-Policy (Directiva 'worker-src' ausente)
 
 [icspms_h]
  Content-Security-Policy (Directiva 'script-src' ausente)
@@ -1060,12 +1069,20 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 [icspmb]
- Evita inyección de etiquetas base; intenta habilitarla con 'none' o 'self'.
- Ref: https://csplite.com/csp95/
+ Evita redirecciones maliciosas desde la URL base; intenta habilitarla con 'self'.
+ Ref: https://centralcsp.com/docs/base-uri
 
 [icspmc]
  Evita ejecutar código malicioso vía workers/frames; intenta habilitarla con 'self'.
  Ref: https://centralcsp.com/docs/child-src
+
+[icspmcn]
+ Protege contra la exfiltración no autorizada de datos; intenta habilitarla con 'self'.
+ Ref: https://centralcsp.com/docs/connect-src
+
+[icspmfo]
+ Evita cargar fuentes web maliciosas; intenta habilitarla con 'self'.
+ Ref: https://centralcsp.com/docs/font-src
 
 [icspmf]
  Evita ataques Cross-Site Request Forgery; intenta habilitarla con 'self'.
@@ -1100,6 +1117,10 @@ Cabeceras de respuesta HTTP
 [icspmstt]
  Evita ataques XSS; intenta habilitarla con 'none' o una política segura.
  Ref: https://centralcsp.com/docs/trusted-types
+
+[icspmsw]
+ Evita ejecutar worker scripts no autorizados; intenta habilitarla con 'self'.
+ Ref: https://centralcsp.com/docs/worker-src
 
 [icspev]
  El valor 'unsafe-eval' incrementa el riesgo de Cross-site scripting (XSS).

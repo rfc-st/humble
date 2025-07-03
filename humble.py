@@ -157,7 +157,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-06-28', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-07-03', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -791,10 +791,12 @@ def csp_check_ignored(csp_header):
 
 def csp_check_missing(csp_dirs):
     csp_refs = [('[icspmb_h]', '[icspmb]'), ('[icspmc_h]', '[icspmc]'),
+                ('[icspmcn_h]', '[icspmcn]'), ('[icspmfo_h]', '[icspmfo]'),
                 ('[icspmf_h]', '[icspmf]'), ('[icspmfa_h]', '[icspmfa]'),
                 ('[icspmi_h]', '[icspmi]'), ('[icspmo_h]', '[icspmo]'),
                 ('[icspmr_h]', '[icspmr]'), ('[icspms_h]', '[icspms]'),
-                ('[icspmst_h]', '[icspmst]'), ('[icspmstt_h]', '[icspmstt]')]
+                ('[icspmst_h]', '[icspmst]'), ('[icspmstt_h]', '[icspmstt]'),
+                ('[icspmsw_h]', '[icspmsw]')]
     for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs):
         if directive not in csp_dirs:
             csp_print_missing(csp_ref, csp_ref_brief)
@@ -2432,9 +2434,10 @@ t_csp_dirs = ('base-uri', 'child-src', 'connect-src', 'default-src',
               'style-src-attr', 'style-src-elem', 'trusted-types',
               'upgrade-insecure-requests', 'webrtc', 'worker-src')
 t_csp_insecs = ('http:', 'ws:')
-t_csp_miss = ('base-uri', 'child-src', 'form-action', 'frame-ancestors',
-              'img-src', 'object-src', 'require-trusted-types-for',
-              'script-src', 'style-src', 'trusted-types')
+t_csp_miss = ('base-uri', 'child-src', 'connect-src', 'font-src',
+              'form-action', 'frame-ancestors', 'img-src', 'object-src',
+              'require-trusted-types-for', 'script-src', 'style-src',
+              'trusted-types', 'worker-src')
 t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',
                 'unsafe-hashes', 'nonce-', '127.0.0.1')
 
