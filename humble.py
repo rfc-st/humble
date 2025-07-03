@@ -2524,15 +2524,16 @@ t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
             'execution-while-out-of-viewport', 'focus-without-user-activation',
             'fullscreen', 'gamepad', 'geolocation', 'gyroscope', 'hid',
             'identity-credentials-get', 'idle-detection', 'interest-cohort',
-            'join-ad-interest-group', 'keyboard-map', 'layout-animations',
-            'local-fonts', 'magnetometer', 'microphone', 'midi',
-            'navigation-override', 'otp-credentials', 'payment',
+            'join-ad-interest-group', 'keyboard-map', 'language-detector',
+            'layout-animations', 'local-fonts', 'magnetometer', 'microphone',
+            'midi', 'navigation-override', 'otp-credentials', 'payment',
             'picture-in-picture', 'publickey-credentials-create',
             'publickey-credentials-get', 'run-ad-auction', 'screen-wake-lock',
             'serial', 'shared-autofill', 'smart-card', 'speaker-selection',
             'storage-access', 'summarizer', 'sync-script', 'sync-xhr',
-            'trust-token-redemption', 'unload', 'usb', 'vertical-scroll',
-            'web-share', 'window-management', 'xr-spatial-tracking')
+            'translator', 'trust-token-redemption', 'unload', 'usb',
+            'vertical-scroll', 'web-share', 'window-management',
+            'xr-spatial-tracking')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
 # https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
