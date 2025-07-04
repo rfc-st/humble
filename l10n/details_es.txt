@@ -1882,23 +1882,24 @@ Excepción no gestionada:
  Analizando la URL en relación a las mejores prácticas de OWASP 'Secure Headers Project', espera por favor ...
 
 [comp_analysis]
- [Cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project']
+ [Resumen de Cumplimiento de Cabeceras Seguras OWASP]
 
-[comp_ko_owasp]
- Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
-
-[comp_ok_owasp]
- Ref: https://owasp.org/www-project-secure-headers/#div-bestpractices
+[comp_ref]
+  Ref  : https://owasp.org/www-project-secure-headers/#div-bestpractices
+  Note : Usa este análisis como base para asegurar las cabeceras HTTP y sus valores.
 
 [comp_experimental]
  Significado de '(*)': Cabecera de respuesta HTTP experimental
  Referencia de '(*)':  https://mdn.io/Experimental_deprecated_obsolete
 
 [comp_rec]
- [Cabeceras de respuesta HTTP recomendadas sin habilitar]
+ [Cabeceras de respuesta HTTP recomendadas ausentes]
 
 [comp_val]
- [Cabeceras de respuesta HTTP habilitadas sin valores recomendados]
+ [Cabeceras habilitadas con valores no conformes]
+
+[comp_rec_val]
+ [Valores recomendados para cabeceras habilitadas]
 
 [comp_header]
 (Cabecera no habilitada)

@@ -157,7 +157,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-07-03', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-07-04', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1916,16 +1916,17 @@ def check_owasp_compliance(tmp_filename):
 
 
 def print_owasp_findings(header_dict, header_list):
-    print(linesep.join(['']*2))
+    print(linesep.join([''] * 2))
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
     print(" ", end='')
     print_detail_l('[analysis_date]')
     print(f" {current_time}")
     print(f'  URL  : {URL}')
-    print(f" {get_detail('[comp_ko_owasp]').replace(':', '  :', 1)}")
+    print_detail('[comp_ref]', num_lines=2)
     print_owasp_missing(header_list)
-    print_owasp_wrong(header_dict)
-    print(linesep.join(['']*2))
+    if wrong_owasp := print_owasp_wrong(header_dict):
+        print_owasp_rec(wrong_owasp, header_dict)
+    print(linesep.join([''] * 2))
     print_detail('[comp_experimental]', 2)
 
 
@@ -1947,13 +1948,22 @@ def print_owasp_wrong(header_dict):
         for header, value in headers_l.items()
         if (owasp_value := header_dict.get(header.title())) and value !=
         owasp_value]
-    if not wrong_owasp:
-        print(f"{STYLE[10]}  {get_detail('[no_warnings]')}{STYLE[5]}", end="")
-        return
     print(f"\n\n{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
+    if not wrong_owasp:
+        print(f"{STYLE[10]} {get_detail('[no_warnings]')}{STYLE[5]}", end="")
+        return []
     for header, value in sorted(wrong_owasp):
         prefix = "(*) " if header == "Permissions-Policy" else ""
         print(f"{STYLE[1]}  {prefix}{header}{STYLE[4]}: {value}")
+    return wrong_owasp
+
+
+def print_owasp_rec(wrong_owasp, header_dict):
+    print(f"\n\n{STYLE[0]}{get_detail('[comp_rec_val]')}{STYLE[5]}")
+    for header, _ in sorted(wrong_owasp):
+        prefix = "(*) " if header == "Permissions-Policy" else ""
+        if rec_val := header_dict.get(header):
+            print(f"{STYLE[10]}  {prefix}{header}{STYLE[4]}: {rec_val}")
 
 
 def analyze_input_file(input_file):
