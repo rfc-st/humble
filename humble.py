@@ -892,8 +892,8 @@ def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
     print_detail_r(detail_t, is_red=True)
     if not args.brief:
         print_detail_l('[icsp_s]' if len(csp_unsafe_dirs) > 1 else '[icsp_si]')
-        print(" " + ", ".join(f"'{dir}'" for dir in sorted(csp_unsafe_dirs)) +
-              ".")
+        print(" " + ", ".join(f"'{dir}'" for dir in
+                              sorted(set(csp_unsafe_dirs))) + ".")
         print_detail(detail_d, num_lines=lines_n)
     i_cnt[0] += 1
 
