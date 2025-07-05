@@ -126,7 +126,8 @@ RE_PATTERN = (
     r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{32}$', r'^[A-Za-z0-9+/=]+$',
     r', (?=[^;,]+?=)', r"'nonce-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
     r"'(sha256|sha384|sha512)-([A-Za-z0-9+/=]+)'",
-    r"(?<!')\b(sha256|sha384|sha512)-[A-Za-z0-9+/=]+(?!')"
+    r"(?<!')\b(sha256|sha384|sha512)-[A-Za-z0-9+/=]+(?!')",
+    r'^([a-zA-Z0-9\-]+)'
 )
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
@@ -980,6 +981,29 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
     print_detail_l(f'{csp_desc}')
     print(csp_values)
     print_detail(csp_refs, num_lines=2)
+
+
+def csp_check_unknown(csp_h):
+    unknown_dir = []
+    csp_dirs = [d.strip() for d in csp_h.split(';') if d.strip()]
+    for dir in csp_dirs:
+        if match := re.match(RE_PATTERN[19], dir):
+            dir_name = match[1]
+            if dir_name not in t_csp_dirs + t_csp_dep:
+                unknown_dir.append(dir_name)
+    if unknown_dir:
+        csp_print_unknown(unknown_dir)
+
+
+def csp_print_unknown(unknown_dir):
+    # sourcery skip: use-fstring-for-concatenation
+    print_detail_r('[icspiu_h]', is_red=True)
+    if not args.brief:
+        print_detail_l('[icsp_s]' if len(unknown_dir) > 1 else '[icsp_si]')
+        print(" " + ", ".join(f"'{dir}'" for dir in sorted(unknown_dir)) +
+              ".")
+        print_detail('[icspiu]', num_lines=3)
+    i_cnt[0] += 1
 
 
 def check_unsafe_cookies():  # sourcery skip: use-named-expression
@@ -2716,6 +2740,7 @@ if 'content-security-policy' in headers_l and '16' not in skip_list:
     csp_analyze_content(csp_h)
     if t_csp_checks[0] in csp_h and t_csp_checks[1] not in headers:
         print_details('[icspi_h]', '[icspi]', 'm', i_cnt)
+    csp_check_unknown(csp_h)
     if t_csp_checks[2] in csp_h:
         print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
     csp_check_hashes(csp_h)

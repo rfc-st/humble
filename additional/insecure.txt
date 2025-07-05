@@ -65,6 +65,7 @@ Content-Security-Policy: Insecure Schemes
 Content-Security-Policy: IP detected
 Content-Security-Policy: No Valid Directives
 Content-Security-Policy: Too Permissive Sources
+Content-Security-Policy: Unknown Directive
 Content-Security-Policy: Unsafe Directive
 Content-Security-Policy: Unsafe Eval
 Content-Security-Policy: Unsafe Inline

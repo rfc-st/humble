@@ -564,6 +564,9 @@
 [icsp_h]
  Content-Security-Policy (Unsafe Inline)
 
+[icspiu_h]
+ Content-Security-Policy (Unknown Directive)
+
 [icspi_h]
  Content-Security-Policy (Unsafe Directive)
 
@@ -1130,6 +1133,11 @@ HTTP Response Headers
  Ref: https://csper.io/blog/no-more-unsafe-inline
  Ref: https://content-security-policy.com/hash/
  Ref: https://content-security-policy.com/nonce/
+
+[icspiu]
+ The name does not match any officially recognized CSP directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
+ Ref: https://centralcsp.com/docs/csp-directives
 
 [icspi]
  'upgrade-insecure-requests' without 'HSTS' header could lead to SSL Stripping attacks.
