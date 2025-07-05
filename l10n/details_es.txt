@@ -979,9 +979,6 @@ Cabeceras de respuesta HTTP
 [analysis_skipped_note]
  Nota : Las cabeceras HTTP excluidas expresamente en este análisis son
 
-[analysis_redirects]
- Nota : Se ha indicado expresamente analizar la URL exacta, sin seguir redirecciones.
-
 [analysis_output]
  Analizando URL y guardando el informe, espera por favor ...
 
@@ -1900,9 +1897,6 @@ Excepción no gestionada:
 
 [comp_rec_val]
  [Valores recomendados para cabeceras habilitadas]
-
-[comp_header]
-(Cabecera no habilitada)
 
 [input_filename]
  Input:

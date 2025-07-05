@@ -1914,9 +1914,6 @@ Unhandled exception type:
 [comp_rec_val]
  [Recommended Values for enabled Headers]
 
-[comp_header]
-(Header not enabled)
-
 [input_filename]
  Input:
 
