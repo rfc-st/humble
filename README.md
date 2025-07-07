@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--07--05-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--07--07-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -25,7 +25,7 @@
 <br />
 <br />
 <br />
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fast.PNG" alt="A quick analysis with 'humble'!" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fast.PNG" alt="A quick analysis with 'humble'!">
 <br />
 <br />
 <i>"千里之行，始於足下 - 老子"</i>
@@ -105,13 +105,13 @@
 .: (Linux) - Detailed analysis, in Spanish.<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="(Linux) - Detailed analysis in Spanish" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="(Linux) - Detailed analysis in Spanish">
 </p>
 <br />
 .: (Linux) - Analysis of a "raw response file". <a href="https://github.com/rfc-st/humble/raw/master/samples/github_input_file.txt">Example.</a><br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_input.PNG" alt="(Linux) - Analysis of a raw response file" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_input.PNG" alt="(Linux) - Analysis of a raw response file">
 </p>
 <br />
 .: (Linux) - SSL/TLS checks.<br />
@@ -123,49 +123,49 @@ Options used: -f -g -p -U -s --hints
 
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_encryption_s.PNG" alt="(Linux) - SSL/TLS checks (requires https://testssl.sh/ and Linux/Unix client)" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_encryption_s.PNG" alt="(Linux) - SSL/TLS checks (requires https://testssl.sh/ and Linux/Unix client)">
 </p>
 <br />
 .: (Linux) - Compliance with OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">'Secure Headers Project'<a> best practices.<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Linux) - Compliance with OWASP 'Secure Headers Project' best practices"  width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Linux) - Compliance with OWASP 'Secure Headers Project' best practices">
 </p>
 <br />
 .: (Linux) - List of HTTP fingerprint headers based on a specific term.<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fng.jpg" alt="(Linux) - List of HTTP fingerprint headers based on a specific term" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_fng.jpg" alt="(Linux) - List of HTTP fingerprint headers based on a specific term">
 </p>
 <br />
 .: (Linux) - Brief analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_facebook.com_20250426_191942_en.csv">Example.</a><br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_csv_s.PNG" alt="(Linux) - Brief analysis saved as CSV" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_csv_s.PNG" alt="(Linux) - Brief analysis saved as CSV">
 </p>
 <br />
 .: (Windows) - Detailed analysis saved as PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_samsung_com_20241122_213022_en.pdf">Example.</a><br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="(Windows) - Detailed analysis saved as PDF" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="(Windows) - Detailed analysis saved as PDF">
 </p>
 <br />
 .: (Linux) - Detailed analysis saved as HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/humble_https_facebook.com_20250523_211913_en.html">Example.</a><br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="(Linux) - Detailed analysis saved as HTML" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="(Linux) - Detailed analysis saved as HTML">
 </p>
 <br />
 .: (Linux) - Brief analysis saved as JSON. <a href="http://jsonblob.com/1365739609765634048">Example.</a><br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="(Linux) - Brief analysis saved as JSON" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="(Linux) - Brief analysis saved as JSON">
 </p>
 <br />
 .: (Linux) - Brief analysis saved as XML. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_facebook.com_20250425_181644_en.xml">Example.</a><br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_xml_s.PNG" alt="(Linux) - Brief analysis saved as XML" width=70% height=70%>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_xml_s.PNG" alt="(Linux) - Brief analysis saved as XML">
 </p>
 <br />
 .: (Linux) - Analysis history file: Date, URL, Enabled, Missing, Fingerprint, Deprecated/Insecure, Empty headers & Total warnings (the four previous totals).<br />
