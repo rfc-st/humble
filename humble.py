@@ -1613,6 +1613,8 @@ def set_pdf_content(temp_filename, ok_string, no_headers):
                 set_pdf_nowarnings(line)
                 continue
             pdf.set_text_color(255, 0, 0)
+            if set_pdf_empty(l_empty, line):
+                continue
             format_pdf_lines(line)
 
 
@@ -1655,6 +1657,16 @@ def set_pdf_warnings(line):
 def set_pdf_nowarnings(line):
     pdf.set_text_color(0, 128, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+
+
+def set_pdf_empty(l_empty, line):
+    ln_strip = line.lstrip().lower()
+    for i in l_empty:
+        if (i in ln_strip and '[' not in ln_strip and ':' not in ln_strip):
+            pdf.set_text_color(255, 0, 0)
+            pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+            return True
+    return False
 
 
 def set_pdf_links(i, pdf_string):
@@ -1837,9 +1849,10 @@ def format_html_totals(ln, l_total):
     return ln
 
 
-def format_html_empty(ln, ln_stripped, l_empty):
+def format_html_empty(ln, ln_rstrip, l_empty):
+    ln_strip = ln_rstrip.lstrip().lower()
     for i in l_empty:
-        if (i in ln_stripped and '[' not in ln_stripped):
+        if (i in ln_strip and '[' not in ln_strip and ':' not in ln_strip):
             ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
     return ln
 
