@@ -158,7 +158,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-07-11', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-07-12', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -765,9 +765,9 @@ def print_global_metrics(analytics_l, analytics_s, analytics_w,
 
 def csp_analyze_content(csp_header):
     csp_deprecated = set()
-    csp_dirs = {dir.split()[0].strip() for dir in csp_header.split(';') if
-                dir.strip()}
-    csp_dirs_vals = [dir.strip() for dir in csp_header.split(';')]
+    csp_dirs_vals = [dir.strip() for dir in csp_header.split(';') if
+                     dir.strip()]
+    csp_dirs = {dir.split()[0] for dir in csp_dirs_vals}
     for csp_dir in csp_dirs_vals:
         csp_deprecated |= ({value for value in t_csp_dep if value in csp_dir})
     if csp_deprecated:
@@ -830,6 +830,8 @@ def csp_check_broad(csp_dirs_vals):
     csp_broad_v = sorted({value for dir_vals in csp_dirs_vals if
                           dir_vals.strip() for value in dir_vals.split()[1:]
                           if f" {value} " in t_csp_broad})
+    if not csp_broad_v:
+        return
     csp_broad_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
                       if any(f" {broad_val} " in t_csp_broad for broad_val in
                              dir_vals.split()[1:])}
