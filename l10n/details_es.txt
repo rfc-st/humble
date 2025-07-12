@@ -262,8 +262,8 @@
 
 [ictlg]
  El contenido JavaScript debe servirse siempre utilizando el tipo MIME 'text/javascript'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
  Ref: https://www.rfc-editor.org/rfc/rfc9239.html
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
 
 [ictlhtml_h]
  Content-Type (Tipo MIME distinto de HTML)
@@ -357,8 +357,8 @@
 
 [ixcdisp]
  Codifica las URL de los archivos y sanitiza los caracteres '"', '/', '\r' y '\n'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
  Ref: https://gist.github.com/motoyasu-saburi/1b19ef18e96776fe90ba1b9f910fa714
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
 
 [ickeep_h]
  Keep-Alive (Cabecera ignorada)
@@ -431,8 +431,9 @@
  No se recibieron cabeceras de respuesta HTTP.
 
 [icsi_d_r]
- Ref: https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
+ Ref: https://content-security-policy.com/
  Ref: https://centralcsp.com/docs/csp-directives
+ Ref: https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 
 [itrailer_d_r]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
@@ -1132,19 +1133,19 @@ Cabeceras de respuesta HTTP
 [icsp]
  El valor 'unsafe-inline' incrementa el riesgo de Cross-site scripting (XSS).
  Elimínalo y utiliza hash o nonces en su lugar.
- Ref: https://csper.io/blog/no-more-unsafe-inline
  Ref: https://content-security-policy.com/hash/
  Ref: https://content-security-policy.com/nonce/
+ Ref: https://csper.io/blog/no-more-unsafe-inline
 
 [icspiu]
  El nombre no coincide con ninguna directiva CSP reconocida oficialmente.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
  Ref: https://centralcsp.com/docs/csp-directives
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 
 [icspi]
  'upgrade-insecure-requests' sin la cabecera 'HSTS' podría facilitar ataques SSL Stripping.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
  Ref: https://robotecture.com/http-topics/http-headers/upgrade-insecure-requests/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icsi]
  Incluya, al menos, una directiva correcta.
@@ -1162,8 +1163,8 @@ Cabeceras de respuesta HTTP
  Y no permita esquemas inseguros, sin encriptar: 
 
 [icsh_b]
- Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
  Ref: https://http.dev/wss
+ Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
 
 [icsw]
  Y limite orígenes permisivos: 
@@ -1192,8 +1193,8 @@ Cabeceras de respuesta HTTP
 
 [icsipa]
  Los estándares desaconsejan las direcciones IP como valores (excepto para 127.0.0.1).
- Ref: https://www.w3.org/TR/CSP2/#match-source-expression
  Ref: https://www.w3.org/TR/CSP3/#match-hosts
+ Ref: https://www.w3.org/TR/CSP2/#match-source-expression
 
 [ictp]
  El único valor permitido es 'nosniff'.
@@ -1201,8 +1202,8 @@ Cabeceras de respuesta HTTP
 
 [ictpd]
  Valores distintos, o varias cabeceras con ellos, podrían hacer que los navegadores las ignoren.
+ Ref: https://shorturl.at/qjIgB
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
- Ref: https://shorturl.at/F7A71
 
 [ieta]
  Aunque el riesgo pueda ser mínimo, esta cabecera no debe incluir datos de inodes.
@@ -1218,8 +1219,8 @@ Cabeceras de respuesta HTTP
 
 [ifpoln]
  Incluya, al menos, una directiva correcta.
- Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
  Ref: https://csplite.com/fp/
+ Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 
 [ifpol]
  '*' permite una directiva en cualquier origen, incluso en iframe.
@@ -1343,8 +1344,8 @@ Cabeceras de respuesta HTTP
 
 [ispec]
  Asegúrese que esta cabecera no permita condiciones de carga especulativa inseguras.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Speculation-Rules
  Ref: https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Speculation-Rules
 
 [isdyn]
  Esto no es una cabecera, sino una palabra clave de la cabecera "Content-Security-Policy".
@@ -1352,8 +1353,8 @@ Cabeceras de respuesta HTTP
 
 [ists]
  Habilite 'includeSubDomains' y 'max-age' (con 31536000 -un año- como mínimo).
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
  Ref: https://https.cio.gov/hsts/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [istsr]
  'preload' requiere 'includeSubDomains' y 'max-age' (con 31536000 -un año- como mínimo).
@@ -1407,7 +1408,7 @@ Cabeceras de respuesta HTTP
 [itwall]
  El ámbito '/' es muy permisivo; evalúa el acotarlo.
  Ref: https://www.zeepalm.com/blog/service-worker-security-best-practices-2024-guide
- Ref: https://shorturl.at/F7A71
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Service-Worker-Allowed
 
 [ixpermcrossu]
  El valor 'all' permite peticiones de documentos Flash y PDF entre dominios.
@@ -1416,10 +1417,10 @@ Cabeceras de respuesta HTTP
 
 [ixcsp]
  Esta cabecera está obsoleta; en su lugar habilite una cabecera "Content-Security-Policy" estricta.
- Ref: https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html
  Ref: https://web.dev/articles/strict-csp
- Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
+ Ref: https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
 
 [ixdp]
  Esta cabecera puede eludir las directivas de la cabecera "Content-Security-Policy".
@@ -1469,18 +1470,18 @@ Cabeceras de respuesta HTTP
 [ixxp]
  En algunos casos, valores distintos de "0" pueden crear vulnerabilidades XSS.
  En su lugar habilite una cabecera "Content-Security-Policy" estricta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
  Ref: https://web.dev/articles/strict-csp
- Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
 
 [ixxpdp]
  Esta cabecera está obsoleta en los principales navegadores web.
  En su lugar habilite una cabecera "Content-Security-Policy" estricta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
  Ref: https://web.dev/articles/strict-csp
- Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
 
 [ixxpd]
  Esta cabecera, o sus valores, pueden estar duplicados.

@@ -982,7 +982,7 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
     print_detail_r(f'{csp_title}', is_red=True)
     print_detail_l(f'{csp_desc}')
     print(csp_values)
-    print_detail(csp_refs, num_lines=2)
+    print_detail(csp_refs, num_lines=3)
 
 
 def csp_check_unknown(csp_h):
@@ -2473,15 +2473,15 @@ t_csp_broad = (' *', '* ', ' * ',  ' blob: ', ' data: ', ' ftp: ',
                ' mailto: ', ' mediastream: ', ' schemes: ', ' tel: ', ' wss: ',
                'wss://')
 t_csp_equal = ('nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri')
-t_csp_dep = ('block-all-mixed-content', 'disown-opener', 'plugin-types',
-             'prefetch-src', 'referrer', 'report-uri', 'require-sri-for')
+t_csp_dep = ('block-all-mixed-content', 'disown-opener', 'navigate-to',
+             'plugin-types', 'prefetch-src', 'referrer', 'report-uri',
+             'require-sri-for')
 t_csp_dirs = ('base-uri', 'child-src', 'connect-src', 'default-src',
               'fenced-frame-src', 'font-src', 'form-action', 'frame-ancestors',
               'frame-src', 'img-src', 'manifest-src', 'media-src',
-              'navigate-to', 'object-src', 'report-to',
-              'require-trusted-types-for', 'sandbox', 'script-src',
-              'script-src-attr', 'script-src-elem', 'style-src',
-              'style-src-attr', 'style-src-elem', 'trusted-types',
+              'object-src', 'report-to', 'require-trusted-types-for',
+              'sandbox', 'script-src', 'script-src-attr', 'script-src-elem',
+              'style-src', 'style-src-attr', 'style-src-elem', 'trusted-types',
               'upgrade-insecure-requests', 'webrtc', 'worker-src')
 t_csp_insecs = ('http:', 'ws:')
 t_csp_miss = ('base-uri', 'child-src', 'connect-src', 'font-src',

@@ -261,8 +261,8 @@
 
 [ictlg]
  JavaScript content should always be served using the MIME type 'text/javascript'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
  Ref: https://www.rfc-editor.org/rfc/rfc9239.html
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
 
 [ictlhtml_h]
  Content-Type (Non-HTML MIME type)
@@ -356,8 +356,8 @@
 
 [ixcdisp]
  Encode file URLs and sanitize '"', '/', '\r', '\n' characters.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
  Ref: https://gist.github.com/motoyasu-saburi/1b19ef18e96776fe90ba1b9f910fa714
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
 
 [ickeep_h]
  Keep-Alive (Ignored Header)
@@ -430,8 +430,9 @@
  No HTTP response headers were received.
 
 [icsi_d_r]
- Ref: https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
+ Ref: https://content-security-policy.com/
  Ref: https://centralcsp.com/docs/csp-directives
+ Ref: https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 
 [itrailer_d_r]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
@@ -1130,19 +1131,19 @@ HTTP Response Headers
 [icsp]
  The value 'unsafe-inline' increases the risk of Cross-site scripting (XSS).
  Remove it, and use hashes or nonces instead.
- Ref: https://csper.io/blog/no-more-unsafe-inline
  Ref: https://content-security-policy.com/hash/
  Ref: https://content-security-policy.com/nonce/
+ Ref: https://csper.io/blog/no-more-unsafe-inline
 
 [icspiu]
  The name does not match any officially recognized CSP directive.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
  Ref: https://centralcsp.com/docs/csp-directives
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 
 [icspi]
  'upgrade-insecure-requests' without 'HSTS' header could lead to SSL Stripping attacks.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
  Ref: https://robotecture.com/http-topics/http-headers/upgrade-insecure-requests/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 [icsi]
  Include at least one valid directive.
@@ -1160,8 +1161,8 @@ HTTP Response Headers
  And do not allow insecure, unencrypted schemes: 
 
 [icsh_b]
- Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
  Ref: https://http.dev/wss
+ Ref: https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/
 
 [icsw]
  And limit permissive sources: 
@@ -1190,8 +1191,8 @@ HTTP Response Headers
 
 [icsipa]
  The standards discourage IP addresses as values (except for 127.0.0.1).
- Ref: https://www.w3.org/TR/CSP2/#match-source-expression
  Ref: https://www.w3.org/TR/CSP3/#match-hosts
+ Ref: https://www.w3.org/TR/CSP2/#match-source-expression
 
 [ictp]
  The only valid value is 'nosniff'.
@@ -1199,8 +1200,8 @@ HTTP Response Headers
 
 [ictpd]
  Conflicting values or repeated headers with them could cause browsers to ignore all.
+ Ref: https://shorturl.at/qjIgB
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
- Ref: https://shorturl.at/F7A71
 
 [ieta]
  Although unlikely to be exploited, this header should not include inode information.
@@ -1216,8 +1217,8 @@ HTTP Response Headers
 
 [ifpoln]
  Include at least one valid feature.
- Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
  Ref: https://csplite.com/fp/
+ Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 
 [ifpol]
  '*' allows a directive in any source, including iframe.
@@ -1341,8 +1342,8 @@ HTTP Response Headers
 
 [ispec]
  Make sure this header do not allow unsafe speculative loading conditions.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Speculation-Rules
  Ref: https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Speculation-Rules
 
 [isdyn]
  This is not a header, but a keyword of the 'Content-Security-Policy' header.
@@ -1350,8 +1351,8 @@ HTTP Response Headers
 
 [ists]
  Add 'includeSubDomains' and 'max-age' (with 31536000 -one year- as minimum).
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
  Ref: https://https.cio.gov/hsts/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [istsr]
  'preload' requires 'includeSubDomains' and 'max-age' (with 31536000 -one year- as minimum).
@@ -1405,7 +1406,7 @@ HTTP Response Headers
 [itwall]
  The '/' scope is too permissive; consider narrowing it.
  Ref: https://www.zeepalm.com/blog/service-worker-security-best-practices-2024-guide
- Ref: https://shorturl.at/F7A71
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Service-Worker-Allowed
 
 [ixpermcrossu]
  The value 'all' could permit any cross-domain requests from Flash and PDF documents.
@@ -1414,10 +1415,10 @@ HTTP Response Headers
 
 [ixcsp]
  This header is deprecated; instead, enforce a strict "Content-Security-Policy" header.
- Ref: https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html
  Ref: https://web.dev/articles/strict-csp
- Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
+ Ref: https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
 
 [ixdp]
  Enabling DNS prefetching could bypass "Content-Security-Policy" directives.
@@ -1467,18 +1468,18 @@ HTTP Response Headers
 [ixxp]
  In some cases values other than '0' can create XSS vulnerabilities.
  Instead, enforce a strict "Content-Security-Policy" header.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
  Ref: https://web.dev/articles/strict-csp
- Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
 
 [ixxpdp]
  This header is deprecated in the major web browsers.
  Instead, enforce a strict "Content-Security-Policy" header.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
  Ref: https://web.dev/articles/strict-csp
- Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
 
 [ixxpd]
  This header, or its values, may be duplicated.
