@@ -71,11 +71,11 @@
 :heavy_check_mark: Can export each analysis to CSV, HTML5, JSON, PDF 1.4, TXT and XML (and in a filename and path of your choice).<br />
 :heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** https://testssl.sh/.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
-:heavy_check_mark: Includes browser support references for enabled HTTP security headers: provided by https://caniuse.com/.<br />
+:heavy_check_mark: Shows browser support for enabled HTTP security headers, with data from https://caniuse.com/.<br />
 :heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental<a> headers in each analysis.<br />
-:heavy_check_mark: Each detailed analysis may include up to dozens of official links, references and technical articles.<br />
-:heavy_check_mark: Can display analysis, messages, and most errors in either English or Spanish.<br />
-:heavy_check_mark: Saves each analysis and highlights improvements or deficiencies compared to the previous one.<br />
+:heavy_check_mark: Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.<br />
+:heavy_check_mark: Supports displaying analysis, messages, and most errors in English or Spanish.<br />
+:heavy_check_mark: Saves each analysis, highlighting improvements or deficiencies compared to the previous one.<br />
 :heavy_check_mark: Can display analysis statistics for a specific URL or across all of them.<br />
 :heavy_check_mark: Can display fingerprint statistics for a specific term or the Top 20.<br />
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
