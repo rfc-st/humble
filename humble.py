@@ -61,6 +61,7 @@ import xml.etree.ElementTree as ET
 # Third-Party imports
 from colorama import Fore, Style, init
 from requests.adapters import HTTPAdapter
+from requests.structures import CaseInsensitiveDict
 import requests
 
 
@@ -127,7 +128,8 @@ RE_PATTERN = (
     r', (?=[^;,]+?=)', r"'nonce-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
     r"'(sha256|sha384|sha512)-([A-Za-z0-9+/=]+)'",
     r"(?<!')\b(sha256|sha384|sha512)-[A-Za-z0-9+/=]+(?!')",
-    r'^([a-zA-Z0-9\-]+)'
+    r'^([a-zA-Z0-9\-]+)',
+    r'\s{2,}'
 )
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
@@ -158,7 +160,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-07-12', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-07-18', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -2140,7 +2142,9 @@ def manage_http_request(status_code, reliable, body):
             handle_http_error(r, exception_d)
             if r:
                 status_code = r.status_code
-                headers = r.headers
+                headers = CaseInsensitiveDict({k: re.sub(RE_PATTERN[20], ' ',
+                                                         v).strip() for k, v
+                                              in r.headers.items()})
                 body = r.text
     except SystemExit:
         sys.exit()
