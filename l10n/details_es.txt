@@ -924,7 +924,7 @@ Cabeceras de respuesta HTTP
  Error en servidor; espera unos minutos y prueba de nuevo.
 
 [e_connection]
- Error: La solicitud ha expirado al intentar conectarse al servidor; revisa la URL y prueba de nuevo.
+ Error: La petición ha expirado al intentar conectarse al servidor; revisa la URL y prueba de nuevo.
 
 [e_redirect]
  Error: Demasiadas redirecciones.
@@ -1034,7 +1034,7 @@ Cabeceras de respuesta HTTP
  Ref: https://scotthelme.co.uk/network-error-logging-deep-dive/
 
 [mreferrer]
- Controla los datos del referrer que deben incluirse en las solicitudes.
+ Controla los datos del referrer que deben incluirse en las peticiones.
  Ref: https://scotthelme.co.uk/a-new-security-header-referrer-policy/
 
 [msts]

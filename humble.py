@@ -160,7 +160,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-07-18', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-07-19', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -2122,33 +2122,37 @@ def handle_http_error(r, exception_d):
             print_http_exception(ex, e)
 
 
-def manage_http_request(status_code, reliable, body):
+def process_http_request(status_code, reliable, body):
     headers = {}
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
             future = executor.submit(make_http_request)
-            # Five seconds should be enough to receive HTTP response headers.
             done, _ = concurrent.futures.wait([future], timeout=5)
             if not done:
                 print(get_detail('[unreliable_analysis]'))
                 return headers, status_code, 'No', body
             r, _, exception = future.result()
-            # https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/
-            if exception:
-                handle_requests_exception(exception)
-                return headers, status_code, reliable, body
-            # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors
-            # https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/
-            handle_http_error(r, exception_d)
-            if r:
-                status_code = r.status_code
-                headers = CaseInsensitiveDict({k: re.sub(RE_PATTERN[20], ' ',
-                                                         v).strip() for k, v
-                                              in r.headers.items()})
-                body = r.text
+        return process_http_response(r, exception, status_code, reliable, body)
     except SystemExit:
         sys.exit()
-    return headers, status_code, reliable, body
+
+
+def process_http_response(r, exception, status_code, reliable, body):
+    # https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/
+    if exception:
+        handle_requests_exception(exception)
+        return {}, status_code, reliable, body
+    # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors
+    # https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/
+    handle_http_error(r, exception_d)
+    if r:
+        status_code = r.status_code
+        headers = CaseInsensitiveDict({
+            k: re.sub(RE_PATTERN[20], ' ', v).strip()
+            for k, v in r.headers.items()})
+        body = r.text
+        return headers, status_code, reliable, body
+    return {}, status_code, reliable, body
 
 
 def custom_help_formatter(prog):
@@ -2330,8 +2334,8 @@ requests.packages.urllib3.disable_warnings()
 headers_l, http_equiv, status_code, reliable, body = {}, None, None, None, None
 
 if '-if' not in sys.argv:
-    headers, status_code, reliable, body = manage_http_request(status_code,
-                                                               reliable, body)
+    headers, status_code, reliable, body = process_http_request(status_code,
+                                                                reliable, body)
     if body:
         http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)
 
