@@ -164,6 +164,9 @@
 [server_530]
  Server error usually associated with a CDN (HTTP code 530, 'Review accompanying 1XXX error')
 
+[server_5xx]
+ Server error
+
 [ixuacom_h]
  X-UA-Compatible (Deprecated Header)
 

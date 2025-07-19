@@ -64,7 +64,6 @@ from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
 import requests
 
-
 BANNER = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
  | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
@@ -73,6 +72,7 @@ BANNER = '''  _                     _     _
 '''
 BOLD_STRINGS = ('[0.', 'HTTP R', '[1.', '[2.', '[3.', '[4.', '[5.', '[6.',
                 '[7.', '[Cabeceras')
+CDN_HTTP_CODES = set(range(500, 512)) | set(range(520, 528)) | {530}
 CSV_SECTION = ('0section', '0headers', '1enabled', '2missing', '3fingerprint',
                '4depinsecure', '5empty', '6compat', '7result')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
@@ -92,9 +92,6 @@ EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HASH_CHARS = {'sha256': 32, 'sha384': 48, 'sha512': 64}
 HTTP_SCHEMES = ('http:', 'https:')
-HTTP_SERVER_CODES = (500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510,
-                     511, 520, 521, 522, 523, 524, 525, 526, 527, 528, 529,
-                     530)
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
 HUMBLE_DIRS = ('additional', 'l10n')
 HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
@@ -2050,15 +2047,16 @@ def build_tmp_file(export_date, file_ext, lang, url):
 {url_prt}{export_date}{lang}{file_ext}"
 
 
-def handle_server_error(http_status_code, l10n_id):
+def process_server_error(http_status_code, l10n_id):
     delete_lines()
     print()
-    if http_status_code in HTTP_SERVER_CODES:
+    if http_status_code in CDN_HTTP_CODES:
         if detail := print_detail(l10n_id, 0):
             print(detail)
+        elif 500 <= http_status_code <= 511:
+            print(URL_LIST[2])
         else:
-            print((URL_LIST[2] if http_status_code in range(500, 512) else
-                   URL_LIST[1]))
+            print(URL_LIST[1])
     else:
         print_error_detail('[server_serror]')
     sys.exit()
@@ -2096,27 +2094,27 @@ def make_http_request():
         return None, None, e
 
 
-def handle_requests_exception(exception):
-    exception_type = type(exception)
-    if exception_type in exception_d:
-        exception_id = exception_d[exception_type]
+def process_requests_exception(exception):
+    if exception_id := exception_d.get(type(exception)):
         print_http_exception(exception_id, exception)
     else:
         print_detail_l('[unhandled_exception]')
-        print(f" {exception_type}")
+        print(f" {type(exception).__name__}")
 
 
-def handle_http_error(r, exception_d):
+def process_http_error(r, exception_d):
     if r is None:
         return
     try:
         r.raise_for_status()
     except requests.exceptions.HTTPError as err_http:
-        http_status_code = err_http.response.status_code
-        l10n_id = f'[server_{http_status_code}]'
-        if http_status_code // 100 == 5:
-            handle_server_error(http_status_code, l10n_id)
-    except tuple(exception_d.keys()) as e:
+        status = err_http.response.status_code
+        l10n_id = f'[server_{status}]'
+        if status in CDN_HTTP_CODES:
+            process_server_error(status, l10n_id)
+        elif 500 <= status <= 599:
+            print_error_detail('[server_5xx]')
+    except Exception as e:
         ex = exception_d.get(type(e))
         if ex and (not callable(ex) or ex(e)):
             print_http_exception(ex, e)
@@ -2140,19 +2138,19 @@ def process_http_request(status_code, reliable, body):
 def process_http_response(r, exception, status_code, reliable, body):
     # https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/
     if exception:
-        handle_requests_exception(exception)
+        process_requests_exception(exception)
+        return {}, status_code, reliable, body
+    if r is None:
         return {}, status_code, reliable, body
     # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors
     # https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/
-    handle_http_error(r, exception_d)
-    if r:
-        status_code = r.status_code
-        headers = CaseInsensitiveDict({
-            k: re.sub(RE_PATTERN[20], ' ', v).strip()
-            for k, v in r.headers.items()})
-        body = r.text
-        return headers, status_code, reliable, body
-    return {}, status_code, reliable, body
+    process_http_error(r, exception_d)
+    status_code = r.status_code
+    headers = CaseInsensitiveDict({
+        k: re.sub(RE_PATTERN[20], ' ', v).strip()
+        for k, v in r.headers.items()})
+    body = r.text
+    return headers, status_code, reliable, body
 
 
 def custom_help_formatter(prog):

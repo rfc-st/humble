@@ -165,6 +165,9 @@
 [server_530]
  Error del servidor asociado generalmente con un CDN (código HTTP 530, 'Review accompanying 1XXX error')
 
+[server_5xx]
+ Error del servidor
+
 [ixuacom_h]
  X-UA-Compatible (Cabecera obsoleta)
 
