@@ -1915,3 +1915,12 @@ Excepción no gestionada:
 
 [json_gen]
 Generador
+
+[proxy_host]
+ Error: La URL del proxy no es válida.
+
+[proxy_port]
+ Error: El puerto de proxy no es válido.
+
+[proxy_url]
+ Error: No se puede acceder al proxy.

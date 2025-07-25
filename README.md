@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--07--19-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--07--25-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -304,9 +304,9 @@ $ sudo apt install --only-upgrade humble
 (macOS)   $ python3 humble.py
 
 usage: humble.py [-h] [-a] [-b] [-c] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-if INPUT_FILE] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt,xml}]
-                 [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
+                 [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-03-28
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-07-25
 
 options:
   -h, --help                      show this help message and exit
@@ -315,32 +315,34 @@ options:
   -c                              Checks URL response HTTP headers for compliance with OWASP 'Secure Headers Project' best practices
   -df                             Do not follow redirects; if omitted the last redirection will be the one analyzed
   -e [TESTSSL_PATH]               Shows only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
-  -f [FINGERPRINT_TERM]           Shows fingerprint statistics; if 'FINGERPRINT_TERM' (e.g., 'Google') is omitted the top 20 results will be shown
+  -f [FINGERPRINT_TERM]           Shows fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 results will be shown
   -g                              Shows guidelines for enabling security HTTP response headers on popular frameworks, servers and services
   -grd                            Shows the checks to grade an analysis, along with advice for improvement
-  -if INPUT_FILE                  Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g. 'server: nginx'
+  -if INPUT_FILE                  Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g., 'server: nginx'
   -l {es}                         Defines the language for displaying analysis, errors and messages; if omitted, will be shown in English
   -lic                            Shows the license for 'humble', along with permissions, limitations and conditions.
   -o {csv,html,json,pdf,txt,xml}  Exports analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; json will have a brief analysis
   -of OUTPUT_FILE                 Exports analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter '-o' will be used
   -op OUTPUT_PATH                 Exports analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of 'humble.py' will be used
+  -p PROXY                        Use a proxy for the analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will be used
   -r                              Shows HTTP response headers and a detailed analysis; '-b' parameter will take priority
   -s [SKIP_HEADERS ...]           Skips 'deprecated/insecure' and 'missing' checks for the indicated 'SKIP_HEADERS' (separated by spaces)
-  -u URL                          Scheme, host and port to analyze. E.g. https://google.com
+  -u URL                          Scheme, host and port to analyze. E.g., https://google.com
   -ua USER_AGENT                  User-Agent ID from 'additional/user_agents.txt' file to use. '0' will show all and '1' is the default
   -v, --version                   Checks for updates at https://github.com/rfc-st/humble
 
 examples:
   -u URL -a                       Shows statistics of the analysis performed against the URL
-  -u URL -b                       Analyzes URL and reports overall findings
-  -u URL -b -o csv                Analyzes URL and exports overall findings to CSV format
-  -u URL -l es                    Analyzes URL and reports (in Spanish) detailed findings
-  -u URL -o pdf                   Analyzes URL and exports detailed findings to PDF format
-  -u URL -o html -of test         Analyzes URL and exports detailed findings to HTML format and 'test' filename
-  -u URL -o pdf -op D:/Tests      Analyzes URL and exports detailed findings to PDF format and 'D:/Tests' path
-  -u URL -r                       Analyzes URL and reports detailed findings along with HTTP response headers
-  -u URL -s ETag NEL              Analyzes URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
-  -u URL -ua 4                    Analyzes URL using the fourth User-Agent of 'additional/user_agents.txt' file
+  -u URL -b                       Analyzes the URL and reports overall findings
+  -u URL -b -o csv                Analyzes the URL and exports overall findings to CSV format
+  -u URL -l es                    Analyzes the URL and reports (in Spanish) detailed findings
+  -u URL -o pdf                   Analyzes the URL and exports detailed findings to PDF format
+  -u URL -o html -of test         Analyzes the URL and exports detailed findings to HTML format and 'test' filename
+  -u URL -o pdf -op D:/Tests      Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
+  -u URL -p http://127.0.0.1:8080 Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
+  -u URL -r                       Analyzes the URL and reports detailed findings along with HTTP response headers
+  -u URL -s ETag NEL              Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
+  -u URL -ua 4                    Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
   -a -l es                        Shows statistics (in Spanish) of the analysis performed against all URLs
   -f Google                       Shows HTTP fingerprint headers related to the term 'Google'
 

@@ -51,6 +51,7 @@ from subprocess import PIPE, Popen
 from os import linesep, path, remove
 from os.path import dirname, abspath
 from collections import Counter, defaultdict
+from socket import create_connection, gethostbyname
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
 import ssl
@@ -157,7 +158,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-07-19', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-07-25', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -165,7 +166,7 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         # Yes, certificates and hosts must always be checked/verified on HTTPS
         # connections. However, within the scope of 'humble', I have chosen to
         # disable these checks to allow the analysis of URLs in certain cases
-        # (e.g., development environments, hosts with outdated
+        # (E.g., development environments, hosts with outdated
         # servers/software, self-signed certificates, etc.).
         context = ssl._create_unverified_context()
         context.check_hostname = False
@@ -179,6 +180,25 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
 def check_python_version():
     exit(print_detail('[python_version]', 3)) if sys.version_info < (3, 11) \
         else None
+
+
+def check_proxy(proxy_url, timeout):
+    proxy_parsed = urlparse(proxy_url)
+    host = proxy_parsed.hostname
+    if not host:
+        print_error_detail('[proxy_host]')
+    try:
+        port = proxy_parsed.port or 8080
+    except ValueError:
+        delete_lines()
+        print_error_detail('[proxy_port]')
+    try:
+        gethostbyname(host)
+        with create_connection((host, port), timeout=timeout):
+            pass
+    except OSError:
+        delete_lines()
+        print_error_detail('[proxy_url]')
 
 
 def check_updates(local_version):
@@ -2062,7 +2082,9 @@ def process_server_error(http_status_code, l10n_id):
     sys.exit()
 
 
-def make_http_request():
+def make_http_request():  # sourcery skip: extract-method
+    if proxy:
+        check_proxy(args.proxy, timeout=3.0)
     try:
         custom_headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,\
@@ -2083,10 +2105,11 @@ def make_http_request():
         # Yes, certificates and hosts must always be checked/verified on HTTPS
         # connections. However, within the scope of 'humble', I have chosen to
         # disable these checks to allow the analysis of URLs in certain cases
-        # (e.g., development environments, hosts with outdated
+        # (E.g., development environments, hosts with outdated
         # servers/software, self-signed certificates, etc.).
         r = session.get(URL, allow_redirects=not args.redirects,
-                        verify=False, headers=custom_headers, timeout=15)
+                        verify=False, headers=custom_headers, timeout=15,
+                        proxies=proxy)
         return r, None, None
     except requests.exceptions.SSLError:
         return None, None, None
@@ -2178,7 +2201,7 @@ parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
 parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\
 s only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)")
 parser.add_argument("-f", nargs='?', type=str, dest='fingerprint_term', help="\
-Shows fingerprint statistics; if 'FINGERPRINT_TERM' (e.g., 'Google') is \
+Shows fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is \
 omitted the top 20 results will be shown")
 parser.add_argument("-g", dest='guides', action="store_true", help="Shows \
 guidelines for enabling security HTTP response headers on popular frameworks, \
@@ -2187,7 +2210,7 @@ parser.add_argument("-grd", dest='grades', action="store_true", help="Shows \
 the checks to grade an analysis, along with advice for improvement")
 parser.add_argument("-if", dest='input_file', type=str, help="Analyzes \
 'INPUT_FILE': must contain HTTP response headers and values separated by ': ';\
- E.g. 'server: nginx'")
+ E.g., 'server: nginx'")
 parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
 language for displaying analysis, errors and messages; if omitted, will be \
 shown in English")
@@ -2203,13 +2226,16 @@ analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 parser.add_argument("-op", dest='output_path', type=str, help="Exports \
 analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of \
 'humble.py' will be used")
+parser.add_argument('-p', dest="proxy", type=str, help="Use a proxy for the \
+analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will \
+be used")
 parser.add_argument("-r", dest='ret', action="store_true", help="Shows HTTP \
 response headers and a detailed analysis; '-b' parameter will take priority")
 parser.add_argument("-s", dest='skip_headers', nargs='*', type=str, help="S\
 kips 'deprecated/insecure' and 'missing' checks for the indicated \
 'SKIP_HEADERS' (separated by spaces)")
 parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
- analyze. E.g. https://google.com")
+ analyze. E.g., https://google.com")
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
 from 'additional/user_agents.txt' file to use. '0' will show all and '1' is \
 the default")
@@ -2332,6 +2358,7 @@ requests.packages.urllib3.disable_warnings()
 headers_l, http_equiv, status_code, reliable, body = {}, None, None, None, None
 
 if '-if' not in sys.argv:
+    proxy = {"http": args.proxy, "https": args.proxy} if args.proxy else None
     headers, status_code, reliable, body = process_http_request(status_code,
                                                                 reliable, body)
     if body:
