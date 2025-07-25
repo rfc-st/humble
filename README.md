@@ -71,6 +71,7 @@
 :heavy_check_mark: Can export each analysis to CSV, HTML5, JSON, PDF 1.4, TXT and XML (and in a filename and path of your choice).<br />
 :heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** https://testssl.sh/.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
+:heavy_check_mark: Can use proxies for the analysis (some edge cases still under review).<br />
 :heavy_check_mark: Shows browser support for enabled HTTP security headers, with data from https://caniuse.com/.<br />
 :heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental<a> headers in each analysis.<br />
 :heavy_check_mark: Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.<br />
