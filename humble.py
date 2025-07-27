@@ -57,7 +57,6 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
 import ssl
 import sys
-import concurrent.futures
 import xml.etree.ElementTree as ET
 
 # Third-Party imports
@@ -153,7 +152,7 @@ TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
 URL_LIST = (': https://caniuse.com/?search=', ' Ref  : https://developers.\
 cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 /', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
-Reference/Status', 'https://raw.githubusercontent.com/rfc-st/humble/master/\
+Reference/Status/', 'https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py', 'https://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
@@ -216,7 +215,7 @@ def check_proxy_url(host, port, timeout, failed):
 
 def check_updates(local_version):
     try:
-        github_repo = requests.get(URL_LIST[3], timeout=10).text
+        github_repo = requests.get(URL_LIST[3], timeout=7).text
         github_date = re.search(RE_PATTERN[4], github_repo).group()
         github_version = datetime.strptime(github_date, '%Y-%m-%d').date()
         days_diff = (github_version - local_version).days
@@ -2122,12 +2121,14 @@ def make_http_request(proxy):  # sourcery skip: extract-method
         # (E.g., development environments, hosts with outdated
         # servers/software, self-signed certificates, etc.).
         r = session.get(URL, allow_redirects=not args.redirects,
-                        verify=False, headers=custom_headers, timeout=15,
+                        verify=False, headers=custom_headers, timeout=7,
                         proxies=proxy)
         return r, None, None
     except requests.exceptions.SSLError:
         return None, None, None
     except requests.exceptions.RequestException as e:
+        return None, None, e
+    except Exception as e:
         return None, None, e
 
 
@@ -2158,18 +2159,33 @@ def process_http_error(r, exception_d):
 
 
 def process_http_request(status_code, reliable, body, proxy):
-    headers = {}
-    try:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-            future = executor.submit(make_http_request, proxy)
-            done, _ = concurrent.futures.wait([future], timeout=5)
-            if not done:
-                print(get_detail('[unreliable_analysis]'))
-                return headers, status_code, 'No', body
-            r, _, exception = future.result()
-        return process_http_response(r, exception, status_code, reliable, body)
-    except SystemExit:
-        sys.exit()
+    result = {}
+    done = Event()
+
+    def worker():
+        try:
+            r, _, exception = make_http_request(proxy)
+            result['r'] = r
+            result['exception'] = exception
+        except Exception as e:
+            result['exception'] = e
+        finally:
+            done.set()
+
+    thread = Thread(target=worker, daemon=True)
+    thread.start()
+    done.wait(timeout=5)
+    if not done.is_set():
+        print(get_detail('[unreliable_analysis]'))
+        done.wait(timeout=5)
+        if not done.is_set():
+            delete_lines()
+            delete_lines()
+            print(f"\n{get_detail('[e_timeout]', replace=True)}")
+            sys.exit()
+    r = result.get('r')
+    exception = result.get('exception')
+    return process_http_response(r, exception, status_code, reliable, body)
 
 
 def process_http_response(r, exception, status_code, reliable, body):

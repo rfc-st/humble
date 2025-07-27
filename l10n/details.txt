@@ -931,7 +931,7 @@ HTTP Response Headers
  Error: Too many redirects.
 
 [e_timeout]
- Error: The request timed out.
+ Error: Request timed out. Check the URL.
 
 [e_ischema]
  Error: The URL scheme provided is either invalid or unsupported.

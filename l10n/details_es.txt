@@ -933,7 +933,7 @@ Cabeceras de respuesta HTTP
  Error: Demasiadas redirecciones.
 
 [e_timeout]
- Error: Se ha superado el tiempo de espera; espera unos minutos y prueba de nuevo.
+ Error: La solicitud excedió el tiempo de espera. Verifica la URL.
 
 [e_ischema]
  Error: El esquema de la URL no es válido o no es compatible.
@@ -1926,4 +1926,4 @@ Generador
  Error: El puerto de proxy no es válido.
 
 [proxy_url]
- Error: No se puede acceder al proxy.
+ Error: Proxy no accesible.
