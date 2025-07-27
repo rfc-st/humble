@@ -986,6 +986,9 @@ Cabeceras de respuesta HTTP
 [analysis_skipped_note]
  Nota : Las cabeceras HTTP excluidas expresamente en este análisis son
 
+[proxy_analysis_note]
+ Note : El proxy especificado para este análisis es
+
 [analysis_output]
  Analizando URL y guardando el informe, espera por favor ...
 

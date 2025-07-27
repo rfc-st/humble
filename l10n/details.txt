@@ -984,6 +984,9 @@ HTTP Response Headers
 [analysis_skipped_note]
  Note : The HTTP headers expressly excluded from this analysis are
 
+[proxy_analysis_note]
+ Note : The proxy specified for this analysis is
+
 [analysis_output]
  Analyzing URL and saving the report, please wait ...
 

@@ -48,10 +48,11 @@ from datetime import datetime
 from csv import writer, QUOTE_ALL
 from urllib.parse import urlparse
 from subprocess import PIPE, Popen
+from threading import Event, Thread
 from os import linesep, path, remove
 from os.path import dirname, abspath
+from socket import create_connection
 from collections import Counter, defaultdict
-from socket import create_connection, gethostbyname
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import re
 import ssl
@@ -158,7 +159,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-07-25', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-07-27', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -182,23 +183,35 @@ def check_python_version():
         else None
 
 
-def check_proxy(proxy_url, timeout):
-    proxy_parsed = urlparse(proxy_url)
-    host = proxy_parsed.hostname
-    if not host:
+def process_proxy_url(proxy_url, timeout):
+    parsed_proxy_url = urlparse(proxy_url)
+    proxy_host = parsed_proxy_url.hostname
+    if not proxy_host:
         print_error_detail('[proxy_host]')
     try:
-        port = proxy_parsed.port or 8080
+        proxy_port = parsed_proxy_url.port or 8080
     except ValueError:
         delete_lines()
         print_error_detail('[proxy_port]')
-    try:
-        gethostbyname(host)
-        with create_connection((host, port), timeout=timeout):
-            pass
-    except OSError:
+    failed_result = Event()
+    proxy_thread = Thread(target=check_proxy_url, args=(proxy_host, proxy_port,
+                                                        timeout,
+                                                        failed_result),
+                          daemon=True)
+    proxy_thread.start()
+    proxy_thread.join(timeout)
+    if proxy_thread.is_alive() or failed_result.is_set():
         delete_lines()
         print_error_detail('[proxy_url]')
+    return True
+
+
+def check_proxy_url(host, port, timeout, failed):
+    try:
+        with create_connection((host, port), timeout=timeout):
+            pass
+    except Exception:
+        failed.set()
 
 
 def check_updates(local_version):
@@ -1153,6 +1166,9 @@ def print_basic_info(export_filename):
 def print_extended_info(args, reliable, status_code):
     if args.skip_headers:
         print_skipped_headers(args)
+    if args.proxy:
+        print_detail_l('[proxy_analysis_note]')
+        print(f" {args.proxy}")
     if args.output == 'json':
         print(get_detail('[limited_analysis_note]', replace=True))
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
@@ -2082,9 +2098,7 @@ def process_server_error(http_status_code, l10n_id):
     sys.exit()
 
 
-def make_http_request():  # sourcery skip: extract-method
-    if proxy:
-        check_proxy(args.proxy, timeout=3.0)
+def make_http_request(proxy):  # sourcery skip: extract-method
     try:
         custom_headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,\
@@ -2143,11 +2157,11 @@ def process_http_error(r, exception_d):
             print_http_exception(ex, e)
 
 
-def process_http_request(status_code, reliable, body):
+def process_http_request(status_code, reliable, body, proxy):
     headers = {}
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-            future = executor.submit(make_http_request)
+            future = executor.submit(make_http_request, proxy)
             done, _ = concurrent.futures.wait([future], timeout=5)
             if not done:
                 print(get_detail('[unreliable_analysis]'))
@@ -2358,9 +2372,12 @@ requests.packages.urllib3.disable_warnings()
 headers_l, http_equiv, status_code, reliable, body = {}, None, None, None, None
 
 if '-if' not in sys.argv:
-    proxy = {"http": args.proxy, "https": args.proxy} if args.proxy else None
+    proxy = None
+    if args.proxy and process_proxy_url(args.proxy, 3.0):
+        proxy = {"http": args.proxy, "https": args.proxy}
     headers, status_code, reliable, body = process_http_request(status_code,
-                                                                reliable, body)
+                                                                reliable, body,
+                                                                proxy)
     if body:
         http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)
 
