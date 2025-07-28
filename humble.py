@@ -25,19 +25,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# Notes on some Sourcery checks:
+# https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery
+#
+# To maintain compatibility with the minimum required Python version for
+# 'humble' (especially regarding f-strings), and because some of Sourcery’s
+# checks (in my opinion) offer little benefit, certain ones are explicitly
+# ignored using inline comments.
+
 # Advice:
 # Use the information provided by 'humble' wisely. There is *far* more merit in
 # helping others, learning and teaching than in attacking, harming or taking
 # advantage. Do not just be a 'Script kiddie': if this really interests you
 # learn, research and become a Security Analyst!.
 
-# Greetings:
+# Greetings!:
 # Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3), David (x3), Eduardo,
 # Eloy, Fernando, Gabriel, Íñigo, Joanna, Juan Carlos, Juán, Julián, Julio,
 # Iván, Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Angel,
 # Montse, Naiara, Pablo, Sergio, Ricardo & Rubén!.
 
 # Standard Library imports
+import re
+import ssl
+import sys
+import xml.etree.ElementTree as ET
 from time import time
 from json import dump
 from shutil import copyfile
@@ -54,16 +66,12 @@ from os.path import dirname, abspath
 from socket import create_connection
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-import re
-import ssl
-import sys
-import xml.etree.ElementTree as ET
 
 # Third-Party imports
+import requests
 from colorama import Fore, Style, init
 from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
-import requests
 
 BANNER = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
@@ -77,6 +85,7 @@ CDN_HTTP_CODES = set(range(500, 512)) | set(range(520, 528)) | {530}
 CSV_SECTION = ('0section', '0headers', '1enabled', '2missing', '3fingerprint',
                '4depinsecure', '5empty', '6compat', '7result')
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
+DIR_MSG = ('[icsp_s]', '[icsp_si]', '[no_warnings]')
 DTD_CONTENT = '''<!ELEMENT analysis (section+)>
 <!ATTLIST analysis version CDATA #REQUIRED>
 <!ATTLIST analysis generated CDATA #REQUIRED>
@@ -130,6 +139,17 @@ RE_PATTERN = (
     r'\s{2,}'
 )
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
+REQ_HEADERS = {
+    'Accept': (
+        'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    ),
+    'Accept-Encoding': 'gzip, deflate, br, zstd',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Cache-Control': 'no-cache',
+    'Pragma': 'no-cache',
+    'Upgrade-Insecure-Requests': '1',
+}
+REQ_TIMEOUT = 5
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
 SECTION_V = ('[no_enabled]', '[no_missing]', '[no_fingerprint]',
@@ -215,7 +235,7 @@ def check_proxy_url(host, port, timeout, failed):
 
 def check_updates(local_version):
     try:
-        github_repo = requests.get(URL_LIST[3], timeout=7).text
+        github_repo = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT).text
         github_date = re.search(RE_PATTERN[4], github_repo).group()
         github_version = datetime.strptime(github_date, '%Y-%m-%d').date()
         days_diff = (github_version - local_version).days
@@ -872,7 +892,7 @@ def csp_check_broad(csp_dirs_vals):
 def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
     print_detail_r('[icsw_h]', is_red=True)
     if not args.brief:
-        print_detail_l('[icsp_s]' if len(csp_broad_dirs) > 1 else '[icsp_si]')
+        print_detail_l(DIR_MSG[0] if len(csp_broad_dirs) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{dir}'" for dir in sorted(csp_broad_dirs)) +
               ".")
         print_detail_l('[icsw]')
@@ -894,8 +914,7 @@ def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
     print_detail_r('[icsh_h]', is_red=True)
     if not args.brief:
         csp_values = ', '.join(f"'{value}'" for value in csp_insec_v)
-        print_detail_l('[icsp_s]' if len(csp_insec_dirs) > 1 else
-                       '[icsp_si]')
+        print_detail_l(DIR_MSG[0] if len(csp_insec_dirs) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{dir}'" for dir in sorted(csp_insec_dirs)) +
               ".")
         print_detail_l('[icsh]')
@@ -924,7 +943,7 @@ def csp_check_inline(csp_dirs_vals):
 def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
     print_detail_r(detail_t, is_red=True)
     if not args.brief:
-        print_detail_l('[icsp_s]' if len(csp_unsafe_dirs) > 1 else '[icsp_si]')
+        print_detail_l(DIR_MSG[0] if len(csp_unsafe_dirs) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{dir}'" for dir in
                               sorted(set(csp_unsafe_dirs))) + ".")
         print_detail(detail_d, num_lines=lines_n)
@@ -1032,7 +1051,7 @@ def csp_print_unknown(unknown_dir):
     # sourcery skip: use-fstring-for-concatenation
     print_detail_r('[icspiu_h]', is_red=True)
     if not args.brief:
-        print_detail_l('[icsp_s]' if len(unknown_dir) > 1 else '[icsp_si]')
+        print_detail_l(DIR_MSG[0] if len(unknown_dir) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{dir}'" for dir in sorted(unknown_dir)) +
               ".")
         print_detail('[icspiu]', num_lines=3)
@@ -1091,7 +1110,7 @@ def permissions_check_broad(perm_header):
 def permissions_print_broad(perm_broad_dirs, i_cnt):
     print_detail_r('[ifpol_h]', is_red=True)
     if not args.brief:
-        print_detail_l('[icsp_s]' if len(perm_broad_dirs) > 1 else '[icsp_si]')
+        print_detail_l(DIR_MSG[0] if len(perm_broad_dirs) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{dir}'" for dir in sorted(perm_broad_dirs)) +
               ".")
         print_detail('[ifpol]', num_lines=2)
@@ -1116,9 +1135,9 @@ def print_export_path(filename, reliable):
 
 def print_nowarnings():
     if not args.output:
-        print(f"{STYLE[10]}{get_detail('[no_warnings]')}{STYLE[5]}")
+        print(f"{STYLE[10]}{get_detail(DIR_MSG[2])}{STYLE[5]}")
     else:
-        print_detail('[no_warnings]')
+        print_detail(DIR_MSG[2])
 
 
 def print_header(header):
@@ -1599,7 +1618,7 @@ def format_json(json_data, json_lns):
 
 def generate_pdf(temp_filename):
     set_pdf_file()
-    ok_string = get_detail('[no_warnings]').rstrip()
+    ok_string = get_detail(DIR_MSG[2]).rstrip()
     no_headers = [get_detail(f'[{i}]').strip() for i in ['no_sec_headers',
                                                          'no_enb_headers']]
     set_pdf_content(temp_filename, ok_string, no_headers)
@@ -2009,7 +2028,7 @@ def print_owasp_missing(header_list):
     missing_owasp = [header.title() for header in header_list if header not in
                      headers_l]
     if not missing_owasp:
-        print(f"{STYLE[10]}  {get_detail('[no_warnings]')}{STYLE[5]}", end="")
+        print(f"{STYLE[10]}  {get_detail(DIR_MSG[2])}{STYLE[5]}", end="")
         return
     for header in missing_owasp:
         prefix = "(*) " if header == "Permissions-Policy" else ""
@@ -2024,7 +2043,7 @@ def print_owasp_wrong(header_dict):
         owasp_value]
     print(f"\n\n{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
     if not wrong_owasp:
-        print(f"{STYLE[10]} {get_detail('[no_warnings]')}{STYLE[5]}", end="")
+        print(f"{STYLE[10]} {get_detail(DIR_MSG[2])}{STYLE[5]}", end="")
         return []
     for header, value in sorted(wrong_owasp):
         prefix = "(*) " if header == "Permissions-Policy" else ""
@@ -2099,16 +2118,8 @@ def process_server_error(http_status_code, l10n_id):
 
 def make_http_request(proxy):  # sourcery skip: extract-method
     try:
-        custom_headers = {
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,\
-*/*;q=0.8',
-            'Accept-Encoding': 'gzip, deflate, br, zstd',
-            'Accept-Language': 'en-US,en;q=0.9',
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache',
-            'Upgrade-Insecure-Requests': '1',
-            'User-Agent': ua_header,
-        }
+        custom_headers = REQ_HEADERS.copy()
+        custom_headers['User-Agent'] = ua_header
         session = requests.Session()
         session.mount("https://", SSLContextAdapter())
         session.mount("http://", HTTPAdapter())
@@ -2121,8 +2132,8 @@ def make_http_request(proxy):  # sourcery skip: extract-method
         # (E.g., development environments, hosts with outdated
         # servers/software, self-signed certificates, etc.).
         r = session.get(URL, allow_redirects=not args.redirects,
-                        verify=False, headers=custom_headers, timeout=7,
-                        proxies=proxy)
+                        verify=False, headers=custom_headers,
+                        timeout=REQ_TIMEOUT, proxies=proxy)
         return r, None, None
     except requests.exceptions.SSLError:
         return None, None, None
@@ -2174,10 +2185,10 @@ def process_http_request(status_code, reliable, body, proxy):
 
     thread = Thread(target=worker, daemon=True)
     thread.start()
-    done.wait(timeout=5)
+    done.wait(timeout=REQ_TIMEOUT)
     if not done.is_set():
         print(get_detail('[unreliable_analysis]'))
-        done.wait(timeout=5)
+        done.wait(timeout=REQ_TIMEOUT)
         if not done.is_set():
             delete_lines()
             delete_lines()
@@ -3311,7 +3322,7 @@ elif args.output == 'pdf':
     generate_pdf(tmp_filename)
 elif args.output == 'html':
     generate_html()
-    ok_string = get_detail('[no_warnings]').rstrip()
+    ok_string = get_detail(DIR_MSG[2]).rstrip()
     ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
                                                           'no_enb_headers']]
     sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
