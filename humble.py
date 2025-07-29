@@ -456,9 +456,9 @@ def print_analysis_results(totals, max_secl, en_cnt_w):
         print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} {total}",
               end='')
         if idx == 0 and en_cnt_w:
-            print(f"{print_detail_s('[enabled_cnt_w]',
-                                    max_ln=True):<{max_secl}} \
-{get_detail('[enabled_cnt_wt]')}", end='')
+            val1 = print_detail_s('[enabled_cnt_w]', max_ln=True)
+            val2 = get_detail('[enabled_cnt_wt]')
+            print(f"{val1:<{max_secl}} {val2}", end='')
 
 
 def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
@@ -1071,7 +1071,7 @@ def check_unsafe_cookies():  # sourcery skip: use-named-expression
 
 def print_unsafe_cookies(unsafe_cks):
     print_detail_l('[icooks_s]' if len(unsafe_cks) > 1 else '[icook_s]')
-    print(f"{', '.join(f'\'{ck}\'' for ck in sorted(unsafe_cks))}.")
+    print(f"{', '.join(repr(ck) for ck in sorted(unsafe_cks))}.")
     print_detail('[iset]', num_lines=2)
 
 
@@ -2755,7 +2755,7 @@ if 'access-control-allow-methods' in headers_l and '5' not in skip_list:
         print_detail_r('[imethods_h]', is_red=True)
         if not args.brief:
             match_method = [x for x in t_methods if x in methods]
-            match_method_str = f"{', '.join(f"'{m}'" for m in match_method)}."
+            match_method_str = f"{', '.join(repr(m) for m in match_method)}."
             print_detail_l('[imethods_s]')
             print(match_method_str)
             print_detail('[imethods]')
