@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--07--30-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--07--31-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -46,6 +46,7 @@
 [Installation & Update (Kali Linux)](#installation--update-kali-linux)<br />
 [Usage](#usage)<br />
 [Advanced Usage (Linux)](#advanced-usage-linux)<br />
+[Unit tests](#unit_tests)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
 [Checks: Fingerprint Headers](#checks-fingerprint-headers)<br />
 [Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
@@ -80,6 +81,7 @@
 :heavy_check_mark: Can display analysis statistics for a specific URL or across all of them.<br />
 :heavy_check_mark: Can display fingerprint statistics for a specific term or the Top 20.<br />
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
+:heavy_check_mark: Provides [unit tests](#unit-tests) to verify compatibility with your environment. Requires https://pypi.org/project/pytest/.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
@@ -392,6 +394,18 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_5.jpg" alt="Analyze multiple URLs and save the results as PDFs">
 
+## Unit tests
+
+> [!NOTE]
+> Via /unit_tests/test_humble.py
+
+.: (Linux) - All tests passed successfully.<br />
+
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ok.PNG" alt="All tests passed successfully (Linux)">
+
+.: (Linux) - Some tests failed.<br />
+
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ko.PNG" alt="Some tests failed (Linux)">
 
 ## Checks: enabled headers
 
