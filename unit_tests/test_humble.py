@@ -63,7 +63,8 @@ def run_cmd(args):
             capture_output=True,
             text=True,
             timeout=5,
-            encoding="utf-8"
+            encoding="utf-8",
+            errors="replace"
         )
         return result.stdout if result.returncode == 0 else ""
     except subprocess.TimeoutExpired:
