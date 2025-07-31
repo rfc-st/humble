@@ -403,9 +403,9 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ok.PNG" alt="All tests passed successfully (Linux)">
 
-.: (Linux) - Some tests failed.<br />
+.: (Windows) - Some tests failed.<br />
 
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ko.PNG" alt="Some tests failed (Linux)">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ko.PNG" alt="Some tests failed (Windows)">
 
 ## Checks: enabled headers
 
