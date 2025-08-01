@@ -229,16 +229,16 @@ $ py humble.py -u https://google.com
 # Good practice: deactivate the virtual environment after you have finished using 'humble'
 $ deactivate
 
-# Activate the virtual environment to analyze URLs again with 'humble'
+# Activate the virtual environment to analyze again with 'humble'
 $ cd /home/bluesman/humble_venv/
 $ source /home/bluesman/humble_venv/bin/activate
 $ cd humble
 
-# Updating (weekly): activate the virtual environment and from 'humble' folder
+# Updating 'humble' (weekly): activate the virtual environment and from 'humble' folder
 $ git pull
 
-# Updating (Release): activate the virtual environment, download the latest source code file
-# and decompress it in the 'humble' folder, overwriting files.
+# Updating 'humble' (Release): activate the virtual environment, download the latest source code file
+# and decompress it in the 'humble' folder, overwriting files
 https://github.com/rfc-st/humble/releases
 ```
 
@@ -248,33 +248,33 @@ https://github.com/rfc-st/humble/releases
 > Python 3.11 will be used to [build](https://github.com/rfc-st/humble/blob/master/Dockerfile) the image.
 
 ```bash
-# Install Docker, and make sure it's running:
+# Install Docker and ensure it is running:
 # E.g. (Linux): https://www.kali.org/docs/containers/installing-docker-on-kali/
 # E.g. (macOs): https://docs.docker.com/desktop/install/mac-install/
 # E.g. (Windows): https://docs.docker.com/desktop/install/windows-install/
 
-# Clone the repository *or* download & decompress the latest release:
+# Clone the repository or download the latest release
 $ git clone https://github.com/rfc-st/humble.git
 https://github.com/rfc-st/humble/releases
 
-# Build the image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.48).
-# https://github.com/rfc-st/humble/releases (Windows may require elevated console privileges)
-$ docker build -t humble:1.48 .
+# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.51)
+# https://github.com/rfc-st/humble/releases (On Windows, this may require running the terminal with admin privileges)
+$ docker build -t humble:1.51 .
 
 # Run the analysis specifying the above TAG, along with the specific options for 'humble':
-# '-it', required: allocate a pseudo-TTY and keep the input interactive.
-# '-rm', required: automatically remove the container and associated anonymous volumes when it exits.
+# '-it', required: allocate a pseudo-TTY and keep input interactive.
+# '-rm', required: automatically remove the container after it exits.
 
 # (Linux/macOS)
-# E.g. Analyze https://facebook with a brief analysis:
-$ docker run -it --rm --name humble humble:1.48 /bin/bash -c "python3 humble.py -u https://facebook.com -b"
+# E.g. Analyze https://google.com (brief analysis)
+$ docker run -it --rm --name humble humble:1.51 /bin/bash -c "python3 humble.py -u https://google.com -b"
 
 # (Windows)
-# E.g. Analyze https://facebook with a brief analysis:
-$ docker run -it --rm --name humble humble:1.48 python3 humble.py -u https://facebook.com -b
+# E.g. Analyze https://google.com (detailed analysis)
+$ docker run -it --rm --name humble humble:1.51 python3 humble.py -u https://google.com
 
-# Removing (and untagging) previous images of 'humble' after upgrading to the latest release.
-$ docker rmi humble:1.48
+# (Optional) Remove and untag the previous 'humble' image after upgrading
+$ docker rmi humble:1.50
 ```
 
 ## Installation & update (Kali Linux)
@@ -286,7 +286,7 @@ $ docker rmi humble:1.48
 # Verify that the 'humble' package contains 'Homepage: https://github.com/rfc-st/humble'
 $ apt show humble
 
-# Install it and grant permissions (e.g. to enable analysis history and export analysis)
+# Install 'humble' and grant permissions (e.g. to enable analysis history and export analysis)
 $ sudo apt install humble
 $ sudo chmod -R a+rwx /usr/share/humble
 
@@ -294,7 +294,7 @@ $ sudo chmod -R a+rwx /usr/share/humble
 $ cd /usr/share/humble
 $ python3 humble.py -u https://google.com
 
-# Updating (monthly):
+# Updating 'humble' (monthly)
 $ sudo apt update
 $ sudo apt install --only-upgrade humble
 ```
