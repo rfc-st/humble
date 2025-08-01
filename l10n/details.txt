@@ -1944,3 +1944,33 @@ Generator
 
 [proxy_url]
  Error: Proxy not reachable.
+
+[test_python]
+ (no param); Verifies Python version is ≥ 3.11.
+
+[test_help]
+ ('-h' param); Confirms that the help message is displayed correctly.
+
+[test_brief]
+ ('-b' param); Validates that the brief analysis output contains the expected section.
+
+[test_detailed]
+ (no param); Validates that the detailed analysis output contains the expected section.
+
+[test_fingerprint_stats]
+ ('-f Google' param); Checks that fingerprint statistics are correctly shown for 'Google'.
+
+[test_input_file]
+ ('-if <INPUT_RAW_FILE> -u <INPUT_URL>' params); Ensures that raw response files containing response headers can be successfully analyzed.
+
+[test_l10]
+ ('-l es' param); Confirms Spanish localization is applied in the output of a detailed analysis.
+
+[test_skipped_headers]
+ ('-s ETAG NEL' param); Verifies that the specified headers (ETag, NEL) are excluded from the detailed analysis.
+
+[test_updates]
+ ('-v' param); Confirms that the update check mechanism works as intended.
+
+[test_user_agent]
+ ('-ua 4' param); Validates the selection and use of the 4th User-Agent from the available list during a detailed analysis.
