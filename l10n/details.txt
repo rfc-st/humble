@@ -1957,6 +1957,9 @@ Generator
 [test_detailed]
  (no param); Validates that the detailed analysis output contains the expected section.
 
+[test_export]
+ ('-o html' param); Validates that the detailed analysis is exported to HTML.
+
 [test_fingerprint_stats]
  ('-f Google' param); Checks that fingerprint statistics are correctly shown for 'Google'.
 

@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 import sys
-import time
 import pytest
 import shutil
 import contextlib
 import subprocess
-from os import path, remove
+from os import listdir, path, remove
 from datetime import datetime
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
@@ -30,6 +29,7 @@ TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
     'test_brief': (['-u', None, '-b'], 'Analysis Grade:'),
     'test_detailed': (['-u', None], 'Analysis Grade:'),
+    'test_export': (['-u', None, '-o', 'html'], 'HTML saved'),
     'test_fingerprint_stats': (['-f', 'Google'], 'Headers related to'),
     'test_input_file': (['-if', HUMBLE_INPUT_FILE, '-u', HUMBLE_INPUT_URL],
                         'Input:'),
@@ -41,7 +41,7 @@ TEST_CFGS = {
     'test_user_agent': (['-u', None, '-ua', '4'], 'Selected the User-Agent'),
 }
 TEST_SUMMS = ('[test_python]', '[test_help]', '[test_brief]',
-              '[test_detailed]', '[test_fingerprint_stats]',
+              '[test_detailed]', '[test_export]', '[test_fingerprint_stats]',
               '[test_input_file]', '[test_l10]', '[test_skipped_headers]',
               '[test_updates]', '[test_user_agent]')
 
@@ -96,7 +96,7 @@ def run_test(test_name, args, expected_text, case_sensitive=True):
     try:
         output = run_cmd(test_args)
     except subprocess.TimeoutExpired:
-        pytest.fail(f"{test_name} timed out")
+        pytest.fail("Timed out")
     search_text = expected_text if case_sensitive else expected_text.lower()
     search_output = output if case_sensitive else output.lower()
     if search_text not in search_output:
@@ -127,6 +127,10 @@ def test_detailed():
     run_test('detailed', *TEST_CFGS['test_detailed'])
 
 
+def test_export():
+    run_test('export', *TEST_CFGS['test_export'])
+
+
 def test_fingerprint_stats():
     run_test('fingerprint_stats', *TEST_CFGS['test_fingerprint_stats'])
 
@@ -155,55 +159,78 @@ def test_user_agent():
     run_test('user_agent', *TEST_CFGS['test_user_agent'])
 
 
-def delete_humble_analysis(file_path, retries=5, delay=0.1):
-    messages = []
-    if not path.isfile(file_path):
-        return messages
-    for attempt in range(1, retries + 1):
+def delete_humble_analysis(file_path):
+    msgs = []
+    if path.isfile(file_path):
         try:
             remove(file_path)
-            time.sleep(delay)
-            if not path.isfile(file_path):
-                messages.append(("Successfully deleted 'humble' temp file",
-                                 file_path))
-                return messages
-            messages.append((f"temp file still exists after attempt {attempt}",
-                             file_path))
+            msgs.append(("Successfully deleted analysis file", file_path))
         except Exception as e:
-            messages.append((f"Error deleting temp file: {file_path}", str(e)))
-            break
-    return messages
+            err_type = type(e).__name__
+            msgs.append(("Failed to delete analysis file", f"({err_type}) \
+{file_path}"))
+    return msgs
+
+
+def delete_html_file():
+    msgs = []
+    try:
+        if files := [
+            f for f in listdir(HUMBLE_TESTS_DIR) if f.lower().endswith('.html')
+        ]:
+            html_file = path.join(HUMBLE_TESTS_DIR, files[0])
+            try:
+                remove(html_file)
+                msgs.append(("Successfully deleted HTML file", html_file))
+            except Exception as e:
+                err_type = type(e).__name__
+                msgs.append(("Failed to delete HTML file", f"({err_type}) \
+{html_file}"))
+    except Exception as e:
+        err_type = type(e).__name__
+        msgs.append(("Failed to retrieve HTML file for deletion",
+                     f"({err_type})"))
+    return msgs
 
 
 def delete_pytest_caches(dir_path):
-    messages = []
+    msgs = []
     if path.isdir(dir_path):
         try:
             shutil.rmtree(dir_path)
-            messages.append(("Successfully deleted pytest cache folder",
-                             dir_path))
+            msgs.append(("Successfully deleted pytest cache folder", dir_path))
         except Exception as e:
-            messages.append((f"Could not remove pytest cache folder: \
-{dir_path}", str(e)))
-    return messages
+            err_type = type(e).__name__
+            msgs.append(("Failed to delete pytest cache folder",
+                         f"({err_type}) {dir_path}"))
+    return msgs
 
 
 def delete_temps():
-    timestamp = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-    info_messages = [
-        ("Tests run at", timestamp),
+    current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
+    info_msgs = [
+        ("Tests run at", current_time),
         ("'test_input_file' uses a hardcoded URL", "https://github.com"),
         ("URL used for all remaining tests", url_test)
     ]
-    info_messages.extend(delete_humble_analysis(HUMBLE_TEMP_FILE))
+    info_msgs.extend(delete_humble_analysis(HUMBLE_TEMP_FILE))
+    info_msgs.extend(delete_html_file())
     for cache_dir in PYTEST_CACHE_DIRS:
-        info_messages.extend(delete_pytest_caches(cache_dir))
-    max_len = max(len(msg[0]) for msg in info_messages)
-    for message, value in info_messages:
+        info_msgs.extend(delete_pytest_caches(cache_dir))
+    error_msgs = [(msg, val) for msg, val in info_msgs
+                  if msg.startswith("Failed")]
+    info_msgs = [(msg, val) for msg, val in info_msgs
+                 if not msg.startswith("Failed")]
+    max_len = max(len(msg) for msg, val in info_msgs)
+    for message, value in error_msgs:
+        print(f"[ERROR] {message.ljust(max_len + 1)}: {value}")
+    if error_msgs:
+        print()
+    for message, value in info_msgs:
         print(f"[INFO] {message.ljust(max_len + 2)}: {value}")
 
 
-local_version = datetime.strptime('2025-07-31', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-02', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
