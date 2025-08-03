@@ -1952,10 +1952,10 @@ Generator
  ('-h' param); Confirms that the help message is displayed correctly.
 
 [test_brief]
- ('-b' param); Validates that the brief analysis output contains the expected section.
+ ('-b' param); Verifies that the brief analysis completes successfully.
 
 [test_detailed]
- (no param); Validates that the detailed analysis output contains the expected section.
+ (no param); Verifies that the detailed analysis completes successfully.
 
 [test_export]
  ('-o html' param); Validates that the detailed analysis is exported to HTML.

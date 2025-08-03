@@ -91,15 +91,13 @@ def run_cmd(args):
         return ""
 
 
-def run_test(test_name, args, expected_text, case_sensitive=True):
+def run_test(test_name, args, expected_text):
     test_args = [url_test if arg is None else arg for arg in args]
     try:
         output = run_cmd(test_args)
     except subprocess.TimeoutExpired:
         pytest.fail("Timed out")
-    search_text = expected_text if case_sensitive else expected_text.lower()
-    search_output = output if case_sensitive else output.lower()
-    if search_text not in search_output:
+    if expected_text not in output:
         pytest.fail(f"Missing '{expected_text}' text")
 
 
@@ -116,7 +114,7 @@ def test_python():
 
 
 def test_help():
-    run_test('help', *TEST_CFGS['test_help'], case_sensitive=False)
+    run_test('help', *TEST_CFGS['test_help'])
 
 
 def test_brief():
@@ -166,30 +164,24 @@ def delete_humble_analysis(file_path):
             remove(file_path)
             msgs.append(("Successfully deleted analysis file", file_path))
         except Exception as e:
-            err_type = type(e).__name__
-            msgs.append(("Failed to delete analysis file", f"({err_type}) \
-{file_path}"))
+            msgs.append(("Failed to delete analysis file",
+                         f"({type(e).__name__}) {file_path}"))
     return msgs
 
 
 def delete_html_file():
     msgs = []
-    try:
-        if files := [
+    with contextlib.suppress(Exception):
+        file = next(
             f for f in listdir(HUMBLE_TESTS_DIR) if f.lower().endswith('.html')
-        ]:
-            html_file = path.join(HUMBLE_TESTS_DIR, files[0])
-            try:
-                remove(html_file)
-                msgs.append(("Successfully deleted HTML file", html_file))
-            except Exception as e:
-                err_type = type(e).__name__
-                msgs.append(("Failed to delete HTML file", f"({err_type}) \
-{html_file}"))
-    except Exception as e:
-        err_type = type(e).__name__
-        msgs.append(("Failed to retrieve HTML file for deletion",
-                     f"({err_type})"))
+        )
+        html_file = path.join(HUMBLE_TESTS_DIR, file)
+        try:
+            remove(html_file)
+            msgs.append(("Successfully deleted HTML file", html_file))
+        except Exception as e:
+            msgs.append(("Failed to delete HTML file",
+                         f"({type(e).__name__}) {html_file}"))
     return msgs
 
 
@@ -200,9 +192,8 @@ def delete_pytest_caches(dir_path):
             shutil.rmtree(dir_path)
             msgs.append(("Successfully deleted pytest cache folder", dir_path))
         except Exception as e:
-            err_type = type(e).__name__
             msgs.append(("Failed to delete pytest cache folder",
-                         f"({err_type}) {dir_path}"))
+                         f"({type(e).__name__}) {dir_path}"))
     return msgs
 
 
@@ -230,7 +221,7 @@ def delete_temps():
         print(f"[INFO] {message.ljust(max_len + 2)}: {value}")
 
 
-local_version = datetime.strptime('2025-08-02', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-03', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
