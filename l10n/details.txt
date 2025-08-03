@@ -362,8 +362,15 @@
  Ref: https://gist.github.com/motoyasu-saburi/1b19ef18e96776fe90ba1b9f910fa714
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
 
+[ipol_h]
+ Integrity-Policy (No Valid Keys)
+
 [ickeep_h]
  Keep-Alive (Ignored Header)
+
+[ipol]
+ Include at least one valid key.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
 
 [ickeep]
  This header is ignored if the value of the "Connection" header is not 'keep-alive'.

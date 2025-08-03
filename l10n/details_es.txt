@@ -363,8 +363,15 @@
  Ref: https://gist.github.com/motoyasu-saburi/1b19ef18e96776fe90ba1b9f910fa714
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
 
+[ipol_h]
+ Integrity-Policy (Sin claves adecuadas)
+
 [ickeep_h]
  Keep-Alive (Cabecera ignorada)
+
+[ipol]
+ Incluya, al menos, una clave válida.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
 
 [ickeep]
  Esta cabecera se ignora si el valor de la cabecera "Connection" no es 'keep-alive'.
