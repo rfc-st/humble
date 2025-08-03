@@ -49,6 +49,7 @@ Document-Isolation-Policy
 Document-Policy
 Expect-CT
 Feature-Policy
+Integrity-Policy
 NEL
 Origin-Agent-Cluster
 P3P

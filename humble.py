@@ -2442,13 +2442,14 @@ print_detail_r('[2missing]')
 
 l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
           'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
-          'Cross-Origin-Resource-Policy', 'Content-Security-Policy', 'NEL',
-          'Permissions-Policy', 'Referrer-Policy', 'Strict-Transport-Security',
-          'X-Content-Type-Options', 'X-Permitted-Cross-Domain-Policies']
+          'Cross-Origin-Resource-Policy', 'Content-Security-Policy',
+          'Integrity-Policy', 'NEL', 'Permissions-Policy', 'Referrer-Policy',
+          'Strict-Transport-Security', 'X-Content-Type-Options',
+          'X-Permitted-Cross-Domain-Policies']
 
 l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
-            '[mcsp]', '[mnel]', '[mpermission]', '[mreferrer]', '[msts]',
-            '[mxcto]', '[mxpcd]', '[mxfo]']
+            '[mcsp]', '[mcipol]', '[mnel]', '[mpermission]', '[mreferrer]',
+            '[msts]', '[mxcto]', '[mxpcd]', '[mxfo]']
 
 m_cnt, skip_missing = print_missing_headers(args, headers_l, l_detail, l_miss)
 
@@ -3256,15 +3257,15 @@ t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Headers',
          'Content-Security-Policy-Report-Only', 'Content-Type', 'Critical-CH',
          'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
          'Cross-Origin-Resource-Policy', 'Document-Policy', 'ETag',
-         'Expect-CT', 'Feature-Policy', 'NEL', 'Observe-Browsing-Topics',
-         'Origin-Agent-Cluster', 'Permissions-Policy', 'Pragma',
-         'Proxy-Authenticate', 'Referrer-Policy', 'Refresh', 'Report-To',
-         'Reporting-Endpoints', 'Server-Timing', 'Service-Worker-Allowed',
-         'Set-Cookie', 'Set-Login', 'Speculation-Rules',
-         'Strict-Transport-Security', 'Supports-Loading-Mode',
-         'Timing-Allow-Origin', 'Trailer', 'Vary', 'WWW-Authenticate',
-         'X-Content-Type-Options', 'X-DNS-Prefetch-Control', 'X-Frame-Options',
-         'X-XSS-Protection')
+         'Expect-CT', 'Feature-Policy', 'Integrity-Policy', 'NEL',
+         'Observe-Browsing-Topics', 'Origin-Agent-Cluster',
+         'Permissions-Policy', 'Pragma', 'Proxy-Authenticate',
+         'Referrer-Policy', 'Refresh', 'Report-To', 'Reporting-Endpoints',
+         'Server-Timing', 'Service-Worker-Allowed', 'Set-Cookie', 'Set-Login',
+         'Speculation-Rules', 'Strict-Transport-Security',
+         'Supports-Loading-Mode', 'Timing-Allow-Origin', 'Trailer', 'Vary',
+         'WWW-Authenticate', 'X-Content-Type-Options',
+         'X-DNS-Prefetch-Control', 'X-Frame-Options', 'X-XSS-Protection')
 
 compat_headers = sorted(header for header in t_sec if header in headers)
 

@@ -1031,6 +1031,10 @@ Cabeceras de respuesta HTTP
  Detecta y mitiga, entre otros, ataques Cross-site scripting.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
+[mcipol]
+ Bloquea ciertos recursos sin Subresource Integrity asociada.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
+
 [mpermission]
  Anteriormente llamada "Feature-Policy", permite o deniega funciones del navegador.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/

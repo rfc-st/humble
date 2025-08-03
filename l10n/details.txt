@@ -1029,6 +1029,10 @@ HTTP Response Headers
  Detect and mitigate Cross Site Scripting (XSS) and data injection attacks, among others.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
+[mcipol]
+ Blocks certain resource types without Subresource Integrity metadata.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
+
 [mpermission]
  Previously called "Feature-Policy", allow and deny the use of browser features.
  Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
