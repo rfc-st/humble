@@ -50,6 +50,7 @@ Document-Policy
 Expect-CT
 Feature-Policy
 Integrity-Policy
+Integrity-Policy-Report-Only
 NEL
 Origin-Agent-Cluster
 P3P

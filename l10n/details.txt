@@ -365,12 +365,19 @@
 [ipol_h]
  Integrity-Policy (No Valid Keys)
 
+[ipolr_h]
+ Integrity-Policy-Report-Only (No Valid Keys)
+
 [ickeep_h]
  Keep-Alive (Ignored Header)
 
 [ipol]
  Include at least one valid key.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
+
+[ipolr]
+ Include at least one valid key.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy-Report-Only
 
 [ickeep]
  This header is ignored if the value of the "Connection" header is not 'keep-alive'.

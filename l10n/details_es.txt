@@ -366,12 +366,19 @@
 [ipol_h]
  Integrity-Policy (Sin claves adecuadas)
 
+[ipolr_h]
+ Integrity-Policy-Report-Only (Sin claves adecuadas)
+
 [ickeep_h]
  Keep-Alive (Cabecera ignorada)
 
 [ipol]
  Incluya, al menos, una clave válida.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
+
+[ipolr]
+ Incluya, al menos, una clave válida.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy-Report-Only
 
 [ickeep]
  Esta cabecera se ignora si el valor de la cabecera "Connection" no es 'keep-alive'.
