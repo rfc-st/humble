@@ -178,7 +178,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-05', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-06', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -3272,7 +3272,7 @@ t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Headers',
          'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
          'Cross-Origin-Resource-Policy', 'Document-Policy', 'ETag',
          'Expect-CT', 'Feature-Policy', 'Integrity-Policy',
-         'Integrity-Policy-Report-Only, ''NEL', 'Observe-Browsing-Topics',
+         'Integrity-Policy-Report-Only', 'NEL', 'Observe-Browsing-Topics',
          'Origin-Agent-Cluster', 'Permissions-Policy', 'Pragma',
          'Proxy-Authenticate', 'Referrer-Policy', 'Refresh', 'Report-To',
          'Reporting-Endpoints', 'Server-Timing', 'Service-Worker-Allowed',
