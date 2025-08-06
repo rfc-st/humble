@@ -165,6 +165,12 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="(Linux) - Brief analysis saved as JSON">
 </p>
 <br />
+.: (Linux) - Detailed analysis saved as XLSX. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_google.com_20250806_212549_en.xlsx">Example.</a><br />
+<p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_xslx_s.PNG" alt="(Linux) - Brief analysis saved as XSLX">
+</p>
+<br />
 .: (Linux) - Brief analysis saved as XML. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_en.wikipedia.org_20250711_175924_en.xml">Example.</a><br />
 <p></p>
 <p align="center">
