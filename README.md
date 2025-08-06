@@ -70,10 +70,10 @@
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
 :heavy_check_mark: Can analyze _raw response files_: text files with HTTP response headers and values. Ex: curl option '<a href="https://curl.se/docs/manpage.html" target="_blank">--dump-header<a>'.<br />
 :heavy_check_mark: Can export each analysis to CSV, HTML5, JSON, PDF 1.4, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.<br />
-:heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** https://testssl.sh/.<br />
+:heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** <a href="https://testssl.sh/" target="_blank">testssl.sh<a>.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
 :heavy_check_mark: Can use proxies for the analysis.<br />
-:heavy_check_mark: Shows browser support for enabled HTTP security headers, with data from https://caniuse.com/.<br />
+:heavy_check_mark: Shows browser support for enabled HTTP security headers, with data from <a href="https://caniuse.com/" target="_blank">Can I use<a><br />.
 :heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental<a> headers in each analysis.<br />
 :heavy_check_mark: Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.<br />
 :heavy_check_mark: Supports displaying analysis, messages, and most errors in English or Spanish.<br />
@@ -81,7 +81,7 @@
 :heavy_check_mark: Can display analysis statistics for a specific URL or across all of them.<br />
 :heavy_check_mark: Can display fingerprint statistics for a specific term or the Top 20.<br />
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
-:heavy_check_mark: Provides [unit tests](#unit-tests) to verify compatibility with your environment. Requires https://pypi.org/project/pytest/.<br />
+:heavy_check_mark: Provides [unit tests](#unit-tests) to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest<a>.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
