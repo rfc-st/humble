@@ -1601,6 +1601,7 @@ def set_xlsx_content(workbook, final_filename):
     col_wd = {}
     set_xlsx_sections(bold_fmt, cell_fmt, col_wd, final_filename, worksheet)
     set_xlsx_format(col_wd, worksheet)
+    worksheet.autofilter(0, 0, 0, 1)
 
 
 def set_xlsx_sections(bold_fmt, cell_fmt, col_wd, final_filename, worksheet):
