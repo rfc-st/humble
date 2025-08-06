@@ -57,7 +57,7 @@ from platform import system
 from base64 import b64decode
 from itertools import islice
 from datetime import datetime
-from csv import writer, QUOTE_ALL
+from csv import reader, writer, QUOTE_ALL
 from urllib.parse import urlparse
 from subprocess import PIPE, Popen
 from threading import Event, Thread
@@ -69,6 +69,7 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 # Third-Party imports
 import requests
+import xlsxwriter
 from colorama import Fore, Style, init
 from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
@@ -1540,7 +1541,7 @@ def print_unsupported_headers(unsupported_headers):
     sys.exit()
 
 
-def generate_csv(temp_filename, final_filename):
+def generate_csv(temp_filename, final_filename, to_xlsx=False):
     with open(temp_filename, 'r', encoding='utf8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
         csv_source = txt_source.read()
@@ -1548,10 +1549,12 @@ def generate_csv(temp_filename, final_filename):
         csv_writer.writerow([get_detail('[csv_section]', replace=True),
                              get_detail('[csv_values]', replace=True)])
         csv_writer.writerow([get_detail('[0section]', replace=True),
-                             f"{get_detail('[json_gen]')}: {URL_LIST[4]} | \
-v.{local_version}"])
+                             f"{get_detail('[json_gen]', replace=True)}: \
+{URL_LIST[4]} | v.{local_version}"])
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
         parse_csv(csv_writer, csv_source, csv_section)
+    if to_xlsx is True:
+        generate_xlsx(temp_filename, final_filename)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
 
@@ -1565,6 +1568,63 @@ def parse_csv(csv_writer, csv_source, csv_section):
             clean_ln = ": ".join([part.strip() for part in csv_ln.split(":",
                                                                         1)])
             csv_writer.writerow([i, clean_ln])
+
+
+def generate_xlsx(temp_filename, final_filename):
+    workbook = xlsxwriter.Workbook(final_filename, {'in_memory': True})
+    set_xlsx_metadata(workbook)
+    set_xlsx_content(workbook, final_filename)
+    workbook.close()
+    remove(temp_filename)
+    print_export_path(final_filename, reliable)
+    sys.exit()
+
+
+def set_xlsx_metadata(workbook):
+    workbook.set_properties({
+        'author': f"{URL_LIST[4]} | v.{local_version}",
+        'category': get_detail('[pdf_meta_subject]', replace=True),
+        'keywords': get_detail('[pdf_meta_keywords]', replace=True),
+        'subject': get_detail('[pdf_meta_subject]', replace=True),
+        'title': f"{get_detail('[pdf_meta_title]', replace=True)} {URL}",
+        'comments': f"{get_detail('[excel_meta_generated]', replace=True)} \
+{URL_LIST[4]} | v.{local_version}",
+    })
+
+
+def set_xlsx_content(workbook, final_filename):
+    worksheet = workbook.add_worksheet(get_detail('[pdf_meta_subject]',
+                                                  replace=True))
+    cell_fmt = workbook.add_format({'text_wrap': True, 'valign': 'top'})
+    bold_fmt = workbook.add_format({'bold': True, 'text_wrap': True,
+                                    'align': 'center', 'valign': 'vcenter'})
+    col_wd = {}
+    set_xlsx_sections(bold_fmt, cell_fmt, col_wd, final_filename, worksheet)
+    set_xlsx_format(col_wd, worksheet)
+
+
+def set_xlsx_sections(bold_fmt, cell_fmt, col_wd, final_filename, worksheet):
+    with open(final_filename, 'r', encoding='utf-8', newline='') as f:
+        for row_idx, row in enumerate(reader(f)):
+            for col_idx, cell in enumerate(row):
+                fmt = (bold_fmt if row_idx == 0 and col_idx in (0, 1)
+                       else cell_fmt)
+                worksheet.write(row_idx, col_idx, cell, fmt)
+                cell_len = len(cell)
+                col_wd[col_idx] = max(col_wd.get(col_idx, 0), cell_len)
+
+
+def set_xlsx_format(col_wd, worksheet):
+    col_a_width = col_wd.get(0, 0)
+    col_b_width = col_wd.get(1, 0) + 2
+    adjusted_b_width = max(col_b_width, col_a_width * 2)
+    for col_idx, width in col_wd.items():
+        if col_idx == 0:
+            worksheet.set_column(col_idx, col_idx, col_a_width)
+        elif col_idx == 1:
+            worksheet.set_column(col_idx, col_idx, min(adjusted_b_width, 100))
+        else:
+            worksheet.set_column(col_idx, col_idx, min(width + 2, 50))
 
 
 def generate_json(temp_filename, final_filename):
@@ -1595,8 +1655,8 @@ def write_json(section0, sectionh, section5, section6, json_section, json_lns):
         json_data = {}
         format_json(json_data, json_lns)
         if json_section == section0:
-            json_data = {get_detail('[json_gen]'): f"{URL_LIST[4]} | \
-v.{local_version}", **json_data}
+            json_data = {get_detail('[json_gen]', replace=True):
+                         f"{URL_LIST[4]} | v.{local_version}", **json_data}
     else:
         json_data = list(json_lns)
     return json_data
@@ -2218,7 +2278,7 @@ def process_http_response(r, exception, status_code, reliable, body):
 
 
 def custom_help_formatter(prog):
-    return RawDescriptionHelpFormatter(prog, max_help_position=34)
+    return RawDescriptionHelpFormatter(prog, max_help_position=43)
 
 
 # Main functionality for argparse
@@ -2258,9 +2318,9 @@ shown in English")
 parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
 the license for 'humble', along with permissions, limitations and conditions.")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
-                                                  'txt', 'xml'], help="Exports\
- analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file; json \
-will have a brief analysis")
+                                                  'txt', 'xlsx', 'xml'],
+                    help="Exports analysis to 'humble_scheme_URL_port_yyyymmdd\
+_hhmmss_language.ext' file; json will have a brief analysis")
 parser.add_argument("-of", dest='output_file', type=str, help="Exports \
 analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 '-o' will be used")
@@ -3307,6 +3367,8 @@ elif args.output == 'csv':
     generate_csv(tmp_filename, final_filename)
 elif args.output == 'json':
     generate_json(tmp_filename, final_filename)
+elif args.output == 'xlsx':
+    generate_csv(tmp_filename, final_filename, to_xlsx=True)
 elif args.output == 'xml':
     generate_xml(tmp_filename, final_filename)
 elif args.output == 'pdf':
