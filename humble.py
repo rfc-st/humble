@@ -116,6 +116,7 @@ HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
 L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
              'security_guides': (15, 16)}
+METADATA_S = ('[pdf_meta_keywords', '[pdf_meta_subject]')
 OS_PATH = dirname(abspath(__file__))
 PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
 RE_PATTERN = (
@@ -179,7 +180,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-07', '%Y-%m-%d').date()
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -226,12 +227,12 @@ def process_proxy_url(proxy_url, timeout):
     return True
 
 
-def check_proxy_url(host, port, timeout, failed):
+def check_proxy_url(proxy_host, proxy_port, timeout, failed_result):
     try:
-        with create_connection((host, port), timeout=timeout):
+        with create_connection((proxy_host, proxy_port), timeout=timeout):
             pass
     except Exception:
-        failed.set()
+        failed_result.set()
 
 
 def check_updates(local_version):
@@ -1544,7 +1545,6 @@ def print_unsupported_headers(unsupported_headers):
 def generate_csv(temp_filename, final_filename, to_xlsx=False):
     with open(temp_filename, 'r', encoding='utf8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
-        csv_source = txt_source.read()
         csv_writer = writer(csv_final, quoting=QUOTE_ALL)
         csv_writer.writerow([get_detail('[csv_section]', replace=True),
                              get_detail('[csv_values]', replace=True)])
@@ -1552,8 +1552,8 @@ def generate_csv(temp_filename, final_filename, to_xlsx=False):
                              f"{get_detail('[json_gen]', replace=True)}: \
 {URL_LIST[4]} | v.{local_version}"])
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
-        parse_csv(csv_writer, csv_source, csv_section)
-    if to_xlsx is True:
+        parse_csv(csv_writer, txt_source.read(), csv_section)
+    if to_xlsx:
         generate_xlsx(temp_filename, final_filename)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
@@ -1583,9 +1583,9 @@ def generate_xlsx(temp_filename, final_filename):
 def set_xlsx_metadata(workbook):
     workbook.set_properties({
         'author': f"{URL_LIST[4]} | v.{local_version}",
-        'category': get_detail('[pdf_meta_subject]', replace=True),
-        'keywords': get_detail('[pdf_meta_keywords]', replace=True),
-        'subject': get_detail('[pdf_meta_subject]', replace=True),
+        'category': get_detail(METADATA_S[1], replace=True),
+        'keywords': get_detail(METADATA_S[0], replace=True),
+        'subject': get_detail(METADATA_S[1], replace=True),
         'title': f"{get_detail('[pdf_meta_title]', replace=True)} {URL}",
         'comments': f"{get_detail('[excel_meta_generated]', replace=True)} \
 {URL_LIST[4]} | v.{local_version}",
@@ -1593,18 +1593,17 @@ def set_xlsx_metadata(workbook):
 
 
 def set_xlsx_content(workbook, final_filename):
-    worksheet = workbook.add_worksheet(get_detail('[pdf_meta_subject]',
-                                                  replace=True))
+    worksheet = workbook.add_worksheet(get_detail(METADATA_S[1], replace=True))
     cell_fmt = workbook.add_format({'text_wrap': True, 'valign': 'top'})
     bold_fmt = workbook.add_format({'bold': True, 'text_wrap': True,
                                     'align': 'center', 'valign': 'vcenter'})
     col_wd = {}
-    set_xlsx_sections(bold_fmt, cell_fmt, col_wd, final_filename, worksheet)
-    set_xlsx_format(col_wd, worksheet)
+    set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, worksheet)
+    set_xlsx_width(col_wd, worksheet)
     worksheet.autofilter(0, 0, 0, 1)
 
 
-def set_xlsx_sections(bold_fmt, cell_fmt, col_wd, final_filename, worksheet):
+def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, worksheet):
     with open(final_filename, 'r', encoding='utf-8', newline='') as f:
         for row_idx, row in enumerate(reader(f)):
             for col_idx, cell in enumerate(row):
@@ -1615,7 +1614,7 @@ def set_xlsx_sections(bold_fmt, cell_fmt, col_wd, final_filename, worksheet):
                 col_wd[col_idx] = max(col_wd.get(col_idx, 0), cell_len)
 
 
-def set_xlsx_format(col_wd, worksheet):
+def set_xlsx_width(col_wd, worksheet):
     col_a_width = col_wd.get(0, 0)
     col_b_width = col_wd.get(1, 0) + 2
     adjusted_b_width = max(col_b_width, col_a_width * 2)
@@ -1702,9 +1701,9 @@ def set_pdf_metadata():
     pdf.set_author(git_urlc)
     pdf.set_creation_date = current_time
     pdf.set_creator(git_urlc)
-    pdf.set_keywords(get_detail('[pdf_meta_keywords]', replace=True))
+    pdf.set_keywords(get_detail(METADATA_S[0], replace=True))
     pdf.set_lang(get_detail('[pdf_meta_language]'))
-    pdf.set_subject(get_detail('[pdf_meta_subject]', replace=True))
+    pdf.set_subject(get_detail(METADATA_S[1], replace=True))
     pdf.set_title(title)
     pdf.set_producer(git_urlc)
 
@@ -1849,9 +1848,9 @@ def color_pdf_line(line, hcolor, vcolor, chunks, i):
 def generate_html():
     copyfile(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[8]),
              final_filename)
-    html_replace = {"html_title": get_detail('[pdf_meta_subject]'),
+    html_replace = {"html_title": get_detail(METADATA_S[1]),
                     "html_desc": get_detail('[pdf_meta_title]'),
-                    "html_keywords": get_detail('[pdf_meta_keywords]'),
+                    "html_keywords": get_detail(METADATA_S[0]),
                     "humble_URL": URL_LIST[4],
                     "humble_local_v": local_version, "URL_analyzed": URL,
                     "html_body": '<body><pre>', "}}": '}', "{{": '}'}
