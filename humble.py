@@ -180,7 +180,9 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-07', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-08', '%Y-%m-%d').date()
+
+BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -1159,9 +1161,9 @@ def print_fng_header(header):
 def print_general_info(reliable, export_filename):
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
-        print(f"\n{BANNER}\n ({URL_LIST[4]} | v.{local_version})")
+        print(f"\n{BANNER}\n ({BANNER_VERSION})")
     elif args.output != 'pdf':
-        print(f"\n\n{HUMBLE_DESC}\n{URL_LIST[4]} | v.{local_version}\n")
+        print(f"\n\n{HUMBLE_DESC}\n{BANNER_VERSION}\n")
     print_basic_info(export_filename)
     print_extended_info(args, reliable, status_code)
 
@@ -1550,7 +1552,7 @@ def generate_csv(temp_filename, final_filename, to_xlsx=False):
                              get_detail('[csv_values]', replace=True)])
         csv_writer.writerow([get_detail('[0section]', replace=True),
                              f"{get_detail('[json_gen]', replace=True)}: \
-{URL_LIST[4]} | v.{local_version}"])
+{BANNER_VERSION}"])
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
         parse_csv(csv_writer, txt_source.read(), csv_section)
     if to_xlsx:
@@ -1582,13 +1584,13 @@ def generate_xlsx(temp_filename, final_filename):
 
 def set_xlsx_metadata(workbook):
     workbook.set_properties({
-        'author': f"{URL_LIST[4]} | v.{local_version}",
+        'author': BANNER_VERSION,
         'category': get_detail(METADATA_S[1], replace=True),
         'keywords': get_detail(METADATA_S[0], replace=True),
         'subject': get_detail(METADATA_S[1], replace=True),
         'title': f"{get_detail('[pdf_meta_title]', replace=True)} {URL}",
         'comments': f"{get_detail('[excel_meta_generated]', replace=True)} \
-{URL_LIST[4]} | v.{local_version}",
+{BANNER_VERSION}",
     })
 
 
@@ -1656,7 +1658,7 @@ def write_json(section0, sectionh, section5, section6, json_section, json_lns):
         format_json(json_data, json_lns)
         if json_section == section0:
             json_data = {get_detail('[json_gen]', replace=True):
-                         f"{URL_LIST[4]} | v.{local_version}", **json_data}
+                         BANNER_VERSION, **json_data}
     else:
         json_data = list(json_lns)
     return json_data
@@ -1697,7 +1699,7 @@ def set_pdf_file():
 
 def set_pdf_metadata():
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
-    git_urlc = f"{URL_LIST[4]} | v.{local_version}"
+    git_urlc = BANNER_VERSION
     pdf.set_author(git_urlc)
     pdf.set_creation_date = current_time
     pdf.set_creator(git_urlc)
@@ -2000,9 +2002,8 @@ def format_html_enabled(ln):
 
 
 def generate_xml(temp_filename, final_filename):
-    root = ET.Element('analysis', {
-        'version': f"{URL_LIST[4]} | v.{local_version}",
-        'generated': current_time})
+    root = ET.Element('analysis', {'version': BANNER_VERSION,
+                                   'generated': current_time})
     with open(temp_filename, 'r', encoding='utf8') as txt_source:
         parse_xml(root, None, (line.strip() for line in txt_source))
     xml_decl = '<?xml version="1.0" encoding="utf-8"?>\n'.encode('utf-8')
@@ -3384,7 +3385,7 @@ elif args.output == 'pdf':
             self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
                       new_y="NEXT", align='C')
             self.ln(1)
-            self.cell(0, 5, f"{URL_LIST[4]} | v.{local_version}", align='C')
+            self.cell(0, 5, BANNER_VERSION, align='C')
             self.ln(9 if self.page_no() == 1 else 13)
 
         def footer(self):
