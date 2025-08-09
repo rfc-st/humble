@@ -119,6 +119,11 @@ L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
 METADATA_S = ('[pdf_meta_keywords', '[pdf_meta_subject]')
 OS_PATH = dirname(abspath(__file__))
 PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
+PDF_SECTION = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
+               '[1.': '[1enabled_s]', '[2.': '[2missing_s]',
+               '[3.': '[3fingerprint_s]', '[4.': '[4depinsecure_s]',
+               '[5.': '[5empty_s]', '[6.': '[6compat_s]', '[7.': '[7result_s]',
+               '[Cabeceras': '[0headers_s]'}
 RE_PATTERN = (
     r'\((.*?)\)',
     (r'^(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.'
@@ -1719,12 +1724,11 @@ def export_pdf_file(tmp_filename):
             self.set_y(-15)
             self.set_font('Helvetica', 'I', 8)
             self.set_text_color(0, 0, 0)
-            self.cell(0, 10, print_detail_s('[pdf_footer]') + ' ' +
-                      str(self.page_no()) + get_detail('[pdf_footer2]') +
-                      ' {nb}', align='C')
+            self.cell(0, 10, f"{print_detail_s('[pdf_footer]')} \
+{self.page_no()}{get_detail('[pdf_footer2]')} {{nb}}", align='C')
+
     pdf = PDF()
     initialize_pdf(pdf, tmp_filename, ypos)
-    sys.exit()
 
 
 def initialize_pdf(pdf, tmp_filename, ypos):
@@ -1734,16 +1738,16 @@ def initialize_pdf(pdf, tmp_filename, ypos):
     generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos)
 
 
-def generate_pdf(pdf, temp_filename, pdf_links, pdf_prefixes, ypos):
+def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos):
     set_pdf_file(pdf)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
     no_headers = [get_detail(f'[{i}]').strip() for i in ['no_sec_headers',
                                                          'no_enb_headers']]
-    set_pdf_content(temp_filename, ok_string, no_headers, pdf, pdf_links,
+    set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
                     pdf_prefixes, ypos)
     pdf.output(final_filename)
     print_export_path(final_filename, reliable)
-    remove(temp_filename)
+    remove(tmp_filename)
     sys.exit()
 
 
@@ -1768,40 +1772,43 @@ def set_pdf_metadata(pdf):
     pdf.set_producer(git_urlc)
 
 
-def set_pdf_content(temp_filename, ok_string, no_headers, pdf, pdf_links,
+def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
                     pdf_prefixes, ypos):
-    with open(temp_filename, "r", encoding='utf8') as txt_source:
+    with open(tmp_filename, "r", encoding='utf8') as txt_source:
         for line in txt_source:
             if any(no_header in line for no_header in no_headers):
                 set_pdf_warnings(line, pdf, ypos)
                 continue
             if '[' in line:
                 set_pdf_sections(line, pdf)
-            if any(bold_str in line for bold_str in BOLD_STRINGS):
-                pdf.set_font(style='B')
-            else:
-                pdf.set_font(style='')
-            next((format_pdf_links(line, string, pdf, pdf_prefixes) for
-                  string in pdf_links if string in line), None)
-            if set_pdf_conditions(line, pdf, ypos):
+            if set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes,
+                              ypos):
                 continue
-            elif ok_string in line:
-                set_pdf_nowarnings(line, pdf, ypos)
-                continue
-            pdf.set_text_color(255, 0, 0)
-            if set_pdf_empty(l_empty, line, pdf, ypos):
-                continue
-            format_pdf_lines(line, pdf, ypos)
 
 
-def set_pdf_sections(i, pdf):
-    pdf_section_d = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
-                     '[1.': '[1enabled_s]', '[2.': '[2missing_s]',
-                     '[3.': '[3fingerprint_s]', '[4.': '[4depinsecure_s]',
-                     '[5.': '[5empty_s]', '[6.': '[6compat_s]',
-                     '[7.': '[7result_s]', '[Cabeceras': '[0headers_s]'}
-    if match := next((x for x in pdf_section_d if i.startswith(x)), None):
-        pdf.start_section(get_detail(pdf_section_d[match]))
+def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
+    if any(bold_str in line for bold_str in BOLD_STRINGS):
+        pdf.set_font(style='B')
+    else:
+        pdf.set_font(style='')
+    next((format_pdf_links(line, string, pdf, pdf_prefixes) for string in
+          pdf_links if string in line), None)
+    if set_pdf_conditions(line, pdf, ypos):
+        return True
+    elif ok_string in line:
+        set_pdf_nowarnings(line, pdf, ypos)
+        return True
+    pdf.set_text_color(255, 0, 0)
+    if set_pdf_empty(l_empty, line, pdf, ypos):
+        return True
+    format_pdf_lines(line, pdf, ypos)
+
+
+def set_pdf_sections(line, pdf):
+    for section in PDF_SECTION:
+        if line.startswith(section):
+            pdf.start_section(get_detail(PDF_SECTION[section]))
+            break
 
 
 def set_pdf_conditions(line, pdf, ypos):
@@ -1837,11 +1844,11 @@ def set_pdf_nowarnings(line, pdf, ypos):
 
 def set_pdf_empty(l_empty, line, pdf, ypos):
     ln_strip = line.lstrip().lower()
-    for i in l_empty:
-        if (i in ln_strip and '[' not in ln_strip and ':' not in ln_strip):
-            pdf.set_text_color(255, 0, 0)
-            pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
-            return True
+    if any(i in ln_strip for i in l_empty) and ('[' not in ln_strip and ':'
+                                                not in ln_strip):
+        pdf.set_text_color(255, 0, 0)
+        pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
+        return True
     return False
 
 
@@ -1880,10 +1887,10 @@ def set_pdf_chunks(chunks, pdf):
             chunk_c = color_pdf_line(chunk[19:], '#660033', '#000000',
                                      chunks, i, pdf)
         else:
-            format_pdf_chunks(chunk, chunks, i, chunk_c, pdf)
+            format_pdf_chunks(chunk, chunks, chunk_c, i, pdf)
 
 
-def format_pdf_chunks(chunk, chunks, i, chunk_c, pdf):
+def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
     pdf.set_text_color(0, 0, 0)
     if i > 0:
         chunk = f' {chunk}'
