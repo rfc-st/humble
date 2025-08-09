@@ -69,7 +69,7 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 # Third-Party imports
 import requests
-import xlsxwriter
+from xlsxwriter import Workbook
 from colorama import Fore, Style, init
 from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
@@ -180,7 +180,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-09', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1544,7 +1544,26 @@ def print_unsupported_headers(unsupported_headers):
     sys.exit()
 
 
-def generate_csv(temp_filename, final_filename, to_xlsx=False):
+def check_output_format(args, final_filename, reliable, tmp_filename):
+    if args.output == 'txt':
+        print_export_path(tmp_filename, reliable)
+        if '-c' in sys.argv:
+            check_owasp_compliance(tmp_filename)
+    else:
+        dispatch = {
+            'csv': lambda: generate_csv(final_filename, tmp_filename),
+            'json': lambda: generate_json(final_filename, tmp_filename),
+            'xlsx': lambda: generate_csv(final_filename, tmp_filename,
+                                         to_xlsx=True),
+            'xml': lambda: generate_xml(final_filename, tmp_filename),
+            'html': lambda: export_html_file(final_filename, tmp_filename),
+            'pdf': lambda: export_pdf_file(tmp_filename),
+        }
+        if func := dispatch.get(args.output):
+            func()
+
+
+def generate_csv(final_filename, temp_filename, to_xlsx=False):
     with open(temp_filename, 'r', encoding='utf8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
         csv_writer = writer(csv_final, quoting=QUOTE_ALL)
@@ -1554,14 +1573,15 @@ def generate_csv(temp_filename, final_filename, to_xlsx=False):
                              f"{get_detail('[json_gen]', replace=True)}: \
 {BANNER_VERSION}"])
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
-        parse_csv(csv_writer, txt_source.read(), csv_section)
+        parse_csv(csv_section, txt_source.read(), csv_writer)
     if to_xlsx:
-        generate_xlsx(temp_filename, final_filename)
+        generate_xlsx(final_filename, temp_filename)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
+    sys.exit()
 
 
-def parse_csv(csv_writer, csv_source, csv_section):
+def parse_csv(csv_section, csv_source, csv_writer):
     for i in (item for item in csv_section if item in csv_source):
         csv_content = csv_source.split(i)[1].split('[')[0]
         info_list = [line.strip() for line in csv_content.split('\n') if
@@ -1572,10 +1592,10 @@ def parse_csv(csv_writer, csv_source, csv_section):
             csv_writer.writerow([i, clean_ln])
 
 
-def generate_xlsx(temp_filename, final_filename):
-    workbook = xlsxwriter.Workbook(final_filename, {'in_memory': True})
+def generate_xlsx(final_filename, temp_filename):
+    workbook = Workbook(final_filename, {'in_memory': True})
     set_xlsx_metadata(workbook)
-    set_xlsx_content(workbook, final_filename)
+    set_xlsx_content(final_filename, workbook)
     workbook.close()
     remove(temp_filename)
     print_export_path(final_filename, reliable)
@@ -1594,7 +1614,7 @@ def set_xlsx_metadata(workbook):
     })
 
 
-def set_xlsx_content(workbook, final_filename):
+def set_xlsx_content(final_filename, workbook):
     worksheet = workbook.add_worksheet(get_detail(METADATA_S[1], replace=True))
     cell_fmt = workbook.add_format({'text_wrap': True, 'valign': 'top'})
     bold_fmt = workbook.add_format({'bold': True, 'text_wrap': True,
@@ -1629,31 +1649,32 @@ def set_xlsx_width(col_wd, worksheet):
             worksheet.set_column(col_idx, col_idx, min(width + 2, 50))
 
 
-def generate_json(temp_filename, final_filename):
+def generate_json(final_filename, temp_filename):
     section0, sectionh, section5, section6 = (
         get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
     with open(temp_filename, 'r', encoding='utf8') as txt_file, \
          open(final_filename, 'w', encoding='utf8') as json_file:
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
-        parse_json(txt_sections, data, section0, sectionh, section5, section6)
+        parse_json(data, section0, section5, section6, sectionh, txt_sections)
         dump(data, json_file, indent=4, ensure_ascii=False)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
+    sys.exit()
 
 
-def parse_json(txt_sections, data, section0, sectionh, section5, section6):
+def parse_json(data, section0, section5, section6, sectionh, txt_sections):
     for i in range(0, len(txt_sections), 2):
         json_section = f'[{txt_sections[i]}]'
         json_lns = [line.strip() for line in txt_sections[i + 1].split('\n')
                     if line.strip()]
-        json_data = write_json(section0, sectionh, section5, section6,
-                               json_section, json_lns)
+        json_data = write_json(json_lns, json_section, section0, section5,
+                               section6, sectionh)
         data[json_section] = json_data
 
 
-def write_json(section0, sectionh, section5, section6, json_section, json_lns):
-    if json_section in (section0, sectionh, section5, section6):
+def write_json(json_lns, json_section, section0, section5, section6, sectionh):
+    if json_section in (section0, section5, section6, sectionh):
         json_data = {}
         format_json(json_data, json_lns)
         if json_section == section0:
@@ -1678,26 +1699,63 @@ def format_json(json_data, json_lns):
     return json_data
 
 
-def generate_pdf(temp_filename):
-    set_pdf_file()
+def export_pdf_file(tmp_filename):
+    # Important optimization, lazy-loading fpdf2.
+    from fpdf import FPDF, YPos as ypos  # type: ignore
+
+    class PDF(FPDF):
+
+        def header(self):
+            self.set_font('Courier', 'B', 9)
+            self.set_y(10)
+            self.set_text_color(0, 0, 0)
+            self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
+                      new_y="NEXT", align='C')
+            self.ln(1)
+            self.cell(0, 5, BANNER_VERSION, align='C')
+            self.ln(9 if self.page_no() == 1 else 13)
+
+        def footer(self):
+            self.set_y(-15)
+            self.set_font('Helvetica', 'I', 8)
+            self.set_text_color(0, 0, 0)
+            self.cell(0, 10, print_detail_s('[pdf_footer]') + ' ' +
+                      str(self.page_no()) + get_detail('[pdf_footer2]') +
+                      ' {nb}', align='C')
+    pdf = PDF()
+    initialize_pdf(pdf, tmp_filename, ypos)
+    sys.exit()
+
+
+def initialize_pdf(pdf, tmp_filename, ypos):
+    pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
+                 REF_LINKS[4])
+    pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
+    generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos)
+
+
+def generate_pdf(pdf, temp_filename, pdf_links, pdf_prefixes, ypos):
+    set_pdf_file(pdf)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
     no_headers = [get_detail(f'[{i}]').strip() for i in ['no_sec_headers',
                                                          'no_enb_headers']]
-    set_pdf_content(temp_filename, ok_string, no_headers)
+    set_pdf_content(temp_filename, ok_string, no_headers, pdf, pdf_links,
+                    pdf_prefixes, ypos)
     pdf.output(final_filename)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
+    sys.exit()
 
 
-def set_pdf_file():
+def set_pdf_file(pdf):
     pdf.alias_nb_pages()
-    set_pdf_metadata()
+    set_pdf_metadata(pdf)
     pdf.set_display_mode(zoom=125)
     pdf.add_page()
     pdf.set_font("Courier", size=9)
 
 
-def set_pdf_metadata():
+def set_pdf_metadata(pdf):
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
     git_urlc = BANNER_VERSION
     pdf.set_author(git_urlc)
@@ -1710,32 +1768,33 @@ def set_pdf_metadata():
     pdf.set_producer(git_urlc)
 
 
-def set_pdf_content(temp_filename, ok_string, no_headers):
+def set_pdf_content(temp_filename, ok_string, no_headers, pdf, pdf_links,
+                    pdf_prefixes, ypos):
     with open(temp_filename, "r", encoding='utf8') as txt_source:
         for line in txt_source:
             if any(no_header in line for no_header in no_headers):
-                set_pdf_warnings(line)
+                set_pdf_warnings(line, pdf, ypos)
                 continue
             if '[' in line:
-                set_pdf_sections(line)
+                set_pdf_sections(line, pdf)
             if any(bold_str in line for bold_str in BOLD_STRINGS):
                 pdf.set_font(style='B')
             else:
                 pdf.set_font(style='')
-            next((format_pdf_links(line, string) for string in
-                  pdf_links if string in line), None)
-            if set_pdf_conditions(line):
+            next((format_pdf_links(line, string, pdf, pdf_prefixes) for
+                  string in pdf_links if string in line), None)
+            if set_pdf_conditions(line, pdf, ypos):
                 continue
             elif ok_string in line:
-                set_pdf_nowarnings(line)
+                set_pdf_nowarnings(line, pdf, ypos)
                 continue
             pdf.set_text_color(255, 0, 0)
-            if set_pdf_empty(l_empty, line):
+            if set_pdf_empty(l_empty, line, pdf, ypos):
                 continue
-            format_pdf_lines(line)
+            format_pdf_lines(line, pdf, ypos)
 
 
-def set_pdf_sections(i):
+def set_pdf_sections(i, pdf):
     pdf_section_d = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
                      '[1.': '[1enabled_s]', '[2.': '[2missing_s]',
                      '[3.': '[3fingerprint_s]', '[4.': '[4depinsecure_s]',
@@ -1745,15 +1804,15 @@ def set_pdf_sections(i):
         pdf.start_section(get_detail(pdf_section_d[match]))
 
 
-def set_pdf_conditions(line):
+def set_pdf_conditions(line, pdf, ypos):
     combined_h = l_miss + l_ins + l_fng + titled_fng
     return (
         all(condition not in line for condition in PDF_CONDITIONS[:3]) and
         (PDF_CONDITIONS[3] in line or any(item in line for item in combined_h))
-        and set_pdf_warnings(line))
+        and set_pdf_warnings(line, pdf, ypos))
 
 
-def format_pdf_links(i, pdf_string):
+def format_pdf_links(i, pdf_string, pdf, pdf_prefixes):
     pdf_link = set_pdf_links(i, pdf_string)
     if pdf_string in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
         pdf_prefix = pdf_prefixes.get(pdf_string, pdf_string)
@@ -1764,24 +1823,24 @@ def format_pdf_links(i, pdf_string):
     pdf.cell(w=2000, h=6, text=i[i.index(": ")+2:], align="L", link=pdf_link)
 
 
-def set_pdf_warnings(line):
+def set_pdf_warnings(line, pdf, ypos):
     if STYLE[8] not in line:
         pdf.set_text_color(255, 0, 0)
-        pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+        pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
         return True
 
 
-def set_pdf_nowarnings(line):
+def set_pdf_nowarnings(line, pdf, ypos):
     pdf.set_text_color(0, 128, 0)
-    pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+    pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
 
 
-def set_pdf_empty(l_empty, line):
+def set_pdf_empty(l_empty, line, pdf, ypos):
     ln_strip = line.lstrip().lower()
     for i in l_empty:
         if (i in ln_strip and '[' not in ln_strip and ':' not in ln_strip):
             pdf.set_text_color(255, 0, 0)
-            pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+            pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
             return True
     return False
 
@@ -1795,36 +1854,36 @@ def set_pdf_links(i, pdf_string):
     return pdf_links_d.get(pdf_string)
 
 
-def format_pdf_lines(line):
+def format_pdf_lines(line, pdf, ypos):
     if len(line) > 101:
         chunks = [line[i:i + 101] for i in range(0, len(line), 101)]
-        set_pdf_chunks(chunks)
+        set_pdf_chunks(chunks, pdf)
         pdf.ln(h=2)
         return
     if re.search(RE_PATTERN[10], line):
-        color_pdf_line(line[19:], '#008000', '#000000', None, None)
+        color_pdf_line(line[19:], '#008000', '#000000', None, None, pdf)
         return
     if re.search(RE_PATTERN[7], line):
-        color_pdf_line(line[19:], '#660033', '#000000', None, None)
+        color_pdf_line(line[19:], '#660033', '#000000', None, None, pdf)
         return
     pdf.set_text_color(0, 0, 0)
-    pdf.multi_cell(197, 6, text=line, align='L', new_y=YPos.LAST)
+    pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
 
 
-def set_pdf_chunks(chunks):
+def set_pdf_chunks(chunks, pdf):
     chunk_c = None
     for i, chunk in enumerate(chunks):
         if re.search(RE_PATTERN[10], chunk):
             chunk_c = color_pdf_line(chunk[19:], '#008000', '#000000',
-                                     chunks, i)
+                                     chunks, i, pdf)
         elif re.search(RE_PATTERN[7], chunk):
             chunk_c = color_pdf_line(chunk[19:], '#660033', '#000000',
-                                     chunks, i)
+                                     chunks, i, pdf)
         else:
-            format_pdf_chunks(chunk, chunks, i, chunk_c)
+            format_pdf_chunks(chunk, chunks, i, chunk_c, pdf)
 
 
-def format_pdf_chunks(chunk, chunks, i, chunk_c):
+def format_pdf_chunks(chunk, chunks, i, chunk_c, pdf):
     pdf.set_text_color(0, 0, 0)
     if i > 0:
         chunk = f' {chunk}'
@@ -1836,7 +1895,7 @@ def format_pdf_chunks(chunk, chunks, i, chunk_c):
     pdf.ln(h=6)
 
 
-def color_pdf_line(line, hcolor, vcolor, chunks, i):
+def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
     c_index = line.find(': ')
     ln_final = (
         f'&nbsp;<font color="{hcolor}">{line}</font><br><br>'
@@ -1845,6 +1904,27 @@ def color_pdf_line(line, hcolor, vcolor, chunks, i):
              f'<font color="{vcolor}">{line[c_index + 2:]}</font><br><br>')
     pdf.write_html(ln_final)
     return hcolor if chunks and len(chunks) == 2 and i == 0 else None
+
+
+def export_html_file(final_filename, tmp_filename):
+    generate_html()
+    ok_string = get_detail(DIR_MSG[2]).rstrip()
+    ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
+                                                          'no_enb_headers']]
+    sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
+             'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
+             'span_f': '</span>'}
+    with open(tmp_filename, 'r', encoding='utf8') as html_source, \
+            open(final_filename, 'a', encoding='utf8') as html_final:
+        for ln in html_source:
+            ln_formatted = format_html_lines(html_final, ko_strings, ln,
+                                             ok_string, sub_d)
+            if not ln_formatted:
+                format_html_rest(html_final, l_empty, ln, sub_d)
+        html_final.write('</pre><br></body></html>')
+    print_export_path(final_filename, reliable)
+    remove(tmp_filename)
+    sys.exit()
 
 
 def generate_html():
@@ -1863,17 +1943,18 @@ def generate_html():
         html_file.write(replaced_html)
 
 
-def format_html_lines(ln, html_final):
+def format_html_lines(html_final, ko_strings, ln, ok_string, sub_d):
     lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
     ln_rstrip = ln.rstrip('\n')
-    return (format_html_info(ln_rstrip, html_final)
-            or format_html_bold(ln_rstrip, html_final)
-            or format_html_warnings(ln_rstrip, html_final)
-            or format_html_references(ln_rstrip, html_final, lang_slice)
-            or format_html_compatibility(ln_rstrip, html_final))
+    return (format_html_info(html_final, ln_rstrip, sub_d)
+            or format_html_bold(html_final, ln_rstrip)
+            or format_html_warnings(html_final, ko_strings, ln_rstrip,
+                                    ok_string, sub_d)
+            or format_html_references(html_final, lang_slice, ln_rstrip, sub_d)
+            or format_html_compatibility(html_final, ln_rstrip, sub_d))
 
 
-def format_html_info(ln_rstrip, html_final):
+def format_html_info(html_final, ln_rstrip, sub_d):
     if URL_STRING[0] in ln_rstrip:
         html_final.write(f"{sub_d['ahref_s']}{ln_rstrip[:32]}\
 {sub_d['close_t']}{ln_rstrip[:32]}{sub_d['ahref_f']}{ln_rstrip[32:]}")
@@ -1885,7 +1966,7 @@ def format_html_info(ln_rstrip, html_final):
     return False
 
 
-def format_html_warnings(ln_rstrip, html_final):
+def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string, sub_d):
     if ok_string in ln_rstrip:
         html_final.write(f'<span class="ok">{ln_rstrip}{sub_d["span_f"]}<br>')
         return True
@@ -1895,7 +1976,7 @@ def format_html_warnings(ln_rstrip, html_final):
     return False
 
 
-def format_html_references(ln_rstrip, html_final, lang_slice):
+def format_html_references(html_final, lang_slice, ln_rstrip, sub_d):
     for ref, ln_off, a_off in [(REF_LINKS[1], 6, 6),
                                (REF_LINKS[0], 8, 8),
                                (REF_LINKS[4], lang_slice, lang_slice)]:
@@ -1907,7 +1988,7 @@ def format_html_references(ln_rstrip, html_final, lang_slice):
     return False
 
 
-def format_html_compatibility(ln_rstrip, html_final):
+def format_html_compatibility(html_final, ln_rstrip, sub_d):
     if URL_STRING[2] not in ln_rstrip:
         return False
     prefix, _, link = ln_rstrip.partition(': ')
@@ -1918,14 +1999,14 @@ def format_html_compatibility(ln_rstrip, html_final):
     return True
 
 
-def format_html_bold(ln_rstrip, html_final):
+def format_html_bold(html_final, ln_rstrip):
     if any(s in ln_rstrip for s in BOLD_STRINGS):
         html_final.write(f'<strong>{ln_rstrip}</strong><br>')
         return True
     return False
 
 
-def format_html_headers(ln):
+def format_html_headers(ln, sub_d):
     for header in headers:
         header_str = f"{header}: "
         if header_str in ln:
@@ -1948,7 +2029,7 @@ def format_html_csp(ln):
     return ln
 
 
-def format_html_fingerprint(args, ln, l_fng):
+def format_html_fingerprint(args, ln, l_fng, sub_d):
     ln_cf = ln.casefold() if args.brief else ln
     for i in l_fng:
         i_match = i.casefold() if args.brief else i
@@ -1958,7 +2039,7 @@ def format_html_fingerprint(args, ln, l_fng):
     return ln
 
 
-def format_html_totals(ln, l_total):
+def format_html_totals(ln, l_total, sub_d):
     for i in l_total:
         if (not re.search(RE_PATTERN[11], ln)) and (
              (i in ln) and ('"' not in ln) or ('HTTP (' in ln)):
@@ -1966,7 +2047,7 @@ def format_html_totals(ln, l_total):
     return ln
 
 
-def format_html_empty(ln, ln_rstrip, l_empty):
+def format_html_empty(ln, ln_rstrip, l_empty, sub_d):
     ln_strip = ln_rstrip.lstrip().lower()
     for i in l_empty:
         if (i in ln_strip and '[' not in ln_strip and ':' not in ln_strip):
@@ -1974,19 +2055,19 @@ def format_html_empty(ln, ln_rstrip, l_empty):
     return ln
 
 
-def format_html_rest(ln, l_empty):
+def format_html_rest(html_final, l_empty, ln, sub_d):
     l_total = sorted(set(l_miss + l_ins))
-    ln, ln_enabled = format_html_enabled(ln)
+    ln, ln_enabled = format_html_enabled(ln, sub_d, html_final)
     ln_rstrip = ln.rstrip('\n')
     if ln and not ln_enabled:
-        ln = format_html_headers(ln)
-        ln = format_html_fingerprint(args, ln, sorted(l_fng))
-        ln = format_html_totals(ln, l_total)
-        ln = format_html_empty(ln, ln_rstrip, l_empty)
+        ln = format_html_headers(ln, sub_d)
+        ln = format_html_fingerprint(args, ln, sorted(l_fng), sub_d)
+        ln = format_html_totals(ln, l_total, sub_d)
+        ln = format_html_empty(ln, ln_rstrip, l_empty, sub_d)
         html_final.write(ln)
 
 
-def format_html_enabled(ln):
+def format_html_enabled(ln, sub_d, html_final):
     ln_enabled = STYLE[8] in ln
     if ln_enabled:
         ln = f" {ln[19:].rstrip()}"
@@ -2001,7 +2082,7 @@ def format_html_enabled(ln):
     return ln, ln_enabled
 
 
-def generate_xml(temp_filename, final_filename):
+def generate_xml(final_filename, temp_filename):
     root = ET.Element('analysis', {'version': BANNER_VERSION,
                                    'generated': current_time})
     with open(temp_filename, 'r', encoding='utf8') as txt_source:
@@ -2013,16 +2094,7 @@ def generate_xml(temp_filename, final_filename):
         xml_final.write(xml_decl + xml_dtd + xml_content)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
-
-
-def add_xml_item(section, line):
-    item = ET.SubElement(section, 'item')
-    if ': ' in line and all(sub not in line for sub in XML_STRING):
-        key, value = line.split(': ', 1)
-        item.set('name', key.strip())
-        item.text = value.strip()
-    else:
-        item.text = line
+    sys.exit()
 
 
 def parse_xml(root, section, stripped_txt):
@@ -2034,8 +2106,18 @@ def parse_xml(root, section, stripped_txt):
             continue
         if section is None:
             continue
-        add_xml_item(section, line)
+        add_xml_item(line, section)
     return section
+
+
+def add_xml_item(line, section):
+    item = ET.SubElement(section, 'item')
+    if ': ' in line and all(sub not in line for sub in XML_STRING):
+        key, value = line.split(': ', 1)
+        item.set('name', key.strip())
+        item.text = value.strip()
+    else:
+        item.text = line
 
 
 def print_http_exception(exception_id, exception_v):
@@ -3360,60 +3442,4 @@ if args.output:
     final_filename = f"{tmp_filename[:-5]}.{args.output}"
     sys.stdout = orig_stdout
     tmp_filename_content.close()
-if args.output == 'txt':
-    print_export_path(tmp_filename, reliable)
-    if '-c' in sys.argv:
-        check_owasp_compliance(tmp_filename)
-elif args.output == 'csv':
-    generate_csv(tmp_filename, final_filename)
-elif args.output == 'json':
-    generate_json(tmp_filename, final_filename)
-elif args.output == 'xlsx':
-    generate_csv(tmp_filename, final_filename, to_xlsx=True)
-elif args.output == 'xml':
-    generate_xml(tmp_filename, final_filename)
-elif args.output == 'pdf':
-    # Important optimization, lazy-loading fpdf2.
-    from fpdf import FPDF, YPos  # type: ignore
-
-    class PDF(FPDF):
-
-        def header(self):
-            self.set_font('Courier', 'B', 9)
-            self.set_y(10)
-            self.set_text_color(0, 0, 0)
-            self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
-                      new_y="NEXT", align='C')
-            self.ln(1)
-            self.cell(0, 5, BANNER_VERSION, align='C')
-            self.ln(9 if self.page_no() == 1 else 13)
-
-        def footer(self):
-            self.set_y(-15)
-            self.set_font('Helvetica', 'I', 8)
-            self.set_text_color(0, 0, 0)
-            self.cell(0, 10, print_detail_s('[pdf_footer]') + ' ' +
-                      str(self.page_no()) + get_detail('[pdf_footer2]') +
-                      ' {nb}', align='C')
-    pdf = PDF()
-    pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
-                 REF_LINKS[4])
-    pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
-    generate_pdf(tmp_filename)
-elif args.output == 'html':
-    generate_html()
-    ok_string = get_detail(DIR_MSG[2]).rstrip()
-    ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
-                                                          'no_enb_headers']]
-    sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
-             'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
-             'span_f': '</span>'}
-    with open(tmp_filename, 'r', encoding='utf8') as html_source, \
-            open(final_filename, 'a', encoding='utf8') as html_final:
-        for ln in html_source:
-            ln_formatted = format_html_lines(ln, html_final)
-            if not ln_formatted:
-                format_html_rest(ln, l_empty)
-        html_final.write('</pre><br></body></html>')
-    print_export_path(final_filename, reliable)
-    remove(tmp_filename)
+    check_output_format(args, final_filename, reliable, tmp_filename)
