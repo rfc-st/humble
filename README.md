@@ -144,7 +144,7 @@ Options used: -f -g -p -U -s --hints
 .: (Windows) - Guidelines for enabling security HTTP response headers.<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/humble_guildelines.JPG" alt="(Windows) - Guidelines for enabling security HTTP response headers">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_guidelines.JPG" alt="(Windows) - Guidelines for enabling security HTTP response headers">
 </p>
 <br />
 .: (Linux) - Brief analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_facebook.com_20250426_191942_en.csv">Example.</a><br />
