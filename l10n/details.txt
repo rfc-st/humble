@@ -1848,6 +1848,15 @@ Error: 'testssl' is not found in that PATH.
 [notestssl_path]
 Error: The PATH for 'testssl' is incorrect.
 
+[notestssl_exec]
+Error: 'testssl' is not an executable file.
+
+[testssl_warning]
+WARNING: You are about to execute
+
+[testssl_choice]
+Do you trust this file? [y/n]:
+
 [args_nooutputfmt]
 Error: The parameter '-op' requires the parameter '-o'.
 

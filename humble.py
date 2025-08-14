@@ -57,14 +57,14 @@ from platform import system
 from base64 import b64decode
 from itertools import islice
 from datetime import datetime
-from csv import reader, writer, QUOTE_ALL
 from urllib.parse import urlparse
 from subprocess import PIPE, Popen
 from threading import Event, Thread
-from os import linesep, path, remove
 from os.path import dirname, abspath
 from socket import create_connection
+from csv import reader, writer, QUOTE_ALL
 from collections import Counter, defaultdict
+from os import access, linesep, path, remove, X_OK
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 # Third-Party imports
@@ -185,7 +185,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-09', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-14', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -354,22 +354,34 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
 
 
 def testssl_command(testssl_temp_path, uri):
+    testssl_temp_path = path.abspath(testssl_temp_path)
     if not path.isdir(testssl_temp_path):
         print_error_detail('[notestssl_path]')
-    testssl_path = next((path.join(testssl_temp_path, filename) for filename
-                         in TESTSSL_FILE if
-                         path.isfile(path.join(testssl_temp_path, filename))),
-                        None)
+    testssl_path = next(
+        (path.join(testssl_temp_path, filename)
+         for filename in TESTSSL_FILE
+         if path.isfile(path.join(testssl_temp_path, filename))),
+        None
+    )
     if not testssl_path:
         print_error_detail('[notestssl_file]')
-    testssl_command = [testssl_path] + TESTSSL_OPTIONS + [uri]
-    testssl_analysis(testssl_command)
+    if not access(testssl_path, X_OK):
+        print_error_detail('[notestssl_exec]')
+    print("")
+    print(f"{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
+    choice = input(f"{get_detail('[testssl_choice]',
+                                 replace=True)} ").strip().lower()
+    if choice != "y":
+        sys.exit()
+    delete_lines()
+    testssl_cmd = [testssl_path] + TESTSSL_OPTIONS + [uri]
+    testssl_analysis(testssl_cmd)
     sys.exit()
 
 
-def testssl_analysis(testssl_command):
+def testssl_analysis(testssl_cmd):
     try:
-        process = Popen(testssl_command, stdout=PIPE, stderr=PIPE, text=True)
+        process = Popen(testssl_cmd, stdout=PIPE, stderr=PIPE, text=True)
         for ln in iter(process.stdout.readline, ''):
             print(ln, end='')
             if 'Done' in ln:

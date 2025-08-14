@@ -1850,6 +1850,15 @@ Error: 'testssl' no existe en la ruta indicada.
 [notestssl_path]
 Error: la ruta indicada de 'testssl' es incorrecta.
 
+[notestssl_exec]
+Error: 'testssl' no es un fichero ejecutable.
+
+[testssl_warning]
+AVISO: Vas a ejecutar el fichero
+
+[testssl_choice]
+¿Confías en ese fichero? [y/n]:
+
 [args_skipped]
 Error: El parámetro '-s' requiere, al menos, el nombre de una cabecera HTTP de respuesta.
 
