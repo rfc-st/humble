@@ -26,8 +26,8 @@
 Guidelines for enabling security HTTP response headers on popular frameworks, servers and services:
 
 [Amazon Web Services]
-https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example-function-add-security-headers.html
-https://dev.to/kumo/deliver-perfect-http-security-headers-with-aws-cloudfront-4din
+https://dev.to/slsbytheodo/deliver-perfect-http-security-headers-with-aws-cloudfront-4din
+https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example_cloudfront_functions_add_security_headers_section.html
 
 [Angular]
 https://angular.dev/best-practices/security
@@ -35,19 +35,27 @@ https://learn.microsoft.com/en-us/answers/questions/1376588/how-to-remove-unwant
 
 [Apache HTTP Server]
 https://htaccessbook.com/important-security-headers/
-https://geekflare.com/apache-web-server-hardening-security/
 https://www.adminbyaccident.com/security/how-to-harden-apache-http/
+https://geekflare.com/cybersecurity/apache-web-server-hardening-security/
 https://www.digitalocean.com/community/tutorials/recommended-steps-to-harden-apache-http-on-freebsd-12-0
 
 [Cloudflare]
-https://developers.cloudflare.com/workers/examples/security-headers/
 https://algustionesa.com/security-headers/
+https://developers.cloudflare.com/workers/examples/security-headers/
+
+[Google Cloud]
+https://cloud.google.com/cdn/docs/web-security-best-practices
 
 [LiteSpeed Web Server]
 https://docs.litespeedtech.com/lsws/security-headers/
 
+[Microsoft Azure]
+https://learn.microsoft.com/en-us/azure/frontdoor/front-door-security-headers
+https://neelborghs.com/implement-security-headers-on-azure-application-gateway
+https://blog.jonsdocs.org.uk/2023/09/05/azure-static-web-apps-and-http-security-headers/
+
 [Microsoft Internet Information Services]
-https://geekflare.com/http-header-implementation/
+https://geekflare.com/cybersecurity/http-header-implementation/
 https://www.ryadel.com/en/iis-web-config-secure-http-response-headers-pass-securityheaders-io-scan/
 https://beaglesecurity.com/blog/article/hardening-server-security-by-implementing-security-headers.html
 
@@ -56,14 +64,19 @@ https://www.acunetix.com/blog/web-security-zone/hardening-nginx/
 https://www.getpagespeed.com/server-setup/nginx-security-headers-the-right-way
 
 [Node.js]
-https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html
-https://blog.logrocket.com/using-helmet-node-js-secure-application/
 https://blog.risingstack.com/node-js-security-checklist/
+https://blog.logrocket.com/using-helmet-node-js-secure-application/
+https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html
+
+[PHP]
+https://dcblog.dev/laravel-security-headers
+https://benjamincrozat.com/laravel-security-best-practices
+https://needlify.com/essential-symfony-security-best-practices-for-building-secure-web-applications/
 
 [Spring]
+https://www.baeldung.com/spring-security-csp
 https://docs.spring.io/spring-security/reference/servlet/exploits/headers.html
 https://docs.spring.io/spring-security/reference/features/exploits/headers.html
-https://www.baeldung.com/spring-security-csp
 
 [WordPress]
 https://www.wpdownloadmanager.com/http-security-headers-on-wordpress/
