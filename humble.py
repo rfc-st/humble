@@ -185,7 +185,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-14', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-15', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1975,12 +1975,16 @@ def format_html_lines(html_final, ko_strings, ln, ok_string, sub_d):
 
 def format_html_info(html_final, ln_rstrip, sub_d):
     if URL_STRING[0] in ln_rstrip:
-        html_final.write(f"{sub_d['ahref_s']}{ln_rstrip[:32]}\
-{sub_d['close_t']}{ln_rstrip[:32]}{sub_d['ahref_f']}{ln_rstrip[32:]}")
+        html_final.write(
+            f"{sub_d['ahref_s']}{ln_rstrip[:32]}{sub_d['close_t']}"
+            f"{ln_rstrip[:32]}{sub_d['ahref_f']}{ln_rstrip[32:]}"
+        )
         return True
     if URL_STRING[1] in ln_rstrip:
-        html_final.write(f"{ln_rstrip[:8]}{sub_d['ahref_s']}\
-{ln_rstrip[8:]}{sub_d['close_t']}{ln_rstrip[8:]}{sub_d['ahref_f']}<br>")
+        html_final.write(
+            f"{ln_rstrip[:8]}{sub_d['ahref_s']}{ln_rstrip[8:]}"
+            f"{sub_d['close_t']}{ln_rstrip[8:]}{sub_d['ahref_f']}<br>"
+        )
         return True
     return False
 
@@ -1996,13 +2000,14 @@ def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string, sub_d):
 
 
 def format_html_references(html_final, lang_slice, ln_rstrip, sub_d):
-    for ref, ln_off, a_off in [(REF_LINKS[1], 6, 6),
-                               (REF_LINKS[0], 8, 8),
-                               (REF_LINKS[4], lang_slice, lang_slice)]:
+    for ref, off in [(REF_LINKS[1], 6), (REF_LINKS[0], 8), (REF_LINKS[4],
+                                                            lang_slice)]:
         if ref in ln_rstrip:
-            html_final.write(f"{ln_rstrip[:ln_off]}{sub_d['ahref_s']}\
-{ln_rstrip[a_off:].strip()}{sub_d['close_t']}\
-{ln_rstrip[a_off:].strip()}{sub_d['ahref_f']}<br>")
+            content = ln_rstrip[off:].strip()
+            html_final.write(
+                f"{ln_rstrip[:off]}{sub_d['ahref_s']}{content}"
+                f"{sub_d['close_t']}{content}{sub_d['ahref_f']}<br>"
+            )
             return True
     return False
 
@@ -2091,13 +2096,11 @@ def format_html_enabled(ln, sub_d, html_final):
     if ln_enabled:
         ln = f" {ln[19:].rstrip()}"
         if ':' in ln:
-            header, value = ln.split(":", 1)
-            ln = f"<span class='ok'> {header.strip()}{sub_d['span_f']}: " \
-                 f"{value.strip()}"
+            header, value = map(str.strip, ln.split(":", 1))
+            ln = f"<span class='ok'> {header}{sub_d['span_f']}: {value}"
         else:
             ln = f"<span class='ok'> {ln.strip()}{sub_d['span_f']}"
-        ln = format_html_csp(ln)
-        html_final.write(f'{ln}<br>')
+        html_final.write(f"{format_html_csp(ln)}<br>")
     return ln, ln_enabled
 
 
