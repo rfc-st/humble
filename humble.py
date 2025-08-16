@@ -1196,7 +1196,8 @@ def print_basic_info(export_filename):
         print(f"{get_detail('[ua_custom]', replace=True)} '{args.user_agent}'\
 {get_detail('[ua_custom2]', replace=True)}")
     if args.input_file:
-        print(f"{get_detail('[input_filename]')} {args.input_file}")
+        print(f"{get_detail('[input_filename]', replace=True)} \
+{args.input_file}")
     if export_filename:
         print(f"{get_detail('[export_filename]', replace=True)} \
 {export_filename}")
