@@ -185,7 +185,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-15', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-16', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1926,6 +1926,8 @@ def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
 
 
 def export_html_file(final_filename, tmp_filename):
+    global inside_section
+    inside_section = False
     generate_html()
     ok_string = get_detail(DIR_MSG[2]).rstrip()
     ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
@@ -1936,10 +1938,10 @@ def export_html_file(final_filename, tmp_filename):
     with open(tmp_filename, 'r', encoding='utf8') as html_source, \
             open(final_filename, 'a', encoding='utf8') as html_final:
         for ln in html_source:
-            ln_formatted = format_html_lines(html_final, ko_strings, ln,
-                                             ok_string, sub_d)
-            if not ln_formatted:
-                format_html_rest(html_final, l_empty, ln, sub_d)
+            format_html_file(html_final, ko_strings, ln, ok_string, sub_d)
+        if inside_section:
+            html_final.write('''</pre></details></div><pre>''')
+            inside_section = False
         html_final.write('</pre><br></body></html>')
     print_export_path(final_filename, reliable)
     remove(tmp_filename)
@@ -1960,6 +1962,13 @@ def generate_html():
         replaced_html = temp_html_content.format(**html_replace)
         html_file.seek(0)
         html_file.write(replaced_html)
+
+
+def format_html_file(html_final, ko_strings, ln, ok_string, sub_d):
+    ln_formatted = format_html_lines(html_final, ko_strings, ln, ok_string,
+                                     sub_d)
+    if not ln_formatted:
+        format_html_rest(html_final, l_empty, ln, sub_d)
 
 
 def format_html_lines(html_final, ko_strings, ln, ok_string, sub_d):
@@ -2024,8 +2033,15 @@ def format_html_compatibility(html_final, ln_rstrip, sub_d):
 
 
 def format_html_bold(html_final, ln_rstrip):
+    global inside_section
     if any(s in ln_rstrip for s in BOLD_STRINGS):
-        html_final.write(f'<strong>{ln_rstrip}</strong><br>')
+        if inside_section:
+            html_final.write('''</pre></details></div><pre>''')
+        html_final.write(
+            f'</pre><div><details open><summary><strong>{ln_rstrip}</strong>'
+            f'</summary><pre>'
+        )
+        inside_section = True
         return True
     return False
 

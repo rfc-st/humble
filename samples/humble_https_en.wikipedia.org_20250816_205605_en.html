@@ -1,21 +1,21 @@
 <!DOCTYPE HTML><html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="description" content="HTTP headers analysis of
- https://en.wikipedia.org"><meta name="keywords" content="HTTP Headers, Analyzer, Analysis, Cybersecurity, Security-scanner, Security-Tools, Header-Parser
-"><meta name="author" content="https://github.com/rfc-st/humble | v.2025-07-11"><meta name="generator" content="https://github.com/rfc-st/humble | v.2025-07-11"><title>HTTP headers analysis
-</title><style>pre {overflow-x: auto; white-space: pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word; font-size: 13px;} a {color: blue; text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko {color: red;}</style></head><body><pre>
+ https://en.wikipedia.org"><meta name="keywords" content="Analysis, Analyzer, Cybersecurity, Headers, Header-Parser, HTTP, Security-Scanner, Security-Tool
+"><meta name="author" content="https://github.com/rfc-st/humble | v.2025-08-16"><meta name="generator" content="https://github.com/rfc-st/humble | v.2025-08-16"><title>HTTP headers analysis
+</title><style>pre {overflow-x: auto; white-space: pre-wrap;white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word; font-size: 13px;} a {color: blue; text-decoration: none;} .ok {color: green;} .header {color: #660033;} .ko {color: red;} details summary {font-family: monospace; white-space: pre; font-size: 13px; line-height: 1.4; cursor: pointer; margin: 0; padding: 2px 0;} details summary strong {font-weight: bold;} details summary::-webkit-details-marker {display: none;} details summary::marker {display: none;}</style></head><body><pre>
 
 'humble' (HTTP Headers Analyzer)
-<a href="https://github.com/rfc-st/humble">https://github.com/rfc-st/humble</a> | v.2025-07-11
+<a href="https://github.com/rfc-st/humble">https://github.com/rfc-st/humble</a> | v.2025-08-16
 
 
-<strong>[0. Info]</strong><br>
- Date : 2025/07/11 - 17:49:20
- URL  : <a href="https://en.wikipedia.org">https://en.wikipedia.org</a><br> File : humble_https_en.wikipedia.org_20250711_174921_en.html
+</pre><div><details open><summary><strong>[0. Info]</strong></summary><pre>
+ Date : 2025/08/16 - 20:56:05
+ URL  : <a href="https://en.wikipedia.org">https://en.wikipedia.org</a><br> File : humble_https_en.wikipedia.org_20250816_205605_en.html
 
 
-<strong>[1. Enabled HTTP Security Headers]</strong><br>
-<span class='ok'> Cache-Control</span>: private, s-maxage=0, max-age=0, must-revalidate, no-transform<br><span class='ok'> Content-Type</span>: text/html; charset=UTF-8<br><span class='ok'> (*) Nel</span>: { "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}<br><span class='ok'> Report-To</span>: { "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }<br><span class='ok'> Server-Timing</span>: cache;desc="hit-front", host;desc="cp6012"<br><span class='ok'> Set-Cookie</span>: WMF-DP=17a;Path=/;HttpOnly;secure;Expires=Sat, 12 Jul 2025 00:00:00 GMT, WMF-Uniq=GGE7vxZEYV8DIOJYUebFqwItAAEBAFvdMnaNq-fvvxIHpL89kwuxcH7TaVY6KG9P;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat, 11 Jul 2026 00:00:00 GMT<br><span class='ok'> Strict-Transport-Security</span>: max-age=106384710; includeSubDomains; preload<br><span class='ok'> X-Content-Type-Options</span>: nosniff<br>
+</pre></details></div><pre></pre><div><details open><summary><strong>[1. Enabled HTTP Security Headers]</strong></summary><pre>
+<span class='ok'> Cache-Control</span>: private, s-maxage=0, max-age=0, must-revalidate, no-transform<br><span class='ok'> Content-Type</span>: text/html; charset=UTF-8<br><span class='ok'> (*) Nel</span>: { "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}<br><span class='ok'> Report-To</span>: { "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }<br><span class='ok'> Server-Timing</span>: cache;desc="hit-front", host;desc="cp6012"<br><span class='ok'> Set-Cookie</span>: WMF-DP=8bc;Path=/;HttpOnly;secure;Expires=Sun, 17 Aug 2025 00:00:00 GMT, WMF-Uniq=q4qYZkPbj5l60G5e294FtgJRAAEBAFvduyFDRaDCPVkFNazGP2X3ZzF62b8aBmZV;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sun, 16 Aug 2026 00:00:00 GMT<br><span class='ok'> Strict-Transport-Security</span>: max-age=106384710; includeSubDomains; preload<br><span class='ok'> X-Content-Type-Options</span>: nosniff<br>
 
-<strong>[2. Missing HTTP Security Headers]</strong><br>
+</pre></details></div><pre></pre><div><details open><summary><strong>[2. Missing HTTP Security Headers]</strong></summary><pre>
 <span class="ko"> Clear-Site-Data
 </span> Clears browsing data (cookies, storage, cache) associated with the requesting website.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data</a><br>
@@ -31,6 +31,9 @@
 <span class="ko"> Content-Security-Policy
 </span> Detect and mitigate Cross Site Scripting (XSS) and data injection attacks, among others.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy</a><br>
+<span class="ko"> Integrity-Policy
+</span> Blocks certain resource types without Subresource Integrity metadata.
+ Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy</a><br>
 <span class="ko"> (*) Permissions-Policy
 </span> Previously called "Feature-Policy", allow and deny the use of browser features.
  Ref: <a href="https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/">https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/</a><br>
@@ -44,14 +47,14 @@
 </span> Prevents clickjacking attacks, limiting sources of embedded content.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options</a><br>
 
-<strong>[3. Fingerprint HTTP Response Headers]</strong><br>
+</pre></details></div><pre></pre><div><details open><summary><strong>[3. Fingerprint HTTP Response Headers]</strong></summary><pre>
  These headers can expose IPs, hostnames, software or their versions:
 
 <span class="ko"> Server (Generic HTTP Server/Content Delivery Network)
-</span> Value: 'mw-web.eqiad.main-74fdfd557b-2wn9z'
+</span> Value: 'mw-web.eqiad.main-7f67d69dcb-hl4bq'
 
 
-<strong>[4. Deprecated HTTP Response Headers/Protocols and Insecure Values]</strong><br>
+</pre></details></div><pre></pre><div><details open><summary><strong>[4. Deprecated HTTP Response Headers/Protocols and Insecure Values]</strong></summary><pre>
  The following headers/protocols are deprecated or their values may be considered unsafe:
 
 <span class="ko"> Cache-Control (Recommended Values)
@@ -67,28 +70,29 @@
 </span> The values of this header may expose others, facilitating attacks if user input is accepted.
  Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary</a><br> Ref: <a href="https://www.yeswehack.com/fr/learn-bug-bounty/http-header-exploitation">https://www.yeswehack.com/fr/learn-bug-bounty/http-header-exploitation</a><br>
 
-<strong>[5. Empty HTTP Response Headers Values]</strong><br>
+</pre></details></div><pre></pre><div><details open><summary><strong>[5. Empty HTTP Response Headers Values]</strong></summary><pre>
  Empty HTTP headers (and are therefore considered disabled):
 
- Accept-Ch
+<span class="ko"> Accept-Ch
+</span><span class="ko"> X-Analytics
+</span>
 
-
-<strong>[6. Browser Compatibility for Enabled HTTP Security Headers]</strong><br>
+</pre></details></div><pre></pre><div><details open><summary><strong>[6. Browser Compatibility for Enabled HTTP Security Headers]</strong></summary><pre>
 <span class="header"> Cache-Control: </span><a href="https://caniuse.com/?search=Cache-Control">https://caniuse.com/?search=Cache-Control</a><br><span class="header"> Content-Type: </span><a href="https://caniuse.com/?search=Content-Type">https://caniuse.com/?search=Content-Type</a><br><span class="header"> NEL: </span><a href="https://caniuse.com/?search=NEL">https://caniuse.com/?search=NEL</a><br><span class="header"> Report-To: </span><a href="https://caniuse.com/?search=Report-To">https://caniuse.com/?search=Report-To</a><br><span class="header"> Server-Timing: </span><a href="https://caniuse.com/?search=Server-Timing">https://caniuse.com/?search=Server-Timing</a><br><span class="header"> Set-Cookie: </span><a href="https://caniuse.com/?search=Set-Cookie">https://caniuse.com/?search=Set-Cookie</a><br><span class="header"> Strict-Transport-Security: </span><a href="https://caniuse.com/?search=Strict-Transport-Security">https://caniuse.com/?search=Strict-Transport-Security</a><br><span class="header"> Vary: </span><a href="https://caniuse.com/?search=Vary">https://caniuse.com/?search=Vary</a><br><span class="header"> X-Content-Type-Options: </span><a href="https://caniuse.com/?search=X-Content-Type-Options">https://caniuse.com/?search=X-Content-Type-Options</a><br>
 
-<strong>[7. Analysis Results]</strong><br>
- Done in 0.24 seconds! (changes with respect to the last analysis in parentheses)
+</pre></details></div><pre></pre><div><details open><summary><strong>[7. Analysis Results]</strong></summary><pre>
+ Done in 0.31 seconds! (changes with respect to the last analysis in parentheses)
 
  Enabled headers:               8 (First Analysis)
 
- Missing headers:               9 (First Analysis)
+ Missing headers:              10 (First Analysis)
  Fingerprint headers:           1 (First Analysis)
  Deprecated/Insecure headers:   4 (First Analysis)
- Empty headers:                 1 (First Analysis)
- Findings to review:           15 (First Analysis)
+ Empty headers:                 2 (First Analysis)
+ Findings to review:           17 (First Analysis)
 
  Analysis Grade:               D (Review 'Deprecated/Insecure headers')
 
  '(*)' meaning:                Experimental HTTP response directive or header
  '(*)' ref:                    <a href="https://mdn.io/Experimental_deprecated_obsolete">https://mdn.io/Experimental_deprecated_obsolete</a><br>
-</pre><br></body></html>
+</pre></details></div><pre></pre><br></body></html>
