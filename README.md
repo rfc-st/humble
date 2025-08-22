@@ -276,9 +276,9 @@ https://github.com/rfc-st/humble/releases
 $ git clone https://github.com/rfc-st/humble.git
 https://github.com/rfc-st/humble/releases
 
-# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.51)
+# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.52)
 # https://github.com/rfc-st/humble/releases (On Windows, this may require running the terminal with admin privileges)
-$ docker build -t humble:1.51 .
+$ docker build -t humble:1.52 .
 
 # Run the analysis specifying the above TAG, along with the specific options for 'humble':
 # '-it', required: allocate a pseudo-TTY and keep input interactive.
@@ -286,14 +286,14 @@ $ docker build -t humble:1.51 .
 
 # (Linux/macOS)
 # E.g. Analyze https://google.com (brief analysis)
-$ docker run -it --rm --name humble humble:1.51 /bin/bash -c "python3 humble.py -u https://google.com -b"
+$ docker run -it --rm --name humble humble:1.52 /bin/bash -c "python3 humble.py -u https://google.com -b"
 
 # (Windows)
 # E.g. Analyze https://google.com (detailed analysis)
-$ docker run -it --rm --name humble humble:1.51 python3 humble.py -u https://google.com
+$ docker run -it --rm --name humble humble:1.52 python3 humble.py -u https://google.com
 
 # (Optional) Remove and untag the previous 'humble' image after upgrading
-$ docker rmi humble:1.50
+$ docker rmi humble:1.52
 ```
 
 ## Installation & update (Kali Linux)
@@ -328,7 +328,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-if INPUT_FILE] [-l {es}] [-lic] [-o {csv,html,json,pdf,txt,xlsx,xml}]
                  [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-08-06
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-08-22
 
 options:
   -h, --help                           show this help message and exit
