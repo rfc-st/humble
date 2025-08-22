@@ -16,6 +16,7 @@
 <a target="_blank" href="https://github.com/HackTricks-wiki/hacktricks/blob/master/src/network-services-pentesting/pentesting-web/special-http-headers.md" title="HackTricks"><img src="https://img.shields.io/badge/HackTricks-blue"></a>
 <a target="_blank" href="https://headerscan.com/humble/" title="Security Header Scanner"><img src="https://img.shields.io/badge/HeaderScan-blue"></a>
 <a target="_blank" href="https://www.linux-magazin.de/ausgaben/2022/11/tooltipps/" title="Linux Magazin"><img src="https://img.shields.io/badge/Linux%20Magazin-blue"></a>
+<a target="_blank" href="https://merginit.com/blog/18082025-http-security-header-checker-tools" title="MerginIT"><img src="https://img.shields.io/badge/MerginIT-blue"></a>
 <a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-blue"></a>
 <a target="_blank" href="https://qiita.com/prograti/items/8eea5d60056f6df0d160#humble" title="Security Tools in Kali Linux"><img src="https://img.shields.io/badge/Qiita-blue"></a>
 <br />
