@@ -14,5 +14,6 @@ Permissions-Policy: accelerometer=(), autoplay=(), camera=(), cross-origin-isola
 Referrer-Policy: no-referrer
 Strict-Transport-Security: max-age=31536000; includeSubDomains
 X-Content-Type-Options: nosniff
+X-DNS-Prefetch-Control: off
 X-Frame-Options: deny
 X-Permitted-Cross-Domain-Policies: none

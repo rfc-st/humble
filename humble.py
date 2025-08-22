@@ -185,7 +185,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-16', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-22', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2190,18 +2190,30 @@ def check_owasp_compliance(tmp_filename):
     print_owasp_findings(header_dict, header_list)
 
 
+def print_owasp_summary(missing, wrong):
+    missing_txt = get_detail('[comp_missing]', replace=True)
+    wrong_txt = get_detail('[comp_noncompliant]', replace=True)
+    max_len = len(wrong_txt)
+    print(linesep.join([''] * 2))
+    print(f"{STYLE[0]}{get_detail('[comp_summary]')}")
+    print(f" {missing_txt:{max_len}} : {len(missing)}")
+    print(f" {wrong_txt:{max_len}} : {len(wrong)}")
+
+
 def print_owasp_findings(header_dict, header_list):
     print(linesep.join([''] * 2))
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
     print(" ", end='')
     print_detail_l('[analysis_date]')
     print(f" {current_time}")
-    print(f'  URL  : {URL}')
+    print(f' {URL_STRING[1]}{URL}')
     print_detail('[comp_ref]', num_lines=2)
-    print_owasp_missing(header_list)
-    if wrong_owasp := print_owasp_wrong(header_dict):
+    missing_owasp = print_owasp_missing(header_list)
+    wrong_owasp = print_owasp_wrong(header_dict)
+    if wrong_owasp:
         print_owasp_rec(wrong_owasp, header_dict)
-    print(linesep.join([''] * 2))
+    print_owasp_summary(missing_owasp, wrong_owasp)
+    print("")
     print_detail('[comp_experimental]', 2)
 
 
@@ -2211,10 +2223,11 @@ def print_owasp_missing(header_list):
                      headers_l]
     if not missing_owasp:
         print(f"{STYLE[10]}  {get_detail(DIR_MSG[2])}{STYLE[5]}", end="")
-        return
+        return []
     for header in missing_owasp:
         prefix = "(*) " if header == "Permissions-Policy" else ""
         print(f"{STYLE[1]}  {prefix}{header}{STYLE[5]}")
+    return missing_owasp
 
 
 def print_owasp_wrong(header_dict):
@@ -2222,7 +2235,8 @@ def print_owasp_wrong(header_dict):
         (header.title(), value)
         for header, value in headers_l.items()
         if (owasp_value := header_dict.get(header.title())) and value !=
-        owasp_value]
+        owasp_value
+    ]
     print(f"\n\n{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
     if not wrong_owasp:
         print(f"{STYLE[10]} {get_detail(DIR_MSG[2])}{STYLE[5]}", end="")
