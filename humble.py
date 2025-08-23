@@ -185,7 +185,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-22', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-23', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1615,8 +1615,8 @@ def generate_xlsx(final_filename, temp_filename):
     set_xlsx_metadata(workbook)
     set_xlsx_content(final_filename, workbook)
     workbook.close()
-    remove(temp_filename)
     print_export_path(final_filename, reliable)
+    remove(temp_filename)
     sys.exit()
 
 
@@ -1634,24 +1634,41 @@ def set_xlsx_metadata(workbook):
 
 def set_xlsx_content(final_filename, workbook):
     worksheet = workbook.add_worksheet(get_detail(METADATA_S[1], replace=True))
-    cell_fmt = workbook.add_format({'text_wrap': True, 'valign': 'top'})
     bold_fmt = workbook.add_format({'bold': True, 'text_wrap': True,
                                     'align': 'center', 'valign': 'vcenter'})
+    cell_fmt = workbook.add_format({'text_wrap': True, 'valign': 'top'})
+    hidden_fmt = workbook.add_format({'font_color': '#FFFFFF',
+                                      'text_wrap': True, 'valign': 'top'})
     col_wd = {}
-    set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, worksheet)
+    set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
+                    worksheet)
     set_xlsx_width(col_wd, worksheet)
     worksheet.autofilter(0, 0, 0, 1)
 
 
-def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, worksheet):
-    with open(final_filename, 'r', encoding='utf-8', newline='') as f:
-        for row_idx, row in enumerate(reader(f)):
-            for col_idx, cell in enumerate(row):
-                fmt = (bold_fmt if row_idx == 0 and col_idx in (0, 1)
-                       else cell_fmt)
-                worksheet.write(row_idx, col_idx, cell, fmt)
-                cell_len = len(cell)
-                col_wd[col_idx] = max(col_wd.get(col_idx, 0), cell_len)
+def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
+                    worksheet):
+    prev_section = None
+    with open(final_filename, 'r', encoding='utf-8', newline='') as csv_final:
+        for row_index, row_data in enumerate(reader(csv_final)):
+            for col_index, cell_value in enumerate(row_data):
+                fmt, prev_section = choose_xlsx_format(bold_fmt, cell_fmt,
+                                                       cell_value, col_index,
+                                                       hidden_fmt, row_index,
+                                                       prev_section)
+                worksheet.write(row_index, col_index, cell_value, fmt)
+                col_wd[col_index] = max(col_wd.get(col_index, 0),
+                                        len(cell_value))
+
+
+def choose_xlsx_format(bold_fmt, cell_fmt, cell_value, col_index, hidden_fmt,
+                       row_index, prev_section):
+    if row_index == 0 and col_index in (0, 1):
+        return bold_fmt, prev_section
+    if col_index == 0 and row_index > 0:
+        return (hidden_fmt, prev_section) if cell_value == prev_section \
+            else (cell_fmt, cell_value)
+    return cell_fmt, prev_section
 
 
 def set_xlsx_width(col_wd, worksheet):
