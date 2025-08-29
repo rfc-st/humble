@@ -382,22 +382,6 @@ want to contribute?:
 
 ## Advanced usage (Linux)
 
-.: Show only the analysis summary.<br />
-
-```
-$ python3 humble.py -u https://en.wikipedia.org/ | grep -A 8 "\!." | sed $'1i \n'
-```
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux.jpg" alt="Show only the analysis summary (Linux)">
-
-
-.: Show only the URL, date and analysis summary.<br />
-
-```
-$ python3 humble.py -u https://en.wikipedia.org/ | grep -A8 -E "0. Info|\!." | grep -v "^\[1\." | sed 's/[--]//g' | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' | sed '5,6d' | sed '1i\'
-```
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_2.jpg" alt="Show URL, date and the analysis summary (Linux)">
-
-
 .: Show only the deprecated headers/protocols and insecure values.<br />
 
 ```
