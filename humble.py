@@ -51,7 +51,7 @@ import ssl
 import sys
 import xml.etree.ElementTree as ET
 from time import time
-from json import dump
+from json import dump, dumps
 from shutil import copyfile
 from platform import system
 from base64 import b64decode
@@ -143,7 +143,8 @@ RE_PATTERN = (
     r"'(sha256|sha384|sha512)-([A-Za-z0-9+/=]+)'",
     r"(?<!')\b(sha256|sha384|sha512)-[A-Za-z0-9+/=]+(?!')",
     r'^([a-zA-Z0-9\-]+)',
-    r'\s{2,}'
+    r'\s{2,},',
+    r"^(.*?):\s+(\d+)\s+\((.*?)\)$"
 )
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 REQ_HEADERS = {
@@ -185,7 +186,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-23', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-29', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1564,6 +1565,8 @@ def print_unsupported_headers(unsupported_headers):
 
 def check_output_format(args, final_filename, reliable, tmp_filename):
     if args.output == 'txt':
+        if args.cicd:
+            print_cicd_totals(tmp_filename)
         print_export_path(tmp_filename, reliable)
         if '-c' in sys.argv:
             check_owasp_compliance(tmp_filename)
@@ -1579,6 +1582,62 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
         }
         if func := dispatch.get(args.output):
             func()
+
+
+def print_cicd_totals(tmp_filename):
+    try:
+        with open(tmp_filename, encoding="utf-8") as f:
+            lines = [line.strip() for line in f if line.strip()]
+        (cicd_total, cicd_diff, cicd_error, cicd_info, cicd_date_t,
+         cicd_url_t, cicd_analysis_t) = get_cicd_keys()
+        (cicd_date, cicd_url, cicd_file), result = parse_cicd_sections(
+            cicd_diff, cicd_total, lines)
+        cicd_output = {cicd_info: {cicd_date_t: cicd_date,
+                                   cicd_url_t: cicd_url,
+                                   cicd_analysis_t: cicd_file}, **result}
+        print(dumps(cicd_output, indent=2, ensure_ascii=False))
+        sys.exit()
+    except Exception as e:
+        cicd_error = get_detail('[cicd_error]', replace=True)
+        print(dumps({cicd_error: str(e)}, ensure_ascii=False))
+        sys.exit()
+
+
+def parse_cicd_sections(cicd_diff, cicd_total, lines):
+    info_start = next(idx for idx, line in enumerate(lines) if BOLD_STRINGS[0]
+                      in line)
+    cicd_date, cicd_url, cicd_file = [
+        line.split(":", 1)[1].strip() for line in
+        lines[info_start+1:info_start+4]]
+    totals_start = next(idx for idx, line in enumerate(lines) if
+                        BOLD_STRINGS[8] in line)
+    output_lines = lines[totals_start+3:-3]
+    line_pattern = re.compile(RE_PATTERN[21])
+    result = build_cicd_result(output_lines, cicd_total, cicd_diff,
+                               line_pattern)
+    return (cicd_date, cicd_url, cicd_file), result
+
+
+def build_cicd_result(lines, total_key, diff_key, pattern):
+    return {
+        k: v for line in lines
+        if (processed := parse_cicd_lines(line, pattern, total_key, diff_key))
+        for k, v in [processed]}
+
+
+def get_cicd_keys():
+    keys = ['[cicd_total]', '[cicd_diff]', '[cicd_error]',
+            '[cicd_info]', '[cicd_date]', '[cicd_url]', '[cicd_analysis]']
+    return tuple(get_detail(k, replace=True) for k in keys)
+
+
+def parse_cicd_lines(line, pattern, total_key, diff_key):
+    if match := pattern.match(line):
+        key = match[1].strip()
+        count = int(match[2])
+        diff = match[3].strip()
+        return key, {total_key: count, diff_key: diff}
+    return None
 
 
 def generate_csv(final_filename, temp_filename, to_xlsx=False):
@@ -2450,6 +2509,8 @@ overall findings; if omitted detailed ones will be shown")
 parser.add_argument("-c", dest='compliance', action="store_true", help="Checks\
  URL response HTTP headers for compliance with OWASP 'Secure Headers Project' \
 best practices")
+parser.add_argument('-cicd', dest="cicd", action="store_true", help="Outputs \
+analysis totals in JSON; suitable for CI/CD pipelines")
 parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
  follow redirects; if omitted the last redirection will be the one analyzed")
 parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\
@@ -2516,6 +2577,9 @@ URL = args.URL
 # https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 if URL is not None:
     check_ru_scope()
+
+if '-cicd' in sys.argv:
+    args.output = 'txt'
 
 if '-c' in sys.argv:
     args.brief = False
@@ -2588,7 +2652,7 @@ if args.URL_A:
 
 start = time()
 
-if not args.URL_A:
+if not args.URL_A and not args.cicd:
     if not args.compliance:
         detail = '[analysis_output]' if args.output else '[analysis]'
     else:

@@ -1834,7 +1834,7 @@ Error: The '-l' parameter requires the parameters '-u' or '-a'.
 Error: The '-ua' parameter requires the parameter '-u'.
 
 [args_several]
-Error: The parameters '-b', '-c', '-df', '-'o', '-r' and '-s' require the parameter '-u'.
+Error: The parameters '-b', '-c', '-cicd', '-df', '-'o', '-r' and '-s' require the parameter '-u'.
 
 [args_customfile]
 Error: The parameter '-of' requires the parameters '-u' and '-o'.
@@ -1880,6 +1880,27 @@ Section
 
 [csv_values]
 Values
+
+[cicd_total]
+Total
+
+[cicd_diff]
+Differences
+
+[cicd_error]
+Error
+
+[cicd_info]
+Info
+
+[cicd_date]
+Date
+
+[cicd_url]
+URL
+
+[cicd_analysis]
+Analysis
 
 [epilog_content]
 examples:

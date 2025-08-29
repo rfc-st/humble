@@ -1830,13 +1830,13 @@ Error: El fichero de entrada no contiene texto unicode válido en formato UTF-8 
 Error: El fichero de entrada no contiene líneas con el formato 'cabecera http: valor'. Ej. 'x-frame-options: deny'.
 
 [args_lang]
-Error: Los parámetros '-c' y '-l' requieren de los parámetros '-u' o '-a'.
+Error: Los parámetros '-c' y '-l' requieren de los parámetros '-u' o '-a'. El parámetro '-cicd' requiere el parámetro '-u'.
 
 [args_useragent]
 Error: El parámetro '-ua' requiere el parámetro '-u'.
 
 [args_several]
-Error: Los parámetros '-b', 'c', '-df', -'o', '-r' y '-s' requieren el parámetro '-u'.
+Error: Los parámetros '-b', '-c', '-cicd', '-df', -'o', '-r' y '-s' requieren el parámetro '-u'.
 
 [args_customfile]
 Error: El parámetro -of' requiere los parámetros '-u' y '-o'.
@@ -1882,6 +1882,27 @@ Sección
 
 [csv_values]
 Valores
+
+[cicd_total]
+Total
+
+[cicd_diff]
+Diferencias
+
+[cicd_error]
+Error
+
+[cicd_info]
+Info
+
+[cicd_date]
+Fecha
+
+[cicd_url]
+URL
+
+[cicd_analysis]
+Análisis
 
 [fng_value]
 Valor:
