@@ -137,16 +137,16 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_encryption_s.PNG" alt="(Linux) - SSL/TLS checks (requires https://testssl.sh/ and Linux/Unix client)">
 </p>
 <br />
-.: (Linux) - Compliance with OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">'Secure Headers Project'<a> best practices.<br />
+.: (Linux) - Compliance with OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">'Secure Headers Project'<a> best practices.
 <p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Linux) - Compliance with OWASP 'Secure Headers Project' best practices">
+</p>
+<br />
 .: (Windows) - JSON output for CI/CD integration.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_cicd.PNG" alt="(Windows) - JSON output for seamless CI/CD integration">
-</p>
-<br />
-<p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Linux) - Compliance with OWASP 'Secure Headers Project' best practices">
 </p>
 <br />
 .: (Linux) - List of HTTP fingerprint headers based on a specific term.<br />
