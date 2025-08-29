@@ -74,7 +74,7 @@
 :heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** <a href="https://testssl.sh/" target="_blank">testssl.sh<a>.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
 :heavy_check_mark: Can use proxies for the analysis.<br />
-:heavy_check_mark: Can export analysis totals in JSON for seamless CI/CD integration.<br />
+:heavy_check_mark: Can output analysis totals as JSON for CI/CD pipeline integrations.<br />
 :heavy_check_mark: Shows browser support for enabled HTTP security headers, with data from <a href="https://caniuse.com/" target="_blank">Can I use<a>.<br />
 :heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental<a> headers in each analysis.<br />
 :heavy_check_mark: Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.<br />
@@ -139,6 +139,12 @@ Options used: -f -g -p -U -s --hints
 <br />
 .: (Linux) - Compliance with OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">'Secure Headers Project'<a> best practices.<br />
 <p></p>
+.: (Windows) - JSON output for CI/CD integration.<br />
+<p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_cicd.PNG" alt="(Windows) - JSON output for seamless CI/CD integration">
+</p>
+<br />
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Linux) - Compliance with OWASP 'Secure Headers Project' best practices">
 </p>
