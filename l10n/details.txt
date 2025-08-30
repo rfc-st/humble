@@ -1893,14 +1893,11 @@ Error
 [cicd_info]
 Info
 
-[cicd_date]
-Date
+[cicd_grade]
+Analysis Grade
 
-[cicd_url]
-URL
-
-[cicd_analysis]
-Analysis
+[cicd_grade_note]
+Grade
 
 [epilog_content]
 examples:

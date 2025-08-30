@@ -5,8 +5,8 @@ import pytest
 import shutil
 import contextlib
 import subprocess
-from os import listdir, path, remove
 from datetime import datetime
+from os import listdir, path, remove
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 HUMBLE_TESTS_DIR = path.dirname(__file__)
@@ -221,7 +221,7 @@ def delete_temps():
         print(f"[INFO] {message.ljust(max_len + 2)}: {value}")
 
 
-local_version = datetime.strptime('2025-08-29', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-30', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

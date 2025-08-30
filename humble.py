@@ -186,7 +186,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-29', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-08-30', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1530,7 +1530,7 @@ def print_user_agents(user_agents):
 
 def get_insecure_checks():
     headers_name = set()
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), "r") as \
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), 'r') as \
             ins_source:
         insecure_checks = islice(ins_source, SLICE_INT[2], None)
         for line in insecure_checks:
@@ -1586,57 +1586,62 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
 
 def print_cicd_totals(tmp_filename):
     try:
-        with open(tmp_filename, encoding="utf-8") as f:
-            lines = [line.strip() for line in f if line.strip()]
-        (cicd_total, cicd_diff, cicd_error, cicd_info, cicd_date_t,
-         cicd_url_t, cicd_analysis_t) = get_cicd_keys()
-        (cicd_date, cicd_url, cicd_file), result = parse_cicd_sections(
-            cicd_diff, cicd_total, lines)
-        cicd_output = {cicd_info: {cicd_date_t: cicd_date,
-                                   cicd_url_t: cicd_url,
-                                   cicd_analysis_t: cicd_file}, **result}
+        with open(tmp_filename, 'r', encoding='utf-8') as txt_source:
+            lines = [line.strip() for line in txt_source if line.strip()]
+        (cicd_total_t, cicd_diff_t, cicd_info_t) = get_cicd_labels()
+        cicd_info_lines, cicd_total_lines = parse_cicd_sections(cicd_diff_t,
+                                                                cicd_total_t,
+                                                                lines)
+        cicd_info_dict = {
+            k.strip(): v.strip()
+            for k, v in (line.split(":", 1) for line in cicd_info_lines)
+        }
+        cicd_output = {cicd_info_t: cicd_info_dict, **cicd_total_lines}
         print(dumps(cicd_output, indent=2, ensure_ascii=False))
         sys.exit()
     except Exception as e:
-        cicd_error = get_detail('[cicd_error]', replace=True)
-        print(dumps({cicd_error: str(e)}, ensure_ascii=False))
+        print(dumps({get_detail('[cicd_error]', replace=True): str(e)},
+                    ensure_ascii=False))
         sys.exit()
 
 
-def parse_cicd_sections(cicd_diff, cicd_total, lines):
-    info_start = next(idx for idx, line in enumerate(lines) if BOLD_STRINGS[0]
-                      in line)
-    cicd_date, cicd_url, cicd_file = [
-        line.split(":", 1)[1].strip() for line in
-        lines[info_start+1:info_start+4]]
-    totals_start = next(idx for idx, line in enumerate(lines) if
-                        BOLD_STRINGS[8] in line)
-    output_lines = lines[totals_start+3:-3]
+def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
+    cicd_info_start = lines.index(next(line for line in lines if
+                                       BOLD_STRINGS[0] in line))
+    cicd_info_lines = lines[cicd_info_start + 1:cicd_info_start + 4]
+    cicd_totals_start = lines.index(next(line for line in lines if
+                                         BOLD_STRINGS[8] in line))
+    cicd_totals_lines = lines[cicd_totals_start + 2:-3]
+    cicdi_grade_lines = lines[cicd_totals_start + 8]
     line_pattern = re.compile(RE_PATTERN[21])
-    result = build_cicd_result(output_lines, cicd_total, cicd_diff,
-                               line_pattern)
-    return (cicd_date, cicd_url, cicd_file), result
+    cicd_totals_result = parse_cicd_totals(cicd_totals_lines, cicd_total_t,
+                                           cicd_diff_t, line_pattern)
+    cicd_totals_result[get_detail('[cicd_grade]', replace=True)] = (
+        {get_detail('[cicd_grade_note]', replace=True):
+         cicdi_grade_lines.split(":", 1)[1].strip()}
+    )
+    return cicd_info_lines, cicd_totals_result
 
 
-def build_cicd_result(lines, total_key, diff_key, pattern):
+def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
     return {
-        k: v for line in lines
-        if (processed := parse_cicd_lines(line, pattern, total_key, diff_key))
+        k: v for line in cicd_totals_lines
+        if (processed := parse_cicd_lines(line, pattern, cicd_total_t,
+                                          cicd_diff_t))
         for k, v in [processed]}
 
 
-def get_cicd_keys():
-    keys = ['[cicd_total]', '[cicd_diff]', '[cicd_error]',
-            '[cicd_info]', '[cicd_date]', '[cicd_url]', '[cicd_analysis]']
-    return tuple(get_detail(k, replace=True) for k in keys)
+def get_cicd_labels():
+    cidcd_labels = ['[cicd_total]', '[cicd_diff]', '[cicd_info]']
+    return tuple(get_detail(label, replace=True) for label in cidcd_labels)
 
 
-def parse_cicd_lines(line, pattern, total_key, diff_key):
+def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
     if match := pattern.match(line):
         key = match[1].strip()
-        count = int(match[2])
-        diff = match[3].strip()
-        return key, {total_key: count, diff_key: diff}
+        cicd_total_v = int(match[2])
+        cicd_diff_v = match[3].strip()
+        return key, {cicd_total_t: cicd_total_v, cicd_diff_t: cicd_diff_v}
     return None
 
 
@@ -1863,7 +1868,7 @@ def set_pdf_metadata(pdf):
 
 def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
                     pdf_prefixes, ypos):
-    with open(tmp_filename, "r", encoding='utf8') as txt_source:
+    with open(tmp_filename, 'r', encoding='utf8') as txt_source:
         for line in txt_source:
             if any(no_header in line for no_header in no_headers):
                 set_pdf_warnings(line, pdf, ypos)
@@ -2034,7 +2039,7 @@ def generate_html():
                     "humble_URL": URL_LIST[4],
                     "humble_local_v": local_version, "URL_analyzed": URL,
                     "html_body": '<body><pre>', "}}": '}', "{{": '}'}
-    with open(final_filename, "r+", encoding='utf8') as html_file:
+    with open(final_filename, 'r+', encoding='utf8') as html_file:
         temp_html_content = html_file.read()
         replaced_html = temp_html_content.format(**html_replace)
         html_file.seek(0)
@@ -2509,8 +2514,8 @@ overall findings; if omitted detailed ones will be shown")
 parser.add_argument("-c", dest='compliance', action="store_true", help="Checks\
  URL response HTTP headers for compliance with OWASP 'Secure Headers Project' \
 best practices")
-parser.add_argument('-cicd', dest="cicd", action="store_true", help="Outputs \
-analysis totals in JSON; suitable for CI/CD pipelines")
+parser.add_argument('-cicd', dest="cicd", action="store_true", help="Shows \
+only analysis summary, totals and grade in JSON; suitable for CI/CD pipelines")
 parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
  follow redirects; if omitted the last redirection will be the one analyzed")
 parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\

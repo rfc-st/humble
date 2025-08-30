@@ -1895,14 +1895,11 @@ Error
 [cicd_info]
 Info
 
-[cicd_date]
-Fecha
+[cicd_grade]
+Nota del análisis
 
-[cicd_url]
-URL
-
-[cicd_analysis]
-Análisis
+[cicd_grade_note]
+Nota
 
 [fng_value]
 Valor:
