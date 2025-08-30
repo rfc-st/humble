@@ -2011,6 +2011,9 @@ Generator
 [test_brief]
  ('-b' param); Verifies that the brief analysis completes successfully.
 
+[test_cicd]
+ ('-cicd' param); Verifies that a CI/CD analysis completes successfully.
+
 [test_detailed]
  (no param); Verifies that the detailed analysis completes successfully.
 

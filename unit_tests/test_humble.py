@@ -28,6 +28,7 @@ HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
 TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
     'test_brief': (['-u', None, '-b'], 'Analysis Grade:'),
+    'test_cicd': (['-u', None, '-cicd'], 'Analysis Grade'),
     'test_detailed': (['-u', None], 'Analysis Grade:'),
     'test_export': (['-u', None, '-o', 'html'], 'HTML saved'),
     'test_fingerprint_stats': (['-f', 'Google'], 'Headers related to'),
@@ -40,7 +41,7 @@ TEST_CFGS = {
     'test_updates': (['-v'], 'Keeping your security tools'),
     'test_user_agent': (['-u', None, '-ua', '4'], 'Selected the User-Agent'),
 }
-TEST_SUMMS = ('[test_python]', '[test_help]', '[test_brief]',
+TEST_SUMMS = ('[test_python]', '[test_help]', '[test_brief]', '[test_cicd]',
               '[test_detailed]', '[test_export]', '[test_fingerprint_stats]',
               '[test_input_file]', '[test_l10]', '[test_skipped_headers]',
               '[test_updates]', '[test_user_agent]')
@@ -121,6 +122,10 @@ def test_brief():
     run_test('brief', *TEST_CFGS['test_brief'])
 
 
+def test_cicd():
+    run_test('cicd', *TEST_CFGS['test_cicd'])
+
+
 def test_detailed():
     run_test('detailed', *TEST_CFGS['test_detailed'])
 
@@ -162,10 +167,26 @@ def delete_humble_analysis(file_path):
     if path.isfile(file_path):
         try:
             remove(file_path)
-            msgs.append(("Successfully deleted analysis file", file_path))
+            msgs.append(("Deleted temp analysis file", file_path))
         except Exception as e:
-            msgs.append(("Failed to delete analysis file",
+            msgs.append(("Failed to delete temp analysis file",
                          f"({type(e).__name__}) {file_path}"))
+    return msgs
+
+
+def delete_txt_file():
+    msgs = []
+    with contextlib.suppress(Exception):
+        file = next(
+            f for f in listdir(HUMBLE_TESTS_DIR) if f.lower().endswith('.txt')
+        )
+        txt_file = path.join(HUMBLE_TESTS_DIR, file)
+        try:
+            remove(txt_file)
+            msgs.append(("Deleted final TXT file", txt_file))
+        except Exception as e:
+            msgs.append(("Failed to delete final TXT file",
+                         f"({type(e).__name__}) {txt_file}"))
     return msgs
 
 
@@ -178,9 +199,9 @@ def delete_html_file():
         html_file = path.join(HUMBLE_TESTS_DIR, file)
         try:
             remove(html_file)
-            msgs.append(("Successfully deleted HTML file", html_file))
+            msgs.append(("Deleted final HTML file", html_file))
         except Exception as e:
-            msgs.append(("Failed to delete HTML file",
+            msgs.append(("Failed to delete final HTML file",
                          f"({type(e).__name__}) {html_file}"))
     return msgs
 
@@ -190,7 +211,7 @@ def delete_pytest_caches(dir_path):
     if path.isdir(dir_path):
         try:
             shutil.rmtree(dir_path)
-            msgs.append(("Successfully deleted pytest cache folder", dir_path))
+            msgs.append(("Deleted pytest cache folder", dir_path))
         except Exception as e:
             msgs.append(("Failed to delete pytest cache folder",
                          f"({type(e).__name__}) {dir_path}"))
@@ -205,6 +226,7 @@ def delete_temps():
         ("URL used for all remaining tests", url_test)
     ]
     info_msgs.extend(delete_humble_analysis(HUMBLE_TEMP_FILE))
+    info_msgs.extend(delete_txt_file())
     info_msgs.extend(delete_html_file())
     for cache_dir in PYTEST_CACHE_DIRS:
         info_msgs.extend(delete_pytest_caches(cache_dir))

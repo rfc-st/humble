@@ -74,7 +74,7 @@
 :heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** <a href="https://testssl.sh/" target="_blank">testssl.sh<a>.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
 :heavy_check_mark: Can use proxies for the analysis.<br />
-:heavy_check_mark: Can output analysis totals as JSON for CI/CD pipeline integrations.<br />
+:heavy_check_mark: Can output only analysis summary, totals and grade as JSON for CI/CD pipeline integration.<br />
 :heavy_check_mark: Shows browser support for enabled HTTP security headers, with data from <a href="https://caniuse.com/" target="_blank">Can I use<a>.<br />
 :heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental<a> headers in each analysis.<br />
 :heavy_check_mark: Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.<br />
