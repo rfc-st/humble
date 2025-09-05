@@ -69,7 +69,6 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 # Third-Party imports
 import requests
-from xlsxwriter import Workbook
 from colorama import Fore, Style, init
 from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
@@ -186,7 +185,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-08-30', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-09-05', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -542,17 +541,17 @@ def get_analysis_metrics(all_analysis):
         print_error_detail('[no_analysis]')
     adj_url_ln = adjust_old_analysis(url_ln)
     total_a = len(adj_url_ln)
-    first_m = get_first_metrics(adj_url_ln)
-    second_m = [get_second_metrics(adj_url_ln, i, total_a) for i
-                in range(2, 7)]
-    third_m = get_third_metrics(adj_url_ln)
-    additional_m = get_additional_metrics(adj_url_ln)
-    fourth_m = get_highlights(adj_url_ln)
-    fifth_m = get_trends(adj_url_ln)
-    analytics_s = get_analytics_length(SECTION_V[:5])
-    analytics_w = get_analytics_length(SECTION_V[5:12])
-    return print_metrics(analytics_s, analytics_w, total_a, first_m, second_m,
-                         third_m, additional_m, fourth_m, fifth_m)
+    return print_metrics(
+        get_analytics_length(SECTION_V[:5]),
+        get_analytics_length(SECTION_V[5:12]),
+        total_a,
+        get_first_metrics(adj_url_ln),
+        [get_second_metrics(adj_url_ln, i, total_a) for i in range(2, 7)],
+        get_third_metrics(adj_url_ln),
+        get_additional_metrics(adj_url_ln),
+        get_highlights(adj_url_ln),
+        get_trends(adj_url_ln)
+    )
 
 
 def get_first_metrics(adj_url_ln):
@@ -629,10 +628,12 @@ def get_highlights(adj_url_ln):
     sections_h = SECTION_S[:-1]
     fields_h = [2, 3, 4, 5, 6]
     return [f" {print_detail_l(sections_h[i], analytics=True)}\n"
-            f"  {print_detail_l('[best_analysis]', analytics=True)}: \
-{calculate_highlights(adj_url_ln, fields_h[i], min if i != 0 else max)}\n"
-            f"  {print_detail_l('[worst_analysis]', analytics=True)}: \
-{calculate_highlights(adj_url_ln, fields_h[i], max if i != 0 else min)}\n"
+            f"  {print_detail_l('[best_analysis]', analytics=True)}: "
+            f"{calculate_highlights(adj_url_ln, fields_h[i], min if i else
+                                    max)}\n"
+            f"  {print_detail_l('[worst_analysis]', analytics=True)}: "
+            f"{calculate_highlights(adj_url_ln, fields_h[i], max if i else
+                                    min)}\n"
             for i in range(len(fields_h))]
 
 
@@ -1564,24 +1565,22 @@ def print_unsupported_headers(unsupported_headers):
 
 
 def check_output_format(args, final_filename, reliable, tmp_filename):
-    if args.output == 'txt':
-        if args.cicd:
-            print_cicd_totals(tmp_filename)
-        print_export_path(tmp_filename, reliable)
-        if '-c' in sys.argv:
-            check_owasp_compliance(tmp_filename)
-    else:
-        dispatch = {
-            'csv': lambda: generate_csv(final_filename, tmp_filename),
-            'json': lambda: generate_json(final_filename, tmp_filename),
-            'xlsx': lambda: generate_csv(final_filename, tmp_filename,
-                                         to_xlsx=True),
-            'xml': lambda: generate_xml(final_filename, tmp_filename),
-            'html': lambda: export_html_file(final_filename, tmp_filename),
-            'pdf': lambda: export_pdf_file(tmp_filename),
-        }
-        if func := dispatch.get(args.output):
-            func()
+    dispatch = {
+        "txt": lambda: (
+            args.cicd and print_cicd_totals(tmp_filename),
+            print_export_path(tmp_filename, reliable),
+            "-c" in sys.argv and check_owasp_compliance(tmp_filename),
+        ),
+        "csv": lambda: generate_csv(final_filename, tmp_filename),
+        "json": lambda: generate_json(final_filename, tmp_filename),
+        "xlsx": lambda: generate_csv(final_filename, tmp_filename,
+                                     to_xlsx=True),
+        "xml": lambda: generate_xml(final_filename, tmp_filename),
+        "html": lambda: export_html_file(final_filename, tmp_filename),
+        "pdf": lambda: export_pdf_file(tmp_filename),
+    }
+    if func := dispatch.get(args.output):
+        func()
 
 
 def print_cicd_totals(tmp_filename):
@@ -1675,6 +1674,8 @@ def parse_csv(csv_section, csv_source, csv_writer):
 
 
 def generate_xlsx(final_filename, temp_filename):
+    # Tiny optimization, lazy-loading third-party xlsxwriter
+    from xlsxwriter import Workbook
     workbook = Workbook(final_filename, {'in_memory': True})
     set_xlsx_metadata(workbook)
     set_xlsx_content(final_filename, workbook)
@@ -1799,7 +1800,7 @@ def format_json(json_data, json_lns):
 
 
 def export_pdf_file(tmp_filename):
-    # Important optimization, lazy-loading fpdf2.
+    # Important optimization, lazy-loading third-party fpdf2
     from fpdf import FPDF, YPos as ypos  # type: ignore
 
     class PDF(FPDF):
@@ -1997,14 +1998,19 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
 
 
 def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
-    c_index = line.find(': ')
-    ln_final = (
-        f'&nbsp;<font color="{hcolor}">{line}</font><br><br>'
-        if c_index == -1
-        else f'&nbsp;<font color="{hcolor}">{line[:c_index + 2]}</font>'
-             f'<font color="{vcolor}">{line[c_index + 2:]}</font><br><br>')
+    colon_idx = line.find(': ')
+    ln_final = apply_pdf_color(colon_idx, hcolor, line, vcolor)
     pdf.write_html(ln_final)
     return hcolor if chunks and len(chunks) == 2 and i == 0 else None
+
+
+def apply_pdf_color(colon_idx, hcolor, line, vcolor):
+    if colon_idx == -1:
+        return f'&nbsp;<font color="{hcolor}">{line}</font><br><br>'
+    return (
+        f'&nbsp;<font color="{hcolor}">{line[:colon_idx + 2]}</font>'
+        f'<font color="{vcolor}">{line[colon_idx + 2:]}</font><br><br>'
+    )
 
 
 def export_html_file(final_filename, tmp_filename):
@@ -2368,7 +2374,7 @@ def get_tmp_file(args, export_date):
 
 
 def build_tmp_file(export_date, file_ext, lang, url):
-    # Tiny optimization, lady-loading tldextract
+    # Tiny optimization, lazy-loading third-party tldextract
     import tldextract
     str_hum = HUMBLE_DESC[1:7]
     url_str = tldextract.extract(URL)
@@ -2459,7 +2465,6 @@ def process_http_request(status_code, reliable, body, proxy):
             result['exception'] = e
         finally:
             done.set()
-
     thread = Thread(target=worker, daemon=True)
     thread.start()
     done.wait(timeout=REQ_TIMEOUT)
