@@ -101,12 +101,12 @@ EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'supports-loading-mode')
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HASH_CHARS = {'sha256': 32, 'sha384': 48, 'sha512': 64}
-HTML_TAGS = ['</a>', '<a href="', '">', '<span class="ko">',
+HTML_TAGS = ('</a>', '<a href="', '">', '<span class="ko">',
              '<span class="header">', '</span>', '<span class="ok">',
              '</pre><div><details open><summary><strong>',
              '</strong></summary><pre>', 'class="ko"', '    class="ko"',
              '<br>', '</pre></details></div><pre>', '</pre><br></body></html>',
-             '<strong>', '</strong>']
+             '<strong>', '</strong>')
 HTTP_SCHEMES = ('http:', 'https:')
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
 HUMBLE_DIRS = ('additional', 'l10n')
@@ -123,12 +123,15 @@ L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
              'security_guides': (15, 16)}
 METADATA_S = ('[pdf_meta_keywords', '[pdf_meta_subject]')
 OS_PATH = dirname(abspath(__file__))
+PDF_COLORS = ('#008000', '#000000', '#660033')
 PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
 PDF_SECTION = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
                '[1.': '[1enabled_s]', '[2.': '[2missing_s]',
                '[3.': '[3fingerprint_s]', '[4.': '[4depinsecure_s]',
                '[5.': '[5empty_s]', '[6.': '[6compat_s]', '[7.': '[7result_s]',
                '[Cabeceras': '[0headers_s]'}
+PDF_TAGS = ('&nbsp;<font color="', '</font><br><br>', '</font>',
+            '<font color="')
 RE_PATTERN = (
     r'\((.*?)\)',
     (r'^(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.'
@@ -1969,10 +1972,12 @@ def format_pdf_lines(line, pdf, ypos):
         pdf.ln(h=2)
         return
     if re.search(RE_PATTERN[10], line):
-        color_pdf_line(line[19:], '#008000', '#000000', None, None, pdf)
+        color_pdf_line(line[19:], PDF_COLORS[0], PDF_COLORS[1], None, None,
+                       pdf)
         return
     if re.search(RE_PATTERN[7], line):
-        color_pdf_line(line[19:], '#660033', '#000000', None, None, pdf)
+        color_pdf_line(line[19:], PDF_COLORS[2], PDF_COLORS[1], None, None,
+                       pdf)
         return
     pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
@@ -1982,10 +1987,10 @@ def set_pdf_chunks(chunks, pdf):
     chunk_c = None
     for i, chunk in enumerate(chunks):
         if re.search(RE_PATTERN[10], chunk):
-            chunk_c = color_pdf_line(chunk[19:], '#008000', '#000000',
+            chunk_c = color_pdf_line(chunk[19:], PDF_COLORS[0], PDF_COLORS[1],
                                      chunks, i, pdf)
         elif re.search(RE_PATTERN[7], chunk):
-            chunk_c = color_pdf_line(chunk[19:], '#660033', '#000000',
+            chunk_c = color_pdf_line(chunk[19:], PDF_COLORS[2], PDF_COLORS[1],
                                      chunks, i, pdf)
         else:
             format_pdf_chunks(chunk, chunks, chunk_c, i, pdf)
@@ -1995,7 +2000,7 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
     pdf.set_text_color(0, 0, 0)
     if i > 0:
         chunk = f' {chunk}'
-    if len(chunks) == 2 and i == 1 and chunk_c != '#660033':
+    if len(chunks) == 2 and i == 1 and chunk_c != PDF_COLORS[2]:
         pdf.set_y(pdf.get_y() + 1.5)
     elif i == 1:
         pdf.set_y(pdf.get_y() - 1.5)
@@ -2012,10 +2017,10 @@ def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
 
 def apply_pdf_color(colon_idx, hcolor, line, vcolor):
     if colon_idx == -1:
-        return f'&nbsp;<font color="{hcolor}">{line}</font><br><br>'
+        return f'{PDF_TAGS[0]}{hcolor}">{line}{PDF_TAGS[1]}'
     return (
-        f'&nbsp;<font color="{hcolor}">{line[:colon_idx + 2]}</font>'
-        f'<font color="{vcolor}">{line[colon_idx + 2:]}</font><br><br>'
+        f'{PDF_TAGS[0]}{hcolor}">{line[:colon_idx + 2]}{PDF_TAGS[2]}'
+        f'{PDF_TAGS[3]}{vcolor}">{line[colon_idx + 2:]}{PDF_TAGS[1]}'
     )
 
 
