@@ -2000,10 +2000,13 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
     pdf.set_text_color(0, 0, 0)
     if i > 0:
         chunk = f' {chunk}'
-    if len(chunks) == 2 and i == 1 and chunk_c != PDF_COLORS[2]:
-        pdf.set_y(pdf.get_y() + 1.5)
-    elif i == 1:
-        pdf.set_y(pdf.get_y() - 1.5)
+    y = pdf.get_y()
+    if chunk_c != PDF_COLORS[2]:
+        if i == 1 and len(chunks) >= 2:
+            y -= 1
+        elif len(chunks) == 1:
+            y -= 0.5
+        pdf.set_y(y)
     pdf.cell(104, 6, text=chunk, align='L')
     pdf.ln(h=6)
 
