@@ -101,6 +101,12 @@ EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'supports-loading-mode')
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HASH_CHARS = {'sha256': 32, 'sha384': 48, 'sha512': 64}
+HTML_TAGS = ['</a>', '<a href="', '">', '<span class="ko">',
+             '<span class="header">', '</span>', '<span class="ok">',
+             '</pre><div><details open><summary><strong>',
+             '</strong></summary><pre>', 'class="ko"', '    class="ko"',
+             '<br>', '</pre></details></div><pre>', '</pre><br></body></html>',
+             '<strong>', '</strong>']
 HTTP_SCHEMES = ('http:', 'https:')
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
 HUMBLE_DIRS = ('additional', 'l10n')
@@ -185,7 +191,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-09-05', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-09-06', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2020,17 +2026,14 @@ def export_html_file(final_filename, tmp_filename):
     ok_string = get_detail(DIR_MSG[2]).rstrip()
     ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
                                                           'no_enb_headers']]
-    sub_d = {'ahref_f': '</a>', 'ahref_s': '<a href="', 'close_t': '">',
-             'span_ko': '<span class="ko">', 'span_h': '<span class="header">',
-             'span_f': '</span>'}
     with open(tmp_filename, 'r', encoding='utf8') as html_source, \
             open(final_filename, 'a', encoding='utf8') as html_final:
         for ln in html_source:
-            format_html_file(html_final, ko_strings, ln, ok_string, sub_d)
+            format_html_file(html_final, ko_strings, ln, ok_string)
         if inside_section:
-            html_final.write('''</pre></details></div><pre>''')
+            html_final.write(HTML_TAGS[12])
             inside_section = False
-        html_final.write('</pre><br></body></html>')
+        html_final.write(HTML_TAGS[13])
     print_export_path(final_filename, reliable)
     remove(tmp_filename)
     sys.exit()
@@ -2052,71 +2055,72 @@ def generate_html():
         html_file.write(replaced_html)
 
 
-def format_html_file(html_final, ko_strings, ln, ok_string, sub_d):
-    ln_formatted = format_html_lines(html_final, ko_strings, ln, ok_string,
-                                     sub_d)
+def format_html_file(html_final, ko_strings, ln, ok_string):
+    ln_formatted = format_html_lines(html_final, ko_strings, ln, ok_string)
     if not ln_formatted:
-        format_html_rest(html_final, l_empty, ln, sub_d)
+        format_html_rest(html_final, l_empty, ln)
 
 
-def format_html_lines(html_final, ko_strings, ln, ok_string, sub_d):
+def format_html_lines(html_final, ko_strings, ln, ok_string):
     lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
     ln_rstrip = ln.rstrip('\n')
-    return (format_html_info(html_final, ln_rstrip, sub_d)
+    return (format_html_info(html_final, ln_rstrip)
             or format_html_bold(html_final, ln_rstrip)
             or format_html_warnings(html_final, ko_strings, ln_rstrip,
-                                    ok_string, sub_d)
-            or format_html_references(html_final, lang_slice, ln_rstrip, sub_d)
-            or format_html_compatibility(html_final, ln_rstrip, sub_d))
+                                    ok_string)
+            or format_html_references(html_final, lang_slice, ln_rstrip)
+            or format_html_compatibility(html_final, ln_rstrip))
 
 
-def format_html_info(html_final, ln_rstrip, sub_d):
+def format_html_info(html_final, ln_rstrip):
     if URL_STRING[0] in ln_rstrip:
         html_final.write(
-            f"{sub_d['ahref_s']}{ln_rstrip[:32]}{sub_d['close_t']}"
-            f"{ln_rstrip[:32]}{sub_d['ahref_f']}{ln_rstrip[32:]}"
+            f"{HTML_TAGS[1]}{ln_rstrip[:32]}{HTML_TAGS[2]}"
+            f"{ln_rstrip[:32]}{HTML_TAGS[0]}{ln_rstrip[32:]}"
         )
         return True
     if URL_STRING[1] in ln_rstrip:
         html_final.write(
-            f"{ln_rstrip[:8]}{sub_d['ahref_s']}{ln_rstrip[8:]}"
-            f"{sub_d['close_t']}{ln_rstrip[8:]}{sub_d['ahref_f']}<br>"
+            f"{ln_rstrip[:8]}{HTML_TAGS[1]}{ln_rstrip[8:]}"
+            f"{HTML_TAGS[2]}{ln_rstrip[8:]}{HTML_TAGS[0]}{HTML_TAGS[11]}"
         )
         return True
     return False
 
 
-def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string, sub_d):
+def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string):
     if ok_string in ln_rstrip:
-        html_final.write(f'<span class="ok">{ln_rstrip}{sub_d["span_f"]}<br>')
+        html_final.write(f'{HTML_TAGS[6]}{ln_rstrip}{HTML_TAGS[5]}\
+{HTML_TAGS[11]}')
         return True
     if any(ko in ln_rstrip for ko in ko_strings):
-        html_final.write(f"{sub_d['span_ko']}{ln_rstrip}{sub_d['span_f']}<br>")
+        html_final.write(f"{HTML_TAGS[3]}{ln_rstrip}{HTML_TAGS[5]}\
+                         {HTML_TAGS[11]}")
         return True
     return False
 
 
-def format_html_references(html_final, lang_slice, ln_rstrip, sub_d):
+def format_html_references(html_final, lang_slice, ln_rstrip):
     for ref, off in [(REF_LINKS[1], 6), (REF_LINKS[0], 8), (REF_LINKS[4],
                                                             lang_slice)]:
         if ref in ln_rstrip:
             content = ln_rstrip[off:].strip()
             html_final.write(
-                f"{ln_rstrip[:off]}{sub_d['ahref_s']}{content}"
-                f"{sub_d['close_t']}{content}{sub_d['ahref_f']}<br>"
+                f"{ln_rstrip[:off]}{HTML_TAGS[1]}{content}"
+                f"{HTML_TAGS[2]}{content}{HTML_TAGS[0]}{HTML_TAGS[11]}"
             )
             return True
     return False
 
 
-def format_html_compatibility(html_final, ln_rstrip, sub_d):
+def format_html_compatibility(html_final, ln_rstrip):
     if URL_STRING[2] not in ln_rstrip:
         return False
     prefix, _, link = ln_rstrip.partition(': ')
     html_final.write(
-        f"{sub_d['span_h']}{prefix[1:]}: {sub_d['span_f']}"
-        f"{sub_d['ahref_s']}{link}{sub_d['close_t']}{link}{sub_d['ahref_f']}\
-<br>")
+        f"{HTML_TAGS[4]}{prefix[1:]}: {HTML_TAGS[5]}"
+        f"{HTML_TAGS[1]}{link}{HTML_TAGS[2]}{link}{HTML_TAGS[0]}\
+{HTML_TAGS[11]}")
     return True
 
 
@@ -2124,23 +2128,20 @@ def format_html_bold(html_final, ln_rstrip):
     global inside_section
     if any(s in ln_rstrip for s in BOLD_STRINGS):
         if inside_section:
-            html_final.write('''</pre></details></div><pre>''')
-        html_final.write(
-            f'</pre><div><details open><summary><strong>{ln_rstrip}</strong>'
-            f'</summary><pre>'
-        )
+            html_final.write(HTML_TAGS[12])
+        html_final.write(f'{HTML_TAGS[7]}{ln_rstrip}{HTML_TAGS[8]}')
         inside_section = True
         return True
     return False
 
 
-def format_html_headers(ln, sub_d):
+def format_html_headers(ln):
     for header in headers:
         header_str = f"{header}: "
         if header_str in ln:
             header_pos = ln.index(":")
-            ln = ln.replace(ln[:header_pos], f"{sub_d['span_h']}\
-{ln[:header_pos]}{sub_d['span_f']}", 1)
+            ln = ln.replace(ln[:header_pos], f"{HTML_TAGS[4]}{ln[:header_pos]}\
+{HTML_TAGS[5]}", 1)
             ln = format_html_csp(ln)
     return ln
 
@@ -2152,59 +2153,59 @@ def format_html_csp(ln):
         return ln
     for directive in t_csp_dirs:
         pattern = RE_PATTERN[16].format(dir=re.escape(directive))
-        ln = re.sub(pattern, lambda m: f"{m.group(1)}<strong>{m.group(2)}\
-</strong>{m.group(3)}", ln)
+        ln = re.sub(pattern, lambda m: f"{m.group(1)}{HTML_TAGS[14]}\
+{m.group(2)}{HTML_TAGS[15]}{m.group(3)}", ln)
     return ln
 
 
-def format_html_fingerprint(args, ln, l_fng, sub_d):
+def format_html_fingerprint(args, ln, l_fng):
     ln_cf = ln.casefold() if args.brief else ln
     for i in l_fng:
         i_match = i.casefold() if args.brief else i
-        if i_match in ln_cf and ':' not in ln and 'class="ko"' not in ln and \
-           '    class="ko"' not in ln:
-            return f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+        if i_match in ln_cf and ':' not in ln and HTML_TAGS[9] not in ln and \
+           HTML_TAGS[10] not in ln:
+            return f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
     return ln
 
 
-def format_html_totals(ln, l_total, sub_d):
+def format_html_totals(ln, l_total):
     for i in l_total:
         if (not re.search(RE_PATTERN[11], ln)) and (
              (i in ln) and ('"' not in ln) or ('HTTP (' in ln)):
-            ln = ln.replace(ln, sub_d['span_ko'] + ln + sub_d['span_f'])
+            ln = ln.replace(ln, HTML_TAGS[3] + ln + HTML_TAGS[5])
     return ln
 
 
-def format_html_empty(ln, ln_rstrip, l_empty, sub_d):
+def format_html_empty(ln, ln_rstrip, l_empty):
     ln_strip = ln_rstrip.lstrip().lower()
     for i in l_empty:
         if (i in ln_strip and '[' not in ln_strip and ':' not in ln_strip):
-            ln = f"{sub_d['span_ko']}{ln}{sub_d['span_f']}"
+            ln = f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
     return ln
 
 
-def format_html_rest(html_final, l_empty, ln, sub_d):
+def format_html_rest(html_final, l_empty, ln):
     l_total = sorted(set(l_miss + l_ins))
-    ln, ln_enabled = format_html_enabled(ln, sub_d, html_final)
+    ln, ln_enabled = format_html_enabled(ln, html_final)
     ln_rstrip = ln.rstrip('\n')
     if ln and not ln_enabled:
-        ln = format_html_headers(ln, sub_d)
-        ln = format_html_fingerprint(args, ln, sorted(l_fng), sub_d)
-        ln = format_html_totals(ln, l_total, sub_d)
-        ln = format_html_empty(ln, ln_rstrip, l_empty, sub_d)
+        ln = format_html_headers(ln)
+        ln = format_html_fingerprint(args, ln, sorted(l_fng))
+        ln = format_html_totals(ln, l_total)
+        ln = format_html_empty(ln, ln_rstrip, l_empty)
         html_final.write(ln)
 
 
-def format_html_enabled(ln, sub_d, html_final):
+def format_html_enabled(ln, html_final):
     ln_enabled = STYLE[8] in ln
     if ln_enabled:
         ln = f" {ln[19:].rstrip()}"
         if ':' in ln:
             header, value = map(str.strip, ln.split(":", 1))
-            ln = f"<span class='ok'> {header}{sub_d['span_f']}: {value}"
+            ln = f"{HTML_TAGS[6]} {header}{HTML_TAGS[5]}: {value}"
         else:
-            ln = f"<span class='ok'> {ln.strip()}{sub_d['span_f']}"
-        html_final.write(f"{format_html_csp(ln)}<br>")
+            ln = f"{HTML_TAGS[6]} {ln.strip()}{HTML_TAGS[5]}"
+        html_final.write(f"{format_html_csp(ln)}{HTML_TAGS[11]}")
     return ln, ln_enabled
 
 
@@ -2366,22 +2367,25 @@ def get_tmp_file(args, export_date):
         tmp_file = f'{args.output_file}{file_ext}'
     else:
         url = urlparse(URL)
+        humble_str = HUMBLE_DESC[1:7]
         lang = '_es' if args.lang else '_en'
-        tmp_file = build_tmp_file(export_date, file_ext, lang, url)
+        tmp_file = build_tmp_file(export_date, file_ext, lang, humble_str, url)
     if args.output_path:
         tmp_file = path.join(output_path, tmp_file)
     return tmp_file
 
 
-def build_tmp_file(export_date, file_ext, lang, url):
+def build_tmp_file(export_date, file_ext, lang, humble_str, url):
     # Tiny optimization, lazy-loading third-party tldextract
     import tldextract
-    str_hum = HUMBLE_DESC[1:7]
     url_str = tldextract.extract(URL)
-    url_sub = f"_{url_str.subdomain}." if url_str.subdomain else '_'
-    url_prt = f"_{url.port}_" if url.port else '_'
-    return f"{str_hum}_{url.scheme}{url_sub}{url_str.domain}.{url_str.suffix}\
-{url_prt}{export_date}{lang}{file_ext}"
+    url_sub = f"_{url_str.subdomain}." if url_str.subdomain else "_"
+    url_prt = f"_{url.port}_" if url.port else "_"
+    return (
+        f"{humble_str}_{url.scheme}"
+        f"{url_sub}{url_str.domain}.{url_str.suffix}"
+        f"{url_prt}{export_date}{lang}{file_ext}"
+    )
 
 
 def process_server_error(http_status_code, l10n_id):
