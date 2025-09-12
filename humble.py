@@ -106,7 +106,8 @@ HTML_TAGS = ('</a>', '<a href="', '">', '<span class="ko">',
              '</pre><div><details open><summary><strong>',
              '</strong></summary><pre>', 'class="ko"', '    class="ko"',
              '<br>', '</pre></details></div><pre>', '</pre><br></body></html>',
-             '<strong>', '</strong>')
+             '<strong>', '</strong>', '&nbsp;<font color="', '</font><br><br>',
+             '</font>', '<font color="')
 HTTP_SCHEMES = ('http:', 'https:')
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
 HUMBLE_DIRS = ('additional', 'l10n')
@@ -130,8 +131,6 @@ PDF_SECTION = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
                '[3.': '[3fingerprint_s]', '[4.': '[4depinsecure_s]',
                '[5.': '[5empty_s]', '[6.': '[6compat_s]', '[7.': '[7result_s]',
                '[Cabeceras': '[0headers_s]'}
-PDF_TAGS = ('&nbsp;<font color="', '</font><br><br>', '</font>',
-            '<font color="')
 RE_PATTERN = (
     r'\((.*?)\)',
     (r'^(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.'
@@ -152,7 +151,9 @@ RE_PATTERN = (
     r"(?<!')\b(sha256|sha384|sha512)-[A-Za-z0-9+/=]+(?!')",
     r'^([a-zA-Z0-9\-]+)',
     r'\s{2,},',
-    r"^(.*?):\s+(\d+)\s+\((.*?)\)$"
+    r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
+    r"<pre(?:\s[^>]*)?>\s*</pre>",
+    r"<pre>/pre>'"
 )
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 REQ_HEADERS = {
@@ -194,7 +195,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-09-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-09-12', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2020,10 +2021,10 @@ def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
 
 def apply_pdf_color(colon_idx, hcolor, line, vcolor):
     if colon_idx == -1:
-        return f'{PDF_TAGS[0]}{hcolor}">{line}{PDF_TAGS[1]}'
+        return f'{HTML_TAGS[16]}{hcolor}">{line}{HTML_TAGS[17]}'
     return (
-        f'{PDF_TAGS[0]}{hcolor}">{line[:colon_idx + 2]}{PDF_TAGS[2]}'
-        f'{PDF_TAGS[3]}{vcolor}">{line[colon_idx + 2:]}{PDF_TAGS[1]}'
+        f'{HTML_TAGS[16]}{hcolor}">{line[:colon_idx + 2]}{HTML_TAGS[18]}'
+        f'{HTML_TAGS[19]}{vcolor}">{line[colon_idx + 2:]}{HTML_TAGS[17]}'
     )
 
 
@@ -2031,6 +2032,7 @@ def export_html_file(final_filename, tmp_filename):
     global inside_section
     inside_section = False
     generate_html()
+    clean_html_source(tmp_filename)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
     ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
                                                           'no_enb_headers']]
@@ -2042,6 +2044,7 @@ def export_html_file(final_filename, tmp_filename):
             html_final.write(HTML_TAGS[12])
             inside_section = False
         html_final.write(HTML_TAGS[13])
+    clean_html_final(final_filename)
     print_export_path(final_filename, reliable)
     remove(tmp_filename)
     sys.exit()
@@ -2061,6 +2064,23 @@ def generate_html():
         replaced_html = temp_html_content.format(**html_replace)
         html_file.seek(0)
         html_file.write(replaced_html)
+
+
+def clean_html_source(tmp_filename):
+    with open(tmp_filename, "r+", encoding="utf8") as html_source:
+        html_lines = html_source.readlines()
+        initial_ln, prev_blank_ln = False, False
+        cleaned_ln = []
+        for line in html_lines:
+            if not initial_ln and "[0. Info" in line:
+                initial_ln = True
+            if initial_ln and not line.strip() and prev_blank_ln:
+                continue
+            prev_blank_ln = initial_ln and not line.strip()
+            cleaned_ln.append(line)
+        html_source.seek(0)
+        html_source.writelines(cleaned_ln)
+        html_source.truncate()
 
 
 def format_html_file(html_final, ko_strings, ln, ok_string):
@@ -2215,6 +2235,16 @@ def format_html_enabled(ln, html_final):
             ln = f"{HTML_TAGS[6]} {ln.strip()}{HTML_TAGS[5]}"
         html_final.write(f"{format_html_csp(ln)}{HTML_TAGS[11]}")
     return ln, ln_enabled
+
+
+def clean_html_final(final_filename):
+    with open(final_filename, "r+", encoding="utf8") as html_final:
+        html_content = html_final.read()
+        html_content = re.sub(RE_PATTERN[22], "", html_content)
+        html_content = html_content.replace(RE_PATTERN[23], "")
+        html_final.seek(0)
+        html_final.write(html_content)
+        html_final.truncate()
 
 
 def generate_xml(final_filename, temp_filename):
