@@ -406,17 +406,23 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_5.jpg" alt="Analyze multiple URLs and save the results as PDFs">
 
 ## Unit tests
-
-> [!NOTE]
-> Via /unit_tests/test_humble.py
-
 .: (Linux) - All tests passed successfully.<br />
+```
+$ cd <humble dir>
+$ cd unit_tests
+$ python3 test_humble.py -u <URL>
+```
 
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ok.PNG" alt="All tests passed successfully (Linux)">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ok.PNG" alt="(Linux) - All tests passed successfully">
 
-.: (Windows) - Some tests failed.<br />
+.: .: (Windows) - Some tests failed.<br />
+```
+$ cd <humble dir>
+$ cd unit_tests
+$ py test_humble.py -u <URL>
+```
 
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ko.PNG" alt="Some tests failed (Windows)">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ko.PNG" alt="(Windows) - Some tests failed">
 
 ## Checks: enabled headers
 

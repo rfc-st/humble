@@ -25,6 +25,8 @@ HUMBLE_INPUT_URL = 'https://github.com'
 HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
 HUMBLE_L10N_FILE = 'details.txt'
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
+INPUT_FILE_URL = "https://github.com"
+REQUIRED_PYTHON = (3, 11)
 TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
     'test_brief': (['-u', None, '-b'], 'Analysis Grade:'),
@@ -97,21 +99,24 @@ def run_test(test_name, args, expected_text):
     try:
         output = run_cmd(test_args)
     except subprocess.TimeoutExpired:
-        pytest.fail("Timed out")
+        pytest.fail(get_detail('[test_timeout]', replace=True))
     if expected_text not in output:
-        pytest.fail(f"Missing '{expected_text}' text")
+        pytest.fail(
+            f"'{expected_text}' {get_detail('[test_expected]', replace=True)}"
+            )
 
 
-def get_python_version(min_major=3, min_minor=11):
-    v = sys.version_info
-    return (v.major, v.minor) >= (min_major, min_minor)
+def get_python_version(required_python=REQUIRED_PYTHON):
+    local_python = sys.version_info
+    return (local_python.major, local_python.minor) >= required_python
 
 
 def test_python():
-    assert get_python_version(), (
-        f"Python 3.11+ required, found {sys.version_info.major}."
-        f"{sys.version_info.minor}"
-    )
+    if not get_python_version():
+        pytest.fail(
+            f"{get_detail('[test_pythonm]', replace=True)} "
+            f"{sys.version_info.major}.{sys.version_info.minor}"
+        )
 
 
 def test_help():
@@ -167,9 +172,9 @@ def delete_humble_analysis(file_path):
     if path.isfile(file_path):
         try:
             remove(file_path)
-            msgs.append(("Deleted temp analysis file", file_path))
+            msgs.append((get_detail('[test_temp]', replace=True), file_path))
         except Exception as e:
-            msgs.append(("Failed to delete temp analysis file",
+            msgs.append((get_detail('[test_ftemp]', replace=True),
                          f"({type(e).__name__}) {file_path}"))
     return msgs
 
@@ -183,9 +188,9 @@ def delete_txt_file():
         txt_file = path.join(HUMBLE_TESTS_DIR, file)
         try:
             remove(txt_file)
-            msgs.append(("Deleted final TXT file", txt_file))
+            msgs.append((get_detail('[test_txt]', replace=True), txt_file))
         except Exception as e:
-            msgs.append(("Failed to delete final TXT file",
+            msgs.append((get_detail('[test_ftxt]', replace=True),
                          f"({type(e).__name__}) {txt_file}"))
     return msgs
 
@@ -199,9 +204,9 @@ def delete_html_file():
         html_file = path.join(HUMBLE_TESTS_DIR, file)
         try:
             remove(html_file)
-            msgs.append(("Deleted final HTML file", html_file))
+            msgs.append((get_detail('[test_html]', replace=True), html_file))
         except Exception as e:
-            msgs.append(("Failed to delete final HTML file",
+            msgs.append((get_detail('[test_fhtml]', replace=True),
                          f"({type(e).__name__}) {html_file}"))
     return msgs
 
@@ -211,9 +216,9 @@ def delete_pytest_caches(dir_path):
     if path.isdir(dir_path):
         try:
             shutil.rmtree(dir_path)
-            msgs.append(("Deleted pytest cache folder", dir_path))
+            msgs.append((get_detail('[test_cache]', replace=True), dir_path))
         except Exception as e:
-            msgs.append(("Failed to delete pytest cache folder",
+            msgs.append((get_detail('[test_fcache]', replace=True),
                          f"({type(e).__name__}) {dir_path}"))
     return msgs
 
@@ -221,9 +226,9 @@ def delete_pytest_caches(dir_path):
 def delete_temps():
     current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     info_msgs = [
-        ("Tests run at", current_time),
-        ("'test_input_file' uses a hardcoded URL", "https://github.com"),
-        ("URL used for all remaining tests", url_test)
+        (get_detail('[test_tests]', replace=True), current_time),
+        (get_detail('[test_input]', replace=True), INPUT_FILE_URL),
+        (get_detail('[test_remaining]', replace=True), url_test)
     ]
     info_msgs.extend(delete_humble_analysis(HUMBLE_TEMP_FILE))
     info_msgs.extend(delete_txt_file())
@@ -243,6 +248,7 @@ def delete_temps():
         print(f"[INFO] {message.ljust(max_len + 2)}: {value}")
 
 
+l10n_main = get_l10n_content()
 local_version = datetime.strptime('2025-09-13', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
