@@ -69,7 +69,7 @@
 :heavy_check_mark: 28 [checks](https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L46-L73) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
 :heavy_check_mark: Can check for compliance with the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">Secure Headers Project<a> Best Practices.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
-:heavy_check_mark: Can analyze _raw response files_: text files with HTTP response headers and values. Ex: curl option '<a href="https://curl.se/docs/manpage.html" target="_blank">--dump-header<a>'.<br />
+:heavy_check_mark: Can analyze _raw response files_: text files with HTTP response headers and values. Ex: curl option '<a href="https://curl.se/docs/manpage.html#-D" target="_blank">--dump-header<a>'.<br />
 :heavy_check_mark: Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF 1.4, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.<br />
 :heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** <a href="https://testssl.sh/" target="_blank">testssl.sh<a>.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
