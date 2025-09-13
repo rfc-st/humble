@@ -700,6 +700,9 @@
 [ipkp_h]
  Public-Key-Pins (Cabecera obsoleta)
 
+[imcp_h]
+ Mcp-Session-Id (Valor potencialmente inseguro)
+
 [ipkpr_h]
  Public-Key-Pins-Report-Only (Cabecera obsoleta)
 
@@ -1284,6 +1287,11 @@ Cabeceras de respuesta HTTP
 [ipkp]
  Esta cabecera está obsoleta.
  Ref: https://scotthelme.co.uk/hpkp-is-no-more/
+
+[imcp]
+ Asegúrate de que el valor de esta cabecera sea globalmente único y criptográficamente seguro.
+ P. ej., un UUID generado de forma segura, un JWT o un hash criptográfico.
+ Ref: https://modelcontextprotocol.io/specification/2025-03-26/basic/transports
 
 [iprxauthn]
  Incluya, al menos, una directiva correcta.

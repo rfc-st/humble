@@ -97,6 +97,7 @@ Integrity-Policy: No Valid Keys
 Integrity-Policy-Report-Only: No Valid Keys
 Keep-Alive: Ignored Header
 Large-Allocation: Deprecated Header
+Mcp-Session-Id: Potentially Unsafe Value
 NEL: Missing Directives
 NEL: No Valid Directives
 No-Vary-Search: No Valid Directives

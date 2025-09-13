@@ -699,6 +699,9 @@
 [ipkp_h]
  Public-Key-Pins (Deprecated Header)
 
+[imcp_h]
+ Mcp-Session-Id (Potentially Unsafe Value)
+
 [ipkpr_h]
  Public-Key-Pins-Report-Only (Deprecated Header)
 
@@ -1282,6 +1285,11 @@ HTTP Response Headers
 [ipkp]
  This header is deprecated.
  Ref: https://scotthelme.co.uk/hpkp-is-no-more/
+
+[imcp]
+ Make sure the value of this header is globally unique and cryptographically secure.
+ E.g., a securely generated UUID, a JWT, or a cryptographic hash.
+ Ref: https://modelcontextprotocol.io/specification/2025-03-26/basic/transports
 
 [iprxauthn]
  Include at least one valid directive.

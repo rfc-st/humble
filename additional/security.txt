@@ -51,6 +51,7 @@ Expect-CT
 Feature-Policy
 Integrity-Policy
 Integrity-Policy-Report-Only
+Mcp-Session-Id
 NEL
 Origin-Agent-Cluster
 P3P
