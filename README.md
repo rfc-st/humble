@@ -415,7 +415,7 @@ $ python3 test_humble.py -u <URL>
 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ok.PNG" alt="(Linux) - All tests passed successfully">
 
-.: .: (Windows) - Some tests failed.<br />
+.: (Windows) - Some tests failed, in Spanish.<br />
 ```
 $ cd <humble dir>
 $ cd unit_tests
