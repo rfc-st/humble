@@ -23,7 +23,7 @@ HUMBLE_INPUT_FILE = path.abspath(path.join(HUMBLE_INPUT_DIR,
                                            'github_input_file.txt'))
 HUMBLE_INPUT_URL = 'https://github.com'
 HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
-HUMBLE_L10N_FILE = 'details.txt'
+HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
 INPUT_FILE_URL = "https://github.com"
 REQUIRED_PYTHON = (3, 11)
@@ -64,8 +64,21 @@ def get_detail(id_mode, replace=False):
                 l10n_main[i+1]
 
 
+def print_error_detail(id_mode):
+    print(f"\n{get_detail(id_mode, replace=True)}")
+    sys.exit()
+
+
+def get_l10n_content_old():
+    l10n_path = path.join(HUMBLE_TESTS_DIR, HUMBLE_L10N_DIR, HUMBLE_L10N_DIR)
+    with open(l10n_path, 'r', encoding='utf8') as l10n_content:
+        return l10n_content.readlines()
+
+
 def get_l10n_content():
-    l10n_path = path.join(HUMBLE_TESTS_DIR, HUMBLE_L10N_DIR, HUMBLE_L10N_FILE)
+    l10n_path = path.join(HUMBLE_TESTS_DIR, HUMBLE_L10N_DIR,
+                          HUMBLE_L10N_FILE[1] if args.lang == 'es' else
+                          HUMBLE_L10N_FILE[0])
     with open(l10n_path, 'r', encoding='utf8') as l10n_content:
         return l10n_content.readlines()
 
@@ -102,8 +115,8 @@ def run_test(test_name, args, expected_text):
         pytest.fail(get_detail('[test_timeout]', replace=True))
     if expected_text not in output:
         pytest.fail(
-            f"'{expected_text}' {get_detail('[test_expected]', replace=True)}"
-            )
+            f"{get_detail('[test_expected]', replace=True)} '{expected_text}' \
+{get_detail('[test_notfound]', replace=True)}")
 
 
 def get_python_version(required_python=REQUIRED_PYTHON):
@@ -248,8 +261,7 @@ def delete_temps():
         print(f"[INFO] {message.ljust(max_len + 2)}: {value}")
 
 
-l10n_main = get_l10n_content()
-local_version = datetime.strptime('2025-09-13', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-09-19', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
@@ -258,15 +270,23 @@ parser = ArgumentParser(
         f"{HUMBLE_DESC} | {HUMBLE_GIT} | v.{local_version}"
     )
 )
+
 parser.add_argument('-u', type=str, dest='URL',
                     help="Scheme, host and port to use in the tests. E.g., \
 https://google.com")
+parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
+language for displaying errors and messages; if omitted, will be shown in \
+English")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 url_test = args.URL
 
+if args.lang and not args.URL:
+    print_error_detail('[test_elang]')
+
+l10n_main = get_l10n_content()
+
 if __name__ == "__main__":
-    l10n_main = get_l10n_content()
     code = pytest.main([__file__, "--tb=no", "-rA", "-q", "-v"])
     print_results()
     delete_temps()

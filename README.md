@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--09--13-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--09--19-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -283,9 +283,9 @@ https://github.com/rfc-st/humble/releases
 $ git clone https://github.com/rfc-st/humble.git
 https://github.com/rfc-st/humble/releases
 
-# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.52)
+# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.53)
 # https://github.com/rfc-st/humble/releases (On Windows, this may require running the terminal with admin privileges)
-$ docker build -t humble:1.52 .
+$ docker build -t humble:1.53 .
 
 # Run the analysis specifying the above TAG, along with the specific options for 'humble':
 # '-it', required: allocate a pseudo-TTY and keep input interactive.
@@ -293,14 +293,14 @@ $ docker build -t humble:1.52 .
 
 # (Linux/macOS)
 # E.g. Analyze https://google.com (brief analysis)
-$ docker run -it --rm --name humble humble:1.52 /bin/bash -c "python3 humble.py -u https://google.com -b"
+$ docker run -it --rm --name humble humble:1.53 /bin/bash -c "python3 humble.py -u https://google.com -b"
 
 # (Windows)
 # E.g. Analyze https://google.com (detailed analysis)
-$ docker run -it --rm --name humble humble:1.52 python3 humble.py -u https://google.com
+$ docker run -it --rm --name humble humble:1.53 python3 humble.py -u https://google.com
 
 # (Optional) Remove and untag the previous 'humble' image after upgrading
-$ docker rmi humble:1.52
+$ docker rmi humble:1.53
 ```
 
 ## Installation & update (Kali Linux)
@@ -335,7 +335,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-08-30
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-09-19
 
 options:
   -h, --help                           show this help message and exit
@@ -357,7 +357,7 @@ options:
   -p PROXY                             Use a proxy for the analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will be used
   -r                                   Shows HTTP response headers and a detailed analysis; '-b' parameter will take priority
   -s [SKIP_HEADERS ...]                Skips 'deprecated/insecure' and 'missing' checks for the indicated 'SKIP_HEADERS' (separated by spaces)
-  -u URL                               Scheme, host and port to analyze. E.g., https://google.com
+  -u URL                               Scheme, host and port to analyze. E.g., https://google.com or https://google.com:443
   -ua USER_AGENT                       User-Agent ID from 'additional/user_agents.txt' file to use. '0' will show all and '1' is the default
   -v, --version                        Checks for updates at https://github.com/rfc-st/humble
 

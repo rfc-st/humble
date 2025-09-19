@@ -195,7 +195,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-09-13', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-09-19', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2602,7 +2602,7 @@ parser.add_argument("-s", dest='skip_headers', nargs='*', type=str, help="S\
 kips 'deprecated/insecure' and 'missing' checks for the indicated \
 'SKIP_HEADERS' (separated by spaces)")
 parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
- analyze. E.g., https://google.com")
+ analyze. E.g., https://google.com or https://google.com:443")
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
 from 'additional/user_agents.txt' file to use. '0' will show all and '1' is \
 the default")

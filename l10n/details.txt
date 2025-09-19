@@ -2011,40 +2011,40 @@ Generator
  Error: Proxy not reachable.
 
 [test_python]
- (no param); Verifies Python version is at least 3.11.
+ (no param); verifies Python version is at least 3.11.
 
 [test_help]
- ('-h' param); Confirms that the help message is displayed correctly.
+ ('-h' param); confirms that the help message is displayed correctly.
 
 [test_brief]
- ('-b' param); Verifies that the brief analysis completes successfully.
+ ('-b' param); verifies that the brief analysis completes successfully.
 
 [test_cicd]
- ('-cicd' param); Verifies that a CI/CD analysis completes successfully.
+ ('-cicd' param); verifies that a CI/CD analysis completes successfully.
 
 [test_detailed]
- (no param); Verifies that the detailed analysis completes successfully.
+ (no param); verifies that the detailed analysis completes successfully.
 
 [test_export]
- ('-o html' param); Validates that the detailed analysis is exported to HTML.
+ ('-o html' param); validates that the detailed analysis is exported to HTML.
 
 [test_fingerprint_stats]
- ('-f Google' param); Checks that fingerprint statistics are correctly shown for 'Google'.
+ ('-f Google' param); checks that fingerprint statistics are correctly shown for 'Google'.
 
 [test_input_file]
- ('-if <INPUT_RAW_FILE> -u <INPUT_URL>' params); Ensures that raw response files containing response headers can be successfully analyzed.
+ ('-if <INPUT_RAW_FILE> -u <INPUT_URL>' params); ensures that raw response files containing response headers can be successfully analyzed.
 
 [test_l10]
- ('-l es' param); Confirms Spanish localization is applied in the output of a detailed analysis.
+ ('-l es' param); confirms Spanish localization is applied in the output of a detailed analysis.
 
 [test_skipped_headers]
- ('-s ETAG NEL' param); Verifies that the specified headers (ETag, NEL) are excluded from the detailed analysis.
+ ('-s ETAG NEL' param); verifies that the specified headers are excluded from the detailed analysis.
 
 [test_updates]
- ('-v' param); Confirms that the update check mechanism works as intended.
+ ('-v' param); confirms that the update check mechanism works as intended.
 
 [test_user_agent]
- ('-ua 4' param); Validates the selection and use of the 4th User-Agent from the available list during a detailed analysis.
+ ('-ua 4' param); validates the selection and use of the 4th User-Agent from the available list during a detailed analysis.
 
 [test_tests]
 Tests run at
@@ -2086,4 +2086,10 @@ Timed out
 Python 3.11 or higher is required; found
 
 [test_expected]
-text is missing
+Text
+
+[test_notfound]
+not found
+
+[test_elang]
+Error: The '-l' parameter requires the parameter '-u'.

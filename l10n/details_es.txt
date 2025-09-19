@@ -1992,3 +1992,87 @@ Generador
 
 [proxy_url]
  Error: Proxy no accesible.
+
+[test_python]
+ (sin parámetros); comprueba que la versión de Python es igual o superior a 3.11.
+
+[test_help]
+ (parámetro '-h'); comprueba que la Ayuda se muestra correctamente.
+
+[test_brief]
+ (parámetro '-b'); comprueba que un análisis breve finaliza correctamente.
+
+[test_cicd]
+ (parámetro '-cicd'); comprueba que un análisis CI/CD finaliza correctamente.
+
+[test_detailed]
+ (sin parámetros); comprueba que un análisis detallado finaliza correctamente.
+
+[test_export]
+ (parámetro '-o html'); comprueba que un análisis detallado se exporta a HTML correctamente.
+
+[test_fingerprint_stats]
+ (parámetro '-f Google'); comprueba que las estadísticas de huellas digitales se muestran correctamente para el término 'Google'.
+
+[test_input_file]
+ (parámetros '-if <FICHERO_CABECERAS> -u <URL>'); comprueba que puede analizarse correctamente un fichero con información de cabeceras.
+
+[test_l10]
+ (parámetro '-l es'); comprueba que los mensajes en castellano se muestran correctamente en un análisis detallado.
+
+[test_skipped_headers]
+ (parámetro '-s ETAG NEL'); comprueba que la exclusión de cabeceras HTTP se aplica correctamente en un análisis detallado.
+
+[test_updates]
+ (parámetro '-v'); verifica que la lógica para comprobar actualizaciones funciona correctamente.
+
+[test_user_agent]
+ (parámetro '-ua 4'); comprueba que el cuarto 'User-Agent' se aplique correctamente en un análisis detallado.
+
+[test_tests]
+Pruebas realizadas el
+
+[test_input]
+'test_input_file' utiliza una URL predefinida
+
+[test_remaining]
+URL para el resto de pruebas
+
+[test_temp]
+Eliminado fichero temporal de análisis
+
+[test_ftemp]
+No se pudo eliminar el fichero temporal de análisis
+
+[test_txt]
+Eliminado fichero TXT final
+
+[test_ftxt]
+No se pudo eliminar el fichero TXT final
+
+[test_html]
+Eliminado fichero HTML final
+
+[test_fhtml]
+No se pudo eliminar el fichero HTML final
+
+[test_cache]
+Eliminado directorio de caché de pytest
+
+[test_fcache]
+No se pudo eliminar el directorio de caché de pytest
+
+[test_timeout]
+Tiempo de espera superado
+
+[test_pythonm]
+Se requiere, al menos, Python 3.11; se encontró
+
+[test_expected]
+Texto
+
+[test_notfound]
+no encontrado
+
+[test_elang]
+Error: el parámetro '-l' requiere también el parámetro '-u'.
