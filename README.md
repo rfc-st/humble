@@ -419,7 +419,7 @@ $ python3 test_humble.py -u <URL>
 ```
 $ cd <humble dir>
 $ cd unit_tests
-$ py test_humble.py -u <URL>
+$ py test_humble.py -u <URL> -l es
 ```
 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ko.PNG" alt="(Windows) - Some tests failed">
