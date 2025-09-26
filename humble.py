@@ -195,7 +195,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-09-19', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-09-26', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1221,8 +1221,6 @@ def print_extended_info(args, reliable, status_code):
     if args.proxy:
         print_detail_l('[proxy_analysis_note]')
         print(f" {args.proxy}")
-    if args.output == 'json':
-        print(get_detail('[limited_analysis_note]', replace=True))
     if (status_code is not None and 400 <= status_code <= 451) or reliable or \
        args.redirects or args.skip_headers:
         print_extra_info(reliable)
@@ -1582,7 +1580,11 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
             "-c" in sys.argv and check_owasp_compliance(tmp_filename),
         ),
         "csv": lambda: generate_csv(final_filename, tmp_filename),
-        "json": lambda: generate_json(final_filename, tmp_filename),
+        "json": lambda: (
+            generate_json(final_filename, tmp_filename)
+            if args.brief else
+            generate_json_det(final_filename, tmp_filename)
+        ),
         "xlsx": lambda: generate_csv(final_filename, tmp_filename,
                                      to_xlsx=True),
         "xml": lambda: generate_xml(final_filename, tmp_filename),
@@ -1759,6 +1761,7 @@ def set_xlsx_width(col_wd, worksheet):
             worksheet.set_column(col_idx, col_idx, min(width + 2, 50))
 
 
+# JSON export of a brief analysis.
 def generate_json(final_filename, temp_filename):
     section0, sectionh, section5, section6 = (
         get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
@@ -1807,6 +1810,201 @@ def format_json(json_data, json_lns):
             else:
                 json_data[key] = value
     return json_data
+
+
+# JSON export of a detailed analysis. WIP.
+def json_det_fng():
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
+              encoding='utf8') as json_det_fng:
+        return {line.strip() for line in json_det_fng if line.strip()}
+
+
+def json_det_ins():
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), 'r',
+              encoding='utf8') as json_det_ins:
+        return {line.strip() for line in json_det_ins if line.strip()}
+
+
+def generate_json_det(final_filename, temp_filename):
+    section0, sectionh, section5, _ = (
+        get_detail(f'[{i}]', replace=True) for i in JSON_SECTION
+    )
+    with open(temp_filename, 'r', encoding='utf8') as txt_file, \
+         open(final_filename, 'w', encoding='utf8') as json_file:
+        txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
+        data = {}
+        parse_json_det(data, section0, section5, sectionh, txt_sections)
+        dump(data, json_file, indent=4, ensure_ascii=False)
+    print_export_path(final_filename, reliable)
+    remove(temp_filename)
+    sys.exit()
+
+
+def parse_json_det(data, section0, section5, sectionh, txt_sections):
+    params = ['[json_gen]', '[json_det_fngheader]', '[json_miss_det]',
+              '[json_miss_ref]']
+    details = [get_detail(p, replace=True) for p in params]
+    for i in range(0, len(txt_sections), 2):
+        section = f'[{txt_sections[i]}]'
+        lines = [line.strip() for line in txt_sections[i + 1].split('\n')
+                 if line.strip()]
+        data[section] = write_json_det(
+            details[0], lines, section, section0, section5, sectionh,
+            *details[1:]
+        )
+
+
+def write_json_det(json_det_g, json_lns, json_section, section0, section5,
+                   sectionh, json_miss_h, json_miss_d, json_miss_r):
+    if json_section in (section0, section5, sectionh):
+        json_det_add(json_det_g, json_section, json_lns, section0)
+    elif json_section.startswith((BOLD_STRINGS[2], BOLD_STRINGS[7])):
+        return json_det_fmt(json_lns)
+    elif json_section.startswith(BOLD_STRINGS[3]):
+        return json_det_miss(json_lns, l_miss, json_miss_h, json_miss_d,
+                             json_miss_r)
+    elif json_section.startswith(BOLD_STRINGS[4]):
+        return json_det_parse_fng(json_lns, json_det_fng())
+    elif json_section.startswith(BOLD_STRINGS[5]):
+        return json_det_parse_ins(json_lns, json_det_ins())
+    return list(json_lns)
+
+
+def json_det_add(json_det_g, json_section, json_lns, section0):
+    json_data = {}
+    format_json(json_data, json_lns)
+    if json_section == section0:
+        json_data = {json_det_g: BANNER_VERSION, **json_data, }
+    return json_data
+
+
+def json_det_fmt(json_lns):
+    h, v = [get_detail(p, replace=True) for p in
+            ['[json_det_fngheader]', '[json_det_fngval]']]
+    result = []
+    for line in json_lns:
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith("(*)") or ":" in line:
+            key, value = line.split(":", 1)
+            result.append({h: key.strip(), v: value.strip()})
+        else:
+            result.append({h: line, v: ""})
+    return result
+
+
+def json_det_process_mline(line, l_miss, json_miss_h, json_miss_d, json_miss_r,
+                           json_det_mref, result, entry, current_header):
+    line = line.strip()
+    if not line:
+        return entry, current_header
+    if line in l_miss or line.startswith('(*)'):
+        if entry:
+            result.append(entry)
+        current_header = line
+        entry = {json_miss_h: current_header, json_miss_d: [],
+                 json_miss_r: []}
+    elif line.startswith(json_det_mref) and current_header:
+        entry[json_miss_r].append(line.replace(json_det_mref, "").strip())
+    elif current_header:
+        entry[json_miss_d].append(line)
+    return entry, current_header
+
+
+def json_det_miss(json_lns, l_miss, json_miss_h, json_miss_d, json_miss_r):
+    result, entry, current_header = [], {}, None
+    json_det_mref = PDF_CONDITIONS[0]
+    for line in json_lns:
+        entry, current_header = json_det_process_mline(
+            line, l_miss, json_miss_h, json_miss_d, json_miss_r,
+            json_det_mref, result, entry, current_header
+        )
+    if entry:
+        result.append(entry)
+    for e in result:
+        if len(e[json_miss_d]) == 1:
+            e[json_miss_d] = e[json_miss_d][0]
+    return result
+
+
+def json_det_process_fng(line, fingerprint_set, entry, current_header,
+                         fng_header, fng_val, fng_vals):
+    line_s = line.strip()
+    for f in fingerprint_set:
+        if line_s.startswith(f):
+            return {fng_header: f}, f
+    if current_header and line_s.startswith(fng_val):
+        entry[fng_vals] = line_s[len(fng_val):].strip().strip("'")
+        return entry, current_header
+    return entry, current_header
+
+
+def json_det_parse_fng(json_lns, fingerprint_set):
+    result, entry, current_header = [], {}, None
+    fng_header = get_detail('[json_det_fngheader]', replace=True)
+    fng_val = get_detail('[json_det_fngval]', replace=True)
+    fng_vals = fng_val[:-1]
+    for line in json_lns:
+        new_entry, current_header = json_det_process_fng(
+            line, fingerprint_set, entry, current_header, fng_header, fng_val,
+            fng_vals)
+        if new_entry != entry:
+            if entry:
+                result.append(entry)
+            entry = new_entry
+    if entry:
+        result.append(entry)
+    return result
+
+
+# Yes, of course, this function is a disaster: give me some time! :)
+def json_det_parse_ins(json_lns, insecure_set):
+    h = get_detail('[json_det_fngheader]', replace=True)
+    d = get_detail('[json_det]', replace=True)
+    ref = PDF_CONDITIONS[0]
+    ref_key = ref[:-1]
+    result, entry, header = [], {}, None
+    processed = []
+    for s in insecure_set:
+        json_detailed_process_insecure(processed, s)
+    for line in json_lns:
+        line = line.strip()
+        if not line:
+            continue
+        is_header = line.startswith('(*)')
+        if not is_header and not line.startswith(ref):
+            for key, val in processed:
+                if (val and key in line and val in line) or \
+                   (not val and key in line):
+                    is_header = True
+                    break
+        if is_header:
+            if entry:
+                result.append(entry)
+            header = line
+            entry = {h: header, d: [], ref_key: []}
+        elif header:
+            if line.startswith(ref):
+                entry[ref_key].append(line[len(ref):].strip())
+            else:
+                entry[d].append(line)
+    if entry:
+        result.append(entry)
+    return result
+
+
+def json_detailed_process_insecure(processed_set, s):
+    s_clean = s.strip()
+    if ':' in s_clean:
+        key, val = s_clean.split(':', 1)
+        processed_set.append((key.strip(), val.strip()))
+    elif '(' in s_clean and ')' in s_clean:
+        key, val = s_clean.split('(', 1)
+        val = val.rstrip(')')
+        processed_set.append((key.strip(), val.strip()))
+    else:
+        processed_set.append((s_clean, None))
 
 
 def export_pdf_file(tmp_filename):
@@ -2582,11 +2780,11 @@ parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
 language for displaying analysis, errors and messages; if omitted, will be \
 shown in English")
 parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
-the license for 'humble', along with permissions, limitations and conditions.")
+the license for 'humble', along with permissions, limitations and conditions")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt', 'xlsx', 'xml'],
                     help="Exports analysis to 'humble_scheme_URL_port_yyyymmdd\
-_hhmmss_language.ext' file; json will have a brief analysis")
+_hhmmss_language.ext' file")
 parser.add_argument("-of", dest='output_file', type=str, help="Exports \
 analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 '-o' will be used")
@@ -2678,8 +2876,8 @@ if any([args.brief, args.output, args.ret, args.redirects,
                                  args.URL_A is None):
     print_error_detail('[args_several]')
 
-if args.output == 'json' and not args.brief:
-    print_error_detail('[args_brief_filetype]')
+if args.output == 'json' and args.lang and not args.brief:
+    print_error_detail('[args_json_lang]')
 
 skip_list, unsupported_headers = [], []
 

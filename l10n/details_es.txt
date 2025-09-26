@@ -1849,9 +1849,6 @@ Error: Los parámetros '-b', '-c', '-cicd', '-df', -'o', '-r' y '-s' requieren e
 [args_customfile]
 Error: El parámetro -of' requiere los parámetros '-u' y '-o'.
 
-[args_brief_filetype]
-Error: El parámetro '-o json' requiere el parámetro '-b'.
-
 [notestssl_file]
 Error: 'testssl' no existe en la ruta indicada.
 
@@ -2076,3 +2073,6 @@ no encontrado
 
 [test_elang]
 Error: el parámetro '-l' requiere también el parámetro '-u'.
+
+[args_json_lang]
+Error: El análisis detallado en JSON solo está disponible en inglés; consejo: incluye el parámetro '-b'.

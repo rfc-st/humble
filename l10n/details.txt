@@ -1847,9 +1847,6 @@ Error: The parameters '-b', '-c', '-cicd', '-df', '-'o', '-r' and '-s' require t
 [args_customfile]
 Error: The parameter '-of' requires the parameters '-u' and '-o'.
 
-[args_brief_filetype]
-Error: The parameter '-o json' requires the parameter '-b'.
-
 [notestssl_file]
 Error: 'testssl' is not found in that PATH.
 
@@ -2093,3 +2090,18 @@ not found
 
 [test_elang]
 Error: The '-l' parameter requires the parameter '-u'.
+
+[json_det_fngheader]
+Header:
+
+[json_det_fngval]
+Value:
+
+[json_det]
+Detail:
+
+[json_miss_det]
+Details
+
+[json_miss_ref]
+Refs
