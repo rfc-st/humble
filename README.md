@@ -143,10 +143,10 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Linux) - Compliance with OWASP 'Secure Headers Project' best practices">
 </p>
 <br />
-.: (Windows) - JSON output for CI/CD integration.<br />
+.: (Windows) - JSON summary for CI/CD integration.<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_cicd.PNG" alt="(Windows) - JSON output for seamless CI/CD integration">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_cicd.PNG" alt="(Windows) - JSON summary for CI/CD integration">
 </p>
 <br />
 .: (Linux) - List of HTTP fingerprint headers based on a specific term.<br />
