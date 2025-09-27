@@ -2075,4 +2075,22 @@ no encontrado
 Error: el parámetro '-l' requiere también el parámetro '-u'.
 
 [args_json_lang]
-Error: El análisis detallado en JSON solo está disponible en inglés; consejo: incluye el parámetro '-b'.
+Error: El análisis detallado en JSON solo está disponible actualmente en inglés.
+
+[json_det_fngheader]
+Cabecera:
+
+[json_det_fngval]
+Valor:
+
+[json_det]
+Detalle:
+
+[json_miss_det]
+Detalles
+
+[json_miss_ref]
+Refs
+
+[json_det_inscheck]
+Comprobación:

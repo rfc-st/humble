@@ -195,7 +195,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-09-26', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-09-27', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1812,17 +1812,12 @@ def format_json(json_data, json_lns):
     return json_data
 
 
-# JSON export of a detailed analysis. WIP.
-def json_det_fng():
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
-              encoding='utf8') as json_det_fng:
-        return {line.strip() for line in json_det_fng if line.strip()}
-
-
-def json_det_ins():
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), 'r',
-              encoding='utf8') as json_det_ins:
-        return {line.strip() for line in json_det_ins if line.strip()}
+# JSON export of a detailed analysis.
+def json_det_sources(file_idx, slice_idx):
+    file_path = path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[file_idx])
+    with open(file_path, 'r', encoding='utf8') as f:
+        return {line.strip() for line in islice(f, SLICE_INT[slice_idx],
+                                                None) if line.strip()}
 
 
 def generate_json_det(final_filename, temp_filename):
@@ -1859,14 +1854,14 @@ def write_json_det(json_det_g, json_lns, json_section, section0, section5,
     if json_section in (section0, section5, sectionh):
         json_det_add(json_det_g, json_section, json_lns, section0)
     elif json_section.startswith((BOLD_STRINGS[2], BOLD_STRINGS[7])):
-        return json_det_fmt(json_lns)
+        return format_json_det(json_lns)
     elif json_section.startswith(BOLD_STRINGS[3]):
         return json_det_miss(json_lns, l_miss, json_miss_h, json_miss_d,
                              json_miss_r)
     elif json_section.startswith(BOLD_STRINGS[4]):
-        return json_det_parse_fng(json_lns, json_det_fng())
+        return json_det_parse_fng(json_lns, json_det_sources(2, 0))
     elif json_section.startswith(BOLD_STRINGS[5]):
-        return json_det_parse_ins(json_lns, json_det_ins())
+        return json_det_parse_ins(json_lns, json_det_sources(7, 2))
     return list(json_lns)
 
 
@@ -1878,9 +1873,9 @@ def json_det_add(json_det_g, json_section, json_lns, section0):
     return json_data
 
 
-def json_det_fmt(json_lns):
-    h, v = [get_detail(p, replace=True) for p in
-            ['[json_det_fngheader]', '[json_det_fngval]']]
+def format_json_det(json_lns):
+    header_t, value_t = [get_detail(text, replace=True) for text in
+                         ['[json_det_fngheader]', '[json_det_fngval]']]
     result = []
     for line in json_lns:
         line = line.strip()
@@ -1888,27 +1883,24 @@ def json_det_fmt(json_lns):
             continue
         if line.startswith("(*)") or ":" in line:
             key, value = line.split(":", 1)
-            result.append({h: key.strip(), v: value.strip()})
+            result.append({header_t: key.strip(), value_t: value.strip()})
         else:
-            result.append({h: line, v: ""})
+            result.append({header_t: line, value_t: ""})
     return result
 
 
-def json_det_process_mline(line, l_miss, json_miss_h, json_miss_d, json_miss_r,
-                           json_det_mref, result, entry, current_header):
-    line = line.strip()
-    if not line:
-        return entry, current_header
+def json_det_add_miss(line, l_miss, json_miss_h, json_miss_d, json_miss_r,
+                      json_det_mref, result, entry, current_header):
     if line in l_miss or line.startswith('(*)'):
         if entry:
             result.append(entry)
         current_header = line
-        entry = {json_miss_h: current_header, json_miss_d: [],
-                 json_miss_r: []}
+        entry = {json_miss_h: current_header, json_miss_d: [], json_miss_r: []}
     elif line.startswith(json_det_mref) and current_header:
         entry[json_miss_r].append(line.replace(json_det_mref, "").strip())
     elif current_header:
         entry[json_miss_d].append(line)
+
     return entry, current_header
 
 
@@ -1916,10 +1908,11 @@ def json_det_miss(json_lns, l_miss, json_miss_h, json_miss_d, json_miss_r):
     result, entry, current_header = [], {}, None
     json_det_mref = PDF_CONDITIONS[0]
     for line in json_lns:
-        entry, current_header = json_det_process_mline(
-            line, l_miss, json_miss_h, json_miss_d, json_miss_r,
-            json_det_mref, result, entry, current_header
-        )
+        if line := line.strip():
+            entry, current_header = json_det_add_miss(
+                line, l_miss, json_miss_h, json_miss_d, json_miss_r,
+                json_det_mref, result, entry, current_header
+            )
     if entry:
         result.append(entry)
     for e in result:
@@ -1958,53 +1951,64 @@ def json_det_parse_fng(json_lns, fingerprint_set):
     return result
 
 
-# Yes, of course, this function is a disaster: give me some time! :)
-def json_det_parse_ins(json_lns, insecure_set):
-    h = get_detail('[json_det_fngheader]', replace=True)
-    d = get_detail('[json_det]', replace=True)
+def json_det_update_entry(line, ref, entry, header, header_t, detail_t,
+                          ref_key, result, is_header):
+    if is_header:
+        if entry:
+            result.append(entry)
+        header = line
+        entry = {header_t: header, detail_t: [], ref_key: []}
+    elif header:
+        if line.startswith(ref):
+            entry[ref_key].append(line[len(ref):].strip())
+        else:
+            entry[detail_t].append(line)
+    return entry, header
+
+
+def json_det_process_ins(line, checks_list, ref, entry, header, header_t,
+                         detail_t, ref_key, result):
+    is_header = line.startswith('(*)') or (
+        not line.startswith(ref) and any(
+            (val and key in line and val in line) or (not val and key in line)
+            for key, val in checks_list
+        )
+    )
+    return json_det_update_entry(line, ref, entry, header, header_t,
+                                 detail_t, ref_key, result, is_header)
+
+
+def json_det_parse_ins(json_lns, insecure_checks):
+    header_t = get_detail('[json_det_inscheck]', replace=True)
+    detail_t = get_detail('[json_det]', replace=True)
     ref = PDF_CONDITIONS[0]
     ref_key = ref[:-1]
     result, entry, header = [], {}, None
-    processed = []
-    for s in insecure_set:
-        json_detailed_process_insecure(processed, s)
+    checks_list = []
+    for check in insecure_checks:
+        json_det_ins_checks(checks_list, check)
     for line in json_lns:
-        line = line.strip()
-        if not line:
-            continue
-        is_header = line.startswith('(*)')
-        if not is_header and not line.startswith(ref):
-            for key, val in processed:
-                if (val and key in line and val in line) or \
-                   (not val and key in line):
-                    is_header = True
-                    break
-        if is_header:
-            if entry:
-                result.append(entry)
-            header = line
-            entry = {h: header, d: [], ref_key: []}
-        elif header:
-            if line.startswith(ref):
-                entry[ref_key].append(line[len(ref):].strip())
-            else:
-                entry[d].append(line)
+        if line := line.strip():
+            entry, header = json_det_process_ins(
+                line, checks_list, ref, entry,
+                header, header_t, detail_t, ref_key, result
+            )
     if entry:
         result.append(entry)
     return result
 
 
-def json_detailed_process_insecure(processed_set, s):
-    s_clean = s.strip()
-    if ':' in s_clean:
-        key, val = s_clean.split(':', 1)
-        processed_set.append((key.strip(), val.strip()))
-    elif '(' in s_clean and ')' in s_clean:
-        key, val = s_clean.split('(', 1)
+def json_det_ins_checks(checks_list, check):
+    check_s = check.strip()
+    if ':' in check_s:
+        key, val = check_s.split(':', 1)
+        checks_list.append((key.strip(), val.strip()))
+    elif '(' in check_s and ')' in check_s:
+        key, val = check_s.split('(', 1)
         val = val.rstrip(')')
-        processed_set.append((key.strip(), val.strip()))
+        checks_list.append((key.strip(), val.strip()))
     else:
-        processed_set.append((s_clean, None))
+        checks_list.append((check_s, None))
 
 
 def export_pdf_file(tmp_filename):

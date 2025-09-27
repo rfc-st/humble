@@ -1,0 +1,261 @@
+{
+    "[0. Info]": [
+        "Date : 2025/09/27 - 19:10:18",
+        "URL  : https://google.com",
+        "File : humble_https_google.com_20250927_191019_en.json"
+    ],
+    "[1. Enabled HTTP Security Headers]": [
+        {
+            "Header:": "Cache-Control",
+            "Value:": "private, max-age=0"
+        },
+        {
+            "Header:": "Content-Security-Policy-Report-Only",
+            "Value:": "object-src 'none';base-uri 'self';script-src 'nonce-lohOvQiiMBRw1i_cTRxFJQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"
+        },
+        {
+            "Header:": "Content-Type",
+            "Value:": "text/html; charset=UTF-8"
+        },
+        {
+            "Header:": "Cross-Origin-Opener-Policy",
+            "Value:": "same-origin-allow-popups; report-to=\"gws\""
+        },
+        {
+            "Header:": "P3P",
+            "Value:": "CP=\"This is not a P3P policy! See g.co/p3phelp for more info.\""
+        },
+        {
+            "Header:": "(*) Permissions-Policy",
+            "Value:": "unload=()"
+        },
+        {
+            "Header:": "Report-To",
+            "Value:": "{\"group\":\"gws\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://csp.withgoogle.com/csp/report-to/gws/other\"}]}"
+        },
+        {
+            "Header:": "Set-Cookie",
+            "Value:": "AEC=AaJma5tWGYxwdARLOkgxhh9UKgSkG8Kq50JdfVm41nzCm3T0Niia_l01AJ4; expires=Thu, 26-Mar-2026 17:10:19 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax, __Secure-ENID=28.SE=EEnIRyBEidMWBYeJJBpOeXnXzW94Jj5KjZGeJoaBZBSFWs-k6GBnLSMa08QzVqF5WB4aRKNV6e_ONCkFz2BsVKDChkauQ-HmMwi8xGuGZYJF4IeTcaBcP-aK6ZYggZCLPYkLbglYntEesVsSGfXjEAR3HTFYUC98pI3t9b40gk3zT-VNSl2YbmcEXT_FVB1vyh1KNndDcobRmS66wx-Os32oWQSoHsolVBZ5B9GJGakUX1XOGLYfhaHjTCKuv2E0; expires=Wed, 28-Oct-2026 09:28:37 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax"
+        },
+        {
+            "Header:": "Strict-Transport-Security",
+            "Value:": "max-age=31536000"
+        },
+        {
+            "Header:": "X-Frame-Options",
+            "Value:": "SAMEORIGIN"
+        },
+        {
+            "Header:": "X-Xss-Protection",
+            "Value:": "0"
+        }
+    ],
+    "[2. Missing HTTP Security Headers]": [
+        {
+            "Header:": "Clear-Site-Data",
+            "Details": "Clears browsing data (cookies, storage, cache) associated with the requesting website.",
+            "Refs": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data"
+            ]
+        },
+        {
+            "Header:": "Cross-Origin-Embedder-Policy",
+            "Details": "Prevents documents and workers from loading non-same-origin requests unless allowed.",
+            "Refs": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy"
+            ]
+        },
+        {
+            "Header:": "Cross-Origin-Resource-Policy",
+            "Details": "Protect servers against certain cross-origin or cross-site embedding of the returned source.",
+            "Refs": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)"
+            ]
+        },
+        {
+            "Header:": "Content-Security-Policy",
+            "Details": "Detect and mitigate Cross Site Scripting (XSS) and data injection attacks, among others.",
+            "Refs": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy"
+            ]
+        },
+        {
+            "Header:": "Integrity-Policy",
+            "Details": "Blocks certain resource types without Subresource Integrity metadata.",
+            "Refs": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy"
+            ]
+        },
+        {
+            "Header:": "(*) NEL",
+            "Details": "Enables web applications to declare a reporting policy to report errors.",
+            "Refs": [
+                "https://scotthelme.co.uk/network-error-logging-deep-dive/"
+            ]
+        },
+        {
+            "Header:": "Referrer-Policy",
+            "Details": "Controls how much referrer information should be included with requests.",
+            "Refs": [
+                "https://scotthelme.co.uk/a-new-security-header-referrer-policy/"
+            ]
+        },
+        {
+            "Header:": "X-Content-Type-Options",
+            "Details": "Indicate that MIME types in the \"Content-Type\" headers should be followed.",
+            "Refs": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options"
+            ]
+        },
+        {
+            "Header:": "X-Permitted-Cross-Domain-Policies",
+            "Details": "Limit which data external resources (e.g. Adobe Flash/PDF documents), can access on the domain.",
+            "Refs": [
+                "https://owasp.org/www-project-secure-headers/#div-headers"
+            ]
+        }
+    ],
+    "[3. Fingerprint HTTP Response Headers]": [
+        {
+            "Header:": "Server (Generic HTTP Server/Content Delivery Network)",
+            "Value": "gws"
+        }
+    ],
+    "[4. Deprecated HTTP Response Headers/Protocols and Insecure Values]": [
+        {
+            "Check:": "Cache-Control (Recommended Values)",
+            "Detail:": [
+                "Enable 'no-cache' and 'no-store' if there are sensitive data in the URL analyzed."
+            ],
+            "Ref": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control"
+            ]
+        },
+        {
+            "Check:": "Content-Security-Policy-Report-Only (Ignored Directives)",
+            "Detail:": [
+                "Avoid deprecated or ignored directives: 'report-uri'"
+            ],
+            "Ref": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only"
+            ]
+        },
+        {
+            "Check:": "Content-Security-Policy-Report-Only (Ignored Header)",
+            "Detail:": [
+                "Use the 'report-to' directive or this header has no effect."
+            ],
+            "Ref": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only"
+            ]
+        },
+        {
+            "Check:": "Expires (Ignored Header)",
+            "Detail:": [
+                "Header ignored by the directives 'max-age' or 's-maxage' in the header that controls the cache."
+            ],
+            "Ref": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires"
+            ]
+        },
+        {
+            "Check:": "P3P (Deprecated Header)",
+            "Detail:": [
+                "This header is deprecated. Use cookies, consents and regulations (e.g. GDPR) instead."
+            ],
+            "Ref": [
+                "https://webhint.io/docs/user-guide/hints/hint-no-p3p/"
+            ]
+        },
+        {
+            "Check:": "Report-To (Deprecated Header)",
+            "Detail:": [
+                "This header is deprecated. Use instead \"Reporting-Endpoints\"."
+            ],
+            "Ref": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Report-To"
+            ]
+        },
+        {
+            "Check:": "Strict-Transport-Security (Recommended Values)",
+            "Detail:": [
+                "Add 'includeSubDomains' and 'max-age' (with 31536000 -one year- as minimum)."
+            ],
+            "Ref": [
+                "https://https.cio.gov/hsts/",
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security"
+            ]
+        },
+        {
+            "Check:": "X-XSS-Protection (Deprecated Header)",
+            "Detail:": [
+                "This header is deprecated in the major web browsers.",
+                "Instead, enforce a strict \"Content-Security-Policy\" header."
+            ],
+            "Ref": [
+                "https://web.dev/articles/strict-csp",
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp",
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection",
+                "https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP"
+            ]
+        }
+    ],
+    "[5. Empty HTTP Response Headers Values]": [
+        "Empty HTTP headers (and are therefore considered disabled):",
+        "Nothing to report, all seems OK!"
+    ],
+    "[6. Browser Compatibility for Enabled HTTP Security Headers]": [
+        {
+            "Header:": "Cache-Control",
+            "Value:": "https://caniuse.com/?search=Cache-Control"
+        },
+        {
+            "Header:": "Content-Security-Policy-Report-Only",
+            "Value:": "https://caniuse.com/?search=Content-Security-Policy-Report-Only"
+        },
+        {
+            "Header:": "Content-Type",
+            "Value:": "https://caniuse.com/?search=Content-Type"
+        },
+        {
+            "Header:": "Cross-Origin-Opener-Policy",
+            "Value:": "https://caniuse.com/?search=Cross-Origin-Opener-Policy"
+        },
+        {
+            "Header:": "Permissions-Policy",
+            "Value:": "https://caniuse.com/?search=Permissions-Policy"
+        },
+        {
+            "Header:": "Report-To",
+            "Value:": "https://caniuse.com/?search=Report-To"
+        },
+        {
+            "Header:": "Set-Cookie",
+            "Value:": "https://caniuse.com/?search=Set-Cookie"
+        },
+        {
+            "Header:": "Strict-Transport-Security",
+            "Value:": "https://caniuse.com/?search=Strict-Transport-Security"
+        },
+        {
+            "Header:": "X-Frame-Options",
+            "Value:": "https://caniuse.com/?search=X-Frame-Options"
+        },
+        {
+            "Header:": "X-XSS-Protection",
+            "Value:": "https://caniuse.com/?search=X-XSS-Protection"
+        }
+    ],
+    "[7. Analysis Results]": [
+        "Done in 0.39 seconds! (changes with respect to the last analysis in parentheses)",
+        "Enabled headers:              11 (First Analysis)",
+        "Missing headers:               9 (First Analysis)",
+        "Fingerprint headers:           1 (First Analysis)",
+        "Deprecated/Insecure headers:   8 (First Analysis)",
+        "Empty headers:                 0 (First Analysis)",
+        "Findings to review:           18 (First Analysis)",
+        "Analysis Grade:               D (Review 'Deprecated/Insecure headers')",
+        "'(*)' meaning:                Experimental HTTP response directive or header",
+        "'(*)' ref:                    https://mdn.io/Experimental_deprecated_obsolete"
+    ]
+}
