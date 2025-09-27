@@ -43,10 +43,10 @@ TEST_CFGS = {
     'test_updates': (['-v'], 'Keeping your security tools'),
     'test_user_agent': (['-u', None, '-ua', '4'], 'Selected the User-Agent'),
 }
-TEST_SUMMS = ('[test_python]', '[test_help]', '[test_brief]', '[test_cicd]',
-              '[test_detailed]', '[test_export]', '[test_fingerprint_stats]',
-              '[test_input_file]', '[test_l10]', '[test_skipped_headers]',
-              '[test_updates]', '[test_user_agent]')
+TEST_SUMMS = ('[test_help]', '[test_brief]', '[test_cicd]', '[test_detailed]',
+              '[test_export]', '[test_fingerprint_stats]', '[test_input_file]',
+              '[test_l10n]', '[test_skipped_headers]', '[test_updates]',
+              '[test_user_agent]', '[test_python]')
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -69,12 +69,6 @@ def print_error_detail(id_mode):
     sys.exit()
 
 
-def get_l10n_content_old():
-    l10n_path = path.join(HUMBLE_TESTS_DIR, HUMBLE_L10N_DIR, HUMBLE_L10N_DIR)
-    with open(l10n_path, 'r', encoding='utf8') as l10n_content:
-        return l10n_content.readlines()
-
-
 def get_l10n_content():
     l10n_path = path.join(HUMBLE_TESTS_DIR, HUMBLE_L10N_DIR,
                           HUMBLE_L10N_FILE[1] if args.lang == 'es' else
@@ -92,36 +86,39 @@ def print_results():
     print()
 
 
-def run_cmd(args):
+def run_test(args, expected_text, timeout=5):
+    test_args = [url_test if a is None else a for a in args]
     try:
         result = subprocess.run(
-            [sys.executable, HUMBLE_MAIN_FILE] + args,
+            [sys.executable, HUMBLE_MAIN_FILE] + test_args,
             capture_output=True,
             text=True,
-            timeout=5,
+            timeout=timeout,
             encoding="utf-8",
             errors="replace"
         )
-        return result.stdout if result.returncode == 0 else ""
-    except subprocess.TimeoutExpired:
-        return ""
-
-
-def run_test(test_name, args, expected_text):
-    test_args = [url_test if arg is None else arg for arg in args]
-    try:
-        output = run_cmd(test_args)
+        output = result.stdout if result.returncode == 0 else ""
     except subprocess.TimeoutExpired:
         pytest.fail(get_detail('[test_timeout]', replace=True))
     if expected_text not in output:
         pytest.fail(
-            f"{get_detail('[test_expected]', replace=True)} '{expected_text}' \
-{get_detail('[test_notfound]', replace=True)}")
+            f"{get_detail('[test_expected]', replace=True)} '{expected_text}' "
+            f"{get_detail('[test_notfound]', replace=True)}"
+        )
 
 
-def get_python_version(required_python=REQUIRED_PYTHON):
-    local_python = sys.version_info
-    return (local_python.major, local_python.minor) >= required_python
+def make_test_func(cfg_key):
+    def test_func():
+        run_test(*TEST_CFGS[cfg_key])
+    return test_func
+
+
+for key in TEST_CFGS.keys():
+    globals()[key] = make_test_func(key)
+
+
+def get_python_version(req=REQUIRED_PYTHON):
+    return sys.version_info[:2] >= req
 
 
 def test_python():
@@ -130,54 +127,6 @@ def test_python():
             f"{get_detail('[test_pythonm]', replace=True)} "
             f"{sys.version_info.major}.{sys.version_info.minor}"
         )
-
-
-def test_help():
-    run_test('help', *TEST_CFGS['test_help'])
-
-
-def test_brief():
-    run_test('brief', *TEST_CFGS['test_brief'])
-
-
-def test_cicd():
-    run_test('cicd', *TEST_CFGS['test_cicd'])
-
-
-def test_detailed():
-    run_test('detailed', *TEST_CFGS['test_detailed'])
-
-
-def test_export():
-    run_test('export', *TEST_CFGS['test_export'])
-
-
-def test_fingerprint_stats():
-    run_test('fingerprint_stats', *TEST_CFGS['test_fingerprint_stats'])
-
-
-def test_input_file():
-    run_test('input_file', *TEST_CFGS['test_input_file'])
-
-
-def test_l10n():
-    run_test('l10n', *TEST_CFGS['test_l10n'])
-
-
-def test_response_headers():
-    run_test('response_headers', *TEST_CFGS['test_response_headers'])
-
-
-def test_skipped_headers():
-    run_test('skipped_headers', *TEST_CFGS['test_skipped_headers'])
-
-
-def test_updates():
-    run_test('updates', *TEST_CFGS['test_updates'])
-
-
-def test_user_agent():
-    run_test('user_agent', *TEST_CFGS['test_user_agent'])
 
 
 def delete_humble_analysis(file_path):

@@ -2031,7 +2031,7 @@ Generator
 [test_input_file]
  ('-if <INPUT_RAW_FILE> -u <INPUT_URL>' params); ensures that raw response files containing response headers can be successfully analyzed.
 
-[test_l10]
+[test_l10n]
  ('-l es' param); confirms Spanish localization is applied in the output of a detailed analysis.
 
 [test_skipped_headers]

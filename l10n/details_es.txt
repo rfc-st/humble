@@ -2014,7 +2014,7 @@ Generador
 [test_input_file]
  (parámetros '-if <FICHERO_CABECERAS> -u <URL>'); comprueba que puede analizarse correctamente un fichero con información de cabeceras.
 
-[test_l10]
+[test_l10n]
  (parámetro '-l es'); comprueba que los mensajes en castellano se muestran correctamente en un análisis detallado.
 
 [test_skipped_headers]
