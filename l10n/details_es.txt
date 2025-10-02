@@ -946,6 +946,9 @@ Cabeceras de respuesta HTTP
 [server_serror]
  Error en servidor; espera unos minutos y prueba de nuevo.
 
+[header_error]
+ Formato de cabecera inválido. Se esperaba 'Clave: Valor'
+
 [e_connection]
  Error: La petición ha expirado al intentar conectarse al servidor; revisa la URL y prueba de nuevo.
 

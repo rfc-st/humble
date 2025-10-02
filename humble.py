@@ -2643,9 +2643,26 @@ def process_server_error(http_status_code, l10n_id):
     sys.exit()
 
 
+def parse_headers(header_list):
+    """
+    Convert ["Key: Value", "Another-Key: Value"] into a dict.
+    """
+    if header_list is None:
+        return {}
+    headers = {}
+
+    for h in header_list:
+        if ":" not in h:
+            print_error_detail("[header_error]")
+        key, value = h.split(":", 1)  # split only once
+        headers[key.strip()] = value.strip()
+    return headers
+
+
 def make_http_request(proxy):  # sourcery skip: extract-method
     try:
         custom_headers = REQ_HEADERS.copy()
+        custom_headers.update(added_custom_headers)
         custom_headers['User-Agent'] = ua_header
         session = requests.Session()
         session.mount("https://", SSLContextAdapter())
@@ -2808,6 +2825,9 @@ parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
 from 'additional/user_agents.txt' file to use. '0' will show all and '1' is \
 the default")
+parser.add_argument("-H", "--header", action="append", type=str, dest="header_parameters",
+help="Custom headers which are added to all requests e. g. some authentication. \
+Can be specified multiple times")
 parser.add_argument("-v", "--version", action="store_true", help="Checks for \
 updates at https://github.com/rfc-st/humble")
 
@@ -2854,6 +2874,8 @@ if '-ua' in sys.argv:
     ua_header = parse_user_agent(user_agent=True)
 elif URL:
     ua_header = parse_user_agent()
+
+added_custom_headers = parse_headers(args.header_parameters)
 
 if '-e' in sys.argv:
     if system().lower() == 'windows':

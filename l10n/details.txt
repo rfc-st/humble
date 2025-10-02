@@ -944,6 +944,9 @@ HTTP Response Headers
 [server_serror]
  Server error; wait a while and try again.
 
+[header_error]
+ Invalid header format. Expected 'Key: Value'
+
 [e_connection]
  Error: The request timed out while trying to connect to the remote server. Check URL and try again.
 
