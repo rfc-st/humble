@@ -1970,7 +1970,8 @@ def json_det_process_ins(line, checks_list, ref, entry, header, header_t,
                          detail_t, ref_key, result):
     is_header = line.startswith('(*)') or (
         not line.startswith(ref) and any(
-            (val and key in line and val in line) or (not val and key in line)
+            (val and key in line and val in line) or
+            (not val and line.strip().startswith(key))
             for key, val in checks_list
         )
     )
@@ -1984,6 +1985,9 @@ def json_det_parse_ins(json_lns, insecure_checks):
     ref = PDF_CONDITIONS[0]
     ref_key = ref[:-1]
     result, entry, header = [], {}, None
+    if args.lang:
+        insecure_checks = {item.split(": ")[0] + ": " for item in
+                           insecure_checks}
     checks_list = []
     for check in insecure_checks:
         json_det_ins_checks(checks_list, check)
@@ -2879,9 +2883,6 @@ if any([args.brief, args.output, args.ret, args.redirects,
         args.skip_headers]) and (URL is None or args.guides is None or
                                  args.URL_A is None):
     print_error_detail('[args_several]')
-
-if args.output == 'json' and args.lang and not args.brief:
-    print_error_detail('[args_json_lang]')
 
 skip_list, unsupported_headers = [], []
 
