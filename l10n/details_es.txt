@@ -2094,3 +2094,6 @@ Refs
 
 [json_det_inscheck]
 Comprobación:
+
+[json_det_can]
+Ref:
