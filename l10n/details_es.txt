@@ -2091,3 +2091,6 @@ Advertencia
 
 [json_det_refs]
 Referencias
+
+[json_det_analysis]
+Duración

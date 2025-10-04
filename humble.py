@@ -73,6 +73,7 @@ from colorama import Fore, Style, init
 from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
 
+ANALYSIS_DURATION = ("Done in", "Realizado")
 BANNER = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
  | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
@@ -94,6 +95,7 @@ DTD_CONTENT = '''<!ELEMENT analysis (section+)>
 <!ELEMENT item (#PCDATA)>
 <!ATTLIST item name CDATA #IMPLIED>
 '''
+DURATION_PREFIXES = ("Done in", "Realizado")
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'nel', 'no-vary-search', 'observe-browsing-topics',
@@ -1821,21 +1823,19 @@ def json_detailed_sources(file_idx, slice_idx):
 
 
 def generate_json_detailed(final_filename, temp_filename):
-    section0, _, section5, _ = (
-        get_detail(f'[{i}]', replace=True) for i in JSON_SECTION
-    )
+    section5 = (get_detail(JSON_SECTION[2], replace=True))
     with open(temp_filename, 'r', encoding='utf8') as txt_file, \
          open(final_filename, 'w', encoding='utf8') as json_file:
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
-        parse_json_detailed(data, section0, section5, txt_sections)
+        parse_json_detailed(data, section5, txt_sections)
         dump(data, json_file, indent=4, ensure_ascii=False)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
     sys.exit()
 
 
-def parse_json_detailed(data, section0, section5, txt_sections):
+def parse_json_detailed(data, section5, txt_sections):
     params = ['[json_gen]', '[json_det_fngheader]', '[json_det_details]',
               '[json_det_refs]']
     details = [get_detail(p, replace=True) for p in params]
@@ -1844,15 +1844,17 @@ def parse_json_detailed(data, section0, section5, txt_sections):
         lines = [line.strip() for line in txt_sections[i + 1].split('\n')
                  if line.strip()]
         data[section] = write_json_detailed(
-            details[0], lines, section, section0, section5, *details[1:]
+            details[0], lines, section, section5, *details[1:]
         )
 
 
-def write_json_detailed(json_det_g, json_lns, json_section, section0,
-                        section5, json_miss_h, json_miss_d, json_miss_r):
-    if json_section in (section0, section5):
-        json_detailed_add(json_det_g, json_section, json_lns, section0)
+def write_json_detailed(json_det_g, json_lns, json_section, section5,
+                        json_miss_h, json_miss_d, json_miss_r):
+    if json_section == section5:
+        json_detailed_add(json_det_g, json_section, json_lns,)
     json_conditions = {
+        BOLD_STRINGS[0]:
+            lambda: json_detailed_info(json_lns),
         (f'[{BOLD_STRINGS[1]}', BOLD_STRINGS[9]):
             lambda: json_detailed_response(json_lns),
         BOLD_STRINGS[2]:
@@ -1869,6 +1871,8 @@ def write_json_detailed(json_det_g, json_lns, json_section, section0,
                 json_lns, json_detailed_sources(7, 2)),
         BOLD_STRINGS[7]:
             lambda: format_json_detailed(json_lns, is_l10n=True),
+        BOLD_STRINGS[8]:
+            lambda: json_detailed_results(json_lns),
     }
     return next(
         (condition()
@@ -1884,6 +1888,17 @@ def json_detailed_add(json_det_g, json_section, json_lns, section0):
     if json_section == section0:
         json_data = {json_det_g: BANNER_VERSION, **json_data, }
     return json_data
+
+
+def json_detailed_info(json_lns):
+    info = {}
+    for line in json_lns:
+        if ':' not in line:
+            continue
+        key, value = line.split(':', 1)
+        key = key.strip()
+        info[key] = value.strip()
+    return info
 
 
 def json_detailed_response(json_lns):
@@ -2044,6 +2059,21 @@ def json_detailed_ins_checks(checks_list, check):
         checks_list.append((key.strip(), val.strip()))
     else:
         checks_list.append((check_s, None))
+
+
+def json_detailed_results(json_lns):
+    result = {}
+    duration_key = get_detail('[json_det_analysis]', replace=True)
+    for line in json_lns:
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith(ANALYSIS_DURATION):
+            result[duration_key] = line
+        elif ':' in line:
+            key, value = line.split(':', 1)
+            result[key.strip()] = value.strip()
+    return result
 
 
 def export_pdf_file(tmp_filename):

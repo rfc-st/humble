@@ -2105,3 +2105,6 @@ Issue
 
 [json_det_refs]
 References
+
+[json_det_analysis]
+Duration
