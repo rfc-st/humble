@@ -2078,22 +2078,16 @@ Error: el parámetro '-l' requiere también el parámetro '-u'.
 Error: El análisis detallado en JSON solo está disponible actualmente en inglés.
 
 [json_det_fngheader]
-Cabecera:
+Cabecera
 
 [json_det_fngval]
-Valor:
+Valor
 
-[json_det]
-Detalle:
-
-[json_miss_det]
+[json_det_details]
 Detalles
 
-[json_miss_ref]
-Refs
-
 [json_det_inscheck]
-Comprobación:
+Advertencia
 
-[json_det_can]
-Ref:
+[json_det_refs]
+Referencias

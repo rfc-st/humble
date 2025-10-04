@@ -195,7 +195,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-10-03', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-10-04', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1836,8 +1836,8 @@ def generate_json_detailed(final_filename, temp_filename):
 
 
 def parse_json_detailed(data, section0, section5, sectionh, txt_sections):
-    params = ['[json_gen]', '[json_det_fngheader]', '[json_miss_det]',
-              '[json_miss_ref]']
+    params = ['[json_gen]', '[json_det_fngheader]', '[json_det_details]',
+              '[json_det_refs]']
     details = [get_detail(p, replace=True) for p in params]
     for i in range(0, len(txt_sections), 2):
         section = f'[{txt_sections[i]}]'
@@ -1876,7 +1876,7 @@ def json_detailed_add(json_det_g, json_section, json_lns, section0):
 
 
 def format_json_detailed(json_lns, is_l10n=False):
-    l10n_txt = '[json_det_can]' if is_l10n else '[json_det_fngval]'
+    l10n_txt = '[json_det_refs]' if is_l10n else '[json_det_fngval]'
     header_t, value_t = [get_detail(text, replace=True) for text in
                          ['[json_det_fngheader]', l10n_txt]]
     result = []
@@ -1926,13 +1926,13 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
 
 
 def json_detailed_process_fng(line, fingerprint_set, entry, current_header,
-                              fng_header, fng_val, fng_vals):
+                              fng_header, fng_val):
     line_s = line.strip()
     for f in fingerprint_set:
         if line_s.startswith(f):
             return {fng_header: f}, f
     if current_header and line_s.startswith(fng_val):
-        entry[fng_vals] = line_s[len(fng_val):].strip().strip("'")
+        entry[fng_val] = line_s.split(": ", 1)[1].strip("'\" ")
         return entry, current_header
     return entry, current_header
 
@@ -1941,11 +1941,9 @@ def json_detailed_fng(json_lns, fingerprint_set):
     result, entry, current_header = [], {}, None
     fng_header = get_detail('[json_det_fngheader]', replace=True)
     fng_val = get_detail('[json_det_fngval]', replace=True)
-    fng_vals = fng_val[:-1]
     for line in json_lns:
         new_entry, current_header = json_detailed_process_fng(
-            line, fingerprint_set, entry, current_header, fng_header, fng_val,
-            fng_vals)
+            line, fingerprint_set, entry, current_header, fng_header, fng_val)
         if new_entry != entry:
             if entry:
                 result.append(entry)
@@ -1955,39 +1953,41 @@ def json_detailed_fng(json_lns, fingerprint_set):
     return result
 
 
-def json_detailed_update_entry(line, ref, entry, header, header_t, detail_t,
-                               ref_key, result, is_header):
+def json_detailed_update_entry(line, ref_t, ref_o, entry, header, header_t,
+                               detail_t, result, is_header):
     if is_header:
         if entry:
             result.append(entry)
         header = line
-        entry = {header_t: header, detail_t: [], ref_key: []}
+        entry = {header_t: header, detail_t: [], ref_t: []}
     elif header:
-        if line.startswith(ref):
-            entry[ref_key].append(line[len(ref):].strip())
+        if line.startswith(ref_o):
+            entry[ref_t].append(line[len(ref_o):].strip())
         else:
             entry[detail_t].append(line)
     return entry, header
 
 
-def json_detailed_process_ins(line, checks_list, ref, entry, header, header_t,
-                              detail_t, ref_key, result):
-    is_header = line.startswith('(*)') or (
-        not line.startswith(ref) and any(
-            (val and key in line and val in line) or
-            (not val and line.strip().startswith(key))
+def json_detailed_process_ins(line, checks_list, ref_t, ref_o, entry, header,
+                              header_t, detail_t, result):
+    is_header = (
+        line.startswith('(*)')
+        or not line.startswith(f"{ref_t}")
+        and any(
+            (val and key in line and val in line)
+            or (not val and line.strip().startswith(key))
             for key, val in checks_list
         )
     )
-    return json_detailed_update_entry(line, ref, entry, header, header_t,
-                                      detail_t, ref_key, result, is_header)
+    return json_detailed_update_entry(line, ref_t, ref_o, entry, header,
+                                      header_t, detail_t, result, is_header)
 
 
 def json_detailed_ins(json_lns, insecure_checks):
     header_t = get_detail('[json_det_inscheck]', replace=True)
-    detail_t = get_detail('[json_det]', replace=True)
-    ref = PDF_CONDITIONS[0]
-    ref_key = ref[:-1]
+    detail_t = get_detail('[json_det_details]', replace=True)
+    ref_t = get_detail('[json_det_refs]', replace=True)
+    ref_o = PDF_CONDITIONS[0]
     if args.lang:
         insecure_checks = {check.split(": ")[0] + ":" for check in
                            insecure_checks}
@@ -1998,8 +1998,8 @@ def json_detailed_ins(json_lns, insecure_checks):
     for line in json_lns:
         if line := line.strip():
             entry, header = json_detailed_process_ins(
-                line, checks_list, ref, entry,
-                header, header_t, detail_t, ref_key, result
+                line, checks_list, ref_t, ref_o, entry,
+                header, header_t, detail_t, result
             )
     if entry:
         result.append(entry)

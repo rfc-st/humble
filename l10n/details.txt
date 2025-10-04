@@ -2092,22 +2092,16 @@ not found
 Error: The '-l' parameter requires the parameter '-u'.
 
 [json_det_fngheader]
-Header:
+Header
 
 [json_det_fngval]
-Value:
+Value
 
-[json_det]
-Detail:
-
-[json_miss_det]
+[json_det_details]
 Details
 
-[json_miss_ref]
-Refs
-
 [json_det_inscheck]
-Check:
+Issue
 
-[json_det_can]
-Ref:
+[json_det_refs]
+References
