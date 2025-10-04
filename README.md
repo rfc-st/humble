@@ -359,6 +359,7 @@ options:
   -s [SKIP_HEADERS ...]                Skips 'deprecated/insecure' and 'missing' checks for the indicated 'SKIP_HEADERS' (separated by spaces)
   -u URL                               Scheme, host and port to analyze. E.g., https://google.com or https://google.com:443
   -ua USER_AGENT                       User-Agent ID from 'additional/user_agents.txt' file to use. '0' will show all and '1' is the default
+  -H, --header HEADER_PARAMETERS       Custom headers which are added to all requests e. g. some authentication. Can be specified multiple times
   -v, --version                        Checks for updates at https://github.com/rfc-st/humble
 
 examples:
