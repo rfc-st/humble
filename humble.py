@@ -1821,21 +1821,21 @@ def json_detailed_sources(file_idx, slice_idx):
 
 
 def generate_json_detailed(final_filename, temp_filename):
-    section0, sectionh, section5, _ = (
+    section0, _, section5, _ = (
         get_detail(f'[{i}]', replace=True) for i in JSON_SECTION
     )
     with open(temp_filename, 'r', encoding='utf8') as txt_file, \
          open(final_filename, 'w', encoding='utf8') as json_file:
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
-        parse_json_detailed(data, section0, section5, sectionh, txt_sections)
+        parse_json_detailed(data, section0, section5, txt_sections)
         dump(data, json_file, indent=4, ensure_ascii=False)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
     sys.exit()
 
 
-def parse_json_detailed(data, section0, section5, sectionh, txt_sections):
+def parse_json_detailed(data, section0, section5, txt_sections):
     params = ['[json_gen]', '[json_det_fngheader]', '[json_det_details]',
               '[json_det_refs]']
     details = [get_detail(p, replace=True) for p in params]
@@ -1844,27 +1844,38 @@ def parse_json_detailed(data, section0, section5, sectionh, txt_sections):
         lines = [line.strip() for line in txt_sections[i + 1].split('\n')
                  if line.strip()]
         data[section] = write_json_detailed(
-            details[0], lines, section, section0, section5, sectionh,
-            *details[1:]
+            details[0], lines, section, section0, section5, *details[1:]
         )
 
 
-def write_json_detailed(json_det_g, json_lns, json_section, section0, section5,
-                        sectionh, json_miss_h, json_miss_d, json_miss_r):
-    if json_section in (section0, section5, sectionh):
+def write_json_detailed(json_det_g, json_lns, json_section, section0,
+                        section5, json_miss_h, json_miss_d, json_miss_r):
+    if json_section in (section0, section5):
         json_detailed_add(json_det_g, json_section, json_lns, section0)
-    elif json_section.startswith((BOLD_STRINGS[2])):
-        return format_json_detailed(json_lns)
-    elif json_section.startswith(BOLD_STRINGS[3]):
-        return json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
-                                  json_miss_r)
-    elif json_section.startswith(BOLD_STRINGS[4]):
-        return json_detailed_fng(json_lns, json_detailed_sources(2, 0))
-    elif json_section.startswith(BOLD_STRINGS[5]):
-        return json_detailed_ins(json_lns, json_detailed_sources(7, 2))
-    elif json_section.startswith((BOLD_STRINGS[7])):
-        return format_json_detailed(json_lns, is_l10n=True)
-    return list(json_lns)
+    json_conditions = {
+        (f'[{BOLD_STRINGS[1]}', BOLD_STRINGS[9]):
+            lambda: json_detailed_response(json_lns),
+        BOLD_STRINGS[2]:
+            lambda: format_json_detailed(json_lns),
+        BOLD_STRINGS[3]:
+            lambda: json_detailed_miss(json_lns, l_miss,
+                                       json_miss_h, json_miss_d,
+                                       json_miss_r),
+        BOLD_STRINGS[4]:
+            lambda: json_detailed_fng(
+                json_lns, json_detailed_sources(2, 0)),
+        BOLD_STRINGS[5]:
+            lambda: json_detailed_ins(
+                json_lns, json_detailed_sources(7, 2)),
+        BOLD_STRINGS[7]:
+            lambda: format_json_detailed(json_lns, is_l10n=True),
+    }
+    return next(
+        (condition()
+         for prefix, condition in json_conditions.items()
+         if json_section.startswith(prefix)),
+        list(json_lns),
+    )
 
 
 def json_detailed_add(json_det_g, json_section, json_lns, section0):
@@ -1873,6 +1884,22 @@ def json_detailed_add(json_det_g, json_section, json_lns, section0):
     if json_section == section0:
         json_data = {json_det_g: BANNER_VERSION, **json_data, }
     return json_data
+
+
+def json_detailed_response(json_lns):
+    header_key = get_detail('[json_det_fngheader]', replace=True)
+    value_key = get_detail('[json_det_fngval]', replace=True)
+    result = []
+    for line in json_lns:
+        line = line.strip()
+        if not line or ':' not in line:
+            continue
+        header, value = line.split(':', 1)
+        result.append({
+            header_key: header.strip(),
+            value_key: value.strip()
+        })
+    return result
 
 
 def format_json_detailed(json_lns, is_l10n=False):
