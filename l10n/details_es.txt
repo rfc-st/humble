@@ -2103,3 +2103,6 @@ Resultado
 
 [json_det_empty_h]
 Cabeceras
+
+[json_det_compat]
+Referencia

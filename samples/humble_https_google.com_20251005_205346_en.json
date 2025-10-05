@@ -1,8 +1,8 @@
 {
     "[0. Info]": {
-        "Date": "2025/10/04 - 20:08:26",
+        "Date": "2025/10/05 - 20:53:45",
         "URL": "https://google.com",
-        "File": "humble_https_google.com_20251004_200826_en.json"
+        "File": "humble_https_google.com_20251005_205346_en.json"
     },
     "[1. Enabled HTTP Security Headers]": [
         {
@@ -11,7 +11,7 @@
         },
         {
             "Header": "Content-Security-Policy-Report-Only",
-            "Value": "object-src 'none';base-uri 'self';script-src 'nonce-uyIG0UivNGvJjkIlHUOHPg' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"
+            "Value": "object-src 'none';base-uri 'self';script-src 'nonce-BmVy7hTZXJwMseLMlTHrzQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"
         },
         {
             "Header": "Content-Type",
@@ -35,7 +35,7 @@
         },
         {
             "Header": "Set-Cookie",
-            "Value": "AEC=AaJma5tbdZdIStSjOKotCgNi6NIGy-ZN1zIqg8hWyTC-j7WHt7-tN84HJAs; expires=Thu, 02-Apr-2026 18:08:25 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax, __Secure-ENID=28.SE=n85wvRn6-8krJG63aXmllv0mvc3c9a0AlzpC9V9Tz_HY_-mx2SGCU6iSyi3Gmcd9FTt1srH6dUQw9pylxSUTYrCWqn8cscYiv8e_awv_iFZVFifDZedU4vMp5-WrgKXjr_c_cLJWjeVdkq_8Op5n3jUH45WaqlK3gFBM4o36FWK5TycJTxq14w7ijD3jJfjSP-O-KHnRq7yrOTYQfawvVA4Ff2ZTk05FYZto_nZnw8_E0FZW8xJMty7XFIETyYHC; expires=Wed, 04-Nov-2026 10:26:43 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax"
+            "Value": "AEC=AaJma5vsgG7asK5T5cHzu8mWtR4_hVMr-a6ImtIlrebhcjbnx-2LmDuXkg; expires=Fri, 03-Apr-2026 18:53:45 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax, __Secure-ENID=28.SE=PSWnuB7T8gbnDDXeiyMLsIMztsDQjf5PHQ5Ec2XNVQs-D54K_dmRsVpGZTFPwYoRbjyk8yfl2_QQKt1H2wiydjxg1KO7l6I3flpdELZnPfItuZwfpzV2uGQi3wq-3zA-tViUPP89qBWpzVNl-nn2sXxVS75YQUz0btOpOMVs2B5dxXDdAokM9HPbOdsz4nLEoa572B1hx9lEsUiR5hiA4zK3FYPBGy2D5IQ0op9F4OPf2JGiDi3QL4nIGIKCgjF1; expires=Thu, 05-Nov-2026 11:12:03 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax"
         },
         {
             "Header": "Strict-Transport-Security",
@@ -200,54 +200,54 @@
             ]
         }
     ],
-    "[5. Empty HTTP Response Headers Values]": [
-        "Empty HTTP headers (and are therefore considered disabled):",
-        "Nothing to report, all seems OK!"
-    ],
+    "[5. Empty HTTP Response Headers Values]": {
+        "Description": "Empty HTTP headers (and are therefore considered disabled)",
+        "Result": "Nothing to report, all seems OK!"
+    },
     "[6. Browser Compatibility for Enabled HTTP Security Headers]": [
         {
             "Header": "Cache-Control",
-            "References": "https://caniuse.com/?search=Cache-Control"
+            "Reference": "https://caniuse.com/?search=Cache-Control"
         },
         {
             "Header": "Content-Security-Policy-Report-Only",
-            "References": "https://caniuse.com/?search=Content-Security-Policy-Report-Only"
+            "Reference": "https://caniuse.com/?search=Content-Security-Policy-Report-Only"
         },
         {
             "Header": "Content-Type",
-            "References": "https://caniuse.com/?search=Content-Type"
+            "Reference": "https://caniuse.com/?search=Content-Type"
         },
         {
             "Header": "Cross-Origin-Opener-Policy",
-            "References": "https://caniuse.com/?search=Cross-Origin-Opener-Policy"
+            "Reference": "https://caniuse.com/?search=Cross-Origin-Opener-Policy"
         },
         {
             "Header": "Permissions-Policy",
-            "References": "https://caniuse.com/?search=Permissions-Policy"
+            "Reference": "https://caniuse.com/?search=Permissions-Policy"
         },
         {
             "Header": "Report-To",
-            "References": "https://caniuse.com/?search=Report-To"
+            "Reference": "https://caniuse.com/?search=Report-To"
         },
         {
             "Header": "Set-Cookie",
-            "References": "https://caniuse.com/?search=Set-Cookie"
+            "Reference": "https://caniuse.com/?search=Set-Cookie"
         },
         {
             "Header": "Strict-Transport-Security",
-            "References": "https://caniuse.com/?search=Strict-Transport-Security"
+            "Reference": "https://caniuse.com/?search=Strict-Transport-Security"
         },
         {
             "Header": "X-Frame-Options",
-            "References": "https://caniuse.com/?search=X-Frame-Options"
+            "Reference": "https://caniuse.com/?search=X-Frame-Options"
         },
         {
             "Header": "X-XSS-Protection",
-            "References": "https://caniuse.com/?search=X-XSS-Protection"
+            "Reference": "https://caniuse.com/?search=X-XSS-Protection"
         }
     ],
     "[7. Analysis Results]": {
-        "Duration": "Done in 0.35 seconds! (changes with respect to the last analysis in parentheses)",
+        "Duration": "Done in 0.33 seconds! (changes with respect to the last analysis in parentheses)",
         "Enabled headers": "11 (First Analysis)",
         "Missing headers": "9 (First Analysis)",
         "Fingerprint headers": "1 (First Analysis)",

@@ -2117,3 +2117,6 @@ Result
 
 [json_det_empty_h]
 Headers
+
+[json_det_compat]
+Reference

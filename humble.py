@@ -1867,7 +1867,8 @@ def write_json_detailed(json_lns, json_section, json_miss_h, json_miss_d,
         BOLD_STRINGS[6]:
             lambda: json_detailed_empty(json_lns),
         BOLD_STRINGS[7]:
-            lambda: format_json_detailed(json_lns, is_l10n=True),
+            lambda: format_json_detailed(json_lns, is_compat=True,
+                                         is_l10n=True),
         BOLD_STRINGS[8]:
             lambda: json_detailed_results(json_lns),
     }
@@ -1919,10 +1920,14 @@ def json_detailed_response(json_lns):
     return result
 
 
-def format_json_detailed(json_lns, is_l10n=False):
+def format_json_detailed(json_lns, is_compat=False, is_l10n=False):
     l10n_txt = '[json_det_refs]' if is_l10n else '[json_det_fngval]'
-    header_t, value_t = [get_detail(text, replace=True) for text in
-                         ['[json_det_fngheader]', l10n_txt]]
+    if is_compat:
+        header_t = get_detail('[json_det_fngheader]', replace=True)
+        value_t = get_detail(l10n_txt, replace=True)[:-1]
+    else:
+        header_t, value_t = [get_detail(text, replace=True) for text in
+                             ['[json_det_fngheader]', l10n_txt]]
     result = []
     for line in json_lns:
         line = line.strip()
