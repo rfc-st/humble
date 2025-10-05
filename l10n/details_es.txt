@@ -2094,3 +2094,12 @@ Referencias
 
 [json_det_analysis]
 Duración
+
+[json_det_empty]
+Descripción
+
+[json_det_empty_s]
+Resultado
+
+[json_det_empty_h]
+Cabeceras

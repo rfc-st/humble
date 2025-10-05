@@ -2108,3 +2108,12 @@ References
 
 [json_det_analysis]
 Duration
+
+[json_det_empty]
+Description
+
+[json_det_empty_s]
+Result
+
+[json_det_empty_h]
+Headers

@@ -197,7 +197,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-10-04', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-10-05', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1823,35 +1823,31 @@ def json_detailed_sources(file_idx, slice_idx):
 
 
 def generate_json_detailed(final_filename, temp_filename):
-    section5 = (get_detail(JSON_SECTION[2], replace=True))
     with open(temp_filename, 'r', encoding='utf8') as txt_file, \
          open(final_filename, 'w', encoding='utf8') as json_file:
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
-        parse_json_detailed(data, section5, txt_sections)
+        parse_json_detailed(data, txt_sections)
         dump(data, json_file, indent=4, ensure_ascii=False)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
     sys.exit()
 
 
-def parse_json_detailed(data, section5, txt_sections):
-    params = ['[json_gen]', '[json_det_fngheader]', '[json_det_details]',
-              '[json_det_refs]']
+def parse_json_detailed(data, txt_sections):
+    params = ['[json_det_fngheader]', '[json_det_details]', '[json_det_refs]']
     details = [get_detail(p, replace=True) for p in params]
     for i in range(0, len(txt_sections), 2):
         section = f'[{txt_sections[i]}]'
         lines = [line.strip() for line in txt_sections[i + 1].split('\n')
                  if line.strip()]
         data[section] = write_json_detailed(
-            details[0], lines, section, section5, *details[1:]
+            lines, section, *details
         )
 
 
-def write_json_detailed(json_det_g, json_lns, json_section, section5,
-                        json_miss_h, json_miss_d, json_miss_r):
-    if json_section == section5:
-        json_detailed_add(json_det_g, json_section, json_lns,)
+def write_json_detailed(json_lns, json_section, json_miss_h, json_miss_d,
+                        json_miss_r):
     json_conditions = {
         BOLD_STRINGS[0]:
             lambda: json_detailed_info(json_lns),
@@ -1860,15 +1856,16 @@ def write_json_detailed(json_det_g, json_lns, json_section, section5,
         BOLD_STRINGS[2]:
             lambda: format_json_detailed(json_lns),
         BOLD_STRINGS[3]:
-            lambda: json_detailed_miss(json_lns, l_miss,
-                                       json_miss_h, json_miss_d,
-                                       json_miss_r),
+            lambda: json_detailed_miss(json_lns, l_miss, json_miss_h,
+                                       json_miss_d, json_miss_r),
         BOLD_STRINGS[4]:
             lambda: json_detailed_fng(
                 json_lns, json_detailed_sources(2, 0)),
         BOLD_STRINGS[5]:
             lambda: json_detailed_ins(
                 json_lns, json_detailed_sources(7, 2)),
+        BOLD_STRINGS[6]:
+            lambda: json_detailed_empty(json_lns),
         BOLD_STRINGS[7]:
             lambda: format_json_detailed(json_lns, is_l10n=True),
         BOLD_STRINGS[8]:
@@ -1882,12 +1879,17 @@ def write_json_detailed(json_det_g, json_lns, json_section, section5,
     )
 
 
-def json_detailed_add(json_det_g, json_section, json_lns, section0):
-    json_data = {}
-    format_json(json_data, json_lns)
-    if json_section == section0:
-        json_data = {json_det_g: BANNER_VERSION, **json_data, }
-    return json_data
+def json_detailed_empty(json_lns):
+    desc_key = get_detail('[json_det_empty]', replace=True)
+    status_key = get_detail('[json_det_empty_s]', replace=True)
+    empty_key = get_detail('[json_det_empty_h]', replace=True)
+    lines = [line.strip() for line in json_lns if line.strip()]
+    result = {desc_key: lines[0][:-1]}
+    if e_cnt == 0:
+        result[status_key] = lines[1]
+    else:
+        result[empty_key] = l_empty
+    return result
 
 
 def json_detailed_info(json_lns):
