@@ -168,7 +168,8 @@ REQ_HEADERS = {
     'Pragma': 'no-cache',
     'Upgrade-Insecure-Requests': '1',
 }
-REQ_TIMEOUT = 5
+REQ_TIMEOUT = 15
+REQ_WARNING = 6
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
 SECTION_V = ('[no_enabled]', '[no_missing]', '[no_fingerprint]',
@@ -197,7 +198,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-10-05', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-10-06', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2002,8 +2003,8 @@ def json_detailed_fng(json_lns, fingerprint_set):
     return result
 
 
-def json_detailed_update_entry(line, ref_t, ref_o, entry, header, header_t,
-                               detail_t, result, is_header):
+def json_detailed_append_ins(line, ref_t, ref_o, entry, header, header_t,
+                             detail_t, result, is_header):
     if is_header:
         if entry:
             result.append(entry)
@@ -2028,15 +2029,14 @@ def json_detailed_process_ins(line, checks_list, ref_t, ref_o, entry, header,
             for key, val in checks_list
         )
     )
-    return json_detailed_update_entry(line, ref_t, ref_o, entry, header,
-                                      header_t, detail_t, result, is_header)
+    return json_detailed_append_ins(line, ref_t, ref_o, entry, header,
+                                    header_t, detail_t, result, is_header)
 
 
 def json_detailed_ins(json_lns, insecure_checks):
     header_t = get_detail('[json_det_inscheck]', replace=True)
     detail_t = get_detail('[json_det_details]', replace=True)
     ref_t = get_detail('[json_det_refs]', replace=True)
-    ref_o = PDF_CONDITIONS[0]
     if args.lang:
         insecure_checks = {check.split(": ")[0] + ":" for check in
                            insecure_checks}
@@ -2047,7 +2047,7 @@ def json_detailed_ins(json_lns, insecure_checks):
     for line in json_lns:
         if line := line.strip():
             entry, header = json_detailed_process_ins(
-                line, checks_list, ref_t, ref_o, entry,
+                line, checks_list, ref_t, PDF_CONDITIONS[0], entry,
                 header, header_t, detail_t, result
             )
     if entry:
@@ -2730,10 +2730,17 @@ def make_http_request(proxy):  # sourcery skip: extract-method
         # disable these checks to allow the analysis of URLs in certain cases
         # (E.g., development environments, hosts with outdated
         # servers/software, self-signed certificates, etc.).
-        r = session.get(URL, allow_redirects=not args.redirects,
-                        verify=False, headers=custom_headers,
-                        timeout=REQ_TIMEOUT, proxies=proxy)
+        r = session.get(
+            URL,
+            allow_redirects=not args.redirects,
+            verify=False,
+            headers=custom_headers,
+            timeout=REQ_TIMEOUT,
+            proxies=proxy,
+        )
         return r, None, None
+    except requests.exceptions.Timeout as e:
+        return None, None, e
     except requests.exceptions.SSLError:
         return None, None, None
     except requests.exceptions.RequestException as e:
@@ -2743,6 +2750,11 @@ def make_http_request(proxy):  # sourcery skip: extract-method
 
 
 def process_requests_exception(exception):
+    if isinstance(exception, requests.exceptions.Timeout):
+        delete_lines()
+        delete_lines()
+        print(f"\n{get_detail('[e_timeout]', replace=True)}")
+        sys.exit()
     if exception_id := exception_d.get(type(exception)):
         print_http_exception(exception_id, exception)
     else:
@@ -2781,17 +2793,16 @@ def process_http_request(status_code, reliable, body, proxy):
             result['exception'] = e
         finally:
             done.set()
+
     thread = Thread(target=worker, daemon=True)
     thread.start()
-    done.wait(timeout=REQ_TIMEOUT)
-    if not done.is_set():
+    if not done.wait(timeout=REQ_TIMEOUT - REQ_WARNING):
         print(get_detail('[unreliable_analysis]'))
-        done.wait(timeout=REQ_TIMEOUT)
-        if not done.is_set():
-            delete_lines()
-            delete_lines()
-            print(f"\n{get_detail('[e_timeout]', replace=True)}")
-            sys.exit()
+    if not done.wait(timeout=REQ_TIMEOUT):
+        delete_lines()
+        delete_lines()
+        print(f"\n{get_detail('[e_timeout]', replace=True)}")
+        sys.exit()
     r = result.get('r')
     exception = result.get('exception')
     return process_http_response(r, exception, status_code, reliable, body)
