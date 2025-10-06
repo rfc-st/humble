@@ -1923,12 +1923,10 @@ def json_detailed_response(json_lns):
 
 def format_json_detailed(json_lns, is_compat=False, is_l10n=False):
     l10n_txt = '[json_det_refs]' if is_l10n else '[json_det_fngval]'
+    header_t = get_detail('[json_det_fngheader]', replace=True)
+    value_t = get_detail(l10n_txt, replace=True)
     if is_compat:
-        header_t = get_detail('[json_det_fngheader]', replace=True)
-        value_t = get_detail(l10n_txt, replace=True)[:-1]
-    else:
-        header_t, value_t = [get_detail(text, replace=True) for text in
-                             ['[json_det_fngheader]', l10n_txt]]
+        value_t = value_t[:-1]
     result = []
     for line in json_lns:
         line = line.strip()
@@ -1953,7 +1951,6 @@ def json_detailed_add_miss(line, l_miss, json_miss_h, json_miss_d, json_miss_r,
         entry[json_miss_r].append(line.replace(json_det_mref, "").strip())
     elif current_header:
         entry[json_miss_d].append(line)
-
     return entry, current_header
 
 
@@ -2034,9 +2031,8 @@ def json_detailed_process_ins(line, checks_list, ref_t, ref_o, entry, header,
 
 
 def json_detailed_ins(json_lns, insecure_checks):
-    header_t = get_detail('[json_det_inscheck]', replace=True)
-    detail_t = get_detail('[json_det_details]', replace=True)
-    ref_t = get_detail('[json_det_refs]', replace=True)
+    header_t, detail_t, ref_t = (get_detail(text, replace=True) for text in [
+        '[json_det_inscheck]', '[json_det_details]', '[json_det_refs]'])
     if args.lang:
         insecure_checks = {check.split(": ")[0] + ":" for check in
                            insecure_checks}
