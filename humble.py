@@ -73,7 +73,6 @@ from colorama import Fore, Style, init
 from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
 
-ANALYSIS_DURATION = ("Done in", "Realizado")
 BANNER = '''  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
  | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
@@ -95,7 +94,6 @@ DTD_CONTENT = '''<!ELEMENT analysis (section+)>
 <!ELEMENT item (#PCDATA)>
 <!ATTLIST item name CDATA #IMPLIED>
 '''
-DURATION_PREFIXES = ("Done in", "Realizado")
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'nel', 'no-vary-search', 'observe-browsing-topics',
@@ -1195,7 +1193,8 @@ def print_general_info(reliable, export_filename):
         delete_lines(reliable=False) if reliable else delete_lines()
         print(f"\n{BANNER}\n ({BANNER_VERSION})")
     elif args.output != 'pdf':
-        print(f"\n\n{HUMBLE_DESC}\n{BANNER_VERSION}\n")
+        humble_desc = get_detail('[humble_desc]', replace=True)
+        print(f"\n\n{humble_desc}\n{BANNER_VERSION}\n")
     print_basic_info(export_filename)
     print_extended_info(args, reliable, status_code)
 
@@ -2066,12 +2065,13 @@ def json_detailed_ins_checks(checks_list, check):
 
 def json_detailed_results(json_lns):
     result = {}
+    duration_t = get_detail('[analysis_time]', replace=True)
     duration_key = get_detail('[json_det_analysis]', replace=True)
     for line in json_lns:
         line = line.strip()
         if not line:
             continue
-        if line.startswith(ANALYSIS_DURATION):
+        if line.startswith(duration_t.strip()):
             result[duration_key] = line
         elif ':' in line:
             key, value = line.split(':', 1)
@@ -2089,7 +2089,7 @@ def export_pdf_file(tmp_filename):
             self.set_font('Courier', 'B', 9)
             self.set_y(10)
             self.set_text_color(0, 0, 0)
-            self.cell(0, 5, get_detail('[pdf_title]'), new_x="CENTER",
+            self.cell(0, 5, get_detail('[humble_desc]'), new_x="CENTER",
                       new_y="NEXT", align='C')
             self.ln(1)
             self.cell(0, 5, BANNER_VERSION, align='C')
@@ -3246,6 +3246,7 @@ t_nvarysearch = ('except', 'key-order', 'params')
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
 l_origcluster = ['?1']
 
+# https://developer.chrome.com/origintrials/
 # https://github.com/MicrosoftEdge/MSEdgeExplainers
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy

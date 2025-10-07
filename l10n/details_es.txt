@@ -879,8 +879,7 @@
  El único valor permitido es 'IE=edge'
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
 
-
-[pdf_title]
+[humble_desc]
 'humble' (Analizador de cabeceras HTTP)
 
 [pdf_footer]
