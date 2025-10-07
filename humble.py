@@ -198,7 +198,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-10-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-10-07', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1895,7 +1895,7 @@ def json_detailed_empty(json_lns):
 
 
 def json_detailed_info(json_lns):
-    info = {}
+    info = {get_detail('[json_gen]', replace=True): BANNER_VERSION}
     for line in json_lns:
         if ':' not in line:
             continue
@@ -3246,34 +3246,38 @@ t_nvarysearch = ('except', 'key-order', 'params')
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
 l_origcluster = ['?1']
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
+# https://github.com/MicrosoftEdge/MSEdgeExplainers
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 t_per_broad = ('*', ' * ')
 t_per_dep = ('document-domain', 'window-placement')
 t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
-            'attribution-reporting', 'autoplay', 'battery', 'bluetooth',
-            'browsing-topics', 'camera', 'captured-surface-control', 'ch-ua',
-            'ch-ua-arch', 'ch-ua-bitness', 'ch-ua-full-version',
-            'ch-ua-full-version-list', 'ch-ua-mobile', 'ch-ua-model',
-            'ch-ua-platform', 'ch-ua-platform-version', 'ch-ua-wow64',
-            'clipboard-read', 'clipboard-write', 'compute-pressure',
-            'conversion-measurement', 'cross-origin-isolated',
-            'deferred-fetch', 'deferred-fetch-minimal', 'device-attributes',
-            'digital-credentials-get', 'direct-sockets', 'display-capture',
-            'encrypted-media', 'execution-while-not-rendered',
-            'execution-while-out-of-viewport', 'focus-without-user-activation',
-            'fullscreen', 'gamepad', 'geolocation', 'gyroscope', 'hid',
-            'identity-credentials-get', 'idle-detection', 'interest-cohort',
-            'join-ad-interest-group', 'keyboard-map', 'language-detector',
-            'layout-animations', 'local-fonts', 'magnetometer', 'microphone',
-            'midi', 'navigation-override', 'otp-credentials', 'payment',
-            'picture-in-picture', 'publickey-credentials-create',
-            'publickey-credentials-get', 'run-ad-auction', 'screen-wake-lock',
-            'serial', 'shared-autofill', 'smart-card', 'speaker-selection',
-            'storage-access', 'summarizer', 'sync-script', 'sync-xhr',
-            'translator', 'trust-token-redemption', 'unload', 'usb',
-            'vertical-scroll', 'web-share', 'window-management',
-            'xr-spatial-tracking')
+            'attribution-reporting', 'autofill', 'autoplay', 'battery',
+            'bluetooth', 'browsing-topics', 'camera',
+            'captured-surface-control', 'ch-ua', 'ch-ua-arch', 'ch-ua-bitness',
+            'ch-ua-full-version', 'ch-ua-full-version-list', 'ch-ua-mobile',
+            'ch-ua-model', 'ch-ua-platform', 'ch-ua-platform-version',
+            'ch-ua-wow64', 'clipboard-read', 'clipboard-write',
+            'compute-pressure', 'conversion-measurement',
+            'cross-origin-isolated', 'deferred-fetch',
+            'deferred-fetch-minimal', 'device-attributes',
+            'digital-credentials-create', 'digital-credentials-get',
+            'direct-sockets', 'display-capture', 'encrypted-media',
+            'execution-while-not-rendered', 'execution-while-out-of-viewport',
+            'focus-without-user-activation', 'fullscreen', 'gamepad',
+            'geolocation', 'gyroscope', 'hid', 'identity-credentials-get',
+            'idle-detection', 'interest-cohort', 'join-ad-interest-group',
+            'keyboard-map', 'language-detector', 'language-model',
+            'layout-animations', 'local-fonts', 'magnetometer', 'manual-text',
+            'media-playback-while-not-visible', 'microphone', 'midi',
+            'monetization', 'navigation-override', 'otp-credentials',
+            'payment', 'picture-in-picture', 'publickey-credentials-create',
+            'publickey-credentials-get', 'rewriter', 'run-ad-auction',
+            'screen-wake-lock', 'serial', 'shared-autofill', 'smart-card',
+            'speaker-selection', 'storage-access', 'summarizer', 'sync-script',
+            'sync-xhr', 'translator', 'trust-token-redemption', 'unload',
+            'usb', 'vertical-scroll', 'web-share', 'window-management',
+            'writer', 'xr-spatial-tracking')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
 # https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
