@@ -232,25 +232,24 @@ def process_proxy_url(proxy_url, timeout):
     except ValueError:
         delete_lines()
         print_error_detail('[proxy_port]')
-    failed_result = Event()
+    failed_proxy = Event()
     proxy_thread = Thread(target=check_proxy_url, args=(proxy_host, proxy_port,
-                                                        timeout,
-                                                        failed_result),
+                                                        timeout, failed_proxy),
                           daemon=True)
     proxy_thread.start()
     proxy_thread.join(timeout)
-    if proxy_thread.is_alive() or failed_result.is_set():
+    if proxy_thread.is_alive() or failed_proxy.is_set():
         delete_lines()
         print_error_detail('[proxy_url]')
     return True
 
 
-def check_proxy_url(proxy_host, proxy_port, timeout, failed_result):
+def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
     try:
         with create_connection((proxy_host, proxy_port), timeout=timeout):
             pass
     except Exception:
-        failed_result.set()
+        failed_proxy.set()
 
 
 def check_updates(local_version):
@@ -1827,26 +1826,26 @@ def generate_json_detailed(final_filename, temp_filename):
          open(final_filename, 'w', encoding='utf8') as json_file:
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
-        parse_json_detailed(data, txt_sections)
+        json_detailed_parse(data, txt_sections)
         dump(data, json_file, indent=4, ensure_ascii=False)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
     sys.exit()
 
 
-def parse_json_detailed(data, txt_sections):
+def json_detailed_parse(data, txt_sections):
     params = ['[json_det_fngheader]', '[json_det_details]', '[json_det_refs]']
     details = [get_detail(p, replace=True) for p in params]
     for i in range(0, len(txt_sections), 2):
         section = f'[{txt_sections[i]}]'
         lines = [line.strip() for line in txt_sections[i + 1].split('\n')
                  if line.strip()]
-        data[section] = write_json_detailed(
+        data[section] = json_detailed_write(
             lines, section, *details
         )
 
 
-def write_json_detailed(json_lns, json_section, json_miss_h, json_miss_d,
+def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
                         json_miss_r):
     json_conditions = {
         BOLD_STRINGS[0]:
@@ -1854,7 +1853,7 @@ def write_json_detailed(json_lns, json_section, json_miss_h, json_miss_d,
         (f'[{BOLD_STRINGS[1]}', BOLD_STRINGS[9]):
             lambda: json_detailed_response(json_lns),
         BOLD_STRINGS[2]:
-            lambda: format_json_detailed(json_lns),
+            lambda: json_detailed_format(json_lns),
         BOLD_STRINGS[3]:
             lambda: json_detailed_miss(json_lns, l_miss, json_miss_h,
                                        json_miss_d, json_miss_r),
@@ -1867,7 +1866,7 @@ def write_json_detailed(json_lns, json_section, json_miss_h, json_miss_d,
         BOLD_STRINGS[6]:
             lambda: json_detailed_empty(json_lns),
         BOLD_STRINGS[7]:
-            lambda: format_json_detailed(json_lns, is_compat=True,
+            lambda: json_detailed_format(json_lns, is_compat=True,
                                          is_l10n=True),
         BOLD_STRINGS[8]:
             lambda: json_detailed_results(json_lns),
@@ -1920,15 +1919,14 @@ def json_detailed_response(json_lns):
     return result
 
 
-def format_json_detailed(json_lns, is_compat=False, is_l10n=False):
+def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
     l10n_txt = '[json_det_refs]' if is_l10n else '[json_det_fngval]'
     header_t = get_detail('[json_det_fngheader]', replace=True)
     value_t = get_detail(l10n_txt, replace=True)
     if is_compat:
         value_t = value_t[:-1]
     result = []
-    for line in json_lns:
-        line = line.strip()
+    for line in map(str.strip, json_lns):
         if not line:
             continue
         if line.startswith("(*)") or ":" in line:
@@ -1939,7 +1937,7 @@ def format_json_detailed(json_lns, is_compat=False, is_l10n=False):
     return result
 
 
-def json_detailed_add_miss(line, l_miss, json_miss_h, json_miss_d, json_miss_r,
+def json_detailed_miss_add(line, l_miss, json_miss_h, json_miss_d, json_miss_r,
                            json_det_mref, result, entry, current_header):
     if line in l_miss or line.startswith('(*)'):
         if entry:
@@ -1959,7 +1957,7 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
     json_det_mref = PDF_CONDITIONS[0]
     for line in json_lns:
         if line := line.strip():
-            entry, current_header = json_detailed_add_miss(
+            entry, current_header = json_detailed_miss_add(
                 line, l_miss, json_miss_h, json_miss_d, json_miss_r,
                 json_det_mref, result, entry, current_header
             )
@@ -1971,7 +1969,7 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
     return result
 
 
-def json_detailed_process_fng(line, fingerprint_set, entry, current_header,
+def json_detailed_fng_process(line, fingerprint_set, entry, current_header,
                               fng_header, fng_val):
     line_s = line.strip()
     for f in fingerprint_set:
@@ -1988,7 +1986,7 @@ def json_detailed_fng(json_lns, fingerprint_set):
     fng_header = get_detail('[json_det_fngheader]', replace=True)
     fng_val = get_detail('[json_det_fngval]', replace=True)
     for line in json_lns:
-        new_entry, current_header = json_detailed_process_fng(
+        new_entry, current_header = json_detailed_fng_process(
             line, fingerprint_set, entry, current_header, fng_header, fng_val)
         if new_entry != entry:
             if entry:
@@ -1999,7 +1997,7 @@ def json_detailed_fng(json_lns, fingerprint_set):
     return result
 
 
-def json_detailed_append_ins(line, ref_t, ref_o, entry, header, header_t,
+def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
                              detail_t, result, is_header):
     if is_header:
         if entry:
@@ -2014,19 +2012,25 @@ def json_detailed_append_ins(line, ref_t, ref_o, entry, header, header_t,
     return entry, header
 
 
-def json_detailed_process_ins(line, checks_list, ref_t, ref_o, entry, header,
-                              header_t, detail_t, result):
-    is_header = (
-        line.startswith('(*)')
-        or not line.startswith(f"{ref_t}")
-        and any(
-            (val and key in line and val in line)
-            or (not val and line.strip().startswith(key))
-            for key, val in checks_list
-        )
+def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
+    ins_cond = line.startswith('(*)')
+    ins_cond2 = not line.startswith(ref_t)
+    ins_cond3 = any(
+        (val and key in line and val in line)
+        or (not val and line_s.startswith(key))
+        for key, val in checks_list
     )
-    return json_detailed_append_ins(line, ref_t, ref_o, entry, header,
-                                    header_t, detail_t, result, is_header)
+    return ins_cond or (ins_cond2 and ins_cond3)
+
+
+def json_detailed_ins_process(line, checks_list, ref_t, ref_o, entry, header,
+                              header_t, detail_t, result):
+    line_s = line.strip()
+    is_header = json_detailed_ins_headers(line, line_s, checks_list, ref_t)
+    return json_detailed_ins_append(
+        line, ref_t, ref_o, entry, header, header_t, detail_t, result,
+        is_header
+    )
 
 
 def json_detailed_ins(json_lns, insecure_checks):
@@ -2041,7 +2045,7 @@ def json_detailed_ins(json_lns, insecure_checks):
     result, entry, header = [], {}, None
     for line in json_lns:
         if line := line.strip():
-            entry, header = json_detailed_process_ins(
+            entry, header = json_detailed_ins_process(
                 line, checks_list, ref_t, PDF_CONDITIONS[0], entry,
                 header, header_t, detail_t, result
             )
