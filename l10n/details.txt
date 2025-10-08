@@ -1921,7 +1921,9 @@ examples:
   -f Google                            Shows HTTP fingerprint headers related to the term 'Google'
 
 want to contribute?:
-  How to                               https://github.com/rfc-st/humble/#contribute
+  How to                               https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
+  Code of Conduct                      https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md
+  Acknowledgements                     https://github.com/rfc-st/humble/#acknowledgements
 
 [fng_value]
 Value:

@@ -179,7 +179,7 @@ SECTION_V = ('[no_enabled]', '[no_missing]', '[no_fingerprint]',
              '[most_missing]', '[least_missing]', '[most_fingerprints]',
              '[least_fingerprints]', '[most_insecure]', '[least_insecure]',
              '[most_empty]', '[least_empty]')
-SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4)
+SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 20)
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
          f"(humble_sec_style){Fore.GREEN}", '(humble_sec_style)',
@@ -1338,7 +1338,7 @@ def get_epilog_content(id_mode):
     with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
         epilog_lines = epilog_source.readlines()
         epilog_idx = epilog_lines.index(id_mode + '\n')
-    return ''.join(epilog_lines[epilog_idx+1:epilog_idx+18])
+    return ''.join(epilog_lines[epilog_idx+1:epilog_idx+SLICE_INT[12]])
 
 
 def get_fingerprint_headers():
@@ -2865,7 +2865,7 @@ parser.add_argument("-c", dest='compliance', action="store_true", help="Checks\
  URL response HTTP headers for compliance with OWASP 'Secure Headers Project' \
 best practices")
 parser.add_argument('-cicd', dest="cicd", action="store_true", help="Shows \
-only analysis summary, totals and grade in JSON; suitable for CI/CD pipelines")
+only analysis summary, totals and grade in JSON; suitable for CI/CD")
 parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
  follow redirects; if omitted the last redirection will be the one analyzed")
 parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\

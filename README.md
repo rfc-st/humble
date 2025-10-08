@@ -23,6 +23,7 @@
 <a target="_blank" href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_bandit.PNG" title="Results of the last analysis of this tool with bandit"><img src="https://img.shields.io/badge/bandit-passing-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="CodeQL security analysis passed"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="OpenSSF best practices analysis"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md" title="Code Of Conduct 3.0"><img src="https://img.shields.io/badge/Code_of_Conduct-3.0-blue.svg?labelColor=343b41"></a>
 <br />
 <br />
 <br />
@@ -74,7 +75,7 @@
 :heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** <a href="https://testssl.sh/" target="_blank">testssl.sh<a>.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
 :heavy_check_mark: Can use proxies for the analysis.<br />
-:heavy_check_mark: Can output only analysis summary, totals and grade as JSON for CI/CD pipeline integration.<br />
+:heavy_check_mark: Can output only analysis summary, totals and grade as JSON for <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" target="_blank">CI/CD<a>.<br />
 :heavy_check_mark: Shows browser support for enabled HTTP security headers, with data from <a href="https://caniuse.com/" target="_blank">Can I use<a>.<br />
 :heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental<a> headers in each analysis.<br />
 :heavy_check_mark: Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.<br />
@@ -143,10 +144,10 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Linux) - Compliance with OWASP 'Secure Headers Project' best practices">
 </p>
 <br />
-.: (Windows) - JSON summary for CI/CD integration.<br />
+.: (Windows) - JSON summary for CI/CD.<br />
 <p></p>
 <p align="center">
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_cicd.PNG" alt="(Windows) - JSON summary for CI/CD integration">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_cicd.PNG" alt="(Windows) - JSON summary for CI/CD">
 </p>
 <br />
 .: (Linux) - List of HTTP fingerprint headers based on a specific term.<br />
@@ -335,14 +336,14 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-09-26
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-10-08
 
 options:
   -h, --help                           show this help message and exit
   -a                                   Shows statistics of the performed analysis; if the '-u' parameter is ommited they will be global
   -b                                   Shows overall findings; if omitted detailed ones will be shown
   -c                                   Checks URL response HTTP headers for compliance with OWASP 'Secure Headers Project' best practices
-  -cicd                                Shows only analysis summary, totals and grade in JSON; suitable for CI/CD pipelines
+  -cicd                                Shows only analysis summary, totals and grade in JSON; suitable for CI/CD
   -df                                  Do not follow redirects; if omitted the last redirection will be the one analyzed
   -e [TESTSSL_PATH]                    Shows only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
   -f [FINGERPRINT_TERM]                Shows fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 results will be shown
@@ -377,7 +378,9 @@ examples:
   -f Google                            Shows HTTP fingerprint headers related to the term 'Google'
 
 want to contribute?:
-  How to                               https://github.com/rfc-st/humble/#contribute
+  How to                               https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
+  Code of Conduct                      https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md
+  Acknowledgements                     https://github.com/rfc-st/humble/#acknowledgements
 ```
 
 ## Advanced usage (Linux)
