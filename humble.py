@@ -196,7 +196,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-10-07', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-10-08', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -379,8 +379,9 @@ def testssl_command(testssl_temp_path, uri):
         print_error_detail('[notestssl_exec]')
     print("")
     print(f"{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
-    choice = input(f"{get_detail('[testssl_choice]',
-                                 replace=True)} ").strip().lower()
+    choice = input(
+        f"{get_detail('[testssl_choice]', replace=True)} "
+    ).strip().lower()
     if choice != "y":
         sys.exit()
     delete_lines()
@@ -636,15 +637,17 @@ def get_month_counts(year, url_ln):
 
 def get_highlights(adj_url_ln):
     sections_h = SECTION_S[:-1]
-    fields_h = [2, 3, 4, 5, 6]
-    return [f" {print_detail_l(sections_h[i], analytics=True)}\n"
-            f"  {print_detail_l('[best_analysis]', analytics=True)}: "
-            f"{calculate_highlights(adj_url_ln, fields_h[i], min if i else
-                                    max)}\n"
-            f"  {print_detail_l('[worst_analysis]', analytics=True)}: "
-            f"{calculate_highlights(adj_url_ln, fields_h[i], max if i else
-                                    min)}\n"
-            for i in range(len(fields_h))]
+    best_lbl = print_detail_l('[best_analysis]', analytics=True)
+    worst_lbl = print_detail_l('[worst_analysis]', analytics=True)
+    results = []
+    for i, field in enumerate(range(2, 7)):
+        fns_cond = (min, max) if i else (max, min)
+        section_lbl = print_detail_l(sections_h[i], analytics=True)
+        best_val = calculate_highlights(adj_url_ln, field, fns_cond[0])
+        worst_val = calculate_highlights(adj_url_ln, field, fns_cond[1])
+        results.append(f" {section_lbl}\n  {best_lbl}: {best_val}\n"
+                       f"  {worst_lbl}: {worst_val}\n")
+    return results
 
 
 def calculate_highlights(url_ln, field_index, func):
@@ -2013,58 +2016,60 @@ def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
 
 
 def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
-    ins_cond = line.startswith('(*)')
-    ins_cond2 = not line.startswith(ref_t)
-    ins_cond3 = any(
+    header_cond = line.startswith('(*)')
+    header_cond2 = not line.startswith(ref_t)
+    header_cond3 = any(
         (val and key in line and val in line)
         or (not val and line_s.startswith(key))
         for key, val in checks_list
     )
-    return ins_cond or (ins_cond2 and ins_cond3)
+    return header_cond or (header_cond2 and header_cond3)
 
 
-def json_detailed_ins_process(line, checks_list, ref_t, ref_o, entry, header,
-                              header_t, detail_t, result):
-    line_s = line.strip()
-    is_header = json_detailed_ins_headers(line, line_s, checks_list, ref_t)
-    return json_detailed_ins_append(
-        line, ref_t, ref_o, entry, header, header_t, detail_t, result,
-        is_header
-    )
-
-
-def json_detailed_ins(json_lns, insecure_checks):
-    header_t, detail_t, ref_t = (get_detail(text, replace=True) for text in [
-        '[json_det_inscheck]', '[json_det_details]', '[json_det_refs]'])
-    if args.lang:
-        insecure_checks = {check.split(": ")[0] + ":" for check in
-                           insecure_checks}
-    checks_list = []
-    for check in insecure_checks:
-        json_detailed_ins_checks(checks_list, check)
+def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
+                              detail_t):
     result, entry, header = [], {}, None
     for line in json_lns:
         if line := line.strip():
-            entry, header = json_detailed_ins_process(
-                line, checks_list, ref_t, PDF_CONDITIONS[0], entry,
-                header, header_t, detail_t, result
+            line_s = line.strip()
+            is_header = json_detailed_ins_headers(
+                line, line_s, checks_list, ref_t
+            )
+            entry, header = json_detailed_ins_append(
+                line, ref_t, ref_o, entry, header, header_t,
+                detail_t, result, is_header
             )
     if entry:
         result.append(entry)
     return result
 
 
-def json_detailed_ins_checks(checks_list, check):
-    check_s = check.strip()
-    if ':' in check_s:
-        key, val = check_s.split(':', 1)
-        checks_list.append((key.strip(), val.strip()))
-    elif '(' in check_s and ')' in check_s:
-        key, val = check_s.split('(', 1)
-        val = val.rstrip(')')
-        checks_list.append((key.strip(), val.strip()))
-    else:
-        checks_list.append((check_s, None))
+def json_detailed_ins(json_lns, insecure_checks):
+    header_t, detail_t, ref_t = (get_detail(text, replace=True)
+                                 for text in [
+        '[json_det_inscheck]', '[json_det_details]', '[json_det_refs]'])
+    if args.lang:
+        insecure_checks = {check.split(": ")[0] + ":"
+                           for check in insecure_checks}
+    checks_list = []
+    json_detailed_ins_checks(checks_list, insecure_checks)
+    return json_detailed_ins_process(
+        json_lns, checks_list, ref_t, PDF_CONDITIONS[0], header_t, detail_t
+    )
+
+
+def json_detailed_ins_checks(checks_list, insecure_checks):
+    for check in insecure_checks:
+        check_s = check.strip()
+        if ':' in check_s:
+            key, val = check_s.split(':', 1)
+            checks_list.append((key.strip(), val.strip()))
+        elif '(' in check_s and ')' in check_s:
+            key, val = check_s.split('(', 1)
+            val = val.rstrip(')')
+            checks_list.append((key.strip(), val.strip()))
+        else:
+            checks_list.append((check_s, None))
 
 
 def json_detailed_results(json_lns):
