@@ -1940,32 +1940,41 @@ def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
     return result
 
 
-def json_detailed_miss_add(line, l_miss, json_miss_h, json_miss_d, json_miss_r,
-                           json_det_mref, result, entry, current_header):
+def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
+                               json_miss_r, json_det_mref, result, entry,
+                               current_header):
     if line in l_miss or line.startswith('(*)'):
         if entry:
             result.append(entry)
-        current_header = line
-        entry = {json_miss_h: current_header, json_miss_d: [], json_miss_r: []}
-    elif line.startswith(json_det_mref) and current_header:
+        return {json_miss_h: line, json_miss_d: [], json_miss_r: []}, line
+    if line.startswith(json_det_mref) and current_header:
         entry[json_miss_r].append(line.replace(json_det_mref, "").strip())
     elif current_header:
         entry[json_miss_d].append(line)
     return entry, current_header
 
 
-def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
-                       json_miss_r):
+def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
+                           json_miss_r, json_det_mref):
     result, entry, current_header = [], {}, None
-    json_det_mref = PDF_CONDITIONS[0]
     for line in json_lns:
         if line := line.strip():
-            entry, current_header = json_detailed_miss_add(
+            entry, current_header = json_detailed_miss_process(
                 line, l_miss, json_miss_h, json_miss_d, json_miss_r,
                 json_det_mref, result, entry, current_header
             )
     if entry:
         result.append(entry)
+    return result
+
+
+def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
+                       json_miss_r):
+    json_det_mref = PDF_CONDITIONS[0]
+    result = json_detailed_miss_add(
+        json_lns, l_miss, json_miss_h, json_miss_d, json_miss_r,
+        json_det_mref
+    )
     for e in result:
         if len(e[json_miss_d]) == 1:
             e[json_miss_d] = e[json_miss_d][0]
