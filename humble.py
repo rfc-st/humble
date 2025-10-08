@@ -1922,12 +1922,7 @@ def json_detailed_response(json_lns):
     return result
 
 
-def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
-    l10n_txt = '[json_det_refs]' if is_l10n else '[json_det_fngval]'
-    header_t = get_detail('[json_det_fngheader]', replace=True)
-    value_t = get_detail(l10n_txt, replace=True)
-    if is_compat:
-        value_t = value_t[:-1]
+def json_detailed_format_add(json_lns, header_t, value_t):
     result = []
     for line in map(str.strip, json_lns):
         if not line:
@@ -1938,6 +1933,15 @@ def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
         else:
             result.append({header_t: line, value_t: ""})
     return result
+
+
+def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
+    l10n_txt = '[json_det_refs]' if is_l10n else '[json_det_fngval]'
+    header_t = get_detail('[json_det_fngheader]', replace=True)
+    value_t = get_detail(l10n_txt, replace=True)
+    if is_compat:
+        value_t = value_t[:-1]
+    return json_detailed_format_add(json_lns, header_t, value_t)
 
 
 def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
