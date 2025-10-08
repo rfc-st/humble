@@ -4,3 +4,8 @@
 humble.code-workspace
 
 releases.sh
+
+# history file
+analysis_h.txt
+# ignore html output
+/*.html
