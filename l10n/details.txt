@@ -2122,3 +2122,12 @@ Headers
 
 [json_det_compat]
 Reference
+
+[e_custom_headers]
+Error: The following request headers are malformed
+
+[e_custom_eheaders]
+Error: the '-H' parameter requires at least one HTTP response header and its value.
+
+[e_custom_uheaders]
+Error: the '-H' parameter requires the parameter '-u'.

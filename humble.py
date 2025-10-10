@@ -196,7 +196,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-10-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-10-10', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2733,10 +2733,8 @@ def process_server_error(http_status_code, l10n_id):
     sys.exit()
 
 
-def make_http_request(proxy):  # sourcery skip: extract-method
+def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
     try:
-        custom_headers = REQ_HEADERS.copy()
-        custom_headers['User-Agent'] = ua_header
         session = requests.Session()
         session.mount("https://", SSLContextAdapter())
         session.mount("http://", HTTPAdapter())
@@ -2798,13 +2796,47 @@ def process_http_error(r, exception_d):
             print_http_exception(ex, e)
 
 
-def process_http_request(status_code, reliable, body, proxy):
+def parse_request_headers(request_headers):
+    headers, malformed_headers = process_request_headers(request_headers)
+    if malformed_headers:
+        delete_lines()
+        print("")
+        print(
+            f"{get_detail('[e_custom_headers]', replace=True)}"
+            f"; {', '.join(f'\"{header}\"' for header in malformed_headers)}"
+        )
+        sys.exit()
+    return headers
+
+
+def process_request_headers(request_headers):
+    headers = {}
+    malformed_headers = []
+    for header in request_headers:
+        if not header:
+            delete_lines()
+            print("")
+            print(f"{get_detail('[e_custom_eheaders]', replace=True)}")
+            sys.exit()
+        if ":" not in header:
+            malformed_headers.append(header)
+            continue
+        key, value = header.split(":", 1)
+        key, value = key.strip(), value.strip()
+        if not key or not value:
+            malformed_headers.append(header)
+            continue
+        headers[key] = value
+    return headers, malformed_headers
+
+
+def process_http_request(status_code, reliable, body, proxy, custom_headers):
     result = {}
     done = Event()
 
     def worker():
         try:
-            r, _, exception = make_http_request(proxy)
+            r, _, exception = make_http_request(custom_headers, proxy)
             result['r'] = r
             result['exception'] = exception
         except Exception as e:
@@ -2878,6 +2910,9 @@ guidelines for enabling security HTTP response headers on popular frameworks, \
 servers and services")
 parser.add_argument("-grd", dest='grades', action="store_true", help="Shows \
 the checks to grade an analysis, along with advice for improvement")
+parser.add_argument("-H", dest='request_header', type=str, action="append\
+", help='Adds REQUEST_HEADER to the request;  must be in double quotes and can\
+ be used multiple times, e.g. -H "Host: example.com"')
 parser.add_argument("-if", dest='input_file', type=str, help="Analyzes \
 'INPUT_FILE': must contain HTTP response headers and values separated by ': ';\
  E.g., 'server: nginx'")
@@ -2950,6 +2985,10 @@ if '-if' in sys.argv:
         sys.exit()
     else:
         headers, reliable, status_code = analyze_input_file(args.input_file)
+
+if '-H' in sys.argv and not URL:
+    print_error_detail('[e_custom_uheaders]')
+    sys.exit()
 
 if '-ua' in sys.argv:
     ua_header = parse_user_agent(user_agent=True)
@@ -3031,9 +3070,15 @@ if '-if' not in sys.argv:
     proxy = None
     if args.proxy and process_proxy_url(args.proxy, 3.0):
         proxy = {"http": args.proxy, "https": args.proxy}
+    custom_headers = REQ_HEADERS.copy()
+    if '-H' in sys.argv:
+        added_custom_headers = parse_request_headers(args.request_header)
+        custom_headers.update(added_custom_headers)
+    custom_headers['User-Agent'] = ua_header
     headers, status_code, reliable, body = process_http_request(status_code,
                                                                 reliable, body,
-                                                                proxy)
+                                                                proxy,
+                                                                custom_headers)
     if body:
         http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)
 

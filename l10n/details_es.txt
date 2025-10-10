@@ -2105,3 +2105,12 @@ Cabeceras
 
 [json_det_compat]
 Referencia
+
+[e_custom_headers]
+Error: Estas cabeceras de respuesta no están bien formadas
+
+[e_custom_eheaders]
+Error: el parámetro '-H' requiere de al menos una cabecera de respuesta y sus valores.
+
+[e_custom_uheaders]
+Error: el parámetro '-H' requiere el parámetro '-u'.
