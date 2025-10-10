@@ -139,6 +139,12 @@ Options used: -f -g -p -U -s --hints
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_encryption_s.PNG" alt="(Linux) - SSL/TLS checks (requires https://testssl.sh/ and Linux/Unix client)">
 </p>
 <br />
+.: (Linux) - Custom HTTP request header.<br />
+<p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_request_header.PNG" alt="(Linux) - Custom HTTP request header">
+</p>
+<br />
 .: (Linux) - Compliance with OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">'Secure Headers Project'<a> best practices.
 <p></p>
 <p align="center">
