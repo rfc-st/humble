@@ -1568,6 +1568,9 @@ Cabeceras de respuesta HTTP
 [first_analysis]
 Primer análisis
 
+[notaval_analysis]
+No disponible
+
 [no_changes]
 Sin cambios
 
@@ -1875,8 +1878,8 @@ Error: El parámetro '-op' requiere el parámetro '-o'.
 [args_noexportpath]
 Error: No existe la ruta indicada
 
-[args_nowr]
-Erorr: Este usuario no tiene permisos de escritura en la ruta indicada
+[args_pathe]
+Error: No se puede usar la ruta
 
 [args_input_traversal]
 Error: El nombre del fichero, o la ruta absoluta, indicados parecen erróneos

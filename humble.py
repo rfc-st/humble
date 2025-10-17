@@ -430,6 +430,8 @@ def get_analysis_results():
 
 
 def save_analysis_results(t_cnt):
+    if not validate_history_file():
+        return ("Not available",) * 6
     with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as all_analysis:
         all_analysis.seek(0)
         url_ln = [line for line in all_analysis if URL in line]
@@ -468,6 +470,8 @@ def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
                              e_cnt, t_cnt):
     if analysis_totals[0] == "First":
         return [get_detail('[first_analysis]', replace=True)] * 6
+    elif analysis_totals[0] == "Not available":
+        return [get_detail('[notaval_analysis]', replace=True)] * 6
     current = [int(val) for val in analysis_totals]
     differences = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
     return [get_detail('[no_changes]', replace=True) if (d - c) == 0
@@ -1477,15 +1481,29 @@ def check_input_traversal(user_input):
         sys.exit()
 
 
-def check_path_permissions(output_path):
+def validate_path(output_path):
+    # Validates if there are errors with the supplied path.
     try:
-        open(path.join(output_path, HUMBLE_FILES[1]), 'w')
-    except PermissionError:
-        print(f"\n {get_detail('[args_nowr]', replace=True)} \
-('{output_path}')")
+        with open(path.join(output_path, HUMBLE_FILES[1]), 'w'):
+            pass
+    except OSError as e:
+        print(f"\n {get_detail('[args_pathe]', replace=True)} '{output_path}' \
+({e.strerror})")
         sys.exit()
     else:
         remove(path.join(output_path, HUMBLE_FILES[1]))
+
+
+def validate_history_file():
+    # Validates if the analysis history file (analysis_h.txt) can be created in
+    # the current path, avoiding errors in restricted filesystems such as
+    # those used by AI like 'gemini-cli'.
+    try:
+        with open(path.join(OS_PATH, HUMBLE_FILES[0]), 'a+', encoding='utf8'):
+            pass
+    except OSError:
+        return False
+    return True
 
 
 def check_output_path(args, output_path):
@@ -1493,7 +1511,7 @@ def check_output_path(args, output_path):
     if args.output is None:
         print_error_detail('[args_nooutputfmt]')
     elif path.exists(output_path):
-        check_path_permissions(output_path)
+        validate_path(output_path)
     else:
         print(f"\n {get_detail('[args_noexportpath]', replace=True)} \
 ('{output_path}')")
