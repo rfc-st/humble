@@ -317,16 +317,14 @@ $ docker rmi humble:1.53
 > Python 3.11 or higher is required.
 
 ```bash
-# Verify that the 'humble' package contains 'Homepage: https://github.com/rfc-st/humble'
+# Verify that the output contains 'Homepage: https://github.com/rfc-st/humble'
 $ apt show humble
 
-# Install 'humble' and grant permissions (e.g. to enable analysis history and export analysis)
+# Install 'humble'
 $ sudo apt install humble
-$ sudo chmod -R a+rwx /usr/share/humble
 
 # Analyze! :)
-$ cd /usr/share/humble
-$ python3 humble.py -u https://google.com
+$ humble -u https://google.com
 
 # Updating 'humble' (monthly)
 $ sudo apt update
