@@ -524,7 +524,7 @@ Thanks for downloading _'humble'_, for trying it and for your time!.
 * İDRİS BUDAK for reporting the need to <a href="https://github.com/rfc-st/humble/commit/f85dd7811859fd2e403a0ecd848b21db20949841">this</a> check.
 * <a href="https://github.com/ilLuSion-007">ilLuSion-007</a> for <a href="https://github.com/rfc-st/humble/pull/32">this</a>.
 * <a href="https://github.com/javelinsoft">javelinsoft</a> for <a href="https://github.com/rfc-st/humble/commit/1f50e7109411b5b15c9a75ccb7760a8f16db7c65">this</a>.
-* <a href="https://www.linkedin.com/in/jdelamo/">Julio</a> for testing on macOS.
+* <a href="https://www.linkedin.com/in/jdelamo/">Julio</a> for testing on macOS and for <a href="https://github.com/rfc-st/humble/commit/e5f16f51dbb8b8e7d5d4b41797055899f399a69b">this</a> suggestion.
 * <a href="https://github.com/kazet">kazet</a> for <a href="https://github.com/rfc-st/humble/pull/18">this</a> suggestion.
 * <a href="https://github.com/manuel-sommer">manuel-sommer</a> for <a href="https://github.com/rfc-st/humble/issues/8">this</a>, <a href="https://github.com/rfc-st/humble/issues/10">this</a> and <a href="https://github.com/rfc-st/humble/issues/13">this</a>!.
 * <a href="https://github.com/mfabbri">mfabbri</a> for <a href="https://github.com/rfc-st/humble/issues/25">this</a>.
