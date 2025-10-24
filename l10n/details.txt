@@ -868,8 +868,9 @@
  Content-Type (Incorrect Value - Response body)
 
 [ictlmeta]
- The only allowed value is 'text/html; charset=utf-8'
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+ The only allowed values are 'text/html; charset=utf-8' or 'text/html; charset=UTF-8'
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#charset
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv
 
 [ixuameta_h]
  X-UA-Compatible (Incorrect Value - Response body)

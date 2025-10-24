@@ -196,7 +196,7 @@ URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-10-17', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-10-24', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2891,7 +2891,11 @@ def process_http_response(r, exception, status_code, reliable, body):
         k: re.sub(RE_PATTERN[20], ' ', v).strip()
         for k, v in r.headers.items()})
     body = r.text
-    return headers, status_code, reliable, body
+    # https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type
+    is_html = False
+    ctype = headers.get('content-type', '')
+    is_html = ctype.lower().startswith('text/html')
+    return headers, status_code, reliable, body, is_html
 
 
 def custom_help_formatter(prog):
@@ -3093,11 +3097,12 @@ if '-if' not in sys.argv:
         added_custom_headers = parse_request_headers(args.request_header)
         custom_headers.update(added_custom_headers)
     custom_headers['User-Agent'] = ua_header
-    headers, status_code, reliable, body = process_http_request(status_code,
-                                                                reliable, body,
-                                                                proxy,
-                                                                custom_headers)
-    if body:
+    (headers, status_code, reliable, body, is_html) = (
+        process_http_request(status_code, reliable, body, proxy,
+                             custom_headers,
+                             )
+    )
+    if body and is_html:
         http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)
 
 headers_l = {header.lower(): value for header, value in headers.items()}
@@ -3270,6 +3275,10 @@ l_csp_ro_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
 # https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
 t_ct_mime = ('application/xhtml+xml', 'text/html')
+
+# https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#charset
+# https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type
+t_ct_equiv = ('text/html; charset=utf-8', 'text/html; charset=UTF-8')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
 t_coep = ('credentialless', 'require-corp', 'unsafe-none')
@@ -3570,10 +3579,10 @@ if ctype_header and '18' not in skip_list:
         print_details('[ictlchar_h]', '[ictlchar]', 'd', i_cnt)
 
 if http_equiv:
-    ctype_meta = any('content-type' in item for item in http_equiv)
-    if ctype_meta and not any('text/html; charset=utf-8' in item for tuple in
-                              http_equiv for item in tuple):
-        print_details('[ictlmeta_h]', '[ictlmeta]', 'd', i_cnt)
+    ctype_meta = any('content-type' in name for name, _ in http_equiv)
+    if ctype_meta and not any(val in content for val in t_ct_equiv for _,
+                              content in http_equiv):
+        print_details('[ictlmeta_h]', '[ictlmeta]', 'm', i_cnt)
 
 if 'critical-ch' in headers_l and unsafe_scheme and '19' not in skip_list:
     print_details('[icrch_h]', '[icrch]', 'd', i_cnt)
