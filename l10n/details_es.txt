@@ -1006,6 +1006,9 @@ Cabeceras de respuesta HTTP
 [analysis_skipped_note]
  Nota : Las cabeceras HTTP excluidas expresamente en este análisis son
 
+[analysis_history_note]
+ Nota : No se pudo acceder al archivo del historial de análisis, analysis_h.txt.
+
 [proxy_analysis_note]
  Note : El proxy especificado para este análisis es
 
@@ -1945,6 +1948,7 @@ Excepción no gestionada:
 [experimental_header]
  Significado de '(*)':                        Cabecera de respuesta HTTP experimental
  Referencia de '(*)':                         https://mdn.io/Experimental_deprecated_obsolete
+ Significado de '(No disponible)':            No se pudo acceder al archivo del historial de análisis, analysis_h.txt.
 
 [compliance_output]
  Analizando la URL en relación a las mejores prácticas de OWASP 'Secure Headers Project', espera por favor ...
@@ -2118,3 +2122,6 @@ Error: el parámetro '-H' requiere de al menos una cabecera de respuesta y sus v
 
 [e_custom_uheaders]
 Error: el parámetro '-H' requiere el parámetro '-u'.
+
+[e_export_analysis]
+ Error: No se puede exportar el análisis a

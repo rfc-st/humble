@@ -1005,6 +1005,9 @@ HTTP Response Headers
 [analysis_skipped_note]
  Note : The HTTP headers expressly excluded from this analysis are
 
+[analysis_history_note]
+ Note : The analysis history file, analysis_h.txt, could not be accessed
+
 [proxy_analysis_note]
  Note : The proxy specified for this analysis is
 
@@ -1965,6 +1968,7 @@ Unhandled exception type:
 [experimental_header]
  '(*)' meaning:                Experimental HTTP response directive or header
  '(*)' ref:                    https://mdn.io/Experimental_deprecated_obsolete
+ '(Not available)' meaning:    The analysis history file, analysis_h.txt, could not be accessed
 
 [compliance_output]
  Analyzing the URL in relation to the OWASP 'Secure Headers Project' best practices, please wait ...
@@ -2135,3 +2139,6 @@ Error: the '-H' parameter requires at least one HTTP response header and its val
 
 [e_custom_uheaders]
 Error: the '-H' parameter requires the parameter '-u'.
+
+[e_export_analysis]
+ Error: Unable to export the analysis to

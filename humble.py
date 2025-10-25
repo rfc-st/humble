@@ -193,10 +193,11 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/', 'https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py', 'https://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
+VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-10-24', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-10-25', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -426,20 +427,21 @@ def get_analysis_results():
     format_analysis_results(*analysis_diff, en_cnt_w=en_cnt_w, t_cnt=t_cnt)
     analysis_grade = grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt)
     print(f"{get_detail(analysis_grade)}")
-    print_detail('[experimental_header]', 2)
+    print_detail('[experimental_header]', 3)
 
 
 def save_analysis_results(t_cnt):
-    if not validate_history_file():
-        return ("Not available",) * 6
+    ok, fallback = validate_file_access(VALIDATE_FILE, context='history')
+    if not ok:
+        return fallback
     with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as all_analysis:
         all_analysis.seek(0)
         url_ln = [line for line in all_analysis if URL in line]
         # Format of the analysis history file, ('analysis_h.txt'): Date, URL,
         # Enabled, Missing, Fingerprint, Deprecated/Insecure, Empty headers and
         # Total warnings (the four previous totals).
-        all_analysis.write(f"{current_time} ; {URL} ; {en_cnt} ; {m_cnt} ; \
-{f_cnt} ; {i_cnt[0]} ; {e_cnt} ; {t_cnt}\n")
+        all_analysis.write(f"{current_time} ; {URL} ; {en_cnt} ; {m_cnt} ; "
+                           f"{f_cnt} ; {i_cnt[0]} ; {e_cnt} ; {t_cnt}\n")
     return get_analysis_totals(url_ln) if url_ln else ("First",) * 6
 
 
@@ -1213,14 +1215,15 @@ def print_basic_info(export_filename):
     print(f" {current_time}")
     print(f'{URL_STRING[1]}{URL}')
     if args.user_agent not in (None, '', '0'):
-        print(f"{get_detail('[ua_custom]', replace=True)} '{args.user_agent}'\
-{get_detail('[ua_custom2]', replace=True)}")
+        print(f"{get_detail('[ua_custom]', replace=True)} '{args.user_agent}'"
+              f"{get_detail('[ua_custom2]', replace=True)}")
     if args.input_file:
         print(f"{get_detail('[input_filename]', replace=True)} \
 {args.input_file}")
     if export_filename:
         print(f"{get_detail('[export_filename]', replace=True)} \
 {export_filename}")
+    validate_file_access(VALIDATE_FILE, context='basic')
 
 
 def print_extended_info(args, reliable, status_code):
@@ -1494,16 +1497,29 @@ def validate_path(output_path):
         remove(path.join(output_path, HUMBLE_FILES[1]))
 
 
-def validate_history_file():
-    # Validates if the analysis history file (analysis_h.txt) can be created in
-    # the current path, avoiding errors in restricted filesystems such as
-    # those used by AI like 'gemini-cli'.
+def validate_file_access(target_path, *, context='history',
+                         export_format=None):
+    # Validates permissions by checking if the analysis history file
+    # (analysis_h.txt) and temporary export files can be created. This prevents
+    # errors in restrictive file systems, such as read-only directories or
+    # sandboxed environments (e.g., when running URL analysis via gemini-cli).
     try:
-        with open(path.join(OS_PATH, HUMBLE_FILES[0]), 'a+', encoding='utf8'):
+        with open(target_path, 'a+', encoding='utf8'):
             pass
-    except OSError:
-        return False
-    return True
+    except OSError as e:
+        err_type = type(e).__name__
+        if context == 'history':
+            return False, ("Not available",) * 6
+        elif context == 'basic':
+            print(f"{get_detail('[analysis_history_note]', replace=True)} \
+({err_type})")
+            return False, None
+        elif context == 'export':
+            delete_lines()
+            print(f"\n{get_detail('[e_export_analysis]', replace=True)} "
+                  f"{export_format} ({err_type}).")
+            sys.exit()
+    return True, None
 
 
 def check_output_path(args, output_path):
@@ -3114,6 +3130,8 @@ if args.output:
     orig_stdout = sys.stdout
     export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
     tmp_filename = get_tmp_file(args, export_date)
+    validate_file_access(tmp_filename, context='export',
+                         export_format=args.output)
     tmp_filename_content = open(tmp_filename, 'w', encoding='utf8')
     sys.stdout = tmp_filename_content
     export_slice = SLICE_INT[4] if args.output == 'txt' else SLICE_INT[5]
