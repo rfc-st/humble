@@ -223,6 +223,7 @@ def check_python_version():
         else None
 
 
+# '-p' option: Proxy validation and connectivity check
 def process_proxy_url(proxy_url, timeout):
     parsed_proxy_url = urlparse(proxy_url)
     proxy_host = parsed_proxy_url.hostname
@@ -253,6 +254,7 @@ def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
         failed_proxy.set()
 
 
+# '-v' option: Check for updates from GitHub
 def check_updates(local_version):
     try:
         github_repo = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT).text
@@ -277,6 +279,7 @@ def check_updates_diff(days_diff, github_version, local_version):
         print_detail('[humble_recent]', 8)
 
 
+# '-f' option: Show fingerprint statistics
 def fng_statistics_top():
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
@@ -364,6 +367,7 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
     sys.exit()
 
 
+# '-e' option: Run TLS/SSL analysis using testssl.sh
 def testssl_command(testssl_temp_path, uri):
     testssl_temp_path = path.abspath(testssl_temp_path)
     if not path.isdir(testssl_temp_path):
@@ -413,6 +417,7 @@ def get_l10n_content():
         return l10n_content.readlines()
 
 
+# Show analysis results and summary
 def get_analysis_results():
     analysis_t = str(round(end - start, 2)).rstrip()
     print(f"{get_detail('[analysis_time]', replace=True)} {analysis_t}\
@@ -499,6 +504,7 @@ def print_analysis_results(totals, max_secl, en_cnt_w):
             print(f"{val1:<{max_secl}} {val2}", end='')
 
 
+# Show analysis grade
 def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
     if en_cnt == 0:
         return '[e_grade]'
@@ -538,6 +544,7 @@ def adjust_old_analysis(url_ln):
     return updated_lines
 
 
+# '-a' option: Show analysis statistics
 def url_analytics(is_global=False):
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
     with open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
@@ -856,6 +863,7 @@ def print_global_metrics(analytics_l, analytics_s, analytics_w,
             totals_m.items()}
 
 
+# Content-Security-Policy header analysis
 def csp_analyze_content(csp_header):
     csp_deprecated = set()
     csp_dirs_vals = [dir.strip() for dir in csp_header.split(';') if
@@ -1100,6 +1108,7 @@ def csp_print_unknown(unknown_dir):
     i_cnt[0] += 1
 
 
+# Set-Cookie header analysis
 def check_unsafe_cookies():  # sourcery skip: use-named-expression
     unsafe_cks = [ck.split('=', 1)[0].strip() for ck in
                   re.split(RE_PATTERN[14], stc_header) if
@@ -1117,6 +1126,7 @@ def print_unsafe_cookies(unsafe_cks):
     print_detail('[iset]', num_lines=2)
 
 
+# Permissions-Policy header analysis
 def permissions_analyze_content(perm_header, i_cnt):
     if any(value in perm_header for value in t_per_dep):
         permissions_print_deprecated(perm_header)
@@ -1196,6 +1206,7 @@ def print_fng_header(header):
         print(f"{STYLE[1]} {header}")
 
 
+# Show analysis information (date, URL, optional notes)
 def print_general_info(reliable, export_filename):
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
@@ -1263,6 +1274,7 @@ def print_response_headers():
     print('\n')
 
 
+# Calculate spacing for aligned message display
 def get_max_lnlength(section):
     sec_val = []
     max_secl = 0
@@ -1282,6 +1294,7 @@ def get_analytics_length(section):
     return section_l
 
 
+# Format and show localized messages
 def print_details(short_d, long_d, id_mode, i_cnt):
     print_detail_r(short_d, is_red=True)
     if not args.brief:
@@ -1497,8 +1510,7 @@ def validate_path(output_path):
         remove(path.join(output_path, HUMBLE_FILES[1]))
 
 
-def validate_file_access(target_path, *, context='history',
-                         export_format=None):
+def validate_file_access(target_path, *, context='history'):
     # Validates permissions by checking if the analysis history file
     # (analysis_h.txt) and temporary export files can be created. This prevents
     # errors in restrictive file systems, such as read-only directories or
@@ -1517,7 +1529,7 @@ def validate_file_access(target_path, *, context='history',
         elif context == 'export':
             delete_lines()
             print(f"\n{get_detail('[e_export_analysis]', replace=True)} "
-                  f"{export_format} ({err_type}).")
+                  f"({err_type}).")
             sys.exit()
     return True, None
 
@@ -1633,6 +1645,7 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
         func()
 
 
+# '-cicd' option: Summary-only JSON analysis for CI/CD
 def print_cicd_totals(tmp_filename):
     try:
         with open(tmp_filename, 'r', encoding='utf-8') as txt_source:
@@ -1694,6 +1707,7 @@ def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
     return None
 
 
+# '-o csv' option: CSV export of the analysis
 def generate_csv(final_filename, temp_filename, to_xlsx=False):
     with open(temp_filename, 'r', encoding='utf8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
@@ -1723,6 +1737,7 @@ def parse_csv(csv_section, csv_source, csv_writer):
             csv_writer.writerow([i, clean_ln])
 
 
+# '-o xlsx' option: XLSX spreadsheet export of the analysis
 def generate_xlsx(final_filename, temp_filename):
     # Tiny optimization, lazy-loading third-party xlsxwriter
     from xlsxwriter import Workbook
@@ -1799,7 +1814,7 @@ def set_xlsx_width(col_wd, worksheet):
             worksheet.set_column(col_idx, col_idx, min(width + 2, 50))
 
 
-# JSON export of a brief analysis.
+# '-o json -b' options: JSON export for a brief analysis
 def generate_json(final_filename, temp_filename):
     section0, sectionh, section5, section6 = (
         get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
@@ -1850,7 +1865,7 @@ def format_json(json_data, json_lns):
     return json_data
 
 
-# JSON export of a detailed analysis.
+# '-o json' option: JSON export for a detailed analysis
 def json_detailed_sources(file_idx, slice_idx):
     file_path = path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[file_idx])
     with open(file_path, 'r', encoding='utf8') as f:
@@ -2135,6 +2150,7 @@ def json_detailed_results(json_lns):
     return result
 
 
+# '-o pdf' option: PDF export of the analysis
 def export_pdf_file(tmp_filename):
     # Important optimization, lazy-loading third-party fpdf2
     from fpdf import FPDF, YPos as ypos  # type: ignore
@@ -2354,6 +2370,7 @@ def apply_pdf_color(colon_idx, hcolor, line, vcolor):
     )
 
 
+# '-o html' option: HTML export of the analysis
 def export_html_file(final_filename, tmp_filename):
     global inside_section
     inside_section = False
@@ -2573,6 +2590,7 @@ def clean_html_final(final_filename):
         html_final.truncate()
 
 
+# '-o xml' option: XML export of the analysis
 def generate_xml(final_filename, temp_filename):
     root = ET.Element('analysis', {'version': BANNER_VERSION,
                                    'generated': current_time})
@@ -3130,8 +3148,7 @@ if args.output:
     orig_stdout = sys.stdout
     export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
     tmp_filename = get_tmp_file(args, export_date)
-    validate_file_access(tmp_filename, context='export',
-                         export_format=args.output)
+    validate_file_access(tmp_filename, context='export')
     tmp_filename_content = open(tmp_filename, 'w', encoding='utf8')
     sys.stdout = tmp_filename_content
     export_slice = SLICE_INT[4] if args.output == 'txt' else SLICE_INT[5]

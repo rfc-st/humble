@@ -2124,4 +2124,4 @@ Error: el parámetro '-H' requiere de al menos una cabecera de respuesta y sus v
 Error: el parámetro '-H' requiere el parámetro '-u'.
 
 [e_export_analysis]
- Error: No se puede exportar el análisis a
+ Error: No se puede exportar el análisis
