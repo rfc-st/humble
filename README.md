@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--10--25-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--10--31-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -418,20 +418,20 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 .: (Linux) - All tests passed successfully.<br />
 ```
 $ cd <humble dir>
-$ cd unit_tests
-$ python3 test_humble.py -u <URL>
+$ cd tests
+$ python3 basic_tests.py -u <URL>
 ```
 
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ok.PNG" alt="(Linux) - All tests passed successfully">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_basic_tests_ok.PNG" alt="(Linux) - All tests passed successfully">
 
 .: (Windows) - Some tests failed, in Spanish.<br />
 ```
 $ cd <humble dir>
-$ cd unit_tests
-$ py test_humble.py -u <URL> -l es
+$ cd tests
+$ py basic_tests.py -u <URL> -l es
 ```
 
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_unit_tests_ko.PNG" alt="(Windows) - Some tests failed">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_basic_tests_ko.PNG" alt="(Windows) - Some tests failed">
 
 ## Checks: enabled headers
 
