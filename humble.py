@@ -197,7 +197,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-10-31', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-11-01', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -218,6 +218,7 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         return super(SSLContextAdapter, self).init_poolmanager(*args, **kwargs)
 
 
+# Checks the minimum required version of Python
 def check_python_version():
     exit(print_detail('[python_version]', 3)) if sys.version_info < (3, 11) \
         else None
@@ -352,6 +353,7 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     sys.exit()
 
 
+# Show localized guides content
 def print_l10n_file(args, l10n_file, slice_ln=False):
     lang_es = args.lang == 'es'
     lang_idx = 1 if lang_es else 0
@@ -410,6 +412,7 @@ def testssl_analysis(testssl_cmd):
         print_error_detail('[testssl_error]')
 
 
+# Show localized guides content
 def get_l10n_content():
     l10n_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[4]
                           if args.lang == 'es' else HUMBLE_FILES[5])
@@ -417,7 +420,7 @@ def get_l10n_content():
         return l10n_content.readlines()
 
 
-# Show analysis results and summary
+# Show and save analysis results and summary
 def get_analysis_results():
     analysis_t = str(round(end - start, 2)).rstrip()
     print(f"{get_detail('[analysis_time]', replace=True)} {analysis_t}\
@@ -517,12 +520,14 @@ def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
     return '[a_grade]' if e_cnt > 0 else '[perfect_grade]'
 
 
+# Check if analysis history file exists
 def check_analysis(filepath):
     if not path.exists(filepath):
         detail = '[no_analysis]' if URL else '[no_global_analysis]'
         print_error_detail(detail)
 
 
+# Adjust analysis totals from history prior to 11/28/2024
 def adjust_old_analysis(url_ln):
     # To avoid errors with analyses performed before 11/28/2024, the date on
     # which enabled security headers began being written to the analysis
@@ -672,6 +677,7 @@ def calculate_highlights(url_ln, field_index, func):
     return target_line.split(';')[0].strip()
 
 
+# Calculate and show trends related to '-a' option
 def get_trends(adj_url_ln):
     sections_t = SECTION_S[1:]
     fields_t = [3, 4, 5, 6, 7]
@@ -711,6 +717,7 @@ def calculate_trends(values):
     return print_detail_l('[t_fluctuating]', analytics=True)
 
 
+# Show metrics related to '-a' option
 def print_metrics(analytics_s, analytics_w, total_a, first_m, second_m,
                   third_m, additional_m, fourth_m, fifth_m):
     basic_m = get_basic_metrics(total_a, first_m)
@@ -863,7 +870,7 @@ def print_global_metrics(analytics_l, analytics_s, analytics_w,
             totals_m.items()}
 
 
-# Content-Security-Policy header analysis
+# 'Content-Security-Policy' header analysis
 def csp_analyze_content(csp_header):
     csp_deprecated = set()
     csp_dirs_vals = [dir.strip() for dir in csp_header.split(';') if
@@ -1108,7 +1115,7 @@ def csp_print_unknown(unknown_dir):
     i_cnt[0] += 1
 
 
-# Set-Cookie header analysis
+# 'Set-Cookie' header analysis
 def check_unsafe_cookies():  # sourcery skip: use-named-expression
     unsafe_cks = [ck.split('=', 1)[0].strip() for ck in
                   re.split(RE_PATTERN[14], stc_header) if
@@ -1126,7 +1133,7 @@ def print_unsafe_cookies(unsafe_cks):
     print_detail('[iset]', num_lines=2)
 
 
-# Permissions-Policy header analysis
+# 'Permissions-Policy' header analysis
 def permissions_analyze_content(perm_header, i_cnt):
     if any(value in perm_header for value in t_per_dep):
         permissions_print_deprecated(perm_header)
@@ -1169,6 +1176,7 @@ def permissions_print_broad(perm_broad_dirs, i_cnt):
     i_cnt[0] += 1
 
 
+# Delete printed console lines
 def delete_lines(reliable=True, warning=False):
     if warning:
         sys.stdout.write(DELETED_LINES[:6])
@@ -1178,6 +1186,7 @@ def delete_lines(reliable=True, warning=False):
     sys.stdout.write(DELETED_LINES)
 
 
+# Show export path related to -o' option
 def print_export_path(filename, reliable):
     delete_lines(reliable=False) if reliable else delete_lines()
     if '-c' not in sys.argv:
@@ -1185,6 +1194,7 @@ def print_export_path(filename, reliable):
  '{path.abspath(filename)}'.")
 
 
+# Show a message when no findings exist in analysis section
 def print_nowarnings():
     if not args.output:
         print(f"{STYLE[10]}{get_detail(DIR_MSG[2])}{STYLE[5]}")
@@ -1192,10 +1202,12 @@ def print_nowarnings():
         print_detail(DIR_MSG[2])
 
 
+# Show header name (generic)
 def print_header(header):
     print(f" {header}" if args.output else f"{STYLE[1]} {header}")
 
 
+# Show header name for fingerprint findings
 def print_fng_header(header):
     if args.output:
         print(f" {header}")
@@ -1206,7 +1218,7 @@ def print_fng_header(header):
         print(f"{STYLE[1]} {header}")
 
 
-# Show analysis information (date, URL, optional notes)
+# Show analysis information in the section '[0. Info]'
 def print_general_info(reliable, export_filename):
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
@@ -1260,6 +1272,7 @@ def print_extra_info(reliable):
         print(get_detail('[analysis_redirects_note]', replace=True))
 
 
+# Show response headers relate to '-r' option
 def print_response_headers():
     print(linesep.join(['']*2))
     print_detail_r('[0headers]')
@@ -1353,6 +1366,7 @@ def print_error_detail(id_mode):
     sys.exit()
 
 
+# Show epilog content (examples and how to contribute) related to '-h' option
 def get_epilog_content(id_mode):
     epilog_file_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[5])
     with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
@@ -1361,6 +1375,7 @@ def get_epilog_content(id_mode):
     return ''.join(epilog_lines[epilog_idx+1:epilog_idx+SLICE_INT[12]])
 
 
+# Show findings in the section '[3. Fingerprint HTTP Response Headers]'
 def get_fingerprint_headers():
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
@@ -1397,6 +1412,7 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
         print_header(header)
 
 
+# Show findings in the section '[1. Enabled HTTP Security Headers]
 def get_enabled_headers(args, headers_l, t_enabled):
     headers_d = {key.title(): value for key, value in headers_l.items()}
     t_enabled = sorted({header.title() for header in t_enabled})
@@ -1421,6 +1437,7 @@ def print_enabled_headers(args, exp_s, header, headers_d):
     print(output_str)
 
 
+# Show a message if no header is enabled or if none was received
 def print_nosec_headers(enabled=True):
     id_mode = '[no_sec_headers]' if enabled else '[no_enb_headers]'
     if args.output:
@@ -1429,6 +1446,7 @@ def print_nosec_headers(enabled=True):
         print_detail_r(id_mode, is_red=True)
 
 
+# Show findings in the section '[2. Missing HTTP Security Headers]'
 def print_missing_headers(args, headers_l, l_detail, l_miss):
     m_cnt = 0
     headers_set = set(headers_l)
@@ -1470,6 +1488,7 @@ def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
     return m_cnt
 
 
+# Show findings in the section '[5. Empty HTTP Response Headers Values]'
 def print_empty_headers(headers, l_empty):
     e_cnt = 0
     for key in sorted(headers):
@@ -1480,6 +1499,8 @@ def print_empty_headers(headers, l_empty):
     return e_cnt
 
 
+# Show references in the section '[6. Browser Compatibility for Enabled HTTP
+# Security Headers]'
 def print_browser_compatibility(compat_headers):
     style_blanks = "  " if args.output == 'html' else " "
     for key in compat_headers:
@@ -1489,6 +1510,8 @@ def print_browser_compatibility(compat_headers):
         print(f"{style_blanks}{styled_header}{URL_LIST[0]}{csp_key}")
 
 
+# Check user input for path traversal patterns related to '-of' and '-op'
+# options
 def check_input_traversal(user_input):
     input_traversal_ptrn = re.compile(RE_PATTERN[2])
     if input_traversal_ptrn.search(user_input):
@@ -1497,8 +1520,8 @@ def check_input_traversal(user_input):
         sys.exit()
 
 
+# Validate permissions in the supplied path related to '-op' option
 def validate_path(output_path):
-    # Validates if there are errors with the supplied path.
     try:
         with open(path.join(output_path, HUMBLE_FILES[1]), 'w'):
             pass
@@ -1510,11 +1533,9 @@ def validate_path(output_path):
         remove(path.join(output_path, HUMBLE_FILES[1]))
 
 
+# Validate if the analysis history file and temporary export files can be
+# created
 def validate_file_access(target_path, *, context='history'):
-    # Validates permissions by checking if the analysis history file
-    # (analysis_h.txt) and temporary export files can be created. This prevents
-    # errors in restrictive file systems, such as read-only directories or
-    # sandboxed environments (e.g., when running URL analysis via gemini-cli).
     try:
         with open(target_path, 'a+', encoding='utf8'):
             pass
@@ -1534,6 +1555,7 @@ def validate_file_access(target_path, *, context='history'):
     return True, None
 
 
+# Validations related to the supplied path in ‘-op’ option
 def check_output_path(args, output_path):
     check_input_traversal(args.output_path)
     if args.output is None:
@@ -1546,6 +1568,7 @@ def check_output_path(args, output_path):
         sys.exit()
 
 
+# Select and validate the supplied user agent, related to ‘-ua’ option.
 def parse_user_agent(user_agent=False):
     if not user_agent:
         return get_user_agent('1')
@@ -1587,6 +1610,7 @@ def print_user_agents(user_agents):
     sys.exit()
 
 
+# '-s' option: Skips some checks for the indicated headers
 def get_insecure_checks():
     headers_name = set()
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), 'r') as \
@@ -1622,6 +1646,7 @@ def print_unsupported_headers(unsupported_headers):
     sys.exit()
 
 
+# '-o' option: Export the analysis to the supplied format
 def check_output_format(args, final_filename, reliable, tmp_filename):
     dispatch = {
         "txt": lambda: (
