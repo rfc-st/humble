@@ -471,7 +471,6 @@ Any HTTP response header.
 
 ## To-Do
 - [ ] Add more Header/Value checks (only security-oriented)
-- [ ] Google Style Python Docstrings and documentation via <a href="https://www.sphinx-doc.org/en/master/">Sphinx</a>
 
 ## Further reading
 * Web browsers' experimental features, roadmaps, technology previews and trials:<br />

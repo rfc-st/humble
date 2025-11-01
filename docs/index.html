@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>humble Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            border-bottom: 3px solid #0066cc;
+            padding-bottom: 10px;
+            color: #0066cc;
+        }
+        h2 {
+            color: #0066cc;
+            margin-top: 40px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        .function, .class {
+            background: #f8f9fa;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .signature {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #d63384;
+            font-size: 1.1em;
+            white-space: nowrap;
+        }
+        .docstring {
+            margin-top: 10px;
+            white-space: nowrap;
+            color: #555;
+        }
+        .toc {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        .toc a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .toc h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>humble Documentation</h1>
+<div class="toc"><h2>Table of Contents</h2><ul>
+<li><strong>Classes</strong><ul>
+<li><a href="#SSLContextAdapter">SSLContextAdapter</a></li>
+</ul></li>
+<li><br><strong>Functions</strong><ul>
+<li><a href="#check_python_version">check_python_version()</a></li>
+<li><a href="#process_proxy_url">process_proxy_url(proxy_url, timeout)</a></li>
+<li><a href="#check_updates">check_updates(local_version)</a></li>
+<li><a href="#fng_statistics_top">fng_statistics_top()</a></li>
+<li><a href="#print_l10n_file">print_l10n_file(args, l10n_file, slice_ln)</a></li>
+<li><a href="#testssl_command">testssl_command(testssl_temp_path, uri)</a></li>
+<li><a href="#get_l10n_content">get_l10n_content()</a></li>
+<li><a href="#get_analysis_results">get_analysis_results()</a></li>
+<li><a href="#grade_analysis">grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt)</a></li>
+<li><a href="#check_analysis">check_analysis(filepath)</a></li>
+<li><a href="#adjust_old_analysis">adjust_old_analysis(url_ln)</a></li>
+<li><a href="#url_analytics">url_analytics(is_global)</a></li>
+<li><a href="#get_trends">get_trends(adj_url_ln)</a></li>
+<li><a href="#print_metrics">print_metrics(analytics_s, analytics_w, total_a, first_m, second_m, third_m, additional_m, fourth_m, fifth_m)</a></li>
+<li><a href="#csp_analyze_content">csp_analyze_content(csp_header)</a></li>
+<li><a href="#check_unsafe_cookies">check_unsafe_cookies()</a></li>
+<li><a href="#permissions_analyze_content">permissions_analyze_content(perm_header, i_cnt)</a></li>
+<li><a href="#delete_lines">delete_lines(reliable, warning)</a></li>
+<li><a href="#print_export_path">print_export_path(filename, reliable)</a></li>
+<li><a href="#print_nowarnings">print_nowarnings()</a></li>
+<li><a href="#print_header">print_header(header)</a></li>
+<li><a href="#print_fng_header">print_fng_header(header)</a></li>
+<li><a href="#print_general_info">print_general_info(reliable, export_filename)</a></li>
+<li><a href="#print_response_headers">print_response_headers()</a></li>
+<li><a href="#get_max_lnlength">get_max_lnlength(section)</a></li>
+<li><a href="#print_details">print_details(short_d, long_d, id_mode, i_cnt)</a></li>
+<li><a href="#get_epilog_content">get_epilog_content(id_mode)</a></li>
+<li><a href="#get_fingerprint_headers">get_fingerprint_headers()</a></li>
+<li><a href="#get_enabled_headers">get_enabled_headers(args, headers_l, t_enabled)</a></li>
+<li><a href="#print_nosec_headers">print_nosec_headers(enabled)</a></li>
+<li><a href="#print_missing_headers">print_missing_headers(args, headers_l, l_detail, l_miss)</a></li>
+<li><a href="#print_empty_headers">print_empty_headers(headers, l_empty)</a></li>
+<li><a href="#print_browser_compatibility">print_browser_compatibility(compat_headers)</a></li>
+<li><a href="#check_input_traversal">check_input_traversal(user_input)</a></li>
+<li><a href="#validate_path">validate_path(output_path)</a></li>
+<li><a href="#validate_file_access">validate_file_access(target_path)</a></li>
+<li><a href="#check_output_path">check_output_path(args, output_path)</a></li>
+<li><a href="#parse_user_agent">parse_user_agent(user_agent)</a></li>
+<li><a href="#get_insecure_checks">get_insecure_checks()</a></li>
+<li><a href="#check_output_format">check_output_format(args, final_filename, reliable, tmp_filename)</a></li>
+<li><a href="#print_cicd_totals">print_cicd_totals(tmp_filename)</a></li>
+<li><a href="#generate_csv">generate_csv(final_filename, temp_filename, to_xlsx)</a></li>
+<li><a href="#generate_xlsx">generate_xlsx(final_filename, temp_filename)</a></li>
+<li><a href="#generate_json">generate_json(final_filename, temp_filename)</a></li>
+<li><a href="#json_detailed_sources">json_detailed_sources(file_idx, slice_idx)</a></li>
+<li><a href="#export_pdf_file">export_pdf_file(tmp_filename)</a></li>
+<li><a href="#export_html_file">export_html_file(final_filename, tmp_filename)</a></li>
+<li><a href="#generate_xml">generate_xml(final_filename, temp_filename)</a></li>
+<li><a href="#print_http_exception">print_http_exception(exception_id, exception_v)</a></li>
+<li><a href="#check_ru_scope">check_ru_scope()</a></li>
+<li><a href="#check_owasp_compliance">check_owasp_compliance(tmp_filename)</a></li>
+<li><a href="#analyze_input_file">analyze_input_file(input_file)</a></li>
+<li><a href="#get_tmp_file">get_tmp_file(args, export_date)</a></li>
+<li><a href="#process_server_error">process_server_error(http_status_code, l10n_id)</a></li>
+<li><a href="#make_http_request">make_http_request(custom_headers, proxy)</a></li>
+<li><a href="#process_requests_exception">process_requests_exception(exception)</a></li>
+<li><a href="#process_http_error">process_http_error(r, exception_d)</a></li>
+<li><a href="#parse_request_headers">parse_request_headers(request_headers)</a></li>
+<li><a href="#process_http_request">process_http_request(status_code, reliable, body, proxy, custom_headers)</a></li>
+<li><a href="#custom_help_formatter">custom_help_formatter(prog)</a></li>
+</ul></li>
+</ul></div>
+<h2>Classes</h2>
+<div class="class" id="SSLContextAdapter">
+<div class="signature">class SSLContextAdapter</div>
+<div class="docstring">Custom SSL adapter that disables certificate verification to facilitate
+analysis.</div>
+</div>
+<h2>Functions</h2>
+<div class="function" id="check_python_version">
+<div class="signature">check_python_version()</div>
+<div class="docstring">Checks the minimum required version of Python</div>
+</div>
+<div class="function" id="process_proxy_url">
+<div class="signature">process_proxy_url(proxy_url, timeout)</div>
+<div class="docstring">'-p' option: Proxy validation and connectivity check</div>
+</div>
+<div class="function" id="check_updates">
+<div class="signature">check_updates(local_version)</div>
+<div class="docstring">'-v' option: Check for updates from GitHub</div>
+</div>
+<div class="function" id="fng_statistics_top">
+<div class="signature">fng_statistics_top()</div>
+<div class="docstring">'-f' option: Show fingerprint statistics</div>
+</div>
+<div class="function" id="print_l10n_file">
+<div class="signature">print_l10n_file(args, l10n_file, slice_ln)</div>
+<div class="docstring">Show localized guides content</div>
+</div>
+<div class="function" id="testssl_command">
+<div class="signature">testssl_command(testssl_temp_path, uri)</div>
+<div class="docstring">'-e' option: Run TLS/SSL analysis using testssl.sh</div>
+</div>
+<div class="function" id="get_l10n_content">
+<div class="signature">get_l10n_content()</div>
+<div class="docstring">Show localized guides content</div>
+</div>
+<div class="function" id="get_analysis_results">
+<div class="signature">get_analysis_results()</div>
+<div class="docstring">Show and save analysis results and summary</div>
+</div>
+<div class="function" id="grade_analysis">
+<div class="signature">grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt)</div>
+<div class="docstring">Show analysis grade</div>
+</div>
+<div class="function" id="check_analysis">
+<div class="signature">check_analysis(filepath)</div>
+<div class="docstring">Check if analysis history file exists</div>
+</div>
+<div class="function" id="adjust_old_analysis">
+<div class="signature">adjust_old_analysis(url_ln)</div>
+<div class="docstring">Adjust analysis totals from history prior to 11/28/2024</div>
+</div>
+<div class="function" id="url_analytics">
+<div class="signature">url_analytics(is_global)</div>
+<div class="docstring">'-a' option: Show analysis statistics</div>
+</div>
+<div class="function" id="get_trends">
+<div class="signature">get_trends(adj_url_ln)</div>
+<div class="docstring">Calculate and show trends related to '-a' option</div>
+</div>
+<div class="function" id="print_metrics">
+<div class="signature">print_metrics(analytics_s, analytics_w, total_a, first_m, second_m, third_m, additional_m, fourth_m, fifth_m)</div>
+<div class="docstring">Show metrics related to '-a' option</div>
+</div>
+<div class="function" id="csp_analyze_content">
+<div class="signature">csp_analyze_content(csp_header)</div>
+<div class="docstring">'Content-Security-Policy' header analysis</div>
+</div>
+<div class="function" id="check_unsafe_cookies">
+<div class="signature">check_unsafe_cookies()</div>
+<div class="docstring">'Set-Cookie' header analysis</div>
+</div>
+<div class="function" id="permissions_analyze_content">
+<div class="signature">permissions_analyze_content(perm_header, i_cnt)</div>
+<div class="docstring">Permissions-Policy' header analysis</div>
+</div>
+<div class="function" id="delete_lines">
+<div class="signature">delete_lines(reliable, warning)</div>
+<div class="docstring">Delete printed console lines</div>
+</div>
+<div class="function" id="print_export_path">
+<div class="signature">print_export_path(filename, reliable)</div>
+<div class="docstring">Show export path related to -o' option</div>
+</div>
+<div class="function" id="print_nowarnings">
+<div class="signature">print_nowarnings()</div>
+<div class="docstring">Show a message when no findings exist in analysis section</div>
+</div>
+<div class="function" id="print_header">
+<div class="signature">print_header(header)</div>
+<div class="docstring">Show header name (generic)</div>
+</div>
+<div class="function" id="print_fng_header">
+<div class="signature">print_fng_header(header)</div>
+<div class="docstring">Show header name for fingerprint findings</div>
+</div>
+<div class="function" id="print_general_info">
+<div class="signature">print_general_info(reliable, export_filename)</div>
+<div class="docstring">Show analysis information in the section '[0. Info]'</div>
+</div>
+<div class="function" id="print_response_headers">
+<div class="signature">print_response_headers()</div>
+<div class="docstring">Show response headers relate to '-r' option</div>
+</div>
+<div class="function" id="get_max_lnlength">
+<div class="signature">get_max_lnlength(section)</div>
+<div class="docstring">Calculate spacing for aligned message display</div>
+</div>
+<div class="function" id="print_details">
+<div class="signature">print_details(short_d, long_d, id_mode, i_cnt)</div>
+<div class="docstring">Format and show localized messages</div>
+</div>
+<div class="function" id="get_epilog_content">
+<div class="signature">get_epilog_content(id_mode)</div>
+<div class="docstring">Show examples and how to contribute, related to '-h' option</div>
+</div>
+<div class="function" id="get_fingerprint_headers">
+<div class="signature">get_fingerprint_headers()</div>
+<div class="docstring">Show findings in the section '[3. Fingerprint HTTP Response Headers]'</div>
+</div>
+<div class="function" id="get_enabled_headers">
+<div class="signature">get_enabled_headers(args, headers_l, t_enabled)</div>
+<div class="docstring">Show findings in the section '[1. Enabled HTTP Security Headers]</div>
+</div>
+<div class="function" id="print_nosec_headers">
+<div class="signature">print_nosec_headers(enabled)</div>
+<div class="docstring">Show a message if no header is enabled or if none was received</div>
+</div>
+<div class="function" id="print_missing_headers">
+<div class="signature">print_missing_headers(args, headers_l, l_detail, l_miss)</div>
+<div class="docstring">Show findings in the section '[2. Missing HTTP Security Headers]'</div>
+</div>
+<div class="function" id="print_empty_headers">
+<div class="signature">print_empty_headers(headers, l_empty)</div>
+<div class="docstring">Show findings in the section '[5. Empty HTTP Response Headers Values]'</div>
+</div>
+<div class="function" id="print_browser_compatibility">
+<div class="signature">print_browser_compatibility(compat_headers)</div>
+<div class="docstring">Show references in the section '[6. Browser Compatibility for Enabled HTTP
+Security Headers]'</div>
+</div>
+<div class="function" id="check_input_traversal">
+<div class="signature">check_input_traversal(user_input)</div>
+<div class="docstring">Check user input for path traversal patterns related to '-of' and '-op'
+options</div>
+</div>
+<div class="function" id="validate_path">
+<div class="signature">validate_path(output_path)</div>
+<div class="docstring">Validate permissions in the supplied path related to '-op' option</div>
+</div>
+<div class="function" id="validate_file_access">
+<div class="signature">validate_file_access(target_path)</div>
+<div class="docstring">Validate if the analysis history file and temporary export files can be
+created</div>
+</div>
+<div class="function" id="check_output_path">
+<div class="signature">check_output_path(args, output_path)</div>
+<div class="docstring">Validations related to the supplied path in ‘-op’ option</div>
+</div>
+<div class="function" id="parse_user_agent">
+<div class="signature">parse_user_agent(user_agent)</div>
+<div class="docstring">Select and validate the supplied user agent related to ‘-ua’ option</div>
+</div>
+<div class="function" id="get_insecure_checks">
+<div class="signature">get_insecure_checks()</div>
+<div class="docstring">'-s' option: Skips some checks for the indicated headers</div>
+</div>
+<div class="function" id="check_output_format">
+<div class="signature">check_output_format(args, final_filename, reliable, tmp_filename)</div>
+<div class="docstring">'-o' option: Export the analysis to the supplied format</div>
+</div>
+<div class="function" id="print_cicd_totals">
+<div class="signature">print_cicd_totals(tmp_filename)</div>
+<div class="docstring">'-cicd' option: Summary-only JSON analysis for CI/CD</div>
+</div>
+<div class="function" id="generate_csv">
+<div class="signature">generate_csv(final_filename, temp_filename, to_xlsx)</div>
+<div class="docstring">'-o csv' option: CSV export of the analysis</div>
+</div>
+<div class="function" id="generate_xlsx">
+<div class="signature">generate_xlsx(final_filename, temp_filename)</div>
+<div class="docstring">'-o xlsx' option: XLSX spreadsheet export of the analysis</div>
+</div>
+<div class="function" id="generate_json">
+<div class="signature">generate_json(final_filename, temp_filename)</div>
+<div class="docstring">'-o json -b' options: JSON export for a brief analysis</div>
+</div>
+<div class="function" id="json_detailed_sources">
+<div class="signature">json_detailed_sources(file_idx, slice_idx)</div>
+<div class="docstring">'-o json' option: JSON export for a detailed analysis</div>
+</div>
+<div class="function" id="export_pdf_file">
+<div class="signature">export_pdf_file(tmp_filename)</div>
+<div class="docstring">'-o pdf' option: PDF export of the analysis</div>
+</div>
+<div class="function" id="export_html_file">
+<div class="signature">export_html_file(final_filename, tmp_filename)</div>
+<div class="docstring">'-o html' option: HTML export of the analysis</div>
+</div>
+<div class="function" id="generate_xml">
+<div class="signature">generate_xml(final_filename, temp_filename)</div>
+<div class="docstring">'-o xml' option: XML export of the analysis</div>
+</div>
+<div class="function" id="print_http_exception">
+<div class="signature">print_http_exception(exception_id, exception_v)</div>
+<div class="docstring">Show the exception received during analysis</div>
+</div>
+<div class="function" id="check_ru_scope">
+<div class="signature">check_ru_scope()</div>
+<div class="docstring">Blocks analysis of Russian domains:
+ https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326</div>
+</div>
+<div class="function" id="check_owasp_compliance">
+<div class="signature">check_owasp_compliance(tmp_filename)</div>
+<div class="docstring">'-c' option: OWASP Secure Headers Project best practices checks</div>
+</div>
+<div class="function" id="analyze_input_file">
+<div class="signature">analyze_input_file(input_file)</div>
+<div class="docstring">'-if' option: Analyze headers from supplied file</div>
+</div>
+<div class="function" id="get_tmp_file">
+<div class="signature">get_tmp_file(args, export_date)</div>
+<div class="docstring">Create the temporary export file related to '-o' option</div>
+</div>
+<div class="function" id="process_server_error">
+<div class="signature">process_server_error(http_status_code, l10n_id)</div>
+<div class="docstring">Show message for specific 5xx server errors during analysis</div>
+</div>
+<div class="function" id="make_http_request">
+<div class="signature">make_http_request(custom_headers, proxy)</div>
+<div class="docstring">Make the request to the supplied URL</div>
+</div>
+<div class="function" id="process_requests_exception">
+<div class="signature">process_requests_exception(exception)</div>
+<div class="docstring">Show error messages for request timeout and unhandled exceptions during
+analysis.</div>
+</div>
+<div class="function" id="process_http_error">
+<div class="signature">process_http_error(r, exception_d)</div>
+<div class="docstring">Show error messages based on HTTP response code during analysis</div>
+</div>
+<div class="function" id="parse_request_headers">
+<div class="signature">parse_request_headers(request_headers)</div>
+<div class="docstring">'-H' option: Add the supplied headers to the request</div>
+</div>
+<div class="function" id="process_http_request">
+<div class="signature">process_http_request(status_code, reliable, body, proxy, custom_headers)</div>
+<div class="docstring">Process the request to the supplied URL</div>
+</div>
+<div class="function" id="custom_help_formatter">
+<div class="signature">custom_help_formatter(prog)</div>
+<div class="docstring">Custom help formatter to allow more characters per line</div>
+</div>
+
+</body>
+</html>
