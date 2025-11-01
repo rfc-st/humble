@@ -202,12 +202,12 @@ local_version = datetime.strptime('2025-11-01', '%Y-%m-%d').date()
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
 
+# Custom SSL adapter that disables certificate verification to facilitate
+# analysis
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
     def init_poolmanager(self, *args, **kwargs):
-        # Yes, certificates and hosts must always be checked/verified on HTTPS
-        # connections. However, within the scope of 'humble', I have chosen to
-        # disable these checks to allow the analysis of URLs in certain cases
-        # (E.g., development environments, hosts with outdated
+        # I have chosen to disable these checks to allow the analysis of URLs
+        # in certain cases (E.g., development environments, hosts with outdated
         # servers/software, self-signed certificates, etc.).
         context = ssl._create_unverified_context()
         context.check_hostname = False
@@ -1568,7 +1568,7 @@ def check_output_path(args, output_path):
         sys.exit()
 
 
-# Select and validate the supplied user agent, related to ‘-ua’ option.
+# Select and validate the supplied user agent related to ‘-ua’ option.
 def parse_user_agent(user_agent=False):
     if not user_agent:
         return get_user_agent('1')
@@ -2654,6 +2654,7 @@ def add_xml_item(line, section):
         item.text = line
 
 
+# Show the exception received during analysis
 def print_http_exception(exception_id, exception_v):
     delete_lines()
     print("")
@@ -2661,6 +2662,8 @@ def print_http_exception(exception_id, exception_v):
     raise SystemExit from exception_v
 
 
+# Blocks analysis of Russian domains
+# https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 def check_ru_scope():
     try:
         sff = urlparse(URL).netloc.split(':')[0].encode('ascii').decode('idna')
@@ -2671,6 +2674,7 @@ def check_ru_scope():
         sys.exit()
 
 
+# '-c' option: OWASP Secure Headers Project best practices checks
 def check_owasp_compliance(tmp_filename):
     remove(tmp_filename)
     header_list = []
@@ -2750,6 +2754,7 @@ def print_owasp_rec(wrong_owasp, header_dict):
             print(f"{STYLE[10]}  {prefix}{header}{STYLE[4]}: {rec_val}")
 
 
+# '-if' option: Analyze headers from supplied file
 def analyze_input_file(input_file):
     if not path.exists(input_file):
         print_error_detail('[args_inputnotfound]')
@@ -2768,6 +2773,7 @@ def analyze_input_file(input_file):
     return input_headers, False, 200
 
 
+# Create the temporary export file related to '-o' option
 def get_tmp_file(args, export_date):
     file_ext = '.txt' if args.output == 'txt' else 't.txt'
     if args.output_file:
@@ -2795,6 +2801,7 @@ def build_tmp_file(export_date, file_ext, lang, humble_str, url):
     )
 
 
+# Show message for specific 5xx server errors during analysis
 def process_server_error(http_status_code, l10n_id):
     delete_lines()
     print()
@@ -2810,6 +2817,7 @@ def process_server_error(http_status_code, l10n_id):
     sys.exit()
 
 
+# Make the request to the supplied URL
 def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
     try:
         session = requests.Session()
@@ -2842,6 +2850,8 @@ def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
         return None, None, e
 
 
+# Show error messages for request timeout and unhandled exceptions during
+# analysis
 def process_requests_exception(exception):
     if isinstance(exception, requests.exceptions.Timeout):
         delete_lines()
@@ -2855,6 +2865,7 @@ def process_requests_exception(exception):
         print(f" {type(exception).__name__}")
 
 
+# Show error messages based on HTTP response code during analysis
 def process_http_error(r, exception_d):
     if r is None:
         return
@@ -2873,6 +2884,7 @@ def process_http_error(r, exception_d):
             print_http_exception(ex, e)
 
 
+# '-H' option: Add the supplied headers to the request
 def parse_request_headers(request_headers):
     headers, malformed_headers = process_request_headers(request_headers)
     if malformed_headers:
@@ -2907,6 +2919,7 @@ def process_request_headers(request_headers):
     return headers, malformed_headers
 
 
+# Process the request to the supplied URL
 def process_http_request(status_code, reliable, body, proxy, custom_headers):
     result = {}
     done = Event()
@@ -2957,6 +2970,7 @@ def process_http_response(r, exception, status_code, reliable, body):
     return headers, status_code, reliable, body, is_html
 
 
+# Custom help formatter to allow more characters per line
 def custom_help_formatter(prog):
     return RawDescriptionHelpFormatter(prog, max_help_position=43)
 
@@ -3045,7 +3059,6 @@ if '-f' in sys.argv:
 
 URL = args.URL
 
-# https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
 if URL is not None:
     check_ru_scope()
 
