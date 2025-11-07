@@ -205,7 +205,7 @@ BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
     """
     Custom SSL adapter that disables certificate verification to facilitate
-    analysis.
+    analysis
     """
     def init_poolmanager(self, *args, **kwargs):
         # I have chosen to disable these checks to allow the analysis of URLs
@@ -359,7 +359,8 @@ def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl):
 
 def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     """
-    Show, in alphabetical order, the service associated with the term
+    Displays, in alphabetical order, the service associated with the term
+    provided
     """
     for content in fng_groups:
         print(f"\n [{STYLE[0]}{content}]")
@@ -440,7 +441,7 @@ def get_l10n_content():
 
 
 def get_analysis_results():
-    """Show and save analysis results and summary"""
+    """Show analysis results and summary"""
     analysis_t = str(round(end - start, 2)).rstrip()
     print(f"{get_detail('[analysis_time]', replace=True)} {analysis_t}\
 {get_detail('[analysis_time_sec]', replace=True)}")
@@ -458,6 +459,7 @@ def get_analysis_results():
 
 
 def save_analysis_results(t_cnt):
+    """Save analysis results"""
     ok, fallback = validate_file_access(VALIDATE_FILE, context='history')
     if not ok:
         return fallback
@@ -473,6 +475,9 @@ def save_analysis_results(t_cnt):
 
 
 def get_analysis_totals(url_ln):
+    """
+    Recovers analysis totals, normalizing those performed before 11/28/2024
+    """
     # To avoid errors with analyses performed before 11/28/2024, the date on
     # which enabled security headers began being considered when calculating
     # differences between analyses of the same URL.
@@ -497,6 +502,7 @@ def get_analysis_totals(url_ln):
 
 def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
                              e_cnt, t_cnt):
+    """Shows differences between analyses of the same URL"""
     if analysis_totals[0] == "First":
         return [get_detail('[first_analysis]', replace=True)] * 6
     elif analysis_totals[0] == "Not available":
@@ -508,6 +514,7 @@ def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
 
 
 def format_analysis_results(*diff, en_cnt_w, t_cnt):
+    """Apply formatting to differences between analyses of the same URL"""
     results = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
     new_ln = ["\n" if int(en_cnt) > 0 else "", "", "", "", "", "\n\n"]
     totals = [f"{val:>2} ({diff[i]}){new_ln[i]}" for i, val in
@@ -517,6 +524,7 @@ def format_analysis_results(*diff, en_cnt_w, t_cnt):
 
 
 def print_analysis_results(totals, max_secl, en_cnt_w):
+    """Show the totals after analysis"""
     for idx, (literal, total) in enumerate(zip(SECTION_S, totals)):
         print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} {total}",
               end='')
@@ -527,7 +535,7 @@ def print_analysis_results(totals, max_secl, en_cnt_w):
 
 
 def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
-    """Show analysis grade"""
+    """Grade the analysis based on its results"""
     if en_cnt == 0:
         return '[e_grade]'
     if i_cnt and sum(i_cnt) > 0:
@@ -2691,7 +2699,7 @@ def print_http_exception(exception_id, exception_v):
 def check_ru_scope():
     """
     Blocks analysis of Russian domains:
-     https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
+    https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
     """
     try:
         sff = urlparse(URL).netloc.split(':')[0].encode('ascii').decode('idna')
