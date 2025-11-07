@@ -1,0 +1,17 @@
+site_name: humble.py
+
+use_directory_urls: false
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["."]
