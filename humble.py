@@ -2903,10 +2903,8 @@ def parse_request_headers(request_headers):
     if malformed_headers:
         delete_lines()
         print("")
-        print(
-            f"{get_detail('[e_custom_headers]', replace=True)}"
-            f"; {', '.join(f'\"{header}\"' for header in malformed_headers)}"
-        )
+        quoted = ', '.join(f'"{h}"' for h in malformed_headers)
+        print(f"{get_detail('[e_custom_headers]', replace=True)}; {quoted}")
         sys.exit()
     return headers
 
