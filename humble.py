@@ -227,7 +227,7 @@ def check_python_version():
 
 
 def process_proxy_url(proxy_url, timeout):
-    """'-p' option: Proxy validation and connectivity check"""
+    """'-p' option: Parse and validate proxy URL accessibility"""
     parsed_proxy_url = urlparse(proxy_url)
     proxy_host = parsed_proxy_url.hostname
     if not proxy_host:
@@ -250,6 +250,7 @@ def process_proxy_url(proxy_url, timeout):
 
 
 def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
+    """Check if the proxy server is reachable"""
     try:
         with create_connection((proxy_host, proxy_port), timeout=timeout):
             pass
@@ -258,7 +259,7 @@ def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
 
 
 def check_updates(local_version):
-    """'-v' option: Check for updates from GitHub"""
+    """'-v' option: Check for newer versions on GitHub"""
     try:
         github_repo = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT).text
         github_date = re.search(RE_PATTERN[4], github_repo).group()
@@ -271,6 +272,7 @@ def check_updates(local_version):
 
 
 def check_updates_diff(days_diff, github_version, local_version):
+    """Show version comparison results and update recommendations"""
     # Three weeks without updating 'humble' is too long ;)
     print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
 {github_version} \n {get_detail('[humble_local]', replace=True)} \
@@ -283,7 +285,10 @@ def check_updates_diff(days_diff, github_version, local_version):
 
 
 def fng_statistics_top():
-    """'-f' option: Show fingerprint statistics"""
+    """
+    '-f' option: Show top 20 HTTP fingerprint header statistics grouped by
+    service
+    """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
@@ -296,6 +301,7 @@ def fng_statistics_top():
 
 
 def fng_statistics_top_groups(fng_lines, fng_incl):
+    """Count fingerprint headers per service"""
     top_groups_pattern = re.compile(RE_PATTERN[3])
     fng_top_groups = Counter(match.strip() for line in fng_lines for match in
                              top_groups_pattern.findall(line))
@@ -303,6 +309,7 @@ def fng_statistics_top_groups(fng_lines, fng_incl):
 
 
 def fng_statistics_top_result(fng_top_groups, fng_incl):
+    """Show services in the top 20 by total number of headers"""
     max_ln_len = max(len(content) for content, _ in
                      fng_top_groups.most_common(20))
     print(f"{get_detail('[fng_top]', replace=True)} {fng_incl}\
@@ -314,6 +321,7 @@ def fng_statistics_top_result(fng_top_groups, fng_incl):
 
 
 def fng_statistics_term(fng_term):
+    """Count fingerprint headers per provided term"""
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
@@ -329,6 +337,10 @@ def fng_statistics_term(fng_term):
 
 
 def fng_statistics_term_groups(fng_incl, fng_term):
+    """
+    Calculate the total of digital footprints per term provided and the
+    services that include it
+    """
     fng_matches = [match for line in fng_incl if
                    (match := re.search(RE_PATTERN[0], line)) and
                    fng_term.lower() in match[1].lower()]
@@ -338,6 +350,7 @@ def fng_statistics_term_groups(fng_incl, fng_term):
 
 
 def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl):
+    """Calculate percentage of headers matching the search term"""
     fng_pct = round(term_cnt / len(fng_incl) * 100, 2)
     print(f"{get_detail('[fng_add]', replace=True)} '{fng_term}': {fng_pct}%\
  ({term_cnt}{get_detail('[pdf_footer2]', replace=True)} {len(fng_incl)})")
@@ -345,6 +358,9 @@ def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl):
 
 
 def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
+    """
+    Show, in alphabetical order, the service associated with the term
+    """
     for content in fng_groups:
         print(f"\n [{STYLE[0]}{content}]")
         content = content.lower()
@@ -356,7 +372,7 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
 
 
 def print_l10n_file(args, l10n_file, slice_ln=False):
-    """Show localized guides content"""
+    """Show the contents of a file based on the language provided"""
     lang_es = args.lang == 'es'
     lang_idx = 1 if lang_es else 0
     l10n_file = HUMBLE_FILES[L10N_IDXS[l10n_file][lang_idx]]
@@ -372,7 +388,7 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
 
 
 def testssl_command(testssl_temp_path, uri):
-    """'-e' option: Run TLS/SSL analysis using testssl.sh"""
+    """'-e' option: Prepare the TLS/SSL analysis based on user compliance"""
     testssl_temp_path = path.abspath(testssl_temp_path)
     if not path.isdir(testssl_temp_path):
         print_error_detail('[notestssl_path]')
@@ -400,6 +416,7 @@ def testssl_command(testssl_temp_path, uri):
 
 
 def testssl_analysis(testssl_cmd):
+    """Running TLS/SSL analysis with testssl.sh"""
     try:
         process = Popen(testssl_cmd, stdout=PIPE, stderr=PIPE, text=True)
         for ln in iter(process.stdout.readline, ''):
