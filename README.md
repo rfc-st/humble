@@ -22,6 +22,7 @@
 <br />
 <a target="_blank" href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_bandit.PNG" title="Results of the last analysis of this tool with bandit"><img src="https://img.shields.io/badge/bandit-passing-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="CodeQL security analysis passed"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
+<a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="humble documentation status"><img src="https://readthedocs.org/projects/humble/badge/?version=latest"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="OpenSSF best practices analysis"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md" title="Code Of Conduct 3.0"><img src="https://img.shields.io/badge/Code_of_Conduct-3.0-blue.svg?labelColor=343b41"></a>
 <br />
@@ -86,6 +87,7 @@
 :heavy_check_mark: Can display fingerprint statistics for a specific term or the Top 20.<br />
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
 :heavy_check_mark: Provides basic [unit tests](#unit-tests) to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest<a>.<br />
+:heavy_check_mark: Classes and functions documented at <a href="https://humble.readthedocs.io/en/latest/" target="_blank">Read the Docs<a>.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
@@ -529,7 +531,7 @@ Thanks for downloading _'humble'_, for trying it and for your time!.
 * <a href="https://github.com/mfabbri">mfabbri</a> for <a href="https://github.com/rfc-st/humble/issues/25">this</a>.
 * <a href="https://github.com/mgrottenthaler">mgrottenthaler</a> for <a href="https://github.com/rfc-st/humble/issues/27">this</a> and <a href="https://github.com/rfc-st/humble/issues/33">this</a>.
 * <a href="https://github.com/MikeAnast">MikeAnast</a> for <a href="https://github.com/rfc-st/humble/pull/22">several</a> suggestions.
-* <a href="https://github.com/multipartninja">multipartninja</a> for <a href="https://github.com/rfc-st/humble/issues/35">this</a>.
+* <a href="https://github.com/multipartninja">multipartninja</a> for <a href="https://github.com/rfc-st/humble/issues/35">this</a> and <a href="https://github.com/rfc-st/humble/issues/36">this</a>.
 * <a href="https://github.com/n3bojs4">n3bojs4</a>, <a href="https://github.com/ehlewis">ehlewis</a> and <a href="https://github.com/dkadev">dkadev</a> for <a href="https://github.com/rfc-st/humble/issues/7">this</a> and <a href="https://github.com/rfc-st/humble/pull/16">this</a>.
 * <a href="https://www.kali.org/about-us/">Sophie Brun</a> for keeping 'humble' updated in <a href="https://pkg.kali.org/pkg/humble">Kali Linux</a> and for <a href="https://github.com/rfc-st/humble/commit/88a4e5e930083801b0ea2f4ab5f51730f72c9ebf">this</a>.
 * <a href="https://github.com/stanley101music">stanley101music</a> for <a href="https://github.com/rfc-st/humble/issues/14">this</a>, <a href="https://github.com/rfc-st/humble/issues/15">this</a> and <a href="https://github.com/rfc-st/humble/issues/17">this</a>!.
