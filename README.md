@@ -22,7 +22,7 @@
 <br />
 <a target="_blank" href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_bandit.PNG" title="Results of the last analysis of this tool with bandit"><img src="https://img.shields.io/badge/bandit-passing-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="CodeQL security analysis passed"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
-<a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="humble documentation status"><img src="https://readthedocs.org/projects/humble/badge/?version=latest"></a>
+<a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="humble documentation status"><img src="https://img.shields.io/badge/documentation-passing-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="OpenSSF best practices analysis"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md" title="Code Of Conduct 3.0"><img src="https://img.shields.io/badge/Code_of_Conduct-3.0-blue.svg?labelColor=343b41"></a>
 <br />
