@@ -197,7 +197,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-11-07', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-11-08', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -227,7 +227,7 @@ def check_python_version():
 
 
 def process_proxy_url(proxy_url, timeout):
-    """'-p' option: Parse and validate proxy URL accessibility"""
+    """Parse and validate proxy URL accessibility, related to '-p' option"""
     parsed_proxy_url = urlparse(proxy_url)
     proxy_host = parsed_proxy_url.hostname
     if not proxy_host:
@@ -259,7 +259,7 @@ def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
 
 
 def check_updates(local_version):
-    """'-v' option: Check for newer versions on GitHub"""
+    """Check for updated versions on GitHub, related to '-v' option"""
     try:
         github_repo = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT).text
         github_date = re.search(RE_PATTERN[4], github_repo).group()
@@ -272,12 +272,14 @@ def check_updates(local_version):
 
 
 def check_updates_diff(days_diff, github_version, local_version):
-    """Show version comparison results and update recommendations"""
-    # Three weeks without updating 'humble' is too long ;)
+    """
+    Check whether the local version is more than a month older than the latest
+    on GitHub
+    """
     print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
 {github_version} \n {get_detail('[humble_local]', replace=True)} \
 {local_version}{STYLE[4]}")
-    if days_diff > 21:
+    if days_diff > 30:
         print(f"\n{get_detail('[humble_not_recent]')}\n\
 {get_detail('[github_humble]', replace=True)}\n")
     else:
@@ -286,8 +288,8 @@ def check_updates_diff(days_diff, github_version, local_version):
 
 def fng_statistics_top():
     """
-    '-f' option: Show top 20 HTTP fingerprint header statistics grouped by
-    service
+    Show top 20 HTTP fingerprint header statistics grouped by service, related
+    to '-f' option
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
@@ -309,7 +311,7 @@ def fng_statistics_top_groups(fng_lines, fng_incl):
 
 
 def fng_statistics_top_result(fng_top_groups, fng_incl):
-    """Show services in the top 20 by total number of headers"""
+    """Show services in the top 20 by total number of fingerprint headers"""
     max_ln_len = max(len(content) for content, _ in
                      fng_top_groups.most_common(20))
     print(f"{get_detail('[fng_top]', replace=True)} {fng_incl}\
@@ -338,8 +340,8 @@ def fng_statistics_term(fng_term):
 
 def fng_statistics_term_groups(fng_incl, fng_term):
     """
-    Calculate the total of digital footprints per term provided and the
-    services that include it
+    Calculate the total of fingerprint headers per term provided and the
+    services that include them
     """
     fng_matches = [match for line in fng_incl if
                    (match := re.search(RE_PATTERN[0], line)) and
@@ -350,7 +352,7 @@ def fng_statistics_term_groups(fng_incl, fng_term):
 
 
 def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl):
-    """Calculate percentage of headers matching the search term"""
+    """Calculate percentage of fingerprint headers matching the search term"""
     fng_pct = round(term_cnt / len(fng_incl) * 100, 2)
     print(f"{get_detail('[fng_add]', replace=True)} '{fng_term}': {fng_pct}%\
  ({term_cnt}{get_detail('[pdf_footer2]', replace=True)} {len(fng_incl)})")
@@ -389,7 +391,10 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
 
 
 def testssl_command(testssl_temp_path, uri):
-    """'-e' option: Prepare the TLS/SSL analysis based on user compliance"""
+    """
+    Prepare the TLS/SSL analysis based on user compliance, related to '-e'
+    option
+    """
     testssl_temp_path = path.abspath(testssl_temp_path)
     if not path.isdir(testssl_temp_path):
         print_error_detail('[notestssl_path]')
@@ -417,7 +422,7 @@ def testssl_command(testssl_temp_path, uri):
 
 
 def testssl_analysis(testssl_cmd):
-    """Running TLS/SSL analysis with testssl.sh"""
+    """Run TLS/SSL analysis with testssl.sh"""
     try:
         process = Popen(testssl_cmd, stdout=PIPE, stderr=PIPE, text=True)
         for ln in iter(process.stdout.readline, ''):
@@ -433,7 +438,10 @@ def testssl_analysis(testssl_cmd):
 
 
 def get_l10n_content():
-    """Show localized guides content"""
+    """
+    Define the literal file to use, to show messages and errors, based on
+    the language provided
+    """
     l10n_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[4]
                           if args.lang == 'es' else HUMBLE_FILES[5])
     with open(l10n_path, 'r', encoding='utf8') as l10n_content:
@@ -459,7 +467,7 @@ def get_analysis_results():
 
 
 def save_analysis_results(t_cnt):
-    """Save analysis results"""
+    """Save analysis results to the history file (analysis_h.txt)"""
     ok, fallback = validate_file_access(VALIDATE_FILE, context='history')
     if not ok:
         return fallback
@@ -476,7 +484,7 @@ def save_analysis_results(t_cnt):
 
 def get_analysis_totals(url_ln):
     """
-    Recovers analysis totals, normalizing those performed before 11/28/2024
+    Recover analysis totals, normalizing those performed before 11/28/2024
     """
     # To avoid errors with analyses performed before 11/28/2024, the date on
     # which enabled security headers began being considered when calculating
@@ -502,7 +510,10 @@ def get_analysis_totals(url_ln):
 
 def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
                              e_cnt, t_cnt):
-    """Shows differences between analyses of the same URL"""
+    """
+    Shows the differences in totals between the last analysis and the current
+    one, for the same URL
+    """
     if analysis_totals[0] == "First":
         return [get_detail('[first_analysis]', replace=True)] * 6
     elif analysis_totals[0] == "Not available":
@@ -514,7 +525,10 @@ def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
 
 
 def format_analysis_results(*diff, en_cnt_w, t_cnt):
-    """Apply formatting to differences between analyses of the same URL"""
+    """
+    Apply formatting to differences in totals between the last analysis and the
+    current one, for the same URL
+    """
     results = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
     new_ln = ["\n" if int(en_cnt) > 0 else "", "", "", "", "", "\n\n"]
     totals = [f"{val:>2} ({diff[i]}){new_ln[i]}" for i, val in
@@ -524,7 +538,7 @@ def format_analysis_results(*diff, en_cnt_w, t_cnt):
 
 
 def print_analysis_results(totals, max_secl, en_cnt_w):
-    """Show the totals after analysis"""
+    """Shows the totals for the current analysis"""
     for idx, (literal, total) in enumerate(zip(SECTION_S, totals)):
         print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} {total}",
               end='')
@@ -548,22 +562,19 @@ def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
 
 
 def check_analysis(filepath):
-    """Check if analysis history file exists"""
+    """Check if analysis history file (analysis_h.txt) exists"""
     if not path.exists(filepath):
         detail = '[no_analysis]' if URL else '[no_global_analysis]'
         print_error_detail(detail)
 
 
 def adjust_old_analysis(url_ln):
-    """Adjust analysis totals from history prior to 11/28/2024"""
-    # To avoid errors with analyses performed before 11/28/2024, the date on
-    # which enabled security headers began being written to the analysis
-    # history file ('analysis_h.txt') and considered for displaying statistics
-    # (via the '-a' parameter).
-
-    # Therefore, analyses performed before that date are assumed to have no
-    # security headers enabled.
-    # Ref: https://github.com/rfc-st/humble/commit/f7b376
+    """
+    Adjusts analysis history entries, in analsys history file (analysis_h.txt),
+    created before 2024-11-28, when the 'enabled security headers' total was
+    not yet recorded. Ensures older entries remain compatible with the current
+    analysis format.
+    """
     updated_lines = []
     for i in url_ln:
         fields = i.strip().split(';')
@@ -577,7 +588,10 @@ def adjust_old_analysis(url_ln):
 
 
 def url_analytics(is_global=False):
-    """'-a' option: Show analysis statistics"""
+    """
+    Show analysis statistics for all analyses performed on a URL, related to
+    '-a' option
+    """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
     with open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
         analysis_metrics = url_scope(all_analysis)
@@ -592,6 +606,9 @@ def url_analytics(is_global=False):
 
 
 def get_analysis_metrics(all_analysis):
+    """
+    Calculate metrics to show statistics of the analyses performed on a URL
+    """
     url_ln = [line for line in all_analysis if URL in line]
     if not url_ln:
         print_error_detail('[no_analysis]')
@@ -611,6 +628,7 @@ def get_analysis_metrics(all_analysis):
 
 
 def get_first_metrics(adj_url_ln):
+    """Calculate key analytics metrics of the analyses performed on a URL"""
     first_a = min(line[:SLICE_INT[9]] for line in adj_url_ln)
     latest_a = max(line[:SLICE_INT[9]] for line in adj_url_ln)
     date_w = [(line[:SLICE_INT[9]], int(line.strip().split(" ; ")[-1]))
@@ -621,6 +639,9 @@ def get_first_metrics(adj_url_ln):
 
 
 def get_second_metrics(adj_url_ln, index, total_a):
+    """
+    Calculate the total of analyses performed on a URL that meet a key metric
+    """
     metric_c = len([line for line in adj_url_ln if int(line.split(' ; ')
                                                        [index])
                     == 0])
@@ -629,6 +650,7 @@ def get_second_metrics(adj_url_ln, index, total_a):
 
 
 def get_third_metrics(adj_url_ln):
+    """Calculate metrics related to averages of analyses performed on a URL"""
     fields = [line.strip().split(';') for line in adj_url_ln]
     total_enb, total_miss, total_fng, total_dep, total_ety = \
         [sum(int(f[i]) for f in fields) for i in range(2, 7)]
@@ -640,6 +662,9 @@ def get_third_metrics(adj_url_ln):
 
 
 def get_additional_metrics(adj_url_ln):
+    """
+    Calculate the total of analyses performed on a URL, by month and year
+    """
     avg_w = int(sum(int(line.split(' ; ')[-1]) for line in adj_url_ln) /
                 len(adj_url_ln))
     year_a, avg_w_y, month_a = extract_date_metrics(adj_url_ln)
@@ -647,6 +672,9 @@ def get_additional_metrics(adj_url_ln):
 
 
 def extract_date_metrics(url_ln):
+    """
+    Extract totals, by month and year, from the analyses performed on a URL
+    """
     year_cnt, year_wng = defaultdict(int), defaultdict(int)
     for line in url_ln:
         year = int(line[:SLICE_INT[11]])
@@ -658,6 +686,10 @@ def extract_date_metrics(url_ln):
 
 
 def generate_date_groups(year_cnt, url_ln):
+    """
+    Generates a formatted summary of yearly and monthly analyses performed on a
+    URL
+    """
     years_str = []
     for year in sorted(year_cnt.keys()):
         year_str = f" {year}: {year_cnt[year]} \
@@ -671,6 +703,7 @@ def generate_date_groups(year_cnt, url_ln):
 
 
 def get_month_counts(year, url_ln):
+    """Calculate the total of analyses performed on a URL, by month"""
     month_cnts = defaultdict(int)
     for line in url_ln:
         date_str = line[:SLICE_INT[10]]
@@ -681,6 +714,7 @@ def get_month_counts(year, url_ln):
 
 
 def get_highlights(adj_url_ln):
+    """Calculate highlight metrics of analyses performed on a URL"""
     sections_h = SECTION_S[:-1]
     best_lbl = print_detail_l('[best_analysis]', analytics=True)
     worst_lbl = print_detail_l('[worst_analysis]', analytics=True)
@@ -696,6 +730,10 @@ def get_highlights(adj_url_ln):
 
 
 def calculate_highlights(url_ln, field_index, func):
+    """
+    Extract the specific date from an analysis, based on the required highlight
+    metric
+    """
     values = [int(line.split(';')[field_index].strip()) for line in url_ln]
     target_value = func(values)
     target_line = next(line for line in url_ln
@@ -705,7 +743,7 @@ def calculate_highlights(url_ln, field_index, func):
 
 
 def get_trends(adj_url_ln):
-    """Calculate and show trends related to '-a' option"""
+    """Show trends based on the totals of analyses performed on a URL"""
     sections_t = SECTION_S[1:]
     fields_t = [3, 4, 5, 6, 7]
     max_secl = (get_max_lnlength(SECTION_S))-2
@@ -719,17 +757,21 @@ def get_trends(adj_url_ln):
 
 
 def calculate_trends(values):
-    # Calculates the trend of values for several checks (Missing, Fingerprint,
-    # Deprecated/Insecure, Empty headers, and Total warnings) for a given URL.
+    """
+    Calculate trends based on the totals of analyses performed on a URL
+    """
+    # Trends are related to 'Missing', 'Fingerprint', 'Deprecated/Insecure',
+    # 'Empty' headers checks and 'Total warnings' for a given URL.
     #
-    # At least five analyses of the URL are required to calculate reliable
-    # trends, and only the five most recent analyses are considered. The
-    # possible trends are:
+    # At least five analyses of the same URL are required to calculate reliable
+    # trends and only the five most recent analyses are considered.
     #
-    # 'Stable': All five values are identical.
-    # 'Improving': Values consistently decrease.
-    # 'Worsening': Values consistently increase.
-    # 'Fluctuating': No clear trend is detected; values alternate.
+    # Trend values:
+    #
+    # - 'Stable': All five values are identical.
+    # - 'Improving': Values consistently decrease.
+    # - 'Worsening': Values consistently increase.
+    # - 'Fluctuating': No clear trend is detected; values alternate.
     if len(values) < 5:
         return print_detail_l('[t_insufficient]', analytics=True)
     trends_list = values[-5:]
@@ -746,7 +788,7 @@ def calculate_trends(values):
 
 def print_metrics(analytics_s, analytics_w, total_a, first_m, second_m,
                   third_m, additional_m, fourth_m, fifth_m):
-    """Show metrics related to '-a' option"""
+    """Show metrics related to the analysis performed on a URL"""
     basic_m = get_basic_metrics(total_a, first_m)
     error_m = get_security_metrics(analytics_s, second_m)
     warning_m = get_warnings_metrics(additional_m, analytics_w)
@@ -1214,7 +1256,7 @@ def delete_lines(reliable=True, warning=False):
 
 
 def print_export_path(filename, reliable):
-    """Show export path related to -o' option"""
+    """Show export path, related to -o' option"""
     delete_lines(reliable=False) if reliable else delete_lines()
     if '-c' not in sys.argv:
         print(f"\n {args.output.upper()} {print_detail_s('[report]').lstrip()}\
@@ -1300,7 +1342,7 @@ def print_extra_info(reliable):
 
 
 def print_response_headers():
-    """Show response headers relate to '-r' option"""
+    """Show response headers, related to '-r' option"""
     print(linesep.join(['']*2))
     print_detail_r('[0headers]')
     if not headers:
@@ -1542,7 +1584,7 @@ def print_browser_compatibility(compat_headers):
 
 def check_input_traversal(user_input):
     """
-    Check user input for path traversal patterns related to '-of' and '-op'
+    Check user input for path traversal patterns, related to '-of' and '-op'
     options
     """
     input_traversal_ptrn = re.compile(RE_PATTERN[2])
@@ -1553,7 +1595,7 @@ def check_input_traversal(user_input):
 
 
 def validate_path(output_path):
-    """Validate permissions in the supplied path related to '-op' option"""
+    """Validate permissions in the supplied path, related to '-op' option"""
     try:
         with open(path.join(output_path, HUMBLE_FILES[1]), 'w'):
             pass
@@ -1590,7 +1632,7 @@ def validate_file_access(target_path, *, context='history'):
 
 
 def check_output_path(args, output_path):
-    """Validations related to the supplied path in ‘-op’ option"""
+    """Validations related to the supplied path in '-op' option"""
     check_input_traversal(args.output_path)
     if args.output is None:
         print_error_detail('[args_nooutputfmt]')
@@ -1603,7 +1645,7 @@ def check_output_path(args, output_path):
 
 
 def parse_user_agent(user_agent=False):
-    """Select and validate the supplied user agent related to ‘-ua’ option"""
+    """Select and validate the supplied user agent, related to '-ua' option"""
     if not user_agent:
         return get_user_agent('1')
     user_agent_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
@@ -1645,7 +1687,7 @@ def print_user_agents(user_agents):
 
 
 def get_insecure_checks():
-    """'-s' option: Skips some checks for the indicated headers"""
+    """Skips some checks for the indicated headers, related to '-s' option"""
     headers_name = set()
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), 'r') as \
             ins_source:
@@ -1681,7 +1723,7 @@ def print_unsupported_headers(unsupported_headers):
 
 
 def check_output_format(args, final_filename, reliable, tmp_filename):
-    """'-o' option: Export the analysis to the supplied format"""
+    """Export the analysis to the supplied format, related to '-o' option"""
     dispatch = {
         "txt": lambda: (
             args.cicd and print_cicd_totals(tmp_filename),
@@ -1705,7 +1747,7 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
 
 
 def print_cicd_totals(tmp_filename):
-    """'-cicd' option: Summary-only JSON analysis for CI/CD"""
+    """Summary-only JSON analysis for CI/CD, related to 'cicd' option"""
     try:
         with open(tmp_filename, 'r', encoding='utf-8') as txt_source:
             lines = [line.strip() for line in txt_source if line.strip()]
@@ -1767,7 +1809,7 @@ def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
 
 
 def generate_csv(final_filename, temp_filename, to_xlsx=False):
-    """'-o csv' option: CSV export of the analysis"""
+    """CSV export of the analysis, related to '-o csv' option"""
     with open(temp_filename, 'r', encoding='utf8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
         csv_writer = writer(csv_final, quoting=QUOTE_ALL)
@@ -1797,7 +1839,9 @@ def parse_csv(csv_section, csv_source, csv_writer):
 
 
 def generate_xlsx(final_filename, temp_filename):
-    """'-o xlsx' option: XLSX spreadsheet export of the analysis"""
+    """
+    XLSX spreadsheet export of the analysis, related to '-o xlsx' option
+    """
     # Tiny optimization, lazy-loading third-party xlsxwriter
     from xlsxwriter import Workbook
     workbook = Workbook(final_filename, {'in_memory': True})
@@ -1925,7 +1969,7 @@ def format_json(json_data, json_lns):
 
 
 def json_detailed_sources(file_idx, slice_idx):
-    """'-o json' option: JSON export for a detailed analysis"""
+    """JSON export for a detailed analysis, related to '-o json' option"""
     file_path = path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[file_idx])
     with open(file_path, 'r', encoding='utf8') as f:
         return {line.strip() for line in islice(f, SLICE_INT[slice_idx],
@@ -2210,7 +2254,7 @@ def json_detailed_results(json_lns):
 
 
 def export_pdf_file(tmp_filename):
-    """'-o pdf' option: PDF export of the analysis"""
+    """PDF export of the analysis, related to '-o pdf' option"""
     # Important optimization, lazy-loading third-party fpdf2
     from fpdf import FPDF, YPos as ypos  # type: ignore
 
@@ -2430,7 +2474,7 @@ def apply_pdf_color(colon_idx, hcolor, line, vcolor):
 
 
 def export_html_file(final_filename, tmp_filename):
-    """'-o html' option: HTML export of the analysis"""
+    """HTML export of the analysis, related to '-o html' option"""
     global inside_section
     inside_section = False
     generate_html()
@@ -2650,7 +2694,7 @@ def clean_html_final(final_filename):
 
 
 def generate_xml(final_filename, temp_filename):
-    """'-o xml' option: XML export of the analysis"""
+    """XML export of the analysis, related to '-o xml' option"""
     root = ET.Element('analysis', {'version': BANNER_VERSION,
                                    'generated': current_time})
     with open(temp_filename, 'r', encoding='utf8') as txt_source:
@@ -2711,7 +2755,9 @@ def check_ru_scope():
 
 
 def check_owasp_compliance(tmp_filename):
-    """'-c' option: OWASP Secure Headers Project best practices checks"""
+    """
+    OWASP Secure Headers Project best practices checks, related to '-c' option
+    """
     remove(tmp_filename)
     header_list = []
     header_dict = {}
@@ -2791,7 +2837,7 @@ def print_owasp_rec(wrong_owasp, header_dict):
 
 
 def analyze_input_file(input_file):
-    """'-if' option: Analyze headers from supplied file"""
+    """Analyze headers from supplied file, related to '-if' option"""
     if not path.exists(input_file):
         print_error_detail('[args_inputnotfound]')
     input_headers = {}
@@ -2810,7 +2856,7 @@ def analyze_input_file(input_file):
 
 
 def get_tmp_file(args, export_date):
-    """Create the temporary export file related to '-o' option"""
+    """Create the temporary export file, related to '-o' option"""
     file_ext = '.txt' if args.output == 'txt' else 't.txt'
     if args.output_file:
         tmp_file = f'{args.output_file}{file_ext}'
@@ -2923,7 +2969,7 @@ def process_http_error(r, exception_d):
 
 
 def parse_request_headers(request_headers):
-    """'-H' option: Add the supplied headers to the request"""
+    """Add the supplied headers to the request, related to '-H' option"""
     headers, malformed_headers = process_request_headers(request_headers)
     if malformed_headers:
         delete_lines()
