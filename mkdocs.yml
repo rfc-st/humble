@@ -10,6 +10,10 @@ theme:
     - search.suggest
     - search.highlight
 
+nav:
+  - Home: index.md
+  - Reference: reference.md
+
 plugins:
   - mkdocstrings:
       handlers:
