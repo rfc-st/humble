@@ -803,6 +803,7 @@ def print_metrics(analytics_s, analytics_w, total_a, first_m, second_m,
 
 
 def get_basic_metrics(total_a, first_m):
+    """Show base metrics details related to the analysis performed on a URL"""
     return {'[main]': "", '[total_analysis]': total_a,
             '[first_analysis_a]': first_m[0], '[latest_analysis]': first_m[1],
             '[best_analysis]': f"{first_m[2]} \
@@ -812,6 +813,10 @@ def get_basic_metrics(total_a, first_m):
 
 
 def get_security_metrics(analytics_s, second_m):
+    """
+    Show security-related metrics details related to the analysis performed on
+    a URL
+    """
     return {'[analysis_y]': "",
             '[no_enabled]': f"{analytics_s[0]}{second_m[0]}",
             '[no_missing]': f"{analytics_s[1]}{second_m[1]}",
@@ -821,12 +826,20 @@ def get_security_metrics(analytics_s, second_m):
 
 
 def get_warnings_metrics(additional_m, analytics_w):
+    """
+    Show warning-related metrics details related to the analysis performed on a
+    URL
+    """
     return {'[averages]': "",
             '[average_warnings]': f"{analytics_w[0]}{additional_m[0]}",
             '[average_warnings_year]': f"{analytics_w[1]}{additional_m[2]}\n"}
 
 
 def get_averages_metrics(analytics_w, third_m):
+    """
+    Show average-related metrics details related to the analysis performed on a
+    URL
+    """
     return {'[average_enb]': f"{analytics_w[2]}{third_m[0]}",
             '[average_miss]': f"{analytics_w[3]}{third_m[1]}",
             '[average_fng]': f"{analytics_w[4]}{third_m[2]}",
@@ -835,10 +848,18 @@ def get_averages_metrics(analytics_w, third_m):
 
 
 def get_highlights_metrics(fourth_m):
+    """
+    Show highlight-related metrics details related to the analysis performed on
+    a URL
+    """
     return {'[highlights]': "\n" + "\n".join(fourth_m)}
 
 
 def get_trend_metrics(fifth_m):
+    """
+    Show trend-related metrics details related to the analysis performed on a
+    URL
+    """
     if '5' in fifth_m[0]:
         trends_s = get_detail('[t_insufficient]')
         return {'[trends]': "\n" + trends_s}
@@ -846,10 +867,14 @@ def get_trend_metrics(fifth_m):
 
 
 def get_date_metrics(additional_m):
+    """Show date-related metrics details related"""
     return {'[analysis_year_month]': f"\n{additional_m[1]}"}
 
 
 def extract_global_metrics(all_analysis):
+    """
+    Calculate metrics to show statistics across all URL analyses
+    """
     url_ln = list(all_analysis)
     if not url_ln:
         print_error_detail('[no_global_analysis]')
@@ -868,6 +893,7 @@ def extract_global_metrics(all_analysis):
 
 
 def get_global_first_metrics(adj_url_ln):
+    """Calculate key analytics metrics across all URL analyses"""
     split_lines = [line.split(' ; ') for line in adj_url_ln]
     url_lines = {}
     for entry in split_lines:
@@ -877,6 +903,7 @@ def get_global_first_metrics(adj_url_ln):
 
 
 def get_global_metrics(url_ln, url_lines):
+    """Calculate key analytics metrics across all URL analyses"""
     first_a = min(line[:SLICE_INT[9]] for line in url_ln)
     latest_a = max(line[:SLICE_INT[9]] for line in url_ln)
     unique_u = len({line.split(' ; ')[1] for line in url_ln})
@@ -893,6 +920,7 @@ def get_global_metrics(url_ln, url_lines):
 
 
 def get_global_totals(url_ln, field):
+    """Calculate totals metrics across all URL analyses"""
     most_totals = max(url_ln, key=lambda line: int(line.split(' ; ')[field]))
     least_totals = min(url_ln, key=lambda line: int(line.split(' ; ')[field]))
     most_totals_c, most_totals_cu = most_totals.split(' ; ')[1], \
@@ -905,6 +933,7 @@ def get_global_totals(url_ln, field):
 
 
 def get_basic_global_metrics(analytics_l, total_a, first_m):
+    """Show metrics details across all URL analyses"""
     return {'[main]': "", '[total_analysis]': total_a,
             '[total_global_analysis]': str(first_m[2]),
             '[first_analysis_a]': first_m[0],
@@ -928,6 +957,7 @@ def get_basic_global_metrics(analytics_l, total_a, first_m):
 
 def print_global_metrics(analytics_l, analytics_s, analytics_w,
                          total_a, first_m, second_m, third_m, additional_m):
+    """Show metrics across all URL analyses"""
     basic_m = get_basic_global_metrics(analytics_l, total_a, first_m)
     error_m = get_security_metrics(analytics_s, second_m)
     warning_m = get_warnings_metrics(additional_m, analytics_w)
@@ -956,6 +986,9 @@ def csp_analyze_content(csp_header):
 
 
 def csp_check_ignored(csp_header):
+    """
+    'Content-Security-Policy' header check related to 'strict-dynamic' keyword
+    """
     hash_p = bool(re.search(RE_PATTERN[17], csp_header))
     nonce_p = bool(re.search(RE_PATTERN[6], csp_header))
     if not (hash_p or nonce_p):
@@ -969,6 +1002,9 @@ def csp_check_ignored(csp_header):
 
 
 def csp_check_missing(csp_dirs):
+    """
+    'Content-Security-Policy' header check related to missing directives
+    """
     csp_refs = [('[icspmb_h]', '[icspmb]'), ('[icspmc_h]', '[icspmc]'),
                 ('[icspmcn_h]', '[icspmcn]'), ('[icspmfo_h]', '[icspmfo]'),
                 ('[icspmf_h]', '[icspmf]'), ('[icspmfa_h]', '[icspmfa]'),
@@ -982,6 +1018,9 @@ def csp_check_missing(csp_dirs):
 
 
 def csp_print_missing(csp_ref, csp_ref_brief):
+    """
+    Shows the missing directive in the 'Content-Security-Policy' header
+    """
     if args.brief:
         i_cnt[0] += 1
         print_detail_r(csp_ref_brief, is_red=True)
@@ -994,6 +1033,9 @@ def csp_print_missing(csp_ref, csp_ref_brief):
 
 
 def csp_check_additional(csp_dirs_vals):
+    """
+    'Content-Security-Policy' header check related to broad and insecure values
+    """
     checks = [(t_csp_broad, csp_check_broad),
               (t_csp_insecs, csp_check_insecure)]
     for match, csp_func in checks:
@@ -1004,6 +1046,7 @@ def csp_check_additional(csp_dirs_vals):
 
 
 def csp_check_broad(csp_dirs_vals):
+    """'Content-Security-Policy' header check related to broad values"""
     csp_broad_v = sorted({value for dir_vals in csp_dirs_vals if
                           dir_vals.strip() for value in dir_vals.split()[1:]
                           if f" {value} " in t_csp_broad})
@@ -1016,6 +1059,9 @@ def csp_check_broad(csp_dirs_vals):
 
 
 def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
+    """
+    Shows the broad value in the 'Content-Security-Policy' header
+    """
     print_detail_r('[icsw_h]', is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(csp_broad_dirs) > 1 else DIR_MSG[1])
@@ -1028,6 +1074,7 @@ def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
 
 
 def csp_check_insecure(csp_dirs_vals):
+    """'Content-Security-Policy' header check related to insecure values"""
     csp_insec_v = sorted({value for value in t_csp_insecs if
                           any(value in dir for dir in csp_dirs_vals)})
     csp_insec_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
@@ -1037,6 +1084,9 @@ def csp_check_insecure(csp_dirs_vals):
 
 
 def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
+    """
+    Shows the insecure value in the 'Content-Security-Policy' header
+    """
     print_detail_r('[icsh_h]', is_red=True)
     if not args.brief:
         csp_values = ', '.join(f"'{value}'" for value in csp_insec_v)
@@ -1050,6 +1100,10 @@ def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
 
 
 def csp_check_eval(csp_dirs_vals):
+    """
+    'Content-Security-Policy' header check related to 'unsafe-eval' and
+    'wasm-unsafe-eval' keywords
+    """
     csp_unsafe_dirs = [
         dir_vals.split()[0] if ' ' in dir_vals else dir_vals
         for dir_vals in csp_dirs_vals
@@ -1059,6 +1113,9 @@ def csp_check_eval(csp_dirs_vals):
 
 
 def csp_check_inline(csp_dirs_vals):
+    """
+    'Content-Security-Policy' header check related to 'unsafe-inline' keyword
+    """
     csp_unsafe_dirs = [
         dir_vals.split()[0] if ' ' in dir_vals else dir_vals
         for dir_vals in csp_dirs_vals if 'unsafe-inline' in dir_vals]
@@ -1067,6 +1124,10 @@ def csp_check_inline(csp_dirs_vals):
 
 
 def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
+    """
+    Show the occurrences of 'unsafe-eval' and 'unsafe-inline'keywords in the
+    'Content-Security-Policy' header
+    """
     print_detail_r(detail_t, is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(csp_unsafe_dirs) > 1 else DIR_MSG[1])
@@ -1077,6 +1138,7 @@ def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
 
 
 def csp_check_hashes(csp_h):
+    """'Content-Security-Policy' header checks related to hashes"""
     csp_unquoted_hashes(csp_h)
     invalid_algos = set()
     csp_hashes = re.findall(RE_PATTERN[17], csp_h)
@@ -1096,6 +1158,7 @@ def csp_check_hashes(csp_h):
 
 
 def csp_unquoted_hashes(csp_h):
+    """'Content-Security-Policy' header check related to unquoted hashes"""
     if re.search(RE_PATTERN[18], csp_h):
         print_detail_r('[icshash_h]', is_red=True)
         i_cnt[0] += 1
@@ -1105,6 +1168,7 @@ def csp_unquoted_hashes(csp_h):
 
 
 def csp_check_nonces(csp_h):
+    """'Content-Security-Policy' header checks related to nonces"""
     if not re.search(RE_PATTERN[15], csp_h):
         print_details('[icsncei_h]', '[icsncei]', 'd', i_cnt)
         return
@@ -1118,11 +1182,13 @@ def csp_check_nonces(csp_h):
 
 
 def csp_hex_nonce(nonce, nonce_refs, i_cnt):
+    """'Content-Security-Policy' header checks related to hexadecimal nonces"""
     return csp_print_nonce(nonce, nonce_refs, i_cnt) \
         if len(nonce) < 32 else False
 
 
 def csp_base64_nonce(nonce, nonce_refs, i_cnt):
+    """'Content-Security-Policy' header checks related to Base64 nonces"""
     try:
         return csp_print_nonce(nonce, nonce_refs, i_cnt) if \
             len(b64decode(nonce, validate=True)) < 16 else False
@@ -1131,6 +1197,10 @@ def csp_base64_nonce(nonce, nonce_refs, i_cnt):
 
 
 def csp_print_nonce(nonce, nonce_refs, i_cnt):
+    """
+    Show insecure Base64 and hexadecimal nonces in the
+    'Content-Security-Policy' header
+    """
     print_detail_r(nonce_refs[0], is_red=True)
     if not args.brief:
         print_detail_l(nonce_refs[1])
@@ -1141,12 +1211,14 @@ def csp_print_nonce(nonce, nonce_refs, i_cnt):
 
 
 def csp_check_ip(csp_h):
+    """'Content-Security-Policy' header check related to IP address values"""
     ip_match = re.findall(RE_PATTERN[1], csp_h)
     if ip_match != t_csp_checks[4]:
         print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
 
 
 def csp_print_deprecated(csp_deprecated):
+    """Show deprecated directives in the 'Content-Security-Policy' header"""
     i_cnt[0] += 1
     print_detail_r('[icsi_d]', is_red=True) if args.brief else \
         csp_print_details(csp_deprecated, '[icsi_d]', '[icsi_d_s]',
@@ -1154,6 +1226,9 @@ def csp_print_deprecated(csp_deprecated):
 
 
 def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
+    """
+    Group the deprecated directives in the 'Content-Security-Policy' header
+    """
     csp_values = ', '.join(f"'{value}'" for value in sorted(csp_values))
     print_detail_r(f'{csp_title}', is_red=True)
     print_detail_l(f'{csp_desc}')
@@ -1162,6 +1237,7 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
 
 
 def csp_check_unknown(csp_h):
+    """'Content-Security-Policy' header check related to unknown directives"""
     unknown_dir = []
     csp_dirs = [d.strip() for d in csp_h.split(';') if d.strip()]
     for dir in csp_dirs:
@@ -1174,6 +1250,7 @@ def csp_check_unknown(csp_h):
 
 
 def csp_print_unknown(unknown_dir):
+    """Show unknown directives in the 'Content-Security-Policy' header"""
     # sourcery skip: use-fstring-for-concatenation
     print_detail_r('[icspiu_h]', is_red=True)
     if not args.brief:
@@ -1197,13 +1274,14 @@ def check_unsafe_cookies():  # sourcery skip: use-named-expression
 
 
 def print_unsafe_cookies(unsafe_cks):
+    """Show unsafe cookies in the 'Set-Cookie' header"""
     print_detail_l('[icooks_s]' if len(unsafe_cks) > 1 else '[icook_s]')
     print(", ".join(f"'{ck}'" for ck in sorted(unsafe_cks)) + ".")
     print_detail('[iset]', num_lines=2)
 
 
 def permissions_analyze_content(perm_header, i_cnt):
-    """Permissions-Policy' header analysis"""
+    """'Permissions-Policy' header analysis"""
     if any(value in perm_header for value in t_per_dep):
         permissions_print_deprecated(perm_header)
     if 'none' in perm_header:
@@ -1213,6 +1291,7 @@ def permissions_analyze_content(perm_header, i_cnt):
 
 
 def permissions_print_deprecated(perm_header):
+    """Show deprecated directives in the 'Permissions-Policy' header"""
     print_detail_r('[ifpold_h]', is_red=True)
     if not args.brief:
         matches_perm = [x for x in t_per_dep if x in perm_header]
@@ -1223,6 +1302,7 @@ def permissions_print_deprecated(perm_header):
 
 
 def permissions_check_broad(perm_header):
+    """'Permissions-Policy' header check related to broad values"""
     if sum(dir in perm_header for dir in t_per_ft) < 2:
         return None
     try:
@@ -1236,6 +1316,9 @@ def permissions_check_broad(perm_header):
 
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
+    """
+    Show the broad values in the 'Permissions-Policy' header
+    """
     print_detail_r('[ifpol_h]', is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(perm_broad_dirs) > 1 else DIR_MSG[1])
@@ -1246,7 +1329,7 @@ def permissions_print_broad(perm_broad_dirs, i_cnt):
 
 
 def delete_lines(reliable=True, warning=False):
-    """Delete printed console lines"""
+    """Remove previously printed lines from the console output"""
     if warning:
         sys.stdout.write(DELETED_LINES[:6])
         return
@@ -1264,7 +1347,7 @@ def print_export_path(filename, reliable):
 
 
 def print_nowarnings():
-    """Show a message when no findings exist in analysis section"""
+    """Check if no results were found in sections of the analysis"""
     if not args.output:
         print(f"{STYLE[10]}{get_detail(DIR_MSG[2])}{STYLE[5]}")
     else:
@@ -1272,12 +1355,12 @@ def print_nowarnings():
 
 
 def print_header(header):
-    """Show header name (generic)"""
+    """Show the header name (generic use)."""
     print(f" {header}" if args.output else f"{STYLE[1]} {header}")
 
 
 def print_fng_header(header):
-    """Show header name for fingerprint findings"""
+    """Show the header name in the fingerprint section of the analysis."""
     if args.output:
         print(f" {header}")
     elif '[' in header:
@@ -1288,7 +1371,7 @@ def print_fng_header(header):
 
 
 def print_general_info(reliable, export_filename):
-    """Show analysis information in the section '[0. Info]'"""
+    """Show all the information in the '[0. Info]' section of the analysis."""
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
         print(f"\n{BANNER}\n ({BANNER_VERSION})")
@@ -1300,6 +1383,7 @@ def print_general_info(reliable, export_filename):
 
 
 def print_basic_info(export_filename):
+    """Show basic information in the '[0. Info]' section of the analysis."""
     print(linesep.join(['']*2) if args.output == 'html' or not args.output
           else "")
     print_detail_r('[0section]')
@@ -1319,6 +1403,7 @@ def print_basic_info(export_filename):
 
 
 def print_extended_info(args, reliable, status_code):
+    """Show extended information in the '[0. Info]' section of the analysis."""
     if args.skip_headers:
         print_skipped_headers(args)
     if args.proxy:
@@ -1330,6 +1415,7 @@ def print_extended_info(args, reliable, status_code):
 
 
 def print_extra_info(reliable):
+    """Show extra information in the '[0. Info]' section of the analysis."""
     if (status_code is not None and 400 <= status_code <= 451):
         id_mode = f'[http_{status_code}]'
         if detail := print_detail(id_mode, 0):
@@ -1357,7 +1443,7 @@ def print_response_headers():
 
 
 def get_max_lnlength(section):
-    """Calculate spacing for aligned message display"""
+    """Calculate the longest item length in a section"""
     sec_val = []
     max_secl = 0
     for i in section:
@@ -1368,6 +1454,7 @@ def get_max_lnlength(section):
 
 
 def get_analytics_length(section):
+    """Calculate alignment padding for each item in a section"""
     basic_l = get_max_lnlength(section) - 1
     section_l = []
     for i in section:
@@ -1377,7 +1464,7 @@ def get_analytics_length(section):
 
 
 def print_details(short_d, long_d, id_mode, i_cnt):
-    """Format and show localized messages"""
+    """Show detailed information about the finding"""
     print_detail_r(short_d, is_red=True)
     if not args.brief:
         print_detail(long_d, 2) if id_mode == 'd' else print_detail(long_d, 3)
@@ -1386,6 +1473,7 @@ def print_details(short_d, long_d, id_mode, i_cnt):
 
 
 def print_detail(id_mode, num_lines=1):
+    """Show detailed information about the finding across multiple lines"""
     idx = l10n_main.index(id_mode + '\n')
     print(l10n_main[idx+1], end='')
     for i in range(1, num_lines+1):
@@ -1394,6 +1482,10 @@ def print_detail(id_mode, num_lines=1):
 
 
 def print_detail_l(id_mode, analytics=False, no_headers=False):
+    """
+    Show detailed information about the finding and removes lines from the
+    output based on it
+    """
     for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
         if idmode_ln.startswith(id_mode):
             if no_headers:
@@ -1405,6 +1497,9 @@ def print_detail_l(id_mode, analytics=False, no_headers=False):
 
 
 def print_detail_r(id_mode, is_red=False):
+    """
+    Show detailed information about the finding using a distinctive format
+    """
     style_str = STYLE[1] if is_red else STYLE[0]
     for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
         if idmode_ln.startswith(id_mode):
@@ -1417,6 +1512,9 @@ def print_detail_r(id_mode, is_red=False):
 
 
 def print_detail_s(id_mode, max_ln=False):
+    """
+    Show message with leading newline and optional whitespace preservation
+    """
     for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
         if idmode_ln.startswith(id_mode):
             return f"\n{idnext_ln.rstrip()}" if max_ln else \
@@ -1424,6 +1522,7 @@ def print_detail_s(id_mode, max_ln=False):
 
 
 def get_detail(id_mode, replace=False):
+    """"Show message, optionally removing newlines"""
     for i, line in enumerate(l10n_main):
         if line.startswith(id_mode):
             return (l10n_main[i+1].replace('\n', '')) if replace else \
@@ -1431,12 +1530,13 @@ def get_detail(id_mode, replace=False):
 
 
 def print_error_detail(id_mode):
+    """Show error message and terminate execution"""
     print(f"\n{get_detail(id_mode, replace=True)}")
     sys.exit()
 
 
 def get_epilog_content(id_mode):
-    """Show examples and how to contribute, related to '-h' option"""
+    """Show use cases and how to contribute, , related to '-h' option"""
     epilog_file_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[5])
     with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
         epilog_lines = epilog_source.readlines()
@@ -1445,7 +1545,10 @@ def get_epilog_content(id_mode):
 
 
 def get_fingerprint_headers():
-    """Show findings in the section '[3. Fingerprint HTTP Response Headers]'"""
+    """
+    Show all the information in the '[3. Fingerprint HTTP Response Headers]'
+    section of the analysis
+    """
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
         l_fng_ex = [line.strip() for line in
