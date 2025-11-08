@@ -8,7 +8,11 @@ It is a humble, and **fast**, security-oriented HTTP headers analyzer.
 
 It is the result of many weekends over the years, filled with excitement: programming, studying, reviewing, and reading standards, regulations, exploits, bypasses, articles, and blogs on related HTTP response headers and their security.
 
-It started as a small personal project, with no intention of becoming important. Over time, it was accepted into [Kali Linux](https://pkg.kali.org/pkg/humble) and has been referenced in blogs and social media.
+It started as a small personal project, with no intention of becoming important. Over time, it was accepted into [Kali Linux](https://pkg.kali.org/pkg/humble), has been referenced in blogs and social media, and has been used as a basis and reference for final degree projects.
+
+## Who Made It?
+
+Rafa *'Bluesman'* Faura Cucalón; you can read about me on [LinkedIn](https://www.linkedin.com/in/rafaelfaura/).
 
 ## Features
 
@@ -44,4 +48,4 @@ Start by taking a look at its [repository](https://github.com/rfc-st/humble/).
 
 And the available [documentation](reference.md) on its classes and functions (Work in progress).
 
-**Thank you** in advance; I hope you find *humble* useful!
+**Thank you** in advance; I hope you find *humble* useful!.
