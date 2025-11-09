@@ -1,5 +1,7 @@
 site_name: humble.py
 
+repo_url: https://github.com/rfc-st/humble
+
 use_directory_urls: false
 
 theme:
