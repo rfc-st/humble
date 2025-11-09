@@ -1,5 +1,4 @@
 # humble.py
-
 Welcome to **humble.py** documentation!
 
 ## What is *humble.py*?
