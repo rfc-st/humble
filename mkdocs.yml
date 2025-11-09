@@ -19,3 +19,5 @@ plugins:
       handlers:
         python:
           paths: ["."]
+  - search
+  - git-revision-date-localized
