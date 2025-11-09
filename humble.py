@@ -2212,7 +2212,7 @@ def json_detailed_sources(file_idx, slice_idx):
 def generate_json_detailed(final_filename, temp_filename):
     """
     JSON export of a detailed analysis and and terminates execution, related to
-    -o json -b' option
+    -o json' option
     """
     with open(temp_filename, 'r', encoding='utf8') as txt_file, \
          open(final_filename, 'w', encoding='utf8') as json_file:

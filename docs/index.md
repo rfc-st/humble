@@ -10,6 +10,8 @@ It is the result of many weekends over the years, filled with excitement: progra
 
 It started as a small personal project, with no intention of becoming important. Over time, it was accepted into [Kali Linux](https://pkg.kali.org/pkg/humble), has been referenced in blogs and social media, and has been used as a basis and reference for final degree projects.
 
+Requires Python [3.11](https://www.python.org/downloads/release/python-3110/) or higher along with a few [dependencies](https://github.com/rfc-st/humble/blob/master/requirements.txt).
+
 ## Who Made It?
 
 Rafa *'Bluesman'* Faura Cucalón; you can read about me on [LinkedIn](https://www.linkedin.com/in/rafaelfaura/).
@@ -51,5 +53,7 @@ Of course, the code can be improved, but I feel comfortable with that threshold.
 Start by taking a look at its [repository](https://github.com/rfc-st/humble/).
 
 And the available [documentation](reference.md) on its classes and functions (Work in progress).
+
+After that, I advise that you try it out to see if you can use it in your [environment](https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests).
 
 **Thank you** in advance :); I hope you find *humble* useful!.
