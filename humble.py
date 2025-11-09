@@ -1992,6 +1992,10 @@ def get_cicd_labels():
 
 
 def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
+    """
+    Process lines associated with analysis designed for continuous integration
+    and continuous delivery/deployment
+    """
     if match := pattern.match(line):
         key = match[1].strip()
         cicd_total_v = int(match[2])
@@ -2001,7 +2005,10 @@ def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
 
 
 def generate_csv(final_filename, temp_filename, to_xlsx=False):
-    """CSV export of the analysis, related to '-o csv' option"""
+    """
+    CSV export of the analysis and terminates execution, related to '-o csv'
+    option
+    """
     with open(temp_filename, 'r', encoding='utf8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
         csv_writer = writer(csv_final, quoting=QUOTE_ALL)
@@ -2020,6 +2027,9 @@ def generate_csv(final_filename, temp_filename, to_xlsx=False):
 
 
 def parse_csv(csv_section, csv_source, csv_writer):
+    """
+    Extract and write CSV data for matching section items
+    """
     for i in (item for item in csv_section if item in csv_source):
         csv_content = csv_source.split(i)[1].split('[')[0]
         info_list = [line.strip() for line in csv_content.split('\n') if
@@ -2032,7 +2042,8 @@ def parse_csv(csv_section, csv_source, csv_writer):
 
 def generate_xlsx(final_filename, temp_filename):
     """
-    XLSX spreadsheet export of the analysis, related to '-o xlsx' option
+    XLSX spreadsheet export of the analysis and terminates execution, related
+    to '-o xlsx' option
     """
     # Tiny optimization, lazy-loading third-party xlsxwriter
     from xlsxwriter import Workbook
@@ -2046,6 +2057,9 @@ def generate_xlsx(final_filename, temp_filename):
 
 
 def set_xlsx_metadata(workbook):
+    """
+    Define metadata for XLSX spreadsheet export of the analysis
+    """
     workbook.set_properties({
         'author': BANNER_VERSION,
         'category': get_detail(METADATA_S[1], replace=True),
@@ -2058,6 +2072,10 @@ def set_xlsx_metadata(workbook):
 
 
 def set_xlsx_content(final_filename, workbook):
+    """
+    Define the content and format of the data for exporting the analysis to
+    an XLSX spreadsheet
+    """
     worksheet = workbook.add_worksheet(get_detail(METADATA_S[1], replace=True))
     bold_fmt = workbook.add_format({'bold': True, 'text_wrap': True,
                                     'align': 'center', 'valign': 'vcenter'})
@@ -2073,6 +2091,9 @@ def set_xlsx_content(final_filename, workbook):
 
 def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
                     worksheet):
+    """
+    Write formatted content to XLSX spreadsheet with dynamic column widths
+    """
     prev_section = None
     with open(final_filename, 'r', encoding='utf-8', newline='') as csv_final:
         for row_index, row_data in enumerate(reader(csv_final)):
@@ -2088,6 +2109,10 @@ def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
 
 def choose_xlsx_format(bold_fmt, cell_fmt, cell_value, col_index, hidden_fmt,
                        row_index, prev_section):
+    """
+    Determine XLSX spreadsheet cell format based on position and content,
+    tracking section changes
+    """
     if row_index == 0 and col_index in (0, 1):
         return bold_fmt, prev_section
     if col_index == 0 and row_index > 0:
@@ -2097,6 +2122,10 @@ def choose_xlsx_format(bold_fmt, cell_fmt, cell_value, col_index, hidden_fmt,
 
 
 def set_xlsx_width(col_wd, worksheet):
+    """
+    Set XLSX spreadsheet column widths with special handling for first two
+    columns
+    """
     col_a_width = col_wd.get(0, 0)
     col_b_width = col_wd.get(1, 0) + 2
     adjusted_b_width = max(col_b_width, col_a_width * 2)
@@ -2110,7 +2139,10 @@ def set_xlsx_width(col_wd, worksheet):
 
 
 def generate_json(final_filename, temp_filename):
-    """'-o json -b' options: JSON export for a brief analysis"""
+    """
+    JSON export of a brief analysis and and terminates execution,
+    related to '-o json -b' option
+    """
     section0, sectionh, section5, section6 = (
         get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
     with open(temp_filename, 'r', encoding='utf8') as txt_file, \
@@ -2125,6 +2157,9 @@ def generate_json(final_filename, temp_filename):
 
 
 def parse_json(data, section0, section5, section6, sectionh, txt_sections):
+    """
+    Parse JSON export sections
+    """
     for i in range(0, len(txt_sections), 2):
         json_section = f'[{txt_sections[i]}]'
         json_lns = [line.strip() for line in txt_sections[i + 1].split('\n')
@@ -2135,6 +2170,9 @@ def parse_json(data, section0, section5, section6, sectionh, txt_sections):
 
 
 def write_json(json_lns, json_section, section0, section5, section6, sectionh):
+    """
+    Format JSON export content, with special handling for specific sections
+    """
     if json_section in (section0, section5, section6, sectionh):
         json_data = {}
         format_json(json_data, json_lns)
@@ -2147,6 +2185,9 @@ def write_json(json_lns, json_section, section0, section5, section6, sectionh):
 
 
 def format_json(json_data, json_lns):
+    """
+    Format JSON export content, grouping duplicate keys
+    """
     for line in json_lns:
         if ':' in line:
             key, value = (part.strip() for part in line.split(':', 1))
@@ -2169,6 +2210,10 @@ def json_detailed_sources(file_idx, slice_idx):
 
 
 def generate_json_detailed(final_filename, temp_filename):
+    """
+    JSON export of a detailed analysis and and terminates execution, related to
+    -o json -b' option
+    """
     with open(temp_filename, 'r', encoding='utf8') as txt_file, \
          open(final_filename, 'w', encoding='utf8') as json_file:
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
@@ -2181,6 +2226,9 @@ def generate_json_detailed(final_filename, temp_filename):
 
 
 def json_detailed_parse(data, txt_sections):
+    """
+    Parse JSON export detailed sections
+    """
     params = ['[json_det_fngheader]', '[json_det_details]', '[json_det_refs]']
     details = [get_detail(p, replace=True) for p in params]
     for i in range(0, len(txt_sections), 2):
@@ -2194,6 +2242,9 @@ def json_detailed_parse(data, txt_sections):
 
 def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
                         json_miss_r):
+    """
+    Write JSON export detailed sections
+    """
     json_conditions = {
         BOLD_STRINGS[0]:
             lambda: json_detailed_info(json_lns),
@@ -2227,6 +2278,10 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
 
 
 def json_detailed_empty(json_lns):
+    """
+    Show findings in the section '[5. Empty HTTP Response Headers Values]',
+    related to JSON detailed analysis
+    """
     desc_key = get_detail('[json_det_empty]', replace=True)
     status_key = get_detail('[json_det_empty_s]', replace=True)
     empty_key = get_detail('[json_det_empty_h]', replace=True)
@@ -2240,6 +2295,9 @@ def json_detailed_empty(json_lns):
 
 
 def json_detailed_info(json_lns):
+    """
+    Show findings in the section '[0. Info]', related to JSON detailed analysis
+    """
     info = {get_detail('[json_gen]', replace=True): BANNER_VERSION}
     for line in json_lns:
         if ':' not in line:
@@ -2251,6 +2309,10 @@ def json_detailed_info(json_lns):
 
 
 def json_detailed_response(json_lns):
+    """
+    Show findings in the section '[HTTP Response Headers]', related to JSON
+    detailed analysis and '-r' option
+    """
     header_key = get_detail('[json_det_fngheader]', replace=True)
     value_key = get_detail('[json_det_fngval]', replace=True)
     result = []

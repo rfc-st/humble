@@ -42,10 +42,14 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on [LinkedIn](https://ww
 - Almost all the code available under MIT license.
 - And more!.
 
+## Why does it have so many functions?
+Because I try to ensure that each specific feature has its own function. And because I try to ensure that all of them achieve at least a 64% [Quality Score](https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md#contributing) in Sourcery's analysis.
+
+Of course, the code can be improved, but I feel comfortable with that threshold.
 
 ## How can I test it?
 Start by taking a look at its [repository](https://github.com/rfc-st/humble/).
 
 And the available [documentation](reference.md) on its classes and functions (Work in progress).
 
-**Thank you** in advance; I hope you find *humble* useful!.
+**Thank you** in advance :); I hope you find *humble* useful!.
