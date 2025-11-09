@@ -3805,6 +3805,7 @@ l_origcluster = ['?1']
 # https://github.com/MicrosoftEdge/MSEdgeExplainers
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
+# https://privacysandbox.google.com/private-advertising/setup/web/permissions-policy
 t_per_broad = ('*', ' * ')
 t_per_dep = ('document-domain', 'window-placement')
 t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
@@ -3827,13 +3828,16 @@ t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
             'layout-animations', 'local-fonts', 'magnetometer', 'manual-text',
             'media-playback-while-not-visible', 'microphone', 'midi',
             'monetization', 'navigation-override', 'otp-credentials',
-            'payment', 'picture-in-picture', 'publickey-credentials-create',
-            'publickey-credentials-get', 'rewriter', 'run-ad-auction',
-            'screen-wake-lock', 'serial', 'shared-autofill', 'smart-card',
-            'speaker-selection', 'storage-access', 'summarizer', 'sync-script',
-            'sync-xhr', 'translator', 'trust-token-redemption', 'unload',
-            'usb', 'vertical-scroll', 'web-share', 'window-management',
-            'writer', 'xr-spatial-tracking')
+            'payment', 'picture-in-picture', 'private-aggregation',
+            'private-state-token-issuance', 'private-state-token-redemption',
+            'publickey-credentials-create', 'publickey-credentials-get',
+            'rewriter', 'run-ad-auction', 'screen-wake-lock', 'serial',
+            'shared-autofill', 'shared-storage', 'shared-storage-select-url',
+            'smart-card', 'speaker-selection', 'storage-access', 'summarizer',
+            'sync-script', 'sync-xhr', 'top-level-storage-access',
+            'translator', 'trust-token-redemption', 'unload', 'usb',
+            'vertical-scroll', 'web-share', 'window-management', 'writer',
+            'xr-spatial-tracking')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
 # https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
