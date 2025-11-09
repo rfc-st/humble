@@ -2329,6 +2329,10 @@ def json_detailed_response(json_lns):
 
 
 def json_detailed_format_add(json_lns, header_t, value_t):
+    """
+    Format JSON detailed analysis lines into structured header-value
+    dictionaries
+    """
     result = []
     for line in map(str.strip, json_lns):
         if not line:
@@ -2342,6 +2346,10 @@ def json_detailed_format_add(json_lns, header_t, value_t):
 
 
 def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
+    """
+    Format JSON detailed analysis lines with configurable headers for
+    compatibility or localization
+    """
     l10n_txt = '[json_det_refs]' if is_l10n else '[json_det_fngval]'
     header_t = get_detail('[json_det_fngheader]', replace=True)
     value_t = get_detail(l10n_txt, replace=True)
@@ -2353,6 +2361,10 @@ def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
 def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
                                json_miss_r, json_det_mref, result, entry,
                                current_header):
+    """
+    Process missing header lines, of a JSON detailed analysis, grouping
+    descriptions and references by header
+    """
     if line in l_miss or line.startswith('(*)'):
         if entry:
             result.append(entry)
@@ -2366,6 +2378,10 @@ def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
 
 def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
                            json_miss_r, json_det_mref):
+    """
+    Format missing headers, of a JSON detailed analysis, into structured
+    entries with descriptions and references
+    """
     result, entry, current_header = [], {}, None
     for line in json_lns:
         if line := line.strip():
@@ -2380,6 +2396,10 @@ def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
 
 def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
                        json_miss_r):
+    """
+    Format missing headers, of a JSON detailed analysis,
+    simplifying single-item descriptions
+    """
     json_det_mref = PDF_CONDITIONS[0]
     result = json_detailed_miss_add(
         json_lns, l_miss, json_miss_h, json_miss_d, json_miss_r,
@@ -2393,6 +2413,10 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
 
 def json_detailed_fng_process(line, fingerprint_set, entry, current_header,
                               fng_header, fng_val):
+    """
+    Process fingerprint lines, of a JSON detailed analysis, extracting headers
+    and their values
+    """
     line_s = line.strip()
     for f in fingerprint_set:
         if line_s.startswith(f):
@@ -2404,6 +2428,10 @@ def json_detailed_fng_process(line, fingerprint_set, entry, current_header,
 
 
 def json_detailed_fng(json_lns, fingerprint_set):
+    """
+    Format fingerprint headers, of a JSON detailed analysis, into structured
+    entries with their values
+    """
     result, entry, current_header = [], {}, None
     fng_header = get_detail('[json_det_fngheader]', replace=True)
     fng_val = get_detail('[json_det_fngval]', replace=True)
@@ -2421,6 +2449,10 @@ def json_detailed_fng(json_lns, fingerprint_set):
 
 def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
                              detail_t, result, is_header):
+    """
+    Process insecure header lines, of a JSON detailed analysis,
+    grouping details and references by header
+    """
     if is_header:
         if entry:
             result.append(entry)
@@ -2435,6 +2467,10 @@ def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
 
 
 def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
+    """
+    Determine if a line represents an insecure header, of a JSON detailed
+    analysis, based on marker patterns
+    """
     header_cond = line.startswith('(*)')
     header_cond2 = not line.startswith(ref_t)
     header_cond3 = any(
@@ -2447,6 +2483,10 @@ def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
 
 def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
                               detail_t):
+    """
+    Format insecure headers, of a JSON detailed analysis, into structured
+    entries with details and references
+    """
     result, entry, header = [], {}, None
     for line in json_lns:
         if line := line.strip():
@@ -2464,6 +2504,10 @@ def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
 
 
 def json_detailed_ins(json_lns, insecure_checks):
+    """
+    Format insecure headers, of a JSON detailed analysis, with localized check
+    patterns
+    """
     header_t, detail_t, ref_t = (get_detail(text, replace=True)
                                  for text in [
         '[json_det_inscheck]', '[json_det_details]', '[json_det_refs]'])
@@ -2478,6 +2522,10 @@ def json_detailed_ins(json_lns, insecure_checks):
 
 
 def json_detailed_ins_checks(checks_list, insecure_checks):
+    """
+    Parse insecure check patterns, of a JSON detailed analysis, into key-value
+    tuples for matching
+    """
     for check in insecure_checks:
         check_s = check.strip()
         if ':' in check_s:
@@ -2492,6 +2540,10 @@ def json_detailed_ins_checks(checks_list, insecure_checks):
 
 
 def json_detailed_results(json_lns):
+    """
+    Format analysis results, of a JSON detailed analysis, into a structured
+    dictionary with duration tracking
+    """
     result = {}
     duration_t = get_detail('[analysis_time]', replace=True)
     duration_key = get_detail('[json_det_analysis]', replace=True)
