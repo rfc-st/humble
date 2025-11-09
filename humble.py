@@ -197,7 +197,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-11-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-11-09', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -259,7 +259,10 @@ def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
 
 
 def check_updates(local_version):
-    """Check for updated versions on GitHub, related to '-v' option"""
+    """
+    Check for updated versions on GitHub and terminate execution, related to
+    '-v' option
+    """
     try:
         github_repo = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT).text
         github_date = re.search(RE_PATTERN[4], github_repo).group()
@@ -288,8 +291,8 @@ def check_updates_diff(days_diff, github_version, local_version):
 
 def fng_statistics_top():
     """
-    Show top 20 HTTP fingerprint header statistics grouped by service, related
-    to '-f' option
+    Show top 20 HTTP fingerprint header statistics grouped by service and
+    terminate execution, related to '-f' option
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
@@ -323,7 +326,10 @@ def fng_statistics_top_result(fng_top_groups, fng_incl):
 
 
 def fng_statistics_term(fng_term):
-    """Count fingerprint headers per provided term"""
+    """
+    Count fingerprint headers per provided term and terminate execution if no
+    results are found
+    """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
@@ -361,8 +367,8 @@ def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl):
 
 def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     """
-    Displays, in alphabetical order, the service associated with the term
-    provided
+    Show, in alphabetical order, the service associated with the term
+    provided and terminate execution
     """
     for content in fng_groups:
         print(f"\n [{STYLE[0]}{content}]")
@@ -375,7 +381,10 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
 
 
 def print_l10n_file(args, l10n_file, slice_ln=False):
-    """Show the contents of a file based on the language provided"""
+    """
+    Show the contents of a file based on the language provided and terminates
+    execution
+    """
     lang_es = args.lang == 'es'
     lang_idx = 1 if lang_es else 0
     l10n_file = HUMBLE_FILES[L10N_IDXS[l10n_file][lang_idx]]
@@ -392,8 +401,8 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
 
 def testssl_command(testssl_temp_path, uri):
     """
-    Prepare the TLS/SSL analysis based on user compliance, related to '-e'
-    option
+    Prepare the TLS/SSL analysis and terminates execution based on user
+    compliance, related to '-e' option
     """
     testssl_temp_path = path.abspath(testssl_temp_path)
     if not path.isdir(testssl_temp_path):
@@ -589,8 +598,8 @@ def adjust_old_analysis(url_ln):
 
 def url_analytics(is_global=False):
     """
-    Show analysis statistics for all analyses performed on a URL, related to
-    '-a' option
+    Show analysis statistics for all analyses performed on a URL and
+    terminates execution, related to '-a' option
     """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
     with open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
@@ -1536,7 +1545,10 @@ def print_error_detail(id_mode):
 
 
 def get_epilog_content(id_mode):
-    """Show use cases and how to contribute, , related to '-h' option"""
+    """
+    Show examples of use of 'humble' and how to contribute to it, related to
+    '-h' option
+    """
     epilog_file_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[5])
     with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
         epilog_lines = epilog_source.readlines()
@@ -1559,6 +1571,10 @@ def get_fingerprint_headers():
 
 
 def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
+    """
+    Identify and show, from among all response headers enabled in the URL,
+    those associated with fingerprint
+    """
     f_cnt = 0
     sorted_headers = sorted({header.title() for header in headers_l})
     for header in sorted_headers:
@@ -1570,6 +1586,11 @@ def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
 
 
 def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
+    """
+    Show the name, the associated service (according to the
+    /additional/fingerprint.txt file), and the value of the header identified
+    as fingerprint
+    """
     if not args.brief:
         print_fng_header(l_fng_ex[idx_fng])
         header_value = headers_l.get(header.lower()) if '-if' in sys.argv else\
@@ -1600,6 +1621,10 @@ def get_enabled_headers(args, headers_l, t_enabled):
 
 
 def print_enabled_headers(args, exp_s, header, headers_d):
+    """
+    Show the enabled HTTP response headers considered to be security-related
+    (according to the additional/security.txt file)
+    """
     prefix = STYLE[8] if args.output in ('html', 'pdf') else ''
     header_display = f"{prefix}{exp_s}{header}"
     if not args.output:
@@ -1610,7 +1635,10 @@ def print_enabled_headers(args, exp_s, header, headers_d):
 
 
 def print_nosec_headers(enabled=True):
-    """Show a message if no header is enabled or if none was received"""
+    """
+    Show a message if no security-related HTTP response headers are enabled
+    or if none was received
+    """
     id_mode = '[no_sec_headers]' if enabled else '[no_enb_headers]'
     if args.output:
         print_detail_l(id_mode, no_headers=True)
@@ -1634,6 +1662,10 @@ def print_missing_headers(args, headers_l, l_detail, l_miss):
 
 
 def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
+    """
+    Show the missing security-related HTTP response headers (based on those I
+    consider essential)
+    """
     for header, detail in zip(l_miss, l_detail):
         lower_header = header.lower()
         if lower_header not in merged_set and not xfo_skipped:
@@ -1647,6 +1679,10 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
 
 
 def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
+    """
+    Check whether the absence of the 'X-Frame-Options' HTTP response header
+    should be reported
+    """
     xfo_needed = ('x-frame-options' not in skip_headers) and \
         ('x-frame-options' not in headers_l)
     fa_needed = 'frame-ancestors' not in \
@@ -1662,7 +1698,8 @@ def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
 
 def print_empty_headers(headers, l_empty):
     """
-    Show findings in the section '[5. Empty HTTP Response Headers Values]'"""
+    Show findings in the section '[5. Empty HTTP Response Headers Values]'
+    """
     e_cnt = 0
     for key in sorted(headers):
         if not headers[key]:
@@ -1687,8 +1724,8 @@ def print_browser_compatibility(compat_headers):
 
 def check_input_traversal(user_input):
     """
-    Check user input for path traversal patterns, related to '-of' and '-op'
-    options
+    Check user input for path traversal patterns and terminates execution if
+    one is found, related to '-of' and '-op' options
     """
     input_traversal_ptrn = re.compile(RE_PATTERN[2])
     if input_traversal_ptrn.search(user_input):
@@ -1698,7 +1735,10 @@ def check_input_traversal(user_input):
 
 
 def validate_path(output_path):
-    """Validate permissions in the supplied path, related to '-op' option"""
+    """
+    Validate permissions in the supplied path and terminates execution in case
+    of error, related to '-op' option
+    """
     try:
         with open(path.join(output_path, HUMBLE_FILES[1]), 'w'):
             pass
@@ -1713,7 +1753,8 @@ def validate_path(output_path):
 def validate_file_access(target_path, *, context='history'):
     """
     Validate if the analysis history file and temporary export files can be
-    created
+    created, terminating execution in case of an error when exporting an
+    analysis
     """
     try:
         with open(target_path, 'a+', encoding='utf8'):
@@ -1735,7 +1776,10 @@ def validate_file_access(target_path, *, context='history'):
 
 
 def check_output_path(args, output_path):
-    """Validations related to the supplied path in '-op' option"""
+    """
+    Validations related to the supplied path in '-op' option, terminating
+    execution in case of error
+    """
     check_input_traversal(args.output_path)
     if args.output is None:
         print_error_detail('[args_nooutputfmt]')
@@ -1759,6 +1803,10 @@ def parse_user_agent(user_agent=False):
 
 
 def nourl_user_agent(user_agent_id):
+    """
+    Show a message if the User-Agent identifier provided is invalid or if the
+    URL to be analyzed has not been specified
+    """
     try:
         if user_agent_id == '0':
             return get_user_agent('0')
@@ -1768,6 +1816,11 @@ def nourl_user_agent(user_agent_id):
 
 
 def get_user_agent(user_agent_id):
+    """
+    Select and validate the User-Agent identifier to be used in the analysis
+    (from those available in additional/user-agents.txt file), terminating
+    execution if it is not found
+    """
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
               encoding='utf8') as ua_source:
         user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
@@ -1782,6 +1835,9 @@ def get_user_agent(user_agent_id):
 
 
 def print_user_agents(user_agents):
+    """
+    Show available User-Agent identifiers and terminate execution
+    """
     print(f"\n{STYLE[0]}{get_detail('[ua_available]', replace=True)}\
 {STYLE[4]}{get_detail('[ua_source]', replace=True)}\n")
     for line in user_agents:
@@ -1790,7 +1846,10 @@ def print_user_agents(user_agents):
 
 
 def get_insecure_checks():
-    """Skips some checks for the indicated headers, related to '-s' option"""
+    """
+    Skips security checks for specified HTTP response headers, related to '-s'
+    option
+    """
     headers_name = set()
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), 'r') as \
             ins_source:
@@ -1803,6 +1862,10 @@ def get_insecure_checks():
 
 
 def get_skipped_unsupported_headers(args, insecure_headers):
+    """
+    Check whether the HTTP response headers specified for skipping security
+    checks are among those being analyzed
+    """
     insecure_set = {ins_header.strip().lower() for ins_header in
                     args.skip_headers}
     skip_list = [insecure_headers[insecure_header] for insecure_header in
@@ -1812,6 +1875,10 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 
 def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
+    """
+    Show the HTTP response headers for which it is expressly indicated to skip
+    their security analysis
+    """
     print_detail_l('[analysis_skipped_note]')
     print(" " + ", ".join("'{}'".format(h.title()) for h in
                           sorted(args.skip_headers, key=str.lower)) + ".")
@@ -1819,6 +1886,10 @@ def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
 
 def print_unsupported_headers(unsupported_headers):
     # sourcery skip: use-fstring-for-concatenation
+    """
+    Shows unsupported HTTP response headers, for which it has been expressly
+    indicated to skip their security analysis, and terminate execution
+    """
     quoted = ", ".join("'" + h + "'" for h in unsupported_headers)
     print(f"\n {get_detail('[args_skipped_unknown]', replace=True)} \
 ({quoted})")
@@ -1850,7 +1921,11 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
 
 
 def print_cicd_totals(tmp_filename):
-    """Summary-only JSON analysis for CI/CD, related to 'cicd' option"""
+    """
+    Show a summary-only JSON analysis, designed for continuous integration and
+    continuous delivery/deployment, exports it to a txt file and terminate
+    execution; related to '-cicd' option
+    """
     try:
         with open(tmp_filename, 'r', encoding='utf-8') as txt_source:
             lines = [line.strip() for line in txt_source if line.strip()]
@@ -1872,6 +1947,11 @@ def print_cicd_totals(tmp_filename):
 
 
 def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
+    """
+    Define the sections in which to display the summary-only JSON analysis
+    results, designed for continuous integration and
+    continuous delivery/deployment
+    """
     cicd_info_start = lines.index(next(line for line in lines if
                                        BOLD_STRINGS[0] in line))
     cicd_info_lines = lines[cicd_info_start + 1:cicd_info_start + 4]
@@ -1890,6 +1970,11 @@ def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
 
 
 def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
+    """
+    Show the total of findings per section, along with the differences between
+    the current analysis and the last one performed against the URL; designed
+    for continuous integration and continuous delivery/deployment
+    """
     return {
         k: v for line in cicd_totals_lines
         if (processed := parse_cicd_lines(line, pattern, cicd_total_t,
@@ -1898,6 +1983,10 @@ def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
 
 
 def get_cicd_labels():
+    """
+    Show literals related to the analysis designed for continuous integration
+    and continuous delivery/deployment
+    """
     cidcd_labels = ['[cicd_total]', '[cicd_diff]', '[cicd_info]']
     return tuple(get_detail(label, replace=True) for label in cidcd_labels)
 
