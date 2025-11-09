@@ -12,6 +12,16 @@ It started as a small personal project, with no intention of becoming important.
 
 Requires Python [3.11](https://www.python.org/downloads/release/python-3110/) or higher along with a few [dependencies](https://github.com/rfc-st/humble/blob/master/requirements.txt).
 
+## What does it offer?
+
+I sincerely believe that HTTP response headers are often overlooked in security audits: after several years working in cybersecurity I believe that proper header configuration can prevent serious vulnerabilities and save headaches in the long run.
+
+*humble* provides a quick, direct, and honest way to identify:
+- Deficiencies in your security header configuration
+- Hundreds of technical references and best practices
+
+You have nothing to lose by trying it; are you up for it? :).
+
 ## Who Made It?
 
 Rafa *'Bluesman'* Faura Cucalón; you can read about me on [LinkedIn](https://www.linkedin.com/in/rafaelfaura/).
