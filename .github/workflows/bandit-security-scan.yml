@@ -1,0 +1,20 @@
+name: Bandit Security Scan
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  bandit-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: PyCQA/bandit-action@v1
+      with:
+        targets: humble.py
+        severity: high
