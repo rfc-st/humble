@@ -12,6 +12,11 @@ theme:
     - search.suggest
     - search.highlight
 
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
 nav:
   - Home: index.md
   - Reference: reference.md

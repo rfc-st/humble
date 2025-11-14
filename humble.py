@@ -206,11 +206,13 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
     """
     Custom SSL adapter that disables certificate verification to facilitate
     analysis
+
+    ??? note
+        I have chosen to disable these checks to allow the analysis of URLs in
+        certain cases (E.g., development environments, hosts with outdated
+        servers/software, self-signed certificates, etc.).
     """
     def init_poolmanager(self, *args, **kwargs):
-        # I have chosen to disable these checks to allow the analysis of URLs
-        # in certain cases (E.g., development environments, hosts with outdated
-        # servers/software, self-signed certificates, etc.).
         context = ssl._create_unverified_context()
         context.check_hostname = False
         context.verify_mode = ssl.CERT_NONE
@@ -476,16 +478,27 @@ def get_analysis_results():
 
 
 def save_analysis_results(t_cnt):
-    """Save analysis results to the history file (analysis_h.txt)"""
+    """
+    Save analysis results to the analysis history file, analysis_h.txt
+
+    ??? info
+        Values, in order, of each entry in the history file:<br>
+
+        - Date of analysis
+        - URL analyzed
+        - Total number of enabled headers
+        - Total number of missing headers
+        - Total number of fingerprint headers
+        - Total number of deprecated/insecure headers
+        - Total number of empty headers
+        - Total number of warnings (the four previous totals)
+    """
     ok, fallback = validate_file_access(VALIDATE_FILE, context='history')
     if not ok:
         return fallback
     with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as all_analysis:
         all_analysis.seek(0)
         url_ln = [line for line in all_analysis if URL in line]
-        # Format of the analysis history file, ('analysis_h.txt'): Date, URL,
-        # Enabled, Missing, Fingerprint, Deprecated/Insecure, Empty headers and
-        # Total warnings (the four previous totals).
         all_analysis.write(f"{current_time} ; {URL} ; {en_cnt} ; {m_cnt} ; "
                            f"{f_cnt} ; {i_cnt[0]} ; {e_cnt} ; {t_cnt}\n")
     return get_analysis_totals(url_ln) if url_ln else ("First",) * 6
@@ -494,14 +507,16 @@ def save_analysis_results(t_cnt):
 def get_analysis_totals(url_ln):
     """
     Recover analysis totals, normalizing those performed before 11/28/2024
-    """
-    # To avoid errors with analyses performed before 11/28/2024, the date on
-    # which enabled security headers began being considered when calculating
-    # differences between analyses of the same URL.
 
-    # Therefore, analyses performed before that date are assumed to have no
-    # security headers enabled.
-    # Ref: https://github.com/rfc-st/humble/commit/f7b376
+    ??? note
+        To avoid errors with analyses performed before 11/28/2024, the date on
+        which enabled security headers began being considered when calculating
+        differences between analyses of the same URL.
+
+        Therefore, analyses performed before that date are assumed to have no
+        security headers enabled.<br>
+        Ref: https://github.com/rfc-st/humble/commit/f7b376
+    """
     updated_lines = []
     for line in url_ln:
         fields = line.strip().split(' ; ')
@@ -579,10 +594,13 @@ def check_analysis(filepath):
 
 def adjust_old_analysis(url_ln):
     """
-    Adjusts analysis history entries, in analsys history file (analysis_h.txt),
-    created before 2024-11-28, when the 'enabled security headers' total was
-    not yet recorded. Ensures older entries remain compatible with the current
-    analysis format.
+    Adjusts analysis entries in analysis history file, analysis_h.txt
+
+    ??? note
+        Applied to those made before 2024-11-28 when the
+        *enabled security headers* total was not yet recorded; ensures that old
+        entries in that file remain compatible with the current analysis
+        format.
     """
     updated_lines = []
     for i in url_ln:
@@ -767,20 +785,23 @@ def get_trends(adj_url_ln):
 
 def calculate_trends(values):
     """
-    Calculate trends based on the totals of analyses performed on a URL
+    Calculate trends based on several analyses of the same URL
+
+    ??? info
+        Trends are related to the totals of missing headers, fingerprints,
+        deprecated/insecure, empty, and total warnings for a given URL: the
+        analysis history file, analysis_h.txt, must contain at least **five**
+        analyses of the same URL in order to calculate reliable trends, and
+        **only** the five most recent analyses of that URL are taken into
+        account.<br>
+        <br>
+        Trend values:<br>
+
+        - Stable: all five totals are identical.
+        - Improving: totals consistently decrease.
+        - Worsening: totals consistently increase.
+        - Fluctuating: No clear trend is detected; totals alternate.
     """
-    # Trends are related to 'Missing', 'Fingerprint', 'Deprecated/Insecure',
-    # 'Empty' headers checks and 'Total warnings' for a given URL.
-    #
-    # At least five analyses of the same URL are required to calculate reliable
-    # trends and only the five most recent analyses are considered.
-    #
-    # Trend values:
-    #
-    # - 'Stable': All five values are identical.
-    # - 'Improving': Values consistently decrease.
-    # - 'Worsening': Values consistently increase.
-    # - 'Fluctuating': No clear trend is detected; values alternate.
     if len(values) < 5:
         return print_detail_l('[t_insufficient]', analytics=True)
     trends_list = values[-5:]
@@ -1736,7 +1757,7 @@ def check_input_traversal(user_input):
 
 def validate_path(output_path):
     """
-    Validate permissions in the supplied path and terminates execution in case
+    Validate permissions in the provided path and terminates execution in case
     of error, related to '-op' option
     """
     try:
@@ -1777,7 +1798,7 @@ def validate_file_access(target_path, *, context='history'):
 
 def check_output_path(args, output_path):
     """
-    Validations related to the supplied path in '-op' option, terminating
+    Validations related to the provided path in '-op' option, terminating
     execution in case of error
     """
     check_input_traversal(args.output_path)
@@ -1792,7 +1813,7 @@ def check_output_path(args, output_path):
 
 
 def parse_user_agent(user_agent=False):
-    """Select and validate the supplied user agent, related to '-ua' option"""
+    """Select and validate the provided user agent, related to '-ua' option"""
     if not user_agent:
         return get_user_agent('1')
     user_agent_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
@@ -1897,7 +1918,7 @@ def print_unsupported_headers(unsupported_headers):
 
 
 def check_output_format(args, final_filename, reliable, tmp_filename):
-    """Export the analysis to the supplied format, related to '-o' option"""
+    """Export the analysis to the provided format, related to '-o' option"""
     dispatch = {
         "txt": lambda: (
             args.cicd and print_cicd_totals(tmp_filename),
@@ -2044,8 +2065,11 @@ def generate_xlsx(final_filename, temp_filename):
     """
     XLSX spreadsheet export of the analysis and terminates execution, related
     to '-o xlsx' option
+
+    ??? tip
+        xlsxwriter is lazy-loaded to avoid unnecessary overhead when XLSX
+        export is not used
     """
-    # Tiny optimization, lazy-loading third-party xlsxwriter
     from xlsxwriter import Workbook
     workbook = Workbook(final_filename, {'in_memory': True})
     set_xlsx_metadata(workbook)
@@ -2560,8 +2584,13 @@ def json_detailed_results(json_lns):
 
 
 def export_pdf_file(tmp_filename):
-    """PDF export of the analysis, related to '-o pdf' option"""
-    # Important optimization, lazy-loading third-party fpdf2
+    """
+    PDF export of the analysis, related to '-o pdf' option
+
+    ??? tip
+        fpdf2 is lazy-loaded to avoid unnecessary overhead when PDF export is
+        not used
+    """
     from fpdf import FPDF, YPos as ypos  # type: ignore
 
     class PDF(FPDF):
@@ -3143,7 +3172,7 @@ def print_owasp_rec(wrong_owasp, header_dict):
 
 
 def analyze_input_file(input_file):
-    """Analyze headers from supplied file, related to '-if' option"""
+    """Analyze headers from provided file, related to '-if' option"""
     if not path.exists(input_file):
         print_error_detail('[args_inputnotfound]')
     input_headers = {}
@@ -3206,19 +3235,22 @@ def process_server_error(http_status_code, l10n_id):
 
 
 def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
-    """Make the request to the supplied URL"""
+    """
+    Make the request to the provided URL, disabling certificate verification to
+    facilitate analysis
+
+    ??? note
+        I have chosen to disable these checks to allow the analysis of URLs in
+        certain cases (E.g., development environments, hosts with outdated
+        servers/software, self-signed certificates, etc.).
+
+        If '-df' parameter is provided ('args.redirects') the exact URL will
+        be analyzed; otherwise the last redirected URL will be analyzed.
+    """
     try:
         session = requests.Session()
         session.mount("https://", SSLContextAdapter())
         session.mount("http://", HTTPAdapter())
-        # If '-df' parameter is provided ('args.redirects') the exact URL will
-        # be analyzed; otherwise the last redirected URL will be analyzed.
-        #
-        # Yes, certificates and hosts must always be checked/verified on HTTPS
-        # connections. However, within the scope of 'humble', I have chosen to
-        # disable these checks to allow the analysis of URLs in certain cases
-        # (E.g., development environments, hosts with outdated
-        # servers/software, self-signed certificates, etc.).
         r = session.get(
             URL,
             allow_redirects=not args.redirects,
@@ -3275,7 +3307,7 @@ def process_http_error(r, exception_d):
 
 
 def parse_request_headers(request_headers):
-    """Add the supplied headers to the request, related to '-H' option"""
+    """Add the provided headers to the request, related to '-H' option"""
     headers, malformed_headers = process_request_headers(request_headers)
     if malformed_headers:
         delete_lines()
@@ -3308,7 +3340,7 @@ def process_request_headers(request_headers):
 
 
 def process_http_request(status_code, reliable, body, proxy, custom_headers):
-    """Process the request to the supplied URL"""
+    """Process the request to the provided URL"""
     result = {}
     done = Event()
 
