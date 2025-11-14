@@ -550,8 +550,8 @@ def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
 
 def format_analysis_results(*diff, en_cnt_w, t_cnt):
     """
-    Apply formatting to differences in totals between the last analysis and the
-    current one, for the same URL
+    Format differences in totals between the last analysis and the current one,
+    for the same URL
     """
     results = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
     new_ln = ["\n" if int(en_cnt) > 0 else "", "", "", "", "", "\n\n"]
@@ -844,8 +844,7 @@ def get_basic_metrics(total_a, first_m):
 
 def get_security_metrics(analytics_s, second_m):
     """
-    Show security-related metrics details related to the analysis performed on
-    a URL
+    Show security-related metrics details to the analysis performed on a URL
     """
     return {'[analysis_y]': "",
             '[no_enabled]': f"{analytics_s[0]}{second_m[0]}",
@@ -857,8 +856,7 @@ def get_security_metrics(analytics_s, second_m):
 
 def get_warnings_metrics(additional_m, analytics_w):
     """
-    Show warning-related metrics details related to the analysis performed on a
-    URL
+    Show warning-related metrics details to the analysis performed on a URL
     """
     return {'[averages]': "",
             '[average_warnings]': f"{analytics_w[0]}{additional_m[0]}",
@@ -879,17 +877,13 @@ def get_averages_metrics(analytics_w, third_m):
 
 def get_highlights_metrics(fourth_m):
     """
-    Show highlight-related metrics details related to the analysis performed on
-    a URL
+    Show highlight-related metrics details to the analysis performed on a URL
     """
     return {'[highlights]': "\n" + "\n".join(fourth_m)}
 
 
 def get_trend_metrics(fifth_m):
-    """
-    Show trend-related metrics details related to the analysis performed on a
-    URL
-    """
+    """Show trend-related metrics details to the analysis performed on a URL"""
     if '5' in fifth_m[0]:
         trends_s = get_detail('[t_insufficient]')
         return {'[trends]': "\n" + trends_s}
@@ -2081,9 +2075,7 @@ def generate_xlsx(final_filename, temp_filename):
 
 
 def set_xlsx_metadata(workbook):
-    """
-    Define metadata for XLSX spreadsheet export of the analysis
-    """
+    """Specifies metadata for XLSX spreadsheet export of the analysis"""
     workbook.set_properties({
         'author': BANNER_VERSION,
         'category': get_detail(METADATA_S[1], replace=True),
@@ -2617,6 +2609,10 @@ def export_pdf_file(tmp_filename):
 
 
 def initialize_pdf(pdf, tmp_filename, ypos):
+    """
+    Retrieves literals to apply the appropriate formatting to their lines in
+    the analysis PDF export
+    """
     pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
                  REF_LINKS[4])
     pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
@@ -2624,6 +2620,10 @@ def initialize_pdf(pdf, tmp_filename, ypos):
 
 
 def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos):
+    """
+    Generates the required file structure, including metadata, for analysis PDF
+    export
+    """
     set_pdf_file(pdf)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
     no_headers = [get_detail(f'[{i}]').strip() for i in ['no_sec_headers',
@@ -2637,6 +2637,9 @@ def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos):
 
 
 def set_pdf_file(pdf):
+    """
+    Set display parameters, along with metadata, for analysis PDF export
+    """
     pdf.alias_nb_pages()
     set_pdf_metadata(pdf)
     pdf.set_display_mode(zoom=125)
@@ -2645,6 +2648,7 @@ def set_pdf_file(pdf):
 
 
 def set_pdf_metadata(pdf):
+    """Set metadata values for analysis PDF export"""
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
     git_urlc = BANNER_VERSION
     pdf.set_author(git_urlc)
@@ -2659,6 +2663,7 @@ def set_pdf_metadata(pdf):
 
 def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
                     pdf_prefixes, ypos):
+    """Set the format and sections of the analysis PDF export"""
     with open(tmp_filename, 'r', encoding='utf8') as txt_source:
         for line in txt_source:
             if any(no_header in line for no_header in no_headers):
@@ -2672,6 +2677,10 @@ def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
 
 
 def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
+    """
+    Applies specific format to lines based on its content, related to the PDF
+    export of the analysis
+    """
     if any(bold_str in line for bold_str in BOLD_STRINGS):
         pdf.set_font(style='B')
     else:
@@ -2690,6 +2699,7 @@ def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
 
 
 def set_pdf_sections(line, pdf):
+    """Set the sections related to the analysis PDF export"""
     for section in PDF_SECTION:
         if line.startswith(section):
             pdf.start_section(get_detail(PDF_SECTION[section]))
@@ -2697,6 +2707,11 @@ def set_pdf_sections(line, pdf):
 
 
 def set_pdf_conditions(line, pdf, ypos):
+    """
+    Check whether the analysis line includes mention of a specific response
+    HTTP header in order to apply a specific format; related to the analysis
+    PDF export
+    """
     combined_h = l_miss + l_ins + l_fng + titled_fng
     return (
         all(condition not in line for condition in PDF_CONDITIONS[:3]) and
@@ -2705,6 +2720,10 @@ def set_pdf_conditions(line, pdf, ypos):
 
 
 def format_pdf_links(i, pdf_string, pdf, pdf_prefixes):
+    """
+    Applies a specific format to lines containing links; related to the
+    analysis PDF export
+    """
     pdf_link = set_pdf_links(i, pdf_string)
     if pdf_string in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
         pdf_prefix = pdf_prefixes.get(pdf_string, pdf_string)
@@ -2716,6 +2735,7 @@ def format_pdf_links(i, pdf_string, pdf, pdf_prefixes):
 
 
 def set_pdf_warnings(line, pdf, ypos):
+    """Format warnings-related lines, related to the analysis PDF export"""
     if STYLE[8] not in line:
         pdf.set_text_color(255, 0, 0)
         pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
@@ -2723,11 +2743,13 @@ def set_pdf_warnings(line, pdf, ypos):
 
 
 def set_pdf_nowarnings(line, pdf, ypos):
+    """Format line without warnings, related to the analysis PDF export"""
     pdf.set_text_color(0, 128, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
 
 
 def set_pdf_empty(l_empty, line, pdf, ypos):
+    """Format line with empty headers, related to the analysis PDF export"""
     ln_strip = line.lstrip().lower()
     if any(i in ln_strip for i in l_empty) and ('[' not in ln_strip and ':'
                                                 not in ln_strip):
@@ -2738,6 +2760,10 @@ def set_pdf_empty(l_empty, line, pdf, ypos):
 
 
 def set_pdf_links(i, pdf_string):
+    """
+    Check if the line includes a link, to display it with a specific format;
+    related to the analysis PDF export
+    """
     pdf_links_d = {URL_STRING[1]: URL,
                    REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
                    REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
@@ -2747,6 +2773,10 @@ def set_pdf_links(i, pdf_string):
 
 
 def format_pdf_lines(line, pdf, ypos):
+    """
+    Identify lines, by length and content, to apply formatting; related to the
+    analysis PDF export
+    """
     if len(line) > 101:
         chunks = [line[i:i + 101] for i in range(0, len(line), 101)]
         set_pdf_chunks(chunks, pdf)
@@ -2765,6 +2795,9 @@ def format_pdf_lines(line, pdf, ypos):
 
 
 def set_pdf_chunks(chunks, pdf):
+    """
+    Identify blocks of text to format them; related to the analysis PDF export
+    """
     chunk_c = None
     for i, chunk in enumerate(chunks):
         if re.search(RE_PATTERN[10], chunk):
@@ -2778,6 +2811,10 @@ def set_pdf_chunks(chunks, pdf):
 
 
 def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
+    """
+    Apply formatting and positioning to blocks of text; related to the analysis
+    PDF export
+    """
     pdf.set_text_color(0, 0, 0)
     if i > 0:
         chunk = f' {chunk}'
@@ -2793,6 +2830,10 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
 
 
 def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
+    """
+    Locate lines to which a specific color should be applied; related to the
+    analysis PDF export
+    """
     colon_idx = line.find(': ')
     ln_final = apply_pdf_color(colon_idx, hcolor, line, vcolor)
     pdf.write_html(ln_final)
@@ -2800,6 +2841,10 @@ def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
 
 
 def apply_pdf_color(colon_idx, hcolor, line, vcolor):
+    """
+    Add the specific HTML tag to indicate the corresponding color; related to
+    the analysis PDF export
+    """
     if colon_idx == -1:
         return f'{HTML_TAGS[16]}{hcolor}">{line}{HTML_TAGS[17]}'
     return (
@@ -2832,6 +2877,9 @@ def export_html_file(final_filename, tmp_filename):
 
 
 def generate_html():
+    """
+    Add values to the global attributes; related to the analysis HTML export
+    """
     copyfile(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[8]),
              final_filename)
     html_replace = {"html_title": get_detail(METADATA_S[1]),
