@@ -8,4 +8,8 @@ updates:
       - "additional/*"
       - "l10n/*"
       - "samples/*"
-      - "unit_tests/*"
+      - "tests/*"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
