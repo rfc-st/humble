@@ -197,7 +197,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-11-14', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-11-15', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2043,7 +2043,8 @@ def generate_csv(final_filename, temp_filename, to_xlsx=False):
 
 def parse_csv(csv_section, csv_source, csv_writer):
     """
-    Extract and write CSV data for matching section items
+    Extract and write data for matching section items; related to analysis
+    exported to CSV
     """
     for i in (item for item in csv_section if item in csv_source):
         csv_content = csv_source.split(i)[1].split('[')[0]
@@ -2075,7 +2076,7 @@ def generate_xlsx(final_filename, temp_filename):
 
 
 def set_xlsx_metadata(workbook):
-    """Specifies metadata for XLSX spreadsheet export of the analysis"""
+    """Set metadata values; related to analysis exported to XLSX spreadsheet"""
     workbook.set_properties({
         'author': BANNER_VERSION,
         'category': get_detail(METADATA_S[1], replace=True),
@@ -2089,8 +2090,8 @@ def set_xlsx_metadata(workbook):
 
 def set_xlsx_content(final_filename, workbook):
     """
-    Define the content and format of the data for exporting the analysis to
-    an XLSX spreadsheet
+    Define the content and format of the data; related to analysis exported to
+    XLSX spreadsheet
     """
     worksheet = workbook.add_worksheet(get_detail(METADATA_S[1], replace=True))
     bold_fmt = workbook.add_format({'bold': True, 'text_wrap': True,
@@ -2108,7 +2109,8 @@ def set_xlsx_content(final_filename, workbook):
 def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
                     worksheet):
     """
-    Write formatted content to XLSX spreadsheet with dynamic column widths
+    Write formatted content with dynamic column widths; related to analysis
+    exported to XLSX spreadsheet
     """
     prev_section = None
     with open(final_filename, 'r', encoding='utf-8', newline='') as csv_final:
@@ -2126,8 +2128,8 @@ def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
 def choose_xlsx_format(bold_fmt, cell_fmt, cell_value, col_index, hidden_fmt,
                        row_index, prev_section):
     """
-    Determine XLSX spreadsheet cell format based on position and content,
-    tracking section changes
+    Determine cell format based on position and content, tracking section
+    changes; related to analysis exported to XLSX spreadsheet
     """
     if row_index == 0 and col_index in (0, 1):
         return bold_fmt, prev_section
@@ -2139,8 +2141,8 @@ def choose_xlsx_format(bold_fmt, cell_fmt, cell_value, col_index, hidden_fmt,
 
 def set_xlsx_width(col_wd, worksheet):
     """
-    Set XLSX spreadsheet column widths with special handling for first two
-    columns
+    Set column widths with special handling for first two columns; related to
+    analysis exported to XLSX spreadsheet
     """
     col_a_width = col_wd.get(0, 0)
     col_b_width = col_wd.get(1, 0) + 2
@@ -2174,7 +2176,7 @@ def generate_json(final_filename, temp_filename):
 
 def parse_json(data, section0, section5, section6, sectionh, txt_sections):
     """
-    Parse JSON export sections
+    Parse sections; related to brief analysis exported to JSON
     """
     for i in range(0, len(txt_sections), 2):
         json_section = f'[{txt_sections[i]}]'
@@ -2187,7 +2189,8 @@ def parse_json(data, section0, section5, section6, sectionh, txt_sections):
 
 def write_json(json_lns, json_section, section0, section5, section6, sectionh):
     """
-    Format JSON export content, with special handling for specific sections
+    Format content, with special handling for specific sections; related to
+    brief analysis exported to JSON
     """
     if json_section in (section0, section5, section6, sectionh):
         json_data = {}
@@ -2202,7 +2205,8 @@ def write_json(json_lns, json_section, section0, section5, section6, sectionh):
 
 def format_json(json_data, json_lns):
     """
-    Format JSON export content, grouping duplicate keys
+    Format content, grouping duplicate keys; related to brief analysis exported
+    to JSON
     """
     for line in json_lns:
         if ':' in line:
@@ -2218,7 +2222,12 @@ def format_json(json_data, json_lns):
 
 
 def json_detailed_sources(file_idx, slice_idx):
-    """JSON export for a detailed analysis, related to '-o json' option"""
+    """
+    Access the contents of files in the /additional path, in order to use them
+    as sources for specific sections (e.g., fingerprint and
+    deprecated/insecure headers); related to detailed analysis exported to
+    JSON.
+    """
     file_path = path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[file_idx])
     with open(file_path, 'r', encoding='utf8') as f:
         return {line.strip() for line in islice(f, SLICE_INT[slice_idx],
@@ -2242,9 +2251,7 @@ def generate_json_detailed(final_filename, temp_filename):
 
 
 def json_detailed_parse(data, txt_sections):
-    """
-    Parse JSON export detailed sections
-    """
+    """Parse sections; related to detailed analysis exported to JSON"""
     params = ['[json_det_fngheader]', '[json_det_details]', '[json_det_refs]']
     details = [get_detail(p, replace=True) for p in params]
     for i in range(0, len(txt_sections), 2):
@@ -2258,9 +2265,7 @@ def json_detailed_parse(data, txt_sections):
 
 def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
                         json_miss_r):
-    """
-    Write JSON export detailed sections
-    """
+    """Write sections; related to detailed analysis exported to JSON"""
     json_conditions = {
         BOLD_STRINGS[0]:
             lambda: json_detailed_info(json_lns),
@@ -2295,8 +2300,8 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
 
 def json_detailed_empty(json_lns):
     """
-    Show findings in the section '[5. Empty HTTP Response Headers Values]',
-    related to JSON detailed analysis
+    Show findings in the section '[5. Empty HTTP Response Headers Values]';
+    related to detailed analysis exported to JSON
     """
     desc_key = get_detail('[json_det_empty]', replace=True)
     status_key = get_detail('[json_det_empty_s]', replace=True)
@@ -2312,7 +2317,8 @@ def json_detailed_empty(json_lns):
 
 def json_detailed_info(json_lns):
     """
-    Show findings in the section '[0. Info]', related to JSON detailed analysis
+    Show findings in the section '[0. Info]'; related to detailed analysis
+    exported to JSON
     """
     info = {get_detail('[json_gen]', replace=True): BANNER_VERSION}
     for line in json_lns:
@@ -2326,8 +2332,8 @@ def json_detailed_info(json_lns):
 
 def json_detailed_response(json_lns):
     """
-    Show findings in the section '[HTTP Response Headers]', related to JSON
-    detailed analysis and '-r' option
+    Show findings in the section '[HTTP Response Headers]'; related to detailed
+    analysis exported to JSON
     """
     header_key = get_detail('[json_det_fngheader]', replace=True)
     value_key = get_detail('[json_det_fngval]', replace=True)
@@ -2346,8 +2352,8 @@ def json_detailed_response(json_lns):
 
 def json_detailed_format_add(json_lns, header_t, value_t):
     """
-    Format JSON detailed analysis lines into structured header-value
-    dictionaries
+    Convert raw header lines into a list of dictionaries using the given header
+    and value keys; related to detailed analysis exported to JSON
     """
     result = []
     for line in map(str.strip, json_lns):
@@ -2363,8 +2369,8 @@ def json_detailed_format_add(json_lns, header_t, value_t):
 
 def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
     """
-    Format JSON detailed analysis lines with configurable headers for
-    compatibility or localization
+    Format lines in specific sections (e.g., enabled headers and browser
+    compatibility); related to detailed analysis exported to JSON
     """
     l10n_txt = '[json_det_refs]' if is_l10n else '[json_det_fngval]'
     header_t = get_detail('[json_det_fngheader]', replace=True)
@@ -2378,8 +2384,8 @@ def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
                                json_miss_r, json_det_mref, result, entry,
                                current_header):
     """
-    Process missing header lines, of a JSON detailed analysis, grouping
-    descriptions and references by header
+    Format the lines to be included in the missing headers section; related to
+    detailed analysis exported to JSON
     """
     if line in l_miss or line.startswith('(*)'):
         if entry:
@@ -2395,8 +2401,8 @@ def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
 def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
                            json_miss_r, json_det_mref):
     """
-    Format missing headers, of a JSON detailed analysis, into structured
-    entries with descriptions and references
+    Add lines to missing headers section; related to detailed analysis exported
+    to JSON
     """
     result, entry, current_header = [], {}, None
     for line in json_lns:
@@ -2413,8 +2419,8 @@ def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
 def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
                        json_miss_r):
     """
-    Format missing headers, of a JSON detailed analysis,
-    simplifying single-item descriptions
+    Select the lines to include in the missing headers section; related to
+    detailed analysis exported to JSON
     """
     json_det_mref = PDF_CONDITIONS[0]
     result = json_detailed_miss_add(
@@ -2430,8 +2436,8 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
 def json_detailed_fng_process(line, fingerprint_set, entry, current_header,
                               fng_header, fng_val):
     """
-    Process fingerprint lines, of a JSON detailed analysis, extracting headers
-    and their values
+    Format the lines to be included in the fingerprint headers section; related
+    to detailed analysis exported to JSON
     """
     line_s = line.strip()
     for f in fingerprint_set:
@@ -2445,8 +2451,8 @@ def json_detailed_fng_process(line, fingerprint_set, entry, current_header,
 
 def json_detailed_fng(json_lns, fingerprint_set):
     """
-    Format fingerprint headers, of a JSON detailed analysis, into structured
-    entries with their values
+    Select the lines to include in the fingerprint headers section; related to
+    detailed analysis exported to JSON
     """
     result, entry, current_header = [], {}, None
     fng_header = get_detail('[json_det_fngheader]', replace=True)
@@ -2466,8 +2472,8 @@ def json_detailed_fng(json_lns, fingerprint_set):
 def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
                              detail_t, result, is_header):
     """
-    Process insecure header lines, of a JSON detailed analysis,
-    grouping details and references by header
+    Add lines to deprecated/insecure headers section; related to detailed
+    analysis exported to JSON
     """
     if is_header:
         if entry:
@@ -2484,8 +2490,8 @@ def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
 
 def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
     """
-    Determine if a line represents an insecure header, of a JSON detailed
-    analysis, based on marker patterns
+    Determine if a line represents a deprecated/insecure header; related to
+    detailed analysis exported to JSON
     """
     header_cond = line.startswith('(*)')
     header_cond2 = not line.startswith(ref_t)
@@ -2500,8 +2506,8 @@ def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
 def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
                               detail_t):
     """
-    Format insecure headers, of a JSON detailed analysis, into structured
-    entries with details and references
+    Format the lines to be included in the deprecated/insecure headers section;
+    related to detailed analysis exported to JSON
     """
     result, entry, header = [], {}, None
     for line in json_lns:
@@ -2521,8 +2527,8 @@ def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
 
 def json_detailed_ins(json_lns, insecure_checks):
     """
-    Format insecure headers, of a JSON detailed analysis, with localized check
-    patterns
+    Select the lines to include in the deprecated/insecure headers section;
+    related to detailed analysis exported to JSON
     """
     header_t, detail_t, ref_t = (get_detail(text, replace=True)
                                  for text in [
@@ -2539,8 +2545,8 @@ def json_detailed_ins(json_lns, insecure_checks):
 
 def json_detailed_ins_checks(checks_list, insecure_checks):
     """
-    Parse insecure check patterns, of a JSON detailed analysis, into key-value
-    tuples for matching
+    Select specific content from the lines in the obsolete/insecure headers
+    section; related to detailed analysis exported to JSON
     """
     for check in insecure_checks:
         check_s = check.strip()
@@ -2557,8 +2563,7 @@ def json_detailed_ins_checks(checks_list, insecure_checks):
 
 def json_detailed_results(json_lns):
     """
-    Format analysis results, of a JSON detailed analysis, into a structured
-    dictionary with duration tracking
+    Add lines to results section; related to detailed analysis exported to JSON
     """
     result = {}
     duration_t = get_detail('[analysis_time]', replace=True)
@@ -2610,8 +2615,8 @@ def export_pdf_file(tmp_filename):
 
 def initialize_pdf(pdf, tmp_filename, ypos):
     """
-    Retrieves literals to apply the appropriate formatting to their lines in
-    the analysis PDF export
+    Retrieves literals to apply the appropriate formatting; related to analysis
+    exported to PDF
     """
     pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
                  REF_LINKS[4])
@@ -2621,8 +2626,8 @@ def initialize_pdf(pdf, tmp_filename, ypos):
 
 def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos):
     """
-    Generates the required file structure, including metadata, for analysis PDF
-    export
+    Generates the required file structure, including metadata; related to
+    analysis exported to PDF
     """
     set_pdf_file(pdf)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
@@ -2638,7 +2643,8 @@ def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos):
 
 def set_pdf_file(pdf):
     """
-    Set display parameters, along with metadata, for analysis PDF export
+    Set display parameters along with metadata; related to analysis exported to
+    PDF
     """
     pdf.alias_nb_pages()
     set_pdf_metadata(pdf)
@@ -2648,7 +2654,7 @@ def set_pdf_file(pdf):
 
 
 def set_pdf_metadata(pdf):
-    """Set metadata values for analysis PDF export"""
+    """Set metadata values; related to analysis exported to PDF"""
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
     git_urlc = BANNER_VERSION
     pdf.set_author(git_urlc)
@@ -2663,7 +2669,7 @@ def set_pdf_metadata(pdf):
 
 def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
                     pdf_prefixes, ypos):
-    """Set the format and sections of the analysis PDF export"""
+    """Set the format and sections; related to analysis exported to PDF"""
     with open(tmp_filename, 'r', encoding='utf8') as txt_source:
         for line in txt_source:
             if any(no_header in line for no_header in no_headers):
@@ -2678,8 +2684,8 @@ def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
 
 def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
     """
-    Applies specific format to lines based on its content, related to the PDF
-    export of the analysis
+    Applies specific format to lines based on its content; related to analysis
+    exported to PDF
     """
     if any(bold_str in line for bold_str in BOLD_STRINGS):
         pdf.set_font(style='B')
@@ -2699,7 +2705,7 @@ def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
 
 
 def set_pdf_sections(line, pdf):
-    """Set the sections related to the analysis PDF export"""
+    """Set the sections of the analysis; related to analysis exported to PDF"""
     for section in PDF_SECTION:
         if line.startswith(section):
             pdf.start_section(get_detail(PDF_SECTION[section]))
@@ -2709,8 +2715,8 @@ def set_pdf_sections(line, pdf):
 def set_pdf_conditions(line, pdf, ypos):
     """
     Check whether the analysis line includes mention of a specific response
-    HTTP header in order to apply a specific format; related to the analysis
-    PDF export
+    HTTP header in order to apply a specific format; related to analysis
+    exported to PDF
     """
     combined_h = l_miss + l_ins + l_fng + titled_fng
     return (
@@ -2721,8 +2727,8 @@ def set_pdf_conditions(line, pdf, ypos):
 
 def format_pdf_links(i, pdf_string, pdf, pdf_prefixes):
     """
-    Applies a specific format to lines containing links; related to the
-    analysis PDF export
+    Applies a specific format to lines containing links; related to analysis
+    exported to PDF
     """
     pdf_link = set_pdf_links(i, pdf_string)
     if pdf_string in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
@@ -2735,7 +2741,7 @@ def format_pdf_links(i, pdf_string, pdf, pdf_prefixes):
 
 
 def set_pdf_warnings(line, pdf, ypos):
-    """Format warnings-related lines, related to the analysis PDF export"""
+    """Format warnings-related lines; related to analysis exported to PDF"""
     if STYLE[8] not in line:
         pdf.set_text_color(255, 0, 0)
         pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
@@ -2743,13 +2749,13 @@ def set_pdf_warnings(line, pdf, ypos):
 
 
 def set_pdf_nowarnings(line, pdf, ypos):
-    """Format line without warnings, related to the analysis PDF export"""
+    """Format line without warnings; related to analysis exported to PDF"""
     pdf.set_text_color(0, 128, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
 
 
 def set_pdf_empty(l_empty, line, pdf, ypos):
-    """Format line with empty headers, related to the analysis PDF export"""
+    """Format line with empty headers; related to analysis exported to PDF"""
     ln_strip = line.lstrip().lower()
     if any(i in ln_strip for i in l_empty) and ('[' not in ln_strip and ':'
                                                 not in ln_strip):
@@ -2762,7 +2768,7 @@ def set_pdf_empty(l_empty, line, pdf, ypos):
 def set_pdf_links(i, pdf_string):
     """
     Check if the line includes a link, to display it with a specific format;
-    related to the analysis PDF export
+    related to analysis exported to PDF
     """
     pdf_links_d = {URL_STRING[1]: URL,
                    REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
@@ -2774,8 +2780,8 @@ def set_pdf_links(i, pdf_string):
 
 def format_pdf_lines(line, pdf, ypos):
     """
-    Identify lines, by length and content, to apply formatting; related to the
-    analysis PDF export
+    Identify lines, by length and content, to apply formatting; related to
+    analysis exported to PDF
     """
     if len(line) > 101:
         chunks = [line[i:i + 101] for i in range(0, len(line), 101)]
@@ -2796,7 +2802,7 @@ def format_pdf_lines(line, pdf, ypos):
 
 def set_pdf_chunks(chunks, pdf):
     """
-    Identify blocks of text to format them; related to the analysis PDF export
+    Identify blocks of text to format them; related to analysis exported to PDF
     """
     chunk_c = None
     for i, chunk in enumerate(chunks):
@@ -2812,8 +2818,8 @@ def set_pdf_chunks(chunks, pdf):
 
 def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
     """
-    Apply formatting and positioning to blocks of text; related to the analysis
-    PDF export
+    Apply formatting and positioning to blocks of text; related to analysis
+    exported to PDF
     """
     pdf.set_text_color(0, 0, 0)
     if i > 0:
@@ -2831,8 +2837,8 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
 
 def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
     """
-    Locate lines to which a specific color should be applied; related to the
-    analysis PDF export
+    Locate lines to which a specific color should be applied; related to
+    analysis exported to PDF
     """
     colon_idx = line.find(': ')
     ln_final = apply_pdf_color(colon_idx, hcolor, line, vcolor)
@@ -2843,7 +2849,7 @@ def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
 def apply_pdf_color(colon_idx, hcolor, line, vcolor):
     """
     Add the specific HTML tag to indicate the corresponding color; related to
-    the analysis PDF export
+    analysis exported to PDF
     """
     if colon_idx == -1:
         return f'{HTML_TAGS[16]}{hcolor}">{line}{HTML_TAGS[17]}'
@@ -2858,7 +2864,7 @@ def export_html_file(final_filename, tmp_filename):
     global inside_section
     inside_section = False
     generate_html()
-    clean_html_source(tmp_filename)
+    decrease_html_spacing(tmp_filename)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
     ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
                                                           'no_enb_headers']]
@@ -2878,7 +2884,8 @@ def export_html_file(final_filename, tmp_filename):
 
 def generate_html():
     """
-    Add values to the global attributes; related to the analysis HTML export
+    Provides content for the variables in the template
+    /additional/html_template.html; related to analysis exported to HTML
     """
     copyfile(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[8]),
              final_filename)
@@ -2895,7 +2902,10 @@ def generate_html():
         html_file.write(replaced_html)
 
 
-def clean_html_source(tmp_filename):
+def decrease_html_spacing(tmp_filename):
+    """
+    Decrease the spacing between sections; related to analysis exported to HTML
+    """
     with open(tmp_filename, "r+", encoding="utf8") as html_source:
         html_lines = html_source.readlines()
         initial_ln, prev_blank_ln = False, False
@@ -2913,12 +2923,17 @@ def clean_html_source(tmp_filename):
 
 
 def format_html_file(html_final, ko_strings, ln, ok_string):
+    """Apply formatting to the content; related to analysis exported to HTML"""
     ln_formatted = format_html_lines(html_final, ko_strings, ln, ok_string)
     if not ln_formatted:
         format_html_rest(html_final, l_empty, ln)
 
 
 def format_html_lines(html_final, ko_strings, ln, ok_string):
+    """
+    Apply specific formatting to lines, depending on their content; related to
+    analysis exported to HTML
+    """
     lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
     ln_rstrip = ln.rstrip('\n')
     return (format_html_info(html_final, ln_rstrip)
