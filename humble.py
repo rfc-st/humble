@@ -514,8 +514,7 @@ def get_analysis_totals(url_ln):
         differences between analyses of the same URL.
 
         Therefore, analyses performed before that date are assumed to have no
-        security headers enabled.<br>
-        Ref: https://github.com/rfc-st/humble/commit/f7b376
+        security headers enabled.
     """
     updated_lines = []
     for line in url_ln:
@@ -2923,7 +2922,9 @@ def decrease_html_spacing(tmp_filename):
 
 
 def format_html_file(html_final, ko_strings, ln, ok_string):
-    """Apply formatting to the content; related to analysis exported to HTML"""
+    """
+    Format content for the main sections; related to analysis exported to HTML
+    """
     ln_formatted = format_html_lines(html_final, ko_strings, ln, ok_string)
     if not ln_formatted:
         format_html_rest(html_final, l_empty, ln)
@@ -2931,8 +2932,8 @@ def format_html_file(html_final, ko_strings, ln, ok_string):
 
 def format_html_lines(html_final, ko_strings, ln, ok_string):
     """
-    Apply specific formatting to lines, depending on their content; related to
-    analysis exported to HTML
+    Write formatted lines for the main sections; related to the analysis
+    exported to HTML
     """
     lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
     ln_rstrip = ln.rstrip('\n')
@@ -2945,6 +2946,10 @@ def format_html_lines(html_final, ko_strings, ln, ok_string):
 
 
 def format_html_info(html_final, ln_rstrip):
+    """
+    Write formatted lines for *humble* and analysis information sections;
+    related to analysis exported to HTML
+    """
     if URL_STRING[0] in ln_rstrip:
         html_final.write(
             f"{HTML_TAGS[1]}{ln_rstrip[:32]}{HTML_TAGS[2]}"
@@ -2961,6 +2966,11 @@ def format_html_info(html_final, ln_rstrip):
 
 
 def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string):
+    """
+    Write formatted lines for sections without results: either because they
+    have passed all checks or because the headers could not be retrieved;
+    related to analysis exported to HTML
+    """
     if ok_string in ln_rstrip:
         html_final.write(f'{HTML_TAGS[6]}{ln_rstrip}{HTML_TAGS[5]}\
 {HTML_TAGS[11]}')
@@ -2973,6 +2983,9 @@ def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string):
 
 
 def format_html_references(html_final, lang_slice, ln_rstrip):
+    """
+    Write formatted lines for references; related to analysis exported to HTML
+    """
     for ref, off in [(REF_LINKS[1], 6), (REF_LINKS[0], 8), (REF_LINKS[4],
                                                             lang_slice)]:
         if ref in ln_rstrip:
@@ -2986,6 +2999,10 @@ def format_html_references(html_final, lang_slice, ln_rstrip):
 
 
 def format_html_compatibility(html_final, ln_rstrip):
+    """
+    Write formatted lines for browser compatibility section; related to
+    analysis exported to HTML
+    """
     if URL_STRING[2] not in ln_rstrip:
         return False
     prefix, _, link = ln_rstrip.partition(': ')
@@ -2997,6 +3014,9 @@ def format_html_compatibility(html_final, ln_rstrip):
 
 
 def format_html_bold(html_final, ln_rstrip):
+    """
+    Bold the section names; related to analysis exported to HTML
+    """
     global inside_section
     if any(s in ln_rstrip for s in BOLD_STRINGS):
         if inside_section:
@@ -3008,6 +3028,10 @@ def format_html_bold(html_final, ln_rstrip):
 
 
 def format_html_headers(ln):
+    """
+    Write formatted lines for HTTP response headers section; related to
+    analysis exported to HTML
+    """
     for header in headers:
         header_str = f"{header}: "
         if header_str in ln:
@@ -3019,6 +3043,10 @@ def format_html_headers(ln):
 
 
 def format_html_csp(ln):
+    """
+    Bold Content-Security-Policy header directives; related to analysis
+    exported to HTML
+    """
     csp_value = next((v for k, v in headers.items() if k.lower() ==
                       "content-security-policy"), None)
     if not csp_value:
@@ -3031,6 +3059,10 @@ def format_html_csp(ln):
 
 
 def format_html_fingerprint(args, ln, l_fng):
+    """
+    Write formatted lines for fingerprint section; related to analysis exported
+    to HTML
+    """
     ln_cf = ln.casefold() if args.brief else ln
     for i in l_fng:
         i_match = i.casefold() if args.brief else i
@@ -3041,6 +3073,10 @@ def format_html_fingerprint(args, ln, l_fng):
 
 
 def format_html_totals(ln, l_total):
+    """
+    Highlight the header that fails any of the checks; related to analysis
+    exported to HTML
+    """
     for i in l_total:
         if (not re.search(RE_PATTERN[11], ln)) and (
              (i in ln) and ('"' not in ln) or ('HTTP (' in ln)):
@@ -3049,6 +3085,10 @@ def format_html_totals(ln, l_total):
 
 
 def format_html_empty(ln, ln_rstrip, l_empty):
+    """
+    Write formatted lines for empty section; related to analysis exported to
+    HTML
+    """
     ln_strip = ln_rstrip.lstrip().lower()
     for i in l_empty:
         if (i in ln_strip and '[' not in ln_strip and ':' not in ln_strip):
@@ -3057,6 +3097,10 @@ def format_html_empty(ln, ln_rstrip, l_empty):
 
 
 def format_html_rest(html_final, l_empty, ln):
+    """
+    Write formatted lines for the rest of the sections; related to analysis
+    exported to HTML
+    """
     l_total = sorted(set(l_miss + l_ins))
     ln, ln_enabled = format_html_enabled(ln, html_final)
     ln_rstrip = ln.rstrip('\n')
@@ -3069,6 +3113,10 @@ def format_html_rest(html_final, l_empty, ln):
 
 
 def format_html_enabled(ln, html_final):
+    """
+    Write formatted lines for enabled headers section; related to analysis
+    exported to HTML
+    """
     ln_enabled = STYLE[8] in ln
     if ln_enabled:
         ln = f" {ln[19:].rstrip()}"
@@ -3082,6 +3130,10 @@ def format_html_enabled(ln, html_final):
 
 
 def clean_html_final(final_filename):
+    """
+    Remove content related to preformatted text; related to analysis exported
+    to HTML
+    """
     with open(final_filename, "r+", encoding="utf8") as html_final:
         html_content = html_final.read()
         html_content = re.sub(RE_PATTERN[22], "", html_content)
@@ -3108,6 +3160,7 @@ def generate_xml(final_filename, temp_filename):
 
 
 def parse_xml(root, section, stripped_txt):
+    """Parse sections; related to analysis exported to XML"""
     for line in stripped_txt:
         if not line:
             continue
@@ -3121,6 +3174,7 @@ def parse_xml(root, section, stripped_txt):
 
 
 def add_xml_item(line, section):
+    """Adds a new item to the section; related to analysis exported to XML"""
     item = ET.SubElement(section, 'item')
     if ': ' in line and all(sub not in line for sub in XML_STRING):
         key, value = line.split(': ', 1)
@@ -3140,9 +3194,11 @@ def print_http_exception(exception_id, exception_v):
 
 def check_ru_scope():
     """
-    Blocks analysis of Russian domains:
-    https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326
-    """
+    Blocks analysis of Russian domains
+
+    ??? note
+        You can read my reasons <a href="https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326" target="_blank">here</a>.
+    """  # noqa: E501
     try:
         sff = urlparse(URL).netloc.split(':')[0].encode('ascii').decode('idna')
     except UnicodeError:
@@ -3170,6 +3226,10 @@ def check_owasp_compliance(tmp_filename):
 
 
 def print_owasp_summary(missing, wrong):
+    """
+    Format lines for results section; related to OWASP Secure Headers Project
+    best practices analysis
+    """
     missing_txt = get_detail('[comp_missing]', replace=True)
     wrong_txt = get_detail('[comp_noncompliant]', replace=True)
     max_len = len(wrong_txt)
@@ -3180,6 +3240,10 @@ def print_owasp_summary(missing, wrong):
 
 
 def print_owasp_findings(header_dict, header_list):
+    """
+    Show formatted lines for results section; related to OWASP Secure Headers
+    Project best practices analysis
+    """
     print(linesep.join([''] * 2))
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
     print(" ", end='')
@@ -3197,6 +3261,10 @@ def print_owasp_findings(header_dict, header_list):
 
 
 def print_owasp_missing(header_list):
+    """
+    Show missing recommended headers; related to OWASP Secure Headers Project
+    best practices analysis
+    """
     print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
     missing_owasp = [header.title() for header in header_list if header not in
                      headers_l]
@@ -3210,6 +3278,10 @@ def print_owasp_missing(header_list):
 
 
 def print_owasp_wrong(header_dict):
+    """
+    Show enabled headers with non-compliant values; related to OWASP Secure
+    Headers Project
+    """
     wrong_owasp = [
         (header.title(), value)
         for header, value in headers_l.items()
@@ -3227,6 +3299,10 @@ def print_owasp_wrong(header_dict):
 
 
 def print_owasp_rec(wrong_owasp, header_dict):
+    """
+    Show recommended values for enabled headers; related to OWASP Secure
+    Headers Project
+    """
     print(f"\n\n{STYLE[0]}{get_detail('[comp_rec_val]')}{STYLE[5]}")
     for header, _ in sorted(wrong_owasp):
         prefix = "(*) " if header == "Permissions-Policy" else ""
@@ -3235,7 +3311,10 @@ def print_owasp_rec(wrong_owasp, header_dict):
 
 
 def analyze_input_file(input_file):
-    """Analyze headers from provided file, related to '-if' option"""
+    """
+    Perform a detailed analysis of the headers and values in the file provided
+    , related to '-if' option
+    """
     if not path.exists(input_file):
         print_error_detail('[args_inputnotfound]')
     input_headers = {}
@@ -3269,7 +3348,13 @@ def get_tmp_file(args, export_date):
 
 
 def build_tmp_file(export_date, file_ext, lang, humble_str, url):
-    # Tiny optimization, lazy-loading third-party tldextract
+    """
+    Define the name of the temporary export file
+
+    ??? tip
+        tldextract is lazy-loaded to avoid unnecessary overhead when the
+        analysis is not exported
+    """
     import tldextract
     url_str = tldextract.extract(URL)
     url_sub = f"_{url_str.subdomain}." if url_str.subdomain else "_"
@@ -3282,7 +3367,7 @@ def build_tmp_file(export_date, file_ext, lang, humble_str, url):
 
 
 def process_server_error(http_status_code, l10n_id):
-    """Show message for specific 5xx server errors during analysis"""
+    """Show message for specific server error (5xx) during analysis"""
     delete_lines()
     print()
     if http_status_code in CDN_HTTP_CODES:
@@ -3370,7 +3455,8 @@ def process_http_error(r, exception_d):
 
 
 def parse_request_headers(request_headers):
-    """Add the provided headers to the request, related to '-H' option"""
+    """Add the provided headers to the request, terminating execution if any of
+    them are not well-formed; related to '-H' option"""
     headers, malformed_headers = process_request_headers(request_headers)
     if malformed_headers:
         delete_lines()
@@ -3382,6 +3468,9 @@ def parse_request_headers(request_headers):
 
 
 def process_request_headers(request_headers):
+    """
+    Verify that the request headers provided are well-formed
+    """
     headers = {}
     malformed_headers = []
     for header in request_headers:
@@ -3403,7 +3492,10 @@ def process_request_headers(request_headers):
 
 
 def process_http_request(status_code, reliable, body, proxy, custom_headers):
-    """Process the request to the provided URL"""
+    """
+    Perform an HTTP request to the provided URL with timeout handling and
+    response processing
+    """
     result = {}
     done = Event()
 
@@ -3432,21 +3524,29 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
 
 
 def process_http_response(r, exception, status_code, reliable, body):
-    # https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/
+    """
+    Process an HTTP response (and its exceptions), storing headers, status code
+    , and body, and determining if the analyzed URL returns an HTML document
+
+    ??? note
+        References:<br>
+
+        - <a href="https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/" target="_blank">Exceptions in the HTTP library 'requests' </a>
+        - <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors" target="_blank">Generic HTTP 5xx errors</a>
+        - <a href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/" target="_blank">Cloudflare's 5xx HTTP errors</a>
+        - <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type" target="_blank">MDN docs regarding HTML <meta> and content-type</a>
+    """  # noqa: E501
     if exception:
         process_requests_exception(exception)
         return {}, status_code, reliable, body
     if r is None:
         return {}, status_code, reliable, body
-    # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors
-    # https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/
     process_http_error(r, exception_d)
     status_code = r.status_code
     headers = CaseInsensitiveDict({
         k: re.sub(RE_PATTERN[20], ' ', v).strip()
         for k, v in r.headers.items()})
     body = r.text
-    # https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type
     is_html = False
     ctype = headers.get('content-type', '')
     is_html = ctype.lower().startswith('text/html')
