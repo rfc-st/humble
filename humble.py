@@ -197,7 +197,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-11-15', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-11-21', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -233,12 +233,11 @@ def process_proxy_url(proxy_url, timeout):
     parsed_proxy_url = urlparse(proxy_url)
     proxy_host = parsed_proxy_url.hostname
     if not proxy_host:
-        print_error_detail('[proxy_host]')
+        print_error_detail('[proxy_host]', clean_lines=True)
     try:
         proxy_port = parsed_proxy_url.port or 8080
     except ValueError:
-        delete_lines()
-        print_error_detail('[proxy_port]')
+        print_error_detail('[proxy_port]', clean_lines=True)
     failed_proxy = Event()
     proxy_thread = Thread(target=check_proxy_url, args=(proxy_host, proxy_port,
                                                         timeout, failed_proxy),
@@ -246,8 +245,7 @@ def process_proxy_url(proxy_url, timeout):
     proxy_thread.start()
     proxy_thread.join(timeout)
     if proxy_thread.is_alive() or failed_proxy.is_set():
-        delete_lines()
-        print_error_detail('[proxy_url]')
+        print_error_detail('[proxy_url]', clean_lines=True)
     return True
 
 
@@ -273,7 +271,7 @@ def check_updates(local_version):
         check_updates_diff(days_diff, github_version, local_version)
     except requests.exceptions.RequestException:
         print_error_detail('[update_error]')
-    sys.exit()
+    sys.exit(0)
 
 
 def check_updates_diff(days_diff, github_version, local_version):
@@ -293,7 +291,7 @@ def check_updates_diff(days_diff, github_version, local_version):
 
 def fng_statistics_top():
     """
-    Show top 20 HTTP fingerprint header statistics grouped by service and
+    Print top 20 HTTP fingerprint header statistics grouped by service and
     terminate execution, related to '-f' option
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
@@ -304,7 +302,7 @@ def fng_statistics_top():
     fng_incl = sum(1 for _ in islice(fng_lines, SLICE_INT[0], None))
     fng_lines = fng_lines[SLICE_INT[0]:]
     fng_statistics_top_groups(fng_lines, fng_incl)
-    sys.exit()
+    sys.exit(0)
 
 
 def fng_statistics_top_groups(fng_lines, fng_incl):
@@ -316,7 +314,7 @@ def fng_statistics_top_groups(fng_lines, fng_incl):
 
 
 def fng_statistics_top_result(fng_top_groups, fng_incl):
-    """Show services in the top 20 by total number of fingerprint headers"""
+    """Print services in the top 20 by total number of fingerprint headers"""
     max_ln_len = max(len(content) for content, _ in
                      fng_top_groups.most_common(20))
     print(f"{get_detail('[fng_top]', replace=True)} {fng_incl}\
@@ -342,7 +340,7 @@ def fng_statistics_term(fng_term):
     if not fng_groups:
         print(f"{get_detail('[fng_zero]', replace=True)} '{fng_term}'.\n\n\
 {get_detail('[fng_zero_2]', replace=True)}.\n")
-        sys.exit()
+        sys.exit(0)
     fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl)
 
 
@@ -369,7 +367,7 @@ def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl):
 
 def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     """
-    Show, in alphabetical order, the service associated with the term
+    Print, in alphabetical order, the service associated with the term
     provided and terminate execution
     """
     for content in fng_groups:
@@ -379,12 +377,12 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
             line_l = line.lower()
             if content in line_l and fng_term in line_l:
                 print(f"  {line[:line.find('(')].strip()}")
-    sys.exit()
+    sys.exit(0)
 
 
 def print_l10n_file(args, l10n_file, slice_ln=False):
     """
-    Show the contents of a file based on the language provided and terminates
+    Print the contents of a file based on the language provided and terminates
     execution
     """
     lang_es = args.lang == 'es'
@@ -398,7 +396,7 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
         for line in l10n_lines:
             prefix = f" {STYLE[0]}" if line.startswith('[') else "  "
             print(f"{prefix}{line}", end='')
-    sys.exit()
+    sys.exit(0)
 
 
 def testssl_command(testssl_temp_path, uri):
@@ -425,11 +423,11 @@ def testssl_command(testssl_temp_path, uri):
         f"{get_detail('[testssl_choice]', replace=True)} "
     ).strip().lower()
     if choice != "y":
-        sys.exit()
+        sys.exit(0)
     delete_lines()
     testssl_cmd = [testssl_path] + TESTSSL_OPTIONS + [uri]
     testssl_analysis(testssl_cmd)
-    sys.exit()
+    sys.exit(0)
 
 
 def testssl_analysis(testssl_cmd):
@@ -450,7 +448,7 @@ def testssl_analysis(testssl_cmd):
 
 def get_l10n_content():
     """
-    Define the literal file to use, to show messages and errors, based on
+    Define the literal file to use, to print messages and errors, based on
     the language provided
     """
     l10n_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[4]
@@ -460,7 +458,7 @@ def get_l10n_content():
 
 
 def get_analysis_results():
-    """Show analysis results and summary"""
+    """Print analysis results and summary"""
     analysis_t = str(round(end - start, 2)).rstrip()
     print(f"{get_detail('[analysis_time]', replace=True)} {analysis_t}\
 {get_detail('[analysis_time_sec]', replace=True)}")
@@ -534,7 +532,7 @@ def get_analysis_totals(url_ln):
 def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
                              e_cnt, t_cnt):
     """
-    Shows the differences in totals between the last analysis and the current
+    Print the differences in totals between the last analysis and the current
     one, for the same URL
     """
     if analysis_totals[0] == "First":
@@ -561,7 +559,7 @@ def format_analysis_results(*diff, en_cnt_w, t_cnt):
 
 
 def print_analysis_results(totals, max_secl, en_cnt_w):
-    """Shows the totals for the current analysis"""
+    """Print the totals for the current analysis"""
     for idx, (literal, total) in enumerate(zip(SECTION_S, totals)):
         print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} {total}",
               end='')
@@ -615,7 +613,7 @@ def adjust_old_analysis(url_ln):
 
 def url_analytics(is_global=False):
     """
-    Show analysis statistics for all analyses performed on a URL and
+    Print analysis statistics for all analyses performed on a URL and
     terminates execution, related to '-a' option
     """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
@@ -628,12 +626,12 @@ def url_analytics(is_global=False):
         key_style = f"{STYLE[0]}{key}{STYLE[4]}" if not value or not \
             key.startswith(' ') else key
         print(f"{key_style}: {value}")
-    sys.exit()
+    sys.exit(0)
 
 
 def get_analysis_metrics(all_analysis):
     """
-    Calculate metrics to show statistics of the analyses performed on a URL
+    Calculate metrics to print statistics of the analyses performed on a URL
     """
     url_ln = [line for line in all_analysis if URL in line]
     if not url_ln:
@@ -769,7 +767,7 @@ def calculate_highlights(url_ln, field_index, func):
 
 
 def get_trends(adj_url_ln):
-    """Show trends based on the totals of analyses performed on a URL"""
+    """Print trends based on the totals of analyses performed on a URL"""
     sections_t = SECTION_S[1:]
     fields_t = [3, 4, 5, 6, 7]
     max_secl = (get_max_lnlength(SECTION_S))-2
@@ -817,7 +815,7 @@ def calculate_trends(values):
 
 def print_metrics(analytics_s, analytics_w, total_a, first_m, second_m,
                   third_m, additional_m, fourth_m, fifth_m):
-    """Show metrics related to the analysis performed on a URL"""
+    """Print metrics related to the analysis performed on a URL"""
     basic_m = get_basic_metrics(total_a, first_m)
     error_m = get_security_metrics(analytics_s, second_m)
     warning_m = get_warnings_metrics(additional_m, analytics_w)
@@ -832,7 +830,7 @@ def print_metrics(analytics_s, analytics_w, total_a, first_m, second_m,
 
 
 def get_basic_metrics(total_a, first_m):
-    """Show base metrics details related to the analysis performed on a URL"""
+    """Print base metrics details related to the analysis performed on a URL"""
     return {'[main]': "", '[total_analysis]': total_a,
             '[first_analysis_a]': first_m[0], '[latest_analysis]': first_m[1],
             '[best_analysis]': f"{first_m[2]} \
@@ -843,7 +841,7 @@ def get_basic_metrics(total_a, first_m):
 
 def get_security_metrics(analytics_s, second_m):
     """
-    Show security-related metrics details to the analysis performed on a URL
+    Print security-related metrics details to the analysis performed on a URL
     """
     return {'[analysis_y]': "",
             '[no_enabled]': f"{analytics_s[0]}{second_m[0]}",
@@ -855,7 +853,7 @@ def get_security_metrics(analytics_s, second_m):
 
 def get_warnings_metrics(additional_m, analytics_w):
     """
-    Show warning-related metrics details to the analysis performed on a URL
+    Print warning-related metrics details to the analysis performed on a URL
     """
     return {'[averages]': "",
             '[average_warnings]': f"{analytics_w[0]}{additional_m[0]}",
@@ -864,8 +862,8 @@ def get_warnings_metrics(additional_m, analytics_w):
 
 def get_averages_metrics(analytics_w, third_m):
     """
-    Show average-related metrics details related to the analysis performed on a
-    URL
+    Print average-related metrics details related to the analysis performed on
+    a URL
     """
     return {'[average_enb]': f"{analytics_w[2]}{third_m[0]}",
             '[average_miss]': f"{analytics_w[3]}{third_m[1]}",
@@ -876,13 +874,15 @@ def get_averages_metrics(analytics_w, third_m):
 
 def get_highlights_metrics(fourth_m):
     """
-    Show highlight-related metrics details to the analysis performed on a URL
+    Print highlight-related metrics details to the analysis performed on a URL
     """
     return {'[highlights]': "\n" + "\n".join(fourth_m)}
 
 
 def get_trend_metrics(fifth_m):
-    """Show trend-related metrics details to the analysis performed on a URL"""
+    """
+    Print trend-related metrics details to the analysis performed on a URL
+    """
     if '5' in fifth_m[0]:
         trends_s = get_detail('[t_insufficient]')
         return {'[trends]': "\n" + trends_s}
@@ -890,13 +890,13 @@ def get_trend_metrics(fifth_m):
 
 
 def get_date_metrics(additional_m):
-    """Show date-related metrics details related"""
+    """Print date-related metrics details related"""
     return {'[analysis_year_month]': f"\n{additional_m[1]}"}
 
 
 def extract_global_metrics(all_analysis):
     """
-    Calculate metrics to show statistics across all URL analyses
+    Calculate metrics to print statistics across all URL analyses
     """
     url_ln = list(all_analysis)
     if not url_ln:
@@ -956,7 +956,7 @@ def get_global_totals(url_ln, field):
 
 
 def get_basic_global_metrics(analytics_l, total_a, first_m):
-    """Show metrics details across all URL analyses"""
+    """Print metrics details across all URL analyses"""
     return {'[main]': "", '[total_analysis]': total_a,
             '[total_global_analysis]': str(first_m[2]),
             '[first_analysis_a]': first_m[0],
@@ -980,7 +980,7 @@ def get_basic_global_metrics(analytics_l, total_a, first_m):
 
 def print_global_metrics(analytics_l, analytics_s, analytics_w,
                          total_a, first_m, second_m, third_m, additional_m):
-    """Show metrics across all URL analyses"""
+    """Print metrics across all URL analyses"""
     basic_m = get_basic_global_metrics(analytics_l, total_a, first_m)
     error_m = get_security_metrics(analytics_s, second_m)
     warning_m = get_warnings_metrics(additional_m, analytics_w)
@@ -1041,9 +1041,7 @@ def csp_check_missing(csp_dirs):
 
 
 def csp_print_missing(csp_ref, csp_ref_brief):
-    """
-    Shows the missing directive in the 'Content-Security-Policy' header
-    """
+    """Print the missing directive in the 'Content-Security-Policy' header"""
     if args.brief:
         i_cnt[0] += 1
         print_detail_r(csp_ref_brief, is_red=True)
@@ -1082,9 +1080,7 @@ def csp_check_broad(csp_dirs_vals):
 
 
 def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
-    """
-    Shows the broad value in the 'Content-Security-Policy' header
-    """
+    """Print the broad value in the 'Content-Security-Policy' header"""
     print_detail_r('[icsw_h]', is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(csp_broad_dirs) > 1 else DIR_MSG[1])
@@ -1107,9 +1103,7 @@ def csp_check_insecure(csp_dirs_vals):
 
 
 def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
-    """
-    Shows the insecure value in the 'Content-Security-Policy' header
-    """
+    """Print the insecure value in the 'Content-Security-Policy' header"""
     print_detail_r('[icsh_h]', is_red=True)
     if not args.brief:
         csp_values = ', '.join(f"'{value}'" for value in csp_insec_v)
@@ -1148,7 +1142,7 @@ def csp_check_inline(csp_dirs_vals):
 
 def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
     """
-    Show the occurrences of 'unsafe-eval' and 'unsafe-inline'keywords in the
+    Print the occurrences of 'unsafe-eval' and 'unsafe-inline' keywords in the
     'Content-Security-Policy' header
     """
     print_detail_r(detail_t, is_red=True)
@@ -1221,7 +1215,7 @@ def csp_base64_nonce(nonce, nonce_refs, i_cnt):
 
 def csp_print_nonce(nonce, nonce_refs, i_cnt):
     """
-    Show insecure Base64 and hexadecimal nonces in the
+    Print insecure Base64 and hexadecimal nonces in the
     'Content-Security-Policy' header
     """
     print_detail_r(nonce_refs[0], is_red=True)
@@ -1241,7 +1235,7 @@ def csp_check_ip(csp_h):
 
 
 def csp_print_deprecated(csp_deprecated):
-    """Show deprecated directives in the 'Content-Security-Policy' header"""
+    """Print deprecated directives in the 'Content-Security-Policy' header"""
     i_cnt[0] += 1
     print_detail_r('[icsi_d]', is_red=True) if args.brief else \
         csp_print_details(csp_deprecated, '[icsi_d]', '[icsi_d_s]',
@@ -1273,7 +1267,7 @@ def csp_check_unknown(csp_h):
 
 
 def csp_print_unknown(unknown_dir):
-    """Show unknown directives in the 'Content-Security-Policy' header"""
+    """Print unknown directives in the 'Content-Security-Policy' header"""
     # sourcery skip: use-fstring-for-concatenation
     print_detail_r('[icspiu_h]', is_red=True)
     if not args.brief:
@@ -1297,7 +1291,7 @@ def check_unsafe_cookies():  # sourcery skip: use-named-expression
 
 
 def print_unsafe_cookies(unsafe_cks):
-    """Show unsafe cookies in the 'Set-Cookie' header"""
+    """Print unsafe cookies in the 'Set-Cookie' header"""
     print_detail_l('[icooks_s]' if len(unsafe_cks) > 1 else '[icook_s]')
     print(", ".join(f"'{ck}'" for ck in sorted(unsafe_cks)) + ".")
     print_detail('[iset]', num_lines=2)
@@ -1314,7 +1308,7 @@ def permissions_analyze_content(perm_header, i_cnt):
 
 
 def permissions_print_deprecated(perm_header):
-    """Show deprecated directives in the 'Permissions-Policy' header"""
+    """Print deprecated directives in the 'Permissions-Policy' header"""
     print_detail_r('[ifpold_h]', is_red=True)
     if not args.brief:
         matches_perm = [x for x in t_per_dep if x in perm_header]
@@ -1339,9 +1333,7 @@ def permissions_check_broad(perm_header):
 
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
-    """
-    Show the broad values in the 'Permissions-Policy' header
-    """
+    """Print the broad values in the 'Permissions-Policy' header"""
     print_detail_r('[ifpol_h]', is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(perm_broad_dirs) > 1 else DIR_MSG[1])
@@ -1362,7 +1354,7 @@ def delete_lines(reliable=True, warning=False):
 
 
 def print_export_path(filename, reliable):
-    """Show export path, related to -o' option"""
+    """Print export path, related to -o' option"""
     delete_lines(reliable=False) if reliable else delete_lines()
     if '-c' not in sys.argv:
         print(f"\n {args.output.upper()} {print_detail_s('[report]').lstrip()}\
@@ -1378,12 +1370,12 @@ def print_nowarnings():
 
 
 def print_header(header):
-    """Show the header name (generic use)."""
+    """Print the header name (generic use)."""
     print(f" {header}" if args.output else f"{STYLE[1]} {header}")
 
 
 def print_fng_header(header):
-    """Show the header name in the fingerprint section of the analysis."""
+    """Print the header name in the fingerprint section of the analysis"""
     if args.output:
         print(f" {header}")
     elif '[' in header:
@@ -1394,7 +1386,7 @@ def print_fng_header(header):
 
 
 def print_general_info(reliable, export_filename):
-    """Show all the information in the '[0. Info]' section of the analysis."""
+    """Print all the information in the '[0. Info]' section of the analysis"""
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
         print(f"\n{BANNER}\n ({BANNER_VERSION})")
@@ -1406,7 +1398,7 @@ def print_general_info(reliable, export_filename):
 
 
 def print_basic_info(export_filename):
-    """Show basic information in the '[0. Info]' section of the analysis."""
+    """Print basic information in the '[0. Info]' section of the analysis"""
     print(linesep.join(['']*2) if args.output == 'html' or not args.output
           else "")
     print_detail_r('[0section]')
@@ -1426,7 +1418,7 @@ def print_basic_info(export_filename):
 
 
 def print_extended_info(args, reliable, status_code):
-    """Show extended information in the '[0. Info]' section of the analysis."""
+    """Print extended information in the '[0. Info]' section of the analysis"""
     if args.skip_headers:
         print_skipped_headers(args)
     if args.proxy:
@@ -1438,7 +1430,7 @@ def print_extended_info(args, reliable, status_code):
 
 
 def print_extra_info(reliable):
-    """Show extra information in the '[0. Info]' section of the analysis."""
+    """Print extra information in the '[0. Info]' section of the analysis"""
     if (status_code is not None and 400 <= status_code <= 451):
         id_mode = f'[http_{status_code}]'
         if detail := print_detail(id_mode, 0):
@@ -1451,7 +1443,7 @@ def print_extra_info(reliable):
 
 
 def print_response_headers():
-    """Show response headers, related to '-r' option"""
+    """Print response headers, related to '-r' option"""
     print(linesep.join(['']*2))
     print_detail_r('[0headers]')
     if not headers:
@@ -1487,7 +1479,7 @@ def get_analytics_length(section):
 
 
 def print_details(short_d, long_d, id_mode, i_cnt):
-    """Show detailed information about the finding"""
+    """Print detailed information about the finding"""
     print_detail_r(short_d, is_red=True)
     if not args.brief:
         print_detail(long_d, 2) if id_mode == 'd' else print_detail(long_d, 3)
@@ -1496,7 +1488,7 @@ def print_details(short_d, long_d, id_mode, i_cnt):
 
 
 def print_detail(id_mode, num_lines=1):
-    """Show detailed information about the finding across multiple lines"""
+    """Print detailed information about the finding across multiple lines"""
     idx = l10n_main.index(id_mode + '\n')
     print(l10n_main[idx+1], end='')
     for i in range(1, num_lines+1):
@@ -1506,7 +1498,7 @@ def print_detail(id_mode, num_lines=1):
 
 def print_detail_l(id_mode, analytics=False, no_headers=False):
     """
-    Show detailed information about the finding and removes lines from the
+    Print detailed information about the finding and removes lines from the
     output based on it
     """
     for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
@@ -1521,7 +1513,7 @@ def print_detail_l(id_mode, analytics=False, no_headers=False):
 
 def print_detail_r(id_mode, is_red=False):
     """
-    Show detailed information about the finding using a distinctive format
+    Print detailed information about the finding using a distinctive format
     """
     style_str = STYLE[1] if is_red else STYLE[0]
     for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
@@ -1536,7 +1528,7 @@ def print_detail_r(id_mode, is_red=False):
 
 def print_detail_s(id_mode, max_ln=False):
     """
-    Show message with leading newline and optional whitespace preservation
+    Print message with leading newline and optional whitespace preservation
     """
     for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
         if idmode_ln.startswith(id_mode):
@@ -1545,22 +1537,27 @@ def print_detail_s(id_mode, max_ln=False):
 
 
 def get_detail(id_mode, replace=False):
-    """"Show message, optionally removing newlines"""
+    """"Print a message, optionally removing newlines"""
     for i, line in enumerate(l10n_main):
         if line.startswith(id_mode):
             return (l10n_main[i+1].replace('\n', '')) if replace else \
                 l10n_main[i+1]
 
 
-def print_error_detail(id_mode):
-    """Show error message and terminate execution"""
+def print_error_detail(id_mode, clean_lines=False):
+    """
+    Print an error message, optionally removing previously printed lines on
+    the console, and terminate execution
+    """
+    if clean_lines:
+        delete_lines()
     print(f"\n{get_detail(id_mode, replace=True)}")
-    sys.exit()
+    sys.exit(1)
 
 
 def get_epilog_content(id_mode):
     """
-    Show examples of use of 'humble' and how to contribute to it, related to
+    Print examples of use of 'humble' and how to contribute to it, related to
     '-h' option
     """
     epilog_file_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[5])
@@ -1572,7 +1569,7 @@ def get_epilog_content(id_mode):
 
 def get_fingerprint_headers():
     """
-    Show all the information in the '[3. Fingerprint HTTP Response Headers]'
+    Print all the information in the '[3. Fingerprint HTTP Response Headers]'
     section of the analysis
     """
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
@@ -1586,7 +1583,7 @@ def get_fingerprint_headers():
 
 def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
     """
-    Identify and show, from among all response headers enabled in the URL,
+    Identify and print, from among all response headers enabled in the URL,
     those associated with fingerprint
     """
     f_cnt = 0
@@ -1601,7 +1598,7 @@ def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
 
 def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
     """
-    Show the name, the associated service (according to the
+    Print the name, the associated service (according to the
     /additional/fingerprint.txt file), and the value of the header identified
     as fingerprint
     """
@@ -1620,7 +1617,7 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
 
 
 def get_enabled_headers(args, headers_l, t_enabled):
-    """Show findings in the section '[1. Enabled HTTP Security Headers]"""
+    """Print findings in the section '[1. Enabled HTTP Security Headers]"""
     headers_d = {key.title(): value for key, value in headers_l.items()}
     t_enabled = sorted({header.title() for header in t_enabled})
     enabled_headers = [header for header in t_enabled if header in headers_d]
@@ -1636,7 +1633,7 @@ def get_enabled_headers(args, headers_l, t_enabled):
 
 def print_enabled_headers(args, exp_s, header, headers_d):
     """
-    Show the enabled HTTP response headers considered to be security-related
+    Print the enabled HTTP response headers considered to be security-related
     (according to the additional/security.txt file)
     """
     prefix = STYLE[8] if args.output in ('html', 'pdf') else ''
@@ -1650,7 +1647,7 @@ def print_enabled_headers(args, exp_s, header, headers_d):
 
 def print_nosec_headers(enabled=True):
     """
-    Show a message if no security-related HTTP response headers are enabled
+    Print a message if no security-related HTTP response headers are enabled
     or if none was received
     """
     id_mode = '[no_sec_headers]' if enabled else '[no_enb_headers]'
@@ -1661,7 +1658,7 @@ def print_nosec_headers(enabled=True):
 
 
 def print_missing_headers(args, headers_l, l_detail, l_miss):
-    """Show findings in the section '[2. Missing HTTP Security Headers]'"""
+    """Print findings in the section '[2. Missing HTTP Security Headers]'"""
     m_cnt = 0
     headers_set = set(headers_l)
     l_miss_set = {header.lower() for header in l_miss}
@@ -1677,7 +1674,7 @@ def print_missing_headers(args, headers_l, l_detail, l_miss):
 
 def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
     """
-    Show the missing security-related HTTP response headers (based on those I
+    Print the missing security-related HTTP response headers (based on those I
     consider essential)
     """
     for header, detail in zip(l_miss, l_detail):
@@ -1712,7 +1709,7 @@ def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
 
 def print_empty_headers(headers, l_empty):
     """
-    Show findings in the section '[5. Empty HTTP Response Headers Values]'
+    Print findings in the section '[5. Empty HTTP Response Headers Values]'
     """
     e_cnt = 0
     for key in sorted(headers):
@@ -1725,7 +1722,7 @@ def print_empty_headers(headers, l_empty):
 
 def print_browser_compatibility(compat_headers):
     """
-    Show references in the section '[6. Browser Compatibility for Enabled HTTP
+    Print references in the section '[6. Browser Compatibility for Enabled HTTP
     Security Headers]'
     """
     style_blanks = "  " if args.output == 'html' else " "
@@ -1745,7 +1742,7 @@ def check_input_traversal(user_input):
     if input_traversal_ptrn.search(user_input):
         print(f"\n{get_detail('[args_input_traversal]', replace=True)}\
 : ('{user_input}')")
-        sys.exit()
+        sys.exit(1)
 
 
 def validate_path(output_path):
@@ -1759,7 +1756,7 @@ def validate_path(output_path):
     except OSError as e:
         print(f"\n {get_detail('[args_pathe]', replace=True)} '{output_path}' \
 ({e.strerror})")
-        sys.exit()
+        sys.exit(1)
     else:
         remove(path.join(output_path, HUMBLE_FILES[1]))
 
@@ -1785,7 +1782,7 @@ def validate_file_access(target_path, *, context='history'):
             delete_lines()
             print(f"\n{get_detail('[e_export_analysis]', replace=True)} "
                   f"({err_type}).")
-            sys.exit()
+            sys.exit(1)
     return True, None
 
 
@@ -1802,7 +1799,7 @@ def check_output_path(args, output_path):
     else:
         print(f"\n {get_detail('[args_noexportpath]', replace=True)} \
 ('{output_path}')")
-        sys.exit()
+        sys.exit(1)
 
 
 def parse_user_agent(user_agent=False):
@@ -1818,7 +1815,7 @@ def parse_user_agent(user_agent=False):
 
 def nourl_user_agent(user_agent_id):
     """
-    Show a message if the User-Agent identifier provided is invalid or if the
+    Print a message if the User-Agent identifier provided is invalid or if the
     URL to be analyzed has not been specified
     """
     try:
@@ -1845,18 +1842,17 @@ def get_user_agent(user_agent_id):
         if line.startswith(f"{user_agent_id}.-"):
             return line[4:].strip()
     print_error_detail('[ua_invalid]')
-    sys.exit()
 
 
 def print_user_agents(user_agents):
     """
-    Show available User-Agent identifiers and terminate execution
+    Print available User-Agent identifiers and terminate execution
     """
     print(f"\n{STYLE[0]}{get_detail('[ua_available]', replace=True)}\
 {STYLE[4]}{get_detail('[ua_source]', replace=True)}\n")
     for line in user_agents:
         print(f' {line}')
-    sys.exit()
+    sys.exit(0)
 
 
 def get_insecure_checks():
@@ -1890,7 +1886,7 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
     """
-    Show the HTTP response headers for which it is expressly indicated to skip
+    Print the HTTP response headers for which it is expressly indicated to skip
     their security analysis
     """
     print_detail_l('[analysis_skipped_note]')
@@ -1901,13 +1897,13 @@ def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
 def print_unsupported_headers(unsupported_headers):
     # sourcery skip: use-fstring-for-concatenation
     """
-    Shows unsupported HTTP response headers, for which it has been expressly
+    Print unsupported HTTP response headers, for which it has been expressly
     indicated to skip their security analysis, and terminate execution
     """
     quoted = ", ".join("'" + h + "'" for h in unsupported_headers)
     print(f"\n {get_detail('[args_skipped_unknown]', replace=True)} \
 ({quoted})")
-    sys.exit()
+    sys.exit(1)
 
 
 def check_output_format(args, final_filename, reliable, tmp_filename):
@@ -1936,7 +1932,7 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
 
 def print_cicd_totals(tmp_filename):
     """
-    Show a summary-only JSON analysis, designed for continuous integration and
+    Print a summary-only JSON analysis, designed for continuous integration and
     continuous delivery/deployment, exports it to a txt file and terminate
     execution; related to '-cicd' option
     """
@@ -1953,11 +1949,11 @@ def print_cicd_totals(tmp_filename):
         }
         cicd_output = {cicd_info_t: cicd_info_dict, **cicd_total_lines}
         print(dumps(cicd_output, indent=2, ensure_ascii=False))
-        sys.exit()
+        sys.exit(0)
     except Exception as e:
         print(dumps({get_detail('[cicd_error]', replace=True): str(e)},
                     ensure_ascii=False))
-        sys.exit()
+        sys.exit(1)
 
 
 def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
@@ -1985,7 +1981,7 @@ def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
 
 def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
     """
-    Show the total of findings per section, along with the differences between
+    Print the total of findings per section, along with the differences between
     the current analysis and the last one performed against the URL; designed
     for continuous integration and continuous delivery/deployment
     """
@@ -1998,7 +1994,7 @@ def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
 
 def get_cicd_labels():
     """
-    Show literals related to the analysis designed for continuous integration
+    Print literals related to the analysis designed for continuous integration
     and continuous delivery/deployment
     """
     cidcd_labels = ['[cicd_total]', '[cicd_diff]', '[cicd_info]']
@@ -2037,7 +2033,7 @@ def generate_csv(final_filename, temp_filename, to_xlsx=False):
         generate_xlsx(final_filename, temp_filename)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
-    sys.exit()
+    sys.exit(0)
 
 
 def parse_csv(csv_section, csv_source, csv_writer):
@@ -2071,7 +2067,7 @@ def generate_xlsx(final_filename, temp_filename):
     workbook.close()
     print_export_path(final_filename, reliable)
     remove(temp_filename)
-    sys.exit()
+    sys.exit(0)
 
 
 def set_xlsx_metadata(workbook):
@@ -2170,7 +2166,7 @@ def generate_json(final_filename, temp_filename):
         dump(data, json_file, indent=4, ensure_ascii=False)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
-    sys.exit()
+    sys.exit(0)
 
 
 def parse_json(data, section0, section5, section6, sectionh, txt_sections):
@@ -2246,7 +2242,7 @@ def generate_json_detailed(final_filename, temp_filename):
         dump(data, json_file, indent=4, ensure_ascii=False)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
-    sys.exit()
+    sys.exit(0)
 
 
 def json_detailed_parse(data, txt_sections):
@@ -2299,7 +2295,7 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
 
 def json_detailed_empty(json_lns):
     """
-    Show findings in the section '[5. Empty HTTP Response Headers Values]';
+    Print findings in the section '[5. Empty HTTP Response Headers Values]';
     related to detailed analysis exported to JSON
     """
     desc_key = get_detail('[json_det_empty]', replace=True)
@@ -2316,7 +2312,7 @@ def json_detailed_empty(json_lns):
 
 def json_detailed_info(json_lns):
     """
-    Show findings in the section '[0. Info]'; related to detailed analysis
+    Print findings in the section '[0. Info]'; related to detailed analysis
     exported to JSON
     """
     info = {get_detail('[json_gen]', replace=True): BANNER_VERSION}
@@ -2331,8 +2327,8 @@ def json_detailed_info(json_lns):
 
 def json_detailed_response(json_lns):
     """
-    Show findings in the section '[HTTP Response Headers]'; related to detailed
-    analysis exported to JSON
+    Print findings in the section '[HTTP Response Headers]'; related to
+    detailed analysis exported to JSON
     """
     header_key = get_detail('[json_det_fngheader]', replace=True)
     value_key = get_detail('[json_det_fngval]', replace=True)
@@ -2637,7 +2633,7 @@ def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos):
     pdf.output(final_filename)
     print_export_path(final_filename, reliable)
     remove(tmp_filename)
-    sys.exit()
+    sys.exit(0)
 
 
 def set_pdf_file(pdf):
@@ -2878,7 +2874,7 @@ def export_html_file(final_filename, tmp_filename):
     clean_html_final(final_filename)
     print_export_path(final_filename, reliable)
     remove(tmp_filename)
-    sys.exit()
+    sys.exit(0)
 
 
 def generate_html():
@@ -3156,7 +3152,7 @@ def generate_xml(final_filename, temp_filename):
         xml_final.write(xml_decl + xml_dtd + xml_content)
     print_export_path(final_filename, reliable)
     remove(temp_filename)
-    sys.exit()
+    sys.exit(0)
 
 
 def parse_xml(root, section, stripped_txt):
@@ -3185,7 +3181,7 @@ def add_xml_item(line, section):
 
 
 def print_http_exception(exception_id, exception_v):
-    """Show the exception received during analysis"""
+    """Print the exception received during analysis"""
     delete_lines()
     print("")
     print_detail(exception_id)
@@ -3205,12 +3201,13 @@ def check_ru_scope():
         sff = urlparse(URL).netloc.split(':')[0]
     if sff.split('.')[-1].upper() in {'RU', 'РФ'}:
         print_detail('[ru_check]', 3)
-        sys.exit()
+        sys.exit(1)
 
 
 def check_owasp_compliance(tmp_filename):
     """
-    OWASP Secure Headers Project best practices checks, related to '-c' option
+    'OWASP Secure Headers Project' best practices checks, related to '-c'
+    option
     """
     remove(tmp_filename)
     header_list = []
@@ -3227,7 +3224,7 @@ def check_owasp_compliance(tmp_filename):
 
 def print_owasp_summary(missing, wrong):
     """
-    Format lines for results section; related to OWASP Secure Headers Project
+    Format lines for results section; related to 'OWASP Secure Headers Project'
     best practices analysis
     """
     missing_txt = get_detail('[comp_missing]', replace=True)
@@ -3241,8 +3238,8 @@ def print_owasp_summary(missing, wrong):
 
 def print_owasp_findings(header_dict, header_list):
     """
-    Show formatted lines for results section; related to OWASP Secure Headers
-    Project best practices analysis
+    Print formatted lines for results section; related to 'OWASP Secure
+    Headers Project' best practices analysis
     """
     print(linesep.join([''] * 2))
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
@@ -3262,8 +3259,8 @@ def print_owasp_findings(header_dict, header_list):
 
 def print_owasp_missing(header_list):
     """
-    Show missing recommended headers; related to OWASP Secure Headers Project
-    best practices analysis
+    Print missing recommended headers; related to 'OWASP Secure Headers
+    Project' best practices analysis
     """
     print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
     missing_owasp = [header.title() for header in header_list if header not in
@@ -3279,8 +3276,8 @@ def print_owasp_missing(header_list):
 
 def print_owasp_wrong(header_dict):
     """
-    Show enabled headers with non-compliant values; related to OWASP Secure
-    Headers Project
+    Print enabled headers with non-compliant values; related to 'OWASP Secure
+    Headers Project' best practices analysis
     """
     wrong_owasp = [
         (header.title(), value)
@@ -3300,8 +3297,8 @@ def print_owasp_wrong(header_dict):
 
 def print_owasp_rec(wrong_owasp, header_dict):
     """
-    Show recommended values for enabled headers; related to OWASP Secure
-    Headers Project
+    Print recommended values for enabled headers; related to 'OWASP Secure
+    Headers Project' best practices analysis
     """
     print(f"\n\n{STYLE[0]}{get_detail('[comp_rec_val]')}{STYLE[5]}")
     for header, _ in sorted(wrong_owasp):
@@ -3367,7 +3364,7 @@ def build_tmp_file(export_date, file_ext, lang, humble_str, url):
 
 
 def process_server_error(http_status_code, l10n_id):
-    """Show message for specific server error (5xx) during analysis"""
+    """Print message for specific server error (5xx) during analysis"""
     delete_lines()
     print()
     if http_status_code in CDN_HTTP_CODES:
@@ -3379,7 +3376,7 @@ def process_server_error(http_status_code, l10n_id):
             print(URL_LIST[1])
     else:
         print_error_detail('[server_serror]')
-    sys.exit()
+    sys.exit(1)
 
 
 def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
@@ -3420,14 +3417,14 @@ def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
 
 def process_requests_exception(exception):
     """
-    Show error messages for request timeout and unhandled exceptions during
+    Print error messages for request timeout and unhandled exceptions during
     analysis.
     """
     if isinstance(exception, requests.exceptions.Timeout):
         delete_lines()
         delete_lines()
         print(f"\n{get_detail('[e_timeout]', replace=True)}")
-        sys.exit()
+        sys.exit(1)
     if exception_id := exception_d.get(type(exception)):
         print_http_exception(exception_id, exception)
     else:
@@ -3436,7 +3433,7 @@ def process_requests_exception(exception):
 
 
 def process_http_error(r, exception_d):
-    """Show error messages based on HTTP response code during analysis"""
+    """Print error messages based on HTTP response code during analysis"""
     if r is None:
         return
     try:
@@ -3463,7 +3460,7 @@ def parse_request_headers(request_headers):
         print("")
         quoted = ', '.join(f'"{h}"' for h in malformed_headers)
         print(f"{get_detail('[e_custom_headers]', replace=True)}; {quoted}")
-        sys.exit()
+        sys.exit(1)
     return headers
 
 
@@ -3478,7 +3475,7 @@ def process_request_headers(request_headers):
             delete_lines()
             print("")
             print(f"{get_detail('[e_custom_eheaders]', replace=True)}")
-            sys.exit()
+            sys.exit(1)
         if ":" not in header:
             malformed_headers.append(header)
             continue
@@ -3517,7 +3514,7 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
         delete_lines()
         delete_lines()
         print(f"\n{get_detail('[e_timeout]', replace=True)}")
-        sys.exit()
+        sys.exit(1)
     r = result.get('r')
     exception = result.get('exception')
     return process_http_response(r, exception, status_code, reliable, body)
@@ -3656,16 +3653,13 @@ if '-c' in sys.argv:
 if '-if' in sys.argv:
     if any([args.redirects, args.ret, args.user_agent]):
         print_error_detail('[args_inputfile]')
-        sys.exit()
     elif not args.URL:
         print_error_detail('[args_urlinputfile]')
-        sys.exit()
     else:
         headers, reliable, status_code = analyze_input_file(args.input_file)
 
 if '-H' in sys.argv and not URL:
     print_error_detail('[e_custom_uheaders]')
-    sys.exit()
 
 if '-ua' in sys.argv:
     ua_header = parse_user_agent(user_agent=True)
