@@ -3992,6 +3992,7 @@ l_origcluster = ['?1']
 
 # https://developer.chrome.com/origintrials/
 # https://github.com/MicrosoftEdge/MSEdgeExplainers
+# https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
 # https://privacysandbox.google.com/private-advertising/setup/web/permissions-policy
