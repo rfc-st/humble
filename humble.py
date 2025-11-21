@@ -3563,27 +3563,27 @@ parser = ArgumentParser(formatter_class=custom_help_formatter,
                         description=f"{HUMBLE_DESC} | {URL_LIST[4]} | \
 v.{local_version}", epilog=epilog_content)
 
-parser.add_argument("-a", dest='URL_A', action="store_true", help="Shows \
-statistics of the performed analysis; if the '-u' parameter is ommited they \
+parser.add_argument("-a", dest='URL_A', action="store_true", help="Print \
+statistics of the performed analysis; if the '-u' parameter is omitted they \
 will be global")
-parser.add_argument("-b", dest='brief', action="store_true", help="Shows \
-overall findings; if omitted detailed ones will be shown")
+parser.add_argument("-b", dest='brief', action="store_true", help="Print \
+overall findings; if omitted detailed ones will be printed")
 parser.add_argument("-c", dest='compliance', action="store_true", help="Checks\
  URL response HTTP headers for compliance with OWASP 'Secure Headers Project' \
 best practices")
-parser.add_argument('-cicd', dest="cicd", action="store_true", help="Shows \
+parser.add_argument('-cicd', dest="cicd", action="store_true", help="Print \
 only analysis summary, totals and grade in JSON; suitable for CI/CD")
 parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
  follow redirects; if omitted the last redirection will be the one analyzed")
-parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Show\
-s only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)")
+parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Prin\
+t only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)")
 parser.add_argument("-f", nargs='?', type=str, dest='fingerprint_term', help="\
-Shows fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is \
-omitted the top 20 results will be shown")
-parser.add_argument("-g", dest='guides', action="store_true", help="Shows \
+Print fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is \
+omitted the top 20 results will be printed")
+parser.add_argument("-g", dest='guides', action="store_true", help="Print \
 guidelines for enabling security HTTP response headers on popular frameworks, \
 servers and services")
-parser.add_argument("-grd", dest='grades', action="store_true", help="Shows \
+parser.add_argument("-grd", dest='grades', action="store_true", help="Print \
 the checks to grade an analysis, along with advice for improvement")
 parser.add_argument("-H", dest='request_header', type=str, action="append\
 ", help='Adds REQUEST_HEADER to the request;  must be in double quotes and can\
@@ -3593,8 +3593,8 @@ parser.add_argument("-if", dest='input_file', type=str, help="Analyzes \
  E.g., 'server: nginx'")
 parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
 language for displaying analysis, errors and messages; if omitted, will be \
-shown in English")
-parser.add_argument("-lic", dest='license', action="store_true", help="Shows \
+printed in English")
+parser.add_argument("-lic", dest='license', action="store_true", help="Print \
 the license for 'humble', along with permissions, limitations and conditions")
 parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
                                                   'txt', 'xlsx', 'xml'],
@@ -3609,7 +3609,7 @@ analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of \
 parser.add_argument('-p', dest="proxy", type=str, help="Use a proxy for the \
 analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will \
 be used")
-parser.add_argument("-r", dest='ret', action="store_true", help="Shows HTTP \
+parser.add_argument("-r", dest='ret', action="store_true", help="Print HTTP \
 response headers and a detailed analysis; '-b' parameter will take priority")
 parser.add_argument("-s", dest='skip_headers', nargs='*', type=str, help="S\
 kips 'deprecated/insecure' and 'missing' checks for the indicated \
@@ -3617,7 +3617,7 @@ kips 'deprecated/insecure' and 'missing' checks for the indicated \
 parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
  analyze. E.g., https://google.com or https://google.com:443")
 parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
-from 'additional/user_agents.txt' file to use. '0' will show all and '1' is \
+from 'additional/user_agents.txt' file to use. '0' will print all and '1' is \
 the default")
 parser.add_argument("-v", "--version", action="store_true", help="Checks for \
 updates at https://github.com/rfc-st/humble")

@@ -78,7 +78,7 @@
 :heavy_check_mark: Can use proxies for the analysis.<br />
 :heavy_check_mark: Allows specifying custom HTTP request headers.<br />
 :heavy_check_mark: Can output only analysis summary, totals and grade as JSON for <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" target="_blank">CI/CD<a>.<br />
-:heavy_check_mark: Shows browser support for enabled HTTP security headers, with data from <a href="https://caniuse.com/" target="_blank">Can I use<a>.<br />
+:heavy_check_mark: Print browser support for enabled HTTP security headers, with data from <a href="https://caniuse.com/" target="_blank">Can I use<a>.<br />
 :heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental<a> headers in each analysis.<br />
 :heavy_check_mark: Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.<br />
 :heavy_check_mark: Supports displaying analysis, messages, and most errors in English or Spanish.<br />
@@ -343,51 +343,51 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-10-10
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-11-21
 
 options:
   -h, --help                           show this help message and exit
-  -a                                   Shows statistics of the performed analysis; if the '-u' parameter is ommited they will be global
-  -b                                   Shows overall findings; if omitted detailed ones will be shown
+  -a                                   Print statistics of the performed analysis; if the '-u' parameter is omitted they will be global
+  -b                                   Print overall findings; if omitted detailed ones will be printed
   -c                                   Checks URL response HTTP headers for compliance with OWASP 'Secure Headers Project' best practices
-  -cicd                                Shows only analysis summary, totals and grade in JSON; suitable for CI/CD
+  -cicd                                Print only analysis summary, totals and grade in JSON; suitable for CI/CD
   -df                                  Do not follow redirects; if omitted the last redirection will be the one analyzed
-  -e [TESTSSL_PATH]                    Shows only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
-  -f [FINGERPRINT_TERM]                Shows fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 results will be shown
-  -g                                   Shows guidelines for enabling security HTTP response headers on popular frameworks, servers and services
-  -grd                                 Shows the checks to grade an analysis, along with advice for improvement
+  -e [TESTSSL_PATH]                    Print only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
+  -f [FINGERPRINT_TERM]                Print fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 results will be printed
+  -g                                   Print guidelines for enabling security HTTP response headers on popular frameworks, servers and services
+  -grd                                 Print the checks to grade an analysis, along with advice for improvement
   -H REQUEST_HEADER                    Adds REQUEST_HEADER to the request; must be in double quotes and can be used multiple times, e.g. -H "Host: example.com"
   -if INPUT_FILE                       Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g., 'server: nginx'
-  -l {es}                              Defines the language for displaying analysis, errors and messages; if omitted, will be shown in English
-  -lic                                 Shows the license for 'humble', along with permissions, limitations and conditions
+  -l {es}                              Defines the language for displaying analysis, errors and messages; if omitted, will be printed in English
+  -lic                                 Print the license for 'humble', along with permissions, limitations and conditions
   -o {csv,html,json,pdf,txt,xlsx,xml}  Exports analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file
   -of OUTPUT_FILE                      Exports analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter '-o' will be used
   -op OUTPUT_PATH                      Exports analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of 'humble.py' will be used
   -p PROXY                             Use a proxy for the analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will be used
-  -r                                   Shows HTTP response headers and a detailed analysis; '-b' parameter will take priority
+  -r                                   Print HTTP response headers and a detailed analysis; '-b' parameter will take priority
   -s [SKIP_HEADERS ...]                Skips 'deprecated/insecure' and 'missing' checks for the indicated 'SKIP_HEADERS' (separated by spaces)
   -u URL                               Scheme, host and port to analyze. E.g., https://google.com or https://google.com:443
-  -ua USER_AGENT                       User-Agent ID from 'additional/user_agents.txt' file to use. '0' will show all and '1' is the default
+  -ua USER_AGENT                       User-Agent ID from 'additional/user_agents.txt' file to use. '0' will print all and '1' is the default
   -v, --version                        Checks for updates at https://github.com/rfc-st/humble
 
 examples:
-  -u URL -a                            Shows statistics of the analysis performed against the URL
-  -u URL -b                            Analyzes the URL and reports overall findings
+  -u URL -a                            Print statistics of the analysis performed against the URL
+  -u URL -b                            Analyzes the URL and prints overall findings
   -u URL -b -o csv                     Analyzes the URL and exports overall findings to CSV format
-  -u URL -l es                         Analyzes the URL and reports (in Spanish) detailed findings
+  -u URL -l es                         Analyzes the URL and prints (in Spanish) detailed findings
   -u URL -o pdf                        Analyzes the URL and exports detailed findings to PDF format
   -u URL -o html -of test              Analyzes the URL and exports detailed findings to HTML format and 'test' filename
   -u URL -o pdf -op D:/Tests           Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
   -u URL -p http://127.0.0.1:8080      Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
-  -u URL -r                            Analyzes the URL and reports detailed findings along with HTTP response headers
+  -u URL -r                            Analyzes the URL and prints detailed findings along with HTTP response headers
   -u URL -s ETag NEL                   Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
   -u URL -ua 4                         Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
-  -a -l es                             Shows statistics (in Spanish) of the analysis performed against all URLs
-  -f Google                            Shows HTTP fingerprint headers related to the term 'Google'
+  -a -l es                             Print statistics (in Spanish) of the analysis performed against all URLs
+  -f Google                            Print HTTP fingerprint headers related to the term 'Google'
 
 want to contribute?:
   How to                               https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
-  Code of Conduct                      https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md
+  References (classes and functions)   https://humble.readthedocs.io/en/latest/reference.html
   Acknowledgements                     https://github.com/rfc-st/humble/#acknowledgements
 ```
 

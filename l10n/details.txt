@@ -1913,23 +1913,23 @@ Grade
 
 [epilog_content]
 examples:
-  -u URL -a                            Shows statistics of the analysis performed against the URL
-  -u URL -b                            Analyzes the URL and reports overall findings
+  -u URL -a                            Print statistics of the analysis performed against the URL
+  -u URL -b                            Analyzes the URL and prints overall findings
   -u URL -b -o csv                     Analyzes the URL and exports overall findings to CSV format
-  -u URL -l es                         Analyzes the URL and reports (in Spanish) detailed findings
+  -u URL -l es                         Analyzes the URL and prints (in Spanish) detailed findings
   -u URL -o pdf                        Analyzes the URL and exports detailed findings to PDF format
   -u URL -o html -of test              Analyzes the URL and exports detailed findings to HTML format and 'test' filename
   -u URL -o pdf -op D:/Tests           Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
   -u URL -p http://127.0.0.1:8080      Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
-  -u URL -r                            Analyzes the URL and reports detailed findings along with HTTP response headers
+  -u URL -r                            Analyzes the URL and prints detailed findings along with HTTP response headers
   -u URL -s ETag NEL                   Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
   -u URL -ua 4                         Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
-  -a -l es                             Shows statistics (in Spanish) of the analysis performed against all URLs
-  -f Google                            Shows HTTP fingerprint headers related to the term 'Google'
+  -a -l es                             Print statistics (in Spanish) of the analysis performed against all URLs
+  -f Google                            Print HTTP fingerprint headers related to the term 'Google'
 
 want to contribute?:
   How to                               https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
-  Code of Conduct                      https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md
+  References (classes and functions)   https://humble.readthedocs.io/en/latest/reference.html
   Acknowledgements                     https://github.com/rfc-st/humble/#acknowledgements
 
 [fng_value]
