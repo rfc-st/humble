@@ -183,13 +183,18 @@ BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
     """
-    Custom SSL adapter that disables certificate verification to facilitate
-    analysis
+    Custom SSL adapter that disables certain checks to allow a URL to be
+    analyzed
 
     ??? note
-        I have chosen to disable these checks to allow the analysis of URLs in
-        certain cases (E.g., development environments, hosts with outdated
-        servers/software, self-signed certificates, etc.).
+        I have disabled the following checks to allow the analysis of URLs in
+        certain cases (e.g., development environments, hosts with outdated
+        servers/software or self-signed certificates) and because they exceed
+        the scope of this tool:
+
+        - Certificate Verification
+        - Hostname Verification
+        - Certificate Requirement
     """
     def init_poolmanager(self, *args, **kwargs):
         context = ssl._create_unverified_context()
@@ -3411,9 +3416,14 @@ def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
     facilitate analysis
 
     ??? note
-        I have chosen to disable these checks to allow the analysis of URLs in
-        certain cases (E.g., development environments, hosts with outdated
-        servers/software, self-signed certificates, etc.).
+        I have disabled the following checks to allow the analysis of URLs in
+        certain cases (e.g., development environments, hosts with outdated
+        servers/software or self-signed certificates) and because they exceed
+        the scope of this tool:
+
+        - Certificate Verification
+        - Hostname Verification
+        - Certificate Requirement
 
         If '-df' parameter is provided ('args.redirects') the exact URL will
         be analyzed; otherwise the last redirected URL will be analyzed.
