@@ -25,26 +25,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Notes on some Sourcery checks:
-# https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery
-#
-# To maintain compatibility with the minimum required Python version for
-# 'humble' (especially regarding f-strings), and because some of Sourcery’s
-# checks (in my opinion) offer little benefit, certain ones are explicitly
-# ignored using inline comments.
-
-# Advice:
-# Use the information provided by 'humble' wisely. There is *far* more merit in
-# helping others, learning and teaching than in attacking, harming or taking
-# advantage. Do not just be a 'Script kiddie': if this really interests you
-# learn, research and become a Security Analyst!.
-
-# Greetings!:
-# Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3), David (x3), Eduardo,
-# Eloy, Fernando, Gabriel, Íñigo, Joanna, Juan Carlos, Juán, Julián, Julio,
-# Iván, Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Angel,
-# Montse, Naiara, Pablo, Sergio, Ricardo & Rubén!.
-
 # Standard Library imports
 import re
 import ssl
@@ -94,7 +74,6 @@ DTD_CONTENT = '''<!ELEMENT analysis (section+)>
 <!ELEMENT item (#PCDATA)>
 <!ATTLIST item name CDATA #IMPLIED>
 '''
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'nel', 'no-vary-search', 'observe-browsing-topics',
                'permissions-policy', 'speculation-rules',
@@ -185,7 +164,6 @@ STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          f"(humble_sec_style){Fore.GREEN}", '(humble_sec_style)',
          f"{Style.RESET_ALL}{Fore.RESET}", Fore.GREEN)
 TESTSSL_FILE = ("testssl", "testssl.sh")
-# Check https://testssl.sh/doc/testssl.1.html to choose your preferred options
 TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
 URL_LIST = (': https://caniuse.com/?search=', ' Ref  : https://developers.\
 cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
@@ -197,7 +175,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-11-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-11-22', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -403,6 +381,20 @@ def testssl_command(testssl_temp_path, uri):
     """
     Prepare the TLS/SSL analysis and terminates execution based on user
     compliance, related to '-e' option
+
+    ??? tip
+        The options to be used in the analyses are defined in the
+        TESTSSL_OPTIONS constant:<br>
+
+        - -f: checks robust forward secrecy key exchange
+        - -g: checks several server implementation bug
+        - -p: checks TLS/SSL protocols
+        - -U: tests all vulnerabilities, like Heartbleed, ROBOT and sweet32
+        - -s: tests lists of cipher suites/categories by strength
+        - --hints: (available in the future) give hints how to fix a finding
+
+        Check the testssl.sh <a href="https://testssl.sh/doc/testssl.1.html"
+        target="_blank">documentation</a> for a list of all available options.
     """
     testssl_temp_path = path.abspath(testssl_temp_path)
     if not path.isdir(testssl_temp_path):
@@ -794,10 +786,10 @@ def calculate_trends(values):
         <br>
         Trend values:<br>
 
-        - Stable: all five totals are identical.
-        - Improving: totals consistently decrease.
-        - Worsening: totals consistently increase.
-        - Fluctuating: No clear trend is detected; totals alternate.
+        - Stable: all five totals are identical
+        - Improving: totals consistently decrease
+        - Worsening: totals consistently increase
+        - Fluctuating: No clear trend is detected; totals alternate
     """
     if len(values) < 5:
         return print_detail_l('[t_insufficient]', analytics=True)
@@ -1617,7 +1609,18 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
 
 
 def get_enabled_headers(args, headers_l, t_enabled):
-    """Print findings in the section '[1. Enabled HTTP Security Headers]"""
+    """
+    Print findings in the section '[1. Enabled HTTP Security Headers],
+    highlighting some experimental HTTP headers
+
+    ??? note
+        The highlighted <a href="https://developer.mozilla.org/en-US/docs/
+        MDN/Writing_guidelines/Experimental_deprecated_obsolete"
+        target=blank">experimental</a> headers are defined in the EXP_HEADERS
+        constant and correspond to some of those indicated in the MDN <a href="
+        https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers"
+        target="_blank">list</a> of HTTP headers.
+    """
     headers_d = {key.title(): value for key, value in headers_l.items()}
     t_enabled = sorted({header.title() for header in t_enabled})
     enabled_headers = [header for header in t_enabled if header in headers_d]
@@ -1676,6 +1679,14 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
     """
     Print the missing security-related HTTP response headers (based on those I
     consider essential)
+
+    ??? note
+        The highlighted <a href="https://developer.mozilla.org/en-US/docs/
+        MDN/Writing_guidelines/Experimental_deprecated_obsolete"
+        target=blank">experimental</a> headers are defined in the EXP_HEADERS
+        constant and correspond to some of those indicated in the MDN <a href="
+        https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers"
+        target="_blank">list</a> of HTTP headers.
     """
     for header, detail in zip(l_miss, l_detail):
         lower_header = header.lower()
@@ -2058,7 +2069,7 @@ def generate_xlsx(final_filename, temp_filename):
 
     ??? tip
         xlsxwriter is lazy-loaded to avoid unnecessary overhead when XLSX
-        export is not used
+        export is not used.
     """
     from xlsxwriter import Workbook
     workbook = Workbook(final_filename, {'in_memory': True})
@@ -2581,7 +2592,7 @@ def export_pdf_file(tmp_filename):
 
     ??? tip
         fpdf2 is lazy-loaded to avoid unnecessary overhead when PDF export is
-        not used
+        not used.
     """
     from fpdf import FPDF, YPos as ypos  # type: ignore
 
@@ -3350,7 +3361,7 @@ def build_tmp_file(export_date, file_ext, lang, humble_str, url):
 
     ??? tip
         tldextract is lazy-loaded to avoid unnecessary overhead when the
-        analysis is not exported
+        analysis is not exported.
     """
     import tldextract
     url_str = tldextract.extract(URL)

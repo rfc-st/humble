@@ -1,23 +1,25 @@
 # humble.py
-Welcome to **humble.py** documentation!
+Welcome to **humble.py** documentation!.
 
 ## What is *humble.py*?
 
-It is a humble, and **fast**, security-oriented HTTP headers analyzer.
+It is a humble, and **fast**, security-oriented HTTP response headers analyzer.
 
-It is the result of many weekends over the years, filled with excitement: programming, studying, reviewing, and reading standards, regulations, exploits, bypasses, articles, and blogs on related HTTP response headers and their security.
+It is the result of many weekends spent coding, studying, and researching standards, regulations, exploits, bypasses, and countless articles about HTTP response header security.
 
-It started as a small personal project, with no intention of becoming important. Over time, it was accepted into [Kali Linux](https://pkg.kali.org/pkg/humble), has been referenced in blogs and social media, and has been used as a basis and reference for final degree projects.
+It started as a small personal project, with no intention of becoming important. Over time, it was accepted into [Kali Linux](https://pkg.kali.org/pkg/humble), has been referenced in blogs and social media and has been used as a basis and reference for final degree projects.
 
 Requires Python [3.11](https://www.python.org/downloads/release/python-3110/) or higher along with a few [dependencies](https://github.com/rfc-st/humble/blob/master/requirements.txt).
 
 ## What does it offer?
 
-I sincerely believe that HTTP response headers are often overlooked in security audits: after several years working in cybersecurity I believe that proper header configuration can prevent serious vulnerabilities and save headaches in the long run.
+In my experience, HTTP response headers are consistently overlooked in security audits. Yet after several years in cybersecurity, I've seen firsthand how proper header configuration can prevent serious vulnerabilities and avoid problems before they escalate.
 
-*humble* provides a quick, direct, and honest way to identify deficiencies in your security header configuration and hundreds of technical references and best practices.
+humble.py delivers quick, honest security analysis of HTTP response headers, identifying configuration deficiencies while providing actionable technical references and best practices.
 
 You have nothing to lose by trying it; are you up for it? :).
+
+And, if I may, a word of advice: use the information provided by this tool wisely. I believe there is *far* more merit in helping others, learning and teaching than in attacking, harming or taking advantage. Please, do not just be a [Script kiddie](https://en.wikipedia.org/wiki/Script_kiddie): if this really interests you learn, research and become a Security Analyst!.
 
 ## Who Made It?
 
@@ -51,11 +53,6 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on [LinkedIn](https://ww
 - Almost all the code available under MIT license.
 - And more!.
 
-## Why does it have so many functions?
-Because I try to ensure that each specific feature has its own function. And because I try to ensure that all of them achieve at least a 64% [Quality Score](https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md#contributing) in Sourcery's analysis.
-
-Of course, the code can be improved, but I feel comfortable with that threshold.
-
 ## How can I test it?
 Start by taking a look at its [repository](https://github.com/rfc-st/humble/).
 
@@ -63,4 +60,16 @@ And the available [documentation](reference.md) on its classes and functions (Wo
 
 After that, I advise that you try it out to see if you can use it in your [environment](https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests).
 
-**Thank you** in advance :); I hope you find *humble* useful!.
+**Thank you** in advance; I hope you find humble.py useful!.
+
+## Notes
+
+About [Sourcery](https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery) checks:
+
+To maintain compatibility with the minimum required Python version for this tool (particularly with respect to f-strings), and because I consider some of Sourcery’s checks offer little benefit, certain ones are explicitly ignored through inline comments.
+
+## Last but not least
+
+For those who maintain some essential tools for developing and testing humble.py, and to everyone who has contributed ideas, suggestions, or reported bugs: [thank you](https://github.com/rfc-st/humble/?tab=readme-ov-file#acknowledgements)!.
+
+And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3), David (x3), Eduardo, Eloy, Fernando, Gabriel, Íñigo, Joanna, Juan Carlos, Juán, Julián, Julio, Iván, Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Ángel (x2), Montse, Naiara, Pablo, Sergio, Ricardo, and Rubén!.
