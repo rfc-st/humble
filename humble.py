@@ -2,6 +2,7 @@
 
 # 'humble' (HTTP Headers Analyzer)
 # https://github.com/rfc-st/humble/
+# https://humble.readthedocs.io/
 #
 # MIT License
 #
@@ -1563,6 +1564,9 @@ def get_fingerprint_headers():
     """
     Print all the information in the '[3. Fingerprint HTTP Response Headers]'
     section of the analysis
+
+    ??? note
+        The file associated with this check is /additional/fingerprint.txt.
     """
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
@@ -1614,6 +1618,8 @@ def get_enabled_headers(args, headers_l, t_enabled):
     highlighting some experimental HTTP headers
 
     ??? note
+        The file associated with this check is /additional/security.txt.
+
         The highlighted <a href="https://developer.mozilla.org/en-US/docs/
         MDN/Writing_guidelines/Experimental_deprecated_obsolete"
         target=blank">experimental</a> headers are defined in the EXP_HEADERS
@@ -1661,7 +1667,12 @@ def print_nosec_headers(enabled=True):
 
 
 def print_missing_headers(args, headers_l, l_detail, l_miss):
-    """Print findings in the section '[2. Missing HTTP Security Headers]'"""
+    """
+    Print findings in the section '[2. Missing HTTP Security Headers]'
+
+    ??? note
+        The file associated with this check is /additional/missing.txt.
+    """
     m_cnt = 0
     headers_set = set(headers_l)
     l_miss_set = {header.lower() for header in l_miss}
@@ -1735,6 +1746,10 @@ def print_browser_compatibility(compat_headers):
     """
     Print references in the section '[6. Browser Compatibility for Enabled HTTP
     Security Headers]'
+
+    ??? note
+        References provided by <a href="https://caniuse.com/" target="_blank">
+        Can I use</a>.
     """
     style_blanks = "  " if args.output == 'html' else " "
     for key in compat_headers:
@@ -3541,7 +3556,7 @@ def process_http_response(r, exception, status_code, reliable, body):
 
         - <a href="https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/" target="_blank">Exceptions in the HTTP library 'requests' </a>
         - <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors" target="_blank">Generic HTTP 5xx errors</a>
-        - <a href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/" target="_blank">Cloudflare's 5xx HTTP errors</a>
+        - <a href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/" target="_blank">Cloudflare 5xx HTTP errors</a>
         - <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type" target="_blank">MDN docs regarding HTML <meta> and content-type</a>
     """  # noqa: E501
     if exception:
@@ -3785,7 +3800,6 @@ print_general_info(reliable, export_filename)
 print_response_headers() if args.ret else print(linesep.join([''] * 2))
 
 # Section '1. Enabled HTTP Security Headers'
-# Checks: /additional/security.txt
 print_detail_r('[1enabled]')
 
 with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[17]), 'r',
@@ -3795,7 +3809,6 @@ with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[17]), 'r',
 en_cnt = get_enabled_headers(args, headers_l, t_ena)
 
 # Section '2. Missing HTTP Security Headers'
-# Checks: /additional/missing.txt
 print_detail_r('[2missing]')
 
 l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
@@ -3818,7 +3831,6 @@ if m_cnt == 0:
 print("")
 
 # Section '3. Fingerprint HTTP Response Headers'
-# Checks: /additional/fingerprint.txt
 print_detail_r('[3fingerprint]')
 
 if not args.brief:
@@ -3834,7 +3846,7 @@ if f_cnt == 0:
 print("")
 
 # Section '4. Deprecated HTTP Response Headers/Protocols and Insecure Values'
-# Checks: /additional/insecure.txt
+# The file associated with this check is /additional/insecure.txt
 print_detail_r('[4depinsecure]')
 i_cnt = [0]
 
@@ -4638,7 +4650,6 @@ print("") if e_cnt != 0 else print_nowarnings()
 print("")
 
 # Section '6. Browser Compatibility for Enabled HTTP Security Headers'
-# Ref: https://caniuse.com/
 print_detail_r('[6compat]')
 
 t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Headers',
