@@ -19,7 +19,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Reference: reference.md
+  - References: references.md
 
 plugins:
   - mkdocstrings:

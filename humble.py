@@ -176,7 +176,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-11-22', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-11-28', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -3412,7 +3412,7 @@ def process_server_error(http_status_code, l10n_id):
 
 def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
     """
-    Make the request to the provided URL, disabling certificate verification to
+    Make the request to the provided URL, disabling certain checks to
     facilitate analysis
 
     ??? note
@@ -3997,7 +3997,7 @@ t_excc = ('max-age', 's-maxage')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy-Report-Only
-t_ipol = ('blocked-destinations', 'endpoints')
+t_ipol = ('blocked-destinations', 'endpoints', 'sources')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
 # https://cyberwhite.co.uk/http-verbs-and-their-security-risks/
