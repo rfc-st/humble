@@ -438,7 +438,19 @@ Open the index.html file in a browser.
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_code_coverage.PNG" alt="(Linux) - Code coverage">
 
 > [!NOTE]
-> _After reviewing the code coverage, you can delete all files and folders from the *tests* directory except for the *.coveragerc* and *test_basic.py* files.
+> After reviewing the code coverage, you can delete all files and folders from the *tests* directory except for the *.coveragerc* and *test_basic.py* files.
+
+> [!TIP]
+> pytest parameters:
+>
+> - -cov-config=.coveragerc: Specifies the coverage configuration file
+> - --cov=..: Specifies what code to measure coverage for
+> - --cov-report=html: Defines the coverage report format
+> - --tb=no: Does not show tracebacks for failed tests
+> - -rA: Show all extra test summary info
+> - -q: Quiet mode (during the analysis)
+> - -v: Verbose mode (after the analysis)
+> - -W ignore: Ignore all warnings during test execution
 
 ## Checks: enabled headers
 
