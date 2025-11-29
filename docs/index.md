@@ -13,7 +13,7 @@ Requires Python <a href="https://www.python.org/downloads/" target="_blank">3.11
 ## What does it offer?
 In my experience, HTTP response headers are consistently overlooked in security audits. Yet after several years in cybersecurity, I've seen firsthand how proper header configuration can prevent serious vulnerabilities and avoid problems before they escalate.
 
-humble.py delivers quick, honest security analysis of HTTP response headers, identifying configuration deficiencies while providing actionable technical references and best practices.
+**humble.py** delivers quick, honest security analysis of HTTP response headers, identifying configuration deficiencies while providing actionable technical references and best practices.
 
 You have nothing to lose by trying it; are you up for it? :).
 
@@ -52,11 +52,11 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 ## How can I test it?
 Start by taking a look at its <a href="https://github.com/rfc-st/humble/" target="_blank">repository</a>.
 
-And the available <a href="https://humble.readthedocs.io/en/latest/reference.html" target="_blank">documentation</a> on its classes and functions (Work in progress).
+And the available <a href="https://humble.readthedocs.io/en/latest/references.html" target="_blank">documentation</a> on its classes and functions (Work in progress).
 
 After that, I advise that you try it out to see if you can use it in your <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" target="_blank">environment</a>.
 
-**Thank you** in advance; I hope you find humble.py useful!.
+**Thank you** in advance; I hope you find **humble.py** useful!.
 
 ## Notes
 About <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> checks:
@@ -64,6 +64,6 @@ About <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sour
 To maintain compatibility with the minimum required Python version for this tool (particularly with respect to f-strings), and because I consider some of Sourcery’s checks offer little benefit, certain ones are explicitly ignored through inline comments.
 
 ## Last but not least
-For those who maintain some essential tools for developing and testing humble.py, and to everyone who has contributed ideas, suggestions, or reported bugs: <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#acknowledgements" target="_blank">thank you</a>!.
+For those who maintain some essential tools for developing and testing **humble.py**, and to everyone who has contributed ideas, suggestions, or reported bugs: <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#acknowledgements" target="_blank">thank you</a>!.
 
 And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3), David (x3), Eduardo, Eloy, Fernando, Gabriel, Íñigo, Joanna, Juan Carlos, Juán, Julián, Julio, Iván, Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Ángel (x2), Montse, Naiara, Pablo, Sergio, Ricardo, and Rubén!.
