@@ -426,7 +426,7 @@ $ python3 basic_tests.py -u <URL>
 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_basic_tests_ok.PNG" alt="(Linux) - All tests passed successfully">
 
-.: (Linux) - Code coverage.<br />
+.: (Linux) - Code coverage (for now, it only works on Linux).<br />
 ```
 $ cd <humble dir>
 $ cd tests
