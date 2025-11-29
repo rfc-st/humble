@@ -15,7 +15,7 @@ PYTEST_CACHE_DIRS = [
     path.join(HUMBLE_TESTS_DIR, d)
     for d in ['__pycache__', '.pytest_cache']
 ]
-HUMBLE_DESC = "Unit tests for 'humble' (HTTP Headers Analyzer)"
+HUMBLE_DESC = "Basic unit tests for 'humble' (HTTP Headers Analyzer)"
 HUMBLE_GIT = 'https://github.com/rfc-st/humble'
 HUMBLE_PROJECT_ROOT = path.abspath(path.join(HUMBLE_TESTS_DIR, '..'))
 HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
@@ -47,6 +47,12 @@ TEST_SUMMS = ('[test_help]', '[test_brief]', '[test_cicd]', '[test_detailed]',
               '[test_export]', '[test_fingerprint_stats]', '[test_input_file]',
               '[test_l10n]', '[test_skipped_headers]', '[test_updates]',
               '[test_user_agent]', '[test_python]')
+URL_TEST = 'https://google.com'
+
+
+class _Args:
+    URL = INPUT_FILE_URL
+    lang = None
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -70,9 +76,12 @@ def print_error_detail(id_mode):
 
 
 def get_l10n_content():
-    l10n_path = path.join(HUMBLE_TESTS_DIR, HUMBLE_L10N_DIR,
-                          HUMBLE_L10N_FILE[1] if args.lang == 'es' else
-                          HUMBLE_L10N_FILE[0])
+    if args.lang == 'en':
+        l10n_file = HUMBLE_L10N_FILE[0]
+    elif args.lang == 'es':
+        l10n_file = HUMBLE_L10N_FILE[1]
+
+    l10n_path = path.join(HUMBLE_TESTS_DIR, HUMBLE_L10N_DIR, l10n_file)
     with open(l10n_path, 'r', encoding='utf8') as l10n_content:
         return l10n_content.readlines()
 
@@ -87,7 +96,7 @@ def print_results():
 
 
 def run_test(args, expected_text, timeout=5):
-    test_args = [url_test if a is None else a for a in args]
+    test_args = [URL_TEST if a is None else a for a in args]
     try:
         result = subprocess.run(
             [sys.executable, HUMBLE_MAIN_FILE] + test_args,
@@ -190,7 +199,7 @@ def delete_temps():
     info_msgs = [
         (get_detail('[test_tests]', replace=True), current_time),
         (get_detail('[test_input]', replace=True), INPUT_FILE_URL),
-        (get_detail('[test_remaining]', replace=True), url_test)
+        (get_detail('[test_remaining]', replace=True), URL_TEST)
     ]
     info_msgs.extend(delete_humble_analysis(HUMBLE_TEMP_FILE))
     info_msgs.extend(delete_txt_file())
@@ -210,7 +219,7 @@ def delete_temps():
         print(f"[INFO] {message.ljust(max_len + 2)}: {value}")
 
 
-local_version = datetime.strptime('2025-11-28', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-11-29', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
@@ -220,22 +229,14 @@ parser = ArgumentParser(
     )
 )
 
-parser.add_argument('-u', type=str, dest='URL',
-                    help="Scheme, host and port to use in the tests. E.g., \
-https://google.com")
-parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
-language for displaying errors and messages; if omitted, will be shown in \
-English")
+parser.add_argument("-l", dest='lang', choices=['en', 'es'], help="Defines the\
+ language for displaying errors and messages")
 
-args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
-url_test = args.URL
-
-if args.lang and not args.URL:
-    print_error_detail('[test_elang]')
-
-l10n_main = get_l10n_content()
+args = _Args()
 
 if __name__ == "__main__":
+    args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+    l10n_main = get_l10n_content()
     code = pytest.main([__file__, "--tb=no", "-rA", "-q", "-v"])
     print_results()
     delete_temps()

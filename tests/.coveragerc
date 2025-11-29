@@ -1,0 +1,9 @@
+[run]
+omit =
+    */tests/*
+    */test_*.py
+disable_warnings = no-data-collected
+
+[report]
+skip_covered = True
+show_missing = False

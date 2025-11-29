@@ -1,6 +1,7 @@
 colorama>=0.4.6
 fpdf2>=2.7.7
 pytest>=8.4.1
+pytest-cov>=6.2.1
 requests>=2.32.3
 tldextract>=3.4.1
 xlsxwriter>=3.2.5

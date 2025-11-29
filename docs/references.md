@@ -1,5 +1,5 @@
 # References
 
-Class and function descriptions, listed in the order they appear in **humble.py**
+Classes and functions of **humble.py**, in alphabetical order
 
 ::: humble
