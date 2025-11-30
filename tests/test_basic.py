@@ -27,27 +27,41 @@ HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
 INPUT_FILE_URL = "https://github.com"
 REQUIRED_PYTHON = (3, 11)
+TEST_URL = 'https://google.com'
 TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
-    'test_brief': (['-u', None, '-b'], 'Analysis Grade:'),
-    'test_cicd': (['-u', None, '-cicd'], 'Analysis Grade'),
-    'test_detailed': (['-u', None], 'Analysis Grade:'),
-    'test_export': (['-u', None, '-o', 'html'], 'HTML saved'),
-    'test_fingerprint_stats': (['-f', 'Google'], 'Headers related to'),
+    'test_brief': (['-u', TEST_URL, '-b'], 'Analysis Grade:'),
+    'test_cicd': (['-u', TEST_URL, '-cicd'], 'Analysis Grade'),
+    'test_detailed': (['-u', TEST_URL], 'Analysis Grade:'),
+    'test_export_csv': (['-u', TEST_URL, '-o', 'csv'], 'CSV saved'),
+    'test_export_html': (['-u', TEST_URL, '-o', 'html'], 'HTML saved'),
+    'test_export_json': (['-u', TEST_URL, '-o', 'json'], 'JSON saved'),
+    'test_export_json_brief': (['-u', TEST_URL, '-o', 'json', '-b'],
+                               'JSON saved'),
+    'test_export_pdf': (['-u', TEST_URL, '-o', 'pdf'], 'PDF saved'),
+    'test_export_xlsx': (['-u', TEST_URL, '-o', 'xlsx'], 'XLSX saved'),
+    'test_export_xml': (['-u', TEST_URL, '-o', 'xml'], 'XML saved'),
+    'test_fingerprint_groups': (['-f'], 'Top 20 groups'),
+    'test_fingerprint_term': (['-f', 'Google'], 'Headers related to'),
     'test_input_file': (['-if', HUMBLE_INPUT_FILE, '-u', HUMBLE_INPUT_URL],
                         'Input:'),
-    'test_l10n': (['-u', None, '-l', 'es'], 'Advertencias a revisar'),
-    'test_response_headers': (['-u', None, '-r'], 'HTTP Response Headers'),
-    'test_skipped_headers': (['-u', None, '-s', 'ETAG', 'NEL'],
+    'test_l10n': (['-u', TEST_URL, '-l', 'es'], 'Advertencias a revisar'),
+    'test_l10n_file': (['-grd', '-l', 'es'], 'No te obsesiones'),
+    'test_response_headers': (['-u', TEST_URL, '-r'], 'HTTP Response Headers'),
+    'test_skipped_headers': (['-u', TEST_URL, '-s', 'ETAG', 'NEL'],
                              'expressly excluded'),
     'test_updates': (['-v'], 'Keeping your security tools'),
-    'test_user_agent': (['-u', None, '-ua', '4'], 'Selected the User-Agent'),
+    'test_user_agent': (['-u', TEST_URL, '-ua', '4'],
+                        'Selected the User-Agent'),
+    'test_user_agent_list': (['-ua', '0'], 'source: '),
 }
 TEST_SUMMS = ('[test_help]', '[test_brief]', '[test_cicd]', '[test_detailed]',
-              '[test_export]', '[test_fingerprint_stats]', '[test_input_file]',
-              '[test_l10n]', '[test_skipped_headers]', '[test_updates]',
-              '[test_user_agent]', '[test_python]')
-URL_TEST = 'https://google.com'
+              '[test_export_csv]', '[test_export_html]', '[test_export_json]',
+              '[test_export_json_brief]', '[test_export_pdf]',
+              '[test_export_xlsx]', '[test_export_xml]', '[test_fng_groups]',
+              '[test_fng_term]', '[test_input_file]', '[test_l10n]',
+              '[test_l10n_file]', '[test_skipped_headers]', '[test_updates]',
+              '[test_user_agent]', '[test_user_agent_list]', '[test_python]')
 
 
 class _Args:
@@ -96,7 +110,7 @@ def print_results():
 
 
 def run_test(args, expected_text, timeout=5):
-    test_args = [URL_TEST if a is None else a for a in args]
+    test_args = [TEST_URL if a is None else a for a in args]
     try:
         result = subprocess.run(
             [sys.executable, HUMBLE_MAIN_FILE] + test_args,
@@ -150,35 +164,20 @@ def delete_humble_analysis(file_path):
     return msgs
 
 
-def delete_txt_file():
+def delete_export_files(extension, ok_msg, ko_msg):
     msgs = []
     with contextlib.suppress(Exception):
         file = next(
-            f for f in listdir(HUMBLE_TESTS_DIR) if f.lower().endswith('.txt')
+            f for f in listdir(HUMBLE_TESTS_DIR)
+            if f.lower().endswith(extension)
         )
-        txt_file = path.join(HUMBLE_TESTS_DIR, file)
+        export_file = path.join(HUMBLE_TESTS_DIR, file)
         try:
-            remove(txt_file)
-            msgs.append((get_detail('[test_txt]', replace=True), txt_file))
+            remove(export_file)
+            msgs.append((get_detail(ok_msg, replace=True), export_file))
         except Exception as e:
-            msgs.append((get_detail('[test_ftxt]', replace=True),
-                         f"({type(e).__name__}) {txt_file}"))
-    return msgs
-
-
-def delete_html_file():
-    msgs = []
-    with contextlib.suppress(Exception):
-        file = next(
-            f for f in listdir(HUMBLE_TESTS_DIR) if f.lower().endswith('.html')
-        )
-        html_file = path.join(HUMBLE_TESTS_DIR, file)
-        try:
-            remove(html_file)
-            msgs.append((get_detail('[test_html]', replace=True), html_file))
-        except Exception as e:
-            msgs.append((get_detail('[test_fhtml]', replace=True),
-                         f"({type(e).__name__}) {html_file}"))
+            msgs.append((get_detail(ko_msg, replace=True),
+                         f"({type(e).__name__}) {export_file}"))
     return msgs
 
 
@@ -199,11 +198,21 @@ def delete_temps():
     info_msgs = [
         (get_detail('[test_tests]', replace=True), current_time),
         (get_detail('[test_input]', replace=True), INPUT_FILE_URL),
-        (get_detail('[test_remaining]', replace=True), URL_TEST)
+        (get_detail('[test_remaining]', replace=True), TEST_URL)
     ]
     info_msgs.extend(delete_humble_analysis(HUMBLE_TEMP_FILE))
-    info_msgs.extend(delete_txt_file())
-    info_msgs.extend(delete_html_file())
+    info_msgs.extend(delete_export_files('.csv', '[test_csv]', '[test_fcsv]'))
+    info_msgs.extend(delete_export_files('.txt', '[test_txt]', '[test_ftxt]'))
+    info_msgs.extend(delete_export_files('.html', '[test_html]',
+                                         '[test_fhtml]'))
+    info_msgs.extend(delete_export_files('.json', '[test_json]',
+                                         '[test_fjson]'))
+    info_msgs.extend(delete_export_files('.json', '[test_json_brief]',
+                                         '[test_fjson_brief]'))
+    info_msgs.extend(delete_export_files('.pdf', '[test_pdf]', '[test_fpdf]'))
+    info_msgs.extend(delete_export_files('.xlsx', '[test_xlsx]',
+                                         '[test_fxlsx]'))
+    info_msgs.extend(delete_export_files('.xml', '[test_xml]', '[test_fxml]'))
     for cache_dir in PYTEST_CACHE_DIRS:
         info_msgs.extend(delete_pytest_caches(cache_dir))
     error_msgs = [(msg, val) for msg, val in info_msgs
@@ -219,7 +228,7 @@ def delete_temps():
         print(f"[INFO] {message.ljust(max_len + 2)}: {value}")
 
 
-local_version = datetime.strptime('2025-11-29', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-11-30', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

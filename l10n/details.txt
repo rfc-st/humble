@@ -2021,37 +2021,64 @@ Generator
  (no param); verifies Python version is at least 3.11.
 
 [test_help]
- ('-h' param); confirms that the help message is displayed correctly.
+ ('-h' param); verifies the help message is displayed correctly.
 
 [test_brief]
- ('-b' param); verifies that the brief analysis completes successfully.
+ ('-b' param); verifies the brief analysis completes successfully.
 
 [test_cicd]
- ('-cicd' param); verifies that a CI/CD analysis completes successfully.
+ ('-cicd' param); verifies a CI/CD analysis completes successfully.
 
 [test_detailed]
- (no param); verifies that the detailed analysis completes successfully.
+ (no param); verifies the detailed analysis completes successfully.
 
-[test_export]
- ('-o html' param); validates that the detailed analysis is exported to HTML.
+[test_export_csv]
+ ('-o csv' param); verifies the detailed analysis is exported to CSV.
 
-[test_fingerprint_stats]
- ('-f Google' param); checks that fingerprint statistics are correctly shown for 'Google'.
+[test_export_html]
+ ('-o html' param); verifies the detailed analysis is exported to HTML.
+
+[test_export_json]
+ ('-o json' param); verifies the detailed analysis is exported to JSON.
+
+[test_export_json_brief]
+ ('-o json -b' params); verifies the brief analysis is exported to JSON.
+
+[test_export_pdf]
+ ('-o pdf' param); verifies the detailed analysis is exported to PDF.
+
+[test_export_xlsx]
+ ('-o xlsx' param); verifies the detailed analysis is exported to XLSX.
+
+[test_export_xml]
+ ('-o xml' param); verifies the detailed analysis is exported to XML.
+
+[test_fng_groups]
+ ('-f' param); verifies fingerprint statistics for the Top 20 groups display correctly.
+
+[test_fng_term]
+ ('-f Google' param); verifies fingerprint statistics display correctly for the term 'Google'.
 
 [test_input_file]
- ('-if <INPUT_RAW_FILE> -u <INPUT_URL>' params); ensures that raw response files containing response headers can be successfully analyzed.
+ ('-if <INPUT_RAW_FILE> -u <INPUT_URL>' params); verifies raw response files are analyzed.
 
 [test_l10n]
- ('-l es' param); confirms Spanish localization is applied in the output of a detailed analysis.
+ ('-l es' param); verifies Spanish localization is applied in the output of a detailed analysis.
+
+[test_l10n_file]
+ ('-grd -l es' params); verifies Spanish localization is applied in the output of a guide.
 
 [test_skipped_headers]
- ('-s ETAG NEL' param); verifies that the specified headers are excluded from the detailed analysis.
+ ('-s ETAG NEL' param); verifies the specified headers are excluded from the detailed analysis.
 
 [test_updates]
- ('-v' param); confirms that the update check mechanism works as intended.
+ ('-v' param); verifies the update check mechanism works as intended.
 
 [test_user_agent]
- ('-ua 4' param); validates the selection and use of the 4th User-Agent from the available list during a detailed analysis.
+ ('-ua 4' param); verifies the selection and use of the 4th User-Agent from the available list during a detailed analysis.
+
+[test_user_agent_list]
+ ('-ua 0' param); verifies the display of available User-Agents.
 
 [test_tests]
 Tests run at
@@ -2074,11 +2101,47 @@ Deleted final TXT file
 [test_ftxt]
 Failed to delete final TXT file
 
+[test_csv]
+Deleted final CSV file
+
+[test_fcsv]
+Failed to delete final CSV file
+
 [test_html]
 Deleted final HTML file
 
 [test_fhtml]
 Failed to delete final HTML file
+
+[test_json]
+Deleted final JSON file
+
+[test_fjson]
+Failed to delete final JSON file
+
+[test_json_brief]
+Deleted final brief JSON file
+
+[test_fjson_brief]
+Failed to delete final brief JSON file
+
+[test_pdf]
+Deleted final PDF file
+
+[test_fpdf]
+Failed to delete final PDF file
+
+[test_xlsx]
+Deleted final XLSX file
+
+[test_fxlsx]
+Failed to delete final XLSX file
+
+[test_xml]
+Deleted final XLM file
+
+[test_fxlm]
+Failed to delete final XLM file
 
 [test_cache]
 Deleted pytest cache folder
