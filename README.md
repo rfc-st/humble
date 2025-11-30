@@ -12,7 +12,7 @@
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
 <a target="_blank" href="https://artemis-scanner.readthedocs.io/en/latest/search.html?q=humble&check_keywords=yes&area=default" title="Artemis vulnerability scanner"><img src="https://img.shields.io/badge/Artemis-blue"></a>
 <a target="_blank" href="https://blog.csdn.net/gitblog_01072/article/details/141745712" title="Chinese Software Developer Network"><img src="https://img.shields.io/badge/CSDN-blue"></a>
-<a target="_blank" href="https://docs.defectdojo.com/en/connecting_your_tools/parsers/file/humble/" title="DefectDojo vulnerability management tool"><img src="https://img.shields.io/badge/DefectDojo-blue"></a>
+<a target="_blank" href="https://docs.defectdojo.com/supported_tools/parsers/file/humble/" title="Importing and parsing 'humble' results in DefectDojo"><img src="https://img.shields.io/badge/DefectDojo-blue"></a>
 <a target="_blank" href="https://github.com/HackTricks-wiki/hacktricks/blob/master/src/network-services-pentesting/pentesting-web/special-http-headers.md" title="HackTricks"><img src="https://img.shields.io/badge/HackTricks-blue"></a>
 <a target="_blank" href="https://headerscan.com/humble/" title="Security Header Scanner"><img src="https://img.shields.io/badge/HeaderScan-blue"></a>
 <a target="_blank" href="https://www.linux-magazin.de/ausgaben/2022/11/tooltipps/" title="Linux Magazin"><img src="https://img.shields.io/badge/Linux%20Magazin-blue"></a>
