@@ -176,7 +176,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-11-30', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-01', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1417,6 +1417,8 @@ def print_basic_info(export_filename):
 
 def print_extended_info(args, reliable, status_code):
     """Print extended information in the '[0. Info]' section of the analysis"""
+    if args.request_header:
+        print_request_headers(added_request_headers)
     if args.skip_headers:
         print_skipped_headers(args)
     if args.proxy:
@@ -1923,6 +1925,18 @@ def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
     print_detail_l('[analysis_skipped_note]')
     print(" " + ", ".join("'{}'".format(h.title()) for h in
                           sorted(args.skip_headers, key=str.lower)) + ".")
+
+
+def print_request_headers(added_request_headers):
+    """
+    Print the HTTP request headers explicitly added for the analysis
+    """
+    print_detail_l('[analysis_request_note]')
+    request_headers = ", ".join(
+        f"{repr(k)}: {repr(v)}"
+        for k, v in added_request_headers.items()
+    )
+    print(f" {request_headers}")
 
 
 def print_unsupported_headers(unsupported_headers):
@@ -3779,8 +3793,8 @@ if '-if' not in sys.argv:
         proxy = {"http": args.proxy, "https": args.proxy}
     custom_headers = REQ_HEADERS.copy()
     if '-H' in sys.argv:
-        added_custom_headers = parse_request_headers(args.request_header)
-        custom_headers.update(added_custom_headers)
+        added_request_headers = parse_request_headers(args.request_header)
+        custom_headers.update(added_request_headers)
     custom_headers['User-Agent'] = ua_header
     (headers, status_code, reliable, body, is_html) = (
         process_http_request(status_code, reliable, body, proxy,

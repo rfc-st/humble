@@ -1003,6 +1003,9 @@ Cabeceras de respuesta HTTP
 [analysis_redirects_note]
  Nota : Se analizará la URL exacta, sin seguir redireccionamientos.
 
+[analysis_request_note]
+ Nota : Las cabeceras HTTP de petición incluídas expresamente en este análisis son
+
 [analysis_skipped_note]
  Nota : Las cabeceras HTTP excluidas expresamente en este análisis son
 
@@ -1997,68 +2000,86 @@ Generador
 [proxy_url]
  Error: Proxy no accesible.
 
-[test_python]
- (sin parámetros); comprueba que la versión de Python es igual o superior a 3.11.
+[test_python_version]
+ (sin parámetros); verifica que la versión de Python sea igual o superior a 3.11.
 
 [test_help]
- (parámetro '-h'); comprueba que la Ayuda se muestre correctamente.
+ (parámetro '-h'); verifica que la Ayuda se muestre correctamente.
 
-[test_brief]
- (parámetro '-b'); comprueba que un análisis breve finalice correctamente.
+[test_brief_analysis]
+ (parámetro '-b'); verifica que un análisis breve finalice correctamente.
 
-[test_cicd]
- (parámetro '-cicd'); comprueba que un análisis CI/CD finalice correctamente.
+[test_cicd_analysis]
+ (parámetro '-cicd'); verifica que un análisis CI/CD finalice correctamente.
 
-[test_detailed]
- (sin parámetros); comprueba que un análisis detallado finalice correctamente.
+[test_detailed_analysis]
+ (sin parámetros); verifica que un análisis detallado finalice correctamente.
 
 [test_export_csv]
- (parámetro '-o csv'); comprueba que se exporta a CSV un análisis detallado.
+ (parámetro '-o csv'); verifica que se exporte a CSV un análisis detallado.
 
 [test_export_html]
- (parámetro '-o html'); comprueba que se exporta a HTML un análisis detallado.
+ (parámetro '-o html'); verifica que se exporte a HTML un análisis detallado.
 
 [test_export_json]
- (parámetro '-o json' param); comprueba que se exporta a JSON un análisis detallado.
+ (parámetro '-o json' param); verifica que se exporte a JSON un análisis detallado.
 
 [test_export_json_brief]
- (parámetros '-o json -b'); comprueba que se exporta a JSON un análisis breve.
+ (parámetros '-o json -b'); verifica que se exporte a JSON un análisis breve.
 
 [test_export_pdf]
- (parámetro '-o pdf'); comprueba que se exporta a PDF un análisis detallado.
+ (parámetro '-o pdf'); verifica que se exporte a PDF un análisis detallado.
 
 [test_export_xlsx]
- (parámetro '-o xlsx'); comprueba que se exporta a XLSX un análisis detallado.
+ (parámetro '-o xlsx'); verifica que se exporte a XLSX un análisis detallado.
 
 [test_export_xml]
- (parámetro '-o xml'); comprueba que se exporta a XML un análisis detallado.
+ (parámetro '-o xml'); verifica que se exporte a XML un análisis detallado.
 
-[test_fng_groups]
- (parámetro '-f'); comprueba que las estadísticas del Top 20 de grupos, por huella digital, se muestran correctamente.
+[test_fingerprint_groups]
+ (parámetro '-f'); verifica que las estadísticas del Top 20 de grupos, por huella digital, se muestre correctamente.
 
-[test_fng_term]
- (parámetro '-f Google'); comprueba que las estadísticas del término 'Google', por huella digital, se muestran correctamente.
+[test_fingerprint_term]
+ (parámetro '-f Google'); verifica que las estadísticas del término 'Google', por huella digital, se muestren correctamente.
 
 [test_input_file]
- (parámetros '-if <FICHERO_CABECERAS> -u <URL>'); comprueba que se analice correctamente un fichero con cabeceras de respuesta.
+ (parámetros '-if <FICHERO_CABECERAS> -u <URL>'); verifica que se analice correctamente un fichero con cabeceras de respuesta.
 
-[test_l10n]
- (parámetro '-l es'); comprueba que los mensajes en castellano se muestran correctamente en un análisis detallado.
+[test_l10n_analysis]
+ (parámetro '-l es'); verifica que los mensajes en castellano se muestren correctamente en un análisis detallado.
 
-[test_l10n_file]
- (parámetros '-grd -l es'); comprueba que los mensajes en castellano se muestran correctamente en una guía.
+[test_l10n_grades]
+ (parámetros '-grd -l es'); verifica que la guía sobre la calificación de un análisis se muestra correctamente en castellano.
+
+[test_license]
+ (parámetro '-lic'); verifica que la licencia se muestre correctamente.
+
+[test_owasp_compliance]
+ (parámetro '-c'); verifica que los resultados de cumplimiento con las mejores prácticas de OWASP 'Secure Headers Project' se muestren correctamente.
+
+[test_redirects]
+ (parámetro '-df'); verifica que no se sigan las redirecciones en un análisis detallado.
+
+[test_requests_headers]
+ (parámetro '-H' con varias cabeceras'); verifica que un análisis finaliza correctamente tras añadir en la petición varias cabeceras HTTP.
+
+[test_response_headers]
+ (parámetro '-r'); verifica que las cabeceras HTTP de respuesta se muestren correctamente.
+
+[test_security_guidelines]
+ (parámetro '-g'); verifica que la guía con directrices de seguridad se muestre correctamente.
 
 [test_skipped_headers]
- (parámetro '-s ETAG NEL'); comprueba que la exclusión de cabeceras HTTP se aplica correctamente en un análisis detallado.
+ (parámetro '-s ETAG NEL'); verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
 
 [test_updates]
- (parámetro '-v'); comprueba que la lógica para comprobar actualizaciones funciona correctamente.
+ (parámetro '-v'); verifica que la lógica para comprobar actualizaciones funcione correctamente.
 
 [test_user_agent]
- (parámetro '-ua 4'); comprueba que el cuarto 'User-Agent' se aplique correctamente en un análisis detallado.
+ (parámetro '-ua 4'); verifica que el cuarto 'User-Agent' se aplique correctamente en un análisis detallado.
 
 [test_user_agent_list]
- (parámetro '-ua 0'); comprueba que se muestren los 'User-Agents' disponibles.
+ (parámetro '-ua 0'); verifica que se muestren los 'User-Agents' disponibles.
 
 [test_tests]
 Pruebas realizadas el

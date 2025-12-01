@@ -30,12 +30,12 @@ REQUIRED_PYTHON = (3, 11)
 TEST_URL = 'https://google.com'
 TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
-    'test_brief': (['-u', TEST_URL, '-b'], 'Analysis Grade:'),
-    'test_cicd': (['-u', TEST_URL, '-cicd'], 'Analysis Grade'),
-    'test_detailed': (['-u', TEST_URL], 'Analysis Grade:'),
+    'test_brief_analysis': (['-u', TEST_URL, '-b'], 'Analysis Grade:'),
+    'test_cicd_analysis': (['-u', TEST_URL, '-cicd'], 'Analysis Grade'),
+    'test_detailed_analysis': (['-u', TEST_URL], 'Analysis Grade:'),
     'test_export_csv': (['-u', TEST_URL, '-o', 'csv'], 'CSV saved'),
-    'test_export_html': (['-u', TEST_URL, '-o', 'html'], 'HTML saved'),
-    'test_export_json': (['-u', TEST_URL, '-o', 'json'], 'JSON saved'),
+    'test_export_html': (['-u', TEST_URL, '-o', 'html', '-r'], 'HTML saved'),
+    'test_export_json': (['-u', TEST_URL, '-o', 'json', '-r'], 'JSON saved'),
     'test_export_json_brief': (['-u', TEST_URL, '-o', 'json', '-b'],
                                'JSON saved'),
     'test_export_pdf': (['-u', TEST_URL, '-o', 'pdf'], 'PDF saved'),
@@ -45,9 +45,20 @@ TEST_CFGS = {
     'test_fingerprint_term': (['-f', 'Google'], 'Headers related to'),
     'test_input_file': (['-if', HUMBLE_INPUT_FILE, '-u', HUMBLE_INPUT_URL],
                         'Input:'),
-    'test_l10n': (['-u', TEST_URL, '-l', 'es'], 'Advertencias a revisar'),
-    'test_l10n_file': (['-grd', '-l', 'es'], 'No te obsesiones'),
+    'test_l10n_analysis': (['-u', TEST_URL, '-l', 'es'],
+                           'Advertencias a revisar'),
+    'test_l10n_grades': (['-grd', '-l', 'es'], 'No te obsesiones'),
+    'test_license': (['-lic'], 'copyright'),
+    'test_owasp_compliance': (['-u', TEST_URL, '-c'],
+                              'non-recommended values'),
+    'test_redirects': (['-u', TEST_URL, '-df'], 'Analysis Grade:'),
+    'test_request_headers': (
+        ['-u', TEST_URL, '-H', 'Cache-Control: no-cache', '-H',
+         'If-Modified-Since: Wed, 21 Oct 2020 00:00:00 GMT'],
+        'Analysis Grade:'
+    ),
     'test_response_headers': (['-u', TEST_URL, '-r'], 'HTTP Response Headers'),
+    'test_security_guidelines': (['-g'], 'headers-in-wordpress'),
     'test_skipped_headers': (['-u', TEST_URL, '-s', 'ETAG', 'NEL'],
                              'expressly excluded'),
     'test_updates': (['-v'], 'Keeping your security tools'),
@@ -55,13 +66,19 @@ TEST_CFGS = {
                         'Selected the User-Agent'),
     'test_user_agent_list': (['-ua', '0'], 'source: '),
 }
-TEST_SUMMS = ('[test_help]', '[test_brief]', '[test_cicd]', '[test_detailed]',
-              '[test_export_csv]', '[test_export_html]', '[test_export_json]',
+TEST_SUMMS = ('[test_help]', '[test_brief_analysis]', '[test_cicd_analysis]',
+              '[test_detailed_analysis]', '[test_export_csv]',
+              '[test_export_html]', '[test_export_json]',
               '[test_export_json_brief]', '[test_export_pdf]',
-              '[test_export_xlsx]', '[test_export_xml]', '[test_fng_groups]',
-              '[test_fng_term]', '[test_input_file]', '[test_l10n]',
-              '[test_l10n_file]', '[test_skipped_headers]', '[test_updates]',
-              '[test_user_agent]', '[test_user_agent_list]', '[test_python]')
+              '[test_export_xlsx]', '[test_export_xml]',
+              '[test_fingerprint_groups]', '[test_fingerprint_term]',
+              '[test_input_file]', '[test_l10n_analysis]',
+              '[test_l10n_grades]', '[test_license]',
+              '[test_owasp_compliance]', '[test_redirects]',
+              '[test_requests_headers]', '[test_response_headers]',
+              '[test_security_guidelines]', '[test_skipped_headers]',
+              '[test_updates]', '[test_user_agent]', '[test_user_agent_list]',
+              '[test_python_version]')
 
 
 class _Args:
@@ -144,7 +161,7 @@ def get_python_version(req=REQUIRED_PYTHON):
     return sys.version_info[:2] >= req
 
 
-def test_python():
+def test_python_version():
     if not get_python_version():
         pytest.fail(
             f"{get_detail('[test_pythonm]', replace=True)} "
@@ -228,7 +245,7 @@ def delete_temps():
         print(f"[INFO] {message.ljust(max_len + 2)}: {value}")
 
 
-local_version = datetime.strptime('2025-11-30', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-01', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

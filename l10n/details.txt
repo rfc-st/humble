@@ -1002,6 +1002,9 @@ HTTP Response Headers
 [analysis_redirects_note]
  Note : The exact URL will be analyzed, without following redirects.
 
+[analysis_request_note]
+ Note : The HTTP request headers expressly included for this analysis are
+
 [analysis_skipped_note]
  Note : The HTTP headers expressly excluded from this analysis are
 
@@ -2017,19 +2020,19 @@ Generator
 [proxy_url]
  Error: Proxy not reachable.
 
-[test_python]
+[test_python_version]
  (no param); verifies Python version is at least 3.11.
 
 [test_help]
  ('-h' param); verifies the help message is displayed correctly.
 
-[test_brief]
+[test_brief_analysis]
  ('-b' param); verifies the brief analysis completes successfully.
 
-[test_cicd]
+[test_cicd_analysis]
  ('-cicd' param); verifies a CI/CD analysis completes successfully.
 
-[test_detailed]
+[test_detailed_analysis]
  (no param); verifies the detailed analysis completes successfully.
 
 [test_export_csv]
@@ -2053,20 +2056,38 @@ Generator
 [test_export_xml]
  ('-o xml' param); verifies the detailed analysis is exported to XML.
 
-[test_fng_groups]
+[test_fingerprint_groups]
  ('-f' param); verifies fingerprint statistics for the Top 20 groups display correctly.
 
-[test_fng_term]
+[test_fingerprint_term]
  ('-f Google' param); verifies fingerprint statistics display correctly for the term 'Google'.
 
 [test_input_file]
  ('-if <INPUT_RAW_FILE> -u <INPUT_URL>' params); verifies raw response files are analyzed.
 
-[test_l10n]
+[test_l10n_analysis]
  ('-l es' param); verifies Spanish localization is applied in the output of a detailed analysis.
 
-[test_l10n_file]
- ('-grd -l es' params); verifies Spanish localization is applied in the output of a guide.
+[test_l10n_grades]
+ ('-grd -l es' params); verifies the guide about grading an analysis is displayed correctly in Spanish.
+
+[test_license]
+ ('-lic param'); verify the license is displayed correctly.
+
+[test_owasp_compliance]
+ ('-c param'); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
+
+[test_redirects]
+ ('-df param'); verifies redirects are not followed in a detailed analysis.
+
+[test_requests_headers]
+ ('-H' param with several headers); verify an analysis completes correctly after adding several HTTP headers to the request.
+
+[test_response_headers]
+ ('-r param'); verify HTTP response headers are displayed correctly.
+
+[test_security_guidelines]
+ ('-g param'); verifies the guide with security guidelines is displayed correctly.
 
 [test_skipped_headers]
  ('-s ETAG NEL' param); verifies the specified headers are excluded from the detailed analysis.
