@@ -19,6 +19,8 @@ PYTEST_CACHE_DIRS = [
 HUMBLE_DESC = "Basic unit tests for 'humble' (HTTP Headers Analyzer)"
 HUMBLE_GIT = 'https://github.com/rfc-st/humble'
 HUMBLE_PROJECT_ROOT = path.abspath(path.join(HUMBLE_TESTS_DIR, '..'))
+HUMBLE_CSP_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
+                                         'csp_test_file.txt'))
 HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
 HUMBLE_INPUT_FILE = path.abspath(path.join(HUMBLE_INPUT_DIR,
                                            'github_input_file.txt'))
@@ -33,6 +35,8 @@ TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
     'test_brief_analysis': (['-u', TEST_URL, '-b'], 'Analysis Grade:'),
     'test_cicd_analysis': (['-u', TEST_URL, '-cicd'], 'Analysis Grade'),
+    'test_csp_header': (['-if', HUMBLE_CSP_FILE, '-u', HUMBLE_INPUT_URL],
+                        'Input:'),
     'test_detailed_analysis': (['-u', TEST_URL], 'Analysis Grade:'),
     'test_export_csv': (['-u', TEST_URL, '-o', 'csv'], 'CSV saved'),
     'test_export_html': (['-u', TEST_URL, '-o', 'html', '-r'], 'HTML saved'),
@@ -68,8 +72,8 @@ TEST_CFGS = {
     'test_user_agent_list': (['-ua', '0'], 'source: '),
 }
 TEST_SUMMS = ('[test_help]', '[test_brief_analysis]', '[test_cicd_analysis]',
-              '[test_detailed_analysis]', '[test_export_csv]',
-              '[test_export_html]', '[test_export_json]',
+              '[test_csp_header]', '[test_detailed_analysis]',
+              '[test_export_csv]', '[test_export_html]', '[test_export_json]',
               '[test_export_json_brief]', '[test_export_pdf]',
               '[test_export_xlsx]', '[test_export_xml]',
               '[test_fingerprint_groups]', '[test_fingerprint_term]',

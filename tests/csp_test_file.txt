@@ -1,0 +1,12 @@
+HTTP/2 200
+date: Sat, 02 Dec 2025 21:11:00 GMT
+content-type: text/html; charset=utf-8
+content-language: en-US
+cache-control: max-age=0, private, must-revalidate
+strict-transport-security: max-age=31536000; includeSubdomains; preload
+x-frame-options: deny
+x-content-type-options: nosniff
+x-xss-protection: 0
+referrer-policy: origin-when-cross-origin, strict-origin-when-cross-origin
+content-security-policy: default-src 'none'; block-all-mixed-content; script-src 'strict-dynamic' 'unsafe-inline' 'unsafe-eval' sha256-/JqT3SQfawRcv/BIHPThkBvs0OE 127.0.0.1; unknown_directive
+accept-ranges: bytes

@@ -23,7 +23,7 @@
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml" title="Results of the last analysis of this tool with bandit, for critical or high vulnerabilities"><img src="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml/badge.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="CodeQL security analysis passed"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="humble documentation status"><img src="https://img.shields.io/badge/documentation-passing-32bd50?labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="humble code coverage"><img src="https://img.shields.io/badge/code%20coverage-69%25-f9d71c?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="humble code coverage"><img src="https://img.shields.io/badge/code%20coverage-71%25-f9d71c?labelColor=343b41"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="OpenSSF best practices analysis"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
 <br />
 <br />
@@ -451,7 +451,7 @@ Open the index.html file in a browser.
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_code_coverage.PNG" alt="(Linux) - Code coverage">
 
 > [!NOTE]
-> After reviewing the code coverage, you can delete all files and folders from the *tests* directory except for the *.coveragerc* and *test_basic.py* files.
+> After reviewing the code coverage, you can delete all files and folders from the *tests* directory except for the *.coveragerc*, *csp_test_file.txt* and *test_basic.py* files.
 
 > [!TIP]
 > <a target="_blank" href="https://docs.pytest.org/en/stable/reference/reference.html">pytest</a> and <a target="_blank" href="https://pytest-cov.readthedocs.io/en/latest/config.html">pytest-cov</a> parameters:

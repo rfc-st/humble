@@ -2032,6 +2032,9 @@ Generator
 [test_cicd_analysis]
  ('-cicd' param); verifies a CI/CD analysis completes successfully.
 
+[test_csp_header]
+ ('-if <HUMBLE_CSP_FILE> -u <HUMBLE_INPUT_URL>' params); verify that the ‘Content-Security-Policy’ header is analyzed
+
 [test_detailed_analysis]
  (no param); verifies the detailed analysis completes successfully.
 
@@ -2063,7 +2066,7 @@ Generator
  ('-f Google' param); verifies fingerprint statistics display correctly for the term 'Google'.
 
 [test_input_file]
- ('-if <INPUT_RAW_FILE> -u <INPUT_URL>' params); verifies raw response files are analyzed.
+ ('-if <HUMBLE_INPUT_FILE> -u <HUMBLE_INPUT_URL>' params); verifies raw response files are analyzed.
 
 [test_l10n_analysis]
  ('-l es' param); verifies Spanish localization is applied in the output of a detailed analysis.

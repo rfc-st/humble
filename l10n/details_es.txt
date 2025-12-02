@@ -2012,6 +2012,9 @@ Generador
 [test_cicd_analysis]
  (parámetro '-cicd'); verifica que un análisis CI/CD finalice correctamente.
 
+[test_csp_header]
+ ('-if <HUMBLE_CSP_FILE> -u <HUMBLE_INPUT_URL>' params); verifica que se analice la cabecera 'Content-Security-Policy'
+
 [test_detailed_analysis]
  (sin parámetros); verifica que un análisis detallado finalice correctamente.
 
@@ -2043,7 +2046,7 @@ Generador
  (parámetro '-f Google'); verifica que las estadísticas del término 'Google', por huella digital, se muestren correctamente.
 
 [test_input_file]
- (parámetros '-if <FICHERO_CABECERAS> -u <URL>'); verifica que se analice correctamente un fichero con cabeceras de respuesta.
+ (parámetros '-if <HUMBLE_INPUT_FILE> -u <HUMBLE_INPUT_URL>'); verifica que se analice correctamente un fichero con cabeceras de respuesta.
 
 [test_l10n_analysis]
  (parámetro '-l es'); verifica que los mensajes en castellano se muestren correctamente en un análisis detallado.
