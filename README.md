@@ -444,9 +444,9 @@ Open the index.html file in a browser.
 > After reviewing the code coverage, you can delete all files and folders from the *tests* directory except for the *.coveragerc* and *test_basic.py* files.
 
 > [!TIP]
-> pytest parameters:
+> <a target="_blank" href="https://docs.pytest.org/en/stable/reference/reference.html">pytest</a> and <a target="_blank" href="https://pytest-cov.readthedocs.io/en/latest/config.html">pytest-cov</a> parameters:
 >
-> - -cov-config=.coveragerc: Specifies the coverage configuration file
+> - --cov-config=.coveragerc: Specifies the coverage configuration file
 > - --cov=..: Specifies what code to measure coverage for
 > - --cov-report=html: Defines the coverage report format
 > - --tb=no: Does not show tracebacks for failed tests
