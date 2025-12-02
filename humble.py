@@ -393,8 +393,8 @@ def testssl_command(testssl_temp_path, uri):
         TESTSSL_OPTIONS constant:<br>
 
         - -f: checks robust forward secrecy key exchange
-        - -g: checks several server implementation bug
-        - -p: checks TLS/SSL protocols
+        - -g: checks several server implementation bugs
+        - -p: checks the availability of SSL/TLS protocols
         - -U: tests all vulnerabilities, like Heartbleed, ROBOT and sweet32
         - -s: tests lists of cipher suites/categories by strength
         - --hints: (available in the future) give hints how to fix a finding

@@ -117,24 +117,34 @@
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble.PNG" alt="(Linux) - Detailed analysis in Spanish">
 </p>
 <br />
-.: (Linux) - Analysis of a "raw response file". <a href="https://github.com/rfc-st/humble/raw/master/samples/github_input_file.txt">Example.</a><br />
+.: (Linux) - Analysis of a raw response file. <a href="https://github.com/rfc-st/humble/raw/master/samples/github_input_file.txt">Example.</a><br />
+<br />
+
+> [!TIP]
+> <a target="_blank" href="https://curl.se/docs/manpage.html#-D">Generating</a> a raw response file:
+> ```bash
+> curl --dump-header github_input_file.txt https://github.com
+> ```
+
 <p></p>
 
-```bash
-Raw response file generation: curl --dump-header github_input_file.txt https://github.com
-```
-
-<p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_input.PNG" alt="(Linux) - Analysis of a raw response file">
 </p>
+
 <br />
 .: (Linux) - SSL/TLS checks.<br />
 <p></p>
 
-```bash
-Options used: -f -g -p -U -s --hints
-```
+> [!TIP]
+> <a target="_blank" href="https://testssl.sh/doc/testssl.1.html">testssl.sh</a> options used:
+>
+> - -f: checks robust forward secrecy key exchange
+> - -g: checks several server implementation bugs
+> - -p: checks the availability of SSL/TLS protocols
+> - -U: tests all vulnerabilities, like Heartbleed, ROBOT and sweet32
+> - -s: tests lists of cipher suites/categories by strength
+> - -hints: (available in the future) give hints how to fix a finding
 
 <p></p>
 <p align="center">
@@ -343,7 +353,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-11-21
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-12-02
 
 options:
   -h, --help                           show this help message and exit
