@@ -121,9 +121,9 @@
 <br />
 
 > [!TIP]
-> <a target="_blank" href="https://curl.se/docs/manpage.html#-D">Generating</a> a raw response file:
+> <a target="_blank" href="https://curl.se/docs/manpage.html#-D">Generating</a> a raw response file; requires curl <a target="_blank" href="https://curl.se/ch/8.16.0.html">8.16</a> or higher:
 > ```bash
-> curl --dump-header github_input_file.txt https://github.com
+> curl --dump-header github_input_file.txt https://github.com --out-null -s
 > ```
 
 <p></p>
