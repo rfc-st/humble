@@ -2055,7 +2055,7 @@ Generador
  (parámetro '-lic'); verifica que la licencia se muestre correctamente.
 
 [test_owasp_compliance]
- (parámetro '-c'); verifica que los resultados de cumplimiento con las mejores prácticas de OWASP 'Secure Headers Project' se muestren correctamente.
+ (parámetro '-c'); verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
 
 [test_redirects]
  (parámetro '-df'); verifica que no se sigan las redirecciones en un análisis detallado.
