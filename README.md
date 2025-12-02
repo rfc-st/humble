@@ -77,7 +77,7 @@
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
 :heavy_check_mark: Can use proxies for the analysis.<br />
 :heavy_check_mark: Allows specifying custom HTTP request headers.<br />
-:heavy_check_mark: Can output only analysis summary, totals and grade as JSON for <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" target="_blank">CI/CD<a>.<br />
+:heavy_check_mark: Can output only analysis summary, totals and grade as JSON; suitable for <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" target="_blank">CI/CD<a>.<br />
 :heavy_check_mark: Print browser support for enabled HTTP security headers, with data from <a href="https://caniuse.com/" target="_blank">Can I use<a>.<br />
 :heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental<a> headers in each analysis.<br />
 :heavy_check_mark: Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.<br />
@@ -163,7 +163,7 @@
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Linux) - Compliance with OWASP 'Secure Headers Project' best practices">
 </p>
 <br />
-.: (Windows) - JSON summary for CI/CD.<br />
+.: (Windows) - JSON summary of the analysis, suitable for <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" target="_blank">CI/CD<a>.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_cicd.PNG" alt="(Windows) - JSON summary for CI/CD">
