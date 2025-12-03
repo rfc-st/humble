@@ -2033,7 +2033,7 @@ Generator
  ('-cicd' param); verifies a CI/CD analysis completes successfully.
 
 [test_csp_header]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' params); verify that the ‘Content-Security-Policy’ header is analyzed
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' params); verify that the ‘Content-Security-Policy’ header is analyzed.
 
 [test_detailed_analysis]
  (no param); verifies the detailed analysis completes successfully.

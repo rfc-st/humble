@@ -2013,7 +2013,7 @@ Generador
  (parámetro '-cicd'); verifica que un análisis CI/CD finalice correctamente.
 
 [test_csp_header]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' params); verifica que se analice la cabecera 'Content-Security-Policy'
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' params); verifica que se analice la cabecera 'Content-Security-Policy'.
 
 [test_detailed_analysis]
  (sin parámetros); verifica que un análisis detallado finalice correctamente.
