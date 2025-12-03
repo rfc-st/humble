@@ -292,13 +292,19 @@ def delete_temp_content():
                   if msg.startswith("Failed")]
     info_msgs = [(msg, val) for msg, val in info_msgs
                  if not msg.startswith("Failed")]
-    max_len = max(len(msg) for msg in info_msgs)
+    all_msgs = [
+        '[test_tests]', '[test_input]', '[test_remaining]', '[test_temp]',
+        '[test_csv]', '[test_txt]', '[test_html]', '[test_json]',
+        '[test_json_brief]', '[test_pdf]', '[test_xlsx]', '[test_xml]',
+        '[test_cache]'
+    ]
+    max_msg_len = max(len(get_detail(key, replace=True)) for key in all_msgs)
     for message, value in error_msgs:
-        print(f"[ERROR] {message.ljust(max_len + 1)}: {value}")
+        print(f"[ERROR] {message.ljust(max_msg_len + 1)}: {value}")
     if error_msgs:
         print()
     for message, value in info_msgs:
-        print(f"[INFO] {message.ljust(max_len + 2)}: {value}")
+        print(f"[INFO] {message.ljust(max_msg_len + 1)}: {value}")
 
 
 local_version = datetime.strptime('2025-12-03', '%Y-%m-%d').date()
