@@ -38,6 +38,8 @@ from platform import system
 from base64 import b64decode
 from itertools import islice
 from datetime import datetime
+from contextlib import suppress
+from ipaddress import ip_address
 from urllib.parse import urlparse
 from subprocess import PIPE, Popen
 from threading import Event, Thread
@@ -113,11 +115,7 @@ PDF_SECTION = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
                '[Cabeceras': '[0headers_s]'}
 RE_PATTERN = (
     r'\((.*?)\)',
-    (r'^(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.'
-     r'(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})$|'
-     r'^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|'
-     r'^[0-9a-fA-F:]+$|'
-     r'^(?:[0-9a-fA-F]{1,4}:){1,7}:$|^::(?:[0-9a-fA-F]{1,4}:){1,7}$'),
+    r'(?:(?:\d{1,3}\.){3}\d{1,3}|(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4})',
     (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
      r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
      r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\(([^)]+)\)',
@@ -176,7 +174,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-12-02', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-03', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1227,9 +1225,14 @@ def csp_print_nonce(nonce, nonce_refs, i_cnt):
 
 def csp_check_ip(csp_h):
     """'Content-Security-Policy' header check related to IP address values"""
-    ip_match = re.findall(RE_PATTERN[1], csp_h)
-    if ip_match != t_csp_checks[4]:
-        print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
+    localhost_ip = ip_address(t_csp_checks[4])
+    ip_matches = re.findall(RE_PATTERN[1], csp_h)
+    for match in ip_matches:
+        with suppress(ValueError):
+            ip_match = ip_address(match)
+            if ip_match != localhost_ip:
+                print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
+                break
 
 
 def csp_print_deprecated(csp_deprecated):
