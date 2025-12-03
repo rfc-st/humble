@@ -1324,10 +1324,14 @@ def permissions_check_broad(perm_header):
     if sum(dir in perm_header for dir in t_per_ft) < 2:
         return None
     try:
-        return [directive.split('=')[0].strip()
-                for directive in perm_header.split(',')
-                if any(broad in directive.split('=')[1].strip() for broad in
-                       t_per_broad)]
+        result = []
+        for directive in perm_header.split(','):
+            if '=' in directive:
+                feature = directive.split('=')[0].strip()
+                value = directive.split('=')[1].strip()
+                if any(broad in value for broad in t_per_broad):
+                    result.append(feature)
+        return result or None
     except (IndexError, ValueError):
         print_details('[ifpolf_h]', '[ifpolf]', "d", i_cnt)
         return None

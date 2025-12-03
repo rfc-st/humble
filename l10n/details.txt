@@ -2033,7 +2033,7 @@ Generator
  ('-cicd' param); verifies a CI/CD analysis completes successfully.
 
 [test_csp_header]
- ('-if <HUMBLE_CSP_FILE> -u <HUMBLE_INPUT_URL>' params); verify that the ‘Content-Security-Policy’ header is analyzed
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' params); verify that the ‘Content-Security-Policy’ header is analyzed
 
 [test_detailed_analysis]
  (no param); verifies the detailed analysis completes successfully.
@@ -2079,6 +2079,9 @@ Generator
 
 [test_owasp_compliance]
  ('-c param'); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
+
+[test_perm_header]
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' params); verify that the ‘Permissions-Policy’ header is analyzed.
 
 [test_redirects]
  ('-df param'); verifies redirects are not followed in a detailed analysis.

@@ -19,8 +19,8 @@ PYTEST_CACHE_DIRS = [
 HUMBLE_DESC = "Basic unit tests for 'humble' (HTTP Headers Analyzer)"
 HUMBLE_GIT = 'https://github.com/rfc-st/humble'
 HUMBLE_PROJECT_ROOT = path.abspath(path.join(HUMBLE_TESTS_DIR, '..'))
-HUMBLE_CSP_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                         'csp_test_file.txt'))
+HUMBLE_HEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
+                                             'headers_test_file.txt'))
 HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
 HUMBLE_INPUT_FILE = path.abspath(path.join(HUMBLE_INPUT_DIR,
                                            'github_input_file.txt'))
@@ -35,7 +35,7 @@ TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
     'test_brief_analysis': (['-u', TEST_URL, '-b'], 'Analysis Grade:'),
     'test_cicd_analysis': (['-u', TEST_URL, '-cicd'], 'Analysis Grade'),
-    'test_csp_header': (['-if', HUMBLE_CSP_FILE, '-u', HUMBLE_INPUT_URL],
+    'test_csp_header': (['-if', HUMBLE_HEADERS_FILE, '-u', HUMBLE_INPUT_URL],
                         'Input:'),
     'test_detailed_analysis': (['-u', TEST_URL], 'Analysis Grade:'),
     'test_export_csv': (['-u', TEST_URL, '-o', 'csv'], 'CSV saved'),
@@ -56,6 +56,8 @@ TEST_CFGS = {
     'test_license': (['-lic'], 'copyright'),
     'test_owasp_compliance': (['-u', TEST_URL, '-c'],
                               'non-recommended values'),
+    'test_perm_header': (['-if', HUMBLE_HEADERS_FILE, '-u', HUMBLE_INPUT_URL],
+                         'Input:'),
     'test_redirects': (['-u', TEST_URL, '-df'], 'Analysis Grade:'),
     'test_request_headers': (
         ['-u', TEST_URL, '-H', 'Cache-Control: no-cache', '-H',
@@ -79,11 +81,11 @@ TEST_SUMMS = ('[test_help]', '[test_brief_analysis]', '[test_cicd_analysis]',
               '[test_fingerprint_groups]', '[test_fingerprint_term]',
               '[test_input_file]', '[test_l10n_analysis]',
               '[test_l10n_grades]', '[test_license]',
-              '[test_owasp_compliance]', '[test_redirects]',
-              '[test_requests_headers]', '[test_response_headers]',
-              '[test_security_guidelines]', '[test_skipped_headers]',
-              '[test_updates]', '[test_user_agent]', '[test_user_agent_list]',
-              '[test_python_version]')
+              '[test_owasp_compliance]', '[test_perm_header]',
+              '[test_redirects]', '[test_requests_headers]',
+              '[test_response_headers]', '[test_security_guidelines]',
+              '[test_skipped_headers]', '[test_updates]', '[test_user_agent]',
+              '[test_user_agent_list]', '[test_python_version]')
 
 
 class _Args:

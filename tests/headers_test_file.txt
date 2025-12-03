@@ -9,4 +9,5 @@ x-content-type-options: nosniff
 x-xss-protection: 0
 referrer-policy: origin-when-cross-origin, strict-origin-when-cross-origin
 content-security-policy: default-src 'none'; block-all-mixed-content; script-src 'strict-dynamic' 'unsafe-inline' 'unsafe-eval' 'sha256-YTVkYWQ3OWVmZTY1ODkzNzhhM2Y4M2Q2MDU5MTQyMTkxZmM2ZDRmZjdkMzc5MjRlOGVhMWU5MzU2OGFjNGRiOA=' sha256-YTVkYWQ3OWVmZTY1ODkzNzhhM2Y4M2Q2MDU5MTQyMTkxZmM2ZDRmZjdkMzc5MjRlOGVhMWU5MzU2OGFjNGRiOA== 'nonce-VEVTVA==' 192.168.1.1; unknown_directive; style-src http://insecuretestdomain.net; font-src *
+permissions-policy: window-placement, geolocation=*, camera none
 accept-ranges: bytes
