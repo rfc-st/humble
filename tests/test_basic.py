@@ -256,6 +256,16 @@ def delete_pytest_caches(dir_path):
     return msgs
 
 
+def delete_pytestcov_caches(dir_path):
+    """
+    Delete the directories associated with the pytest caches after code
+    coverage has been run.
+    """
+    if path.isdir(dir_path):
+        with contextlib.suppress(Exception):
+            shutil.rmtree(dir_path)
+
+
 def set_temp_content(current_time):
     """
     Define the files and directories to be deleted after all tests have been
@@ -321,6 +331,19 @@ parser.add_argument("-l", dest='lang', choices=['en', 'es'], help="Defines the\
  language for displaying errors and messages")
 
 args = _Args()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def delete_temp_coverage():
+    global l10n_main
+    global args
+    args.lang = "en"
+    l10n_main = get_l10n_content()
+    yield
+    delete_temp_content()
+    for cache_dir in PYTEST_CACHE_DIRS:
+        delete_pytestcov_caches(cache_dir)
+
 
 if __name__ == "__main__":
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])

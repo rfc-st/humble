@@ -7,3 +7,7 @@ disable_warnings = no-data-collected
 [report]
 skip_covered = True
 show_missing = False
+
+[html]
+directory = humble_coverage_report
+title = 'humble' code coverage
