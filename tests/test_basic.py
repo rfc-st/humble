@@ -30,6 +30,7 @@ HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
 INPUT_FILE_URL = "https://github.com"
 REQUIRED_PYTHON = (3, 11)
+TEST_RUSSIAN_URL = 'https://tass.ru/'
 TEST_URL = 'https://google.com'
 TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
@@ -65,9 +66,12 @@ TEST_CFGS = {
         'Analysis Grade:'
     ),
     'test_response_headers': (['-u', TEST_URL, '-r'], 'HTTP Response Headers'),
+    'test_russian_block': (['-u', TEST_RUSSIAN_URL, ], 'withdraws'),
     'test_security_guidelines': (['-g'], 'headers-in-wordpress'),
     'test_skipped_headers': (['-u', TEST_URL, '-s', 'ETAG', 'NEL'],
                              'expressly excluded'),
+    'test_unsupported_header': (['-u', TEST_URL, '-s', 'testhumbleheader'],
+                                'testhumbleheader'),
     'test_updates': (['-v'], 'Keeping your security tools'),
     'test_user_agent': (['-u', TEST_URL, '-ua', '4'],
                         'Selected the User-Agent'),
@@ -83,9 +87,11 @@ TEST_SUMMS = ('[test_help]', '[test_brief_analysis]', '[test_cicd_analysis]',
               '[test_l10n_grades]', '[test_license]',
               '[test_owasp_compliance]', '[test_perm_header]',
               '[test_redirects]', '[test_requests_headers]',
-              '[test_response_headers]', '[test_security_guidelines]',
-              '[test_skipped_headers]', '[test_updates]', '[test_user_agent]',
-              '[test_user_agent_list]', '[test_python_version]')
+              '[test_response_headers]', '[test_russian_block]',
+              '[test_security_guidelines]', '[test_skipped_headers]',
+              '[test_unsupported_header]', '[test_updates]',
+              '[test_user_agent]', '[test_user_agent_list]',
+              '[test_python_version]')
 
 
 class _Args:
@@ -162,7 +168,7 @@ def run_test(args, expected_text, timeout=5):
             encoding="utf-8",
             errors="replace"
         )
-        output = result.stdout if result.returncode == 0 else ""
+        output = result.stdout + result.stderr
     except subprocess.TimeoutExpired:
         pytest.fail(get_detail('[test_timeout]', replace=True))
     if expected_text not in output:

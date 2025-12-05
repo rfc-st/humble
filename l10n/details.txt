@@ -2092,11 +2092,17 @@ Generator
 [test_response_headers]
  ('-r param'); verify HTTP response headers are displayed correctly.
 
+[test_russian_block]
+ (no param); verify that Russian URLs are not analyzed.
+
 [test_security_guidelines]
  ('-g param'); verifies the guide with security guidelines is displayed correctly.
 
 [test_skipped_headers]
  ('-s ETAG NEL' param); verifies the specified headers are excluded from the detailed analysis.
+
+[test_unsupported_header]
+ ('-s testhumbleheader' param); verify that the headers indicated for exclusion in the analysis are actually analyzed.
 
 [test_updates]
  ('-v' param); verifies the update check mechanism works as intended.

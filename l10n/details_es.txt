@@ -2072,11 +2072,17 @@ Generador
 [test_response_headers]
  (parámetro '-r'); verifica que las cabeceras HTTP de respuesta se muestren correctamente.
 
+[test_russian_block]
+ (sin parámetros); verifica que no se analicen URL rusas.
+
 [test_security_guidelines]
  (parámetro '-g'); verifica que la guía con directrices de seguridad se muestre correctamente.
 
 [test_skipped_headers]
  (parámetro '-s ETAG NEL'); verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
+
+[test_unsupported_header]
+ (parámetro '-s testhumbleheader'); verifica que las cabeceras indicadas a excluir en el análisis realmente se analicen.
 
 [test_updates]
  (parámetro '-v'); verifica que la lógica para comprobar actualizaciones funcione correctamente.
