@@ -10,7 +10,7 @@ from os import listdir, path, remove
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 HUMBLE_TESTS_DIR = path.dirname(__file__)
-HUMBLE_TEMP_FILE = path.join(HUMBLE_TESTS_DIR, 'analysis_h.txt')
+HUMBLE_TEMP_HISTORY = path.join(HUMBLE_TESTS_DIR, 'analysis_h.txt')
 HUMBLE_TEMP_PREFIX = 'humble_'
 PYTEST_CACHE_DIRS = [
     path.join(HUMBLE_TESTS_DIR, d)
@@ -49,6 +49,7 @@ TEST_CFGS = {
     'test_export_xml': (['-u', TEST_URL, '-o', 'xml'], 'XML saved'),
     'test_fingerprint_groups': (['-f'], 'Top 20 groups'),
     'test_fingerprint_term': (['-f', 'Google'], 'Headers related to'),
+    'test_global_statistics': (['-a'], 'Empty headers'),
     'test_input_file': (['-if', HUMBLE_INPUT_FILE, '-u', HUMBLE_INPUT_URL],
                         'Input:'),
     'test_l10n_analysis': (['-u', TEST_URL, '-l', 'es'],
@@ -83,8 +84,8 @@ TEST_SUMMS = ('[test_help]', '[test_brief_analysis]', '[test_cicd_analysis]',
               '[test_export_json_brief]', '[test_export_pdf]',
               '[test_export_xlsx]', '[test_export_xml]',
               '[test_fingerprint_groups]', '[test_fingerprint_term]',
-              '[test_input_file]', '[test_l10n_analysis]',
-              '[test_l10n_grades]', '[test_license]',
+              '[test_global_statistics]', '[test_input_file]',
+              '[test_l10n_analysis]', '[test_l10n_grades]', '[test_license]',
               '[test_owasp_compliance]', '[test_perm_header]',
               '[test_redirects]', '[test_requests_headers]',
               '[test_response_headers]', '[test_russian_block]',
@@ -97,17 +98,6 @@ TEST_SUMMS = ('[test_help]', '[test_brief_analysis]', '[test_cicd_analysis]',
 class _Args:
     URL = INPUT_FILE_URL
     lang = None
-
-
-@pytest.fixture(scope="session", autouse=True)
-def delete_prior_temps():
-    """
-    Delete the previous analysis history file, analysis_h.txt, if it exists
-    """
-    if path.isfile(HUMBLE_TEMP_FILE):
-        with contextlib.suppress(Exception):
-            remove(HUMBLE_TEMP_FILE)
-    yield
 
 
 def get_detail(id_mode, replace=False):
@@ -209,22 +199,6 @@ def test_python_version():
         )
 
 
-def delete_humble_analysis(file_path):
-    """
-    Deletes analysis history file, analysis_h.txt, after all tests have been
-    run
-    """
-    msgs = []
-    if path.isfile(file_path):
-        try:
-            remove(file_path)
-            msgs.append((get_detail('[test_temp]', replace=True), file_path))
-        except Exception as e:
-            msgs.append((get_detail('[test_ftemp]', replace=True),
-                         f"({type(e).__name__}) {file_path}"))
-    return msgs
-
-
 def delete_export_files(extension, ok_msg, ko_msg):
     """
     Delete all files associated with export tests
@@ -292,7 +266,6 @@ def set_temp_content(current_time):
         ('.xlsx', '[test_xlsx]', '[test_fxlsx]'),
         ('.xml', '[test_xml]', '[test_fxml]'),
     ]
-    info_msgs.extend(delete_humble_analysis(HUMBLE_TEMP_FILE))
     for extension, ok_msg, ko_msg in delete_extensions:
         info_msgs.extend(delete_export_files(extension, ok_msg, ko_msg))
     for cache_dir in PYTEST_CACHE_DIRS:

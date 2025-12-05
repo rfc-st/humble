@@ -2045,6 +2045,9 @@ Generador
 [test_fingerprint_term]
  (parámetro '-f Google'); verifica que las estadísticas del término 'Google', por huella digital, se muestren correctamente.
 
+[test_global_statistics]
+ ('-a' param); verifica que se muestren estadísticas sobre todos los análisis realizados.
+
 [test_input_file]
  (parámetros '-if <HUMBLE_INPUT_FILE> -u <HUMBLE_INPUT_URL>'); verifica que se analice correctamente un fichero con cabeceras de respuesta.
 

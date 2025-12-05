@@ -2065,6 +2065,9 @@ Generator
 [test_fingerprint_term]
  ('-f Google' param); verifies fingerprint statistics display correctly for the term 'Google'.
 
+[test_global_statistics]
+ ('-a' param); verifies that statistics are displayed for all analyses performed.
+
 [test_input_file]
  ('-if <HUMBLE_INPUT_FILE> -u <HUMBLE_INPUT_URL>' params); verifies raw response files are analyzed.
 
