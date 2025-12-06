@@ -2013,7 +2013,7 @@ Generador
  (parámetro '-cicd'); verifica que un análisis CI/CD finalice correctamente.
 
 [test_csp_header]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' params); verifica que se analice la cabecera 'Content-Security-Policy'.
+ (parámetros '-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>'); verifica que se analice la cabecera 'Content-Security-Policy'.
 
 [test_detailed_analysis]
  (sin parámetros); verifica que un análisis detallado finalice correctamente.
@@ -2025,7 +2025,7 @@ Generador
  (parámetro '-o html'); verifica que se exporte a HTML un análisis detallado.
 
 [test_export_json]
- (parámetro '-o json' param); verifica que se exporte a JSON un análisis detallado.
+ (parámetro '-o json'); verifica que se exporte a JSON un análisis detallado.
 
 [test_export_json_brief]
  (parámetros '-o json -b'); verifica que se exporte a JSON un análisis breve.
@@ -2046,7 +2046,7 @@ Generador
  (parámetro '-f Google'); verifica que las estadísticas del término 'Google', por huella digital, se muestren correctamente.
 
 [test_global_statistics]
- ('-a' param); verifica que se muestren estadísticas sobre todos los análisis realizados.
+ (parámetro '-a'); verifica que se muestren estadísticas sobre todos los análisis realizados.
 
 [test_input_file]
  (parámetros '-if <HUMBLE_INPUT_FILE> -u <HUMBLE_INPUT_URL>'); verifica que se analice correctamente un fichero con cabeceras de respuesta.
@@ -2064,13 +2064,13 @@ Generador
  (parámetro '-c'); verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
 
 [test_perm_header]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' params); verifica que se analice la cabecera 'Permissions-Policy'.
+ (parámetros '-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>'); verifica que se analice la cabecera 'Permissions-Policy'.
 
 [test_redirects]
  (parámetro '-df'); verifica que no se sigan las redirecciones en un análisis detallado.
 
 [test_requests_headers]
- (parámetro '-H' con varias cabeceras'); verifica que un análisis finaliza correctamente tras añadir en la petición varias cabeceras HTTP.
+ (parámetro '-H con varias cabeceras'); verifica que un análisis finaliza correctamente tras añadir en la petición varias cabeceras HTTP.
 
 [test_response_headers]
  (parámetro '-r'); verifica que las cabeceras HTTP de respuesta se muestren correctamente.
@@ -2089,6 +2089,9 @@ Generador
 
 [test_updates]
  (parámetro '-v'); verifica que la lógica para comprobar actualizaciones funcione correctamente.
+
+[test_url_statistics]
+ (parámetros '-u <HUMBLE_STATISTICS_URL> -a'); verifica que se muestren las estadísticas para una URL concreta analizada.
 
 [test_user_agent]
  (parámetro '-ua 4'); verifica que el cuarto 'User-Agent' se aplique correctamente en un análisis detallado.

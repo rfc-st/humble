@@ -28,6 +28,7 @@ HUMBLE_INPUT_URL = 'https://github.com'
 HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
 HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
+HUMBLE_STATISTICS_URL = 'https://en.wikipedia.org/'
 INPUT_FILE_URL = "https://github.com"
 REQUIRED_PYTHON = (3, 11)
 TEST_RUSSIAN_URL = 'https://tass.ru/'
@@ -74,6 +75,8 @@ TEST_CFGS = {
     'test_unsupported_header': (['-u', TEST_URL, '-s', 'testhumbleheader'],
                                 'testhumbleheader'),
     'test_updates': (['-v'], 'Keeping your security tools'),
+    'test_url_statistics': (['-u', HUMBLE_STATISTICS_URL, '-a'],
+                            'Empty headers'),
     'test_user_agent': (['-u', TEST_URL, '-ua', '4'],
                         'Selected the User-Agent'),
     'test_user_agent_list': (['-ua', '0'], 'source: '),
@@ -91,8 +94,8 @@ TEST_SUMMS = ('[test_help]', '[test_brief_analysis]', '[test_cicd_analysis]',
               '[test_response_headers]', '[test_russian_block]',
               '[test_security_guidelines]', '[test_skipped_headers]',
               '[test_unsupported_header]', '[test_updates]',
-              '[test_user_agent]', '[test_user_agent_list]',
-              '[test_python_version]')
+              '[test_url_statistics]', '[test_user_agent]',
+              '[test_user_agent_list]', '[test_python_version]')
 
 
 class _Args:

@@ -2021,100 +2021,103 @@ Generator
  Error: Proxy not reachable.
 
 [test_python_version]
- (no param); verifies Python version is at least 3.11.
+ (without parameters); verifies Python version is at least 3.11.
 
 [test_help]
- ('-h' param); verifies the help message is displayed correctly.
+ ('-h' parameter); verifies the help message is displayed correctly.
 
 [test_brief_analysis]
- ('-b' param); verifies the brief analysis completes successfully.
+ ('-b' parameter); verifies the brief analysis completes successfully.
 
 [test_cicd_analysis]
- ('-cicd' param); verifies a CI/CD analysis completes successfully.
+ ('-cicd' parameter); verifies a CI/CD analysis completes successfully.
 
 [test_csp_header]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' params); verify that the ‘Content-Security-Policy’ header is analyzed.
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' parameters); verify that the ‘Content-Security-Policy’ header is analyzed.
 
 [test_detailed_analysis]
- (no param); verifies the detailed analysis completes successfully.
+ (no parameter); verifies the detailed analysis completes successfully.
 
 [test_export_csv]
- ('-o csv' param); verifies the detailed analysis is exported to CSV.
+ ('-o csv' parameter); verifies the detailed analysis is exported to CSV.
 
 [test_export_html]
- ('-o html' param); verifies the detailed analysis is exported to HTML.
+ ('-o html' parameter); verifies the detailed analysis is exported to HTML.
 
 [test_export_json]
- ('-o json' param); verifies the detailed analysis is exported to JSON.
+ ('-o json' parameter); verifies the detailed analysis is exported to JSON.
 
 [test_export_json_brief]
- ('-o json -b' params); verifies the brief analysis is exported to JSON.
+ ('-o json -b' parameters); verifies the brief analysis is exported to JSON.
 
 [test_export_pdf]
- ('-o pdf' param); verifies the detailed analysis is exported to PDF.
+ ('-o pdf' parameter); verifies the detailed analysis is exported to PDF.
 
 [test_export_xlsx]
- ('-o xlsx' param); verifies the detailed analysis is exported to XLSX.
+ ('-o xlsx' parameter); verifies the detailed analysis is exported to XLSX.
 
 [test_export_xml]
- ('-o xml' param); verifies the detailed analysis is exported to XML.
+ ('-o xml' parameter); verifies the detailed analysis is exported to XML.
 
 [test_fingerprint_groups]
- ('-f' param); verifies fingerprint statistics for the Top 20 groups display correctly.
+ ('-f' parameter); verifies fingerprint statistics for the Top 20 groups display correctly.
 
 [test_fingerprint_term]
- ('-f Google' param); verifies fingerprint statistics display correctly for the term 'Google'.
+ ('-f Google' parameter); verifies fingerprint statistics display correctly for the term 'Google'.
 
 [test_global_statistics]
- ('-a' param); verifies that statistics are displayed for all analyses performed.
+ ('-a' parameter); verifies that statistics are displayed for all analyses performed.
 
 [test_input_file]
- ('-if <HUMBLE_INPUT_FILE> -u <HUMBLE_INPUT_URL>' params); verifies raw response files are analyzed.
+ ('-if <HUMBLE_INPUT_FILE> -u <HUMBLE_INPUT_URL>' parameters); verifies raw response files are analyzed.
 
 [test_l10n_analysis]
- ('-l es' param); verifies Spanish localization is applied in the output of a detailed analysis.
+ ('-l es' parameter); verifies Spanish localization is applied in the output of a detailed analysis.
 
 [test_l10n_grades]
- ('-grd -l es' params); verifies the guide about grading an analysis is displayed correctly in Spanish.
+ ('-grd -l es' parameters); verifies the guide about grading an analysis is displayed correctly in Spanish.
 
 [test_license]
- ('-lic param'); verify the license is displayed correctly.
+ ('-lic' parameter); verify the license is displayed correctly.
 
 [test_owasp_compliance]
- ('-c param'); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
+ ('-c' parameter); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
 
 [test_perm_header]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' params); verify that the ‘Permissions-Policy’ header is analyzed.
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' parameters); verify that the ‘Permissions-Policy’ header is analyzed.
 
 [test_redirects]
- ('-df param'); verifies redirects are not followed in a detailed analysis.
+ ('-df' parameter); verifies redirects are not followed in a detailed analysis.
 
 [test_requests_headers]
- ('-H' param with several headers); verify an analysis completes correctly after adding several HTTP headers to the request.
+ ('-H' parameter with several headers); verify an analysis completes correctly after adding several HTTP headers to the request.
 
 [test_response_headers]
- ('-r param'); verify HTTP response headers are displayed correctly.
+ ('-r' parameter); verify HTTP response headers are displayed correctly.
 
 [test_russian_block]
- (no param); verify that Russian URLs are not analyzed.
+ (without parameters); verify that Russian URLs are not analyzed.
 
 [test_security_guidelines]
- ('-g param'); verifies the guide with security guidelines is displayed correctly.
+ ('-g' parameter); verifies the guide with security guidelines is displayed correctly.
 
 [test_skipped_headers]
- ('-s ETAG NEL' param); verifies the specified headers are excluded from the detailed analysis.
+ ('-s ETAG NEL' parameter); verifies the specified headers are excluded from the detailed analysis.
 
 [test_unsupported_header]
- ('-s testhumbleheader' param); verify that the headers indicated for exclusion in the analysis are actually analyzed.
+ ('-s testhumbleheader' parameter); verify that the headers indicated for exclusion in the analysis are actually analyzed.
 
 [test_updates]
- ('-v' param); verifies the update check mechanism works as intended.
+ ('-v' parameter); verifies the update check mechanism works as intended.
+
+[test_url_statistics]
+ ('-u <HUMBLE_STATISTICS_URL> -a' parameters); verify that statistics are displayed for a specific URL analyzed.
 
 [test_user_agent]
- ('-ua 4' param); verifies the selection and use of the 4th User-Agent from the available list during a detailed analysis.
+ ('-ua 4' parameter); verifies the selection and use of the 4th User-Agent from the available list during a detailed analysis.
 
 [test_user_agent_list]
- ('-ua 0' param); verifies the display of available User-Agents.
+ ('-ua 0' parameter); verifies the display of available User-Agents.
 
 [test_tests]
 Tests run at
