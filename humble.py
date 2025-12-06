@@ -3909,11 +3909,11 @@ l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Accept-Patch',
          'X-Runtime', 'X-SourceMap', 'X-UA-Compatible', 'X-Webkit-CSP',
          'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-CH
 t_acceptch_dep = ('content-dpr', 'dpr', 'sec-ch-ua-full-version',
                   'viewport-width', 'width')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Origin
 t_accecao = ('*', 'null')
 t_accecaov = ('.*', '*.')
 
@@ -3921,33 +3921,34 @@ t_accecaov = ('.*', '*.')
 # https://developers.google.com/privacy-sandbox/blog/storage-access-api-headers-logic
 t_act = ('allowed-origin', 'load', 'retry')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
 t_cache = ('no-cache', 'no-store')
 t_cachev = ('immutable', 'max-age', 'must-revalidate', 'must-understand',
             'no-cache', 'no-store', 'no-transform', 'private',
             'proxy-revalidate', 'public', 's-maxage', 'stale-if-error',
             'stale-while-revalidate')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data
 t_csdata = ('cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
             '*')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Digest
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Content-Digest
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Repr-Digest
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Digest
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Want-Repr-Digest
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Want-Content-Digest
 t_digest_sec = ('sha-256', 'sha-512')
 t_digest_ins = ('adler', 'crc32c', 'md5', 'sha-1', 'unixsum', 'unixcksum')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Disposition
 t_contdisp = ('filename', 'filename*')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Encoding
 t_cencoding = ('br', 'compress', 'dcb', 'dcz', 'deflate', 'gzip', 'x-gzip',
                'zstd')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
-# https://www.w3.org/TR/CSP2/ & https://www.w3.org/TR/CSP3/
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
+# https://www.w3.org/TR/CSP2/
+# https://www.w3.org/TR/CSP3/
 t_csp_broad = (' *', '* ', ' * ',  ' blob: ', ' data: ', ' ftp: ',
                ' filesystem: ', ' https: ', ' https://* ', ' https://*.* ',
                ' mailto: ', ' mediastream: ', ' schemes: ', ' tel: ', ' wss: ',
@@ -3971,32 +3972,32 @@ t_csp_miss = ('base-uri', 'child-src', 'connect-src', 'font-src',
 t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',
                 'unsafe-hashes', 'nonce-', '127.0.0.1')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only
 l_csp_ro_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
                 'prefetch-src', 'referrer', 'report-uri', 'require-sri-for',
                 'sandbox', 'violated-directive']
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
 # https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
 t_ct_mime = ('application/xhtml+xml', 'text/html')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#charset
+# https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta#charset
 # https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type
 t_ct_equiv = ('text/html; charset=utf-8', 'text/html; charset=UTF-8')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy
 t_coep = ('credentialless', 'require-corp', 'unsafe-none')
 
 # https://html.spec.whatwg.org/dev/browsers.html#the-coep-headers
 t_coepr = ('require-corp', 'unsafe-none')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
-# https://html.spec.whatwg.org/multipage/browsers.html#cross-origin-opener-policies
 # https://html.spec.whatwg.org/dev/browsers.html#the-coop-headers
+# https://html.spec.whatwg.org/multipage/browsers.html#cross-origin-opener-policies
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy
 t_coop = ('noopener-allow-popups', 'same-origin', 'same-origin-allow-popups',
           'same-origin-plus-COEP', 'unsafe-none')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Resource-Policy
 t_corp = ('cross-origin', 'same-origin', 'same-site')
 
 # https://wicg.github.io/document-isolation-policy/
@@ -4013,19 +4014,19 @@ t_docp = ('basic', 'bpp', 'document-write', 'early-script', 'escape-in-popups',
           'report-to', 'script', 'scripts', 'unsized-media', 'vertical-scroll',
           'viewport-capture')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Expires
 t_excc = ('max-age', 's-maxage')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy-Report-Only
 t_ipol = ('blocked-destinations', 'endpoints', 'sources')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods
 # https://cyberwhite.co.uk/http-verbs-and-their-security-risks/
 t_methods = ('*', 'CONNECT', 'DEBUG', 'DELETE', 'HEAD', 'OPTIONS', 'PATCH',
              'PUT', 'TRACE', 'TRACK')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/MIME_types
 t_legacy = ('application/javascript', 'application/ecmascript',
             'application/x-ecmascript', 'application/x-javascript',
             'text/ecmascript', 'text/javascript1.0', 'text/javascript1.1',
@@ -4041,15 +4042,15 @@ t_nel_req = ('report_to', 'max_age')
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
 t_nvarysearch = ('except', 'key-order', 'params')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Origin-Agent-Cluster
 l_origcluster = ['?1']
 
 # https://developer.chrome.com/origintrials/
+# https://privacysandbox.google.com/overview/status
 # https://github.com/MicrosoftEdge/MSEdgeExplainers
 # https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
-# https://privacysandbox.google.com/private-advertising/setup/web/permissions-policy
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
 t_per_broad = ('*', ' * ')
 t_per_dep = ('document-domain', 'window-placement')
 t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
@@ -4084,14 +4085,14 @@ t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
             'vertical-scroll', 'web-share', 'window-management', 'writer',
             'xr-spatial-tracking')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
 # https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Proxy-Authenticate
 t_proxy_auth = ('AWS4-HMAC-SHA256', 'Basic', 'Bearer', 'Concealed', 'Digest',
                 'DPoP', 'GNAP', 'HOBA', 'Mutual', 'Negotiate', 'OAuth',
                 'PrivateToken', 'SCRAM-SHA-1', 'SCRAM-SHA-256', 'vapid')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
 # https://www.w3.org/TR/referrer-policy/#information-leakage
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referrer-Policy
 t_ref_secure = ('same-origin', 'strict-origin',
                 'strict-origin-when-cross-origin', 'no-referrer',
                 'no-referrer-when-downgrade')
@@ -4099,33 +4100,33 @@ t_ref_values = ('no-referrer', 'no-referrer-when-downgrade', 'origin',
                 'origin-when-cross-origin', 'same-origin', 'strict-origin',
                 'strict-origin-when-cross-origin', 'unsafe-url')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Refresh
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Refresh
 t_refresh = ('QA==', '@')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 t_cookie_prf = ('__Host-', '__Secure-')
 t_cookie_sec = ('httponly', 'secure')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Login
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Login
 t_setlogin = ('logged-in', 'logged-out')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security
 t_sts_dir = ('includeSubDomains', 'max-age')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Supports-Loading-Mode
 t_support_mode = ('credentialed-prerender', 'fenced-frame')
 
 # https://www.w3.org/TR/edge-arch/
 t_surrogate = ('content', 'extension-directive', 'max-age', 'no-store',
                'no-store-remote')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Trailer
 t_trailer = ('authorization', 'cache-control', 'content-encoding',
              'content-length', 'content-type', 'content-range', 'host',
              'max-forwards', 'set-cookie', 'te', 'trailer',
              'transfer-encoding')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Transfer-Encoding
 t_transfer = ('chunked', 'compress', 'deflate', 'gzip', 'x-gzip')
 
 # https://getbutterfly.com/security-headers-a-concise-guide/
@@ -4133,12 +4134,12 @@ t_transfer = ('chunked', 'compress', 'deflate', 'gzip', 'x-gzip')
 t_permcross = ('all', 'by-content-only', 'by-ftp-only', 'master-only', 'none',
                'none-this-response')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options
 t_xfo_dir = ('DENY', 'SAMEORIGIN')
 
+# https://seranking.com/blog/guide-meta-tag-robots-x-robots-tag/
 # https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 # https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
-# https://seranking.com/blog/guide-meta-tag-robots-x-robots-tag/
 t_robots = ('all', 'archive', 'follow', 'index', 'indexifembedded',
             'max-image-preview', 'max-snippet', 'max-video-preview',
             'noarchive', 'nocache', 'noodp', 'nofollow', 'noimageindex',
