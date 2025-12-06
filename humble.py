@@ -174,7 +174,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-12-05', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-06', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 

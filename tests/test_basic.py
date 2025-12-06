@@ -3,10 +3,10 @@
 import sys
 import pytest
 import shutil
-import contextlib
 import subprocess
 from datetime import datetime
-from os import listdir, path, remove
+from contextlib import suppress
+from os import listdir, path, remove, fsync
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 HUMBLE_TESTS_DIR = path.dirname(__file__)
@@ -204,7 +204,7 @@ def delete_export_files(extension, ok_msg, ko_msg):
     Delete all files associated with export tests
     """
     msgs = []
-    with contextlib.suppress(Exception):
+    with suppress(Exception):
         file = next(
             f for f in listdir(HUMBLE_TESTS_DIR)
             if f.lower().startswith(HUMBLE_TEMP_PREFIX)
@@ -242,7 +242,7 @@ def delete_pytestcov_caches(dir_path):
     coverage has been run.
     """
     if path.isdir(dir_path):
-        with contextlib.suppress(Exception):
+        with suppress(Exception):
             shutil.rmtree(dir_path)
 
 
@@ -296,7 +296,30 @@ def delete_temp_content():
         print(f"[INFO] {message.ljust(max_msg_len + 1)}: {value}")
 
 
-local_version = datetime.strptime('2025-12-03', '%Y-%m-%d').date()
+def cleanup_analysis_history():
+    """
+    Once all tests have been completed, delete all lines from the test analysis
+    history file except for the first twenty-five (which are necessary for some
+    of the tests), ensuring that the size of this file remains stable over
+    time.
+    """
+    original_lines = []
+
+    with suppress(Exception):
+        with open(HUMBLE_TEMP_HISTORY, "r", encoding="utf-8") as history_file:
+            original_lines.extend(next(history_file) for _ in range(25))
+
+    if not original_lines:
+        return
+
+    with suppress(Exception):
+        with open(HUMBLE_TEMP_HISTORY, "w", encoding="utf-8") as original_file:
+            original_file.writelines(original_lines)
+            original_file.flush()
+            fsync(original_file.fileno())
+
+
+local_version = datetime.strptime('2025-12-06', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
@@ -319,6 +342,7 @@ def delete_temp_coverage():
     args.lang = "en"
     l10n_main = get_l10n_content()
     yield
+    cleanup_analysis_history()
     delete_temp_content()
     for cache_dir in PYTEST_CACHE_DIRS:
         delete_pytestcov_caches(cache_dir)
