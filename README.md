@@ -353,7 +353,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-12-02
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2025-12-06
 
 options:
   -h, --help                           show this help message and exit
@@ -397,7 +397,7 @@ examples:
 
 want to contribute?:
   How to                               https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
-  References (classes and functions)   https://humble.readthedocs.io/en/latest/reference.html
+  References (classes and functions)   https://humble.readthedocs.io/en/latest/references.html
   Acknowledgements                     https://github.com/rfc-st/humble/#acknowledgements
 ```
 
