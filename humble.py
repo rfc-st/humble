@@ -4038,7 +4038,7 @@ t_nel_dir = ('failure_fraction', 'include_subdomains', 'max_age', 'report_to',
              'request_headers', 'response_headers', 'success_fraction')
 t_nel_req = ('report_to', 'max_age')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/No-Vary-Search
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
 t_nvarysearch = ('except', 'key-order', 'params')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
@@ -4364,7 +4364,7 @@ if 'integrity-policy' in headers_l and '33' not in skip_list:
         print_details('[ipol_h]', '[ipol]', 'd', i_cnt)
 
 if 'integrity-policy-report-only' in headers_l and '34' not in skip_list:
-    ipol_header = headers_l['integrity-policy-report-only-policy']
+    ipol_header = headers_l['integrity-policy-report-only']
     if not any(elem in ipol_header for elem in t_ipol):
         print_details('[ipolr_h]', '[ipolr]', 'd', i_cnt)
 
@@ -4376,7 +4376,7 @@ if ('keep-alive' in headers_l and headers_l['keep-alive'] and
 if 'large-allocation' in headers_l and '36' not in skip_list:
     print_details('[ixlalloc_h]', '[ixallocd]', 'd', i_cnt)
 
-if 'mcp-session-id' in headers and '37' not in skip_list:
+if 'mcp-session-id' in headers_l and '37' not in skip_list:
     print_details('[imcp_h]', '[imcp]', 'm', i_cnt)
 
 if 'nel' in headers_l and '38' not in skip_list:
@@ -4387,7 +4387,7 @@ if 'nel' in headers_l and '38' not in skip_list:
         print_details('[inelm_h]', '[inelm]', "d", i_cnt)
 
 if 'no-vary-search' in headers_l and '39' not in skip_list:
-    nvarys_header = headers_l['no_vary-search']
+    nvarys_header = headers_l['no-vary-search']
     if not any(elem in nvarys_header for elem in t_nvarysearch):
         print_details('[ifnvarys_h]', '[ifnvarys]', 'd', i_cnt)
 

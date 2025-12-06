@@ -2026,14 +2026,14 @@ Generator
 [test_help]
  ('-h' parameter); verifies the help message is displayed correctly.
 
+[test_all_headers]
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' parameters); verify that all possible headers are analyzed.
+
 [test_brief_analysis]
  ('-b' parameter); verifies the brief analysis completes successfully.
 
 [test_cicd_analysis]
  ('-cicd' parameter); verifies a CI/CD analysis completes successfully.
-
-[test_csp_header]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' parameters); verify that the ‘Content-Security-Policy’ header is analyzed.
 
 [test_detailed_analysis]
  (no parameter); verifies the detailed analysis completes successfully.
@@ -2082,9 +2082,6 @@ Generator
 
 [test_owasp_compliance]
  ('-c' parameter); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
-
-[test_perm_header]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' parameters); verify that the ‘Permissions-Policy’ header is analyzed.
 
 [test_redirects]
  ('-df' parameter); verifies redirects are not followed in a detailed analysis.

@@ -1,0 +1,84 @@
+HTTP/2 200
+date: Sat, 06 Dec 2025 19:38:00 GMT
+content-type: text/html; charset=utf-8
+content-language: en-US
+cache-control: max-age=0, private, must-revalidate
+strict-transport-security: max-age=31536000; includeSubdomains; preload
+x-frame-options: deny
+x-content-type-options: nosniff
+x-xss-protection: 0
+referrer-policy: origin-when-cross-origin, strict-origin-when-cross-origin
+content-security-policy: default-src 'none'; block-all-mixed-content; script-src 'strict-dynamic' 'unsafe-inline' 'unsafe-eval' 'sha256-YTVkYWQ3OWVmZTY1ODkzNzhhM2Y4M2Q2MDU5MTQyMTkxZmM2ZDRmZjdkMzc5MjRlOGVhMWU5MzU2OGFjNGRiOA=' sha256-YTVkYWQ3OWVmZTY1ODkzNzhhM2Y4M2Q2MDU5MTQyMTkxZmM2ZDRmZjdkMzc5MjRlOGVhMWU5MzU2OGFjNGRiOA== 'nonce-VEVTVA==' 192.168.1.1; unknown_directive; style-src http://insecuretestdomain.net; font-src *
+permissions-policy: window-placement, geolocation=*, camera none
+accept-ranges: bytes
+accept-ch: content-dpr, viewport-width
+accept-ch-lifetime: 86400
+accept-patch: */*
+access-control-allow-credentials: false
+access-control-allow-methods: DEBUG, DELETE
+access-control-allow-origin: null
+access-control-max-age: 86401
+activate-storage-access: testvalue
+allow: TRACE, TRACK
+clear-site-data: testdirective
+content-digest: md5=2ab39636ed14de9189751a912273995f
+content-disposition: filename="humble_test.jpg"
+content-dpr: 2.0
+content-enconding: testencoding
+critical-ch: Sec-CH-Prefers-Reduced-Motion
+cross-origin-embedder-policy: testdirective
+cross-origin-embedder-policy-report-only: testdirective
+cross-origin-opener-policy: testdirective
+cross-origin-opener-policy-report-only: testdirective
+cross-origin-resource-policy: testdirective
+digest: sha-256=:RK/0qy18MlBSVnWgjwz6lZEWjP/lF5HF9bvEF8FabDg=:
+document-isolation-policy: testpolicy
+document-policy: testpolicy
+expect-ct: max-age=86400
+feature-policy: camera 'self'
+integrity-policy: testkey
+integrity-policy-report-only: testkey
+keep-alive: timeout=5, max=200
+large-allocation: 0
+mcp-session-id: 1868a90c
+nel: testdirective
+no-vary-search: testdirective
+observe-browsing-topics: ?0
+onion-location: http://humbletestonionaddress.onion
+origin-agent-cluster: ?0
+pragma: no-cache
+proxy-authenticate: testscheme
+public-key-pins: pin-sha256="base64_hash_primary"
+public-key-pins-report-only: pin-sha256 = "cUPcTAZWKaASuYWhhneY3oBAkE3h2+soZS7sWs="
+refresh: @
+repr-digest: adler
+server-timing: cache;desc="Cache Read";dur=23.2,db;dur=53,app;dur=47.2
+service-worker-allowed: /
+set-cookie: __humble-test=34d8g; SameSite=None;
+set-login: logged-test
+sourcemap: /humble/test/test.js.map
+speculation-rules: "humble/test/test.json"
+strict-dynamic: testvalue
+supports-loading-mode: testdirective
+surrogate-control: testdirective
+timing-allow-origin: *
+tk: N
+trailer: content-encoding
+transfer-encoding: testdirective
+want-content-digest: adler
+want-digest: sha-512=9
+want-repr-digest: adler
+warning: 112 - "cache down" "Sat, 06 Dec 2025 20:59:00 GMT"
+x-content-security-policy: allow *
+x-content-security-policy-report-only: default-src https:
+x-dns-prefetch-control: on
+x-download-options: noopen
+x-pad: avoid browser bug
+x-permitted-cross-domain-policies: testvalue
+x-pingback: http://humbletestingpingback.test/xmlrcp.php
+x-robots-tag: testvalue
+x-runtime: 0.615905
+x-sourcemap: /humble/test/test.js.map
+x-ua-compatible: IE=EmulateIE8
+x-webkit-csp: allow *
+x-webkit-csp-report-only: default-src https:
