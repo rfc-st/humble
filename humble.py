@@ -3883,7 +3883,7 @@ print("")
 # when exporting an analysis to PDF, certain reference URLs were too long and
 # caused formatting issues. After researching how to fix these errors, I found
 # https://github.com/lazd/mdn.io, which uses DuckDuckGo's Bang! to redirect to
-# the first search result associated with 'Mozilla Network Documentation.'
+# the first search result associated with 'Mozilla Developer Network'.
 #
 # E.g., from https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/\
 # Headers/Cross-Origin-Embedder-Policy to https://mdn.io/Cross-Origin-Embedder\

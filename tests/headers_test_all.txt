@@ -1,13 +1,13 @@
 HTTP/2 200
 date: Sat, 06 Dec 2025 19:38:00 GMT
-content-type: text/html; charset=utf-8
+content-type: text/javascript1.3
 content-language: en-US
 cache-control: max-age=0, private, must-revalidate
-strict-transport-security: max-age=31536000; includeSubdomains; preload
-x-frame-options: deny
-x-content-type-options: nosniff
-x-xss-protection: 0
-referrer-policy: origin-when-cross-origin, strict-origin-when-cross-origin
+strict-transport-security: max-age=31536000; includeSubdomains; preload, preload
+x-frame-options: allow-from, allow-from
+x-content-type-options: test, test
+x-xss-protection: 1, 1
+referrer-policy: testvalue, testvalue
 content-security-policy: default-src 'none'; block-all-mixed-content; script-src 'strict-dynamic' 'unsafe-inline' 'unsafe-eval' 'sha256-YTVkYWQ3OWVmZTY1ODkzNzhhM2Y4M2Q2MDU5MTQyMTkxZmM2ZDRmZjdkMzc5MjRlOGVhMWU5MzU2OGFjNGRiOA=' sha256-YTVkYWQ3OWVmZTY1ODkzNzhhM2Y4M2Q2MDU5MTQyMTkxZmM2ZDRmZjdkMzc5MjRlOGVhMWU5MzU2OGFjNGRiOA== 'nonce-VEVTVA==' 192.168.1.1; unknown_directive; style-src http://insecuretestdomain.net; font-src *
 permissions-policy: window-placement, geolocation=*, camera none
 accept-ranges: bytes
@@ -51,10 +51,11 @@ proxy-authenticate: testscheme
 public-key-pins: pin-sha256="base64_hash_primary"
 public-key-pins-report-only: pin-sha256 = "cUPcTAZWKaASuYWhhneY3oBAkE3h2+soZS7sWs="
 refresh: @
+reporting-endpoints: csp-endpoint="http://humbletestreportingendpoint.com/csp-reports"
 repr-digest: adler
 server-timing: cache;desc="Cache Read";dur=23.2,db;dur=53,app;dur=47.2
 service-worker-allowed: /
-set-cookie: __humble-test=34d8g; SameSite=None;
+set-cookie: __Secure-humble-test=34d8g; SameSite=None; secure
 set-login: logged-test
 sourcemap: /humble/test/test.js.map
 speculation-rules: "humble/test/test.json"
@@ -69,13 +70,14 @@ want-content-digest: adler
 want-digest: sha-512=9
 want-repr-digest: adler
 warning: 112 - "cache down" "Sat, 06 Dec 2025 20:59:00 GMT"
+www-authenticate: basic realm="testing", charset="UTF-8"
 x-content-security-policy: allow *
 x-content-security-policy-report-only: default-src https:
 x-dns-prefetch-control: on
 x-download-options: noopen
 x-pad: avoid browser bug
-x-permitted-cross-domain-policies: testvalue
-x-pingback: http://humbletestingpingback.test/xmlrcp.php
+x-permitted-cross-domain-policies: testvalue, testvalue
+x-pingback: http://humbletestingpingback.test/xmlrpc.php
 x-robots-tag: testvalue
 x-runtime: 0.615905
 x-sourcemap: /humble/test/test.js.map

@@ -2027,7 +2027,10 @@ Generator
  ('-h' parameter); verifies the help message is displayed correctly.
 
 [test_all_headers]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' parameters); verify that all possible headers are analyzed.
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' parameters); verify that all possible headers of a secure URL are analyzed.
+
+[test_unsafe_all_headers]
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INSECURE_INPUT_URL>' parameters); verify that all possible headers of an insecure URL are analyzed.
 
 [test_brief_analysis]
  ('-b' parameter); verifies the brief analysis completes successfully.

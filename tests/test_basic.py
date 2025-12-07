@@ -25,6 +25,7 @@ HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
 HUMBLE_INPUT_FILE = path.abspath(path.join(HUMBLE_INPUT_DIR,
                                            'github_input_file.txt'))
 HUMBLE_INPUT_URL = 'https://github.com'
+HUMBLE_INSECURE_INPUT_URL = 'http://github.com'
 HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
 HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
@@ -37,6 +38,8 @@ TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
     'test_all_headers': (['-if', HUMBLE_HEADERS_FILE, '-u', HUMBLE_INPUT_URL],
                          'Input:'),
+    'test_unsafe_all_headers': (['-if', HUMBLE_HEADERS_FILE, '-u',
+                                 HUMBLE_INSECURE_INPUT_URL], 'Input:'),
     'test_brief_analysis': (['-u', TEST_URL, '-b'], 'Analysis Grade:'),
     'test_cicd_analysis': (['-u', TEST_URL, '-cicd'], 'Analysis Grade'),
     'test_detailed_analysis': (['-u', TEST_URL], 'Analysis Grade:'),
@@ -79,9 +82,10 @@ TEST_CFGS = {
                         'Selected the User-Agent'),
     'test_user_agent_list': (['-ua', '0'], 'source: '),
 }
-TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_brief_analysis]',
-              '[test_cicd_analysis]', '[test_detailed_analysis]',
-              '[test_export_csv]', '[test_export_html]', '[test_export_json]',
+TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
+              '[test_brief_analysis]', '[test_cicd_analysis]',
+              '[test_detailed_analysis]', '[test_export_csv]',
+              '[test_export_html]', '[test_export_json]',
               '[test_export_json_brief]', '[test_export_pdf]',
               '[test_export_xlsx]', '[test_export_xml]',
               '[test_fingerprint_groups]', '[test_fingerprint_term]',

@@ -2007,7 +2007,10 @@ Generador
  (parámetro '-h'); verifica que la Ayuda se muestre correctamente.
 
 [test_all_headers]
- (parámetros '-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>'); verifica que se analicen todas las cabeceras posibles.
+ (parámetros '-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>'); verifica que se analicen todas las cabeceras posibles de una URL segura.
+
+[test_unsafe_all_headers]
+ (parámetros '-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INSECURE_INPUT_URL>'); verifica que se analicen todas las cabeceras posibles de una URL insegura.
 
 [test_brief_analysis]
  (parámetro '-b'); verifica que un análisis breve finalice correctamente.
