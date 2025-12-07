@@ -183,7 +183,7 @@
 
 [ixcspr]
  This header is deprecated. Use instead "Content-Security-Policy-Report-Only".
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only
+ Ref: https://mdn.io/Content-Security-Policy-Report-Only
 
 [ionloc_h]
  Onion-Location (Potentially Unsafe Header)
@@ -272,7 +272,7 @@
 
 [ictlhtml]
  The URL is not an HTML document. This analysis may not apply in its entirety.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+ Ref: https://mdn.io/Common_types
 
 [ictlchar_h]
  Content-Type (Unsafe Value)
@@ -345,7 +345,7 @@
 
 [icred]
  The only valid value for this header is 'true'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Credentials
+ Ref: https://mdn.io/Access-Control-Allow-Credentials
 
 [ixcdpr_h]
  Content-DPR (Deprecated Header)
@@ -359,8 +359,8 @@
 
 [ixcdisp]
  Encode file URLs and sanitize '"', '/', '\r', '\n' characters.
+ Ref: https://mdn.io/Content-Disposition
  Ref: https://gist.github.com/motoyasu-saburi/1b19ef18e96776fe90ba1b9f910fa714
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Disposition
 
 [ipol_h]
  Integrity-Policy (No Valid Keys)
@@ -377,7 +377,7 @@
 
 [ipolr]
  Include at least one valid key.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy-Report-Only
+ Ref: https://mdn.io/Integrity-Policy-Report-Only
 
 [ickeep]
  This header is ignored if the value of the "Connection" header is not 'keep-alive'.
@@ -402,7 +402,7 @@
 
 [iobsb]
  Include at least one valid directive.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Observe-Browsing-Topics
+ Ref: https://mdn.io/Observe-Browsing-Topics
 
 [inelm_h]
  (*) NEL (Missing Directives)
@@ -423,7 +423,7 @@
 
 [ixwandig]
  This header is deprecated.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Want-Content-Digest
+ Ref: https://mdn.io/Want-Content-Digest
 
 [ixwar_h]
  Warning (Deprecated Header)
@@ -458,7 +458,7 @@
  Content-Security-Policy-Report-Only (Ignored Directives)
 
 [icsiro_d_r]
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only
+ Ref: https://mdn.io/Content-Security-Policy-Report-Only
 
 [icsi_d_s]
  Avoid deprecated or ignored directives: 
@@ -468,7 +468,7 @@
 
 [icsiroi]
  Use the 'report-to' directive or this header has no effect.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only
+ Ref: https://mdn.io/Content-Security-Policy-Report-Only
 
 [itrailer_d_s]
  Avoid disallowed directives: 
@@ -503,7 +503,7 @@
 
 [icoep]
  Include at least one valid directive.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy
+ Ref: https://mdn.io/Cross-Origin-Embedder-Policy
 
 [icoepr]
  Include at least one valid directive.
@@ -514,14 +514,14 @@
 
 [icoop]
  Include at least one valid directive.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy
+ Ref: https://mdn.io/Cross-Origin-Opener-Policy
 
 [icoopi_h]
  Cross-Origin-Opener-Policy (Unsafe value)
 
 [icoopi]
  The value 'unsafe-none' is considered unsafe.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy
+ Ref: https://mdn.io/Cross-Origin-Opener-Policy
 
 [icoopr_h]
  Cross-Origin-Opener-Policy-Report-Only (No Valid Directives)
@@ -535,7 +535,7 @@
 
 [icorp]
  Include at least one valid directive.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Resource-Policy
+ Ref: https://mdn.io/Cross-Origin-Resource-Policy
 
 [icspmb_h]
  Content-Security-Policy ('base-uri' Directive Missing)
@@ -1042,11 +1042,11 @@ HTTP Response Headers
 
 [mcoe]
  Prevents documents and workers from loading non-same-origin requests unless allowed.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy
+ Ref: https://mdn.io/Cross-Origin-Embedder-Policy
 
 [mcop]
  Prevent other websites from gaining arbitrary window references to a page.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy
+ Ref: https://mdn.io/Cross-Origin-Opener-Policy
 
 [mcor]
  Protect servers against certain cross-origin or cross-site embedding of the returned source.
@@ -1074,11 +1074,11 @@ HTTP Response Headers
 
 [msts]
  Tell browsers that it should only be accessed using HTTPS, instead of using HTTP.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security
+ Ref: https://mdn.io/Strict-Transport-Security
 
 [mxcto]
  Indicate that MIME types in the "Content-Type" headers should be followed.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Content-Type-Options
+ Ref: https://mdn.io/X-Content-Type-Options
 
 [mxfo]
  Prevents clickjacking attacks, limiting sources of embedded content.
@@ -1090,7 +1090,7 @@ HTTP Response Headers
 
 [iaccess]
  Review the values '*' or 'null' regarding your Cross-origin resource sharing requirements.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Origin
+ Ref: https://mdn.io/Access-Control-Allow-Origin
 
 [iaccessma]
  The value of this header exceeds the maximum allowed (86400) in the main browsers.
@@ -1136,7 +1136,7 @@ HTTP Response Headers
 
 [icspmo]
  Prevents plugin injection; try to set it to 'none'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/object-src
+ Ref: https://mdn.io/object-src
 
 [icspmr]
  Prevents DOM XSS injection in scripts; try to set it to 'script'.
@@ -1233,12 +1233,12 @@ HTTP Response Headers
 
 [ictp]
  The only valid value is 'nosniff'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Content-Type-Options
+ Ref: https://mdn.io/X-Content-Type-Options
 
 [ictpd]
  Conflicting values or repeated headers with them could cause browsers to ignore all.
- Ref: https://shorturl.at/qjIgB
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Content-Type-Options
+ Ref: https://mdn.io/X-Content-Type-Options
+ Ref: https://datatracker.ietf.org/doc/html/rfc9110#section-5.3
 
 [ieta]
  Although unlikely to be exploited, this header should not include inode information.
@@ -1348,11 +1348,11 @@ HTTP Response Headers
 
 [iwcondig]
  Include a secure algorithm.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Want-Content-Digest
+ Ref: https://mdn.io/Want-Content-Digest
 
 [iwcondigi]
  Unsafe algorithms should not be used as collisions can be forced.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Want-Content-Digest
+ Ref: https://mdn.io/Want-Content-Digest
 
 [iwreprdig]
  Include a secure algorithm.
@@ -1388,29 +1388,29 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Speculation-Rules
 
 [isdyn]
- This is not a header, but a keyword of the 'Content-Security-Policy' header.
+ Review the context in which ‘strict-dynamic’ is permitted.
  Ref: https://content-security-policy.com/strict-dynamic/
 
 [ists]
  Add 'includeSubDomains' and 'max-age' (with 31536000 -one year- as minimum).
  Ref: https://https.cio.gov/hsts/
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security
+ Ref: https://mdn.io/Strict-Transport-Security
 
 [istsr]
  'preload' requires 'includeSubDomains' and 'max-age' (with 31536000 -one year- as minimum).
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security
+ Ref: https://mdn.io/Strict-Transport-Security
 
 [istsd]
  This header, or its values, may be duplicated.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security
+ Ref: https://mdn.io/Strict-Transport-Security
 
 [islmodei]
  This header is ignored by the browser when accessing via HTTP.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Supports-Loading-Mode
+ Ref: https://mdn.io/Supports-Loading-Mode
 
 [islmode]
  Include at least one valid directive.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Supports-Loading-Mode
+ Ref: https://mdn.io/Supports-Loading-Mode
 
 [isurrmode]
  Include at least one valid directive.
@@ -1422,7 +1422,7 @@ HTTP Response Headers
 
 [ihsts]
  This header is ignored by the browser when accessing via HTTP.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security
+ Ref: https://mdn.io/Strict-Transport-Security
 
 [ihbas]
  The 'Basic' HTTP authentication scheme sends base64-encoded credentials, without encrypting them.
@@ -1447,8 +1447,8 @@ HTTP Response Headers
 
 [itwall]
  The '/' scope is too permissive; consider narrowing it.
+ Ref: https://mdn.io/Service-Worker-Allowed
  Ref: https://www.zeepalm.com/blog/service-worker-security-best-practices-2024-guide
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Service-Worker-Allowed
 
 [ixpermcrossu]
  The value 'all' could permit any cross-domain requests from Flash and PDF documents.
@@ -1504,7 +1504,7 @@ HTTP Response Headers
  Ref: https://www.virtuesecurity.com/kb/x-runtime-header-timing-attacks/
 
 [ixsrc]
- This header is deprecated. Use instead "SourceMap".
+ This header is deprecated; use the one indicated in the following reference.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/SourceMap
 
 [ixxp]

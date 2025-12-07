@@ -174,7 +174,7 @@ VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-12-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-07', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -3146,8 +3146,8 @@ def format_html_empty(ln, ln_rstrip, l_empty):
 
 def format_html_rest(html_final, l_empty, ln):
     """
-    Write formatted lines for the rest of the sections; related to analysis
-    exported to HTML
+    Write formatted lines for the rest of the sections; e.g. highlighting in
+    red the insecure headers. Related to analysis exported to HTML
     """
     l_total = sorted(set(l_miss + l_ins))
     ln, ln_enabled = format_html_enabled(ln, html_final)
@@ -3878,6 +3878,20 @@ print("")
 
 # Section '4. Deprecated HTTP Response Headers/Protocols and Insecure Values'
 # The file associated with this check is /additional/insecure.txt
+#
+# About 'https://mdn.io/' short links: due to limited character space per line,
+# when exporting an analysis to PDF, certain reference URLs were too long and
+# caused formatting issues. After researching how to fix these errors, I found
+# https://github.com/lazd/mdn.io, which uses DuckDuckGo's Bang! to redirect to
+# the first search result associated with 'Mozilla Network Documentation.'
+#
+# E.g., from https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/\
+# Headers/Cross-Origin-Embedder-Policy to https://mdn.io/Cross-Origin-Embedder\
+# -Policy.
+#
+# I have checked all of these short links one by one: they all resolve to the
+# original URL, but I cannot guarantee that they will remain that way over
+# time. I will keep an eye on them, though :)
 print_detail_r('[4depinsecure]')
 i_cnt = [0]
 
@@ -3897,23 +3911,23 @@ l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Accept-Patch',
          'Mcp-Session-Id', 'No-Vary-Search', 'Observe-Browsing-Topics',
          'Onion-Location', 'Origin-Agent-Cluster', 'P3P', 'Pragma',
          'Proxy-Authenticate', 'Public-Key-Pins',
-         'Public-Key-Pins-Report-Only', 'Report-To', 'Reporting-Endpoints',
-         'Repr-Digest', 'Server-Timing', 'Service-Worker-Allowed',
-         'Set-Cookie', 'Set-Login', 'SourceMap', 'Speculation-Rules',
-         'Strict-Dynamic', 'Supports-Loading-Mode', 'Surrogate-Control',
-         'Timing-Allow-Origin', 'Tk', 'Trailer', 'Transfer-Encoding', 'Vary',
-         'Want-Digest', 'Want-Content-Digest', 'Want-Repr-Digest', 'Warning',
-         'WWW-Authenticate', 'X-Content-Security-Policy',
-         'X-Content-Security-Policy-Report-Only', 'X-DNS-Prefetch-Control',
-         'X-Download-Options', 'X-Pad', 'X-Pingback', 'X-Robots-Tag',
-         'X-Runtime', 'X-SourceMap', 'X-UA-Compatible', 'X-Webkit-CSP',
-         'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
+         'Public-Key-Pins-Report-Only', 'Refresh', 'Report-To',
+         'Reporting-Endpoints', 'Repr-Digest', 'Server-Timing',
+         'Service-Worker-Allowed', 'Set-Cookie', 'Set-Login', 'SourceMap',
+         'Speculation-Rules', 'Strict-Dynamic', 'Supports-Loading-Mode',
+         'Surrogate-Control', 'Timing-Allow-Origin', 'Tk', 'Trailer',
+         'Transfer-Encoding', 'Vary', 'Want-Digest', 'Want-Content-Digest',
+         'Want-Repr-Digest', 'Warning', 'WWW-Authenticate',
+         'X-Content-Security-Policy', 'X-Content-Security-Policy-Report-Only',
+         'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad', 'X-Pingback',
+         'X-Robots-Tag', 'X-Runtime', 'X-SourceMap', 'X-UA-Compatible',
+         'X-Webkit-CSP', 'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-CH
 t_acceptch_dep = ('content-dpr', 'dpr', 'sec-ch-ua-full-version',
                   'viewport-width', 'width')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Origin
+# https://mdn.io/Access-Control-Allow-Origin
 t_accecao = ('*', 'null')
 t_accecaov = ('.*', '*.')
 
@@ -3932,14 +3946,14 @@ t_cachev = ('immutable', 'max-age', 'must-revalidate', 'must-understand',
 t_csdata = ('cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
             '*')
 
+# https://mdn.io/Want-Content-Digest
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Repr-Digest
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Digest
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Want-Repr-Digest
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Want-Content-Digest
 t_digest_sec = ('sha-256', 'sha-512')
 t_digest_ins = ('adler', 'crc32c', 'md5', 'sha-1', 'unixsum', 'unixcksum')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Disposition
+# https://mdn.io/Content-Disposition
 t_contdisp = ('filename', 'filename*')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Encoding
@@ -3972,7 +3986,7 @@ t_csp_miss = ('base-uri', 'child-src', 'connect-src', 'font-src',
 t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',
                 'unsafe-hashes', 'nonce-', '127.0.0.1')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only
+# https://mdn.io/Content-Security-Policy-Report-Only
 l_csp_ro_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
                 'prefetch-src', 'referrer', 'report-uri', 'require-sri-for',
                 'sandbox', 'violated-directive']
@@ -3985,19 +3999,19 @@ t_ct_mime = ('application/xhtml+xml', 'text/html')
 # https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type
 t_ct_equiv = ('text/html; charset=utf-8', 'text/html; charset=UTF-8')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy
+# https://mdn.io/Cross-Origin-Embedder-Policy
 t_coep = ('credentialless', 'require-corp', 'unsafe-none')
 
 # https://html.spec.whatwg.org/dev/browsers.html#the-coep-headers
 t_coepr = ('require-corp', 'unsafe-none')
 
+# https://mdn.io/Cross-Origin-Opener-Policy
 # https://html.spec.whatwg.org/dev/browsers.html#the-coop-headers
 # https://html.spec.whatwg.org/multipage/browsers.html#cross-origin-opener-policies
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy
 t_coop = ('noopener-allow-popups', 'same-origin', 'same-origin-allow-popups',
           'same-origin-plus-COEP', 'unsafe-none')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Resource-Policy
+# https://mdn.io/Cross-Origin-Resource-Policy
 t_corp = ('cross-origin', 'same-origin', 'same-site')
 
 # https://wicg.github.io/document-isolation-policy/
@@ -4017,8 +4031,8 @@ t_docp = ('basic', 'bpp', 'document-write', 'early-script', 'escape-in-popups',
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Expires
 t_excc = ('max-age', 's-maxage')
 
+# https://mdn.io/Integrity-Policy-Report-Only
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy-Report-Only
 t_ipol = ('blocked-destinations', 'endpoints', 'sources')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods
@@ -4110,10 +4124,10 @@ t_cookie_sec = ('httponly', 'secure')
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Login
 t_setlogin = ('logged-in', 'logged-out')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security
+# https://mdn.io/Strict-Transport-Security
 t_sts_dir = ('includeSubDomains', 'max-age')
 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Supports-Loading-Mode
+# https://mdn.io/Supports-Loading-Mode
 t_support_mode = ('credentialed-prerender', 'fenced-frame')
 
 # https://www.w3.org/TR/edge-arch/
@@ -4232,7 +4246,7 @@ if contdig_header and '12' not in skip_list:
     if not any(elem in contdig_header for elem in t_digest_sec):
         print_details('[icontdig_h]', '[icontdig]', 'd', i_cnt)
     if any(elem in contdig_header for elem in t_digest_ins):
-        print_details('[icontdigi_h]', '[icontdigi]', 'm', i_cnt)
+        print_details('[icontdigi_h]', '[icontdigi]', 'd', i_cnt)
 
 if 'content-dpr' in headers_l and '13' not in skip_list:
     print_details('[ixcdpr_h]', '[ixcdprd]', 'd', i_cnt)
@@ -4240,7 +4254,7 @@ if 'content-dpr' in headers_l and '13' not in skip_list:
 cdis_header = headers_l.get("content-disposition", '')
 if cdis_header and ('14' not in skip_list) and (any(elem in cdis_header for
                                                     elem in t_contdisp)):
-    print_details('[ixcdisp_h]', '[ixcdisp]', 'd', i_cnt)
+    print_details('[ixcdisp_h]', '[ixcdisp]', 'm', i_cnt)
 
 cencod_header = headers_l.get("content-enconding", '')
 if cencod_header and not any(elem in cencod_header for elem in t_cencoding) \
@@ -4458,7 +4472,7 @@ if repdig_header and '53' not in skip_list:
     if not any(elem in repdig_header for elem in t_digest_sec):
         print_details('[irepdig_h]', '[irepdig]', 'd', i_cnt)
     if any(elem in repdig_header for elem in t_digest_ins):
-        print_details('[irepdigi_h]', '[irepdigi]', 'm', i_cnt)
+        print_details('[irepdigi_h]', '[irepdigi]', 'd', i_cnt)
 
 if 'server-timing' in headers_l and '54' not in skip_list:
     print_details('[itim_h]', '[itim]', 'd', i_cnt)
@@ -4490,7 +4504,11 @@ if 'sourcemap' in headers_l and '58' not in skip_list:
 if 'speculation-rules' in headers_l and '59' not in skip_list:
     print_details('[ispec_m]', '[ispec]', 'm', i_cnt)
 
-if 'strict-dynamic' in headers_l and '60' not in skip_list:
+if (
+    'strict-dynamic' in headers_l
+    and 'content-security-policy' not in headers_l
+    and '60' not in skip_list
+):
     print_details('[isdyn_h]', '[isdyn]', 'd', i_cnt)
 
 sts_header = headers_l.get('strict-transport-security', '')
@@ -4551,7 +4569,7 @@ if wcondig_header and '69' not in skip_list:
     if not any(elem in wcondig_header for elem in t_digest_sec):
         print_details('[iwcondig_h]', '[iwcondig]', 'd', i_cnt)
     if any(elem in wcondig_header for elem in t_digest_ins):
-        print_details('[iwcondigi_h]', '[iwcondigi]', 'm', i_cnt)
+        print_details('[iwcondigi_h]', '[iwcondigi]', 'd', i_cnt)
 
 if 'want-digest' in headers_l and '70' not in skip_list:
     print_details('[ixwandig_h]', '[ixwandig]', 'd', i_cnt)
@@ -4561,7 +4579,7 @@ if wreprdig_header and '71' not in skip_list:
     if not any(elem in wreprdig_header for elem in t_digest_sec):
         print_details('[iwreprdig_h]', '[iwreprdig]', 'd', i_cnt)
     if any(elem in wreprdig_header for elem in t_digest_ins):
-        print_details('[iwreprdigi_h]', '[iwreprdigi]', 'm', i_cnt)
+        print_details('[iwreprdigi_h]', '[iwreprdigi]', 'd', i_cnt)
 
 if 'warning' in headers_l and '72' not in skip_list:
     print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
