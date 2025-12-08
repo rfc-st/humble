@@ -1465,7 +1465,7 @@ Cabeceras de respuesta HTTP
 
 [ixdp]
  Esta cabecera puede eludir las directivas de la cabecera "Content-Security-Policy".
- Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
+ Ref: https://tinyurl.com/dns-prefetch
 
 [ixdow]
  Esta cabecera es exclusiva de Internet Explorer 8 (obsoleto desde 2020).

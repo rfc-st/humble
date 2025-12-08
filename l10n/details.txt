@@ -1464,7 +1464,7 @@ HTTP Response Headers
 
 [ixdp]
  Enabling DNS prefetching could bypass "Content-Security-Policy" directives.
- Ref: https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
+ Ref: https://tinyurl.com/dns-prefetch
 
 [ixdow]
  This header is specific to Internet Explorer 8 (discontinued in 2020).

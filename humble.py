@@ -4608,6 +4608,8 @@ if 'x-content-type-options' in headers_l and '76' not in skip_list:
     elif 'nosniff' not in headers_l['x-content-type-options']:
         print_details('[ictp_h]', '[ictp]', 'd', i_cnt)
 
+# The short link for this header (https://tinyurl.com/dns-prefetch) resolves to
+# https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
 if headers_l.get('x-dns-prefetch-control', '') == 'on' and '77' not in \
      skip_list:
     print_details('[ixdp_h]', '[ixdp]', 'd', i_cnt)
