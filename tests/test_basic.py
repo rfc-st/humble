@@ -24,6 +24,7 @@ HUMBLE_HEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
 HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
 HUMBLE_INPUT_FILE = path.abspath(path.join(HUMBLE_INPUT_DIR,
                                            'github_input_file.txt'))
+HUMBLE_INPUT_TRAVERSAL = '../../../humbleinputtraversal/'
 HUMBLE_INPUT_URL = 'https://github.com'
 HUMBLE_INSECURE_INPUT_URL = 'http://github.com'
 HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
@@ -53,9 +54,12 @@ TEST_CFGS = {
     'test_export_xml': (['-u', TEST_URL, '-o', 'xml'], 'XML saved'),
     'test_fingerprint_groups': (['-f'], 'Top 20 groups'),
     'test_fingerprint_term': (['-f', 'Google'], 'Headers related to'),
+    'test_fingerprint_term_no_results': (['-f', 'TestingHumble'], 'quote'),
     'test_global_statistics': (['-a'], 'Empty headers'),
     'test_input_file': (['-if', HUMBLE_INPUT_FILE, '-u', HUMBLE_INPUT_URL],
                         'Input:'),
+    'test_input_traversal': (['-u', TEST_URL, '-op', HUMBLE_INPUT_TRAVERSAL],
+                             'wrong:'),
     'test_l10n_analysis': (['-u', TEST_URL, '-l', 'es'],
                            'Advertencias a revisar'),
     'test_l10n_grades': (['-grd', '-l', 'es'], 'No te obsesiones'),
@@ -69,7 +73,7 @@ TEST_CFGS = {
         'Analysis Grade:'
     ),
     'test_response_headers': (['-u', TEST_URL, '-r'], 'HTTP Response Headers'),
-    'test_russian_block': (['-u', TEST_RUSSIAN_URL, ], 'withdraws'),
+    'test_russian_block': (['-u', TEST_RUSSIAN_URL], 'withdraws'),
     'test_security_guidelines': (['-g'], 'headers-in-wordpress'),
     'test_skipped_headers': (['-u', TEST_URL, '-s', 'ETAG', 'NEL'],
                              'expressly excluded'),
@@ -89,10 +93,11 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_export_json_brief]', '[test_export_pdf]',
               '[test_export_xlsx]', '[test_export_xml]',
               '[test_fingerprint_groups]', '[test_fingerprint_term]',
-              '[test_global_statistics]', '[test_input_file]',
+              '[test_fingerprint_term_no_results]', '[test_global_statistics]',
+              '[test_input_file]', '[test_input_traversal]',
               '[test_l10n_analysis]', '[test_l10n_grades]', '[test_license]',
               '[test_owasp_compliance]', '[test_redirects]',
-              '[test_requests_headers]', '[test_response_headers]',
+              '[test_request_headers]', '[test_response_headers]',
               '[test_russian_block]', '[test_security_guidelines]',
               '[test_skipped_headers]', '[test_unsupported_header]',
               '[test_updates]', '[test_url_statistics]', '[test_user_agent]',

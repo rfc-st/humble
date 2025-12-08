@@ -11,10 +11,10 @@
 2025/12/05 - 20:03:39 ; https://tiktok.com ; 15 ; 8 ; 8 ; 24 ; 0 ; 40
 2025/12/05 - 20:03:48 ; https://whatsapp.com ; 14 ; 8 ; 1 ; 13 ; 0 ; 22
 2025/12/05 - 20:03:58 ; https://en.wikipedia.org/ ; 8 ; 10 ; 1 ; 4 ; 2 ; 17
-2025/12/05 - 20:03:59 ; https://en.wikipedia.org/ ; 8 ; 10 ; 1 ; 4 ; 2 ; 17
-2025/12/05 - 20:04:00 ; https://en.wikipedia.org/ ; 8 ; 10 ; 1 ; 4 ; 2 ; 17
-2025/12/05 - 20:04:01 ; https://en.wikipedia.org/ ; 8 ; 10 ; 1 ; 4 ; 2 ; 17
-2025/12/05 - 20:04:02 ; https://en.wikipedia.org/ ; 8 ; 10 ; 1 ; 4 ; 2 ; 17
+2025/12/05 - 20:03:59 ; https://en.wikipedia.org/ ; 7 ; 9 ; 0 ; 3 ; 2 ; 14
+2025/12/05 - 20:04:00 ; https://en.wikipedia.org/ ; 6 ; 8 ; 0 ; 2 ; 1 ; 11
+2025/12/05 - 20:04:01 ; https://en.wikipedia.org/ ; 5 ; 7 ; 0 ; 1 ; 0 ; 8
+2025/12/05 - 20:04:02 ; https://en.wikipedia.org/ ; 4 ; 6 ; 1 ; 0 ; 0 ; 7
 2025/12/05 - 20:04:12 ; https://github.com ; 9 ; 8 ; 2 ; 14 ; 0 ; 24
 2025/12/05 - 20:04:13 ; https://github.com ; 9 ; 8 ; 2 ; 14 ; 0 ; 24
 2025/12/05 - 20:04:23 ; https://www.instagram.com/ ; 14 ; 8 ; 1 ; 18 ; 0 ; 27

@@ -2013,34 +2013,34 @@ Generador
  (parámetros '-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INSECURE_INPUT_URL>'); verifica que se analicen todas las cabeceras posibles de una URL insegura.
 
 [test_brief_analysis]
- (parámetro '-b'); verifica que un análisis breve finalice correctamente.
+ (parámetros '-u <TEST_URL> -b'); verifica que un análisis breve finalice correctamente.
 
 [test_cicd_analysis]
- (parámetro '-cicd'); verifica que un análisis CI/CD finalice correctamente.
+ (parámetros '-u <TEST_URL> -cicd'); verifica que un análisis CI/CD finalice correctamente.
 
 [test_detailed_analysis]
- (sin parámetros); verifica que un análisis detallado finalice correctamente.
+ (parámetro '-u <TEST_URL>'); verifica que un análisis detallado finalice correctamente.
 
 [test_export_csv]
- (parámetro '-o csv'); verifica que se exporte a CSV un análisis detallado.
+ (parámetros '-u <TEST_URL> -o csv'); verifica que se exporte a CSV un análisis detallado.
 
 [test_export_html]
- (parámetro '-o html'); verifica que se exporte a HTML un análisis detallado.
+ (parámetros '-u <TEST_URL> -o html'); verifica que se exporte a HTML un análisis detallado.
 
 [test_export_json]
- (parámetro '-o json'); verifica que se exporte a JSON un análisis detallado.
+ (parámetros '-u <TEST_URL> -o json'); verifica que se exporte a JSON un análisis detallado.
 
 [test_export_json_brief]
- (parámetros '-o json -b'); verifica que se exporte a JSON un análisis breve.
+ (parámetros '-u <TEST_URL> -o json -b'); verifica que se exporte a JSON un análisis breve.
 
 [test_export_pdf]
- (parámetro '-o pdf'); verifica que se exporte a PDF un análisis detallado.
+ (parámetros '-u <TEST_URL> -o pdf'); verifica que se exporte a PDF un análisis detallado.
 
 [test_export_xlsx]
- (parámetro '-o xlsx'); verifica que se exporte a XLSX un análisis detallado.
+ (parámetros '-u <TEST_URL> -o xlsx'); verifica que se exporte a XLSX un análisis detallado.
 
 [test_export_xml]
- (parámetro '-o xml'); verifica que se exporte a XML un análisis detallado.
+ (parámetros '-u <TEST_URL> -o xml'); verifica que se exporte a XML un análisis detallado.
 
 [test_fingerprint_groups]
  (parámetro '-f'); verifica que las estadísticas del Top 20 de grupos, por huella digital, se muestre correctamente.
@@ -2048,14 +2048,20 @@ Generador
 [test_fingerprint_term]
  (parámetro '-f Google'); verifica que las estadísticas del término 'Google', por huella digital, se muestren correctamente.
 
+[test_fingerprint_term_no_results]
+ (parámetro '-f TestingHumble'); verifica que se muestre correctamente un error para el término 'TestingHumble'.
+
 [test_global_statistics]
  (parámetro '-a'); verifica que se muestren estadísticas sobre todos los análisis realizados.
 
 [test_input_file]
  (parámetros '-if <HUMBLE_INPUT_FILE> -u <HUMBLE_INPUT_URL>'); verifica que se analice correctamente un fichero con cabeceras de respuesta.
 
+[test_input_traversal]
+ (parámetros '-u <TEST_URL> -op <HUMBLE_INPUT_TRAVERSAL>'); verifica que se realicen comprobaciones básicas sobre 'input traversal'.
+
 [test_l10n_analysis]
- (parámetro '-l es'); verifica que los mensajes en castellano se muestren correctamente en un análisis detallado.
+ (parámetros '-u <TEST_URL> -l es'); verifica que los mensajes en castellano se muestren correctamente en un análisis detallado.
 
 [test_l10n_grades]
  (parámetros '-grd -l es'); verifica que la guía sobre la calificación de un análisis se muestra correctamente en castellano.
@@ -2064,28 +2070,28 @@ Generador
  (parámetro '-lic'); verifica que la licencia se muestre correctamente.
 
 [test_owasp_compliance]
- (parámetro '-c'); verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
+ (parámetros '-u <TEST_URL> -c'); verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
 
 [test_redirects]
- (parámetro '-df'); verifica que no se sigan las redirecciones en un análisis detallado.
+ (parámetros '-u <TEST_URL> -df'); verifica que no se sigan las redirecciones en un análisis detallado.
 
-[test_requests_headers]
- (parámetro '-H con varias cabeceras'); verifica que un análisis finaliza correctamente tras añadir en la petición varias cabeceras HTTP.
+[test_request_headers]
+ (parámetros '-u <TEST_URL> -H <REQUEST_HEADER>'); verifica que un análisis finaliza correctamente tras añadir en la petición cabeceras HTTP.
 
 [test_response_headers]
- (parámetro '-r'); verifica que las cabeceras HTTP de respuesta se muestren correctamente.
+ (parámetros '-u <TEST_URL> -r'); verifica que las cabeceras HTTP de respuesta se muestren correctamente.
 
 [test_russian_block]
- (sin parámetros); verifica que no se analicen URL rusas.
+ (parámetro '-u <TEST_RUSSIAN_URL>'); verifica que no se analicen URL rusas.
 
 [test_security_guidelines]
  (parámetro '-g'); verifica que la guía con directrices de seguridad se muestre correctamente.
 
 [test_skipped_headers]
- (parámetro '-s ETAG NEL'); verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
+ (parámetros '-u <TEST_URL> -s ETAG NEL'); verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
 
 [test_unsupported_header]
- (parámetro '-s testhumbleheader'); verifica que las cabeceras indicadas a excluir en el análisis realmente se analicen.
+ (parámetros '-u <TEST_URL> -s testhumbleheader'); verifica que las cabeceras indicadas a excluir en el análisis realmente se analicen.
 
 [test_updates]
  (parámetro '-v'); verifica que la lógica para comprobar actualizaciones funcione correctamente.
@@ -2094,7 +2100,7 @@ Generador
  (parámetros '-u <HUMBLE_STATISTICS_URL> -a'); verifica que se muestren las estadísticas para una URL concreta analizada.
 
 [test_user_agent]
- (parámetro '-ua 4'); verifica que el cuarto 'User-Agent' se aplique correctamente en un análisis detallado.
+ (parámetros '-u <TEST_URL> -ua 4'); verifica que el cuarto 'User-Agent' se aplique correctamente en un análisis detallado.
 
 [test_user_agent_list]
  (parámetro '-ua 0'); verifica que se muestren los 'User-Agents' disponibles.

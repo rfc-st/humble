@@ -2033,34 +2033,34 @@ Generator
  ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INSECURE_INPUT_URL>' parameters); verify that all possible headers of an insecure URL are analyzed.
 
 [test_brief_analysis]
- ('-b' parameter); verifies the brief analysis completes successfully.
+ ('-u <TEST_URL> -b' parameters); verifies the brief analysis completes successfully.
 
 [test_cicd_analysis]
- ('-cicd' parameter); verifies a CI/CD analysis completes successfully.
+ ('-u <TEST_URL> -cicd' parameters); verifies a CI/CD analysis completes successfully.
 
 [test_detailed_analysis]
- (no parameter); verifies the detailed analysis completes successfully.
+ ('-u <TEST_URL>' parameter); verifies the detailed analysis completes successfully.
 
 [test_export_csv]
- ('-o csv' parameter); verifies the detailed analysis is exported to CSV.
+ ('-u <TEST_URL> -o csv' parameters); verifies the detailed analysis is exported to CSV.
 
 [test_export_html]
- ('-o html' parameter); verifies the detailed analysis is exported to HTML.
+ ('-u <TEST_URL> -o html' parameters); verifies the detailed analysis is exported to HTML.
 
 [test_export_json]
- ('-o json' parameter); verifies the detailed analysis is exported to JSON.
+ ('-u <TEST_URL> -o json' parameters); verifies the detailed analysis is exported to JSON.
 
 [test_export_json_brief]
- ('-o json -b' parameters); verifies the brief analysis is exported to JSON.
+ ('-u <TEST_URL> -o json -b' parameters); verifies the brief analysis is exported to JSON.
 
 [test_export_pdf]
- ('-o pdf' parameter); verifies the detailed analysis is exported to PDF.
+ ('-u <TEST_URL> -o pdf' parameters); verifies the detailed analysis is exported to PDF.
 
 [test_export_xlsx]
- ('-o xlsx' parameter); verifies the detailed analysis is exported to XLSX.
+ ('-u <TEST_URL> -o xlsx' parameters); verifies the detailed analysis is exported to XLSX.
 
 [test_export_xml]
- ('-o xml' parameter); verifies the detailed analysis is exported to XML.
+ ('-u <TEST_URL> -o xml' parameter); verifies the detailed analysis is exported to XML.
 
 [test_fingerprint_groups]
  ('-f' parameter); verifies fingerprint statistics for the Top 20 groups display correctly.
@@ -2068,14 +2068,20 @@ Generator
 [test_fingerprint_term]
  ('-f Google' parameter); verifies fingerprint statistics display correctly for the term 'Google'.
 
+[test_fingerprint_term_no_results]
+ ('-f TestingHumble' parameter); verify that an error is displayed correctly for the term 'TestingHumble'
+
 [test_global_statistics]
  ('-a' parameter); verifies that statistics are displayed for all analyses performed.
 
 [test_input_file]
  ('-if <HUMBLE_INPUT_FILE> -u <HUMBLE_INPUT_URL>' parameters); verifies raw response files are analyzed.
 
+[test_input_traversal]
+ ('-u <TEST_URL> -op <HUMBLE_INPUT_TRAVERSAL>' parameters); verify that basic checks are applied to input traversal.
+
 [test_l10n_analysis]
- ('-l es' parameter); verifies Spanish localization is applied in the output of a detailed analysis.
+ ('-u <TEST_URL> -l es' parameters); verifies Spanish localization is applied in the output of a detailed analysis.
 
 [test_l10n_grades]
  ('-grd -l es' parameters); verifies the guide about grading an analysis is displayed correctly in Spanish.
@@ -2084,28 +2090,28 @@ Generator
  ('-lic' parameter); verify the license is displayed correctly.
 
 [test_owasp_compliance]
- ('-c' parameter); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
+ ('-u <TEST_URL> -c' parameters); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
 
 [test_redirects]
- ('-df' parameter); verifies redirects are not followed in a detailed analysis.
+ ('-u <TEST_URL> -df' parameters); verifies redirects are not followed in a detailed analysis.
 
-[test_requests_headers]
- ('-H' parameter with several headers); verify an analysis completes correctly after adding several HTTP headers to the request.
+[test_request_headers]
+ ('-u <TEST_URL> -H <REQUEST_HEADER>' parameters); verify an analysis completes correctly after adding HTTP headers to the request.
 
 [test_response_headers]
- ('-r' parameter); verify HTTP response headers are displayed correctly.
+ ('-u <TEST_URL> -r' parameters); verify HTTP response headers are displayed correctly.
 
 [test_russian_block]
- (without parameters); verify that Russian URLs are not analyzed.
+ ('-u <TEST_RUSSIAN_URL>' parameter); verify that Russian URLs are not analyzed.
 
 [test_security_guidelines]
  ('-g' parameter); verifies the guide with security guidelines is displayed correctly.
 
 [test_skipped_headers]
- ('-s ETAG NEL' parameter); verifies the specified headers are excluded from the detailed analysis.
+ ('-u <TEST_URL> -s ETAG NEL' parameters); verifies the specified headers are excluded from the detailed analysis.
 
 [test_unsupported_header]
- ('-s testhumbleheader' parameter); verify that the headers indicated for exclusion in the analysis are actually analyzed.
+ ('-u <TEST_URL> -s testhumbleheader' parameters); verify that the headers indicated for exclusion in the analysis are actually analyzed.
 
 [test_updates]
  ('-v' parameter); verifies the update check mechanism works as intended.
@@ -2114,7 +2120,7 @@ Generator
  ('-u <HUMBLE_STATISTICS_URL> -a' parameters); verify that statistics are displayed for a specific URL analyzed.
 
 [test_user_agent]
- ('-ua 4' parameter); verifies the selection and use of the 4th User-Agent from the available list during a detailed analysis.
+ ('-u <TEST_URL> -ua 4' parameters); verifies the selection and use of the 4th User-Agent from the available list during a detailed analysis.
 
 [test_user_agent_list]
  ('-ua 0' parameter); verifies the display of available User-Agents.
