@@ -2072,6 +2072,9 @@ Generador
 [test_owasp_compliance]
  (parámetros '-u <TEST_URL> -c'); verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
 
+[test_proxy_unreachable]
+ (parámetros '-u <TEST_URL> -p <PROXY_UNREACHABLE>'); verifica que se muestre correctamente un mensaje de error cuando el proxy no sea accesible.
+
 [test_redirects]
  (parámetros '-u <TEST_URL> -df'); verifica que no se sigan las redirecciones en un análisis detallado.
 
@@ -2097,7 +2100,10 @@ Generador
  (parámetro '-v'); verifica que la lógica para comprobar actualizaciones funcione correctamente.
 
 [test_url_statistics]
- (parámetros '-u <HUMBLE_STATISTICS_URL> -a'); verifica que se muestren las estadísticas para una URL concreta analizada.
+ (parámetros '-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_STATISTICS_URL> -a'); verifica que se muestren las estadísticas para una URL concreta analizada.
+
+[test_url_insufficient_statistics]
+ (parámetros '-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INSUFFICIENT_STATISTICS_URL> -a'); verifica que se muestre un error por análisis insuficientes de una URL.
 
 [test_user_agent]
  (parámetros '-u <TEST_URL> -ua 4'); verifica que el cuarto 'User-Agent' se aplique correctamente en un análisis detallado.

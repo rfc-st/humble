@@ -2092,6 +2092,9 @@ Generator
 [test_owasp_compliance]
  ('-u <TEST_URL> -c' parameters); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
 
+[test_proxy_unreachable]
+ ('-u <TEST_URL> -p <PROXY_UNREACHABLE>' parameters); verify that an error message is displayed correctly when the proxy is unreachable.
+
 [test_redirects]
  ('-u <TEST_URL> -df' parameters); verifies redirects are not followed in a detailed analysis.
 
@@ -2117,7 +2120,10 @@ Generator
  ('-v' parameter); verifies the update check mechanism works as intended.
 
 [test_url_statistics]
- ('-u <HUMBLE_STATISTICS_URL> -a' parameters); verify that statistics are displayed for a specific URL analyzed.
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_STATISTICS_URL> -a' parameters); verify that statistics are displayed for a specific URL analyzed.
+
+[test_url_insufficient_statistics]
+ ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INSUFFICIENT_STATISTICS_URL> -a' parameters); verify that an error is displayed due to insufficient analysis of a URL.
 
 [test_user_agent]
  ('-u <TEST_URL> -ua 4' parameters); verifies the selection and use of the 4th User-Agent from the available list during a detailed analysis.
