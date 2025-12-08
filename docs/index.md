@@ -67,3 +67,11 @@ To maintain compatibility with the minimum required Python version for this tool
 For those who maintain some essential tools for developing and testing **humble.py**, and to everyone who has contributed ideas, suggestions, or reported bugs: <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#acknowledgements" target="_blank">thank you</a>!.
 
 And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3), David (x3), Eduardo, Eloy, Fernando, Gabriel, Íñigo, Joanna, Juan Carlos, Juán, Julián, Julio, Iván, Lourdes, Luis Joaquín, María Antonia, Marta, Miguel, Miguel Ángel (x2), Montse, Naiara, Pablo, Sergio, Ricardo, and Rubén!.
+<br />
+<br />
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+Last updated on
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>December 08, 2025</em></span>
+</span>
+</aside>
