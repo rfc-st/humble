@@ -171,10 +171,11 @@ Reference/Status/', 'https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py', 'https://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
 VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
+XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-12-07', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-08', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2766,6 +2767,7 @@ def set_pdf_conditions(line, pdf, ypos):
     exported to PDF
     """
     combined_h = l_miss + l_ins + l_fng + titled_fng
+    combined_h.append(XFRAME_CHECK)
     return (
         all(condition not in line for condition in PDF_CONDITIONS[:3]) and
         (PDF_CONDITIONS[3] in line or any(item in line for item in combined_h))
@@ -3122,12 +3124,13 @@ def format_html_fingerprint(args, ln, l_fng):
 
 def format_html_totals(ln, l_total):
     """
-    Highlight the header that fails any of the checks; related to analysis
-    exported to HTML
+    Highlight in red the header that fails any of the checks; related to
+    analysis exported to HTML
     """
     for i in l_total:
         if (not re.search(RE_PATTERN[11], ln)) and (
-             (i in ln) and ('"' not in ln) or ('HTTP (' in ln)):
+             (i in ln) and ('"' not in ln) or ('HTTP (' in ln) or
+             (XFRAME_CHECK in ln)):
             ln = ln.replace(ln, HTML_TAGS[3] + ln + HTML_TAGS[5])
     return ln
 
