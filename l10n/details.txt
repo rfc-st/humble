@@ -2137,6 +2137,9 @@ Generator
 [test_user_agent_list]
  ('-ua 0' parameter); verifies the display of available User-Agents.
 
+[test_wrong_testssl]
+ ('-u <TEST_URL> -e <HUMBLE_WRONG_TESTSSL_DIR>' parameters); verify that an error is displayed when the testssl.sh file is not found.
+
 [test_tests]
 Tests run at
 

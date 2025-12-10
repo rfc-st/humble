@@ -38,6 +38,7 @@ HUMBLE_NOSECHEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
 HUMBLE_NOSECHEADERS_URL = 'https://humbletestingnosecheaders.com'
 HUMBLE_STATISTICS_URL = 'https://en.wikipedia.org'
 HUMBLE_INSUFFICIENT_STATISTICS_URL = 'https://microsoft.com'
+HUMBLE_WRONG_TESTSSL_DIR = '/dev/'
 INPUT_FILE_URL = "https://github.com"
 PROXY_UNREACHABLE = "http://127.0.0.1:65535"
 REQUIRED_PYTHON = (3, 11)
@@ -102,6 +103,8 @@ TEST_CFGS = {
     'test_user_agent': (['-u', TEST_URL, '-ua', '4'],
                         'Selected the User-Agent'),
     'test_user_agent_list': (['-ua', '0'], 'source: '),
+    'test_wrong_testssl': (['-u', TEST_URL, '-e', HUMBLE_WRONG_TESTSSL_DIR],
+                           'not found'),
 }
 TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_brief_analysis]', '[test_cicd_analysis]',
@@ -120,7 +123,8 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_skipped_headers]', '[test_unsupported_header]',
               '[test_updates]', '[test_url_statistics]',
               '[test_url_insufficient_statistics]', '[test_user_agent]',
-              '[test_user_agent_list]', '[test_python_version]')
+              '[test_user_agent_list]', '[test_wrong_testssl]',
+              '[test_python_version]')
 
 
 class _Args:

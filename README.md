@@ -23,7 +23,7 @@
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml" title="Results of the last analysis of this tool with bandit, for critical or high vulnerabilities"><img src="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml/badge.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="CodeQL security analysis passed"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="humble documentation status"><img src="https://img.shields.io/badge/documentation-passing-32bd50?labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="humble code coverage"><img src="https://img.shields.io/badge/code%20coverage-89%25-f9d71c?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="humble code coverage"><img src="https://img.shields.io/badge/code%20coverage-90%25-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="OpenSSF best practices analysis"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
 <br />
 <br />
@@ -86,7 +86,7 @@
 :heavy_check_mark: Can display analysis statistics for a specific URL or across all of them.<br />
 :heavy_check_mark: Can display fingerprint statistics for a specific term or the Top 20.<br />
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
-:heavy_check_mark: Provides basic [unit tests](#unit-tests) to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest<a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
+:heavy_check_mark: Provides [unit tests](#unit-tests) to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest<a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
 :heavy_check_mark: Classes and functions documented at <a href="https://humble.readthedocs.io/en/latest/" target="_blank">Read the Docs<a>.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
@@ -434,24 +434,31 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 ```
 $ cd <humble dir>
 $ cd tests
-$ python test_basic.py -l en
+$ python test_humble.py -l en
 ```
 
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_basic_tests_ok.PNG" alt="(Linux) - All tests passed successfully">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_tests_ok.PNG" alt="(Linux) - All tests passed successfully">
 
 .: (Linux) - Code coverage (for now, it only works on Linux).<br />
 ```
 $ cd <humble dir>
 $ cd tests
-$ pytest test_basic.py --cov-config=.coveragerc --cov=.. --cov-report=html --tb=no -rA -q -v -W ignore
+$ pytest test_humble.py --cov-config=.coveragerc --cov=.. --cov-report=html --tb=no -rA -q -v -W ignore
 $ cd humble_coverage_report
 Open the index.html file in a browser.
 ```
 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_code_coverage.PNG" alt="(Linux) - Code coverage">
 
-> [!NOTE]
-> After reviewing the code coverage you can delete all files and folders from the *tests* directory except for the *.coveragerc*, *analysis_h.txt*, *client_error_test.txt, *headers_none_security.txt*, *headers_test_all.txt* and *test_basic.py* files: if these files are deleted, the tests will fail.
+> [!IMPORTANT]
+> After reviewing the code coverage you can delete all files and folders from the *tests* directory except for the following, as they are required precisely for those tests:
+>
+> - *.coveragerc*
+> - *analysis_h.txt*
+> - *client_error_test.txt*
+> - *headers_none_security.txt*
+> - *headers_test_all.txt*
+> - *test_humble.py*
 
 > [!TIP]
 > <a target="_blank" href="https://docs.pytest.org/en/stable/reference/reference.html">pytest</a> and <a target="_blank" href="https://pytest-cov.readthedocs.io/en/latest/config.html">pytest-cov</a> parameters:

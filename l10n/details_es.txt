@@ -2117,6 +2117,9 @@ Generador
 [test_user_agent_list]
  (parámetro '-ua 0'); verifica que se muestren los 'User-Agents' disponibles.
 
+[test_wrong_testssl]
+ (parámetros '-u <TEST_URL> -e <HUMBLE_WRONG_TESTSSL_DIR>'); verifica que se muestre un error al no encontrar el fichero de testssl.sh.
+
 [test_tests]
 Pruebas realizadas el
 
