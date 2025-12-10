@@ -21,6 +21,9 @@ HUMBLE_GIT = 'https://github.com/rfc-st/humble'
 HUMBLE_PROJECT_ROOT = path.abspath(path.join(HUMBLE_TESTS_DIR, '..'))
 HUMBLE_HEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
                                              'headers_test_all.txt'))
+HUMBLE_CLIENTERROR_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
+                                                 'client_error_test.txt'))
+HUMBLE_CLIENTERROR_URL = 'https://www.chicagotribune.com/'
 HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
 HUMBLE_INPUT_FILE = path.abspath(path.join(HUMBLE_INPUT_DIR,
                                            'github_input_file.txt'))
@@ -30,6 +33,9 @@ HUMBLE_INSECURE_INPUT_URL = 'http://github.com'
 HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
 HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
+HUMBLE_NOSECHEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
+                                                  'headers_none_security.txt'))
+HUMBLE_NOSECHEADERS_URL = 'https://humbletestingnosecheaders.com'
 HUMBLE_STATISTICS_URL = 'https://en.wikipedia.org'
 HUMBLE_INSUFFICIENT_STATISTICS_URL = 'https://microsoft.com'
 INPUT_FILE_URL = "https://github.com"
@@ -45,6 +51,8 @@ TEST_CFGS = {
                                  HUMBLE_INSECURE_INPUT_URL], 'Input:'),
     'test_brief_analysis': (['-u', TEST_URL, '-b'], 'Analysis Grade:'),
     'test_cicd_analysis': (['-u', TEST_URL, '-cicd'], 'Analysis Grade'),
+    'test_client_error_response': (['-if', HUMBLE_CLIENTERROR_FILE, '-u',
+                                    HUMBLE_CLIENTERROR_URL], 'HTTP code'),
     'test_detailed_analysis': (['-u', TEST_URL], 'Analysis Grade:'),
     'test_export_csv': (['-u', TEST_URL, '-o', 'csv'], 'CSV saved'),
     'test_export_html': (['-u', TEST_URL, '-o', 'html', '-r'], 'HTML saved'),
@@ -66,6 +74,8 @@ TEST_CFGS = {
                            'Advertencias a revisar'),
     'test_l10n_grades': (['-grd', '-l', 'es'], 'No te obsesiones'),
     'test_license': (['-lic'], 'copyright'),
+    'test_no_security_headers': (['-if', HUMBLE_NOSECHEADERS_FILE, '-u',
+                                  HUMBLE_NOSECHEADERS_URL], 'are present'),
     'test_owasp_compliance': (['-u', TEST_URL, '-c'],
                               'non-recommended values'),
     'test_proxy_unreachable': (['-u', TEST_URL, '-p', PROXY_UNREACHABLE],
@@ -95,22 +105,22 @@ TEST_CFGS = {
 }
 TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_brief_analysis]', '[test_cicd_analysis]',
-              '[test_detailed_analysis]', '[test_export_csv]',
-              '[test_export_html]', '[test_export_json]',
+              '[test_client_error_response]', '[test_detailed_analysis]',
+              '[test_export_csv]', '[test_export_html]', '[test_export_json]',
               '[test_export_json_brief]', '[test_export_pdf]',
               '[test_export_xlsx]', '[test_export_xml]',
               '[test_fingerprint_groups]', '[test_fingerprint_term]',
               '[test_fingerprint_term_no_results]', '[test_global_statistics]',
               '[test_input_file]', '[test_input_traversal]',
               '[test_l10n_analysis]', '[test_l10n_grades]', '[test_license]',
-              '[test_owasp_compliance]', '[test_proxy_unreachable]',
-              '[test_redirects]', '[test_request_headers]',
-              '[test_response_headers]', '[test_russian_block]',
-              '[test_security_guidelines]', '[test_skipped_headers]',
-              '[test_unsupported_header]', '[test_updates]',
-              '[test_url_statistics]', '[test_url_insufficient_statistics]',
-              '[test_user_agent]', '[test_user_agent_list]',
-              '[test_python_version]')
+              '[test_no_security_headers]', '[test_owasp_compliance]',
+              '[test_proxy_unreachable]', '[test_redirects]',
+              '[test_request_headers]', '[test_response_headers]',
+              '[test_russian_block]', '[test_security_guidelines]',
+              '[test_skipped_headers]', '[test_unsupported_header]',
+              '[test_updates]', '[test_url_statistics]',
+              '[test_url_insufficient_statistics]', '[test_user_agent]',
+              '[test_user_agent_list]', '[test_python_version]')
 
 
 class _Args:
@@ -337,7 +347,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2025-12-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-10', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

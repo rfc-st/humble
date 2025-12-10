@@ -2018,6 +2018,9 @@ Generador
 [test_cicd_analysis]
  (parámetros '-u <TEST_URL> -cicd'); verifica que un análisis CI/CD finalice correctamente.
 
+[test_client_error_response]
+ (parámetros '-if <HUMBLE_CLIENTERROR_FILE> -u <HUMBLE_CLIENTERROR_URL>'); verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
+
 [test_detailed_analysis]
  (parámetro '-u <TEST_URL>'); verifica que un análisis detallado finalice correctamente.
 
@@ -2068,6 +2071,9 @@ Generador
 
 [test_license]
  (parámetro '-lic'); verifica que la licencia se muestre correctamente.
+
+[test_no_security_headers]
+ (parámetros '-if <HUMBLE_NOSECHEADERS_FILE> -u <HUMBLE_NOSECHEADERS_URL>'); verifica que se muestre un análisis sin cabeceras de seguridad recibidas.
 
 [test_owasp_compliance]
  (parámetros '-u <TEST_URL> -c'); verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.

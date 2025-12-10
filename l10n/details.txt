@@ -2038,6 +2038,9 @@ Generator
 [test_cicd_analysis]
  ('-u <TEST_URL> -cicd' parameters); verifies a CI/CD analysis completes successfully.
 
+[test_client_error_response]
+ ('-if <HUMBLE_CLIENTERROR_FILE> -u <HUMBLE_CLIENTERROR_URL>' parameters); verify that the analysis shows the HTTP 4xx error code response.
+
 [test_detailed_analysis]
  ('-u <TEST_URL>' parameter); verifies the detailed analysis completes successfully.
 
@@ -2088,6 +2091,9 @@ Generator
 
 [test_license]
  ('-lic' parameter); verify the license is displayed correctly.
+
+[test_no_security_headers]
+ ('-if <HUMBLE_NOSECHEADERS_FILE> -u <HUMBLE_NOSECHEADERS_URL>' parameters); verify that an analysis without received security headers is displayed.
 
 [test_owasp_compliance]
  ('-u <TEST_URL> -c' parameters); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.

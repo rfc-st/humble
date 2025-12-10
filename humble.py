@@ -175,7 +175,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-12-08', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-10', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -3370,18 +3370,33 @@ def analyze_input_file(input_file):
     if not path.exists(input_file):
         print_error_detail('[args_inputnotfound]')
     input_headers = {}
+    status_code = 0
     try:
         with open(input_file, 'r', encoding='utf8') as input_source:
-            for ln in input_source:
-                ln = ln.strip()
-                if ':' in ln:
-                    input_header, input_value = ln.split(':', 1)
-                    input_headers[input_header.title()] = input_value.strip()
-            if not input_headers:
-                print_error_detail('[args_inputlines]')
+            input_headers, status_code = parse_input_file(input_headers,
+                                                          input_source,
+                                                          status_code)
     except UnicodeDecodeError:
         print_error_detail('[args_inputunicode]')
-    return input_headers, False, 200
+    return input_headers, False, status_code
+
+
+def parse_input_file(input_headers, input_source, status_code):
+    """
+    Parse the headers and values in the file provided, related to '-if' option
+    """
+    first_line = input_source.readline().strip()
+    parts = first_line.split()
+    if len(parts) == 2 and parts[-1].isdigit():
+        status_code = int(parts[-1])
+    for ln in input_source:
+        ln = ln.strip()
+        if ':' in ln:
+            input_header, input_value = ln.split(':', 1)
+            input_headers[input_header.title()] = input_value.strip()
+    if not input_headers:
+        print_error_detail('[args_inputlines]')
+    return input_headers, status_code
 
 
 def get_tmp_file(args, export_date):
@@ -3795,7 +3810,11 @@ exception_d = {
 }
 requests.packages.urllib3.disable_warnings()
 
-headers_l, http_equiv, status_code, reliable, body = {}, None, None, None, None
+if '-if' not in sys.argv:
+    headers_l, http_equiv = {}, None
+    status_code, reliable, body = None, None, None
+else:
+    http_equiv = None
 
 if '-if' not in sys.argv:
     proxy = None

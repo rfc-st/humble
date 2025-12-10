@@ -1,0 +1,8 @@
+HTTP/2 403 
+server: nginx
+date: Wed, 10 Dec 2025 17:01:06 GMT
+content-type: text/html; charset=utf-8
+vary: Accept-Encoding
+content-security-policy: default-src data: 'unsafe-inline' 'unsafe-eval' https:; script-src data: 'unsafe-inline' 'unsafe-eval' https: blob: *.visualwebsiteoptimizer.com; style-src 'unsafe-inline' https: *.visualwebsiteoptimizer.com app.vwo.com; img-src data: https: blob: *.visualwebsiteoptimizer.com app.vwo.com useruploads.vwo.io; font-src data: https:; connect-src https: data: blob: *.visualwebsiteoptimizer.com app.vwo.com; media-src blob: data: https:; object-src https:; child-src https: data: blob: 'self' *.visualwebsiteoptimizer.com app.vwo.com; upgrade-insecure-requests; block-all-mixed-content;
+x-cache: MISS
+x-rq: mad2 0 20 9980

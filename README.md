@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--12--08-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--12--10-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -451,7 +451,7 @@ Open the index.html file in a browser.
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_code_coverage.PNG" alt="(Linux) - Code coverage">
 
 > [!NOTE]
-> After reviewing the code coverage you can delete all files and folders from the *tests* directory except for the *.coveragerc*, *analysis_h.txt*, *headers_test_all.txt* and *test_basic.py* files: if these files are deleted, the tests will fail.
+> After reviewing the code coverage you can delete all files and folders from the *tests* directory except for the *.coveragerc*, *analysis_h.txt*, *client_error_test.txt, *headers_none_security.txt*, *headers_test_all.txt* and *test_basic.py* files: if these files are deleted, the tests will fail.
 
 > [!TIP]
 > <a target="_blank" href="https://docs.pytest.org/en/stable/reference/reference.html">pytest</a> and <a target="_blank" href="https://pytest-cov.readthedocs.io/en/latest/config.html">pytest-cov</a> parameters:
