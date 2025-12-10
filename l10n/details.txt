@@ -2027,43 +2027,43 @@ Generator
  ('-h' parameter); verifies the help message is displayed correctly.
 
 [test_all_headers]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INPUT_URL>' parameters); verify that all possible headers of a secure URL are analyzed.
+ ('-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[2]>' parameters); verify that all possible headers of a secure URL are analyzed.
 
 [test_unsafe_all_headers]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INSECURE_INPUT_URL>' parameters); verify that all possible headers of an insecure URL are analyzed.
+ ('-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[3]>' parameters); verify that all possible headers of an insecure URL are analyzed.
 
 [test_brief_analysis]
- ('-u <TEST_URL> -b' parameters); verifies the brief analysis completes successfully.
+ ('-u <TEST_URLS[9]> -b' parameters); verifies the brief analysis completes successfully.
 
 [test_cicd_analysis]
- ('-u <TEST_URL> -cicd' parameters); verifies a CI/CD analysis completes successfully.
+ ('-u <TEST_URLS[9]> -cicd' parameters); verifies a CI/CD analysis completes successfully.
 
 [test_client_error_response]
- ('-if <HUMBLE_CLIENTERROR_FILE> -u <HUMBLE_CLIENTERROR_URL>' parameters); verify that the analysis shows the HTTP 4xx error code response.
+ ('-if <HUMBLE_CLIENTERROR_FILE> -u <TEST_URLS[1]>' parameters); verify that the analysis shows the HTTP 4xx error code response.
 
 [test_detailed_analysis]
- ('-u <TEST_URL>' parameter); verifies the detailed analysis completes successfully.
+ ('-u <TEST_URLS[9]>' parameter); verifies the detailed analysis completes successfully.
 
 [test_export_csv]
- ('-u <TEST_URL> -o csv' parameters); verifies the detailed analysis is exported to CSV.
+ ('-u <TEST_URLS[9]> -o csv' parameters); verifies the detailed analysis is exported to CSV.
 
 [test_export_html]
- ('-u <TEST_URL> -o html' parameters); verifies the detailed analysis is exported to HTML.
+ ('-u <TEST_URLS[9]> -o html' parameters); verifies the detailed analysis is exported to HTML.
 
 [test_export_json]
- ('-u <TEST_URL> -o json' parameters); verifies the detailed analysis is exported to JSON.
+ ('-u <TEST_URLS[9]> -o json' parameters); verifies the detailed analysis is exported to JSON.
 
 [test_export_json_brief]
- ('-u <TEST_URL> -o json -b' parameters); verifies the brief analysis is exported to JSON.
+ ('-u <TEST_URLS[9]> -o json -b' parameters); verifies the brief analysis is exported to JSON.
 
 [test_export_pdf]
- ('-u <TEST_URL> -o pdf' parameters); verifies the detailed analysis is exported to PDF.
+ ('-u <TEST_URLS[9]> -o pdf' parameters); verifies the detailed analysis is exported to PDF.
 
 [test_export_xlsx]
- ('-u <TEST_URL> -o xlsx' parameters); verifies the detailed analysis is exported to XLSX.
+ ('-u <TEST_URLS[9]> -o xlsx' parameters); verifies the detailed analysis is exported to XLSX.
 
 [test_export_xml]
- ('-u <TEST_URL> -o xml' parameter); verifies the detailed analysis is exported to XML.
+ ('-u <TEST_URLS[9]> -o xml' parameter); verifies the detailed analysis is exported to XML.
 
 [test_fingerprint_groups]
  ('-f' parameter); verifies fingerprint statistics for the Top 20 groups display correctly.
@@ -2078,13 +2078,13 @@ Generator
  ('-a' parameter); verifies that statistics are displayed for all analyses performed.
 
 [test_input_file]
- ('-if <HUMBLE_INPUT_FILE> -u <HUMBLE_INPUT_URL>' parameters); verifies raw response files are analyzed.
+ ('-if <HUMBLE_INPUT_FILE> -u <TEST_URLS[2]>' parameters); verifies raw response files are analyzed.
 
 [test_input_traversal]
- ('-u <TEST_URL> -op <HUMBLE_INPUT_TRAVERSAL>' parameters); verify that basic checks are applied to input traversal.
+ ('-u <TEST_URLS[9]> -op <HUMBLE_INPUT_TRAVERSAL>' parameters); verify that basic checks are applied to input traversal.
 
 [test_l10n_analysis]
- ('-u <TEST_URL> -l es' parameters); verifies Spanish localization is applied in the output of a detailed analysis.
+ ('-u <TEST_URLS[9]> -l es' parameters); verifies Spanish localization is applied in the output of a detailed analysis.
 
 [test_l10n_grades]
  ('-grd -l es' parameters); verifies the guide about grading an analysis is displayed correctly in Spanish.
@@ -2093,52 +2093,52 @@ Generator
  ('-lic' parameter); verify the license is displayed correctly.
 
 [test_no_security_headers]
- ('-if <HUMBLE_NOSECHEADERS_FILE> -u <HUMBLE_NOSECHEADERS_URL>' parameters); verify that an analysis without received security headers is displayed.
+ ('-if <HUMBLE_NOSECHEADERS_FILE> -u <TEST_URLS[4]>' parameters); verify that an analysis without received security headers is displayed.
 
 [test_owasp_compliance]
- ('-u <TEST_URL> -c' parameters); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
+ ('-u <TEST_URLS[9]> -c' parameters); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
 
 [test_proxy_unreachable]
- ('-u <TEST_URL> -p <PROXY_UNREACHABLE>' parameters); verify that an error message is displayed correctly when the proxy is unreachable.
+ ('-u <TEST_URLS[9]> -p <TEST_URLS[7]>' parameters); verify that an error message is displayed correctly when the proxy is unreachable.
 
 [test_redirects]
- ('-u <TEST_URL> -df' parameters); verifies redirects are not followed in a detailed analysis.
+ ('-u <TEST_URLS[9]> -df' parameters); verifies redirects are not followed in a detailed analysis.
 
 [test_request_headers]
- ('-u <TEST_URL> -H <REQUEST_HEADER>' parameters); verify an analysis completes correctly after adding HTTP headers to the request.
+ ('-u <TEST_URLS[9]> -H <REQUEST_HEADER>' parameters); verify an analysis completes correctly after adding HTTP headers to the request.
 
 [test_response_headers]
- ('-u <TEST_URL> -r' parameters); verify HTTP response headers are displayed correctly.
+ ('-u <TEST_URLS[9]> -r' parameters); verify HTTP response headers are displayed correctly.
 
 [test_russian_block]
- ('-u <TEST_RUSSIAN_URL>' parameter); verify that Russian URLs are not analyzed.
+ ('-u <TEST_URLS[8]>' parameter); verify that Russian URLs are not analyzed.
 
 [test_security_guidelines]
  ('-g' parameter); verifies the guide with security guidelines is displayed correctly.
 
 [test_skipped_headers]
- ('-u <TEST_URL> -s ETAG NEL' parameters); verifies the specified headers are excluded from the detailed analysis.
+ ('-u <TEST_URLS[9]> -s ETAG NEL' parameters); verifies the specified headers are excluded from the detailed analysis.
 
 [test_unsupported_header]
- ('-u <TEST_URL> -s testhumbleheader' parameters); verify that the headers indicated for exclusion in the analysis are actually analyzed.
+ ('-u <TEST_URLS[9]> -s testhumbleheader' parameters); verify that the headers indicated for exclusion in the analysis are actually analyzed.
 
 [test_updates]
  ('-v' parameter); verifies the update check mechanism works as intended.
 
 [test_url_statistics]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_STATISTICS_URL> -a' parameters); verify that statistics are displayed for a specific URL analyzed.
+ ('-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[5]> -a' parameters); verify that statistics are displayed for a specific URL analyzed.
 
 [test_url_insufficient_statistics]
- ('-if <HUMBLE_HEADERS_FILE> -u <HUMBLE_INSUFFICIENT_STATISTICS_URL> -a' parameters); verify that an error is displayed due to insufficient analysis of a URL.
+ ('-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[6]> -a' parameters); verify that an error is displayed due to insufficient analysis of a URL.
 
 [test_user_agent]
- ('-u <TEST_URL> -ua 4' parameters); verifies the selection and use of the 4th User-Agent from the available list during a detailed analysis.
+ ('-u <TEST_URLS[9]> -ua 4' parameters); verifies the selection and use of the 4th User-Agent from the available list during a detailed analysis.
 
 [test_user_agent_list]
  ('-ua 0' parameter); verifies the display of available User-Agents.
 
 [test_wrong_testssl]
- ('-u <TEST_URL> -e <HUMBLE_WRONG_TESTSSL_DIR>' parameters); verify that an error is displayed when the testssl.sh file is not found.
+ ('-u <TEST_URLS[9]> -e <HUMBLE_WRONG_TESTSSL_DIR>' parameters); verify that an error is displayed when the testssl.sh file is not found.
 
 [test_tests]
 Tests run at
