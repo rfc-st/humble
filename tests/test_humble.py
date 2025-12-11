@@ -4,6 +4,7 @@ import sys
 import pytest
 import shutil
 import subprocess
+from platform import system
 from datetime import datetime
 from contextlib import suppress
 from os import listdir, path, remove, fsync
@@ -198,9 +199,20 @@ def run_test(args, expected_text, timeout=5):
 
 
 def make_test_func(cfg_key):
-    """Generate a function to run the available tests"""
+    """
+    Generate a function to run the available tests. 'test_wrong_testssl' test
+    is skipped in Windows because testssl.sh, for that platform, requires
+    running it under Cygwin, MSYS2, or Windows Subsystem for Linux
+    """
     def test_func():
-        run_test(*TEST_CFGS[cfg_key])
+        return run_test(*TEST_CFGS[cfg_key])
+
+    if cfg_key == "test_wrong_testssl":
+        test_func = pytest.mark.skipif(
+            system().lower() == "windows",
+            reason="'test_wrong_testssl' skipped on Windows"
+        )(test_func)
+
     return test_func
 
 
@@ -348,7 +360,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2025-12-10', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-11', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

@@ -45,7 +45,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Can display analysis statistics for a specific URL or across all of them.
 - Can display fingerprint statistics for a specific term or the Top 20.
 - Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.
-- Provides basic unit tests to verify compatibility with your environment.
+- Provides unit tests to verify compatibility with your environment.
 - Almost all the code available under MIT license.
 - And more!.
 
@@ -72,6 +72,6 @@ And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>December 10, 2025</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>December 11, 2025</em></span>
 </span>
 </aside>
