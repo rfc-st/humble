@@ -2006,6 +2006,9 @@ Generador
 [test_missing_parameters]
  (varios parámetros); verifica que se provean los parámetros requeridos para funciones específicas.
 
+[test_proxy_wrong]
+ (varios parámetros); verifica que se comprueben los parámetros requeridos asociados con un proxy.
+
 [test_help]
  (parámetro '-h'); verifica que la Ayuda se muestre correctamente.
 

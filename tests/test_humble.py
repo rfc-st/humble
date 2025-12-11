@@ -115,14 +115,15 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_input_file]', '[test_input_traversal]',
               '[test_l10n_analysis]', '[test_l10n_grades]', '[test_license]',
               '[test_no_security_headers]', '[test_owasp_compliance]',
-              '[test_proxy_unreachable]', '[test_redirects]',
-              '[test_request_headers]', '[test_response_headers]',
-              '[test_russian_block]', '[test_security_guidelines]',
-              '[test_skipped_headers]', '[test_unsupported_header]',
-              '[test_updates]', '[test_url_statistics]',
-              '[test_url_insufficient_statistics]', '[test_user_agent]',
-              '[test_user_agent_list]', '[test_wrong_testssl]',
-              '[test_python_version]', '[test_missing_parameters]')
+              '[test_proxy_unreachable]', '[test_proxy_wrong]',
+              '[test_redirects]', '[test_request_headers]',
+              '[test_response_headers]', '[test_russian_block]',
+              '[test_security_guidelines]', '[test_skipped_headers]',
+              '[test_unsupported_header]', '[test_updates]',
+              '[test_url_statistics]', '[test_url_insufficient_statistics]',
+              '[test_user_agent]', '[test_user_agent_list]',
+              '[test_wrong_testssl]', '[test_python_version]',
+              '[test_missing_parameters]')
 
 
 class _Args:
@@ -259,6 +260,16 @@ def test_missing_arguments():
     run_test(['-of', 'humble_test.txt'], expected)
     run_test(['-b'], expected)
     run_test(['-s'], expected)
+
+
+def test_proxy_wrong():
+    """
+    Performs checks associated with parameters required for proxy-related
+    functionalities
+    """
+    expected = ["Error:", "error:"]
+    run_test(['-p', 'https://'], expected)
+    run_test(['-p', 'http://127.0.0.1:test'], expected)
 
 
 def delete_export_files(extension, ok_msg, ko_msg):

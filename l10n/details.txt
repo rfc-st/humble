@@ -2026,6 +2026,9 @@ Generator
 [test_missing_parameters]
  (several parameters); verify that the required parameters for specific functions are provided.
 
+[test_proxy_wrong]
+ (several parameters); verify that the required parameters associated with a proxy are checked.
+
 [test_help]
  ('-h' parameter); verifies the help message is displayed correctly.
 
