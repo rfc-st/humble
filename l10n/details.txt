@@ -2023,6 +2023,9 @@ Generator
 [test_python_version]
  (without parameters); verifies Python version is at least 3.11.
 
+[test_missing_parameters]
+ (several parameters); verify that the required parameters for specific functions are provided.
+
 [test_help]
  ('-h' parameter); verifies the help message is displayed correctly.
 

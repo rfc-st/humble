@@ -122,7 +122,7 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_updates]', '[test_url_statistics]',
               '[test_url_insufficient_statistics]', '[test_user_agent]',
               '[test_user_agent_list]', '[test_wrong_testssl]',
-              '[test_python_version]')
+              '[test_python_version]', '[test_missing_parameters]')
 
 
 class _Args:
@@ -175,10 +175,9 @@ def print_results():
 
 
 def run_test(args, expected_text, timeout=5):
-    """
-    Run each of the available tests
-    """
+    """Run each of the available tests"""
     test_args = [TEST_URLS[9] if a is None else a for a in args]
+
     try:
         result = subprocess.run(
             [sys.executable, HUMBLE_MAIN_FILE] + test_args,
@@ -191,6 +190,21 @@ def run_test(args, expected_text, timeout=5):
         output = result.stdout + result.stderr
     except subprocess.TimeoutExpired:
         pytest.fail(get_detail('[test_timeout]', replace=True))
+    parse_expected_text(output, expected_text)
+
+
+def parse_expected_text(output, expected_text):
+    # sourcery skip: invert-any-all
+    """Checks if expected text is present in each test"""
+    if isinstance(expected_text, (list, tuple, set)):
+        if not any(e in output for e in expected_text):
+            pytest.fail(
+                f"{get_detail('[test_expected]', replace=True)} "
+                f"{expected_text} {get_detail('[test_notfound]',
+                                              replace=True)}"
+            )
+        return
+
     if expected_text not in output:
         pytest.fail(
             f"{get_detail('[test_expected]', replace=True)} '{expected_text}' "
@@ -220,24 +234,31 @@ for key in TEST_CFGS.keys():
     globals()[key] = make_test_func(key)
 
 
-def get_python_version(req=REQUIRED_PYTHON):
-    """
-    Check if the installed Python version is equal to or greater than the
-    minimum required
-    """
-    return sys.version_info[:2] >= req
-
-
 def test_python_version():
     """
     Returns an error message if the installed Python version is less than the
     minimum required
     """
-    if not get_python_version():
+    if sys.version_info[:2] < REQUIRED_PYTHON:
         pytest.fail(
             f"{get_detail('[test_pythonm]', replace=True)} "
             f"{sys.version_info.major}.{sys.version_info.minor}"
         )
+
+
+def test_missing_arguments():
+    """
+    Performs multiple checks, under a single test, associated with missing
+    parameters required for certain functionalities
+    """
+    expected = ["Error:", "error:", "TXT"]
+    run_test(['-H', 'Cache-Control: no-cache'], expected)
+    run_test(['-if', 'humble_test.txt', '-r'], expected)
+    run_test(['-if', 'humble_test.txt'], expected)
+    run_test(['-l', 'es'], expected)
+    run_test(['-of', 'humble_test.txt'], expected)
+    run_test(['-b'], expected)
+    run_test(['-s'], expected)
 
 
 def delete_export_files(extension, ok_msg, ko_msg):

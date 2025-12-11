@@ -2003,6 +2003,9 @@ Generador
 [test_python_version]
  (sin parámetros); verifica que la versión de Python sea igual o superior a 3.11.
 
+[test_missing_parameters]
+ (varios parámetros); verifica que se provean los parámetros requeridos para funciones específicas.
+
 [test_help]
  (parámetro '-h'); verifica que la Ayuda se muestre correctamente.
 
