@@ -4637,7 +4637,7 @@ if 'x-content-security-policy-report-only' in headers_l and '75' not in \
 if 'x-content-type-options' in headers_l and '76' not in skip_list:
     if ',' in headers_l['x-content-type-options']:
         print_details('[ictpd_h]', '[ictpd]', 'm', i_cnt)
-    elif 'nosniff' not in headers_l['x-content-type-options']:
+    if 'nosniff' not in headers_l['x-content-type-options']:
         print_details('[ictp_h]', '[ictp]', 'd', i_cnt)
 
 # The short link for this header (https://tinyurl.com/dns-prefetch) resolves to

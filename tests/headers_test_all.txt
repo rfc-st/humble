@@ -54,6 +54,7 @@ refresh: @
 reporting-endpoints: csp-endpoint="http://humbletestreportingendpoint.com/csp-reports"
 repr-digest: adler
 server-timing: cache;desc="Cache Read";dur=23.2,db;dur=53,app;dur=47.2
+server:
 service-worker-allowed: /
 set-cookie: __Secure-humble-test=34d8g; SameSite=None; secure
 set-login: logged-test
