@@ -175,7 +175,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-12-11', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-12', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -3399,11 +3399,24 @@ def parse_input_file(input_headers, input_source, status_code):
     return input_headers, status_code
 
 
+def normalize_output_file(filename):
+    """
+    Normalizes the filename provided: if it contains an extension, it is
+    removed to avoid generating files with double extensions, adding the
+    extension associated with the value of the '-o' parameter to that filename.
+
+    Example: '-of humble_test.html -o html' will be treated internally as
+    '-of humble_test -o html', preventing the file 'humble_test.html.html'
+    from being generated.
+    """
+    return filename.rsplit(".", 1)[0] if "." in filename else filename
+
+
 def get_tmp_file(args, export_date):
     """Create the temporary export file, related to '-o' option"""
     file_ext = '.txt' if args.output == 'txt' else 't.txt'
     if args.output_file:
-        tmp_file = f'{args.output_file}{file_ext}'
+        tmp_file = f"{normalize_output_file(args.output_file)}{file_ext}"
     else:
         url = urlparse(URL)
         humble_str = HUMBLE_DESC[1:7]

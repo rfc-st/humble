@@ -252,12 +252,14 @@ def test_missing_arguments():
     Performs multiple checks, under a single test, associated with missing
     parameters required for certain functionalities
     """
-    expected = ["Error:", "error:", "TXT"]
+    expected = ["Error:", "error:", "TXT", "HTML"]
     run_test(['-H', 'Cache-Control: no-cache'], expected)
     run_test(['-if', 'humble_test.txt', '-r'], expected)
     run_test(['-if', 'humble_test.txt'], expected)
     run_test(['-l', 'es'], expected)
     run_test(['-of', 'humble_test.txt'], expected)
+    run_test(['-of', 'humble_test.html', '-o', 'html', '-u', TEST_URLS[9]],
+             expected)
     run_test(['-b'], expected)
     run_test(['-s'], expected)
 
@@ -277,12 +279,12 @@ def delete_export_files(extension, ok_msg, ko_msg):
     Delete all files associated with export tests
     """
     msgs = []
-    with suppress(Exception):
-        file = next(
-            f for f in listdir(HUMBLE_TESTS_DIR)
-            if f.lower().startswith(HUMBLE_TEMP_PREFIX)
-            and f.lower().endswith(extension)
-        )
+    test_files = [
+        f for f in listdir(HUMBLE_TESTS_DIR)
+        if f.lower().startswith(HUMBLE_TEMP_PREFIX)
+        and f.lower().endswith(extension)
+    ]
+    for file in test_files:
         export_file = path.join(HUMBLE_TESTS_DIR, file)
         try:
             remove(export_file)
@@ -392,7 +394,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2025-12-11', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-12', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
