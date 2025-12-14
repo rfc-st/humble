@@ -2038,6 +2038,24 @@ Generator
 [test_unsafe_all_headers]
  ('-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[3]>' parameters); verify that all possible headers of an insecure URL are analyzed.
 
+[test_grade_perfect_headers]
+ ('-if <HUMBLE_GRADE_PERFECT_FILE> -u <TEST_URLS[4]>' parameters); verify 'A+' grade is assigned to a URL after analysis.
+
+[test_grade_a_headers]
+ ('-if <HUMBLE_GRADE_A_FILE> -u <TEST_URLS[4]>' parameters); verify 'A' grade is assigned to a URL after analysis.
+
+[test_grade_b_headers]
+ ('-if <HUMBLE_GRADE_B_FILE> -u <TEST_URLS[4]>' parameters); verify 'B' grade is assigned to a URL after analysis.
+
+[test_grade_c_headers]
+ ('-if <HUMBLE_GRADE_C_FILE> -u <TEST_URLS[4]>' parameters); verify 'C' grade is assigned to a URL after analysis.
+
+[test_grade_d_headers]
+ ('-if <HUMBLE_GRADE_D_FILE> -u <TEST_URLS[4]>' parameters); verify 'D' grade is assigned to a URL after analysis.
+
+[test_grade_e_headers]
+ ('-if <HUMBLE_NOSECHEADERS_FILE> -u <TEST_URLS[4]>' parameters); verify 'E' grade is assigned to a URL after analysis.
+
 [test_brief_analysis]
  ('-u <TEST_URLS[9]> -b' parameters); verifies the brief analysis completes successfully.
 

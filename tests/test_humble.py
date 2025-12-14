@@ -21,6 +21,16 @@ HUMBLE_DESC = "Basic unit tests for 'humble' (HTTP Headers Analyzer)"
 HUMBLE_PROJECT_ROOT = path.abspath(path.join(HUMBLE_TESTS_DIR, '..'))
 HUMBLE_HEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
                                              'headers_test_all.txt'))
+HUMBLE_GRADE_PERFECT_FILE = path.abspath(
+    path.join(HUMBLE_TESTS_DIR, 'headers_test_grade_perfect.txt'))
+HUMBLE_GRADE_A_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
+                                             'headers_test_grade_a.txt'))
+HUMBLE_GRADE_B_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
+                                             'headers_test_grade_b.txt'))
+HUMBLE_GRADE_C_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
+                                             'headers_test_grade_c.txt'))
+HUMBLE_GRADE_D_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
+                                             'headers_test_grade_d.txt'))
 HUMBLE_CLIENTERROR_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
                                                  'client_error_test.txt'))
 HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
@@ -46,6 +56,18 @@ TEST_CFGS = {
                          'Input:'),
     'test_unsafe_all_headers': (['-if', HUMBLE_HEADERS_FILE, '-u',
                                  TEST_URLS[3]], 'Input:'),
+    'test_grade_perfect_headers': (['-if', HUMBLE_GRADE_PERFECT_FILE, '-u',
+                                    TEST_URLS[4]], 'A+ ('),
+    'test_grade_a_headers': (['-if', HUMBLE_GRADE_A_FILE, '-u', TEST_URLS[4]],
+                             'A ('),
+    'test_grade_b_headers': (['-if', HUMBLE_GRADE_B_FILE, '-u', TEST_URLS[4]],
+                             'B ('),
+    'test_grade_c_headers': (['-if', HUMBLE_GRADE_C_FILE, '-u', TEST_URLS[4]],
+                             'C ('),
+    'test_grade_d_headers': (['-if', HUMBLE_GRADE_D_FILE, '-u', TEST_URLS[4]],
+                             'D ('),
+    'test_grade_e_headers': (['-if', HUMBLE_NOSECHEADERS_FILE, '-u',
+                              TEST_URLS[4]], 'E ('),
     'test_brief_analysis': (['-u', TEST_URLS[9], '-b'], 'Analysis Grade:'),
     'test_cicd_analysis': (['-u', TEST_URLS[9], '-cicd'], 'Analysis Grade'),
     'test_client_error_response': (['-if', HUMBLE_CLIENTERROR_FILE, '-u',
@@ -105,6 +127,9 @@ TEST_CFGS = {
                             HUMBLE_WRONG_TESTSSL_DIR], 'not found'),
 }
 TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
+              '[test_grade_perfect_headers]', '[test_grade_a_headers]',
+              '[test_grade_b_headers]', '[test_grade_c_headers]',
+              '[test_grade_d_headers]', '[test_grade_e_headers]',
               '[test_brief_analysis]', '[test_cicd_analysis]',
               '[test_client_error_response]', '[test_detailed_analysis]',
               '[test_export_csv]', '[test_export_html]', '[test_export_json]',
@@ -394,7 +419,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2025-12-12', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-13', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

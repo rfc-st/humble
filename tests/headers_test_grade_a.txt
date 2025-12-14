@@ -1,0 +1,24 @@
+HTTP/2 200
+date: Sat, 13 Dec 2025 21:43:00 GMT
+content-type: text/html; charset=utf-8
+content-language: en-US
+cache-control: no-cache, no-store, must-revalidate
+strict-transport-security: max-age=31536000; includeSubdomains; preload
+x-frame-options: DENY
+x-content-type-options: nosniff
+referrer-policy: strict-origin-when-cross-origin
+strict-transport-security: max-age=31536000; includeSubDomains
+content-security-policy: default-src 'none'; font-src 'self'; object-src 'self'; require-trusted-types-for 'script'; trusted-types 'none'; base-uri 'self'; child-src github.githubassets.com; connect-src 'self' uploads.github.com; form-action 'self' github.com; frame-ancestors 'none'; frame-src viewscreen.githubusercontent.com; img-src 'self' github.githubassets.com; manifest-src 'self'; media-src github.com user-images.githubusercontent.com/; script-src github.githubassets.com; style-src github.githubassets.com; worker-src github.githubassets.com
+accept-ranges: bytes
+set-cookie: _gh_sess=8%2F6TddXKqUG7vRsPJEy%2FcM7cmX2eYkT0Ez0L0moxVOjjGunELmCmZ68IP8aWzERUs5Qdk7ssTe62d9E6vrx7zw1egVOJZ9v9qJhi2cWR4s0eEzRzrsHfTZgyTtwDLSmo89PHgomKevkBMVOsVuH5bat97Cd1xqnql%2F78pCw%2B7wZEpHAe9oloD1g3E6278yBvjd0Y0OigpKukXKObQsmLA3I7KaS16EZ6YNmNZcdHVbQO2IWOqn79nbk%2BNmhIKRbmL1EgoQRfDwnJWnazwCZ7Qg%3D%3D--BiorBfFk9eXxfhqf--t1KH7Dv3sgxsPASvel52uw%3D%3D; Path=/; HttpOnly; Secure; SameSite=Lax
+set-cookie: _octo=GH1.1.1920633973.1755371799; Path=/; Domain=github.com; Expires=Sun, 16 Aug 2026 19:16:39 GMT; Secure; SameSite=Lax
+set-cookie: logged_in=no; Path=/; Domain=github.com; Expires=Sun, 16 Aug 2026 19:16:39 GMT; HttpOnly; Secure; SameSite=Lax
+Clear-Site-Data: "cache"
+Cross-Origin-Embedder-Policy: require-corp
+Cross-Origin-Opener-Policy: same-origin-allow-popups
+Cross-Origin-Resource-Policy: same-site
+Integrity-Policy: blocked-destinations=(test)
+NEL: { "report_to": "test", "max_age": 12345, "include_subdomains": false, "success_fraction": 0.0, "failure_fraction": 1.0 }
+Permissions-Policy: geolocation=()
+X-Permitted-Cross-Domain-Policies: none
+test-header:

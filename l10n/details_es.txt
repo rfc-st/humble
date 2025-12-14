@@ -2018,6 +2018,24 @@ Generador
 [test_unsafe_all_headers]
  (parámetros '-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[3]>'); verifica que se analicen todas las cabeceras posibles de una URL insegura.
 
+[test_grade_perfect_headers]
+ (parámetros '-if <HUMBLE_GRADE_PERFECT_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'A+' a una URL tras analizarla.
+
+[test_grade_a_headers]
+ (parámetros '-if <HUMBLE_GRADE_A_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'A' a una URL tras analizarla.
+
+[test_grade_b_headers]
+ (parámetros '-if <HUMBLE_GRADE_B_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'B' a una URL tras analizarla.
+
+[test_grade_c_headers]
+ (parámetros '-if <HUMBLE_GRADE_C_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'C' a una URL tras analizarla.
+
+[test_grade_d_headers]
+ (parámetros '-if <HUMBLE_GRADE_D_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'D' a una URL tras analizarla.
+
+[test_grade_e_headers]
+ (parámetros '-if <HUMBLE_NOSECHEADERS_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'E' a una URL tras analizarla.
+
 [test_brief_analysis]
  (parámetros '-u <TEST_URLS[9]> -b'); verifica que un análisis breve finalice correctamente.
 
