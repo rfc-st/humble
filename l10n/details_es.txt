@@ -2153,62 +2153,32 @@ Pruebas realizadas el
 [test_remaining]
 URL para el resto de pruebas
 
-[test_temp]
-Eliminado fichero temporal de análisis
-
 [test_ftemp]
 No se pudo eliminar el fichero temporal de análisis
-
-[test_txt]
-Eliminado fichero TXT final
 
 [test_ftxt]
 No se pudo eliminar el fichero TXT final
 
-[test_csv]
-Eliminado fichero CSV final
-
 [test_fcsv]
 No se pudo eliminar el fichero CSV final
-
-[test_html]
-Eliminado fichero HTML final
 
 [test_fhtml]
 No se pudo eliminar el fichero HTML final
 
-[test_json]
-Eliminado fichero JSON final
-
 [test_fjson]
 No se pudo eliminar el fichero JSON final
-
-[test_json_brief]
-Eliminado fichero JSON breve final
 
 [test_fjson_brief]
 No se pudo eliminar el fichero JSON breve final
 
-[test_pdf]
-Eliminado fichero PDF final
-
 [test_fpdf]
 No se pudo eliminar el fichero PDF final
-
-[test_xlsx]
-Eliminado fichero XLSX final
 
 [test_fxlsx]
 No se pudo eliminar el fichero XLSX final
 
-[test_xml]
-Eliminado fichero XLM final
-
-[test_fxlm]
+[test_fxml]
 No se pudo eliminar el fichero XLM final
-
-[test_cache]
-Eliminado directorio de caché de pytest
 
 [test_fcache]
 No se pudo eliminar el directorio de caché de pytest

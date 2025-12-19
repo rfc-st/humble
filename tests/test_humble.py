@@ -299,7 +299,7 @@ def test_proxy_wrong():
     run_test(['-p', 'http://127.0.0.1:test'], expected)
 
 
-def delete_export_files(extension, ok_msg, ko_msg):
+def delete_export_files(extension, ko_msg):
     """
     Delete all files associated with export tests
     """
@@ -313,7 +313,6 @@ def delete_export_files(extension, ok_msg, ko_msg):
         export_file = path.join(HUMBLE_TESTS_DIR, file)
         try:
             remove(export_file)
-            msgs.append((get_detail(ok_msg, replace=True), export_file))
         except Exception as e:
             msgs.append((get_detail(ko_msg, replace=True),
                          f"({type(e).__name__}) {export_file}"))
@@ -329,7 +328,6 @@ def delete_pytest_caches(dir_path):
     if path.isdir(dir_path):
         try:
             shutil.rmtree(dir_path)
-            msgs.append((get_detail('[test_cache]', replace=True), dir_path))
         except Exception as e:
             msgs.append((get_detail('[test_fcache]', replace=True),
                          f"({type(e).__name__}) {dir_path}"))
@@ -357,17 +355,17 @@ def set_temp_content(current_time):
         (get_detail('[test_remaining]', replace=True), TEST_URLS[9])
     ]
     delete_extensions = [
-        ('.csv', '[test_csv]', '[test_fcsv]'),
-        ('.txt', '[test_txt]', '[test_ftxt]'),
-        ('.html', '[test_html]', '[test_fhtml]'),
-        ('.json', '[test_json]', '[test_fjson]'),
-        ('.json', '[test_json_brief]', '[test_fjson_brief]'),
-        ('.pdf', '[test_pdf]', '[test_fpdf]'),
-        ('.xlsx', '[test_xlsx]', '[test_fxlsx]'),
-        ('.xml', '[test_xml]', '[test_fxml]'),
+        ('.csv', '[test_fcsv]'),
+        ('.txt', '[test_ftxt]'),
+        ('.html', '[test_fhtml]'),
+        ('.json', '[test_fjson]'),
+        ('.json', '[test_fjson_brief]'),
+        ('.pdf', '[test_fpdf]'),
+        ('.xlsx', '[test_fxlsx]'),
+        ('.xml', '[test_fxml]'),
     ]
-    for extension, ok_msg, ko_msg in delete_extensions:
-        info_msgs.extend(delete_export_files(extension, ok_msg, ko_msg))
+    for extension, ko_msg in delete_extensions:
+        info_msgs.extend(delete_export_files(extension, ko_msg))
     for cache_dir in PYTEST_CACHE_DIRS:
         info_msgs.extend(delete_pytest_caches(cache_dir))
     return info_msgs
@@ -381,12 +379,7 @@ def delete_temp_content():
                   if msg.startswith("Failed")]
     info_msgs = [(msg, val) for msg, val in info_msgs
                  if not msg.startswith("Failed")]
-    all_msgs = [
-        '[test_tests]', '[test_input]', '[test_remaining]', '[test_temp]',
-        '[test_csv]', '[test_txt]', '[test_html]', '[test_json]',
-        '[test_json_brief]', '[test_pdf]', '[test_xlsx]', '[test_xml]',
-        '[test_cache]'
-    ]
+    all_msgs = ['[test_tests]', '[test_input]', '[test_remaining]']
     max_msg_len = max(len(get_detail(key, replace=True)) for key in all_msgs)
     for message, value in error_msgs:
         print(f"[ERROR] {message.ljust(max_msg_len + 1)}: {value}")
@@ -419,7 +412,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2025-12-13', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-19', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

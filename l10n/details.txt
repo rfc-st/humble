@@ -2173,62 +2173,32 @@ Tests run at
 [test_remaining]
 URL used for all remaining tests
 
-[test_temp]
-Deleted temp analysis file
-
 [test_ftemp]
 Failed to delete temp analysis file
-
-[test_txt]
-Deleted final TXT file
 
 [test_ftxt]
 Failed to delete final TXT file
 
-[test_csv]
-Deleted final CSV file
-
 [test_fcsv]
 Failed to delete final CSV file
-
-[test_html]
-Deleted final HTML file
 
 [test_fhtml]
 Failed to delete final HTML file
 
-[test_json]
-Deleted final JSON file
-
 [test_fjson]
 Failed to delete final JSON file
-
-[test_json_brief]
-Deleted final brief JSON file
 
 [test_fjson_brief]
 Failed to delete final brief JSON file
 
-[test_pdf]
-Deleted final PDF file
-
 [test_fpdf]
 Failed to delete final PDF file
-
-[test_xlsx]
-Deleted final XLSX file
 
 [test_fxlsx]
 Failed to delete final XLSX file
 
-[test_xml]
-Deleted final XLM file
-
-[test_fxlm]
+[test_fxml]
 Failed to delete final XLM file
-
-[test_cache]
-Deleted pytest cache folder
 
 [test_fcache]
 Failed to delete pytest cache folder
