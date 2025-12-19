@@ -17,6 +17,8 @@ PYTEST_CACHE_DIRS = [
     path.join(HUMBLE_TESTS_DIR, d)
     for d in ['__pycache__', '.pytest_cache']
 ]
+HUMBLE_CSP_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
+                                         'headers_test_csp.txt'))
 HUMBLE_DESC = "Basic unit tests for 'humble' (HTTP Headers Analyzer)"
 HUMBLE_PROJECT_ROOT = path.abspath(path.join(HUMBLE_TESTS_DIR, '..'))
 HUMBLE_HEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
@@ -72,6 +74,8 @@ TEST_CFGS = {
     'test_cicd_analysis': (['-u', TEST_URLS[9], '-cicd'], 'Analysis Grade'),
     'test_client_error_response': (['-if', HUMBLE_CLIENTERROR_FILE, '-u',
                                     TEST_URLS[1]], 'HTTP code'),
+    'test_csp_corner_cases': (['-if', HUMBLE_CSP_FILE, '-u', TEST_URLS[2]],
+                              'Analysis Grade'),
     'test_detailed_analysis': (['-u', TEST_URLS[9]], 'Analysis Grade:'),
     'test_export_csv': (['-u', TEST_URLS[9], '-o', 'csv'], 'CSV saved'),
     'test_export_html': (['-u', TEST_URLS[9], '-o', 'html', '-r'],
@@ -131,8 +135,9 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_grade_b_headers]', '[test_grade_c_headers]',
               '[test_grade_d_headers]', '[test_grade_e_headers]',
               '[test_brief_analysis]', '[test_cicd_analysis]',
-              '[test_client_error_response]', '[test_detailed_analysis]',
-              '[test_export_csv]', '[test_export_html]', '[test_export_json]',
+              '[test_client_error_response]', '[test_csp_corner_cases]',
+              '[test_detailed_analysis]', '[test_export_csv]',
+              '[test_export_html]', '[test_export_json]',
               '[test_export_json_brief]', '[test_export_pdf]',
               '[test_export_xlsx]', '[test_export_xml]',
               '[test_fingerprint_groups]', '[test_fingerprint_term]',

@@ -2065,6 +2065,9 @@ Generator
 [test_client_error_response]
  ('-if <HUMBLE_CLIENTERROR_FILE> -u <TEST_URLS[1]>' parameters); verify that the analysis shows the HTTP 4xx error code response.
 
+[test_csp_corner_cases]
+ ('-if <HUMBLE_CSP_FILE> -u <TEST_URLS[2]>' parameters); verify that corner cases of the 'Content-Security-Policy' header are checked.
+
 [test_detailed_analysis]
  ('-u <TEST_URLS[9]>' parameter); verifies the detailed analysis completes successfully.
 

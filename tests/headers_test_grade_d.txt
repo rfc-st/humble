@@ -8,7 +8,7 @@ x-frame-options: DENY
 x-content-type-options: nosniff
 referrer-policy: strict-origin-when-cross-origin
 strict-transport-security: max-age=31536000; includeSubDomains
-content-security-policy: default-src 'none'; font-src 'self'; object-src 'self'; require-trusted-types-for 'script'; trusted-types 'none'; base-uri 'self'; child-src github.githubassets.com; connect-src 'self' uploads.github.com; form-action 'self' github.com; frame-ancestors 'none'; frame-src viewscreen.githubusercontent.com; img-src 'self' github.githubassets.com; manifest-src 'self'; media-src github.com user-images.githubusercontent.com/; script-src github.githubassets.com; style-src github.githubassets.com; worker-src github.githubassets.com
+content-security-policy: default-src 'none'; font-src 'self'; object-src 'self'; require-trusted-types-for 'script'; trusted-types 'none'; base-uri 'self'; child-src github.githubassets.com; connect-src 'self' uploads.github.com; form-action 'self' github.com; frame-ancestors 'none'; frame-src viewscreen.githubusercontent.com; img-src 'self' github.githubassets.com; manifest-src 'self'; media-src github.com user-images.githubusercontent.com/; script-src github.githubassets.com 'strict-dynamic'; style-src github.githubassets.com; worker-src github.githubassets.com
 server: github.com
 accept-ranges: bytes
 set-cookie: _gh_sess=8%2F6TddXKqUG7vRsPJEy%2FcM7cmX2eYkT0Ez0L0moxVOjjGunELmCmZ68IP8aWzERUs5Qdk7ssTe62d9E6vrx7zw1egVOJZ9v9qJhi2cWR4s0eEzRzrsHfTZgyTtwDLSmo89PHgomKevkBMVOsVuH5bat97Cd1xqnql%2F78pCw%2B7wZEpHAe9oloD1g3E6278yBvjd0Y0OigpKukXKObQsmLA3I7KaS16EZ6YNmNZcdHVbQO2IWOqn79nbk%2BNmhIKRbmL1EgoQRfDwnJWnazwCZ7Qg%3D%3D--BiorBfFk9eXxfhqf--t1KH7Dv3sgxsPASvel52uw%3D%3D; Path=/; HttpOnly; Secure; SameSite=Lax

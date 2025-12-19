@@ -2045,6 +2045,9 @@ Generador
 [test_client_error_response]
  (parámetros '-if <HUMBLE_CLIENTERROR_FILE> -u <TEST_URLS[1]>'); verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
 
+[test_csp_corner_cases]
+ (parámetros '-if <HUMBLE_CSP_FILE> -u <TEST_URLS[2]>'); verifica que se comprueben casos concretos de la cabecera 'Content-Security-Policy'.
+
 [test_detailed_analysis]
  (parámetro '-u <TEST_URLS[9]>'); verifica que un análisis detallado finalice correctamente.
 

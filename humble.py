@@ -123,7 +123,7 @@ RE_PATTERN = (
     r'\(humble_pdf_style\)([^:]+):',
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r'\(humble_sec_style\)([^:]+)', r'\(humble_sec_style\)',
-    r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{32}$', r'^[A-Za-z0-9+/=]+$',
+    r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{1,31}$', r'^[A-Za-z0-9+/=]+$',
     r', (?=[^;,]+?=)', r"'nonce-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
     r"'(sha256|sha384|sha512)-([A-Za-z0-9+/=]+)'",
     r"(?<!')\b(sha256|sha384|sha512)-[A-Za-z0-9+/=]+(?!')",
