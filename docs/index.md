@@ -23,11 +23,11 @@ And, if I may, a word of advice: use the information provided by this tool wisel
 Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.linkedin.com/in/rafaelfaura/" target="_blank">LinkedIn</a>.
 
 ## Features
-- Covers 61 enabled security-related HTTP response headers.
-- 15 checks for missing security-related HTTP response headers.
-- 1239 checks for fingerprinting through HTTP response headers.
-- 155 checks for deprecated HTTP response headers/protocols or with insecure/wrong values.
-- 28 checks related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
+- Covers 61 <a href="https://github.com/rfc-st/humble/#checks-enabled-headers" target="_blank">enabled</a> security-related HTTP response headers.
+- 15 <a href="https://github.com/rfc-st/humble/#checks-missing-headers" target="_blank">checks</a> for missing security-related HTTP response headers.
+- 1239 <a href="https://github.com/rfc-st/humble/#checks-fingerprint-headers" target="_blank">checks</a> for fingerprinting through HTTP response headers.
+- 155 <a href="https://github.com/rfc-st/humble/#checks-deprecated-headersprotocols-and-insecure-values" target="_blank">checks</a> for deprecated HTTP response headers/protocols or with insecure/wrong values.
+- 28 <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L46-L73" target="_blank">checks</a> related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
 - Can check for compliance with the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">Secure Headers Project</a> Best Practices.
 - Can exclude specific HTTP response headers from the analysis.
 - Can analyze raw response files: text files with HTTP response headers and values.
@@ -45,7 +45,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Can display analysis statistics for a specific URL or across all of them.
 - Can display fingerprint statistics for a specific term or the Top 20.
 - Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.
-- Provides dozens of unit tests to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/"  target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/" target="_blank">pytest-cov</a>..
+- Provides dozens of <a href="https://github.com/rfc-st/humble/#unit-tests" target="_blank">unit tests</a> to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/"  target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/" target="_blank">pytest-cov</a>.
 - Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit</a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8</a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument</a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE</a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a>.
 - Tested, one by one, on thousands of URLs.
 - Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.
