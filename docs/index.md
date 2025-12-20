@@ -27,8 +27,8 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - 15 checks for missing security-related HTTP response headers.
 - 1239 checks for fingerprinting through HTTP response headers.
 - 155 checks for deprecated HTTP response headers/protocols or with insecure/wrong values.
-- 28 checks related to Content Security Policy Level 3.
-- Can check for compliance with the OWASP Secure Headers Project Best Practices.
+- 28 checks related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
+- Can check for compliance with the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">Secure Headers Project</a> Best Practices.
 - Can exclude specific HTTP response headers from the analysis.
 - Can analyze raw response files: text files with HTTP response headers and values.
 - Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF 1.4, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.
@@ -36,20 +36,20 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Can provide brief and detailed analysis along with HTTP response headers.
 - Can use proxies for the analysis.
 - Allows specifying custom HTTP request headers.
-- Can output only analysis summary, totals and grade as JSON; suitable for CI/CD.
-- Print browser support for enabled HTTP security headers, with data from Can I use.
-- Highlights experimental headers in each analysis.
+- Can output only analysis summary, totals and grade as JSON; suitable for <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" target="_blank">CI/CD</a>.
+- Print browser support for enabled HTTP security headers, with data from <a href="https://caniuse.com/" target="_blank">Can I use</a>.
+- Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental</a> headers in each analysis.
 - Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.
 - Supports displaying analysis, messages, and most errors in English or Spanish.
 - Saves each analysis, highlighting improvements or deficiencies compared to the previous one.
 - Can display analysis statistics for a specific URL or across all of them.
 - Can display fingerprint statistics for a specific term or the Top 20.
 - Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.
-- Provides dozens of unit tests to verify compatibility with your environment; requires pytest and pytest-cov.
-- Code reviewed via Bandit, Flake8, pyinstrument, SonarQube for IDE and Sourcery.
+- Provides dozens of unit tests to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/"  target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/" target="_blank">pytest-cov</a>..
+- Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit</a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8</a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument</a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE</a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a>.
 - Tested, one by one, on thousands of URLs.
 - Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.
-- Almost all the code available under one of the most permissive licenses: MIT.
+- <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost</a> all the <a href="https://github.com/rfc-st/humble/blob/master/additional/owasp_best_practices.txt" target="_blank">code</a> available under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT</a>.
 - And more!.
 
 ## How can I test it?
