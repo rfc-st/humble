@@ -17,8 +17,8 @@ PYTEST_CACHE_DIRS = [
     path.join(HUMBLE_TESTS_DIR, d)
     for d in ['__pycache__', '.pytest_cache']
 ]
-HUMBLE_CSP_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                         'headers_test_csp.txt'))
+HUMBLE_CCASES_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
+                                            'headers_test_corner_cases.txt'))
 HUMBLE_DESC = "Basic unit tests for 'humble' (HTTP Headers Analyzer)"
 HUMBLE_PROJECT_ROOT = path.abspath(path.join(HUMBLE_TESTS_DIR, '..'))
 HUMBLE_HEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
@@ -49,33 +49,35 @@ TEST_URLS = ('https://github.com/rfc-st/humble',
              'http://github.com', 'https://humbletestingnosecheaders.com',
              'https://en.wikipedia.org', 'https://microsoft.com',
              'http://127.0.0.1:65535', 'https://tass.ru/',
-             'https://google.com')
+             'https://google.com', 'https://httpbin.org/delay/10')
 HUMBLE_WRONG_TESTSSL_DIR = '/dev/'
 REQUIRED_PYTHON = (3, 11)
 TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
-    'test_all_headers': (['-if', HUMBLE_HEADERS_FILE, '-u', TEST_URLS[2]],
+    'test_all_headers': (['-u', TEST_URLS[2], '-if', HUMBLE_HEADERS_FILE],
                          'Input:'),
-    'test_unsafe_all_headers': (['-if', HUMBLE_HEADERS_FILE, '-u',
-                                 TEST_URLS[3]], 'Input:'),
-    'test_grade_perfect_headers': (['-if', HUMBLE_GRADE_PERFECT_FILE, '-u',
-                                    TEST_URLS[4]], 'A+ ('),
-    'test_grade_a_headers': (['-if', HUMBLE_GRADE_A_FILE, '-u', TEST_URLS[4]],
+    'test_unsafe_all_headers': (['-u', TEST_URLS[3], '-if',
+                                 HUMBLE_HEADERS_FILE, ], 'Input:'),
+    'test_grade_perfect_headers': (['-u', TEST_URLS[4], '-if',
+                                    HUMBLE_GRADE_PERFECT_FILE], 'A+ ('),
+    'test_grade_a_headers': (['-u', TEST_URLS[4], '-if', HUMBLE_GRADE_A_FILE],
                              'A ('),
-    'test_grade_b_headers': (['-if', HUMBLE_GRADE_B_FILE, '-u', TEST_URLS[4]],
+    'test_grade_b_headers': (['-u', TEST_URLS[4], '-if', HUMBLE_GRADE_B_FILE],
                              'B ('),
-    'test_grade_c_headers': (['-if', HUMBLE_GRADE_C_FILE, '-u', TEST_URLS[4]],
+    'test_grade_c_headers': (['-u', TEST_URLS[4], '-if', HUMBLE_GRADE_C_FILE],
                              'C ('),
-    'test_grade_d_headers': (['-if', HUMBLE_GRADE_D_FILE, '-u', TEST_URLS[4]],
+    'test_grade_d_headers': (['-u', TEST_URLS[4], '-if', HUMBLE_GRADE_D_FILE],
                              'D ('),
-    'test_grade_e_headers': (['-if', HUMBLE_NOSECHEADERS_FILE, '-u',
-                              TEST_URLS[4]], 'E ('),
+    'test_grade_e_headers': (['-u', TEST_URLS[4], '-if',
+                              HUMBLE_NOSECHEADERS_FILE], 'E ('),
     'test_brief_analysis': (['-u', TEST_URLS[9], '-b'], 'Analysis Grade:'),
     'test_cicd_analysis': (['-u', TEST_URLS[9], '-cicd'], 'Analysis Grade'),
-    'test_client_error_response': (['-if', HUMBLE_CLIENTERROR_FILE, '-u',
-                                    TEST_URLS[1]], 'HTTP code'),
-    'test_csp_corner_cases': (['-if', HUMBLE_CSP_FILE, '-u', TEST_URLS[2]],
-                              'Analysis Grade'),
+    'test_client_error_response': (['-u', TEST_URLS[1], '-if',
+                                    HUMBLE_CLIENTERROR_FILE], 'HTTP code'),
+    'test_corner_cases': (['-u', TEST_URLS[2], '-if', HUMBLE_CCASES_FILE],
+                          'Analysis Grade'),
+    'test_corner_cases_brief': (['-u', TEST_URLS[2], '-if',
+                                 HUMBLE_GRADE_D_FILE, '-b'], 'Analysis Grade'),
     'test_detailed_analysis': (['-u', TEST_URLS[9]], 'Analysis Grade:'),
     'test_export_csv': (['-u', TEST_URLS[9], '-o', 'csv'], 'CSV saved'),
     'test_export_html': (['-u', TEST_URLS[9], '-o', 'html', '-r'],
@@ -91,7 +93,7 @@ TEST_CFGS = {
     'test_fingerprint_term': (['-f', 'Google'], 'Headers related to'),
     'test_fingerprint_term_no_results': (['-f', 'TestingHumble'], 'quote'),
     'test_global_statistics': (['-a'], 'Empty headers'),
-    'test_input_file': (['-if', HUMBLE_INPUT_FILE, '-u', TEST_URLS[2]],
+    'test_input_file': (['-u', TEST_URLS[2], '-if', HUMBLE_INPUT_FILE],
                         'Input:'),
     'test_input_traversal': (['-u', TEST_URLS[9], '-op',
                               HUMBLE_INPUT_TRAVERSAL], 'wrong:'),
@@ -99,8 +101,8 @@ TEST_CFGS = {
                            'Advertencias a revisar'),
     'test_l10n_grades': (['-grd', '-l', 'es'], 'No te obsesiones'),
     'test_license': (['-lic'], 'copyright'),
-    'test_no_security_headers': (['-if', HUMBLE_NOSECHEADERS_FILE, '-u',
-                                  TEST_URLS[4]], 'are present'),
+    'test_no_security_headers': (['-u', TEST_URLS[4], '-if',
+                                  HUMBLE_NOSECHEADERS_FILE], 'are present'),
     'test_owasp_compliance': (['-u', TEST_URLS[9], '-c'],
                               'non-recommended values'),
     'test_proxy_unreachable': (['-u', TEST_URLS[9], '-p', TEST_URLS[7]],
@@ -117,13 +119,15 @@ TEST_CFGS = {
     'test_security_guidelines': (['-g'], 'headers-in-wordpress'),
     'test_skipped_headers': (['-u', TEST_URLS[9], '-s', 'ETAG', 'NEL'],
                              'expressly excluded'),
+    'test_unreliable_analysis': (['-u', TEST_URLS[10]], 'reliable'),
     'test_unsupported_header': (['-u', TEST_URLS[9], '-s', 'testhumbleheader'],
                                 'testhumbleheader'),
     'test_updates': (['-v'], 'Keeping your security tools'),
-    'test_url_statistics': (['-if', HUMBLE_HEADERS_FILE, '-u', TEST_URLS[5],
+    'test_url_statistics': (['-u', TEST_URLS[5], '-if', HUMBLE_HEADERS_FILE,
                              '-a'], 'Empty headers'),
-    'test_url_insufficient_statistics': (['-if', HUMBLE_HEADERS_FILE, '-u',
-                                          TEST_URLS[6], '-a'], 'reliable'),
+    'test_url_insufficient_statistics': (['-u', TEST_URLS[6], '-if',
+                                          HUMBLE_HEADERS_FILE, '-a'],
+                                         'reliable'),
     'test_user_agent': (['-u', TEST_URLS[9], '-ua', '4'],
                         'Selected the User-Agent'),
     'test_user_agent_list': (['-ua', '0'], 'source: '),
@@ -135,9 +139,9 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_grade_b_headers]', '[test_grade_c_headers]',
               '[test_grade_d_headers]', '[test_grade_e_headers]',
               '[test_brief_analysis]', '[test_cicd_analysis]',
-              '[test_client_error_response]', '[test_csp_corner_cases]',
-              '[test_detailed_analysis]', '[test_export_csv]',
-              '[test_export_html]', '[test_export_json]',
+              '[test_client_error_response]', '[test_corner_cases]',
+              '[test_corner_cases_brief]', '[test_detailed_analysis]',
+              '[test_export_csv]', '[test_export_html]', '[test_export_json]',
               '[test_export_json_brief]', '[test_export_pdf]',
               '[test_export_xlsx]', '[test_export_xml]',
               '[test_fingerprint_groups]', '[test_fingerprint_term]',
@@ -149,11 +153,11 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_redirects]', '[test_request_headers]',
               '[test_response_headers]', '[test_russian_block]',
               '[test_security_guidelines]', '[test_skipped_headers]',
-              '[test_unsupported_header]', '[test_updates]',
-              '[test_url_statistics]', '[test_url_insufficient_statistics]',
-              '[test_user_agent]', '[test_user_agent_list]',
-              '[test_wrong_testssl]', '[test_python_version]',
-              '[test_missing_parameters]')
+              '[test_unreliable_analysis]', '[test_unsupported_header]',
+              '[test_updates]', '[test_url_statistics]',
+              '[test_url_insufficient_statistics]', '[test_user_agent]',
+              '[test_user_agent_list]', '[test_wrong_testssl]',
+              '[test_python_version]', '[test_missing_parameters]')
 
 
 class _Args:
@@ -205,7 +209,7 @@ def print_results():
     print()
 
 
-def run_test(args, expected_text, timeout=5):
+def run_test(args, expected_text, timeout=15):
     """Run each of the available tests"""
     test_args = [TEST_URLS[9] if a is None else a for a in args]
 
@@ -354,11 +358,7 @@ def set_temp_content(current_time):
     Define the files and directories to be deleted after all tests have been
     run
     """
-    info_msgs = [
-        (get_detail('[test_tests]', replace=True), current_time),
-        (get_detail('[test_input]', replace=True), TEST_URLS[2]),
-        (get_detail('[test_remaining]', replace=True), TEST_URLS[9])
-    ]
+    info_msgs = [(get_detail('[test_tests]', replace=True), current_time)]
     delete_extensions = [
         ('.csv', '[test_fcsv]'),
         ('.txt', '[test_ftxt]'),
@@ -384,8 +384,7 @@ def delete_temp_content():
                   if msg.startswith("Failed")]
     info_msgs = [(msg, val) for msg, val in info_msgs
                  if not msg.startswith("Failed")]
-    all_msgs = ['[test_tests]', '[test_input]', '[test_remaining]']
-    max_msg_len = max(len(get_detail(key, replace=True)) for key in all_msgs)
+    max_msg_len = len(get_detail('[test_tests]', replace=True))
     for message, value in error_msgs:
         print(f"[ERROR] {message.ljust(max_msg_len + 1)}: {value}")
     if error_msgs:
@@ -417,7 +416,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2025-12-19', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-20', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

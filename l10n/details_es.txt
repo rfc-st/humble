@@ -2013,28 +2013,28 @@ Generador
  (parámetro '-h'); verifica que la Ayuda se muestre correctamente.
 
 [test_all_headers]
- (parámetros '-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[2]>'); verifica que se analicen todas las cabeceras posibles de una URL segura.
+ (parámetros '-u <TEST_URLS[2]> -if <HUMBLE_HEADERS_FILE>'); verifica que se analicen todas las cabeceras posibles de una URL segura.
 
 [test_unsafe_all_headers]
- (parámetros '-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[3]>'); verifica que se analicen todas las cabeceras posibles de una URL insegura.
+ (parámetros '-u <TEST_URLS[3]> -if <HUMBLE_HEADERS_FILE>'); verifica que se analicen todas las cabeceras posibles de una URL insegura.
 
 [test_grade_perfect_headers]
- (parámetros '-if <HUMBLE_GRADE_PERFECT_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'A+' a una URL tras analizarla.
+ (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_GRADE_PERFECT_FILE>'); verifica que se asigne la nota 'A+' a una URL tras analizarla.
 
 [test_grade_a_headers]
- (parámetros '-if <HUMBLE_GRADE_A_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'A' a una URL tras analizarla.
+ (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_GRADE_A_FILE>'); verifica que se asigne la nota 'A' a una URL tras analizarla.
 
 [test_grade_b_headers]
- (parámetros '-if <HUMBLE_GRADE_B_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'B' a una URL tras analizarla.
+ (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_GRADE_B_FILE>'); verifica que se asigne la nota 'B' a una URL tras analizarla.
 
 [test_grade_c_headers]
- (parámetros '-if <HUMBLE_GRADE_C_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'C' a una URL tras analizarla.
+ (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_GRADE_C_FILE>'); verifica que se asigne la nota 'C' a una URL tras analizarla.
 
 [test_grade_d_headers]
- (parámetros '-if <HUMBLE_GRADE_D_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'D' a una URL tras analizarla.
+ (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_GRADE_D_FILE>'); verifica que se asigne la nota 'D' a una URL tras analizarla.
 
 [test_grade_e_headers]
- (parámetros '-if <HUMBLE_NOSECHEADERS_FILE> -u <TEST_URLS[4]>'); verifica que se asigne la nota 'E' a una URL tras analizarla.
+ (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_NOSECHEADERS_FILE>'); verifica que se asigne la nota 'E' a una URL tras analizarla.
 
 [test_brief_analysis]
  (parámetros '-u <TEST_URLS[9]> -b'); verifica que un análisis breve finalice correctamente.
@@ -2043,10 +2043,13 @@ Generador
  (parámetros '-u <TEST_URLS[9]> -cicd'); verifica que un análisis CI/CD finalice correctamente.
 
 [test_client_error_response]
- (parámetros '-if <HUMBLE_CLIENTERROR_FILE> -u <TEST_URLS[1]>'); verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
+ (parámetros '-u <TEST_URLS[1]> -if <HUMBLE_CLIENTERROR_FILE>'); verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
 
-[test_csp_corner_cases]
- (parámetros '-if <HUMBLE_CSP_FILE> -u <TEST_URLS[2]>'); verifica que se comprueben casos concretos de la cabecera 'Content-Security-Policy'.
+[test_corner_cases]
+ (parámetros '-u <TEST_URLS[2]> -if <HUMBLE_CCASES_FILE>'); verifica que se comprueben casos específicos en varias cabeceras.
+
+[test_corner_cases_brief]
+ (parámetros '-u <TEST_URLS[2]> -if <HUMBLE_GRADE_D_FILE> -b'); verifica que se comprueben casos específicos en varias cabeceras en un análisis breve.
 
 [test_detailed_analysis]
  (parámetro '-u <TEST_URLS[9]>'); verifica que un análisis detallado finalice correctamente.
@@ -2085,7 +2088,7 @@ Generador
  (parámetro '-a'); verifica que se muestren estadísticas sobre todos los análisis realizados.
 
 [test_input_file]
- (parámetros '-if <HUMBLE_INPUT_FILE> -u <TEST_URLS[2]>'); verifica que se analice correctamente un fichero con cabeceras de respuesta.
+ (parámetros '-u <TEST_URLS[2]> -if <HUMBLE_INPUT_FILE>'); verifica que se analice correctamente un fichero con cabeceras de respuesta.
 
 [test_input_traversal]
  (parámetros '-u <TEST_URLS[9]> -op <HUMBLE_INPUT_TRAVERSAL>'); verifica que se realicen comprobaciones básicas sobre 'input traversal'.
@@ -2100,7 +2103,7 @@ Generador
  (parámetro '-lic'); verifica que la licencia se muestre correctamente.
 
 [test_no_security_headers]
- (parámetros '-if <HUMBLE_NOSECHEADERS_FILE> -u <TEST_URLS[4]>'); verifica que se muestre un análisis sin cabeceras de seguridad recibidas.
+ (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_NOSECHEADERS_FILE>'); verifica que se muestre un análisis sin cabeceras de seguridad recibidas.
 
 [test_owasp_compliance]
  (parámetros '-u <TEST_URLS[9]> -c'); verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
@@ -2126,6 +2129,9 @@ Generador
 [test_skipped_headers]
  (parámetros '-u <TEST_URLS[9]> -s ETAG NEL'); verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
 
+[test_unreliable_analysis]
+ (parámetro '-u <TEST_URLS[10]>'); verifica análisis poco fiables (por ejemplo, aquellos que tardan en responder).
+
 [test_unsupported_header]
  (parámetros '-u <TEST_URLS[9]> -s testhumbleheader'); verifica que las cabeceras indicadas a excluir en el análisis realmente se analicen.
 
@@ -2133,10 +2139,10 @@ Generador
  (parámetro '-v'); verifica que la lógica para comprobar actualizaciones funcione correctamente.
 
 [test_url_statistics]
- (parámetros '-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[5]> -a'); verifica que se muestren las estadísticas para una URL concreta analizada.
+ (parámetros '-u <TEST_URLS[5]> -if <HUMBLE_HEADERS_FILE> -a'); verifica que se muestren las estadísticas para una URL concreta analizada.
 
 [test_url_insufficient_statistics]
- (parámetros '-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[6]> -a'); verifica que se muestre un error por análisis insuficientes de una URL.
+ (parámetros '-u <TEST_URLS[6]> -if <HUMBLE_HEADERS_FILE> -a'); verifica que se muestre un error por análisis insuficientes de una URL.
 
 [test_user_agent]
  (parámetros '-u <TEST_URLS[9]> -ua 4'); verifica que el cuarto 'User-Agent' se aplique correctamente en un análisis detallado.
@@ -2149,12 +2155,6 @@ Generador
 
 [test_tests]
 Pruebas realizadas el
-
-[test_input]
-'test_input_file' utiliza una URL predefinida
-
-[test_remaining]
-URL para el resto de pruebas
 
 [test_ftemp]
 No se pudo eliminar el fichero temporal de análisis

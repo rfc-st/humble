@@ -2033,28 +2033,28 @@ Generator
  ('-h' parameter); verifies the help message is displayed correctly.
 
 [test_all_headers]
- ('-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[2]>' parameters); verify that all possible headers of a secure URL are analyzed.
+ ('-u <TEST_URLS[2]> -if <HUMBLE_HEADERS_FILE>' parameters); verify that all possible headers of a secure URL are analyzed.
 
 [test_unsafe_all_headers]
- ('-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[3]>' parameters); verify that all possible headers of an insecure URL are analyzed.
+ ('-u <TEST_URLS[3]> -if <HUMBLE_HEADERS_FILE>' parameters); verify that all possible headers of an insecure URL are analyzed.
 
 [test_grade_perfect_headers]
- ('-if <HUMBLE_GRADE_PERFECT_FILE> -u <TEST_URLS[4]>' parameters); verify 'A+' grade is assigned to a URL after analysis.
+ ('-u <TEST_URLS[4]> -if <HUMBLE_GRADE_PERFECT_FILE>' parameters); verify 'A+' grade is assigned to a URL after analysis.
 
 [test_grade_a_headers]
- ('-if <HUMBLE_GRADE_A_FILE> -u <TEST_URLS[4]>' parameters); verify 'A' grade is assigned to a URL after analysis.
+ ('-u <TEST_URLS[4]> -if <HUMBLE_GRADE_A_FILE>' parameters); verify 'A' grade is assigned to a URL after analysis.
 
 [test_grade_b_headers]
- ('-if <HUMBLE_GRADE_B_FILE> -u <TEST_URLS[4]>' parameters); verify 'B' grade is assigned to a URL after analysis.
+ ('-u <TEST_URLS[4]> -if <HUMBLE_GRADE_B_FILE>' parameters); verify 'B' grade is assigned to a URL after analysis.
 
 [test_grade_c_headers]
- ('-if <HUMBLE_GRADE_C_FILE> -u <TEST_URLS[4]>' parameters); verify 'C' grade is assigned to a URL after analysis.
+ ('-u <TEST_URLS[4]> -if <HUMBLE_GRADE_C_FILE>' parameters); verify 'C' grade is assigned to a URL after analysis.
 
 [test_grade_d_headers]
- ('-if <HUMBLE_GRADE_D_FILE> -u <TEST_URLS[4]>' parameters); verify 'D' grade is assigned to a URL after analysis.
+ ('-u <TEST_URLS[4]> -if <HUMBLE_GRADE_D_FILE>' parameters); verify 'D' grade is assigned to a URL after analysis.
 
 [test_grade_e_headers]
- ('-if <HUMBLE_NOSECHEADERS_FILE> -u <TEST_URLS[4]>' parameters); verify 'E' grade is assigned to a URL after analysis.
+ ('-u <TEST_URLS[4]> -if <HUMBLE_NOSECHEADERS_FILE>' parameters); verify 'E' grade is assigned to a URL after analysis.
 
 [test_brief_analysis]
  ('-u <TEST_URLS[9]> -b' parameters); verifies the brief analysis completes successfully.
@@ -2063,10 +2063,13 @@ Generator
  ('-u <TEST_URLS[9]> -cicd' parameters); verifies a CI/CD analysis completes successfully.
 
 [test_client_error_response]
- ('-if <HUMBLE_CLIENTERROR_FILE> -u <TEST_URLS[1]>' parameters); verify that the analysis shows the HTTP 4xx error code response.
+ ('-u <TEST_URLS[1]> -if <HUMBLE_CLIENTERROR_FILE>' parameters); verify that the analysis shows the HTTP 4xx error code response.
 
-[test_csp_corner_cases]
- ('-if <HUMBLE_CSP_FILE> -u <TEST_URLS[2]>' parameters); verify that corner cases of the 'Content-Security-Policy' header are checked.
+[test_corner_cases]
+ ('-u <TEST_URLS[2]> -if <HUMBLE_CCASES_FILE>' parameters); verify corner cases for multiple headers.
+
+[test_corner_cases_brief]
+ ('-u <TEST_URLS[2]> -if <HUMBLE_GRADE_D_FILE> -b' parameters); verify corner cases for multiple headers in brief analysis.
 
 [test_detailed_analysis]
  ('-u <TEST_URLS[9]>' parameter); verifies the detailed analysis completes successfully.
@@ -2105,7 +2108,7 @@ Generator
  ('-a' parameter); verifies that statistics are displayed for all analyses performed.
 
 [test_input_file]
- ('-if <HUMBLE_INPUT_FILE> -u <TEST_URLS[2]>' parameters); verifies raw response files are analyzed.
+ ('-u <TEST_URLS[2]> -if <HUMBLE_INPUT_FILE>' parameters); verifies raw response files are analyzed.
 
 [test_input_traversal]
  ('-u <TEST_URLS[9]> -op <HUMBLE_INPUT_TRAVERSAL>' parameters); verify that basic checks are applied to input traversal.
@@ -2120,7 +2123,7 @@ Generator
  ('-lic' parameter); verify the license is displayed correctly.
 
 [test_no_security_headers]
- ('-if <HUMBLE_NOSECHEADERS_FILE> -u <TEST_URLS[4]>' parameters); verify that an analysis without received security headers is displayed.
+ ('-u <TEST_URLS[4]> -if <HUMBLE_NOSECHEADERS_FILE>' parameters); verify that an analysis without received security headers is displayed.
 
 [test_owasp_compliance]
  ('-u <TEST_URLS[9]> -c' parameters); verifies that the results of the OWASP 'Secure Headers Project' compliance check are displayed correctly.
@@ -2146,6 +2149,9 @@ Generator
 [test_skipped_headers]
  ('-u <TEST_URLS[9]> -s ETAG NEL' parameters); verifies the specified headers are excluded from the detailed analysis.
 
+[test_unreliable_analysis]
+ ('-u <TEST_URLS[10]>' parameter); verifies unreliable analyses (e.g., slow responses).
+
 [test_unsupported_header]
  ('-u <TEST_URLS[9]> -s testhumbleheader' parameters); verify that the headers indicated for exclusion in the analysis are actually analyzed.
 
@@ -2153,10 +2159,10 @@ Generator
  ('-v' parameter); verifies the update check mechanism works as intended.
 
 [test_url_statistics]
- ('-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[5]> -a' parameters); verify that statistics are displayed for a specific URL analyzed.
+ ('-u <TEST_URLS[5]> -if <HUMBLE_HEADERS_FILE> -a' parameters); verify that statistics are displayed for a specific URL analyzed.
 
 [test_url_insufficient_statistics]
- ('-if <HUMBLE_HEADERS_FILE> -u <TEST_URLS[6]> -a' parameters); verify that an error is displayed due to insufficient analysis of a URL.
+ ('-u <TEST_URLS[6]> -if <HUMBLE_HEADERS_FILE> -a' parameters); verify that an error is displayed due to insufficient analysis of a URL.
 
 [test_user_agent]
  ('-u <TEST_URLS[9]> -ua 4' parameters); verifies the selection and use of the 4th User-Agent from the available list during a detailed analysis.
@@ -2169,12 +2175,6 @@ Generator
 
 [test_tests]
 Tests run at
-
-[test_input]
-'test_input_file' uses a hardcoded URL
-
-[test_remaining]
-URL used for all remaining tests
 
 [test_ftemp]
 Failed to delete temp analysis file

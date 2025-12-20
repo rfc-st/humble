@@ -131,7 +131,8 @@ RE_PATTERN = (
     r'\s{2,},',
     r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
     r"<pre(?:\s[^>]*)?>\s*</pre>",
-    r"<pre>/pre>'"
+    r"<pre>/pre>'",
+    r"(?<!')nonce-"
 )
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 REQ_HEADERS = {
@@ -175,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-12-19', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-20', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1183,7 +1184,7 @@ def csp_unquoted_hashes(csp_h):
 
 def csp_check_nonces(csp_h):
     """'Content-Security-Policy' header checks related to nonces"""
-    if not re.search(RE_PATTERN[15], csp_h):
+    if not re.search(RE_PATTERN[24], csp_h):
         print_details('[icsncei_h]', '[icsncei]', 'd', i_cnt)
         return
     nonce_refs = ('[icsnces_h]', '[icsncesn]', '[icsnces]')
@@ -1328,8 +1329,9 @@ def permissions_check_broad(perm_header):
         result = []
         for directive in perm_header.split(','):
             if '=' in directive:
-                feature = directive.split('=')[0].strip()
-                value = directive.split('=')[1].strip()
+                feature, value = directive.split('=')
+                feature = feature.strip()
+                value = value.strip()
                 if any(broad in value for broad in t_per_broad):
                     result.append(feature)
         return result or None
@@ -1349,11 +1351,8 @@ def permissions_print_broad(perm_broad_dirs, i_cnt):
     i_cnt[0] += 1
 
 
-def delete_lines(reliable=True, warning=False):
+def delete_lines(reliable=True):
     """Remove previously printed lines from the console output"""
-    if warning:
-        sys.stdout.write(DELETED_LINES[:6])
-        return
     if not reliable:
         sys.stdout.write(DELETED_LINES)
     sys.stdout.write(DELETED_LINES)
@@ -3598,6 +3597,7 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
     thread.start()
     if not done.wait(timeout=REQ_TIMEOUT - REQ_WARNING):
         print(get_detail('[unreliable_analysis]'))
+        reliable = True
     if not done.wait(timeout=REQ_TIMEOUT):
         delete_lines()
         delete_lines()
