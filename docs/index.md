@@ -31,22 +31,25 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Can check for compliance with the OWASP Secure Headers Project Best Practices.
 - Can exclude specific HTTP response headers from the analysis.
 - Can analyze raw response files: text files with HTTP response headers and values.
-- Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF 1.4, TXT, XLSX and XML.
-- Can check for outdated SSL/TLS protocols and vulnerabilities with testssl.sh.
+- Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF 1.4, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.
+- Can check for outdated SSL/TLS protocols and vulnerabilities: requires <a href="https://testssl.sh/" target="_blank">testssl.sh</a>.
 - Can provide brief and detailed analysis along with HTTP response headers.
 - Can use proxies for the analysis.
 - Allows specifying custom HTTP request headers.
-- Can output only analysis summary, totals and grade as JSON for CI/CD.
-- Shows browser support for enabled HTTP security headers, with data from Can I use.
+- Can output only analysis summary, totals and grade as JSON; suitable for CI/CD.
+- Print browser support for enabled HTTP security headers, with data from Can I use.
 - Highlights experimental headers in each analysis.
-- Provides hundreds of relevant links to security resources, standards and technical blogs.
+- Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.
 - Supports displaying analysis, messages, and most errors in English or Spanish.
 - Saves each analysis, highlighting improvements or deficiencies compared to the previous one.
 - Can display analysis statistics for a specific URL or across all of them.
 - Can display fingerprint statistics for a specific term or the Top 20.
 - Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.
-- Provides unit tests to verify compatibility with your environment.
-- Almost all the code available under MIT license.
+- Provides dozens of unit tests to verify compatibility with your environment; requires pytest and pytest-cov.
+- Code reviewed via Bandit, Flake8, pyinstrument, SonarQube for IDE and Sourcery.
+- Tested, one by one, on thousands of URLs.
+- Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.
+- Almost all the code available under one of the most permissive licenses: MIT.
 - And more!.
 
 ## How can I test it?

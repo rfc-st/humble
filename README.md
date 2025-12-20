@@ -86,7 +86,7 @@
 :heavy_check_mark: Can display analysis statistics for a specific URL or across all of them.<br />
 :heavy_check_mark: Can display fingerprint statistics for a specific term or the Top 20.<br />
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
-:heavy_check_mark: Provides [unit tests](#unit-tests) to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest<a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
+:heavy_check_mark: Provides dozens of [unit tests](#unit-tests) to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest<a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
 :heavy_check_mark: Classes and functions documented at <a href="https://humble.readthedocs.io/en/latest/" target="_blank">Read the Docs<a>.<br />
 :heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
