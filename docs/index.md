@@ -53,13 +53,11 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - And more!.
 
 ## How can I test it?
-Start by taking a look at its <a href="https://github.com/rfc-st/humble/" target="_blank">repository</a>.
+- Start by taking a look at its <a href="https://github.com/rfc-st/humble/" target="_blank">repository</a>.
+- And its <a href="https://humble.readthedocs.io/en/latest/references.html" target="_blank">documentation</a> on its classes and functions (Work in progress).
+- Then, if you think it could be useful, run the <a href="https://github.com/rfc-st/humble?tab=readme-ov-file#unit-tests" target="_blank">unit tests</a> to check compatibility with your environment.
 
-And the available <a href="https://humble.readthedocs.io/en/latest/references.html" target="_blank">documentation</a> on its classes and functions (Work in progress).
-
-After that, I advise that you try it out to see if you can use it in your <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" target="_blank">environment</a>.
-
-**Thank you** in advance; I hope you find **humble.py** useful!.
+Whatever you decide about **humble.py**, thank you for your time!.
 
 ## Notes
 About <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> checks:
