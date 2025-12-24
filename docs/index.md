@@ -4,7 +4,7 @@ Welcome to **humble.py** documentation!.
 ## What is *humble.py*?
 It is a humble, and **fast**, security-oriented HTTP response headers analyzer.
 
-It is the result of many weekends spent coding, studying, and researching standards, regulations, exploits, bypasses, and countless articles about HTTP response header security.
+It is the result of many weekends, in my **spare time** (for six years, and hopefully for many more), dedicated to questioning, studying, researching, and programming on standards, exploits, regulations, and vulnerabilities; learning and reading countless articles related to HTTP response headers and their security.
 
 It started as a small personal project, with no intention of becoming important. Over time, it was accepted into <a href="https://pkg.kali.org/pkg/humble" target="_blank">Kali Linux</a>, has been referenced in blogs and social media and has been used as a basis and reference for final degree projects.
 
