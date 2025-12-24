@@ -50,7 +50,8 @@ TEST_URLS = ('https://github.com/rfc-st/humble',
              'https://en.wikipedia.org', 'https://microsoft.com',
              'http://127.0.0.1:65535', 'https://tass.ru/',
              'https://google.com', 'https://httpbin.org/delay/10',
-             'https://httpbin.org/status/502')
+             'https://httpbin.org/status/502', 'http://10.255.255.1',
+             'ftp://google.com')
 HUMBLE_WRONG_TESTSSL_DIR = '/dev/'
 REQUIRED_PYTHON = (3, 11)
 TEST_CFGS = {
@@ -94,6 +95,7 @@ TEST_CFGS = {
     'test_fingerprint_term': (['-f', 'Google'], 'Headers related to'),
     'test_fingerprint_term_no_results': (['-f', 'TestingHumble'], 'quote'),
     'test_global_statistics': (['-a'], 'Empty headers'),
+    'test_http_exception': (['-u', TEST_URLS[13]], 'scheme'),
     'test_input_file': (['-u', TEST_URLS[2], '-if', HUMBLE_INPUT_FILE],
                         'Input:'),
     'test_input_traversal': (['-u', TEST_URLS[9], '-op',
@@ -111,6 +113,7 @@ TEST_CFGS = {
     'test_redirects': (['-u', TEST_URLS[9], '-df'], 'Analysis Grade:'),
     'test_malformed_request_headers': (
         ['-u', TEST_URLS[9], '-H', 'Cache-Control no-cache'], 'malformed'),
+    'test_request_exception': (['-u', TEST_URLS[12]], 'Request', 25),
     'test_request_headers': (
         ['-u', TEST_URLS[9], '-H', 'Cache-Control: no-cache', '-H',
          'If-Modified-Since: Wed, 21 Oct 2020 00:00:00 GMT'],
@@ -150,19 +153,21 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_export_xlsx]', '[test_export_xml]',
               '[test_fingerprint_groups]', '[test_fingerprint_term]',
               '[test_fingerprint_term_no_results]', '[test_global_statistics]',
-              '[test_input_file]', '[test_input_traversal]',
-              '[test_l10n_analysis]', '[test_l10n_grades]', '[test_license]',
+              '[test_http_exception]', '[test_input_file]',
+              '[test_input_traversal]', '[test_l10n_analysis]',
+              '[test_l10n_grades]', '[test_license]',
               '[test_no_security_headers]', '[test_owasp_compliance]',
               '[test_proxy_unreachable]', '[test_proxy_wrong]',
               '[test_redirects]', '[test_malformed_request_headers]',
-              '[test_request_headers]', '[test_response_headers]',
-              '[test_russian_block]', '[test_security_guidelines]',
-              '[test_server_error_response]', '[test_skipped_headers]',
-              '[test_unreliable_analysis]', '[test_unsupported_header]',
-              '[test_updates]', '[test_url_statistics]',
-              '[test_url_insufficient_statistics]', '[test_user_agent]',
-              '[test_user_agent_list]', '[test_wrong_testssl]',
-              '[test_python_version]', '[test_missing_parameters]')
+              '[test_request_exception]', '[test_request_headers]',
+              '[test_response_headers]', '[test_russian_block]',
+              '[test_security_guidelines]', '[test_server_error_response]',
+              '[test_skipped_headers]', '[test_unreliable_analysis]',
+              '[test_unsupported_header]', '[test_updates]',
+              '[test_url_statistics]', '[test_url_insufficient_statistics]',
+              '[test_user_agent]', '[test_user_agent_list]',
+              '[test_wrong_testssl]', '[test_python_version]',
+              '[test_missing_parameters]')
 
 
 class _Args:

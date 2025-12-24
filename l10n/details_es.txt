@@ -2087,6 +2087,9 @@ Generador
 [test_global_statistics]
  (parámetro '-a'); verifica que se muestren estadísticas sobre todos los análisis realizados.
 
+[test_http_exception]
+ (parámetro '-u' <TEST_URLS[13]>'); verifica que se muestre un error por excepción HTTP durante el análisis.
+
 [test_input_file]
  (parámetros '-u <TEST_URLS[2]> -if <HUMBLE_INPUT_FILE>'); verifica que se analice correctamente un fichero con cabeceras de respuesta.
 
@@ -2116,6 +2119,9 @@ Generador
 
 [test_malformed_request_headers]
  (parámetros '-u <TEST_URLS[9]> -H <MALFORMED_REQUEST_HEADER>'); verifica que se muestre un error ante cabeceras de petición malformadas.
+
+[test_request_exception]
+ (parámetro '-u <TEST_URLS[12]>'); verifica que se muestre un error por tiempos de espera agotados o excepciones no controladas durante el análisis.
 
 [test_request_headers]
  (parámetros '-u <TEST_URLS[9]> -H <REQUEST_HEADER>'); verifica que un análisis finaliza correctamente tras añadir en la petición cabeceras HTTP.

@@ -2107,6 +2107,9 @@ Generator
 [test_global_statistics]
  ('-a' parameter); verify statistics are displayed for all analyses performed.
 
+[test_http_exception]
+ ('-u' <TEST_URLS[13]>' parameter); verify an error is displayed for HTTP exceptions during analysis.
+
 [test_input_file]
  ('-u <TEST_URLS[2]> -if <HUMBLE_INPUT_FILE>' parameters); verify raw response files are analyzed.
 
@@ -2136,6 +2139,9 @@ Generator
 
 [test_malformed_request_headers]
  ('-u <TEST_URLS[9]> -H <MALFORMED_REQUEST_HEADER>' parameters); verify an error is displayed for malformed request headers.
+
+[test_request_exception]
+ ('-u <TEST_URLS[12]>' parameter); verify an error is displayed for timeouts or unhandled exceptions during analysis.
 
 [test_request_headers]
  ('-u <TEST_URLS[9]> -H <REQUEST_HEADER>' parameters); verify the completion of an analysis after specifying headers in the request.
