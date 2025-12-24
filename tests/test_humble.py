@@ -49,7 +49,8 @@ TEST_URLS = ('https://github.com/rfc-st/humble',
              'http://github.com', 'https://humbletestingnosecheaders.com',
              'https://en.wikipedia.org', 'https://microsoft.com',
              'http://127.0.0.1:65535', 'https://tass.ru/',
-             'https://google.com', 'https://httpbin.org/delay/10')
+             'https://google.com', 'https://httpbin.org/delay/10',
+             'https://httpbin.org/status/502')
 HUMBLE_WRONG_TESTSSL_DIR = '/dev/'
 REQUIRED_PYTHON = (3, 11)
 TEST_CFGS = {
@@ -108,6 +109,8 @@ TEST_CFGS = {
     'test_proxy_unreachable': (['-u', TEST_URLS[9], '-p', TEST_URLS[7]],
                                'reachable'),
     'test_redirects': (['-u', TEST_URLS[9], '-df'], 'Analysis Grade:'),
+    'test_malformed_request_headers': (
+        ['-u', TEST_URLS[9], '-H', 'Cache-Control no-cache'], 'malformed'),
     'test_request_headers': (
         ['-u', TEST_URLS[9], '-H', 'Cache-Control: no-cache', '-H',
          'If-Modified-Since: Wed, 21 Oct 2020 00:00:00 GMT'],
@@ -117,6 +120,7 @@ TEST_CFGS = {
                               'HTTP Response Headers'),
     'test_russian_block': (['-u', TEST_URLS[8]], 'withdraws'),
     'test_security_guidelines': (['-g'], 'headers-in-wordpress'),
+    'test_server_error_response': (['-u', TEST_URLS[11]], 'Server'),
     'test_skipped_headers': (['-u', TEST_URLS[9], '-s', 'ETAG', 'NEL'],
                              'expressly excluded'),
     'test_unreliable_analysis': (['-u', TEST_URLS[10]], 'reliable'),
@@ -150,9 +154,10 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_l10n_analysis]', '[test_l10n_grades]', '[test_license]',
               '[test_no_security_headers]', '[test_owasp_compliance]',
               '[test_proxy_unreachable]', '[test_proxy_wrong]',
-              '[test_redirects]', '[test_request_headers]',
-              '[test_response_headers]', '[test_russian_block]',
-              '[test_security_guidelines]', '[test_skipped_headers]',
+              '[test_redirects]', '[test_malformed_request_headers]',
+              '[test_request_headers]', '[test_response_headers]',
+              '[test_russian_block]', '[test_security_guidelines]',
+              '[test_server_error_response]', '[test_skipped_headers]',
               '[test_unreliable_analysis]', '[test_unsupported_header]',
               '[test_updates]', '[test_url_statistics]',
               '[test_url_insufficient_statistics]', '[test_user_agent]',
@@ -416,7 +421,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2025-12-20', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-24', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

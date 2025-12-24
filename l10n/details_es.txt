@@ -2114,6 +2114,9 @@ Generador
 [test_redirects]
  (parámetros '-u <TEST_URLS[9]> -df'); verifica que no se sigan las redirecciones en un análisis detallado.
 
+[test_malformed_request_headers]
+ (parámetros '-u <TEST_URLS[9]> -H <MALFORMED_REQUEST_HEADER>'); verifica que se muestre un error ante cabeceras de petición malformadas.
+
 [test_request_headers]
  (parámetros '-u <TEST_URLS[9]> -H <REQUEST_HEADER>'); verifica que un análisis finaliza correctamente tras añadir en la petición cabeceras HTTP.
 
@@ -2125,6 +2128,9 @@ Generador
 
 [test_security_guidelines]
  (parámetro '-g'); verifica que la guía con directrices de seguridad se muestre correctamente.
+
+[test_server_error_response]
+ (parámetro '-u <TEST_URLS[11]>); verifica que se muestre mensaje de error ante códigos de estado HTTP 5xx.
 
 [test_skipped_headers]
  (parámetros '-u <TEST_URLS[9]> -s ETAG NEL'); verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
