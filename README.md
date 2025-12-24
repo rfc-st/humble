@@ -428,7 +428,7 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 
 ## Unit tests
 > [!IMPORTANT]
-> Before running unit tests and code coverage, make sure the *tests* directory has permission to create and delete files and folders; both functionalities require it.
+> Before running unit tests and code coverage make sure that you have a direct Internet connection (without filters or rules that block connections) and that the *tests* directory has permission to create and delete files and folders.
 
 .: (Linux) - All tests passed successfully (showing all messages in English).<br />
 ```
