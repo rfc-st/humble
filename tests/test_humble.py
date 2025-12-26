@@ -39,6 +39,7 @@ HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
 HUMBLE_INPUT_FILE = path.abspath(path.join(HUMBLE_INPUT_DIR,
                                            'github_input_file.txt'))
 HUMBLE_INPUT_TRAVERSAL = '../../../humbleinputtraversal/'
+HUMBLE_INVALID_EXPORT_FILE = 'non_existent_folder/humble_export_file_test'
 HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
 HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
@@ -84,6 +85,8 @@ TEST_CFGS = {
     'test_export_csv': (['-u', TEST_URLS[9], '-o', 'csv'], 'CSV saved'),
     'test_export_html': (['-u', TEST_URLS[9], '-o', 'html', '-r'],
                          'HTML saved'),
+    'test_export_html_csp': (['-u', TEST_URLS[2], '-o', 'html', '-r'],
+                             'HTML saved'),
     'test_export_json': (['-u', TEST_URLS[9], '-o', 'json', '-r'],
                          'JSON saved'),
     'test_export_json_brief': (['-u', TEST_URLS[9], '-o', 'json', '-b'],
@@ -100,6 +103,10 @@ TEST_CFGS = {
                         'Input:'),
     'test_input_traversal': (['-u', TEST_URLS[9], '-op',
                               HUMBLE_INPUT_TRAVERSAL], 'wrong:'),
+    'test_invalid_file_path': (['-u', TEST_URLS[9], '-o', 'csv', '-of',
+                                HUMBLE_INVALID_EXPORT_FILE], 'Unable'),
+    'test_invalid_output_path': (['-u', TEST_URLS[9], '-o', 'csv', '-op',
+                                  HUMBLE_MAIN_FILE], 'Error:'),
     'test_l10n_analysis': (['-u', TEST_URLS[9], '-l', 'es'],
                            'Advertencias a revisar'),
     'test_l10n_grades': (['-grd', '-l', 'es'], 'No te obsesiones'),
@@ -119,6 +126,8 @@ TEST_CFGS = {
          'If-Modified-Since: Wed, 21 Oct 2020 00:00:00 GMT'],
         'Analysis Grade:'
     ),
+    'test_request_invalid_header': (
+        ['-u', TEST_URLS[9], '-H', ''], 'least'),
     'test_response_headers': (['-u', TEST_URLS[9], '-r'],
                               'HTTP Response Headers'),
     'test_russian_block': (['-u', TEST_URLS[8]], 'withdraws'),
@@ -138,6 +147,8 @@ TEST_CFGS = {
     'test_user_agent': (['-u', TEST_URLS[9], '-ua', '4'],
                         'Selected the User-Agent'),
     'test_user_agent_list': (['-ua', '0'], 'source: '),
+    'test_valid_output_path': (['-u', TEST_URLS[9], '-o', 'csv', '-op', '.'],
+                               'saved'),
     'test_wrong_testssl': (['-u', TEST_URLS[9], '-e',
                             HUMBLE_WRONG_TESTSSL_DIR], 'not found'),
 }
@@ -148,24 +159,27 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_brief_analysis]', '[test_cicd_analysis]',
               '[test_client_error_response]', '[test_corner_cases]',
               '[test_corner_cases_brief]', '[test_detailed_analysis]',
-              '[test_export_csv]', '[test_export_html]', '[test_export_json]',
+              '[test_export_csv]', '[test_export_html]',
+              '[test_export_html_csp]', '[test_export_json]',
               '[test_export_json_brief]', '[test_export_pdf]',
               '[test_export_xlsx]', '[test_export_xml]',
               '[test_fingerprint_groups]', '[test_fingerprint_term]',
               '[test_fingerprint_term_no_results]', '[test_global_statistics]',
               '[test_http_exception]', '[test_input_file]',
-              '[test_input_traversal]', '[test_l10n_analysis]',
+              '[test_input_traversal]', '[test_invalid_file_path]',
+              '[test_invalid_output_path]', '[test_l10n_analysis]',
               '[test_l10n_grades]', '[test_license]',
               '[test_no_security_headers]', '[test_owasp_compliance]',
               '[test_proxy_unreachable]', '[test_proxy_wrong]',
               '[test_redirects]', '[test_malformed_request_headers]',
               '[test_request_exception]', '[test_request_headers]',
-              '[test_response_headers]', '[test_russian_block]',
-              '[test_security_guidelines]', '[test_server_error_response]',
-              '[test_skipped_headers]', '[test_unreliable_analysis]',
-              '[test_unsupported_header]', '[test_updates]',
-              '[test_url_statistics]', '[test_url_insufficient_statistics]',
-              '[test_user_agent]', '[test_user_agent_list]',
+              '[test_request_invalid_header]', '[test_response_headers]',
+              '[test_russian_block]', '[test_security_guidelines]',
+              '[test_server_error_response]', '[test_skipped_headers]',
+              '[test_unreliable_analysis]', '[test_unsupported_header]',
+              '[test_updates]', '[test_url_statistics]',
+              '[test_url_insufficient_statistics]', '[test_user_agent]',
+              '[test_user_agent_list]', '[test_valid_output_path]',
               '[test_wrong_testssl]', '[test_python_version]',
               '[test_missing_parameters]')
 
@@ -426,7 +440,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2025-12-24', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-26', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

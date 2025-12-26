@@ -2080,6 +2080,9 @@ Generator
 [test_export_html]
  ('-u <TEST_URLS[9]> -o html' parameters); verify a detailed analysis is exported to HTML.
 
+[test_export_html_csp]
+ ('-u <TEST_URLS[2]> -o html' parameters); verify the directives in the ‘Content-Security-Policy’ header are highlighted in an analysis exported to HTML.
+
 [test_export_json]
  ('-u <TEST_URLS[9]> -o json' parameters); verify a detailed analysis is exported to JSON.
 
@@ -2116,6 +2119,12 @@ Generator
 [test_input_traversal]
  ('-u <TEST_URLS[9]> -op <HUMBLE_INPUT_TRAVERSAL>' parameters); verify checks are performed to prevent input traversal.
 
+[test_invalid_file_path]
+ ('-u TEST_URLS[9] -o csv' -of HUMBLE_INVALID_EXPORT_FILE' parameters); verify an error is displayed for incorrect file when exporting an analysis.
+
+[test_invalid_output_path]
+ ('-u TEST_URLS[9] -o csv -op HUMBLE_MAIN_FILE' parameters); verify an error is displayed for incorrect path when exporting an analysis.
+
 [test_l10n_analysis]
  ('-u <TEST_URLS[9]> -l es' parameters); verify the Spanish localization in a detailed analysis.
 
@@ -2145,6 +2154,9 @@ Generator
 
 [test_request_headers]
  ('-u <TEST_URLS[9]> -H <REQUEST_HEADER>' parameters); verify the completion of an analysis after specifying headers in the request.
+
+[test_request_invalid_header]
+ ('-u TEST_URLS[9] -H <EMPTY_STRING>' parameters); verify an error is displayed for invalid request headers.
 
 [test_response_headers]
  ('-u <TEST_URLS[9]> -r' parameters); verify response headers are displayed.
@@ -2181,6 +2193,9 @@ Generator
 
 [test_user_agent_list]
  ('-ua 0' parameter); verify the display of available User-Agents.
+
+[test_valid_output_path]
+ ('-u TEST_URLS[9] -o csv -op .' parameter); verify an analysis is exported to the specified path.
 
 [test_wrong_testssl]
  ('-u <TEST_URLS[9]> -e <HUMBLE_WRONG_TESTSSL_DIR>' parameters); verify an error is displayed when the testssl.sh file is not found.

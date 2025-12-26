@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-12-24', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-26', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2599,10 +2599,6 @@ def json_detailed_ins_checks(checks_list, insecure_checks):
         check_s = check.strip()
         if ':' in check_s:
             key, val = check_s.split(':', 1)
-            checks_list.append((key.strip(), val.strip()))
-        elif '(' in check_s and ')' in check_s:
-            key, val = check_s.split('(', 1)
-            val = val.rstrip(')')
             checks_list.append((key.strip(), val.strip()))
         else:
             checks_list.append((check_s, None))
