@@ -434,16 +434,18 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 ```
 $ cd <humble dir>
 $ cd tests
-$ python test_humble.py -l en
+(Linux)   $ python test_humble.py -l en
+(Windows) $ py test_humble.py -l en
 ```
 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_tests_ok.PNG" alt="(Linux) - All tests passed successfully">
 
-.: (Linux) - Code coverage (disabled in Windows).<br />
+.: (Linux) - Code coverage (currently disabled in Windows).<br />
 ```
 $ cd <humble dir>
 $ cd tests
-$ pytest test_humble.py --cov-config=.coveragerc --cov=.. --cov-report=html --tb=no -rA -q -v -W ignore -p no:cacheprovider -o dont_write_bytecode=True
+(Linux)   $ pytest test_humble.py --cov-config=.coveragerc --cov=.. --cov-report=html --tb=no -rA -q -v -W ignore -p no:cacheprovider -o dont_write_bytecode=True
+(Windows) $ py -m pytest test_humble.py --cov-config=.coveragerc --cov=.. --cov-report=html --tb=no -rA -q -v -W ignore -p no:cacheprovider -o dont_write_bytecode=True
 $ cd humble_coverage_report
 Open the index.html file in a browser.
 ```
