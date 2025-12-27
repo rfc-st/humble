@@ -474,6 +474,12 @@
 [itrailer_d_s]
  Evite directivas no permitidas: 
 
+[iarrs_h]
+ Attribution-Reporting-Register-Source (Cabecera obsoleta)
+
+[iarrt_h]
+ Attribution-Reporting-Register-Trigger (Cabecera obsoleta)
+
 [imethods_s]
  Asegúrese de que estos métodos HTTP son necesarios: 
 
@@ -608,6 +614,14 @@
 
 [iactr_h]
  Activate-Storage-Access (Valores incorrectos)
+
+[iarrs]
+ Esta cabecera está obsoleta.
+ Ref: https://mdn.io/Attribution-Reporting-Register-Source
+
+[iarrt]
+ Esta cabecera está obsoleta.
+ Ref: https://mdn.io/Attribution-Reporting-Register-Trigger
 
 [iactr]
  'retry' requiere también 'allowed-origin'.

@@ -473,6 +473,12 @@
 [itrailer_d_s]
  Avoid disallowed directives: 
 
+[iarrs_h]
+ Attribution-Reporting-Register-Source (Deprecated Header)
+
+[iarrt_h]
+ Attribution-Reporting-Register-Trigger (Deprecated Header)
+
 [imethods_s]
  Make sure these HTTP methods are needed: 
 
@@ -607,6 +613,14 @@
 
 [iactr_h]
  Activate-Storage-Access (Incorrect Values)
+
+[iarrs]
+ This header is deprecated.
+ Ref: https://mdn.io/Attribution-Reporting-Register-Source
+
+[iarrt]
+ This header is deprecated.
+ Ref: https://mdn.io/Attribution-Reporting-Register-Trigger
 
 [iactr]
  'retry' also requires 'allowed-origin'.

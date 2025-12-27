@@ -34,6 +34,8 @@ Access-Control-Max-Age: Excessive Value
 Activate-Storage-Access: Incorrect Values
 Activate-Storage-Access: No Valid Directives
 Allow: Insecure Methods
+Attribution-Reporting-Register-Source: Deprecated Header
+Attribution-Reporting-Register-Trigger: Deprecated Header
 Cache-Control: No Valid Directives
 Cache-Control: Recommended Values
 Clear-Site-Data: Ignored Header via Unsafe Scheme
