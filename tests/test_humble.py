@@ -10,6 +10,14 @@ from contextlib import suppress
 from os import listdir, path, remove, fsync
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
+WIN_COV_ERROR = (
+    "Code coverage is disabled on native Windows; try to run it through "
+    "Cygwin, MSYS2 or Windows Subsystem for Linux."
+)
+
+if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
+    pytest.fail(WIN_COV_ERROR)
+
 HUMBLE_TESTS_DIR = path.dirname(__file__)
 HUMBLE_TEMP_HISTORY = path.join(HUMBLE_TESTS_DIR, 'analysis_h.txt')
 HUMBLE_TEMP_PREFIX = 'humble_'
@@ -440,7 +448,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2025-12-26', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-27', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
@@ -465,14 +473,13 @@ def delete_temp_coverage():
     yield
     cleanup_analysis_history()
     delete_temp_content()
-    for cache_dir in PYTEST_CACHE_DIRS:
-        delete_pytestcov_caches(cache_dir)
 
 
 if __name__ == "__main__":
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
     l10n_main = get_l10n_content()
-    code = pytest.main([__file__, "--tb=no", "-rA", "-q", "-v"])
+    code = pytest.main([__file__, "--tb=no", "-rA", "-q", "-v", "-p",
+                        "no:cacheprovider", "-o", "dont_write_bytecode=True"])
     print_results()
     delete_temp_content()
     sys.exit()

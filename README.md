@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--12--26-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2025--12--27-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -439,11 +439,11 @@ $ python test_humble.py -l en
 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_tests_ok.PNG" alt="(Linux) - All tests passed successfully">
 
-.: (Linux) - Code coverage (for now, it only works on Linux).<br />
+.: (Linux) - Code coverage (disabled in Windows).<br />
 ```
 $ cd <humble dir>
 $ cd tests
-$ pytest test_humble.py --cov-config=.coveragerc --cov=.. --cov-report=html --tb=no -rA -q -v -W ignore
+$ pytest test_humble.py --cov-config=.coveragerc --cov=.. --cov-report=html --tb=no -rA -q -v -W ignore -p no:cacheprovider -o dont_write_bytecode=True
 $ cd humble_coverage_report
 Open the index.html file in a browser.
 ```
@@ -451,24 +451,13 @@ Open the index.html file in a browser.
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_code_coverage.PNG" alt="(Linux) - Code coverage">
 
 > [!IMPORTANT]
-> After reviewing the code coverage you can delete all files and folders from the *tests* directory except for the following, as they are required precisely for those tests:
+> After reviewing the code coverage, you can delete the following items from the *tests* directory **keeping the rest**:
 >
-> - *.coveragerc*
-> - *analysis_h.txt*
-> - *client_error_test.txt*
-> - *headers_none_security.txt*
-> - *headers_test_all.txt*
-> - *headers_test_corner_cases.txt*
-> - *headers_test_grade_a.txt*
-> - *headers_test_grade_b.txt*
-> - *headers_test_grade_c.txt*
-> - *headers_test_grade_d.txt*
-> - *headers_test_grade_e.txt*
-> - *headers_test_grade_perfect.txt*
-> - *test_humble.py*
+> - *humble_coverage_report* folder
+> - *.coverage* file
 
 > [!TIP]
-> <a target="_blank" href="https://docs.pytest.org/en/stable/reference/reference.html">pytest</a> and <a target="_blank" href="https://pytest-cov.readthedocs.io/en/latest/config.html">pytest-cov</a> parameters:
+> Parameters used in <a target="_blank" href="https://docs.pytest.org/en/stable/reference/reference.html">pytest</a> and <a target="_blank" href="https://pytest-cov.readthedocs.io/en/latest/config.html">pytest-cov</a>:
 >
 > - --cov-config=.coveragerc: Specifies the coverage configuration file
 > - --cov=..: Specifies what code to measure coverage for
@@ -478,6 +467,8 @@ Open the index.html file in a browser.
 > - -q: Quiet mode (during the analysis)
 > - -v: Verbose mode (after the analysis)
 > - -W ignore: Ignore all warnings during test execution
+> - --p no:cacheprovider: Prevents creation of .pytest_cache
+> - -o dont_write_bytecode=True: Prevents creation of `__pycache__` folders
 
 ## Checks: enabled headers
 
