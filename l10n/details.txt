@@ -2106,6 +2106,9 @@ Generator
 [test_export_pdf]
  ('-u <TEST_URLS[9]> -o pdf' parameters); verify a brief analysis is exported to PDF.
 
+[test_export_pdf_empty_headers]
+ ('-u <TEST_URLS[9]> -if <HUMBLE_GRADE_D_FILE> -o pdf' parameters); verify an analysis with empty headers is exported to PDF.
+
 [test_export_xlsx]
  ('-u <TEST_URLS[9]> -o xlsx' parameters); verify a brief analysis is exported to XLSX.
 
@@ -2187,6 +2190,9 @@ Generator
 [test_skipped_headers]
  ('-u <TEST_URLS[9]> -s ETAG NEL' parameters); verify the specified headers are excluded from the detailed analysis.
 
+[test_unicode_error]
+ ('-u <TEST_URLS[9]> -if <HUMBLE_UNICODEERROR_FILE>' parameters); verify all response headers are encoded in UTF-8.
+
 [test_unreliable_analysis]
  ('-u <TEST_URLS[10]>' parameter); verify a message regarding unreliable analysis is displayed (e.g., slow responses).
 
@@ -2207,6 +2213,12 @@ Generator
 
 [test_user_agent_list]
  ('-ua 0' parameter); verify the display of available User-Agents.
+
+[test_user_agent_only]
+ ('-ua 4' parameter); verify an error is displayed when a URL is missing when specifying a valid User-Agent.
+
+[test_user_agent_wrong]
+ ('-u' <TEST_URLS[9]> -ua 999999' parameter); verify an error is displayed when an invalid User-Agent is provided.
 
 [test_valid_output_path]
  ('-u TEST_URLS[9] -o csv -op .' parameter); verify an analysis is exported to the specified path.

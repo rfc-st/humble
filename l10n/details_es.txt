@@ -2086,6 +2086,9 @@ Generador
 [test_export_pdf]
  (parámetros '-u <TEST_URLS[9]> -o pdf'); verifica que se exporte a PDF un análisis detallado.
 
+[test_export_pdf_empty_headers]
+ (parámetros '-u <TEST_URLS[9]> -if <HUMBLE_GRADE_D_FILE> -o pdf'); verifica que se exporte a PDF un análisis con cabeceras vacías.
+
 [test_export_xlsx]
  (parámetros '-u <TEST_URLS[9]> -o xlsx'); verifica que se exporte a XLSX un análisis detallado.
 
@@ -2167,6 +2170,9 @@ Generador
 [test_skipped_headers]
  (parámetros '-u <TEST_URLS[9]> -s ETAG NEL'); verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
 
+[test_unicode_error]
+ (parámetros '-u <TEST_URLS[9]> -if <HUMBLE_UNICODEERROR_FILE>'); verifica que las cabeceras de respuesta estén informadas como UTF-8.
+
 [test_unreliable_analysis]
  (parámetro '-u <TEST_URLS[10]>'); verifica análisis poco fiables (por ejemplo, aquellos que tardan en responder).
 
@@ -2183,10 +2189,16 @@ Generador
  (parámetros '-u <TEST_URLS[6]> -if <HUMBLE_HEADERS_FILE> -a'); verifica que se muestre un error por análisis insuficientes de una URL.
 
 [test_user_agent]
- (parámetros '-u <TEST_URLS[9]> -ua 4'); verifica que el cuarto 'User-Agent' se aplique correctamente en un análisis detallado.
+ (parámetros '-u <TEST_URLS[9]> -ua 4'); verifica que el cuarto User-Agent se utilice en un análisis detallado.
 
 [test_user_agent_list]
- (parámetro '-ua 0'); verifica que se muestren los 'User-Agents' disponibles.
+ (parámetro '-ua 0'); verifica que se muestren los User-Agents disponibles.
+
+[test_user_agent_only]
+ (parámetro '-ua 4'); verifica que se muestre un error al indicar un User-Agent sin URL a analizar.
+
+[test_user_agent_wrong]
+ (parámetros '-u' <TEST_URLS[9]> -ua 999999'); verifica que se muestre un error al indicar un User-Agent inválido.
 
 [test_valid_output_path]
  (parámetros '-u TEST_URLS[9] -o csv -op .'); verifica que se exporte un análisis en la ruta indicada.

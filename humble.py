@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-12-27', '%Y-%m-%d').date()
+local_version = datetime.strptime('2025-12-31', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1375,7 +1375,7 @@ def print_nowarnings():
 
 
 def print_header(header):
-    """Print the header name (generic use)."""
+    """Print the header name (generic use)"""
     print(f" {header}" if args.output else f"{STYLE[1]} {header}")
 
 
@@ -1383,9 +1383,6 @@ def print_fng_header(header):
     """Print the header name in the fingerprint section of the analysis"""
     if args.output:
         print(f" {header}")
-    elif '[' in header:
-        prefix, _, suffix = header.partition(' [')
-        print(f"{STYLE[1]} {prefix}{STYLE[3]}{STYLE[5]} [{suffix}")
     else:
         print(f"{STYLE[1]} {header}")
 
@@ -2801,8 +2798,11 @@ def set_pdf_nowarnings(line, pdf, ypos):
 def set_pdf_empty(l_empty, line, pdf, ypos):
     """Format line with empty headers; related to analysis exported to PDF"""
     ln_strip = line.lstrip().lower()
-    if any(i in ln_strip for i in l_empty) and ('[' not in ln_strip and ':'
-                                                not in ln_strip):
+    if (
+        any(i.lower() in ln_strip for i in l_empty)
+        and '[' not in ln_strip
+        and ':' not in ln_strip
+    ):
         pdf.set_text_color(255, 0, 0)
         pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
         return True
