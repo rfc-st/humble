@@ -6,7 +6,7 @@
 #
 # MIT License
 #
-# Copyright (c) 2020-2025 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
+# Copyright (c) 2020-2026 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2025-12-31', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-02', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
