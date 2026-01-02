@@ -270,7 +270,7 @@ def print_results():
     summaries = [(tag, get_detail(tag, replace=True)) for tag in TEST_SUMMS]
     max_len = max(len(tag.strip("[]")) for tag, _ in summaries)
     for tag, detail in summaries:
-        print(f"{tag.strip("[]").ljust(max_len + 1)}:{detail}")
+        print(f"{tag.strip('[]').ljust(max_len + 1)}:{detail}")
     print()
 
 
