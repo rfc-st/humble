@@ -55,6 +55,8 @@ HUMBLE_NOSECHEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
                                                   'headers_none_security.txt'))
 HUMBLE_UNICODE_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
                                              'headers_test_unicode.txt'))
+
+# URLs to use in unit tests
 TEST_URLS = ('https://github.com/rfc-st/humble',
              'https://www.chicagotribune.com/', 'https://github.com',
              'http://github.com', 'https://humbletestingnosecheaders.com',
@@ -63,8 +65,16 @@ TEST_URLS = ('https://github.com/rfc-st/humble',
              'https://google.com', 'https://httpbin.org/delay/10',
              'https://httpbin.org/status/502', 'http://10.255.255.1',
              'ftp://google.com')
+
 HUMBLE_WRONG_TESTSSL_DIR = '/dev/'
 REQUIRED_PYTHON = (3, 11)
+
+# Definition of unit tests; for each item:
+#
+# - Key: name of the unit test
+# - Value:
+#   - Arguments related to the unit test
+#   - Expected output on console for the unit test
 TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
     'test_all_headers': (['-u', TEST_URLS[2], '-if', HUMBLE_HEADERS_FILE],
@@ -102,6 +112,9 @@ TEST_CFGS = {
     'test_export_json_brief': (['-u', TEST_URLS[9], '-o', 'json', '-b'],
                                'JSON saved'),
     'test_export_pdf': (['-u', TEST_URLS[9], '-o', 'pdf'], 'PDF saved'),
+    'test_export_pdf_color': (['-u', TEST_URLS[9], '-if',
+                               HUMBLE_GRADE_PERFECT_FILE, '-o', 'pdf', '-b'],
+                              'PDF saved'),
     'test_export_pdf_empty_headers': (['-u', TEST_URLS[9], '-if',
                                        HUMBLE_GRADE_D_FILE, '-o', 'pdf'],
                                       'PDF saved'),
@@ -170,6 +183,14 @@ TEST_CFGS = {
     'test_wrong_testssl': (['-u', TEST_URLS[9], '-e',
                             HUMBLE_WRONG_TESTSSL_DIR], 'not found'),
 }
+
+# Description of the unit tests; for each item:
+#
+# - Parameter of the 'get_detail' function, related to an entry in the detail
+#   files located by default in:
+#
+#   <HUMBLE_PROJECT_ROOT>/l10n/details.txt
+#   <HUMBLE_PROJECT_ROOT>/l10n/details_es.txt
 TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_grade_perfect_headers]', '[test_grade_a_headers]',
               '[test_grade_b_headers]', '[test_grade_c_headers]',
@@ -180,13 +201,14 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_export_csv]', '[test_export_html]',
               '[test_export_html_csp]', '[test_export_json]',
               '[test_export_json_brief]', '[test_export_pdf]',
-              '[test_export_pdf_empty_headers]', '[test_export_xlsx]',
-              '[test_export_xml]', '[test_fingerprint_groups]',
-              '[test_fingerprint_term]', '[test_fingerprint_term_no_results]',
-              '[test_global_statistics]', '[test_http_exception]',
-              '[test_input_file]', '[test_input_traversal]',
-              '[test_invalid_file_path]', '[test_invalid_output_path]',
-              '[test_l10n_analysis]', '[test_l10n_grades]', '[test_license]',
+              '[test_export_pdf_color]', '[test_export_pdf_empty_headers]',
+              '[test_export_xlsx]', '[test_export_xml]',
+              '[test_fingerprint_groups]', '[test_fingerprint_term]',
+              '[test_fingerprint_term_no_results]', '[test_global_statistics]',
+              '[test_http_exception]', '[test_input_file]',
+              '[test_input_traversal]', '[test_invalid_file_path]',
+              '[test_invalid_output_path]', '[test_l10n_analysis]',
+              '[test_l10n_grades]', '[test_license]',
               '[test_no_security_headers]', '[test_owasp_compliance]',
               '[test_proxy_unreachable]', '[test_proxy_wrong]',
               '[test_redirects]', '[test_malformed_request_headers]',
@@ -200,7 +222,7 @@ TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
               '[test_user_agent]', '[test_user_agent_list]',
               '[test_user_agent_only]', '[test_user_agent_wrong]',
               '[test_valid_output_path]', '[test_wrong_testssl]',
-              '[test_python_version]', '[test_missing_parameters]')
+              '[test_python_version]', '[test_missing_arguments]')
 
 
 class _Args:

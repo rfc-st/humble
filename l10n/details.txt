@@ -2037,8 +2037,8 @@ Generator
 [test_python_version]
  (without parameters); verify the minimum required Python version.
 
-[test_missing_parameters]
- (several parameters); verify the parameters required for certain functionalities.
+[test_missing_arguments]
+ (several parameters); verify the arguments required for certain functionalities.
 
 [test_proxy_wrong]
  (several parameters); verify the required parameters associated with a proxy are checked.
@@ -2105,6 +2105,9 @@ Generator
 
 [test_export_pdf]
  ('-u <TEST_URLS[9]> -o pdf' parameters); verify a brief analysis is exported to PDF.
+
+[test_export_pdf_color]
+ ('-u <TEST_URLS[9]> -if <HUMBLE_GRADE_PERFECT_FILE> -o pdf -b' parameters); verify the correct format is applied to a brief analysis exported to PDF.
 
 [test_export_pdf_empty_headers]
  ('-u <TEST_URLS[9]> -if <HUMBLE_GRADE_D_FILE> -o pdf' parameters); verify an analysis with empty headers is exported to PDF.

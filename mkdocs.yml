@@ -20,12 +20,13 @@ markdown_extensions:
 nav:
   - Home: index.md
   - References: references.md
+  - Unit Tests: unit_tests.md
 
 plugins:
   - mkdocstrings:
       handlers:
         python:
-          paths: ["."]
+          paths: [".", "tests"]
   - search
   - git-revision-date-localized:
       enabled: false

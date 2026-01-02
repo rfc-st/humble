@@ -2017,8 +2017,8 @@ Generador
 [test_python_version]
  (sin parámetros); verifica que la versión de Python sea igual o superior a 3.11.
 
-[test_missing_parameters]
- (varios parámetros); verifica que se provean los parámetros requeridos para funciones específicas.
+[test_missing_arguments]
+ (varios parámetros); verifica que se provean los argumentos requeridos para funciones específicas.
 
 [test_proxy_wrong]
  (varios parámetros); verifica que se comprueben los parámetros requeridos asociados con un proxy.
@@ -2085,6 +2085,9 @@ Generador
 
 [test_export_pdf]
  (parámetros '-u <TEST_URLS[9]> -o pdf'); verifica que se exporte a PDF un análisis detallado.
+
+[test_export_pdf_color]
+ (parámetros '-u <TEST_URLS[9]> -if <HUMBLE_GRADE_PERFECT_FILE> -o pdf -b'); verifica que se aplique el formato correcto a un análisis breve exportado a PDF.
 
 [test_export_pdf_empty_headers]
  (parámetros '-u <TEST_URLS[9]> -if <HUMBLE_GRADE_D_FILE> -o pdf'); verifica que se exporte a PDF un análisis con cabeceras vacías.
