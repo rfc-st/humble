@@ -3,7 +3,7 @@
 Functions and unit tests of **test_humble.py** (work in progress).
 <br/>
 <br/>
-All these unit tests should complete in less than one minute, under ideal conditions:
+All these <a href="https://github.com/rfc-st/humble/blob/c3129ca2cffb42681f263472b7524b1b1bf0efc1/tests/test_humble.py#L78" target="_blank">tests</a> should complete in less than one minute, under ideal conditions:
 <br/>
 
 - test_help

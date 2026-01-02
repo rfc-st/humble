@@ -55,7 +55,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 ## How can I test it?
 - Start by taking a look at its <a href="https://github.com/rfc-st/humble/" target="_blank">repository</a>.
 - And its <a href="https://humble.readthedocs.io/en/latest/references.html" target="_blank">documentation</a> on its classes and functions (Work in progress).
-- Then, if you think it could be useful, run the <a href="https://github.com/rfc-st/humble?tab=readme-ov-file#unit-tests" target="_blank">unit tests</a> to check compatibility with your environment.
+- Then, if you think it could be useful, run the <a href="https://humble.readthedocs.io/en/latest/unit_tests.html" target="_blank">unit tests</a> to check compatibility with your environment.
 
 Whatever you decide about **humble.py**, thank you for your time!.
 
