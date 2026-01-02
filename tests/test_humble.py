@@ -294,22 +294,15 @@ def run_test(args, expected_text, timeout=15):
 
 
 def parse_expected_text(output, expected_text):
-    # sourcery skip: invert-any-all
     """Checks if expected text is present in each test"""
+    exp_msg = get_detail('[test_expected]', replace=True)
+    not_found_msg = get_detail('[test_notfound]', replace=True)
     if isinstance(expected_text, (list, tuple, set)):
-        if not any(e in output for e in expected_text):
-            pytest.fail(
-                f"{get_detail('[test_expected]', replace=True)} "
-                f"{expected_text} {get_detail('[test_notfound]',
-                                              replace=True)}"
-            )
+        if all(e not in output for e in expected_text):
+            pytest.fail(f"{exp_msg} {expected_text} {not_found_msg}")
         return
-
     if expected_text not in output:
-        pytest.fail(
-            f"{get_detail('[test_expected]', replace=True)} '{expected_text}' "
-            f"{get_detail('[test_notfound]', replace=True)}"
-        )
+        pytest.fail(f"{exp_msg} '{expected_text}' {not_found_msg}")
 
 
 def make_test_func(cfg_key):
