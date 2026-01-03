@@ -18,6 +18,7 @@ WIN_COV_ERROR = (
 if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
     pytest.fail(WIN_COV_ERROR)
 
+EXTENDED_TAGS = ['[test_python_version]', '[test_missing_arguments]']
 HUMBLE_TESTS_DIR = path.dirname(__file__)
 HUMBLE_TEMP_HISTORY = path.join(HUMBLE_TESTS_DIR, 'analysis_h.txt')
 HUMBLE_TEMP_PREFIX = 'humble_'
@@ -184,46 +185,6 @@ TEST_CFGS = {
                             HUMBLE_WRONG_TESTSSL_DIR], 'not found'),
 }
 
-# Description of the unit tests; for each item:
-#
-# - Parameter of the 'get_detail' function, related to an entry in the detail
-#   files located by default in:
-#
-#   <HUMBLE_PROJECT_ROOT>/l10n/details.txt
-#   <HUMBLE_PROJECT_ROOT>/l10n/details_es.txt
-TEST_SUMMS = ('[test_help]', '[test_all_headers]', '[test_unsafe_all_headers]',
-              '[test_grade_perfect_headers]', '[test_grade_a_headers]',
-              '[test_grade_b_headers]', '[test_grade_c_headers]',
-              '[test_grade_d_headers]', '[test_grade_e_headers]',
-              '[test_brief_analysis]', '[test_cicd_analysis]',
-              '[test_client_error_response]', '[test_corner_cases]',
-              '[test_corner_cases_brief]', '[test_detailed_analysis]',
-              '[test_export_csv]', '[test_export_html]',
-              '[test_export_html_csp]', '[test_export_json]',
-              '[test_export_json_brief]', '[test_export_pdf]',
-              '[test_export_pdf_color]', '[test_export_pdf_empty_headers]',
-              '[test_export_xlsx]', '[test_export_xml]',
-              '[test_fingerprint_groups]', '[test_fingerprint_term]',
-              '[test_fingerprint_term_no_results]', '[test_global_statistics]',
-              '[test_http_exception]', '[test_input_file]',
-              '[test_input_traversal]', '[test_invalid_file_path]',
-              '[test_invalid_output_path]', '[test_l10n_analysis]',
-              '[test_l10n_grades]', '[test_license]',
-              '[test_no_security_headers]', '[test_owasp_compliance]',
-              '[test_proxy_unreachable]', '[test_proxy_wrong]',
-              '[test_redirects]', '[test_malformed_request_headers]',
-              '[test_request_exception]', '[test_request_headers]',
-              '[test_request_invalid_header]', '[test_response_headers]',
-              '[test_russian_block]', '[test_security_guidelines]',
-              '[test_server_error_response]', '[test_skipped_headers]',
-              '[test_unicode_error]', '[test_unreliable_analysis]',
-              '[test_unsupported_header]', '[test_updates]',
-              '[test_url_statistics]', '[test_url_insufficient_statistics]',
-              '[test_user_agent]', '[test_user_agent_list]',
-              '[test_user_agent_only]', '[test_user_agent_wrong]',
-              '[test_valid_output_path]', '[test_wrong_testssl]',
-              '[test_python_version]', '[test_missing_arguments]')
-
 
 class _Args:
     URL = TEST_URLS[2]
@@ -264,13 +225,24 @@ def get_l10n_content():
 
 def print_results():
     """
-    Print the summary results for all defined tests
+    Print a description of each unit tests.
+
+    Descriptions are retrieved via `get_detail` function using tags derived
+    from 'TEST_CFGS' keys plus extended ones for complex standalone tests.
+
+    Tags correspond to entries in the following localization files:
+
+    - `<HUMBLE_PROJECT_ROOT>/l10n/details.txt`
+    - `<HUMBLE_PROJECT_ROOT>/l10n/details_es.txt`
     """
     print()
-    summaries = [(tag, get_detail(tag, replace=True)) for tag in TEST_SUMMS]
-    max_len = max(len(tag.strip("[]")) for tag, _ in summaries)
-    for tag, detail in summaries:
-        print(f"{tag.strip('[]').ljust(max_len + 1)}:{detail}")
+    dynamic_tags = [f"[{key}]" for key in TEST_CFGS.keys()]
+    all_tags = dynamic_tags + EXTENDED_TAGS
+    descriptions = [(tag, get_detail(tag, replace=True)) for tag in all_tags]
+    max_len = max(len(tag.strip("[]")) for tag in all_tags)
+    for tag, detail in descriptions:
+        label = tag.strip('[]').ljust(max_len + 1)
+        print(f"{label}:{detail}")
     print()
 
 
