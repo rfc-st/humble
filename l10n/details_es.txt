@@ -2015,199 +2015,208 @@ Generador
  Error: Proxy no accesible.
 
 [test_python_version]
- (sin parámetros); verifica que la versión de Python sea igual o superior a 3.11.
+ verifica que la versión de Python sea igual o superior a 3.11.
 
 [test_missing_arguments]
- (varios parámetros); verifica que se provean los argumentos requeridos para funciones específicas.
+ verifica que se provean los argumentos requeridos para funciones específicas.
 
 [test_proxy_wrong]
- (varios parámetros); verifica que se comprueben los parámetros requeridos asociados con un proxy.
+ verifica que se comprueben los parámetros requeridos asociados con un proxy.
 
 [test_help]
- (parámetro '-h'); verifica que la Ayuda se muestre correctamente.
+ verifica que la Ayuda se muestre correctamente.
 
 [test_all_headers]
- (parámetros '-u <TEST_URLS[2]> -if <HUMBLE_HEADERS_FILE>'); verifica que se analicen todas las cabeceras posibles de una URL segura.
+ verifica que se analicen todas las cabeceras posibles de una URL segura.
 
 [test_unsafe_all_headers]
- (parámetros '-u <TEST_URLS[3]> -if <HUMBLE_HEADERS_FILE>'); verifica que se analicen todas las cabeceras posibles de una URL insegura.
+ verifica que se analicen todas las cabeceras posibles de una URL insegura.
 
 [test_grade_perfect_headers]
- (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_GRADE_PERFECT_FILE>'); verifica que se asigne la nota 'A+' a una URL tras analizarla.
+ verifica que se asigne la nota 'A+' a una URL tras analizarla.
 
 [test_grade_a_headers]
- (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_GRADE_A_FILE>'); verifica que se asigne la nota 'A' a una URL tras analizarla.
+ verifica que se asigne la nota 'A' a una URL tras analizarla.
 
 [test_grade_b_headers]
- (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_GRADE_B_FILE>'); verifica que se asigne la nota 'B' a una URL tras analizarla.
+ verifica que se asigne la nota 'B' a una URL tras analizarla.
 
 [test_grade_c_headers]
- (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_GRADE_C_FILE>'); verifica que se asigne la nota 'C' a una URL tras analizarla.
+ verifica que se asigne la nota 'C' a una URL tras analizarla.
 
 [test_grade_d_headers]
- (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_GRADE_D_FILE>'); verifica que se asigne la nota 'D' a una URL tras analizarla.
+ verifica que se asigne la nota 'D' a una URL tras analizarla.
 
 [test_grade_e_headers]
- (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_NOSECHEADERS_FILE>'); verifica que se asigne la nota 'E' a una URL tras analizarla.
+ verifica que se asigne la nota 'E' a una URL tras analizarla.
 
 [test_brief_analysis]
- (parámetros '-u <TEST_URLS[9]> -b'); verifica que un análisis breve finalice correctamente.
+ verifica que un análisis breve finalice correctamente.
 
 [test_cicd_analysis]
- (parámetros '-u <TEST_URLS[9]> -cicd'); verifica que un análisis CI/CD finalice correctamente.
+ verifica que un análisis CI/CD finalice correctamente.
 
 [test_client_error_response]
- (parámetros '-u <TEST_URLS[1]> -if <HUMBLE_CLIENTERROR_FILE>'); verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
+ verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
 
 [test_corner_cases]
- (parámetros '-u <TEST_URLS[2]> -if <HUMBLE_CCASES_FILE>'); verifica que se comprueben casos específicos en varias cabeceras.
+ verifica que se comprueben casos específicos en varias cabeceras.
 
 [test_corner_cases_brief]
- (parámetros '-u <TEST_URLS[2]> -if <HUMBLE_GRADE_D_FILE> -b'); verifica que se comprueben casos específicos en varias cabeceras en un análisis breve.
+ verifica que se comprueben casos específicos en varias cabeceras en un análisis breve.
 
 [test_detailed_analysis]
- (parámetro '-u <TEST_URLS[9]>'); verifica que un análisis detallado finalice correctamente.
+ verifica que un análisis detallado finalice correctamente.
 
 [test_export_csv]
- (parámetros '-u <TEST_URLS[9]> -o csv'); verifica que se exporte a CSV un análisis detallado.
+ verifica que se exporte a CSV un análisis detallado.
 
 [test_export_html]
- (parámetros '-u <TEST_URLS[9]> -o html'); verifica que se exporte a HTML un análisis detallado.
+ verifica que se exporte a HTML un análisis detallado.
 
 [test_export_html_csp]
- (parámetros '-u <TEST_URLS[2]> -o html'); verifica que se destacan las directivas de la cabecera 'Content-Security-Policy' en un análisis exportado a HTML.
+ verifica que se destacan las directivas de la cabecera 'Content-Security-Policy' en un análisis exportado a HTML.
+
+[test_export_html_empty_headers]
+ verifica que se exporte a HTML un análisis con cabeceras vacías.
 
 [test_export_json]
- (parámetros '-u <TEST_URLS[9]> -o json'); verifica que se exporte a JSON un análisis detallado.
+ verifica que se exporte a JSON un análisis detallado.
 
 [test_export_json_brief]
- (parámetros '-u <TEST_URLS[9]> -o json -b'); verifica que se exporte a JSON un análisis breve.
+ verifica que se exporte a JSON un análisis breve.
 
 [test_export_pdf]
- (parámetros '-u <TEST_URLS[9]> -o pdf'); verifica que se exporte a PDF un análisis detallado.
+ verifica que se exporte a PDF un análisis detallado.
 
 [test_export_pdf_color]
- (parámetros '-u <TEST_URLS[9]> -if <HUMBLE_GRADE_PERFECT_FILE> -o pdf -b'); verifica que se aplique el formato correcto a un análisis breve exportado a PDF.
+ verifica que se aplique el formato correcto a un análisis breve exportado a PDF.
 
 [test_export_pdf_empty_headers]
- (parámetros '-u <TEST_URLS[9]> -if <HUMBLE_GRADE_D_FILE> -o pdf'); verifica que se exporte a PDF un análisis con cabeceras vacías.
+ verifica que se exporte a PDF un análisis con cabeceras vacías.
 
 [test_export_xlsx]
- (parámetros '-u <TEST_URLS[9]> -o xlsx'); verifica que se exporte a XLSX un análisis detallado.
+ verifica que se exporte a XLSX un análisis detallado.
 
 [test_export_xml]
- (parámetros '-u <TEST_URLS[9]> -o xml'); verifica que se exporte a XML un análisis detallado.
+ verifica que se exporte a XML un análisis detallado.
 
 [test_fingerprint_groups]
- (parámetro '-f'); verifica que las estadísticas del Top 20 de grupos, por huella digital, se muestre correctamente.
+ verifica que las estadísticas del Top 20 de grupos, por huella digital, se muestre correctamente.
 
 [test_fingerprint_term]
- (parámetro '-f Google'); verifica que las estadísticas del término 'Google', por huella digital, se muestren correctamente.
+ verifica que las estadísticas del término 'Google', por huella digital, se muestren correctamente.
 
 [test_fingerprint_term_no_results]
- (parámetro '-f TestingHumble'); verifica que se muestre correctamente un error para el término 'TestingHumble'.
+ verifica que se muestre correctamente un error para el término 'TestingHumble'.
 
 [test_global_statistics]
- (parámetro '-a'); verifica que se muestren estadísticas sobre todos los análisis realizados.
+ verifica que se muestren estadísticas sobre todos los análisis realizados.
 
 [test_http_exception]
- (parámetro '-u' <TEST_URLS[13]>'); verifica que se muestre un error por excepción HTTP durante el análisis.
+ verifica que se muestre un error por excepción HTTP durante el análisis.
 
 [test_input_file]
- (parámetros '-u <TEST_URLS[2]> -if <HUMBLE_INPUT_FILE>'); verifica que se analice correctamente un fichero con cabeceras de respuesta.
+ verifica que se analice correctamente un fichero con cabeceras de respuesta.
+
+[test_input_file_nonexistent]
+ verifica que se muestre mensaje de error ante ficheros de input inexistentes.
 
 [test_input_traversal]
- (parámetros '-u <TEST_URLS[9]> -op <HUMBLE_INPUT_TRAVERSAL>'); verifica que se realicen comprobaciones básicas sobre 'input traversal'.
+ verifica que se realicen comprobaciones básicas sobre 'input traversal'.
 
 [test_invalid_file_path]
- (parámetros '-u TEST_URLS[9] -o csv' -of HUMBLE_INVALID_EXPORT_FILE'); verifica que se muestre un error por fichero incorrecto al exportar un análisis.
+ verifica que se muestre un error por fichero incorrecto al exportar un análisis.
 
 [test_invalid_output_path]
- (parámetros '-u TEST_URLS[9] -o csv -op HUMBLE_MAIN_FILE'); verifica que se muestre un error por ruta incorrecta al exportar un análisis.
+ verifica que se muestre un error por ruta incorrecta al exportar un análisis.
 
 [test_l10n_analysis]
- (parámetros '-u <TEST_URLS[9]> -l es'); verifica que los mensajes en castellano se muestren correctamente en un análisis detallado.
+ verifica que los mensajes en castellano se muestren correctamente en un análisis detallado.
 
 [test_l10n_grades]
- (parámetros '-grd -l es'); verifica que la guía sobre la calificación de un análisis se muestra correctamente en castellano.
+ verifica que la guía sobre la calificación de un análisis se muestra correctamente en castellano.
 
 [test_license]
- (parámetro '-lic'); verifica que la licencia se muestre correctamente.
+ verifica que la licencia se muestre correctamente.
+
+[test_no_headers]
+ verifica que se muestre un error ante la ausencia de cabeceras de respuesta en el análisis.
 
 [test_no_security_headers]
- (parámetros '-u <TEST_URLS[4]> -if <HUMBLE_NOSECHEADERS_FILE>'); verifica que se muestre un análisis sin cabeceras de seguridad recibidas.
+ verifica que se muestre un error ante la ausencia de cabeceras de seguridad en el análisis.
 
 [test_owasp_compliance]
- (parámetros '-u <TEST_URLS[9]> -c'); verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
+ verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
 
 [test_proxy_unreachable]
- (parámetros '-u <TEST_URLS[9]> -p <TEST_URLS[7]>'); verifica que se muestre correctamente un mensaje de error cuando el proxy no sea accesible.
+ verifica que se muestre correctamente un mensaje de error cuando el proxy no sea accesible.
 
 [test_redirects]
- (parámetros '-u <TEST_URLS[9]> -df'); verifica que no se sigan las redirecciones en un análisis detallado.
+ verifica que no se sigan las redirecciones en un análisis detallado.
 
 [test_malformed_request_headers]
- (parámetros '-u <TEST_URLS[9]> -H <MALFORMED_REQUEST_HEADER>'); verifica que se muestre un error ante cabeceras de petición malformadas.
+ verifica que se muestre un error ante cabeceras de petición malformadas.
 
 [test_request_exception]
- (parámetro '-u <TEST_URLS[12]>'); verifica que se muestre un error por tiempos de espera agotados o excepciones no controladas durante el análisis.
+ verifica que se muestre un error por tiempos de espera agotados o excepciones no controladas durante el análisis.
 
 [test_request_headers]
- (parámetros '-u <TEST_URLS[9]> -H <REQUEST_HEADER>'); verifica que un análisis finaliza correctamente tras añadir en la petición cabeceras HTTP.
+ verifica que un análisis finaliza correctamente tras añadir en la petición cabeceras HTTP.
 
 [test_request_invalid_header]
- ('-u TEST_URLS[9] -H <EMPTY_STRING>' parameters); veriifica que se muestre un error para las cabeceras de petición HTTP incorrectas.
+ verifica que se muestre un error para las cabeceras de petición HTTP incorrectas.
 
 [test_response_headers]
- (parámetros '-u <TEST_URLS[9]> -r'); verifica que las cabeceras HTTP de respuesta se muestren correctamente.
+ verifica que las cabeceras HTTP de respuesta se muestren correctamente.
 
 [test_russian_block]
- (parámetro '-u <TEST_URLS[8]>'); verifica que no se analicen URL rusas.
+ verifica que no se analicen URL rusas.
 
 [test_security_guidelines]
- (parámetro '-g'); verifica que la guía con directrices de seguridad se muestre correctamente.
+ verifica que la guía con directrices de seguridad se muestre correctamente.
 
 [test_server_error_response]
- (parámetro '-u <TEST_URLS[11]>); verifica que se muestre mensaje de error ante códigos de estado HTTP 5xx.
+ verifica que se muestre mensaje de error ante códigos de estado HTTP 5xx.
 
 [test_skipped_headers]
- (parámetros '-u <TEST_URLS[9]> -s ETAG NEL'); verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
+ verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
 
 [test_unicode_error]
- (parámetros '-u <TEST_URLS[9]> -if <HUMBLE_UNICODEERROR_FILE>'); verifica que las cabeceras de respuesta estén informadas como UTF-8.
+ verifica que las cabeceras de respuesta estén informadas como UTF-8.
 
 [test_unreliable_analysis]
- (parámetro '-u <TEST_URLS[10]>'); verifica análisis poco fiables (por ejemplo, aquellos que tardan en responder).
+ verifica análisis poco fiables (por ejemplo, aquellos que tardan en responder).
 
 [test_unsupported_header]
- (parámetros '-u <TEST_URLS[9]> -s testhumbleheader'); verifica que las cabeceras indicadas a excluir en el análisis realmente se analicen.
+ verifica que las cabeceras indicadas a excluir en el análisis realmente se analicen.
 
 [test_updates]
- (parámetro '-v'); verifica que la lógica para comprobar actualizaciones funcione correctamente.
+ verifica que la lógica para comprobar actualizaciones funcione correctamente.
 
 [test_url_statistics]
- (parámetros '-u <TEST_URLS[5]> -if <HUMBLE_HEADERS_FILE> -a'); verifica que se muestren las estadísticas para una URL concreta analizada.
+ verifica que se muestren las estadísticas para una URL concreta analizada.
 
 [test_url_insufficient_statistics]
- (parámetros '-u <TEST_URLS[6]> -if <HUMBLE_HEADERS_FILE> -a'); verifica que se muestre un error por análisis insuficientes de una URL.
+ verifica que se muestre un error por análisis insuficientes de una URL.
 
 [test_user_agent]
- (parámetros '-u <TEST_URLS[9]> -ua 4'); verifica que el cuarto User-Agent se utilice en un análisis detallado.
+ verifica que el cuarto User-Agent se utilice en un análisis detallado.
 
 [test_user_agent_list]
- (parámetro '-ua 0'); verifica que se muestren los User-Agents disponibles.
+ verifica que se muestren los User-Agents disponibles.
 
 [test_user_agent_only]
- (parámetro '-ua 4'); verifica que se muestre un error al indicar un User-Agent sin URL a analizar.
+ verifica que se muestre un error al indicar un User-Agent sin URL a analizar.
 
 [test_user_agent_wrong]
- (parámetros '-u' <TEST_URLS[9]> -ua 999999'); verifica que se muestre un error al indicar un User-Agent inválido.
+ verifica que se muestre un error al indicar un User-Agent inválido.
 
 [test_valid_output_path]
- (parámetros '-u TEST_URLS[9] -o csv -op .'); verifica que se exporte un análisis en la ruta indicada.
+ verifica que se exporte un análisis en la ruta indicada.
 
 [test_wrong_testssl]
- (parámetros '-u <TEST_URLS[9]> -e <HUMBLE_WRONG_TESTSSL_DIR>'); verifica que se muestre un error al no encontrar el fichero de testssl.sh.
+ verifica que se muestre un error al no encontrar el fichero de testssl.sh.
 
 [test_tests]
 Pruebas realizadas el

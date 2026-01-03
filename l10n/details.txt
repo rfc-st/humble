@@ -1851,13 +1851,13 @@ Error: The '-if' parameter does not requires the parameters '-df', '-r' or -'ua'
 Error: The '-if' parameter requires the parameter '-u'.
 
 [args_inputnotfound]
-Error: The input file is not found in the indicated path.
+Error: The raw response file is not found in the indicated path.
 
 [args_inputunicode]
-Error: The input file does not contain valid unicode text in UTF-8 format or its a binary.
+Error: The raw response file does not contain valid unicode text in UTF-8 format or its a binary.
 
 [args_inputlines]
-Error: The input file does not contain lines with the format 'http header: value'. E.g. 'x-frame-options: deny'.
+Error: The raw response file does not contain lines with the format 'http header: value'. E.g. 'x-frame-options: deny'.
 
 [args_lang]
 Error: The '-l' parameter requires the parameters '-u' or '-a'.
@@ -2035,199 +2035,208 @@ Generator
  Error: Proxy not reachable.
 
 [test_python_version]
- (without parameters); verify the minimum required Python version.
+ verify the minimum required Python version.
 
 [test_missing_arguments]
- (several parameters); verify the arguments required for certain functionalities.
+ verify the presence of mandatory parameters required for certain operations.
 
 [test_proxy_wrong]
- (several parameters); verify the required parameters associated with a proxy are checked.
+ verify the required parameters associated with a proxy are checked.
 
 [test_help]
- ('-h' parameter); verify the help message is displayed.
+ verify the help message is displayed.
 
 [test_all_headers]
- ('-u <TEST_URLS[2]> -if <HUMBLE_HEADERS_FILE>' parameters); verify all possible headers of a secure URL are analyzed.
+ verify all possible headers of a secure URL are analyzed.
 
 [test_unsafe_all_headers]
- ('-u <TEST_URLS[3]> -if <HUMBLE_HEADERS_FILE>' parameters); verify all possible headers of an insecure URL are analyzed.
+ verify all possible headers of an insecure URL are analyzed.
 
 [test_grade_perfect_headers]
- ('-u <TEST_URLS[4]> -if <HUMBLE_GRADE_PERFECT_FILE>' parameters); verify 'A+' grade is assigned to a URL after analysis.
+ verify 'A+' grade is assigned to a URL after analysis.
 
 [test_grade_a_headers]
- ('-u <TEST_URLS[4]> -if <HUMBLE_GRADE_A_FILE>' parameters); verify 'A' grade is assigned to a URL after analysis.
+ verify 'A' grade is assigned to a URL after analysis.
 
 [test_grade_b_headers]
- ('-u <TEST_URLS[4]> -if <HUMBLE_GRADE_B_FILE>' parameters); verify 'B' grade is assigned to a URL after analysis.
+ verify 'B' grade is assigned to a URL after analysis.
 
 [test_grade_c_headers]
- ('-u <TEST_URLS[4]> -if <HUMBLE_GRADE_C_FILE>' parameters); verify 'C' grade is assigned to a URL after analysis.
+ verify 'C' grade is assigned to a URL after analysis.
 
 [test_grade_d_headers]
- ('-u <TEST_URLS[4]> -if <HUMBLE_GRADE_D_FILE>' parameters); verify 'D' grade is assigned to a URL after analysis.
+ verify 'D' grade is assigned to a URL after analysis.
 
 [test_grade_e_headers]
- ('-u <TEST_URLS[4]> -if <HUMBLE_NOSECHEADERS_FILE>' parameters); verify 'E' grade is assigned to a URL after analysis.
+ verify 'E' grade is assigned to a URL after analysis.
 
 [test_brief_analysis]
- ('-u <TEST_URLS[9]> -b' parameters); verify the completion of a brief analysis.
+ verify the completion of a brief analysis.
 
 [test_cicd_analysis]
- ('-u <TEST_URLS[9]> -cicd' parameters); verify the completion of a CI/CD analysis.
+ verify the completion of a CI/CD analysis.
 
 [test_client_error_response]
- ('-u <TEST_URLS[1]> -if <HUMBLE_CLIENTERROR_FILE>' parameters); verify the analysis shows the HTTP 4xx error code response.
+ verify the analysis shows the HTTP 4xx error code response.
 
 [test_corner_cases]
- ('-u <TEST_URLS[2]> -if <HUMBLE_CCASES_FILE>' parameters); verify corner cases of headers are analyzed.
+ verify corner cases of headers are analyzed.
 
 [test_corner_cases_brief]
- ('-u <TEST_URLS[2]> -if <HUMBLE_GRADE_D_FILE> -b' parameters); verify corner cases of headers are analyzed in a brief analysis.
+ verify corner cases of headers are analyzed in a brief analysis.
 
 [test_detailed_analysis]
- ('-u <TEST_URLS[9]>' parameter); verify the completion of a detailed analysis.
+ verify the completion of a detailed analysis.
 
 [test_export_csv]
- ('-u <TEST_URLS[9]> -o csv' parameters); verify a detailed analysis is exported to CSV.
+ verify a detailed analysis is exported to CSV.
 
 [test_export_html]
- ('-u <TEST_URLS[9]> -o html' parameters); verify a detailed analysis is exported to HTML.
+ verify a detailed analysis is exported to HTML.
 
 [test_export_html_csp]
- ('-u <TEST_URLS[2]> -o html' parameters); verify the directives in the ‘Content-Security-Policy’ header are highlighted in an analysis exported to HTML.
+ verify the directives in the ‘Content-Security-Policy’ header are highlighted in an analysis exported to HTML.
+
+[test_export_html_empty_headers]
+ verify an analysis with empty headers is exported to HTML.
 
 [test_export_json]
- ('-u <TEST_URLS[9]> -o json' parameters); verify a detailed analysis is exported to JSON.
+ verify a detailed analysis is exported to JSON.
 
 [test_export_json_brief]
- ('-u <TEST_URLS[9]> -o json -b' parameters); verify a brief analysis is exported to JSON.
+ verify a brief analysis is exported to JSON.
 
 [test_export_pdf]
- ('-u <TEST_URLS[9]> -o pdf' parameters); verify a brief analysis is exported to PDF.
+ verify a brief analysis is exported to PDF.
 
 [test_export_pdf_color]
- ('-u <TEST_URLS[9]> -if <HUMBLE_GRADE_PERFECT_FILE> -o pdf -b' parameters); verify the correct format is applied to a brief analysis exported to PDF.
+ verify the correct format is applied to a brief analysis exported to PDF.
 
 [test_export_pdf_empty_headers]
- ('-u <TEST_URLS[9]> -if <HUMBLE_GRADE_D_FILE> -o pdf' parameters); verify an analysis with empty headers is exported to PDF.
+ verify an analysis with empty headers is exported to PDF.
 
 [test_export_xlsx]
- ('-u <TEST_URLS[9]> -o xlsx' parameters); verify a brief analysis is exported to XLSX.
+ verify a brief analysis is exported to XLSX.
 
 [test_export_xml]
- ('-u <TEST_URLS[9]> -o xml' parameter); verify a brief analysis is exported to XML.
+ verify a brief analysis is exported to XML.
 
 [test_fingerprint_groups]
- ('-f' parameter); verify the Top 20 groups are displayed for fingerprint statistics.
+ verify the Top 20 groups are displayed for fingerprint statistics.
 
 [test_fingerprint_term]
- ('-f Google' parameter); verify fingerprint statistics display for a specific term.
+ verify fingerprint statistics display for a specific term.
 
 [test_fingerprint_term_no_results]
- ('-f TestingHumble' parameter); verify an error is displayed for a specific fingerprint term for which no data is available.
+ verify an error is displayed for a specific fingerprint term for which no data is available.
 
 [test_global_statistics]
- ('-a' parameter); verify statistics are displayed for all analyses performed.
+ verify statistics are displayed for all analyses performed.
 
 [test_http_exception]
- ('-u' <TEST_URLS[13]>' parameter); verify an error is displayed for HTTP exceptions during analysis.
+ verify an error is displayed for HTTP exceptions during analysis.
 
 [test_input_file]
- ('-u <TEST_URLS[2]> -if <HUMBLE_INPUT_FILE>' parameters); verify raw response files are analyzed.
+ verify raw response files are analyzed.
+
+[test_input_file_nonexistent]
+ verify that an error message is displayed for non-existent raw response files files.
 
 [test_input_traversal]
- ('-u <TEST_URLS[9]> -op <HUMBLE_INPUT_TRAVERSAL>' parameters); verify checks are performed to prevent input traversal.
+ verify checks are performed to prevent input traversal.
 
 [test_invalid_file_path]
- ('-u TEST_URLS[9] -o csv' -of HUMBLE_INVALID_EXPORT_FILE' parameters); verify an error is displayed for incorrect file when exporting an analysis.
+ verify an error is displayed for incorrect file when exporting an analysis.
 
 [test_invalid_output_path]
- ('-u TEST_URLS[9] -o csv -op HUMBLE_MAIN_FILE' parameters); verify an error is displayed for incorrect path when exporting an analysis.
+ verify an error is displayed for incorrect path when exporting an analysis.
 
 [test_l10n_analysis]
- ('-u <TEST_URLS[9]> -l es' parameters); verify the Spanish localization in a detailed analysis.
+ verify the Spanish localization in a detailed analysis.
 
 [test_l10n_grades]
- ('-grd -l es' parameters); verify the guide on analysis grading is displayed in Spanish.
+ verify the guide on analysis grading is displayed in Spanish.
 
 [test_license]
- ('-lic' parameter); verify the license is displayed.
+ verify the license is displayed.
+
+[test_no_headers]
+ verify that the absence of security headers is indicated in an analysis.
 
 [test_no_security_headers]
- ('-u <TEST_URLS[4]> -if <HUMBLE_NOSECHEADERS_FILE>' parameters); verify that the absence of security headers is indicated in an analysis.
+ verify that an error is displayed when response headers are missing in the analysis.
 
 [test_owasp_compliance]
- ('-u <TEST_URLS[9]> -c' parameters); verify the results of the OWASP 'Secure Headers Project' compliance check are displayed.
+ verify the results of the OWASP 'Secure Headers Project' compliance check are displayed.
 
 [test_proxy_unreachable]
- ('-u <TEST_URLS[9]> -p <TEST_URLS[7]>' parameters); verify an error is displayed when the proxy is unreachable.
+ verify an error is displayed when the proxy is unreachable.
 
 [test_redirects]
- ('-u <TEST_URLS[9]> -df' parameters); verify that the parameter of not following redirects in an analysis is honored.
+ verify that the parameter of not following redirects in an analysis is honored.
 
 [test_malformed_request_headers]
- ('-u <TEST_URLS[9]> -H <MALFORMED_REQUEST_HEADER>' parameters); verify an error is displayed for malformed request headers.
+ verify an error is displayed for malformed request headers.
 
 [test_request_exception]
- ('-u <TEST_URLS[12]>' parameter); verify an error is displayed for timeouts or unhandled exceptions during analysis.
+ verify an error is displayed for timeouts or unhandled exceptions during analysis.
 
 [test_request_headers]
- ('-u <TEST_URLS[9]> -H <REQUEST_HEADER>' parameters); verify the completion of an analysis after specifying headers in the request.
+ verify the completion of an analysis after specifying headers in the request.
 
 [test_request_invalid_header]
- ('-u TEST_URLS[9] -H <EMPTY_STRING>' parameters); verify an error is displayed for invalid request headers.
+ verify an error is displayed for invalid request headers.
 
 [test_response_headers]
- ('-u <TEST_URLS[9]> -r' parameters); verify response headers are displayed.
+ verify response headers are displayed.
 
 [test_russian_block]
- ('-u <TEST_URLS[8]>' parameter); verify Russian URLs are not analyzed.
+ verify Russian URLs are not analyzed.
 
 [test_security_guidelines]
- ('-g' parameter); verify the security guidelines guide is displayed in Spanish.
+ verify the security guidelines guide is displayed in Spanish.
 
 [test_server_error_response]
- ('-u <TEST_URLS[11]> parameter); verify an error message is displayed for HTTP 5xx status codes.
+ verify an error message is displayed for HTTP 5xx status codes.
 
 [test_skipped_headers]
- ('-u <TEST_URLS[9]> -s ETAG NEL' parameters); verify the specified headers are excluded from the detailed analysis.
+ verify the specified headers are excluded from the detailed analysis.
 
 [test_unicode_error]
- ('-u <TEST_URLS[9]> -if <HUMBLE_UNICODEERROR_FILE>' parameters); verify all response headers are encoded in UTF-8.
+ verify all response headers are encoded in UTF-8.
 
 [test_unreliable_analysis]
- ('-u <TEST_URLS[10]>' parameter); verify a message regarding unreliable analysis is displayed (e.g., slow responses).
+ verify a message regarding unreliable analysis is displayed (e.g., slow responses).
 
 [test_unsupported_header]
- ('-u <TEST_URLS[9]> -s testhumbleheader' parameters); verify an error is displayed for headers requested to be excluded but not supported.
+ verify an error is displayed for headers requested to be excluded but not supported.
 
 [test_updates]
- ('-v' parameter); verify the functionality of checking for updates.
+ verify the functionality of checking for updates.
 
 [test_url_statistics]
- ('-u <TEST_URLS[5]> -if <HUMBLE_HEADERS_FILE> -a' parameters); verify statistics are displayed for a specific URL.
+ verify statistics are displayed for a specific URL.
 
 [test_url_insufficient_statistics]
- ('-u <TEST_URLS[6]> -if <HUMBLE_HEADERS_FILE> -a' parameters); verify an error is displayed due to insufficient analysis of a URL.
+ verify an error is displayed due to insufficient analysis of a URL.
 
 [test_user_agent]
- ('-u <TEST_URLS[9]> -ua 4' parameters); verify the specified User-Agent is used in the analysis.
+ verify the specified User-Agent is used in the analysis.
 
 [test_user_agent_list]
- ('-ua 0' parameter); verify the display of available User-Agents.
+ verify the display of available User-Agents.
 
 [test_user_agent_only]
- ('-ua 4' parameter); verify an error is displayed when a URL is missing when specifying a valid User-Agent.
+ verify an error is displayed when a URL is missing when specifying a valid User-Agent.
 
 [test_user_agent_wrong]
- ('-u' <TEST_URLS[9]> -ua 999999' parameter); verify an error is displayed when an invalid User-Agent is provided.
+ verify an error is displayed when an invalid User-Agent is provided.
 
 [test_valid_output_path]
- ('-u TEST_URLS[9] -o csv -op .' parameter); verify an analysis is exported to the specified path.
+ verify an analysis is exported to the specified path.
 
 [test_wrong_testssl]
- ('-u <TEST_URLS[9]> -e <HUMBLE_WRONG_TESTSSL_DIR>' parameters); verify an error is displayed when the testssl.sh file is not found.
+ verify an error is displayed when the testssl.sh file is not found.
 
 [test_tests]
 Tests run at
