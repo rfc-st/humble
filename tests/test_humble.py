@@ -1,7 +1,33 @@
 #!/usr/bin/env python3
 
+# 'humble' (HTTP Headers Analyzer)
+# https://humble.readthedocs.io/
+# https://github.com/rfc-st/humble/
+#
+# MIT License
+#
+# Copyright (c) 2020-2026 Rafa 'Bluesman' Faura (rafael.fcucalon@gmail.com)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Standard Library imports
 import sys
-import pytest
 import shutil
 import subprocess
 from platform import system
@@ -10,11 +36,14 @@ from contextlib import suppress
 from os import listdir, path, remove, fsync
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
+# Third-Party imports
+import pytest
+
+# To-Do: Enable code coverage in Windows
 WIN_COV_ERROR = (
     "Code coverage is disabled on native Windows; try to run it through "
     "Cygwin, MSYS2 or Windows Subsystem for Linux."
 )
-
 if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
     pytest.fail(WIN_COV_ERROR)
 
@@ -22,28 +51,22 @@ EXTENDED_TAGS = ['[test_python_version]', '[test_missing_arguments]']
 HUMBLE_TESTS_DIR = path.dirname(__file__)
 HUMBLE_TEMP_HISTORY = path.join(HUMBLE_TESTS_DIR, 'analysis_h.txt')
 HUMBLE_TEMP_PREFIX = 'humble_'
-PYTEST_CACHE_DIRS = [
-    path.join(HUMBLE_TESTS_DIR, d)
-    for d in ['__pycache__', '.pytest_cache']
-]
-HUMBLE_CCASES_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                            'headers_test_corner_cases.txt'))
+HUMBLE_TEST_FILES = {
+    'CORNER_CASES': 'headers_test_corner_cases.txt',
+    'ALL_HEADERS': 'headers_test_all.txt',
+    'PERFECT_GRADE': 'headers_test_grade_perfect.txt',
+    'GRADE_A': 'headers_test_grade_a.txt',
+    'GRADE_B': 'headers_test_grade_b.txt',
+    'GRADE_C': 'headers_test_grade_c.txt',
+    'GRADE_D': 'headers_test_grade_d.txt',
+    'CLIENT_ERROR': 'client_error_test.txt',
+    'NO_SEC_HEADERS': 'headers_none_security.txt',
+    'UNICODE': 'headers_test_unicode.txt',
+}
+PATHS = {k: path.abspath(path.join(HUMBLE_TESTS_DIR, v)) for k, v in
+         HUMBLE_TEST_FILES.items()}
 HUMBLE_DESC = "Basic unit tests for 'humble' (HTTP Headers Analyzer)"
 HUMBLE_PROJECT_ROOT = path.abspath(path.join(HUMBLE_TESTS_DIR, '..'))
-HUMBLE_HEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                             'headers_test_all.txt'))
-HUMBLE_GRADE_PERFECT_FILE = path.abspath(
-    path.join(HUMBLE_TESTS_DIR, 'headers_test_grade_perfect.txt'))
-HUMBLE_GRADE_A_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                             'headers_test_grade_a.txt'))
-HUMBLE_GRADE_B_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                             'headers_test_grade_b.txt'))
-HUMBLE_GRADE_C_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                             'headers_test_grade_c.txt'))
-HUMBLE_GRADE_D_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                             'headers_test_grade_d.txt'))
-HUMBLE_CLIENTERROR_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                                 'client_error_test.txt'))
 HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
 HUMBLE_INPUT_FILE = path.abspath(path.join(HUMBLE_INPUT_DIR,
                                            'github_input_file.txt'))
@@ -52,10 +75,11 @@ HUMBLE_INVALID_EXPORT_FILE = 'non_existent_folder/humble_export_file_test'
 HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
 HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
-HUMBLE_NOSECHEADERS_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                                  'headers_none_security.txt'))
-HUMBLE_UNICODE_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR,
-                                             'headers_test_unicode.txt'))
+HUMBLE_WRONG_TESTSSL_DIR = '/dev/'
+PYTEST_CACHE_DIRS = [
+    path.join(HUMBLE_TESTS_DIR, d)
+    for d in ['__pycache__', '.pytest_cache']
+]
 
 # URLs to use in unit tests
 TEST_URLS = ('https://github.com/rfc-st/humble',
@@ -67,8 +91,7 @@ TEST_URLS = ('https://github.com/rfc-st/humble',
              'https://httpbin.org/status/502', 'http://10.255.255.1',
              'ftp://google.com')
 
-HUMBLE_WRONG_TESTSSL_DIR = '/dev/'
-REQUIRED_PYTHON = (3, 11)
+REQUIRED_PYTHON_VERSION = (3, 11)
 
 # Definition of unit tests; for each item:
 #
@@ -78,30 +101,30 @@ REQUIRED_PYTHON = (3, 11)
 #   - Expected output on console for the unit test
 TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
-    'test_all_headers': (['-u', TEST_URLS[2], '-if', HUMBLE_HEADERS_FILE],
+    'test_all_headers': (['-u', TEST_URLS[2], '-if', PATHS['ALL_HEADERS']],
                          'Input:'),
     'test_unsafe_all_headers': (['-u', TEST_URLS[3], '-if',
-                                 HUMBLE_HEADERS_FILE, ], 'Input:'),
+                                 PATHS['ALL_HEADERS'], ], 'Input:'),
     'test_grade_perfect_headers': (['-u', TEST_URLS[4], '-if',
-                                    HUMBLE_GRADE_PERFECT_FILE], 'A+ ('),
-    'test_grade_a_headers': (['-u', TEST_URLS[4], '-if', HUMBLE_GRADE_A_FILE],
+                                    PATHS['PERFECT_GRADE']], 'A+ ('),
+    'test_grade_a_headers': (['-u', TEST_URLS[4], '-if', PATHS['GRADE_A']],
                              'A ('),
-    'test_grade_b_headers': (['-u', TEST_URLS[4], '-if', HUMBLE_GRADE_B_FILE],
+    'test_grade_b_headers': (['-u', TEST_URLS[4], '-if', PATHS['GRADE_B']],
                              'B ('),
-    'test_grade_c_headers': (['-u', TEST_URLS[4], '-if', HUMBLE_GRADE_C_FILE],
+    'test_grade_c_headers': (['-u', TEST_URLS[4], '-if', PATHS['GRADE_C']],
                              'C ('),
-    'test_grade_d_headers': (['-u', TEST_URLS[4], '-if', HUMBLE_GRADE_D_FILE],
+    'test_grade_d_headers': (['-u', TEST_URLS[4], '-if', PATHS['GRADE_D']],
                              'D ('),
     'test_grade_e_headers': (['-u', TEST_URLS[4], '-if',
-                              HUMBLE_NOSECHEADERS_FILE], 'E ('),
+                              PATHS['NO_SEC_HEADERS']], 'E ('),
     'test_brief_analysis': (['-u', TEST_URLS[9], '-b'], 'Analysis Grade:'),
     'test_cicd_analysis': (['-u', TEST_URLS[9], '-cicd'], 'Analysis Grade'),
     'test_client_error_response': (['-u', TEST_URLS[1], '-if',
-                                    HUMBLE_CLIENTERROR_FILE], 'HTTP code'),
-    'test_corner_cases': (['-u', TEST_URLS[2], '-if', HUMBLE_CCASES_FILE],
+                                    PATHS['CLIENT_ERROR']], 'HTTP code'),
+    'test_corner_cases': (['-u', TEST_URLS[2], '-if', PATHS['CORNER_CASES']],
                           'Analysis Grade'),
     'test_corner_cases_brief': (['-u', TEST_URLS[2], '-if',
-                                 HUMBLE_GRADE_D_FILE, '-b'], 'Analysis Grade'),
+                                 PATHS['GRADE_D'], '-b'], 'Analysis Grade'),
     'test_detailed_analysis': (['-u', TEST_URLS[9]], 'Analysis Grade:'),
     'test_export_csv': (['-u', TEST_URLS[9], '-o', 'csv'], 'CSV saved'),
     'test_export_html': (['-u', TEST_URLS[9], '-o', 'html', '-r'],
@@ -114,10 +137,10 @@ TEST_CFGS = {
                                'JSON saved'),
     'test_export_pdf': (['-u', TEST_URLS[9], '-o', 'pdf'], 'PDF saved'),
     'test_export_pdf_color': (['-u', TEST_URLS[9], '-if',
-                               HUMBLE_GRADE_PERFECT_FILE, '-o', 'pdf', '-b'],
+                               PATHS['PERFECT_GRADE'], '-o', 'pdf', '-b'],
                               'PDF saved'),
     'test_export_pdf_empty_headers': (['-u', TEST_URLS[9], '-if',
-                                       HUMBLE_GRADE_D_FILE, '-o', 'pdf'],
+                                       PATHS['GRADE_D'], '-o', 'pdf'],
                                       'PDF saved'),
     'test_export_xlsx': (['-u', TEST_URLS[9], '-o', 'xlsx'], 'XLSX saved'),
     'test_export_xml': (['-u', TEST_URLS[9], '-o', 'xml'], 'XML saved'),
@@ -139,7 +162,7 @@ TEST_CFGS = {
     'test_l10n_grades': (['-grd', '-l', 'es'], 'No te obsesiones'),
     'test_license': (['-lic'], 'copyright'),
     'test_no_security_headers': (['-u', TEST_URLS[4], '-if',
-                                  HUMBLE_NOSECHEADERS_FILE], 'are present'),
+                                  PATHS['NO_SEC_HEADERS']], 'are present'),
     'test_owasp_compliance': (['-u', TEST_URLS[9], '-c'],
                               'non-recommended values'),
     'test_proxy_unreachable': (['-u', TEST_URLS[9], '-p', TEST_URLS[7]],
@@ -162,16 +185,16 @@ TEST_CFGS = {
     'test_server_error_response': (['-u', TEST_URLS[11]], 'Server'),
     'test_skipped_headers': (['-u', TEST_URLS[9], '-s', 'ETAG', 'NEL'],
                              'expressly excluded'),
-    'test_unicode_error': (['-u', TEST_URLS[9], '-if', HUMBLE_UNICODE_FILE],
+    'test_unicode_error': (['-u', TEST_URLS[9], '-if', PATHS['UNICODE']],
                            'unicode'),
     'test_unreliable_analysis': (['-u', TEST_URLS[10]], 'reliable'),
     'test_unsupported_header': (['-u', TEST_URLS[9], '-s', 'testhumbleheader'],
                                 'testhumbleheader'),
     'test_updates': (['-v'], 'Keeping your security tools'),
-    'test_url_statistics': (['-u', TEST_URLS[5], '-if', HUMBLE_HEADERS_FILE,
+    'test_url_statistics': (['-u', TEST_URLS[5], '-if', PATHS['ALL_HEADERS'],
                              '-a'], 'Empty headers'),
     'test_url_insufficient_statistics': (['-u', TEST_URLS[6], '-if',
-                                          HUMBLE_HEADERS_FILE, '-a'],
+                                          PATHS['ALL_HEADERS'], '-a'],
                                          'reliable'),
     'test_user_agent': (['-u', TEST_URLS[9], '-ua', '4'],
                         'Selected the User-Agent'),
@@ -197,15 +220,6 @@ def get_detail(id_mode, replace=False):
         if line.startswith(id_mode):
             return (l10n_main[i+1].replace('\n', '')) if replace else \
                 l10n_main[i+1]
-
-
-def print_error_detail(id_mode):
-    """
-    Print an error message, optionally removing previously printed lines on
-    the console, and terminate execution
-    """
-    print(f"\n{get_detail(id_mode, replace=True)}")
-    sys.exit()
 
 
 def get_l10n_content():
@@ -304,7 +318,7 @@ def test_python_version():
     Returns an error message if the installed Python version is less than the
     minimum required
     """
-    if sys.version_info[:2] < REQUIRED_PYTHON:
+    if sys.version_info[:2] < REQUIRED_PYTHON_VERSION:
         pytest.fail(
             f"{get_detail('[test_pythonm]', replace=True)} "
             f"{sys.version_info.major}.{sys.version_info.minor}"
@@ -480,4 +494,4 @@ if __name__ == "__main__":
                         "no:cacheprovider", "-o", "dont_write_bytecode=True"])
     print_results()
     delete_temp_content()
-    sys.exit()
+    sys.exit(0)
