@@ -73,6 +73,6 @@ And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>January 03, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>January 04, 2026</em></span>
 </span>
 </aside>

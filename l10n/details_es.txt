@@ -2074,6 +2074,9 @@ Generador
 [test_export_html]
  verifica que se exporte a HTML un análisis detallado.
 
+[test_export_html_brief]
+ verifica que se exporte a HTML un análisis breve.
+
 [test_export_html_csp]
  verifica que se destacan las directivas de la cabecera 'Content-Security-Policy' en un análisis exportado a HTML.
 
@@ -2085,6 +2088,9 @@ Generador
 
 [test_export_json_brief]
  verifica que se exporte a JSON un análisis breve.
+
+[test_export_json_l10n]
+ verifica que se exporte a JSON un análisis detallado en castellano.
 
 [test_export_pdf]
  verifica que se exporte a PDF un análisis detallado.

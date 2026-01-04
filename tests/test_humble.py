@@ -97,10 +97,9 @@ REQUIRED_PYTHON_VERSION = (3, 11)
 
 # Definition of unit tests; for each item:
 #
-# - Key: name of the unit test
-# - Value:
-#   - Arguments related to the unit test
-#   - Expected output on console for the unit test
+# - Key: The name of the unit test.
+# - Value: A tuple containing the command-line arguments for the test and the
+#          expected console output.
 TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
     'test_all_headers': (['-u', TEST_URLS[2], '-if', PATHS['ALL_HEADERS']],
@@ -131,6 +130,8 @@ TEST_CFGS = {
     'test_export_csv': (['-u', TEST_URLS[9], '-o', 'csv'], 'CSV saved'),
     'test_export_html': (['-u', TEST_URLS[9], '-o', 'html', '-r'],
                          'HTML saved'),
+    'test_export_html_brief': (['-u', TEST_URLS[9], '-o', 'html', '-b'],
+                               'HTML saved'),
     'test_export_html_csp': (['-u', TEST_URLS[2], '-o', 'html', '-r'],
                              'HTML saved'),
     'test_export_html_empty_headers': (['-u', TEST_URLS[9], '-if',
@@ -140,6 +141,8 @@ TEST_CFGS = {
                          'JSON saved'),
     'test_export_json_brief': (['-u', TEST_URLS[9], '-o', 'json', '-b'],
                                'JSON saved'),
+    'test_export_json_l10n': (['-u', TEST_URLS[9], '-o', 'json', '-l', 'es'],
+                              'JSON guardado'),
     'test_export_pdf': (['-u', TEST_URLS[9], '-o', 'pdf'], 'PDF saved'),
     'test_export_pdf_color': (['-u', TEST_URLS[9], '-if',
                                PATHS['PERFECT_GRADE'], '-o', 'pdf', '-b'],

@@ -1625,8 +1625,8 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
 
 def get_enabled_headers(args, headers_l, t_enabled):
     """
-    Print findings in the section '[1. Enabled HTTP Security Headers],
-    highlighting some experimental HTTP headers
+    Print the contents of the section '[1. Enabled HTTP Security Headers],
+    highlighting experimental HTTP headers
 
     ??? note
         The file associated with this check is /additional/security.txt.
@@ -1679,7 +1679,7 @@ def print_nosec_headers(enabled=True):
 
 def print_missing_headers(args, headers_l, l_detail, l_miss):
     """
-    Print findings in the section '[2. Missing HTTP Security Headers]'
+    Print the contents of the section '[2. Missing HTTP Security Headers]'
 
     ??? note
         The file associated with this check is /additional/missing.txt.
@@ -1742,7 +1742,7 @@ def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
 
 def print_empty_headers(headers, l_empty):
     """
-    Print findings in the section '[5. Empty HTTP Response Headers Values]'
+    Print the contents of the section '[5. Empty HTTP Response Headers Values]'
     """
     e_cnt = 0
     for key in sorted(headers):
@@ -2344,8 +2344,9 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
 
 def json_detailed_empty(json_lns):
     """
-    Print findings in the section '[5. Empty HTTP Response Headers Values]';
-    related to detailed analysis exported to JSON
+    Print the contents of the section
+    '[5. Empty HTTP Response Headers Values]'; related to detailed analysis
+    exported to JSON
     """
     desc_key = get_detail('[json_det_empty]', replace=True)
     status_key = get_detail('[json_det_empty_s]', replace=True)
@@ -2361,13 +2362,11 @@ def json_detailed_empty(json_lns):
 
 def json_detailed_info(json_lns):
     """
-    Print findings in the section '[0. Info]'; related to detailed analysis
+    Print the contents of the section '[0. Info]'; related to detailed analysis
     exported to JSON
     """
     info = {get_detail('[json_gen]', replace=True): BANNER_VERSION}
     for line in json_lns:
-        if ':' not in line:
-            continue
         key, value = line.split(':', 1)
         key = key.strip()
         info[key] = value.strip()
@@ -2376,7 +2375,7 @@ def json_detailed_info(json_lns):
 
 def json_detailed_response(json_lns):
     """
-    Print findings in the section '[HTTP Response Headers]'; related to
+    Print the contents of the section '[HTTP Response Headers]'; related to
     detailed analysis exported to JSON
     """
     header_key = get_detail('[json_det_fngheader]', replace=True)
@@ -2594,11 +2593,8 @@ def json_detailed_ins_checks(checks_list, insecure_checks):
     """
     for check in insecure_checks:
         check_s = check.strip()
-        if ':' in check_s:
-            key, val = check_s.split(':', 1)
-            checks_list.append((key.strip(), val.strip()))
-        else:
-            checks_list.append((check_s, None))
+        key, val = check_s.split(':', 1)
+        checks_list.append((key.strip(), val.strip()))
 
 
 def json_detailed_results(json_lns):
@@ -3132,12 +3128,13 @@ def format_html_totals(ln, l_total):
 
 def format_html_empty(ln, ln_rstrip, l_empty):
     """
-    Write formatted lines for empty section; related to analysis exported to
-    HTML
+    Applies specific HTML formatting tags to empty section headers by
+    validating line content against a predefined list of empty headers
     """
     ln_strip = ln_rstrip.lstrip().lower()
     for i in l_empty:
-        if (i in ln_strip and '[' not in ln_strip and ':' not in ln_strip):
+        if (i.lower() in ln_strip and '[' not in ln_strip and ':' not in
+           ln_strip):
             ln = f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
     return ln
 

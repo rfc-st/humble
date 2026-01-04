@@ -2094,6 +2094,9 @@ Generator
 [test_export_html]
  verify a detailed analysis is exported to HTML.
 
+[test_export_html_brief]
+ verify a brief analysis is exported to HTML.
+
 [test_export_html_csp]
  verify the directives in the ‘Content-Security-Policy’ header are highlighted in an analysis exported to HTML.
 
@@ -2105,6 +2108,9 @@ Generator
 
 [test_export_json_brief]
  verify a brief analysis is exported to JSON.
+
+[test_export_json_l10n]
+ verify a brief analysis is exported to JSON in Spanish.
 
 [test_export_pdf]
  verify a brief analysis is exported to PDF.
