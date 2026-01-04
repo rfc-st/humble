@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--01--03-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--01--04-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -428,7 +428,12 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 
 ## Unit tests
 > [!IMPORTANT]
-> Before running unit tests and code coverage make sure that you have a direct Internet connection (without filters or rules that block connections) and that the *tests* directory has permission to create and delete files and folders.
+> Before running unit tests and code coverage ensure that the following domains are accessible and that the *tests* folder has permission to create and delete files and folders:
+> - https://en.wikipedia.org
+> - https://github.com
+> - https://google.com
+> - https://httpbin.org
+> - https://microsoft.com
 
 .: (Linux) - All tests passed successfully (showing all messages in English).<br />
 ```
@@ -461,16 +466,16 @@ Open the index.html file in a browser.
 > [!TIP]
 > Parameters used in <a target="_blank" href="https://docs.pytest.org/en/stable/reference/reference.html">pytest</a> and <a target="_blank" href="https://pytest-cov.readthedocs.io/en/latest/config.html">pytest-cov</a>:
 >
-> - --cov-config=.coveragerc: Specifies the coverage configuration file
-> - --cov=..: Specifies what code to measure coverage for
-> - --cov-report=html: Defines the coverage report format
-> - --tb=no: Does not show tracebacks for failed tests
-> - -rA: Show all extra test summary info
-> - -q: Quiet mode (during the analysis)
-> - -v: Verbose mode (after the analysis)
-> - -W ignore: Ignore all warnings during test execution
-> - --p no:cacheprovider: Prevents creation of .pytest_cache
-> - -o dont_write_bytecode=True: Prevents creation of `__pycache__` folders
+> - `--cov-config=.coveragerc`: Specifies the coverage configuration file
+> - `--cov=..`: Specifies what code to measure coverage for
+> - `--cov-report=html`: Defines the coverage report format
+> - `--tb=no`: Does not show tracebacks for failed tests
+> - `-rA`: Show all extra test summary info
+> - `-q`: Quiet mode (during the analysis)
+> - `-v`: Verbose mode (after the analysis)
+> - `-W ignore`: Ignore all warnings during test execution
+> - `--p no:cacheprovider`: Prevents creation of .pytest_cache
+> - `-o dont_write_bytecode=True`: Prevents creation of `__pycache__` folders
 
 ## Checks: enabled headers
 
