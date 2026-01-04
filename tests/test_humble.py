@@ -233,8 +233,8 @@ def get_detail(id_mode, replace=False):
 
 def get_l10n_content():
     """
-    Define the literal file to use, to print messages and errors, based on
-    the language provided
+    Assign the correct lookup file to handle localized messaging and error
+    reporting
     """
     if args.lang == 'en':
         l10n_file = HUMBLE_L10N_FILE[0]
@@ -248,10 +248,10 @@ def get_l10n_content():
 
 def print_results():
     """
-    Print a description of each unit tests.
+    Shows the description of each unit test
 
     Descriptions are retrieved via `get_detail` function using tags derived
-    from 'TEST_CFGS' keys plus extended ones for complex standalone tests.
+    from `TEST_CFGS` keys plus extended ones for complex standalone unit tests.
 
     Tags correspond to entries in the following localization files:
 
@@ -270,7 +270,7 @@ def print_results():
 
 
 def run_test(args, expected_text, timeout=15):
-    """Run each of the available tests"""
+    """Run unit test and check for expected console output"""
     test_args = [TEST_URLS[9] if a is None else a for a in args]
 
     try:
@@ -289,7 +289,9 @@ def run_test(args, expected_text, timeout=15):
 
 
 def parse_expected_text(output, expected_text):
-    """Checks if expected text is present in each test"""
+    """
+    Validates console output against expected results after each unit test
+    """
     exp_msg = get_detail('[test_expected]', replace=True)
     not_found_msg = get_detail('[test_notfound]', replace=True)
     if isinstance(expected_text, (list, tuple, set)):
@@ -302,9 +304,9 @@ def parse_expected_text(output, expected_text):
 
 def make_test_func(cfg_key):
     """
-    Generate a function to run the available tests. 'test_wrong_testssl' test
-    is skipped in Windows because testssl.sh, for that platform, requires
-    running it under Cygwin, MSYS2, or Windows Subsystem for Linux
+    Generate unit test execution function; skip `test_wrong_testssl` on Windows
+    due to the Unix-environment requirement (Cygwin, MSYS2, or Windows
+    Subsystem for Linux) for testssl.sh
     """
     def test_func():
         return run_test(*TEST_CFGS[cfg_key])
@@ -324,8 +326,8 @@ for key in TEST_CFGS.keys():
 
 def test_python_version():
     """
-    Returns an error message if the installed Python version is less than the
-    minimum required
+    Returns an error message if the current Python version does not meet the
+    minimum requirement
     """
     if sys.version_info[:2] < REQUIRED_PYTHON_VERSION:
         pytest.fail(
@@ -336,8 +338,8 @@ def test_python_version():
 
 def test_missing_arguments():
     """
-    Performs multiple checks, under a single test, associated with missing
-    parameters required for certain functionalities
+    Consolidates multiple checks for missing required arguments into a single
+    unit test
     """
     expected = ["Error:", "error:", "TXT", "HTML"]
     run_test(['-H', 'Cache-Control: no-cache'], expected)
@@ -353,8 +355,8 @@ def test_missing_arguments():
 
 def test_proxy_wrong():
     """
-    Performs checks associated with parameters required for proxy-related
-    functionalities
+    Consolidates multiple checks for missing required arguments across various
+    proxy-related features
     """
     expected = ["Error:", "error:"]
     run_test(['-p', 'https://'], expected)
@@ -362,9 +364,7 @@ def test_proxy_wrong():
 
 
 def delete_export_files(extension, ko_msg):
-    """
-    Delete all files associated with export tests
-    """
+    """Remove temporary files from export unit tests"""
     msgs = []
     test_files = [
         f for f in listdir(HUMBLE_TESTS_DIR)
@@ -383,8 +383,8 @@ def delete_export_files(extension, ko_msg):
 
 def delete_pytest_caches(dir_path):
     """
-    Delete the directories associated with the pytest cache after all tests
-    have been run.
+    Remove all `.pytest_cache` folders following the execution of all unit
+    tests
     """
     msgs = []
     if path.isdir(dir_path):
@@ -398,8 +398,8 @@ def delete_pytest_caches(dir_path):
 
 def delete_pytestcov_caches(dir_path):
     """
-    Delete the directories associated with the pytest caches after code
-    coverage has been run.
+    Remove all pytest cache folders following the completion of code coverage
+    analysis
     """
     if path.isdir(dir_path):
         with suppress(Exception):
@@ -408,8 +408,7 @@ def delete_pytestcov_caches(dir_path):
 
 def set_temp_content(current_time):
     """
-    Define the files and directories to be deleted after all tests have been
-    run
+    Define the files and folders to be purged upon completion of the test suite
     """
     info_msgs = [(get_detail('[test_tests]', replace=True), current_time)]
     delete_extensions = [
@@ -430,7 +429,7 @@ def set_temp_content(current_time):
 
 
 def delete_temp_content():
-    """Delete the files and directories after all tests have been run"""
+    """Remove the files and folders after all unit tests have been run"""
     current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
     info_msgs = set_temp_content(current_time)
     error_msgs = [(msg, val) for msg, val in info_msgs
@@ -448,10 +447,9 @@ def delete_temp_content():
 
 def cleanup_analysis_history():
     """
-    Once all tests have been completed, delete all lines from the test analysis
-    history file except for the first twenty-five (which are necessary for some
-    of the tests), ensuring that the size of this file remains stable over
-    time.
+    Truncate the test analysis history file after all unit tests complete,
+    retaining only the first twenty-five lines to ensure file size stability
+    while preserving data required for testing
     """
     original_lines = []
 
