@@ -1223,7 +1223,7 @@ HTTP Response Headers
  Ref: https://content-security-policy.com/unsafe-hashes/
 
 [icsncesn]
- Rewiew the nonce 
+ Review the nonce 
 
 [icshash_f]
  Review the format and length of the hashes.
@@ -2085,6 +2085,9 @@ Generator
 [test_corner_cases_brief]
  verify corner cases of headers are analyzed in a brief analysis.
 
+[test_csp_hex_nonce]
+ verify invalid hexadecimal nonces are checked in the ‘Content-Security-Policy’ header.
+
 [test_detailed_analysis]
  verify the completion of a detailed analysis.
 
@@ -2109,8 +2112,14 @@ Generator
 [test_export_json_brief]
  verify a brief analysis is exported to JSON.
 
+[test_export_json_empty_headers]
+ verify an analysis with empty headers is exported to JSON.
+
 [test_export_json_l10n]
  verify a brief analysis is exported to JSON in Spanish.
+
+[test_export_no_security_headers]
+ verify that a detailed analysis is exported without security headers enabled.
 
 [test_export_pdf]
  verify a brief analysis is exported to PDF.

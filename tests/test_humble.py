@@ -60,6 +60,7 @@ HUMBLE_TEST_FILES = {
     'GRADE_C': 'headers_test_grade_c.txt',
     'GRADE_D': 'headers_test_grade_d.txt',
     'CLIENT_ERROR': 'client_error_test.txt',
+    'CSP_HEX_NONCE': 'headers_test_csp_hex_nonce.txt',
     'NO_HEADERS': 'headers_test_none.txt',
     'NO_SEC_HEADERS': 'headers_test_nonesecurity.txt',
     'NONEXISTENT': 'headers_test_nonexistent.txt',
@@ -126,6 +127,8 @@ TEST_CFGS = {
                           'Analysis Grade'),
     'test_corner_cases_brief': (['-u', TEST_URLS[2], '-if',
                                  PATHS['GRADE_D'], '-b'], 'Analysis Grade'),
+    'test_csp_hex_nonce': (['-u', TEST_URLS[2], '-if', PATHS['CSP_HEX_NONCE']],
+                           'Analysis Grade'),
     'test_detailed_analysis': (['-u', TEST_URLS[9]], 'Analysis Grade:'),
     'test_export_csv': (['-u', TEST_URLS[9], '-o', 'csv'], 'CSV saved'),
     'test_export_html': (['-u', TEST_URLS[9], '-o', 'html', '-r'],
@@ -141,8 +144,14 @@ TEST_CFGS = {
                          'JSON saved'),
     'test_export_json_brief': (['-u', TEST_URLS[9], '-o', 'json', '-b'],
                                'JSON saved'),
+    'test_export_json_empty_headers': (['-u', TEST_URLS[9], '-if',
+                                        PATHS['GRADE_D'], '-o', 'json'],
+                                       'JSON saved'),
     'test_export_json_l10n': (['-u', TEST_URLS[9], '-o', 'json', '-l', 'es'],
                               'JSON guardado'),
+    'test_export_no_security_headers': (['-u', TEST_URLS[9], '-if',
+                                         PATHS['NO_SEC_HEADERS'], '-o', 'txt'],
+                                        'TXT saved'),
     'test_export_pdf': (['-u', TEST_URLS[9], '-o', 'pdf'], 'PDF saved'),
     'test_export_pdf_color': (['-u', TEST_URLS[9], '-if',
                                PATHS['PERFECT_GRADE'], '-o', 'pdf', '-b'],
@@ -470,7 +479,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2026-01-04', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-05', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

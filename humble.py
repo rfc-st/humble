@@ -123,7 +123,7 @@ RE_PATTERN = (
     r'\(humble_pdf_style\)([^:]+):',
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r'\(humble_sec_style\)([^:]+)', r'\(humble_sec_style\)',
-    r'(?: Nota : | Note : )', r'^[0-9a-fA-F]{1,31}$', r'^[A-Za-z0-9+/=]+$',
+    r'(?: Nota : | Note : )', r'^[0-9a-fA-F]+$', r'^[A-Za-z0-9+/=]+$',
     r', (?=[^;,]+?=)', r"'nonce-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
     r"'(sha256|sha384|sha512)-([A-Za-z0-9+/=]+)'",
     r"(?<!')\b(sha256|sha384|sha512)-[A-Za-z0-9+/=]+(?!')",
@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-01-04', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-05', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -207,13 +207,16 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
 
 
 def check_python_version():
-    """Checks the minimum required version of Python"""
+    """
+    Returns an error message if the current Python version does not meet the
+    minimum requirement
+    """
     exit(print_detail('[python_version]', 3)) if sys.version_info < (3, 11) \
         else None
 
 
 def process_proxy_url(proxy_url, timeout):
-    """Parse and validate proxy URL accessibility, related to '-p' option"""
+    """Parse and validate proxy URL accessibility, related to `-p` option"""
     parsed_proxy_url = urlparse(proxy_url)
     proxy_host = parsed_proxy_url.hostname
     if not proxy_host:
@@ -234,7 +237,7 @@ def process_proxy_url(proxy_url, timeout):
 
 
 def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
-    """Check if the proxy server is reachable"""
+    """Check if the provided proxy server is reachable"""
     try:
         with create_connection((proxy_host, proxy_port), timeout=timeout):
             pass
@@ -244,8 +247,8 @@ def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
 
 def check_updates(local_version):
     """
-    Check for updated versions on GitHub and terminate execution, related to
-    '-v' option
+    Check for updated versions of **humble.py** on GitHub and terminate
+    execution, related to `-v` option
     """
     try:
         github_repo = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT).text
@@ -260,8 +263,8 @@ def check_updates(local_version):
 
 def check_updates_diff(days_diff, github_version, local_version):
     """
-    Check whether the local version is more than a month older than the latest
-    on GitHub
+    Check whether the local version of **humble.py** is more than a month older
+    than the latest on GitHub
     """
     print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
 {github_version} \n {get_detail('[humble_local]', replace=True)} \
@@ -276,7 +279,7 @@ def check_updates_diff(days_diff, github_version, local_version):
 def fng_statistics_top():
     """
     Print top 20 HTTP fingerprint header statistics grouped by service and
-    terminate execution, related to '-f' option
+    terminate execution, related to `-f` option
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
@@ -386,21 +389,21 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
 def testssl_command(testssl_temp_path, uri):
     """
     Prepare the TLS/SSL analysis and terminates execution based on user
-    compliance, related to '-e' option
+    compliance, related to `-e` option
 
     ??? tip
-        The options to be used in the analyses are defined in the
-        TESTSSL_OPTIONS constant:<br>
+        The options used in the analysis are defined in the `TESTSSL_OPTIONS`
+        list:<br>
 
-        - -f: checks robust forward secrecy key exchange
-        - -g: checks several server implementation bugs
-        - -p: checks the availability of SSL/TLS protocols
-        - -U: tests all vulnerabilities, like Heartbleed, ROBOT and sweet32
-        - -s: tests lists of cipher suites/categories by strength
-        - --hints: (available in the future) give hints how to fix a finding
+        - `-f`: checks robust forward secrecy key exchange
+        - `-g`: checks several server implementation bugs
+        - `-p`: checks the availability of SSL/TLS protocols
+        - `-U`: tests all vulnerabilities, like Heartbleed, ROBOT and sweet32
+        - `-s`: tests lists of cipher suites/categories by strength
+        - `--hints`: (available in the future) give hints how to fix a finding
 
         Check the testssl.sh <a href="https://testssl.sh/doc/testssl.1.html"
-        target="_blank">documentation</a> for a list of all available options.
+        target="_blank">documentation</a> for a list of all available options
     """
     testssl_temp_path = path.abspath(testssl_temp_path)
     if not path.isdir(testssl_temp_path):
@@ -475,7 +478,7 @@ def get_analysis_results():
 
 def save_analysis_results(t_cnt):
     """
-    Save analysis results to the analysis history file, analysis_h.txt
+    Save analysis results to the analysis history file, `analysis_h.txt`
 
     ??? info
         Values, in order, of each entry in the history file:<br>
@@ -581,7 +584,7 @@ def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
 
 
 def check_analysis(filepath):
-    """Check if analysis history file (analysis_h.txt) exists"""
+    """Check if analysis history file, `analysis_h.txt`, exists"""
     if not path.exists(filepath):
         detail = '[no_analysis]' if URL else '[no_global_analysis]'
         print_error_detail(detail)
@@ -589,7 +592,7 @@ def check_analysis(filepath):
 
 def adjust_old_analysis(url_ln):
     """
-    Adjusts analysis entries in analysis history file, analysis_h.txt
+    Adjusts analysis entries in analysis history file, `analysis_h.txt`
 
     ??? note
         Applied to those made before 2024-11-28 when the
@@ -612,7 +615,7 @@ def adjust_old_analysis(url_ln):
 def url_analytics(is_global=False):
     """
     Print analysis statistics for all analyses performed on a URL and
-    terminates execution, related to '-a' option
+    terminates execution, related to `-a` option
     """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
     with open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
@@ -792,10 +795,10 @@ def calculate_trends(values):
         <br>
         Trend values:<br>
 
-        - Stable: all five totals are identical
-        - Improving: totals consistently decrease
-        - Worsening: totals consistently increase
-        - Fluctuating: No clear trend is detected; totals alternate
+        - `Stable`: all five totals are identical
+        - `Improving`: totals consistently decrease
+        - `Worsening`: totals consistently increase
+        - `Fluctuating`: No clear trend is detected; totals alternate
     """
     if len(values) < 5:
         return print_detail_l('[t_insufficient]', analytics=True)
@@ -991,7 +994,7 @@ def print_global_metrics(analytics_l, analytics_s, analytics_w,
 
 
 def csp_analyze_content(csp_header):
-    """'Content-Security-Policy' header analysis"""
+    """`Content-Security-Policy` header analysis"""
     csp_deprecated = set()
     csp_dirs_vals = [dir.strip() for dir in csp_header.split(';') if
                      dir.strip()]
@@ -1008,7 +1011,7 @@ def csp_analyze_content(csp_header):
 
 def csp_check_ignored(csp_header):
     """
-    'Content-Security-Policy' header check related to 'strict-dynamic' keyword
+    `Content-Security-Policy` header check related to `strict-dynamic` keyword
     """
     hash_p = bool(re.search(RE_PATTERN[17], csp_header))
     nonce_p = bool(re.search(RE_PATTERN[6], csp_header))
@@ -1024,7 +1027,7 @@ def csp_check_ignored(csp_header):
 
 def csp_check_missing(csp_dirs):
     """
-    'Content-Security-Policy' header check related to missing directives
+    `Content-Security-Policy` header check related to missing directives
     """
     csp_refs = [('[icspmb_h]', '[icspmb]'), ('[icspmc_h]', '[icspmc]'),
                 ('[icspmcn_h]', '[icspmcn]'), ('[icspmfo_h]', '[icspmfo]'),
@@ -1039,7 +1042,7 @@ def csp_check_missing(csp_dirs):
 
 
 def csp_print_missing(csp_ref, csp_ref_brief):
-    """Print the missing directive in the 'Content-Security-Policy' header"""
+    """Print the missing directive in the `Content-Security-Policy` header"""
     if args.brief:
         i_cnt[0] += 1
         print_detail_r(csp_ref_brief, is_red=True)
@@ -1053,7 +1056,7 @@ def csp_print_missing(csp_ref, csp_ref_brief):
 
 def csp_check_additional(csp_dirs_vals):
     """
-    'Content-Security-Policy' header check related to broad and insecure values
+    `Content-Security-Policy` header check related to broad and insecure values
     """
     checks = [(t_csp_broad, csp_check_broad),
               (t_csp_insecs, csp_check_insecure)]
@@ -1065,7 +1068,7 @@ def csp_check_additional(csp_dirs_vals):
 
 
 def csp_check_broad(csp_dirs_vals):
-    """'Content-Security-Policy' header check related to broad values"""
+    """`Content-Security-Policy` header check related to broad values"""
     csp_broad_v = sorted({value for dir_vals in csp_dirs_vals if
                           dir_vals.strip() for value in dir_vals.split()[1:]
                           if f" {value} " in t_csp_broad})
@@ -1078,7 +1081,7 @@ def csp_check_broad(csp_dirs_vals):
 
 
 def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
-    """Print the broad value in the 'Content-Security-Policy' header"""
+    """Print the broad value in the `Content-Security-Policy` header"""
     print_detail_r('[icsw_h]', is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(csp_broad_dirs) > 1 else DIR_MSG[1])
@@ -1091,7 +1094,7 @@ def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
 
 
 def csp_check_insecure(csp_dirs_vals):
-    """'Content-Security-Policy' header check related to insecure values"""
+    """`Content-Security-Policy` header check related to insecure values"""
     csp_insec_v = sorted({value for value in t_csp_insecs if
                           any(value in dir for dir in csp_dirs_vals)})
     csp_insec_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
@@ -1101,7 +1104,7 @@ def csp_check_insecure(csp_dirs_vals):
 
 
 def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
-    """Print the insecure value in the 'Content-Security-Policy' header"""
+    """Print the insecure value in the `Content-Security-Policy` header"""
     print_detail_r('[icsh_h]', is_red=True)
     if not args.brief:
         csp_values = ', '.join(f"'{value}'" for value in csp_insec_v)
@@ -1116,8 +1119,8 @@ def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
 
 def csp_check_eval(csp_dirs_vals):
     """
-    'Content-Security-Policy' header check related to 'unsafe-eval' and
-    'wasm-unsafe-eval' keywords
+    `Content-Security-Policy` header check related to `unsafe-eval` and
+    `wasm-unsafe-eval` keywords
     """
     csp_unsafe_dirs = [
         dir_vals.split()[0] if ' ' in dir_vals else dir_vals
@@ -1129,7 +1132,7 @@ def csp_check_eval(csp_dirs_vals):
 
 def csp_check_inline(csp_dirs_vals):
     """
-    'Content-Security-Policy' header check related to 'unsafe-inline' keyword
+    `Content-Security-Policy` header check related to `unsafe-inline` keyword
     """
     csp_unsafe_dirs = [
         dir_vals.split()[0] if ' ' in dir_vals else dir_vals
@@ -1140,8 +1143,8 @@ def csp_check_inline(csp_dirs_vals):
 
 def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
     """
-    Print the occurrences of 'unsafe-eval' and 'unsafe-inline' keywords in the
-    'Content-Security-Policy' header
+    Print the occurrences of `unsafe-eval` and `unsafe-inline` keywords in the
+    `Content-Security-Policy` header
     """
     print_detail_r(detail_t, is_red=True)
     if not args.brief:
@@ -1153,7 +1156,7 @@ def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
 
 
 def csp_check_hashes(csp_h):
-    """'Content-Security-Policy' header checks related to hashes"""
+    """`Content-Security-Policy` header checks related to hashes"""
     csp_unquoted_hashes(csp_h)
     invalid_algos = set()
     csp_hashes = re.findall(RE_PATTERN[17], csp_h)
@@ -1173,7 +1176,7 @@ def csp_check_hashes(csp_h):
 
 
 def csp_unquoted_hashes(csp_h):
-    """'Content-Security-Policy' header check related to unquoted hashes"""
+    """`Content-Security-Policy` header check related to unquoted hashes"""
     if re.search(RE_PATTERN[18], csp_h):
         print_detail_r('[icshash_h]', is_red=True)
         i_cnt[0] += 1
@@ -1183,10 +1186,12 @@ def csp_unquoted_hashes(csp_h):
 
 
 def csp_check_nonces(csp_h):
-    """'Content-Security-Policy' header checks related to nonces"""
-    if not re.search(RE_PATTERN[24], csp_h):
+    """
+    `Content-Security-Policy` header checks related to hexadecimal and
+    Base64 nonces
+    """
+    if re.search(RE_PATTERN[24], csp_h):
         print_details('[icsncei_h]', '[icsncei]', 'd', i_cnt)
-        return
     nonce_refs = ('[icsnces_h]', '[icsncesn]', '[icsnces]')
     for nonce in re.findall(RE_PATTERN[6], csp_h):
         if (re.match(RE_PATTERN[12], nonce) and
@@ -1197,13 +1202,13 @@ def csp_check_nonces(csp_h):
 
 
 def csp_hex_nonce(nonce, nonce_refs, i_cnt):
-    """'Content-Security-Policy' header checks related to hexadecimal nonces"""
+    """`Content-Security-Policy` header checks related to hexadecimal nonces"""
     return csp_print_nonce(nonce, nonce_refs, i_cnt) \
         if len(nonce) < 32 else False
 
 
 def csp_base64_nonce(nonce, nonce_refs, i_cnt):
-    """'Content-Security-Policy' header checks related to Base64 nonces"""
+    """`Content-Security-Policy` header checks related to Base64 nonces"""
     try:
         return csp_print_nonce(nonce, nonce_refs, i_cnt) if \
             len(b64decode(nonce, validate=True)) < 16 else False
@@ -1214,7 +1219,7 @@ def csp_base64_nonce(nonce, nonce_refs, i_cnt):
 def csp_print_nonce(nonce, nonce_refs, i_cnt):
     """
     Print insecure Base64 and hexadecimal nonces in the
-    'Content-Security-Policy' header
+    `Content-Security-Policy` header
     """
     print_detail_r(nonce_refs[0], is_red=True)
     if not args.brief:
@@ -1226,7 +1231,7 @@ def csp_print_nonce(nonce, nonce_refs, i_cnt):
 
 
 def csp_check_ip(csp_h):
-    """'Content-Security-Policy' header check related to IP address values"""
+    """`Content-Security-Policy` header check related to IP address values"""
     localhost_ip = ip_address(t_csp_checks[4])
     ip_matches = re.findall(RE_PATTERN[1], csp_h)
     for match in ip_matches:
@@ -1238,7 +1243,7 @@ def csp_check_ip(csp_h):
 
 
 def csp_print_deprecated(csp_deprecated):
-    """Print deprecated directives in the 'Content-Security-Policy' header"""
+    """Print deprecated directives in the `Content-Security-Policy` header"""
     i_cnt[0] += 1
     print_detail_r('[icsi_d]', is_red=True) if args.brief else \
         csp_print_details(csp_deprecated, '[icsi_d]', '[icsi_d_s]',
@@ -1247,7 +1252,7 @@ def csp_print_deprecated(csp_deprecated):
 
 def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
     """
-    Group the deprecated directives in the 'Content-Security-Policy' header
+    Group the deprecated directives in the `Content-Security-Policy` header
     """
     csp_values = ', '.join(f"'{value}'" for value in sorted(csp_values))
     print_detail_r(f'{csp_title}', is_red=True)
@@ -1257,7 +1262,7 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
 
 
 def csp_check_unknown(csp_h):
-    """'Content-Security-Policy' header check related to unknown directives"""
+    """`Content-Security-Policy` header check related to unknown directives"""
     unknown_dir = []
     csp_dirs = [d.strip() for d in csp_h.split(';') if d.strip()]
     for dir in csp_dirs:
@@ -1270,7 +1275,7 @@ def csp_check_unknown(csp_h):
 
 
 def csp_print_unknown(unknown_dir):
-    """Print unknown directives in the 'Content-Security-Policy' header"""
+    """Print unknown directives in the `Content-Security-Policy` header"""
     # sourcery skip: use-fstring-for-concatenation
     print_detail_r('[icspiu_h]', is_red=True)
     if not args.brief:
@@ -1282,7 +1287,7 @@ def csp_print_unknown(unknown_dir):
 
 
 def check_unsafe_cookies():  # sourcery skip: use-named-expression
-    """'Set-Cookie' header analysis"""
+    """`Set-Cookie` header analysis"""
     unsafe_cks = [ck.split('=', 1)[0].strip() for ck in
                   re.split(RE_PATTERN[14], stc_header) if
                   any(val not in ck.lower() for val in t_cookie_sec)]
@@ -1294,14 +1299,14 @@ def check_unsafe_cookies():  # sourcery skip: use-named-expression
 
 
 def print_unsafe_cookies(unsafe_cks):
-    """Print unsafe cookies in the 'Set-Cookie' header"""
+    """Print unsafe cookies in the `Set-Cookie` header"""
     print_detail_l('[icooks_s]' if len(unsafe_cks) > 1 else '[icook_s]')
     print(", ".join(f"'{ck}'" for ck in sorted(unsafe_cks)) + ".")
     print_detail('[iset]', num_lines=2)
 
 
 def permissions_analyze_content(perm_header, i_cnt):
-    """'Permissions-Policy' header analysis"""
+    """`Permissions-Policy` header analysis"""
     if any(value in perm_header for value in t_per_dep):
         permissions_print_deprecated(perm_header)
     if 'none' in perm_header:
@@ -1311,7 +1316,7 @@ def permissions_analyze_content(perm_header, i_cnt):
 
 
 def permissions_print_deprecated(perm_header):
-    """Print deprecated directives in the 'Permissions-Policy' header"""
+    """Print deprecated directives in the `Permissions-Policy` header"""
     print_detail_r('[ifpold_h]', is_red=True)
     if not args.brief:
         matches_perm = [x for x in t_per_dep if x in perm_header]
@@ -1322,7 +1327,7 @@ def permissions_print_deprecated(perm_header):
 
 
 def permissions_check_broad(perm_header):
-    """'Permissions-Policy' header check related to broad values"""
+    """`Permissions-Policy` header check related to broad values"""
     if sum(dir in perm_header for dir in t_per_ft) < 2:
         return None
     try:
@@ -1341,7 +1346,7 @@ def permissions_check_broad(perm_header):
 
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
-    """Print the broad values in the 'Permissions-Policy' header"""
+    """Print the broad values in the `Permissions-Policy` header"""
     print_detail_r('[ifpol_h]', is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(perm_broad_dirs) > 1 else DIR_MSG[1])
@@ -1359,7 +1364,7 @@ def delete_lines(reliable=True):
 
 
 def print_export_path(filename, reliable):
-    """Print export path, related to -o' option"""
+    """Print export path, related to `-o` option"""
     delete_lines(reliable=False) if reliable else delete_lines()
     if '-c' not in sys.argv:
         print(f"\n {args.output.upper()} {print_detail_s('[report]').lstrip()}\
@@ -1375,7 +1380,7 @@ def print_nowarnings():
 
 
 def print_header(header):
-    """Print the header name (generic use)"""
+    """Generic function to print the header name"""
     print(f" {header}" if args.output else f"{STYLE[1]} {header}")
 
 
@@ -1388,7 +1393,7 @@ def print_fng_header(header):
 
 
 def print_general_info(reliable, export_filename):
-    """Print all the information in the '[0. Info]' section of the analysis"""
+    """Print all the information in the `[0. Info]` section of the analysis"""
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
         print(f"\n{BANNER}\n ({BANNER_VERSION})")
@@ -1400,7 +1405,7 @@ def print_general_info(reliable, export_filename):
 
 
 def print_basic_info(export_filename):
-    """Print basic information in the '[0. Info]' section of the analysis"""
+    """Print basic information in the `[0. Info]` section of the analysis"""
     print(linesep.join(['']*2) if args.output == 'html' or not args.output
           else "")
     print_detail_r('[0section]')
@@ -1420,7 +1425,7 @@ def print_basic_info(export_filename):
 
 
 def print_extended_info(args, reliable, status_code):
-    """Print extended information in the '[0. Info]' section of the analysis"""
+    """Print extended information in the `[0. Info]` section of the analysis"""
     if args.request_header:
         print_request_headers(added_request_headers)
     if args.skip_headers:
@@ -1434,7 +1439,7 @@ def print_extended_info(args, reliable, status_code):
 
 
 def print_extra_info(reliable):
-    """Print extra information in the '[0. Info]' section of the analysis"""
+    """Print extra information in the `[0. Info]` section of the analysis"""
     if (status_code is not None and 400 <= status_code <= 451):
         id_mode = f'[http_{status_code}]'
         if detail := print_detail(id_mode, 0):
@@ -1447,7 +1452,7 @@ def print_extra_info(reliable):
 
 
 def print_response_headers():
-    """Print response headers, related to '-r' option"""
+    """Print response headers, related to `-r` option"""
     print(linesep.join(['']*2))
     print_detail_r('[0headers]')
     if not headers:
@@ -1561,8 +1566,8 @@ def print_error_detail(id_mode, clean_lines=False):
 
 def get_epilog_content(id_mode):
     """
-    Print examples of use of 'humble' and how to contribute to it, related to
-    '-h' option
+    Print examples of use of **humble.py** and how to contribute to it, related
+    to `-h` option
     """
     epilog_file_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[5])
     with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
@@ -1573,11 +1578,11 @@ def get_epilog_content(id_mode):
 
 def get_fingerprint_headers():
     """
-    Print all the information in the '[3. Fingerprint HTTP Response Headers]'
+    Print all the information in the `[3. Fingerprint HTTP Response Headers]`
     section of the analysis
 
     ??? note
-        The file associated with this check is /additional/fingerprint.txt.
+        The file associated with this check is `/additional/fingerprint.txt`
     """
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
@@ -1606,7 +1611,7 @@ def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
 def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
     """
     Print the name, the associated service (according to the
-    /additional/fingerprint.txt file), and the value of the header identified
+    `/additional/fingerprint.txt` file), and the value of the header identified
     as fingerprint
     """
     if not args.brief:
@@ -1625,16 +1630,16 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
 
 def get_enabled_headers(args, headers_l, t_enabled):
     """
-    Print the contents of the section '[1. Enabled HTTP Security Headers],
+    Print the contents of the section `[1. Enabled HTTP Security Headers]`,
     highlighting experimental HTTP headers
 
     ??? note
-        The file associated with this check is /additional/security.txt.
+        The file associated with this check is `/additional/security.txt`
 
         The highlighted <a href="https://developer.mozilla.org/en-US/docs/
         MDN/Writing_guidelines/Experimental_deprecated_obsolete"
         target=blank">experimental</a> headers are defined in the EXP_HEADERS
-        constant and correspond to some of those indicated in the MDN <a href="
+        tuple and correspond to some of those indicated in the MDN <a href="
         https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers"
         target="_blank">list</a> of HTTP headers.
     """
@@ -1654,7 +1659,7 @@ def get_enabled_headers(args, headers_l, t_enabled):
 def print_enabled_headers(args, exp_s, header, headers_d):
     """
     Print the enabled HTTP response headers considered to be security-related
-    (according to the additional/security.txt file)
+    (according to the `additional/security.txt` file)
     """
     prefix = STYLE[8] if args.output in ('html', 'pdf') else ''
     header_display = f"{prefix}{exp_s}{header}"
@@ -1679,10 +1684,10 @@ def print_nosec_headers(enabled=True):
 
 def print_missing_headers(args, headers_l, l_detail, l_miss):
     """
-    Print the contents of the section '[2. Missing HTTP Security Headers]'
+    Print the contents of the section `[2. Missing HTTP Security Headers]`
 
     ??? note
-        The file associated with this check is /additional/missing.txt.
+        The file associated with this check is `/additional/missing.txt`
     """
     m_cnt = 0
     headers_set = set(headers_l)
@@ -1706,7 +1711,7 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
         The highlighted <a href="https://developer.mozilla.org/en-US/docs/
         MDN/Writing_guidelines/Experimental_deprecated_obsolete"
         target=blank">experimental</a> headers are defined in the EXP_HEADERS
-        constant and correspond to some of those indicated in the MDN <a href="
+        tuple and correspond to some of those indicated in the MDN <a href="
         https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers"
         target="_blank">list</a> of HTTP headers.
     """
@@ -1724,7 +1729,7 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
 
 def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
     """
-    Check whether the absence of the 'X-Frame-Options' HTTP response header
+    Check whether the absence of the `X-Frame-Options` HTTP response header
     should be reported
     """
     xfo_needed = ('x-frame-options' not in skip_headers) and \
@@ -1742,7 +1747,7 @@ def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
 
 def print_empty_headers(headers, l_empty):
     """
-    Print the contents of the section '[5. Empty HTTP Response Headers Values]'
+    Print the contents of the section `[5. Empty HTTP Response Headers Values]`
     """
     e_cnt = 0
     for key in sorted(headers):
@@ -1755,8 +1760,8 @@ def print_empty_headers(headers, l_empty):
 
 def print_browser_compatibility(compat_headers):
     """
-    Print references in the section '[6. Browser Compatibility for Enabled HTTP
-    Security Headers]'
+    Print references in the section `[6. Browser Compatibility for Enabled HTTP
+    Security Headers]`
 
     ??? note
         References provided by <a href="https://caniuse.com/" target="_blank">
@@ -1773,7 +1778,7 @@ def print_browser_compatibility(compat_headers):
 def check_input_traversal(user_input):
     """
     Check user input for path traversal patterns and terminates execution if
-    one is found, related to '-of' and '-op' options
+    one is found, related to `-of` and `-op` options
     """
     input_traversal_ptrn = re.compile(RE_PATTERN[2])
     if input_traversal_ptrn.search(user_input):
@@ -1785,7 +1790,7 @@ def check_input_traversal(user_input):
 def validate_path(output_path):
     """
     Validate permissions in the provided path and terminates execution in case
-    of error, related to '-op' option
+    of error, related to `-op` option
     """
     try:
         with open(path.join(output_path, HUMBLE_FILES[1]), 'w'):
@@ -1825,7 +1830,7 @@ def validate_file_access(target_path, *, context='history'):
 
 def check_output_path(args, output_path):
     """
-    Validations related to the provided path in '-op' option, terminating
+    Validations related to the provided path in `-op` option, terminating
     execution in case of error
     """
     check_input_traversal(args.output_path)
@@ -1840,7 +1845,9 @@ def check_output_path(args, output_path):
 
 
 def parse_user_agent(user_agent=False):
-    """Select and validate the provided user agent, related to '-ua' option"""
+    """
+    Select and validate the provided user agent, related to `-ua` option
+    """
     if not user_agent:
         return get_user_agent('1')
     user_agent_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
@@ -1852,21 +1859,18 @@ def parse_user_agent(user_agent=False):
 
 def nourl_user_agent(user_agent_id):
     """
-    Print a message if the User-Agent identifier provided is invalid or if the
-    URL to be analyzed has not been specified
+    Display available User-Agents if the ID is `0`. Otherwise, display an
+    error indicating that a URL is required for the provided User-Agent ID.
     """
-    try:
-        if user_agent_id == '0':
-            return get_user_agent('0')
-        print_error_detail('[args_useragent]')
-    except ValueError:
-        print_error_detail('[ua_invalid]')
+    if user_agent_id == '0':
+        return get_user_agent('0')
+    print_error_detail('[args_useragent]')
 
 
 def get_user_agent(user_agent_id):
     """
     Select and validate the User-Agent identifier to be used in the analysis
-    (from those available in additional/user-agents.txt file), terminating
+    (from those available in `additional/user-agents.txt` file), terminating
     execution if it is not found
     """
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
@@ -1894,7 +1898,7 @@ def print_user_agents(user_agents):
 
 def get_insecure_checks():
     """
-    Skips security checks for specified HTTP response headers, related to '-s'
+    Skips security checks for specified HTTP response headers, related to `-s`
     option
     """
     headers_name = set()
@@ -1956,7 +1960,7 @@ def print_unsupported_headers(unsupported_headers):
 
 
 def check_output_format(args, final_filename, reliable, tmp_filename):
-    """Export the analysis to the provided format, related to '-o' option"""
+    """Export the analysis to the provided format, related to `-o` option"""
     dispatch = {
         "txt": lambda: (
             args.cicd and print_cicd_totals(tmp_filename),
@@ -1983,7 +1987,7 @@ def print_cicd_totals(tmp_filename):
     """
     Print a summary-only JSON analysis, designed for continuous integration and
     continuous delivery/deployment, exports it to a txt file and terminate
-    execution; related to '-cicd' option
+    execution; related to `-cicd` option
     """
     try:
         with open(tmp_filename, 'r', encoding='utf-8') as txt_source:
@@ -2008,8 +2012,8 @@ def print_cicd_totals(tmp_filename):
 def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
     """
     Define the sections in which to display the summary-only JSON analysis
-    results, designed for continuous integration and
-    continuous delivery/deployment
+    results, designed for continuous integration and continuous
+    delivery/deployment
     """
     cicd_info_start = lines.index(next(line for line in lines if
                                        BOLD_STRINGS[0] in line))
@@ -2065,7 +2069,7 @@ def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
 
 def generate_csv(final_filename, temp_filename, to_xlsx=False):
     """
-    CSV export of the analysis and terminates execution, related to '-o csv'
+    CSV export of the analysis and terminates execution, related to `-o csv`
     option
     """
     with open(temp_filename, 'r', encoding='utf8') as txt_source, \
@@ -2103,10 +2107,10 @@ def parse_csv(csv_section, csv_source, csv_writer):
 def generate_xlsx(final_filename, temp_filename):
     """
     XLSX spreadsheet export of the analysis and terminates execution, related
-    to '-o xlsx' option
+    to `-o xlsx` option
 
     ??? tip
-        xlsxwriter is lazy-loaded to avoid unnecessary overhead when XLSX
+        `xlsxwriter` is lazy-loaded to avoid unnecessary overhead when XLSX
         export is not used.
     """
     from xlsxwriter import Workbook
@@ -2184,26 +2188,21 @@ def choose_xlsx_format(bold_fmt, cell_fmt, cell_value, col_index, hidden_fmt,
 
 
 def set_xlsx_width(col_wd, worksheet):
-    """
-    Set column widths with special handling for first two columns; related to
-    analysis exported to XLSX spreadsheet
-    """
-    col_a_width = col_wd.get(0, 0)
-    col_b_width = col_wd.get(1, 0) + 2
-    adjusted_b_width = max(col_b_width, col_a_width * 2)
+    """Set column widths; related to analysis exported to XLSX spreadsheet"""
     for col_idx, width in col_wd.items():
         if col_idx == 0:
-            worksheet.set_column(col_idx, col_idx, col_a_width)
+            actual_width = width
         elif col_idx == 1:
-            worksheet.set_column(col_idx, col_idx, min(adjusted_b_width, 100))
-        else:
-            worksheet.set_column(col_idx, col_idx, min(width + 2, 50))
+            col_a_width = col_wd.get(0, 0)
+            adjusted_b_width = max(width + 2, col_a_width * 2)
+            actual_width = min(adjusted_b_width, 100)
+        worksheet.set_column(col_idx, col_idx, actual_width)
 
 
 def generate_json(final_filename, temp_filename):
     """
     JSON export of a brief analysis and and terminates execution,
-    related to '-o json -b' option
+    related to `-o json -b` options
     """
     section0, sectionh, section5, section6 = (
         get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
@@ -2267,8 +2266,8 @@ def format_json(json_data, json_lns):
 
 def json_detailed_sources(file_idx, slice_idx):
     """
-    Access the contents of files in the /additional path, in order to use them
-    as sources for specific sections (e.g., fingerprint and
+    Access the contents of files in the `/additional` path, in order to use
+    them as sources for specific sections (e.g., fingerprint and
     deprecated/insecure headers); related to detailed analysis exported to
     JSON.
     """
@@ -2281,7 +2280,7 @@ def json_detailed_sources(file_idx, slice_idx):
 def generate_json_detailed(final_filename, temp_filename):
     """
     JSON export of a detailed analysis and and terminates execution, related to
-    -o json' option
+    `-o json` option
     """
     with open(temp_filename, 'r', encoding='utf8') as txt_file, \
          open(final_filename, 'w', encoding='utf8') as json_file:
@@ -2345,7 +2344,7 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
 def json_detailed_empty(json_lns):
     """
     Print the contents of the section
-    '[5. Empty HTTP Response Headers Values]'; related to detailed analysis
+    `[5. Empty HTTP Response Headers Values]`; related to detailed analysis
     exported to JSON
     """
     desc_key = get_detail('[json_det_empty]', replace=True)
@@ -2362,7 +2361,7 @@ def json_detailed_empty(json_lns):
 
 def json_detailed_info(json_lns):
     """
-    Print the contents of the section '[0. Info]'; related to detailed analysis
+    Print the contents of the section `[0. Info]`; related to detailed analysis
     exported to JSON
     """
     info = {get_detail('[json_gen]', replace=True): BANNER_VERSION}
@@ -2375,7 +2374,7 @@ def json_detailed_info(json_lns):
 
 def json_detailed_response(json_lns):
     """
-    Print the contents of the section '[HTTP Response Headers]'; related to
+    Print the contents of the section `[HTTP Response Headers]`; related to
     detailed analysis exported to JSON
     """
     header_key = get_detail('[json_det_fngheader]', replace=True)
@@ -2618,10 +2617,10 @@ def json_detailed_results(json_lns):
 
 def export_pdf_file(tmp_filename):
     """
-    PDF export of the analysis, related to '-o pdf' option
+    PDF export of the analysis, related to `-o pdf` option
 
     ??? tip
-        fpdf2 is lazy-loaded to avoid unnecessary overhead when PDF export is
+        `fpdf2` is lazy-loaded to avoid unnecessary overhead when PDF export is
         not used.
     """
     from fpdf import FPDF, YPos as ypos  # type: ignore
@@ -2900,7 +2899,7 @@ def apply_pdf_color(colon_idx, hcolor, line, vcolor):
 
 
 def export_html_file(final_filename, tmp_filename):
-    """HTML export of the analysis, related to '-o html' option"""
+    """HTML export of the analysis, related to `-o html` option"""
     global inside_section
     inside_section = False
     generate_html()
@@ -2925,7 +2924,7 @@ def export_html_file(final_filename, tmp_filename):
 def generate_html():
     """
     Provides content for the variables in the template
-    /additional/html_template.html; related to analysis exported to HTML
+    `/additional/html_template.html`; related to analysis exported to HTML
     """
     copyfile(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[8]),
              final_filename)
@@ -2988,8 +2987,8 @@ def format_html_lines(html_final, ko_strings, ln, ok_string):
 
 def format_html_info(html_final, ln_rstrip):
     """
-    Write formatted lines for *humble* and analysis information sections;
-    related to analysis exported to HTML
+    Write formatted lines for the GitHub URL of **humble.py** and `[0. Info]`
+    section; related to analysis exported to HTML
     """
     if URL_STRING[0] in ln_rstrip:
         html_final.write(
@@ -3085,7 +3084,7 @@ def format_html_headers(ln):
 
 def format_html_csp(ln):
     """
-    Bold Content-Security-Policy header directives; related to analysis
+    Bold `Content-Security-Policy` header directives; related to analysis
     exported to HTML
     """
     csp_value = next((v for k, v in headers.items() if k.lower() ==
@@ -3187,7 +3186,7 @@ def clean_html_final(final_filename):
 
 
 def generate_xml(final_filename, temp_filename):
-    """XML export of the analysis, related to '-o xml' option"""
+    """XML export of the analysis, related to `-o xml` option"""
     root = ET.Element('analysis', {'version': BANNER_VERSION,
                                    'generated': current_time})
     with open(temp_filename, 'r', encoding='utf8') as txt_source:
@@ -3253,7 +3252,7 @@ def check_ru_scope():
 
 def check_owasp_compliance(tmp_filename):
     """
-    'OWASP Secure Headers Project' best practices checks, related to '-c'
+    `OWASP Secure Headers Project` best practices checks, related to `-c`
     option
     """
     remove(tmp_filename)
@@ -3271,7 +3270,7 @@ def check_owasp_compliance(tmp_filename):
 
 def print_owasp_summary(missing, wrong):
     """
-    Format lines for results section; related to 'OWASP Secure Headers Project'
+    Format lines for results section; related to `OWASP Secure Headers Project`
     best practices analysis
     """
     missing_txt = get_detail('[comp_missing]', replace=True)
@@ -3285,8 +3284,8 @@ def print_owasp_summary(missing, wrong):
 
 def print_owasp_findings(header_dict, header_list):
     """
-    Print formatted lines for results section; related to 'OWASP Secure
-    Headers Project' best practices analysis
+    Print formatted lines for results section; related to `OWASP Secure
+    Headers Project` best practices analysis
     """
     print(linesep.join([''] * 2))
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
@@ -3306,8 +3305,8 @@ def print_owasp_findings(header_dict, header_list):
 
 def print_owasp_missing(header_list):
     """
-    Print missing recommended headers; related to 'OWASP Secure Headers
-    Project' best practices analysis
+    Print missing recommended headers; related to `OWASP Secure Headers
+    Project` best practices analysis
     """
     print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
     missing_owasp = [header.title() for header in header_list if header not in
@@ -3323,8 +3322,8 @@ def print_owasp_missing(header_list):
 
 def print_owasp_wrong(header_dict):
     """
-    Print enabled headers with non-compliant values; related to 'OWASP Secure
-    Headers Project' best practices analysis
+    Print enabled headers with non-compliant values; related to `OWASP Secure
+    Headers Project` best practices analysis
     """
     wrong_owasp = [
         (header.title(), value)
@@ -3344,8 +3343,8 @@ def print_owasp_wrong(header_dict):
 
 def print_owasp_rec(wrong_owasp, header_dict):
     """
-    Print recommended values for enabled headers; related to 'OWASP Secure
-    Headers Project' best practices analysis
+    Print recommended values for enabled headers; related to `OWASP Secure
+    Headers Project` best practices analysis
     """
     print(f"\n\n{STYLE[0]}{get_detail('[comp_rec_val]')}{STYLE[5]}")
     for header, _ in sorted(wrong_owasp):
@@ -3357,7 +3356,7 @@ def print_owasp_rec(wrong_owasp, header_dict):
 def analyze_input_file(input_file):
     """
     Perform a detailed analysis of the headers and values in the file provided
-    , related to '-if' option
+    , related to `-if` option
     """
     if not path.exists(input_file):
         print_error_detail('[args_inputnotfound]')
@@ -3375,7 +3374,7 @@ def analyze_input_file(input_file):
 
 def parse_input_file(input_headers, input_source, status_code):
     """
-    Parse the headers and values in the file provided, related to '-if' option
+    Parse the headers and values in the file provided, related to `-if` option
     """
     first_line = input_source.readline().strip()
     parts = first_line.split()
@@ -3395,17 +3394,17 @@ def normalize_output_file(filename):
     """
     Normalizes the filename provided: if it contains an extension, it is
     removed to avoid generating files with double extensions, adding the
-    extension associated with the value of the '-o' parameter to that filename.
+    extension associated with the value of the `-o` option to that filename.
 
-    Example: '-of humble_test.html -o html' will be treated internally as
-    '-of humble_test -o html', preventing the file 'humble_test.html.html'
+    Example: `-of humble_test.html -o html` options will be treated internally
+    as `-of humble_test -o html`, preventing the file `humble_test.html.html`
     from being generated.
     """
     return filename.rsplit(".", 1)[0] if "." in filename else filename
 
 
 def get_tmp_file(args, export_date):
-    """Create the temporary export file, related to '-o' option"""
+    """Create the temporary export file, related to `-o` option"""
     file_ext = '.txt' if args.output == 'txt' else 't.txt'
     if args.output_file:
         tmp_file = f"{normalize_output_file(args.output_file)}{file_ext}"
@@ -3424,7 +3423,7 @@ def build_tmp_file(export_date, file_ext, lang, humble_str, url):
     Define the name of the temporary export file
 
     ??? tip
-        tldextract is lazy-loaded to avoid unnecessary overhead when the
+        `tldextract` is lazy-loaded to avoid unnecessary overhead when the
         analysis is not exported.
     """
     import tldextract
@@ -3469,7 +3468,7 @@ def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
         - Hostname Verification
         - Certificate Requirement
 
-        If '-df' parameter is provided ('args.redirects') the exact URL will
+        If `-df` option is provided (`args.redirects`) the exact URL will
         be analyzed; otherwise the last redirected URL will be analyzed.
     """
     try:
@@ -3533,7 +3532,7 @@ def process_http_error(r, exception_d):
 
 def parse_request_headers(request_headers):
     """Add the provided headers to the request, terminating execution if any of
-    them are not well-formed; related to '-H' option"""
+    them are not well-formed; related to `-H` option"""
     headers, malformed_headers = process_request_headers(request_headers)
     if malformed_headers:
         delete_lines()

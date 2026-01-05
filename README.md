@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--01--04-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--01--05-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -139,12 +139,12 @@
 > [!TIP]
 > <a target="_blank" href="https://testssl.sh/doc/testssl.1.html">testssl.sh</a> options used:
 >
-> - -f: checks robust forward secrecy key exchange
-> - -g: checks several server implementation bugs
-> - -p: checks the availability of SSL/TLS protocols
-> - -U: tests all vulnerabilities, like Heartbleed, ROBOT and sweet32
-> - -s: tests lists of cipher suites/categories by strength
-> - -hints: (available in the future) give hints how to fix a finding
+> - `-f`: checks robust forward secrecy key exchange
+> - `-g`: checks several server implementation bugs
+> - `-p`: checks the availability of SSL/TLS protocols
+> - `-U`: tests all vulnerabilities, like Heartbleed, ROBOT and sweet32
+> - `-s`: tests lists of cipher suites/categories by strength
+> - `-hints`: (available in the future) give hints how to fix a finding
 
 <p></p>
 <p align="center">
