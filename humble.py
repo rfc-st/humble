@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-01-05', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-09', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -198,9 +198,9 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
     """
     def init_poolmanager(self, *args, **kwargs):
         context = ssl._create_unverified_context()
-        context.check_hostname = False
-        context.verify_mode = ssl.CERT_NONE
-        context.cert_reqs = ssl.CERT_NONE
+        context.check_hostname = False  # noqa
+        context.verify_mode = ssl.CERT_NONE  # noqa
+        context.cert_reqs = ssl.CERT_NONE  # noqa
         context.set_ciphers(FORCED_CIPHERS)
         kwargs['ssl_context'] = context
         return super(SSLContextAdapter, self).init_poolmanager(*args, **kwargs)
@@ -2637,7 +2637,7 @@ def export_pdf_file(tmp_filename):
             self.cell(0, 5, BANNER_VERSION, align='C')
             self.ln(9 if self.page_no() == 1 else 13)
 
-        def footer(self):
+        def footer(self):  # noqa
             self.set_y(-15)
             self.set_font('Helvetica', 'I', 8)
             self.set_text_color(0, 0, 0)
@@ -2693,7 +2693,6 @@ def set_pdf_metadata(pdf):
     title = f"{get_detail('[pdf_meta_title]', replace=True)} {URL}"
     git_urlc = BANNER_VERSION
     pdf.set_author(git_urlc)
-    pdf.set_creation_date = current_time
     pdf.set_creator(git_urlc)
     pdf.set_keywords(get_detail(METADATA_S[0], replace=True))
     pdf.set_lang(get_detail('[pdf_meta_language]'))

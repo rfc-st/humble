@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--01--05-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--01--09-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -69,29 +69,29 @@
 :heavy_check_mark: 1239 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 157 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: 28 [checks](https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L46-L73) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
-:heavy_check_mark: Can check for compliance with the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">Secure Headers Project<a> Best Practices.<br />
+:heavy_check_mark: Can check for compliance with the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">Secure Headers Project</a> Best Practices.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
-:heavy_check_mark: Can analyze _raw response files_: text files with HTTP response headers and values. Ex: curl option '<a href="https://curl.se/docs/manpage.html#-D" target="_blank">--dump-header<a>'.<br />
-:heavy_check_mark: Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF 1.4, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.<br />
-:heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** <a href="https://testssl.sh/" target="_blank">testssl.sh<a>.<br />
+:heavy_check_mark: Can analyze _raw response files_: text files with HTTP response headers and values. Ex: curl option '<a href="https://curl.se/docs/manpage.html#-D" target="_blank">--dump-header</a>'.<br />
+:heavy_check_mark: Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.<br />
+:heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** <a href="https://testssl.sh/" target="_blank">testssl.sh</a>.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
 :heavy_check_mark: Can use proxies for the analysis.<br />
 :heavy_check_mark: Allows specifying custom HTTP request headers.<br />
-:heavy_check_mark: Can output only analysis summary, totals and grade as JSON; suitable for <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" target="_blank">CI/CD<a>.<br />
-:heavy_check_mark: Print browser support for enabled HTTP security headers, with data from <a href="https://caniuse.com/" target="_blank">Can I use<a>.<br />
-:heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental<a> headers in each analysis.<br />
+:heavy_check_mark: Can output only analysis summary, totals and grade as JSON; suitable for <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" target="_blank">CI/CD</a>.<br />
+:heavy_check_mark: Print browser support for enabled HTTP security headers, with data from <a href="https://caniuse.com/" target="_blank">Can I use</a>.<br />
+:heavy_check_mark: Highlights <a href="https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Experimental_deprecated_obsolete" target="_blank">experimental</a> headers in each analysis.<br />
 :heavy_check_mark: Provides hundreds of relevant links to security resources, standards and technical blogs based on each analysis.<br />
 :heavy_check_mark: Supports displaying analysis, messages, and most errors in English or Spanish.<br />
 :heavy_check_mark: Saves each analysis, highlighting improvements or deficiencies compared to the previous one.<br />
 :heavy_check_mark: Can display analysis statistics for a specific URL or across all of them.<br />
 :heavy_check_mark: Can display fingerprint statistics for a specific term or the Top 20.<br />
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
-:heavy_check_mark: Provides dozens of [unit tests](#unit-tests) to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest<a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
-:heavy_check_mark: Classes and functions documented at <a href="https://humble.readthedocs.io/en/latest/" target="_blank">Read the Docs<a>.<br />
-:heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit<a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8<a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument<a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE<a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery<a>.<br />
+:heavy_check_mark: Provides dozens of [unit tests](#unit-tests) to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
+:heavy_check_mark: Classes and functions documented at <a href="https://humble.readthedocs.io/en/latest/" target="_blank">Read the Docs</a>.<br />
+:heavy_check_mark: Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit</a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8</a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument</a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE</a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> and <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a>.<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
 :heavy_check_mark: Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.<br />
-:heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost<a> all the <a href="https://github.com/rfc-st/humble/blob/master/additional/owasp_best_practices.txt" target="_blank">code<a> available under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT<a>.<br />
+:heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost</a> all the <a href="https://github.com/rfc-st/humble/blob/master/additional/owasp_best_practices.txt" target="_blank">code</a> available under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT</a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
 :heavy_check_mark: Minimal <a href="https://github.com/rfc-st/humble/blob/master/requirements.txt" target="_blank">dependencies</a> required.<br />
 :heavy_check_mark: Developed entirely in my spare time, <b>no strings attached</b>: feel free to try it out and integrate it into your projects!.<br />
@@ -157,13 +157,13 @@
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_request_header.PNG" alt="(Linux) - Custom HTTP request header">
 </p>
 <br />
-.: (Linux) - Compliance with OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">'Secure Headers Project'<a> best practices.
+.: (Linux) - Compliance with OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">'Secure Headers Project'</a> best practices.
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Linux) - Compliance with OWASP 'Secure Headers Project' best practices">
 </p>
 <br />
-.: (Windows) - JSON summary of the analysis, suitable for <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" target="_blank">CI/CD<a>.<br />
+.: (Windows) - JSON summary of the analysis, suitable for <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" target="_blank">CI/CD</a>.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_cicd.PNG" alt="(Windows) - JSON summary for CI/CD">
@@ -552,8 +552,7 @@ Any HTTP response header.
 Thanks for downloading _'humble'_, for trying it and for your time!.
 
 ## Acknowledgements
-* <a href="https://github.com/PyCQA/bandit">Bandit</a>, <a href="https://github.com/tartley/colorama">colorama</a>, <a href="https://github.com/microsoft/vscode-flake8">Flake8</a>, <a href="https://github.com/py-pdf/fpdf2">fpdf2</a>, <a href="https://github.com/joerick/pyinstrument">pyinstrument</a>, <a href="https://github.com/pytest-dev/pytest">pytest</a>, <a href="https://github.com/pytest-dev/pytest-cov">pytest-cov</a>, <a href="https://github.com/psf/requests">requests</a>, <a href="https://github.com/rubik/radon">Radon</a>, <a href="https://github.com/psf/requests">requests</a>, <a href="https://github.com/SonarSource/sonarlint-vscode">SonarQube for IDE</a>, <a href="https://github.com/sourcery-ai/sourcery-vscode" target="_blank">Sourcery<a>, <a href="https://github.com/drwetter/testssl.sh">testssl.sh</a>, <a href="https://github.com/john-kurkowski/tldextract">tldextract</a> and <a href="https://github.com/jmcnamara/XlsxWriter">xlsxwriter
-</a> authors/teams: you rock :metal:!.
+* <a href="https://github.com/PyCQA/bandit">Bandit</a>, <a href="https://github.com/tartley/colorama">colorama</a>, <a href="https://github.com/microsoft/vscode-flake8">Flake8</a>, <a href="https://github.com/py-pdf/fpdf2">fpdf2</a>, <a href="https://github.com/joerick/pyinstrument">pyinstrument</a>, <a href="https://github.com/pytest-dev/pytest">pytest</a>, <a href="https://github.com/pytest-dev/pytest-cov">pytest-cov</a>, <a href="https://github.com/psf/requests">requests</a>, <a href="https://github.com/rubik/radon">Radon</a>, <a href="https://github.com/psf/requests">requests</a>, <a href="https://github.com/SonarSource/sonarlint-vscode">SonarQube for IDE</a>, <a href="https://github.com/sourcery-ai/sourcery-vscode" target="_blank">Sourcery</a>, <a href="https://github.com/drwetter/testssl.sh">testssl.sh</a>, <a href="https://github.com/john-kurkowski/tldextract">tldextract</a>, <a href="https://github.com/jendrikseipp/vulture">vulture</a> and <a href="https://github.com/jmcnamara/XlsxWriter">xlsxwriter</a> authors/teams: you rock :metal:!.
 * <a href="https://github.com/1nabillion">1nabillion</a> for <a href="https://github.com/rfc-st/humble/issues/31">this</a>.
 * <a href="https://stackoverflow.com/users/8665970/aniket-navlur">Aniket Navlur</a> for <a href="https://stackoverflow.com/questions/19596750/is-there-a-way-to-clear-your-printed-text-in-python/52590238#52590238">this</a> gem.
 * <a href="https://github.com/Azathothas">Azathothas</a> for reporting <a href="https://github.com/rfc-st/humble/issues/4">this</a> bug.

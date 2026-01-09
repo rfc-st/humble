@@ -60,9 +60,9 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 Whatever you decide about **humble.py**, thank you for your time!.
 
 ## Notes
-About <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> checks:
+About <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> and <a href="https://github.com/jendrikseipp/vulture">vulture</a> checks:
 
-To maintain compatibility with the minimum required Python version for this tool (particularly with respect to f-strings), and because I consider some of Sourcery’s checks offer little benefit, certain ones are explicitly ignored through inline comments.
+Inline comments are used to suppress specific Sourcery and Vulture checks; this is necessary to preserve compatibility with older f-string syntax and to maintain focus by ignoring non-critical static analysis findings.
 
 ## Last but not least
 For those who maintain some essential tools for developing and testing **humble.py**, and to everyone who has contributed ideas, suggestions, or reported bugs: <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#acknowledgements" target="_blank">thank you</a>!.
@@ -73,6 +73,6 @@ And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>January 05, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>January 09, 2026</em></span>
 </span>
 </aside>
