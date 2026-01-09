@@ -1,0 +1,21 @@
+name: Vulture Dead Code Check
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  vulture:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+    - uses: actions/checkout@v6
+    - name: Run Vulture
+      uses: gtkacz/vulture-action@1.0.0
+      with:
+        src: 'humble.py'
+        args: '. --min-confidence 60 --exclude "tests,docs"'
