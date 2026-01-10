@@ -32,22 +32,22 @@ import ssl
 import sys
 import xml.etree.ElementTree as ET
 from time import time
-from json import dump, dumps
-from shutil import copyfile
 from platform import system
 from base64 import b64decode
+from json import dump, dumps
 from itertools import islice
 from datetime import datetime
 from contextlib import suppress
 from ipaddress import ip_address
 from urllib.parse import urlparse
-from subprocess import PIPE, Popen
 from threading import Event, Thread
+from shutil import copyfile, which
+from os import linesep, path, remove
 from os.path import dirname, abspath
 from socket import create_connection
 from csv import reader, writer, QUOTE_ALL
+from subprocess import PIPE, Popen, STDOUT
 from collections import Counter, defaultdict
-from os import access, linesep, path, remove, X_OK
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 # Third-Party imports
@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-01-09', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-10', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -414,15 +414,12 @@ def testssl_command(testssl_temp_path, uri):
          if path.isfile(path.join(testssl_temp_path, filename))),
         None
     )
-    if not testssl_path:
-        print_error_detail('[notestssl_file]')
-    if not access(testssl_path, X_OK):
-        print_error_detail('[notestssl_exec]')
+    if not testssl_path or not which(testssl_path):
+        print_error_detail('[notestssl_fileexec]')
     print("")
     print(f"{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
     choice = input(
-        f"{get_detail('[testssl_choice]', replace=True)} "
-    ).strip().lower()
+        f"{get_detail('[testssl_choice]', replace=True)} ")[:1].strip().lower()
     if choice != "y":
         sys.exit(0)
     delete_lines()
@@ -434,15 +431,13 @@ def testssl_command(testssl_temp_path, uri):
 def testssl_analysis(testssl_cmd):
     """Run TLS/SSL analysis with testssl.sh"""
     try:
-        process = Popen(testssl_cmd, stdout=PIPE, stderr=PIPE, text=True)
+        process = Popen(testssl_cmd, stdout=PIPE, stderr=STDOUT, text=True)
         for ln in iter(process.stdout.readline, ''):
             print(ln, end='')
             if 'Done' in ln:
                 process.terminate()
-                process.wait()
                 break
-        if stderr := process.stderr.read():
-            print(stderr, end='')
+        process.wait()
     except Exception:
         print_error_detail('[testssl_error]')
 

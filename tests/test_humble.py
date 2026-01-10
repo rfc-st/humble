@@ -408,16 +408,6 @@ def delete_pytest_caches(dir_path):
     return msgs
 
 
-def delete_pytestcov_caches(dir_path):
-    """
-    Remove all pytest cache folders following the completion of code coverage
-    analysis
-    """
-    if path.isdir(dir_path):
-        with suppress(Exception):
-            shutil.rmtree(dir_path)
-
-
 def set_temp_content(current_time):
     """
     Define the files and folders to be purged upon completion of the test suite
@@ -479,7 +469,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2026-01-09', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-10', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

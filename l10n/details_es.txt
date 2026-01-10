@@ -1872,14 +1872,11 @@ Error: Los parámetros '-b', '-c', '-cicd', '-df', -'o', '-r' y '-s' requieren e
 [args_customfile]
 Error: El parámetro -of' requiere los parámetros '-u' y '-o'.
 
-[notestssl_file]
-Error: 'testssl' no existe en la ruta indicada.
+[notestssl_fileexec]
+Error: 'testssl' no se encuentra en el PATH o no es un fichero ejecutable.
 
 [notestssl_path]
 Error: la ruta indicada de 'testssl' es incorrecta.
-
-[notestssl_exec]
-Error: 'testssl' no es un fichero ejecutable.
 
 [testssl_warning]
 AVISO: Vas a ejecutar el fichero

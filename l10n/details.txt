@@ -1871,14 +1871,11 @@ Error: The parameters '-b', '-c', '-cicd', '-df', '-'o', '-r' and '-s' require t
 [args_customfile]
 Error: The parameter '-of' requires the parameters '-u' and '-o'.
 
-[notestssl_file]
-Error: 'testssl' is not found in that PATH.
+[notestssl_fileexec]
+Error: 'testssl' was not found in the path or is not an executable file.
 
 [notestssl_path]
 Error: The PATH for 'testssl' is incorrect.
-
-[notestssl_exec]
-Error: 'testssl' is not an executable file.
 
 [testssl_warning]
 WARNING: You are about to execute
