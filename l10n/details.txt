@@ -2082,6 +2082,9 @@ Generator
 [test_corner_cases_brief]
  verify corner cases of headers are analyzed in a brief analysis.
 
+[test_csp_base64_nonce]
+ verify invalid base64 nonces are checked in the ‘Content-Security-Policy’ header.
+
 [test_csp_hex_nonce]
  verify invalid hexadecimal nonces are checked in the ‘Content-Security-Policy’ header.
 

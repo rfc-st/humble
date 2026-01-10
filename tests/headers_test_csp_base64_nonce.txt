@@ -1,0 +1,3 @@
+HTTP/2 200
+date: Sat, 13 Dec 2025 21:43:00 GMT
+content-security-policy: script-src 'nonce-SGVsbG8gd29ybGQ==='

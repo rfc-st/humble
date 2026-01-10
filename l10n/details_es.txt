@@ -2062,6 +2062,9 @@ Generador
 [test_corner_cases_brief]
  verifica que se comprueben casos específicos en varias cabeceras en un análisis breve.
 
+[test_csp_base64_nonce]
+ verifica que se comprueben nonces en base64 inválidos, en la cabecera 'Content-Security-Policy'.
+
 [test_csp_hex_nonce]
  verifica que se comprueben nonces en hexadecimal inválidos, en la cabecera 'Content-Security-Policy'.
 
