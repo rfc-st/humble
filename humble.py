@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-01-10', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-16', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -3725,7 +3725,7 @@ if '-c' in sys.argv:
     args.user_agent = '1'
 
 if '-if' in sys.argv:
-    if any([args.redirects, args.ret, args.user_agent]):
+    if any([args.redirects, args.ret]):
         print_error_detail('[args_inputfile]')
     elif not args.URL:
         print_error_detail('[args_urlinputfile]')

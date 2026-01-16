@@ -1845,7 +1845,7 @@ Error: That User-Agent ID does not exist; check the available ones with '-ua 0'
 Error: The '-e' parameter requires the path of 'testssl' and the parameter '-u'.
 
 [args_inputfile]
-Error: The '-if' parameter does not requires the parameters '-df', '-r' or -'ua'.
+Error: The '-if' parameter does not requires the parameters '-df' or '-r'.
 
 [args_urlinputfile]
 Error: The '-if' parameter requires the parameter '-u'.
@@ -2130,6 +2130,9 @@ Generator
 [test_export_pdf_empty_headers]
  verify an analysis with empty headers is exported to PDF.
 
+[test_export_pdf_no_security_headers]
+ verify an analysis without security headers is exported to PDF.
+
 [test_export_xlsx]
  verify a brief analysis is exported to XLSX.
 
@@ -2183,6 +2186,9 @@ Generator
 
 [test_owasp_compliance]
  verify the results of the OWASP 'Secure Headers Project' compliance check are displayed.
+
+[test_owasp_perfect_compliance]
+ verify the results of a perfect OWASP 'Secure Headers Project' compliance check are displayed.
 
 [test_proxy_unreachable]
  verify an error is displayed when the proxy is unreachable.

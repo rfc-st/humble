@@ -65,6 +65,7 @@ HUMBLE_TEST_FILES = {
     'NO_HEADERS': 'headers_test_none.txt',
     'NO_SEC_HEADERS': 'headers_test_nonesecurity.txt',
     'NONEXISTENT': 'headers_test_nonexistent.txt',
+    'PERFECT_OWASP': 'headers_test_perfect_owasp.txt',
     'UNICODE': 'headers_test_unicode.txt',
 }
 PATHS = {k: path.abspath(path.join(HUMBLE_TESTS_DIR, v)) for k, v in
@@ -162,6 +163,9 @@ TEST_CFGS = {
     'test_export_pdf_empty_headers': (['-u', TEST_URLS[9], '-if',
                                        PATHS['GRADE_D'], '-o', 'pdf'],
                                       'PDF saved'),
+    'test_export_pdf_no_security_headers': (['-u', TEST_URLS[9], '-if',
+                                             PATHS['NO_SEC_HEADERS'], '-o',
+                                             'pdf'], 'PDF saved'),
     'test_export_xlsx': (['-u', TEST_URLS[9], '-o', 'xlsx'], 'XLSX saved'),
     'test_export_xml': (['-u', TEST_URLS[9], '-o', 'xml'], 'XML saved'),
     'test_fingerprint_groups': (['-f'], 'Top 20 groups'),
@@ -189,6 +193,8 @@ TEST_CFGS = {
                                   PATHS['NO_SEC_HEADERS']], 'are present'),
     'test_owasp_compliance': (['-u', TEST_URLS[9], '-c'],
                               'non-recommended values'),
+    'test_owasp_perfect_compliance': (['-u', TEST_URLS[9], '-c', '-if',
+                                       PATHS['PERFECT_OWASP']], 'Nothing'),
     'test_proxy_unreachable': (['-u', TEST_URLS[9], '-p', TEST_URLS[7]],
                                'reachable'),
     'test_redirects': (['-u', TEST_URLS[9], '-df'], 'Analysis Grade:'),
@@ -211,7 +217,7 @@ TEST_CFGS = {
                              'expressly excluded'),
     'test_unicode_error': (['-u', TEST_URLS[9], '-if', PATHS['UNICODE']],
                            'unicode'),
-    'test_unreliable_analysis': (['-u', TEST_URLS[10]], 'reliable'),
+    'test_unreliable_analysis': (['-u', TEST_URLS[10]], 'Not'),
     'test_unsupported_header': (['-u', TEST_URLS[9], '-s', 'testhumbleheader'],
                                 'testhumbleheader'),
     'test_updates': (['-v'], 'Keeping your security tools'),
@@ -472,7 +478,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2026-01-10', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-16', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

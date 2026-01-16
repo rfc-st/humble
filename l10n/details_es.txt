@@ -1846,7 +1846,7 @@ Error: No existe ese ID de User-Agent; consulta los disponibles con '-ua 0'
 Error: El parámetro '-e' requiere la ruta de 'testssl' y el parámetro '-u'.
 
 [args_inputfile]
-Error: El parámetro '-if' no requiere los parámetros '-df', '-r' o -'ua'.
+Error: El parámetro '-if' no requiere los parámetros '-df' o '-r'.
 
 [args_urlinputfile]
 Error: El parámetro '-if' requiere el parámetro '-u'.
@@ -2110,6 +2110,9 @@ Generador
 [test_export_pdf_empty_headers]
  verifica que se exporte a PDF un análisis con cabeceras vacías.
 
+[test_export_pdf_no_security_headers]
+ verifica que se exporte a PDF un análisis sin cabeceras de seguridad.
+
 [test_export_xlsx]
  verifica que se exporte a XLSX un análisis detallado.
 
@@ -2163,6 +2166,9 @@ Generador
 
 [test_owasp_compliance]
  verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
+
+[test_owasp_perfect_compliance]
+ verifica que se muestren los resultados del cumplimiento perfecto de las mejores prácticas de OWASP 'Secure Headers Project'.
 
 [test_proxy_unreachable]
  verifica que se muestre correctamente un mensaje de error cuando el proxy no sea accesible.
