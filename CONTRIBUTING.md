@@ -6,8 +6,16 @@ Contributing to 'humble' Open Source Project
 Enhancement & Issues
 --------------------
 
-Feel free to submit [bugs](https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=bug_report.md&title=), [feature requests](https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=feature_request.md&title=), [security vulnerabilities](https://github.com/rfc-st/humble/security/policy) and your suggestions to rafael.fcucalon@gmail.com.
+Feel free to submit [bugs](https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=bug_report.md&title=), [feature requests](https://github.com/rfc-st/humble/issues/new?assignees=&labels=&template=feature_request.md&title=) and [security vulnerabilities](https://github.com/rfc-st/humble/security/policy). If you prefer to do so privately, you can send me an email at rafael.fcucalon@gmail.com.
 
+Translations
+------------
+
+'humble' displays errors and messages exclusively in Spanish and English.; supporting another language would require me to review each of the translations alongside the code that uses them.
+
+And in keeping with the spirit of this tool :), and so as not to waste your time: I don't have the knowledge or the time for that task.
+
+Therefore, I will not accept any contributions aimed at translating ‘humble’ errors or messages into other languages; instead, I encourage you to contribute in other areas!.
 
 Contributing
 ------------
