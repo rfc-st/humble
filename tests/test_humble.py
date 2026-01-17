@@ -94,7 +94,9 @@ TEST_URLS = ('https://github.com/rfc-st/humble',
              'http://127.0.0.1:65535', 'https://tass.ru/',
              'https://google.com', 'https://httpbin.org/delay/10',
              'https://httpbin.org/status/502', 'http://10.255.255.1',
-             'ftp://google.com')
+             'ftp://google.com', 'https://\u0442\u0435\u0441\u0442.ru',
+             'https://httpbin.org/status/529',
+             'https://httpbin.org/status/520')
 
 REQUIRED_PYTHON_VERSION = (3, 11)
 
@@ -211,8 +213,11 @@ TEST_CFGS = {
     'test_response_headers': (['-u', TEST_URLS[9], '-r'],
                               'HTTP Response Headers'),
     'test_russian_block': (['-u', TEST_URLS[8]], 'withdraws'),
+    'test_russian_block_unicode': (['-u', TEST_URLS[14]], 'withdraws'),
     'test_security_guidelines': (['-g'], 'headers-in-wordpress'),
     'test_server_error_response': (['-u', TEST_URLS[11]], 'Server'),
+    'test_server_error_unusual': (['-u', TEST_URLS[15]], 'Server'),
+    'test_server_error_cdn': (['-u', TEST_URLS[16]], 'Server'),
     'test_skipped_headers': (['-u', TEST_URLS[9], '-s', 'ETAG', 'NEL'],
                              'expressly excluded'),
     'test_unicode_error': (['-u', TEST_URLS[9], '-if', PATHS['UNICODE']],
@@ -240,7 +245,10 @@ TEST_CFGS = {
 
 
 class _Args:
-    URL = TEST_URLS[2]
+    """
+    Provides a default language setting to ensure localized messages load
+    during testing
+    """
     lang = None
 
 
@@ -478,7 +486,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2026-01-16', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-17', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
@@ -494,7 +502,7 @@ parser.add_argument("-l", dest='lang', choices=['en', 'es'], help="Defines the\
 args = _Args()
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session", autouse=True) # noqa
 def delete_temp_coverage():
     global l10n_main
     global args
@@ -512,4 +520,4 @@ if __name__ == "__main__":
                         "no:cacheprovider", "-o", "dont_write_bytecode=True"])
     print_results()
     delete_temp_content()
-    sys.exit(0)
+    sys.exit(code)

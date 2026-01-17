@@ -165,9 +165,6 @@
 [server_530]
  Error del servidor asociado generalmente con un CDN (código HTTP 530, 'Review accompanying 1XXX error')
 
-[server_5xx]
- Error del servidor
-
 [ixuacom_h]
  X-UA-Compatible (Cabecera obsoleta)
 
@@ -2194,11 +2191,20 @@ Generador
 [test_russian_block]
  verifica que no se analicen URL rusas.
 
+[test_russian_block_unicode]
+ verifica que no se analicen URL rusas cuando sean Unicode sin procesar.
+
 [test_security_guidelines]
  verifica que la guía con directrices de seguridad se muestre correctamente.
 
 [test_server_error_response]
  verifica que se muestre mensaje de error ante códigos de estado HTTP 5xx.
+
+[test_server_error_unusual]
+ verifica que se muestre mensaje de error ante códigos de estado HTTP 5xx inusuales.
+
+[test_server_error_cdn]
+ verifica que se muestre mensaje de error ante códigos de estado HTTP 5xx asociados con un CDN.
 
 [test_skipped_headers]
  verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.

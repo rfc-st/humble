@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-01-16', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-17', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -3432,13 +3432,12 @@ def build_tmp_file(export_date, file_ext, lang, humble_str, url):
 
 
 def process_server_error(http_status_code, l10n_id):
-    """Print message for specific server error (5xx) during analysis"""
+    """Print error message for specific server error (5xx) during analysis"""
     delete_lines()
-    print()
     if http_status_code in CDN_HTTP_CODES:
-        if detail := print_detail(l10n_id, 0):
-            print(detail)
-        elif 500 <= http_status_code <= 511:
+        print()
+        print_detail(l10n_id, 0)
+        if 500 <= http_status_code <= 511:
             print(URL_LIST[2])
         else:
             print(URL_LIST[1])
@@ -3514,10 +3513,8 @@ def process_http_error(r, exception_d):
     except requests.exceptions.HTTPError as err_http:
         status = err_http.response.status_code
         l10n_id = f'[server_{status}]'
-        if status in CDN_HTTP_CODES:
+        if 500 <= status <= 599:
             process_server_error(status, l10n_id)
-        elif 500 <= status <= 599:
-            print_error_detail('[server_5xx]')
     except Exception as e:
         ex = exception_d.get(type(e))
         if ex and (not callable(ex) or ex(e)):

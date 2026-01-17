@@ -164,9 +164,6 @@
 [server_530]
  Server error usually associated with a CDN (HTTP code 530, 'Review accompanying 1XXX error')
 
-[server_5xx]
- Server error
-
 [ixuacom_h]
  X-UA-Compatible (Deprecated Header)
 
@@ -2214,11 +2211,20 @@ Generator
 [test_russian_block]
  verify Russian URLs are not analyzed.
 
+[test_russian_block_unicode]
+ verify Russian URLS are not analyzed when provided as raw Unicode.
+
 [test_security_guidelines]
  verify the security guidelines guide is displayed in Spanish.
 
 [test_server_error_response]
  verify an error message is displayed for HTTP 5xx status codes.
+
+[test_server_error_unusual]
+ verify an error message is displayed for unusual HTTP 5xx status codes.
+
+[test_server_error_cdn]
+ verify an error message is displayed for CDN-related HTTP 5xx status codes.
 
 [test_skipped_headers]
  verify the specified headers are excluded from the detailed analysis.
