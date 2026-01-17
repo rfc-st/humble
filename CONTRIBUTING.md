@@ -1,4 +1,4 @@
-Contributing to 'humble' Open Source Project
+Contributing to <i>humble</i> Open Source Project
 ============================================
 
 <i>humble</i> welcomes contributions. When contributing please follow the [Code of Conduct](https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md), <b>especially</b> the last section (<i>Update 2022/03/26</i>) on the war in Ukraine and the limitations imposed on this tool: is a <b>personal</b> decision that I hope you understand. Otherwise, and if you don't want to contribute to this project because you don't agree with my decision, I will <b>deeply respect</b> it.
@@ -11,11 +11,11 @@ Feel free to submit [bugs](https://github.com/rfc-st/humble/issues/new?assignees
 Translations
 ------------
 
-'humble' displays errors and messages exclusively in Spanish and English.; supporting another language would require me to review each of the translations alongside the code that uses them.
+<i>humble</i> displays errors and messages <b>exclusively</b> in Spanish and English.; supporting another language would require me to review each of the translations alongside the code that uses them.
 
-And in keeping with the spirit of this tool :), and so as not to waste your time: I don't have the knowledge or the time for that task.
+And in keeping with the spirit of this tool :), and so as not to <b>waste</b> your time: I don't have the knowledge or the time for that task.
 
-Therefore, I will not accept any contributions aimed at translating ‘humble’ errors or messages into other languages; instead, I encourage you to contribute in other areas!.
+Therefore, I will <b>not</b> accept any contributions aimed at translating errors or messages into other languages; instead, I <b>encourage</b> you to contribute in other areas!.
 
 Contributing
 ------------
@@ -49,4 +49,4 @@ Methodology
 Copyright and Licensing
 -----------------------
 
-'humble' is licensed under the [MIT license](https://github.com/rfc-st/humble/blob/master/LICENSE).
+<i>humble</i> is licensed under the [MIT license](https://github.com/rfc-st/humble/blob/master/LICENSE).

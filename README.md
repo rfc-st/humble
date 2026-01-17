@@ -549,7 +549,7 @@ Any HTTP response header.
 * Or use that email to tell me about integrations of this tool in others!
 * And to recommend me a good Blues! :sunglasses:
 
-Thanks for downloading _'humble'_, for trying it and for your time!.
+Thanks for downloading _humble_, for trying it and for your time!.
 
 ## Acknowledgements
 * <a href="https://github.com/PyCQA/bandit">Bandit</a>, <a href="https://github.com/nocomplexity/codeaudit" target="_blank">Codeaudit</a>, <a href="https://github.com/tartley/colorama">colorama</a>, <a href="https://github.com/microsoft/vscode-flake8">Flake8</a>, <a href="https://github.com/py-pdf/fpdf2">fpdf2</a>, <a href="https://github.com/joerick/pyinstrument">pyinstrument</a>, <a href="https://github.com/pytest-dev/pytest">pytest</a>, <a href="https://github.com/pytest-dev/pytest-cov">pytest-cov</a>, <a href="https://github.com/psf/requests">requests</a>, <a href="https://github.com/rubik/radon">Radon</a>, <a href="https://github.com/psf/requests">requests</a>, <a href="https://github.com/SonarSource/sonarlint-vscode">SonarQube for IDE</a>, <a href="https://github.com/sourcery-ai/sourcery-vscode" target="_blank">Sourcery</a>, <a href="https://github.com/drwetter/testssl.sh">testssl.sh</a>, <a href="https://github.com/john-kurkowski/tldextract">tldextract</a>, <a href="https://github.com/jendrikseipp/vulture">vulture</a> and <a href="https://github.com/jmcnamara/XlsxWriter">xlsxwriter</a> authors/teams: you rock :metal:!.
