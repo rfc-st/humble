@@ -450,7 +450,7 @@ $ cd tests
 ```
 $ cd <humble dir>
 $ cd tests
-(Linux)   $ pytest test_humble.py --cov-config=.coveragerc --cov=.. --cov-report=html --tb=no -rA -q -v -W ignore -p no:cacheprovider -o dont_write_bytecode=True
+$ pytest test_humble.py --cov-config=.coveragerc --cov=.. --cov-report=html --tb=no -rA -q -v -W ignore -p no:cacheprovider -o dont_write_bytecode=True
 $ cd humble_coverage_report
 Open the index.html file in a browser.
 ```
