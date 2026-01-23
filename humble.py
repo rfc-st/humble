@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-01-17', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-23', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1541,7 +1541,7 @@ def print_detail_s(id_mode, max_ln=False):
 
 
 def get_detail(id_mode, replace=False):
-    """"Print a message, optionally removing newlines"""
+    """Print a message, optionally removing newlines"""
     for i, line in enumerate(l10n_main):
         if line.startswith(id_mode):
             return (l10n_main[i+1].replace('\n', '')) if replace else \

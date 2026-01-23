@@ -47,6 +47,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.
 - Provides dozens of <a href="https://github.com/rfc-st/humble/#unit-tests" target="_blank">unit tests</a> to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/"  target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/" target="_blank">pytest-cov</a>.
 - Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit</a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8</a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument</a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE</a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a>.
+- Code reviewed via <a href="https://pypi.org/project/bandit/" target="_blank">Bandit</a>, <a href="https://github.com/nocomplexity/codeaudit" target="_blank">Codeaudit</a>, <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.flake8" target="_blank">Flake8</a>, <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument</a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE</a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> and <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a>.<br />
 - Tested, one by one, on thousands of URLs.
 - Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.
 - <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost</a> all the <a href="https://github.com/rfc-st/humble/blob/master/additional/owasp_best_practices.txt" target="_blank">code</a> available under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT</a>.
@@ -73,6 +74,6 @@ And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>January 17, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>January 23, 2026</em></span>
 </span>
 </aside>

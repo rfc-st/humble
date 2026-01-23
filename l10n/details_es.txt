@@ -2012,7 +2012,7 @@ Generador
  verifica que la versión de Python sea igual o superior a 3.11.
 
 [test_missing_arguments]
- verifica que se provean los argumentos requeridos para funciones específicas.
+ verifica que se indiquen los argumentos requeridos para funciones específicas.
 
 [test_proxy_wrong]
  verifica que se comprueben los parámetros requeridos asociados con un proxy.
@@ -2083,6 +2083,9 @@ Generador
 [test_export_html_empty_headers]
  verifica que se exporte a HTML un análisis con cabeceras vacías.
 
+[test_export_html_no_security_headers]
+ verifica que se exporte a HTML un análisis sin cabeceras de respuesta de seguridad.
+
 [test_export_json]
  verifica que se exporte a JSON un análisis detallado.
 
@@ -2096,7 +2099,7 @@ Generador
  verifica que se exporte a JSON un análisis detallado en castellano.
 
 [test_export_no_security_headers]
- verifica que se exporte un análisis detallado sin cabeceras de seguridad habilitadas.
+ verifica que se exporte un análisis detallado sin cabeceras de respuesta de seguridad habilitadas.
 
 [test_export_pdf]
  verifica que se exporte a PDF un análisis detallado.
@@ -2108,7 +2111,10 @@ Generador
  verifica que se exporte a PDF un análisis con cabeceras vacías.
 
 [test_export_pdf_no_security_headers]
- verifica que se exporte a PDF un análisis sin cabeceras de seguridad.
+ verifica que se exporte a PDF un análisis sin cabeceras de respuesta de seguridad.
+
+[test_export_pdf_response_headers]
+ verifica que se aplique el formato correcto a las cabeceras de respuesta de un análisis exportado a PDF.
 
 [test_export_xlsx]
  verifica que se exporte a XLSX un análisis detallado.
@@ -2135,7 +2141,7 @@ Generador
  verifica que se analice correctamente un fichero con cabeceras de respuesta.
 
 [test_input_file_nonexistent]
- verifica que se muestre mensaje de error ante ficheros de input inexistentes.
+ verifica que se muestre mensaje de error con un fichero de input inexistente.
 
 [test_input_traversal]
  verifica que se realicen comprobaciones básicas sobre 'input traversal'.
@@ -2155,11 +2161,17 @@ Generador
 [test_license]
  verifica que la licencia se muestre correctamente.
 
+[test_missing_output_format]
+ verifica que se muestre un error al definir la ruta de exportación y omitir el formato de exportación.
+
 [test_no_headers]
  verifica que se muestre un error ante la ausencia de cabeceras de respuesta en el análisis.
 
 [test_no_security_headers]
- verifica que se muestre un error ante la ausencia de cabeceras de seguridad en el análisis.
+ verifica que se muestre un error ante la ausencia de cabeceras de respuesta de seguridad en el análisis.
+
+[test_non_existent_output_path]
+ verifica que se muestre un mensaje de error al definir una ruta de exportación inexistente.
 
 [test_owasp_compliance]
  verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
@@ -2226,6 +2238,9 @@ Generador
 
 [test_url_insufficient_statistics]
  verifica que se muestre un error por análisis insuficientes de una URL.
+
+[test_url_non_existent_statistics]
+ verifica que se muestre un error al no haber analizado nunca la URL.
 
 [test_user_agent]
  verifica que el cuarto User-Agent se utilice en un análisis detallado.

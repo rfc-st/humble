@@ -2032,7 +2032,7 @@ Generator
  verify the minimum required Python version.
 
 [test_missing_arguments]
- verify the presence of mandatory parameters required for certain operations.
+ verify the presence of required parameters for certain operations.
 
 [test_proxy_wrong]
  verify the required parameters associated with a proxy are checked.
@@ -2103,6 +2103,9 @@ Generator
 [test_export_html_empty_headers]
  verify an analysis with empty headers is exported to HTML.
 
+[test_export_html_no_security_headers]
+ verify an analysis without security response headers is exported to HTML.
+
 [test_export_json]
  verify a detailed analysis is exported to JSON.
 
@@ -2116,7 +2119,7 @@ Generator
  verify a brief analysis is exported to JSON in Spanish.
 
 [test_export_no_security_headers]
- verify that a detailed analysis is exported without security headers enabled.
+ verify a detailed analysis is exported without security response headers enabled.
 
 [test_export_pdf]
  verify a brief analysis is exported to PDF.
@@ -2128,7 +2131,10 @@ Generator
  verify an analysis with empty headers is exported to PDF.
 
 [test_export_pdf_no_security_headers]
- verify an analysis without security headers is exported to PDF.
+ verify an analysis without security response headers is exported to PDF.
+
+[test_export_pdf_response_headers]
+ verify the correct format is applied to the response headers of an analysis exported to PDF.
 
 [test_export_xlsx]
  verify a brief analysis is exported to XLSX.
@@ -2155,7 +2161,7 @@ Generator
  verify raw response files are analyzed.
 
 [test_input_file_nonexistent]
- verify that an error message is displayed for non-existent raw response files files.
+ verify an error message is displayed for non-existent raw response file.
 
 [test_input_traversal]
  verify checks are performed to prevent input traversal.
@@ -2175,11 +2181,17 @@ Generator
 [test_license]
  verify the license is displayed.
 
+[test_missing_output_format]
+ verify an error message is displayed when defining the export path and omitting the export format.
+
 [test_no_headers]
- verify that the absence of security headers is indicated in an analysis.
+ verify the absence of response headers is indicated in an analysis.
 
 [test_no_security_headers]
- verify that an error is displayed when response headers are missing in the analysis.
+ verify an error is displayed when response headers are missing in the analysis.
+
+[test_non_existent_output_path]
+ verify an error message is displayed when defining a non-existent export path.
 
 [test_owasp_compliance]
  verify the results of the OWASP 'Secure Headers Project' compliance check are displayed.
@@ -2191,7 +2203,7 @@ Generator
  verify an error is displayed when the proxy is unreachable.
 
 [test_redirects]
- verify that the parameter of not following redirects in an analysis is honored.
+ verify the parameter of not following redirects in an analysis is honored.
 
 [test_malformed_request_headers]
  verify an error is displayed for malformed request headers.
@@ -2246,6 +2258,9 @@ Generator
 
 [test_url_insufficient_statistics]
  verify an error is displayed due to insufficient analysis of a URL.
+
+[test_url_non_existent_statistics]
+ verify an error is displayed when the URL has never been analyzed.
 
 [test_user_agent]
  verify the specified User-Agent is used in the analysis.

@@ -80,6 +80,8 @@ HUMBLE_INVALID_EXPORT_FILE = 'non_existent_folder/humble_export_file_test'
 HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
 HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
+HUMBLE_OUTPUT_PATHS = ('home/tests/test',
+                       'non_existent_path_for_humble/39332524')
 HUMBLE_WRONG_TESTSSL_DIR = '/dev/'
 PYTEST_CACHE_DIRS = [
     path.join(HUMBLE_TESTS_DIR, d)
@@ -96,7 +98,8 @@ TEST_URLS = ('https://github.com/rfc-st/humble',
              'https://httpbin.org/status/502', 'http://10.255.255.1',
              'ftp://google.com', 'https://\u0442\u0435\u0441\u0442.ru',
              'https://httpbin.org/status/529',
-             'https://httpbin.org/status/520')
+             'https://httpbin.org/status/520',
+             'http://nonexistenturl.com')
 
 REQUIRED_PYTHON_VERSION = (3, 11)
 
@@ -146,6 +149,9 @@ TEST_CFGS = {
     'test_export_html_empty_headers': (['-u', TEST_URLS[9], '-if',
                                        PATHS['GRADE_D'], '-o', 'html'],
                                        'HTML saved'),
+    'test_export_html_no_security_headers': (['-u', TEST_URLS[9], '-if',
+                                             PATHS['NO_SEC_HEADERS'], '-o',
+                                             'html'], 'HTML saved'),
     'test_export_json': (['-u', TEST_URLS[9], '-o', 'json', '-r'],
                          'JSON saved'),
     'test_export_json_brief': (['-u', TEST_URLS[9], '-o', 'json', '-b'],
@@ -168,6 +174,8 @@ TEST_CFGS = {
     'test_export_pdf_no_security_headers': (['-u', TEST_URLS[9], '-if',
                                              PATHS['NO_SEC_HEADERS'], '-o',
                                              'pdf'], 'PDF saved'),
+    'test_export_pdf_response_headers': (['-u', TEST_URLS[9], '-o', 'pdf',
+                                          '-r'], 'PDF saved'),
     'test_export_xlsx': (['-u', TEST_URLS[9], '-o', 'xlsx'], 'XLSX saved'),
     'test_export_xml': (['-u', TEST_URLS[9], '-o', 'xml'], 'XML saved'),
     'test_fingerprint_groups': (['-f'], 'Top 20 groups'),
@@ -189,10 +197,14 @@ TEST_CFGS = {
                            'Advertencias a revisar'),
     'test_l10n_grades': (['-grd', '-l', 'es'], 'No te obsesiones'),
     'test_license': (['-lic'], 'copyright'),
+    'test_missing_output_format': (['-u', TEST_URLS[9], '-op',
+                                    HUMBLE_OUTPUT_PATHS[0]], 'Error:'),
     'test_no_headers': (['-u', TEST_URLS[4], '-if', PATHS['NO_HEADERS']],
                         'contain'),
     'test_no_security_headers': (['-u', TEST_URLS[4], '-if',
                                   PATHS['NO_SEC_HEADERS']], 'are present'),
+    'test_non_existent_output_path': (['-u', TEST_URLS[9], '-o', 'txt', '-op',
+                                       HUMBLE_OUTPUT_PATHS[1]], 'Error:'),
     'test_owasp_compliance': (['-u', TEST_URLS[9], '-c'],
                               'non-recommended values'),
     'test_owasp_perfect_compliance': (['-u', TEST_URLS[9], '-c', '-if',
@@ -231,6 +243,8 @@ TEST_CFGS = {
     'test_url_insufficient_statistics': (['-u', TEST_URLS[6], '-if',
                                           PATHS['ALL_HEADERS'], '-a'],
                                          'reliable'),
+    'test_url_non_existent_statistics': (['-u', TEST_URLS[17], '-a',],
+                                         'Error:'),
     'test_user_agent': (['-u', TEST_URLS[9], '-ua', '4'],
                         'Selected the User-Agent'),
     'test_user_agent_list': (['-ua', '0'], 'source: '),
@@ -486,7 +500,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2026-01-17', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-23', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
