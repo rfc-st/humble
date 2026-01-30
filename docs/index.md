@@ -31,7 +31,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Can check for compliance with the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">Secure Headers Project</a> Best Practices.
 - Can exclude specific HTTP response headers from the analysis.
 - Can analyze raw response files: text files with HTTP response headers and values.
-- Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF 1.4, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.
+- Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.
 - Can check for outdated SSL/TLS protocols and vulnerabilities: requires <a href="https://testssl.sh/" target="_blank">testssl.sh</a>.
 - Can provide brief and detailed analysis along with HTTP response headers.
 - Can use proxies for the analysis.
@@ -73,6 +73,6 @@ And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>January 23, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>January 30, 2026</em></span>
 </span>
 </aside>

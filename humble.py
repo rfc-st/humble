@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-01-24', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-30', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -283,11 +283,11 @@ def fng_statistics_top():
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
-              encoding='utf8') as fng_f:
-        fng_lines = fng_f.readlines()
-    fng_incl = sum(1 for _ in islice(fng_lines, SLICE_INT[0], None))
-    fng_lines = fng_lines[SLICE_INT[0]:]
+    file_path = path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2])
+    with open(file_path, 'r', encoding='utf8') as fng_f:
+        fng_iterator = islice(fng_f, SLICE_INT[0], None)
+        fng_lines = list(fng_iterator)
+        fng_incl = len(fng_lines)
     fng_statistics_top_groups(fng_lines, fng_incl)
     sys.exit(0)
 
@@ -319,10 +319,9 @@ def fng_statistics_term(fng_term):
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
-              encoding='utf8') as fng_source:
-        fng_lines = fng_source.readlines()
-    fng_incl = list(islice(fng_lines, SLICE_INT[0], None))
+    file_path = path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2])
+    with open(file_path, 'r', encoding='utf8') as fng_source:
+        fng_incl = list(islice(fng_source, SLICE_INT[0], None))
     fng_groups, term_cnt = fng_statistics_term_groups(fng_incl, fng_term)
     if not fng_groups:
         print(f"{get_detail('[fng_zero]', replace=True)} '{fng_term}'.\n\n\
@@ -527,18 +526,14 @@ def get_analysis_totals(url_ln):
 
 def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
                              e_cnt, t_cnt):
-    """
-    Print the differences in totals between the last analysis and the current
-    one, for the same URL
-    """
-    if analysis_totals[0] == "First":
-        return [get_detail('[first_analysis]', replace=True)] * 6
-    elif analysis_totals[0] == "Not available":
-        return [get_detail('[notaval_analysis]', replace=True)] * 6
-    current = [int(val) for val in analysis_totals]
-    differences = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
-    return [get_detail('[no_changes]', replace=True) if (d - c) == 0
-            else f"{d - c:+d}" for d, c in zip(differences, current)]
+    """Print the differences in totals between analyses of the same URL"""
+    status_map = {"First": '[first_analysis]',
+                  "Not available": '[notaval_analysis]'}
+    if analysis_totals[0] in status_map:
+        return [get_detail(status_map[analysis_totals[0]], replace=True)] * 6
+    diffs = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
+    return [get_detail('[no_changes]', replace=True) if (d - int(c)) == 0
+            else f"{d - int(c):+d}" for d, c in zip(diffs, analysis_totals)]
 
 
 def format_analysis_results(*diff, en_cnt_w, t_cnt):
@@ -1565,10 +1560,14 @@ def get_epilog_content(id_mode):
     to `-h` option
     """
     epilog_file_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[5])
+    target = id_mode + '\n'
+    content = []
     with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
-        epilog_lines = epilog_source.readlines()
-        epilog_idx = epilog_lines.index(id_mode + '\n')
-    return ''.join(epilog_lines[epilog_idx+1:epilog_idx+SLICE_INT[12]])
+        for line in epilog_source:
+            if line == target:
+                break
+        content = list(islice(epilog_source, SLICE_INT[12] - 1))
+    return ''.join(content)
 
 
 def get_fingerprint_headers():
@@ -2939,20 +2938,18 @@ def decrease_html_spacing(tmp_filename):
     """
     Decrease the spacing between sections; related to analysis exported to HTML
     """
-    with open(tmp_filename, "r+", encoding="utf8") as html_source:
-        html_lines = html_source.readlines()
-        initial_ln, prev_blank_ln = False, False
-        cleaned_ln = []
-        for line in html_lines:
+    initial_ln, prev_blank_ln = False, False
+    cleaned_ln = []
+    with open(tmp_filename, "r", encoding="utf8") as html_source:
+        for line in html_source:
             if not initial_ln and "[0. Info" in line:
                 initial_ln = True
             if initial_ln and not line.strip() and prev_blank_ln:
                 continue
             prev_blank_ln = initial_ln and not line.strip()
             cleaned_ln.append(line)
-        html_source.seek(0)
-        html_source.writelines(cleaned_ln)
-        html_source.truncate()
+    with open(tmp_filename, "w", encoding="utf8") as html_output:
+        html_output.writelines(cleaned_ln)
 
 
 def format_html_file(html_final, ko_strings, ln, ok_string):
