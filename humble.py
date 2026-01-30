@@ -197,7 +197,7 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         - Certificate Requirement
     """
     def init_poolmanager(self, *args, **kwargs):
-        context = ssl._create_unverified_context()
+        context = ssl._create_unverified_context()  # noopengrep
         context.check_hostname = False  # noqa
         context.verify_mode = ssl.CERT_NONE  # noqa
         context.cert_reqs = ssl.CERT_NONE  # noqa
@@ -1787,7 +1787,8 @@ def validate_path(output_path):
     of error, related to `-op` option
     """
     try:
-        with open(path.join(output_path, HUMBLE_FILES[1]), 'w'):
+        with open(path.join(output_path, HUMBLE_FILES[1]), 'w',
+                  encoding='utf8'):
             pass
     except OSError as e:
         print(f"\n {get_detail('[args_pathe]', replace=True)} '{output_path}' \
@@ -1896,8 +1897,8 @@ def get_insecure_checks():
     option
     """
     headers_name = set()
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), 'r') as \
-            ins_source:
+    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), 'r',
+              encoding='utf-8') as ins_source:
         insecure_checks = islice(ins_source, SLICE_INT[2], None)
         for line in insecure_checks:
             insecure_header = line.split(':')[0]

@@ -60,9 +60,14 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 Whatever you decide about **humble.py**, thank you for your time!.
 
 ## Notes
-About <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> and <a href="https://github.com/jendrikseipp/vulture">vulture</a> checks:
+About <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> and <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a> checks:
 
-Inline comments are used to suppress specific Sourcery and Vulture checks; this is necessary to preserve compatibility with older f-string syntax and to maintain focus by ignoring non-critical static analysis findings.
+There are inline comments in the code to bypass some of the checks performed by these tools: to preserve compatibility with older f-string syntax, to maintain focus by ignoring non-critical findings and due to personal decisions.
+
+You can identify them in the code by searching for the literals:
+
+* `# noopengrep`
+* `# noqa`
 
 ## Last but not least
 For those who maintain some essential tools for developing and testing **humble.py**, and to everyone who has contributed ideas, suggestions, or reported bugs: <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#acknowledgements" target="_blank">thank you</a>!.
