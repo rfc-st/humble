@@ -62,11 +62,11 @@ Whatever you decide about **humble.py**, thank you for your time!.
 ## Notes
 About <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> and <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a> checks:
 
-There are inline comments in the code to bypass some of the checks performed by these tools: to preserve compatibility with older f-string syntax, to maintain focus by ignoring non-critical findings and due to personal decisions.
+Inline comments are used to suppress certain tool-generated checks. These exclusions are necessary to preserve legacy syntax compatibility, reduce noise from non-critical findings, and support intentional design choices as noted in the code.
 
-You can identify them in the code by searching for the literals:
+You can identify them in the code by searching for:
 
-* `# noopengrep`
+* `# nosemgrep` (should be valid for <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a> and <a href="https://github.com/semgrep/semgrep" target="_blank">semgrep</a>)
 * `# noqa`
 
 ## Last but not least
@@ -78,6 +78,6 @@ And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>January 30, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>January 31, 2026</em></span>
 </span>
 </aside>

@@ -30,7 +30,7 @@
 import re
 import ssl
 import sys
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # nosemgrep
 from time import time
 from platform import system
 from base64 import b64decode
@@ -45,7 +45,6 @@ from shutil import copyfile, which
 from os import linesep, path, remove
 from os.path import dirname, abspath
 from socket import create_connection
-from csv import reader, writer, QUOTE_ALL
 from subprocess import PIPE, Popen, STDOUT
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -54,6 +53,7 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import requests
 from colorama import Fore, Style, init
 from requests.adapters import HTTPAdapter
+from defusedcsv import csv as defusedcsv_logic
 from requests.structures import CaseInsensitiveDict
 
 BANNER = '''  _                     _     _
@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-01-30', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-01-31', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -197,11 +197,11 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         - Certificate Requirement
     """
     def init_poolmanager(self, *args, **kwargs):
-        context = ssl._create_unverified_context()  # noopengrep
+        context = ssl._create_unverified_context()  # nosemgrep
         context.check_hostname = False  # noqa
         context.verify_mode = ssl.CERT_NONE  # noqa
         context.cert_reqs = ssl.CERT_NONE  # noqa
-        context.set_ciphers(FORCED_CIPHERS)
+        context.set_ciphers(FORCED_CIPHERS)  # nosemgrep
         kwargs['ssl_context'] = context
         return super(SSLContextAdapter, self).init_poolmanager(*args, **kwargs)
 
@@ -211,8 +211,9 @@ def check_python_version():
     Returns an error message if the current Python version does not meet the
     minimum requirement
     """
-    exit(print_detail('[python_version]', 3)) if sys.version_info < (3, 11) \
-        else None
+    if sys.version_info < (3, 11):
+        print_detail('[python_version]', 3)
+        sys.exit(1)
 
 
 def process_proxy_url(proxy_url, timeout):
@@ -251,7 +252,9 @@ def check_updates(local_version):
     execution, related to `-v` option
     """
     try:
-        github_repo = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT).text
+        github_response = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT)
+        github_response.raise_for_status()
+        github_repo = github_response.text
         github_date = re.search(RE_PATTERN[4], github_repo).group()
         github_version = datetime.strptime(github_date, '%Y-%m-%d').date()
         days_diff = (github_version - local_version).days
@@ -392,7 +395,7 @@ def testssl_command(testssl_temp_path, uri):
 
     ??? tip
         The options used in the analysis are defined in the `TESTSSL_OPTIONS`
-        list:<br>
+        constant:<br>
 
         - `-f`: checks robust forward secrecy key exchange
         - `-g`: checks several server implementation bugs
@@ -428,8 +431,16 @@ def testssl_command(testssl_temp_path, uri):
 
 
 def testssl_analysis(testssl_cmd):
-    """Run TLS/SSL analysis with testssl.sh"""
+    """
+    Run TLS/SSL analysis with testssl.sh
+
+    ??? note
+        This function is safe from injection: `shell=True` is not used,
+        arguments are passed as a list and `testssl.sh` options are defined in
+        the `TESTSSL_OPTIONS` constant.
+    """
     try:
+        # nosemgrep
         process = Popen(testssl_cmd, stdout=PIPE, stderr=STDOUT, text=True)
         for ln in iter(process.stdout.readline, ''):
             print(ln, end='')
@@ -1576,7 +1587,7 @@ def get_fingerprint_headers():
     section of the analysis
 
     ??? note
-        The file associated with this check is `/additional/fingerprint.txt`
+        The file associated with this check is `/additional/fingerprint.txt`.
     """
     with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
               encoding='utf8') as fng_source:
@@ -1681,7 +1692,7 @@ def print_missing_headers(args, headers_l, l_detail, l_miss):
     Print the contents of the section `[2. Missing HTTP Security Headers]`
 
     ??? note
-        The file associated with this check is `/additional/missing.txt`
+        The file associated with this check is `/additional/missing.txt`.
     """
     m_cnt = 0
     headers_set = set(headers_l)
@@ -2066,10 +2077,15 @@ def generate_csv(final_filename, temp_filename, to_xlsx=False):
     """
     CSV export of the analysis and terminates execution, related to `-o csv`
     option
+
+    ??? note
+        This function uses `defusedcsv` to mitigate formula injection attacks
+        by sanitizing potentially dangerous values.
     """
     with open(temp_filename, 'r', encoding='utf8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
-        csv_writer = writer(csv_final, quoting=QUOTE_ALL)
+        csv_writer = defusedcsv_logic.writer(
+            csv_final, quoting=defusedcsv_logic.QUOTE_ALL)
         csv_writer.writerow([get_detail('[csv_section]', replace=True),
                              get_detail('[csv_values]', replace=True)])
         csv_writer.writerow([get_detail('[0section]', replace=True),
@@ -2154,10 +2170,15 @@ def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
     """
     Write formatted content with dynamic column widths; related to analysis
     exported to XLSX spreadsheet
+
+    ??? note
+        This function uses `defusedcsv` to mitigate formula injection attacks
+        by sanitizing potentially dangerous values.
     """
     prev_section = None
     with open(final_filename, 'r', encoding='utf-8', newline='') as csv_final:
-        for row_index, row_data in enumerate(reader(csv_final)):
+        for row_index, row_data in enumerate(
+                defusedcsv_logic.reader(csv_final)):
             for col_index, cell_value in enumerate(row_data):
                 fmt, prev_section = choose_xlsx_format(bold_fmt, cell_fmt,
                                                        cell_value, col_index,
@@ -3178,7 +3199,13 @@ def clean_html_final(final_filename):
 
 
 def generate_xml(final_filename, temp_filename):
-    """XML export of the analysis, related to `-o xml` option"""
+    """analysis
+    XML export of the analysis, related to `-o xml` option
+
+    ??? note
+        This function is safe from XXE and XML Bomb attacks as it only
+        generates XML from `DTD_CONTENT` constant and local analysis results.
+    """
     root = ET.Element('analysis', {'version': BANNER_VERSION,
                                    'generated': current_time})
     with open(temp_filename, 'r', encoding='utf8') as txt_source:
@@ -3837,6 +3864,7 @@ if args.output:
     export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
     tmp_filename = get_tmp_file(args, export_date)
     validate_file_access(tmp_filename, context='export')
+    # nosemgrep
     tmp_filename_content = open(tmp_filename, 'w', encoding='utf8')
     sys.stdout = tmp_filename_content
     export_slice = SLICE_INT[4] if args.output == 'txt' else SLICE_INT[5]

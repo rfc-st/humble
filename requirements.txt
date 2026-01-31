@@ -1,4 +1,5 @@
 colorama>=0.4.6
+defusedcsv>=3.0.0
 fpdf2>=2.7.7
 pytest>=8.4.1
 pytest-cov>=6.2.1
