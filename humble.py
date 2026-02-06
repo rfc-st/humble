@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-01-31', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-02-06', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -3199,12 +3199,21 @@ def clean_html_final(final_filename):
 
 
 def generate_xml(final_filename, temp_filename):
-    """analysis
+    """
     XML export of the analysis, related to `-o xml` option
 
     ??? note
-        This function is safe from XXE and XML Bomb attacks as it only
-        generates XML from `DTD_CONTENT` constant and local analysis results.
+        According to
+        <a href="https://docs.python.org/3.11/library/xml.html"
+        target="_blank">here</a> (*XML vulnerabilities* section),
+        <a href="https://github.com/python/cpython/pull/135294"
+        target="_blank">here</a> and
+        <a href="https://github.com/python/cpython/issues/127502"
+        target="_blank">here</a> the minimum Python version required to run
+        *humble* (3.11) should not be vulnerable to common XML attacks.
+
+        Additionally, the DTD used to generate the XML is defined in the
+        constant `DTD_CONTENT`.
     """
     root = ET.Element('analysis', {'version': BANNER_VERSION,
                                    'generated': current_time})
