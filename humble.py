@@ -176,7 +176,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-02-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-02-07', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -420,7 +420,7 @@ def testssl_command(testssl_temp_path, uri):
         print_error_detail('[notestssl_fileexec]')
     print("")
     print(f"{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
-    choice = input(
+    choice = input(  # nosemgrep
         f"{get_detail('[testssl_choice]', replace=True)} ")[:1].strip().lower()
     if choice != "y":
         sys.exit(0)
@@ -441,7 +441,8 @@ def testssl_analysis(testssl_cmd):
     """
     try:
         # nosemgrep
-        process = Popen(testssl_cmd, stdout=PIPE, stderr=STDOUT, text=True)
+        process = Popen(testssl_cmd, stdout=PIPE, stderr=STDOUT,
+                        text=True)  # nosemgrep
         for ln in iter(process.stdout.readline, ''):
             print(ln, end='')
             if 'Done' in ln:
