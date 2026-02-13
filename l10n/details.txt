@@ -334,7 +334,8 @@
  Accept-Patch (Potentially Unsafe Header)
 
 [ixacp]
- Check that the HTTP PATCH method is really required to be enabled.
+ HTTP PATCH is neither safe nor idempotent; check if its really needed.
+ Ref: https://appcheck-ng.com/http-verbs-security-risks/
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Patch
 
 [icred_h]
@@ -391,14 +392,14 @@
  (*) NEL (No Valid Directives)
 
 [iobsb_h]
- (*) Observe-Browsing-Topics (No Valid Directives)
+ Observe-Browsing-Topics (Deprecated Header)
 
 [inel]
  Include at least one valid directive.
  Ref: https://w3c.github.io/network-error-logging/#nel-response-header
 
 [iobsb]
- Include at least one valid directive.
+ This header is deprecated.
  Ref: https://mdn.io/Observe-Browsing-Topics
 
 [inelm_h]

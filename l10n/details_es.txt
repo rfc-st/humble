@@ -335,8 +335,9 @@
  Accept-Patch (Cabecera potencialmente insegura)
 
 [ixacp]
- Asegúrese de que el método HTTP PATCH sea necesario
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Patch
+ HTTP PATCH no es seguro ni idempotente; revisa si realmente es necesario.
+ Ref: https://appcheck-ng.com/http-verbs-security-risks/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-Patch
 
 [icred_h]
  Access-Control-Allow-Credentials (Valores incorrectos)
@@ -392,15 +393,15 @@
  (*) NEL (Sin directivas adecuadas)
 
 [iobsb_h]
- (*) Observe-Browsing-Topics (Sin directivas adecuadas)
+ Observe-Browsing-Topics (Cabecera obsoleta)
 
 [inel]
  Incluya, al menos, una directiva correcta.
  Ref: https://w3c.github.io/network-error-logging/#nel-response-header
 
 [iobsb]
- Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Observe-Browsing-Topics
+ Esta cabecera está obsoleta.
+ Ref: https://mdn.io/Observe-Browsing-Topics
 
 [inelm_h]
  (*) NEL (Directivas ausentes)

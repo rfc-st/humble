@@ -78,9 +78,8 @@ DTD_CONTENT = '''<!ELEMENT analysis (section+)>
 <!ATTLIST item name CDATA #IMPLIED>
 '''
 EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
-               'nel', 'no-vary-search', 'observe-browsing-topics',
-               'permissions-policy', 'speculation-rules',
-               'supports-loading-mode')
+               'nel', 'no-vary-search', 'permissions-policy',
+               'speculation-rules', 'supports-loading-mode')
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HASH_CHARS = {'sha256': 32, 'sha384': 48, 'sha512': 64}
 HTML_TAGS = ('</a>', '<a href="', '">', '<span class="ko">',
@@ -3999,8 +3998,8 @@ t_cachev = ('immutable', 'max-age', 'must-revalidate', 'must-understand',
             'stale-while-revalidate')
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data
-t_csdata = ('cache', 'clientHints', 'cookies', 'storage', 'executionContexts',
-            '*')
+t_csdata = ('cache', 'clientHints', 'cookies', 'executionContexts',
+            'prefetchCache', 'prerenderCache', 'storage', '*')
 
 # https://mdn.io/Want-Content-Digest
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Repr-Digest
@@ -4126,7 +4125,8 @@ t_per_dep = ('document-domain', 'window-placement')
 t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
             'aria-notify', 'attribution-reporting', 'autofill', 'autoplay',
             'battery', 'bluetooth', 'browsing-topics', 'camera',
-            'captured-surface-control', 'ch-ua', 'ch-ua-arch', 'ch-ua-bitness',
+            'captured-surface-control', 'ch-ua-high-entropy-values',
+            'ch-ua', 'ch-ua-arch', 'ch-ua-bitness',
             'ch-ua-full-version', 'ch-ua-full-version-list', 'ch-ua-mobile',
             'ch-ua-model', 'ch-ua-platform', 'ch-ua-platform-version',
             'ch-ua-wow64', 'clipboard-read', 'clipboard-write',
@@ -4236,7 +4236,7 @@ if 'accept-ch-lifetime' in headers_l and '2' not in skip_list:
     print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
 
 if 'accept-patch' in headers_l and '3' not in skip_list:
-    print_details('[ixacp_h]', '[ixacp]', 'd', i_cnt)
+    print_details('[ixacp_h]', '[ixacp]', 'm', i_cnt)
 
 accescred_header = headers_l.get("access-control-allow-credentials", '')
 if accescred_header and accescred_header != 'true' and '4' not in skip_list:
@@ -4477,9 +4477,7 @@ if 'no-vary-search' in headers_l and '41' not in skip_list:
     if not any(elem in nvarys_header for elem in t_nvarysearch):
         print_details('[ifnvarys_h]', '[ifnvarys]', 'd', i_cnt)
 
-observe_brows_header = headers_l.get('observe-browsing-topics', '')
-if observe_brows_header and '?1' not in observe_brows_header and \
-     '42' not in skip_list:
+if 'observe-browsing-topics' in headers_l and '42' not in skip_list:
     print_details('[iobsb_h]', '[iobsb]', 'd', i_cnt)
 
 if 'onion-location' in headers_l and '43' not in skip_list:
@@ -4783,15 +4781,14 @@ t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Headers',
          'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
          'Cross-Origin-Resource-Policy', 'Document-Policy', 'ETag',
          'Expect-CT', 'Feature-Policy', 'Integrity-Policy',
-         'Integrity-Policy-Report-Only', 'NEL', 'Observe-Browsing-Topics',
-         'Origin-Agent-Cluster', 'Permissions-Policy', 'Pragma',
-         'Proxy-Authenticate', 'Referrer-Policy', 'Refresh', 'Report-To',
-         'Reporting-Endpoints', 'Server-Timing', 'Service-Worker-Allowed',
-         'Set-Cookie', 'Set-Login', 'Speculation-Rules',
-         'Strict-Transport-Security', 'Supports-Loading-Mode',
-         'Timing-Allow-Origin', 'Trailer', 'Vary', 'WWW-Authenticate',
-         'X-Content-Type-Options', 'X-DNS-Prefetch-Control', 'X-Frame-Options',
-         'X-XSS-Protection')
+         'Integrity-Policy-Report-Only', 'NEL', 'Origin-Agent-Cluster',
+         'Permissions-Policy', 'Pragma', 'Proxy-Authenticate',
+         'Referrer-Policy', 'Refresh', 'Report-To', 'Reporting-Endpoints',
+         'Server-Timing', 'Service-Worker-Allowed', 'Set-Cookie', 'Set-Login',
+         'Speculation-Rules', 'Strict-Transport-Security',
+         'Supports-Loading-Mode', 'Timing-Allow-Origin', 'Trailer', 'Vary',
+         'WWW-Authenticate', 'X-Content-Type-Options',
+         'X-DNS-Prefetch-Control', 'X-Frame-Options', 'X-XSS-Protection')
 
 compat_headers = sorted(header for header in t_sec if header in headers)
 
