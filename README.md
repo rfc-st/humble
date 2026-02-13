@@ -51,6 +51,7 @@
 [Usage](#usage)<br />
 [Advanced Usage (Linux)](#advanced-usage-linux)<br />
 [Unit tests](#unit-tests)<br />
+[Quality, style and security tools](#quality-style-and-security-tools)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
 [Checks: Fingerprint Headers](#checks-fingerprint-headers)<br />
 [Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
@@ -481,8 +482,10 @@ Open the index.html file in a browser.
 
 *humble* has enabled the following workflows:
 
+- <a href="https://github.com/PyCQA/bandit-action" target="_blank">Bandit</a>
 - <a href="https://codeql.github.com/" target="_blank">CodeQl</a>
 - <a href="https://docs.github.com/en/code-security/tutorials/secure-your-dependencies/dependabot-quickstart-guide" target="_blank">Dependabot</a>
+- <a href="https://github.com/marketplace/actions/vulture-github-action" target="_blank">vulture</a>
 
 It is also reviewed with the following extensions in Visual Studio Code:
 
