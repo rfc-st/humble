@@ -305,9 +305,9 @@ https://github.com/rfc-st/humble/releases
 $ git clone https://github.com/rfc-st/humble.git
 https://github.com/rfc-st/humble/releases
 
-# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.57)
+# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.58)
 # https://github.com/rfc-st/humble/releases (On Windows, this may require running the terminal with admin privileges)
-$ docker build -t humble:1.57 .
+$ docker build -t humble:1.58 .
 
 # Run the analysis specifying the above TAG, along with the specific options for 'humble':
 # '-it', required: allocate a pseudo-TTY and keep input interactive.
@@ -315,14 +315,14 @@ $ docker build -t humble:1.57 .
 
 # (Linux/macOS)
 # E.g. Analyze https://google.com (brief analysis)
-$ docker run -it --rm --name humble humble:1.57 /bin/bash -c "python3 humble.py -u https://google.com -b"
+$ docker run -it --rm --name humble humble:1.58 /bin/bash -c "python3 humble.py -u https://google.com -b"
 
 # (Windows)
 # E.g. Analyze https://google.com (detailed analysis)
-$ docker run -it --rm --name humble humble:1.57 python3 humble.py -u https://google.coms
+$ docker run -it --rm --name humble humble:1.58 python3 humble.py -u https://google.coms
 
 # (Optional) Remove and untag the previous 'humble' image after upgrading
-$ docker rmi humble:1.57
+$ docker rmi humble:1.58
 ```
 
 ## Installation & update (Kali Linux)
