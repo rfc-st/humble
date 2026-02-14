@@ -80,6 +80,7 @@ DTD_CONTENT = '''<!ELEMENT analysis (section+)>
 EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'nel', 'no-vary-search', 'permissions-policy',
                'speculation-rules', 'supports-loading-mode')
+EXPORT_EXTENSIONS = ('.csv', '.html', '.json', '.pdf', '.txt', '.xlsx', '.xml')
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HASH_CHARS = {'sha256': 32, 'sha384': 48, 'sha512': 64}
 HTML_TAGS = ('</a>', '<a href="', '">', '<span class="ko">',
@@ -100,6 +101,7 @@ HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'testssl_windows_es.txt', 'security_guides.txt',
                 'security_guides_es.txt', 'security.txt',
                 'owasp_best_practices.txt')
+JSON_L10N = ('[json_det_fngheader]', '[json_det_refs]', '[json_det_fngval]')
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
 L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
              'security_guides': (15, 16)}
@@ -175,7 +177,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-02-13', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-02-14', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -195,11 +197,11 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         - Hostname Verification
         - Certificate Requirement
     """
-    def init_poolmanager(self, *args, **kwargs):
+    def init_poolmanager(self, *args, **kwargs):  # nosemgrep
         context = ssl._create_unverified_context()  # nosemgrep
         context.check_hostname = False  # noqa
         context.verify_mode = ssl.CERT_NONE  # noqa
-        context.cert_reqs = ssl.CERT_NONE  # noqa
+        context.cert_reqs = ssl.CERT_NONE  # noqa # nosemgrep
         context.set_ciphers(FORCED_CIPHERS)  # nosemgrep
         kwargs['ssl_context'] = context
         return super(SSLContextAdapter, self).init_poolmanager(*args, **kwargs)
@@ -1811,9 +1813,9 @@ def validate_path(output_path):
 
 def validate_file_access(target_path, *, context='history'):
     """
-    Validate if the analysis history file and temporary export files can be
-    created, terminating execution in case of an error when exporting an
-    analysis
+    Checks if the history or export files can be accessed or created. If an
+    error occurs, it either returns failure metadata or terminates the
+    execution depending on the provided context.
     """
     try:
         with open(target_path, 'a+', encoding='utf8'):
@@ -1822,14 +1824,14 @@ def validate_file_access(target_path, *, context='history'):
         err_type = type(e).__name__
         if context == 'history':
             return False, ("Not available",) * 6
-        elif context == 'basic':
-            print(f"{get_detail('[analysis_history_note]', replace=True)} \
-({err_type})")
+        if context == 'basic':
+            msg = get_detail('[analysis_history_note]', replace=True)
+            print(f"{msg} ({err_type})")
             return False, None
-        elif context == 'export':
+        if context == 'export':
             delete_lines()
-            print(f"\n{get_detail('[e_export_analysis]', replace=True)} "
-                  f"({err_type}).")
+            err_msg = get_detail('[e_export_analysis]', replace=True)
+            print(f"\n{err_msg} ({err_type}).")
             sys.exit(1)
     return True, None
 
@@ -1966,7 +1968,14 @@ def print_unsupported_headers(unsupported_headers):
 
 
 def check_output_format(args, final_filename, reliable, tmp_filename):
-    """Export the analysis to the provided format, related to `-o` option"""
+    """
+    Dispatches the export logic based on the selected output format, related to
+    `-o` option. It maps the `-o` options to specific generator functions for
+    text, CSV, JSON, Excel, XML, HTML, or PDF reports.
+
+    The function handles conditional triggers for CI/CD totals, OWASP
+    compliance checks, and toggles between brief and detailed JSON reports.
+    """
     dispatch = {
         "txt": lambda: (
             args.cicd and print_cicd_totals(tmp_filename),
@@ -2311,7 +2320,7 @@ def generate_json_detailed(final_filename, temp_filename):
 
 def json_detailed_parse(data, txt_sections):
     """Parse sections; related to detailed analysis exported to JSON"""
-    params = ['[json_det_fngheader]', '[json_det_details]', '[json_det_refs]']
+    params = [JSON_L10N[0], '[json_det_details]', JSON_L10N[1]]
     details = [get_detail(p, replace=True) for p in params]
     for i in range(0, len(txt_sections), 2):
         section = f'[{txt_sections[i]}]'
@@ -2393,8 +2402,8 @@ def json_detailed_response(json_lns):
     Print the contents of the section `[HTTP Response Headers]`; related to
     detailed analysis exported to JSON
     """
-    header_key = get_detail('[json_det_fngheader]', replace=True)
-    value_key = get_detail('[json_det_fngval]', replace=True)
+    header_key = get_detail(JSON_L10N[0], replace=True)
+    value_key = get_detail(JSON_L10N[2], replace=True)
     result = []
     for line in json_lns:
         line = line.strip()
@@ -2430,8 +2439,8 @@ def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
     Format lines in specific sections (e.g., enabled headers and browser
     compatibility); related to detailed analysis exported to JSON
     """
-    l10n_txt = '[json_det_refs]' if is_l10n else '[json_det_fngval]'
-    header_t = get_detail('[json_det_fngheader]', replace=True)
+    l10n_txt = JSON_L10N[1] if is_l10n else JSON_L10N[2]
+    header_t = get_detail(JSON_L10N[0], replace=True)
     value_t = get_detail(l10n_txt, replace=True)
     if is_compat:
         value_t = value_t[:-1]
@@ -2514,7 +2523,7 @@ def json_detailed_fng(json_lns, fingerprint_set):
     """
     result, entry, current_header = [], {}, None
     fng_header = get_detail('[json_det_fngheader]', replace=True)
-    fng_val = get_detail('[json_det_fngval]', replace=True)
+    fng_val = get_detail(JSON_L10N[2], replace=True)
     for line in json_lns:
         new_entry, current_header = json_detailed_fng_process(
             line, fingerprint_set, entry, current_header, fng_header, fng_val)
@@ -2590,7 +2599,7 @@ def json_detailed_ins(json_lns, insecure_checks):
     """
     header_t, detail_t, ref_t = (get_detail(text, replace=True)
                                  for text in [
-        '[json_det_inscheck]', '[json_det_details]', '[json_det_refs]'])
+        '[json_det_inscheck]', '[json_det_details]', JSON_L10N[1]])
     if args.lang:
         insecure_checks = {check.split(": ")[0] + ":"
                            for check in insecure_checks}
@@ -3383,8 +3392,11 @@ def print_owasp_rec(wrong_owasp, header_dict):
 
 def analyze_input_file(input_file):
     """
-    Perform a detailed analysis of the headers and values in the file provided
-    , related to `-if` option
+    Analyzes HTTP headers from a raw response file instead of a URL, related
+    to `-if` option. Ex: <a href="https://curl.se/docs/manpage.html#-D"
+    target="_blank">curl</a> option `--dump-header`.
+
+    It reads the provided file path and parses its content into header data.
     """
     if not path.exists(input_file):
         print_error_detail('[args_inputnotfound]')
@@ -3420,35 +3432,50 @@ def parse_input_file(input_headers, input_source, status_code):
 
 def normalize_output_file(filename):
     """
-    Normalizes the filename provided: if it contains an extension, it is
-    removed to avoid generating files with double extensions, adding the
-    extension associated with the value of the `-o` option to that filename.
+    Normalizes the filename: strips path components and removes extensions
+    only if they match supported formats (defined in `EXPORT_EXTENSIONS`
+    constant) to avoid double extensions.
 
-    Example: `-of humble_test.html -o html` options will be treated internally
-    as `-of humble_test -o html`, preventing the file `humble_test.html.html`
-    from being generated.
+    Example: `-of test.html` becomes `test`, but `-of test.old` stays
+    `test.old`.
     """
-    return filename.rsplit(".", 1)[0] if "." in filename else filename
+    safe_filename = path.basename(filename)
+    if safe_filename.lower().endswith(EXPORT_EXTENSIONS):
+        return safe_filename.rsplit(".", 1)[0]
+    return safe_filename
 
 
 def get_tmp_file(args, export_date):
-    """Create the temporary export file, related to `-o` option"""
+    """
+    Manages the path selection for the temporary export file, related to `-o`
+    option. It chooses between a sanitized custom filename from `-of` option
+    and a generated name provided by `build_tmp_file` function based on the
+    current date, extension, language and URL.
+
+    It ensures the correct file extension is applied and, if an output
+    directory is specified via `-op` option, joins and resolves the final
+    result into a secure, absolute filesystem path.
+    """
     file_ext = '.txt' if args.output == 'txt' else 't.txt'
     if args.output_file:
-        tmp_file = f"{normalize_output_file(args.output_file)}{file_ext}"
+        name_part = normalize_output_file(args.output_file)
+        tmp_file = f"{name_part}{file_ext}"
     else:
         url = urlparse(URL)
         humble_str = HUMBLE_DESC[1:7]
         lang = '_es' if args.lang else '_en'
         tmp_file = build_tmp_file(export_date, file_ext, lang, humble_str, url)
     if args.output_path:
-        tmp_file = path.join(output_path, tmp_file)
+        full_path = path.join(args.output_path, tmp_file)
+        tmp_file = path.abspath(full_path)
     return tmp_file
 
 
 def build_tmp_file(export_date, file_ext, lang, humble_str, url):
     """
-    Define the name of the temporary export file
+    Constructs the default filename for the temporary export file, related to
+    `-o` option. It formats a string using the URL scheme, domain, port, and
+    timestamp to create a unique identifier.
 
     ??? tip
         `tldextract` is lazy-loaded to avoid unnecessary overhead when the
