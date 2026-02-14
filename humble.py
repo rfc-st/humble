@@ -472,10 +472,8 @@ def get_analysis_results():
 {get_detail('[analysis_time_sec]', replace=True)}")
     t_cnt = sum([m_cnt, f_cnt, i_cnt[0], e_cnt])
     analysis_totals = save_analysis_results(t_cnt)
-    analysis_diff = compare_analysis_results(*analysis_totals, en_cnt=en_cnt,
-                                             m_cnt=m_cnt, f_cnt=f_cnt,
-                                             i_cnt=i_cnt, e_cnt=e_cnt,
-                                             t_cnt=t_cnt)
+    current = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
+    analysis_diff = compare_analysis_results(analysis_totals, current)
     en_cnt_w = '1' if en_cnt == 0 else None
     format_analysis_results(*analysis_diff, en_cnt_w=en_cnt_w, t_cnt=t_cnt)
     analysis_grade = grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt)
@@ -537,16 +535,17 @@ def get_analysis_totals(url_ln):
     return tuple(totals[2:])
 
 
-def compare_analysis_results(*analysis_totals, en_cnt, m_cnt, f_cnt, i_cnt,
-                             e_cnt, t_cnt):
+def compare_analysis_results(analysis_totals, current_counts):
     """Print the differences in totals between analyses of the same URL"""
     status_map = {"First": '[first_analysis]',
                   "Not available": '[notaval_analysis]'}
     if analysis_totals[0] in status_map:
         return [get_detail(status_map[analysis_totals[0]], replace=True)] * 6
-    diffs = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
-    return [get_detail('[no_changes]', replace=True) if (d - int(c)) == 0
-            else f"{d - int(c):+d}" for d, c in zip(diffs, analysis_totals)]
+    return [
+        get_detail('[no_changes]', replace=True) if (d - int(c)) == 0
+        else f"{d - int(c):+d}" for d, c in zip(current_counts,
+                                                analysis_totals)
+    ]
 
 
 def format_analysis_results(*diff, en_cnt_w, t_cnt):
@@ -817,16 +816,21 @@ def calculate_trends(values):
     return print_detail_l('[t_fluctuating]', analytics=True)
 
 
-def print_metrics(analytics_s, analytics_w, total_a, first_m, second_m,
-                  third_m, additional_m, fourth_m, fifth_m):
-    """Print metrics related to the analysis performed on a URL"""
-    basic_m = get_basic_metrics(total_a, first_m)
-    error_m = get_security_metrics(analytics_s, second_m)
-    warning_m = get_warnings_metrics(additional_m, analytics_w)
-    averages_m = get_averages_metrics(analytics_w, third_m)
-    fourth_m = get_highlights_metrics(fourth_m)
-    trend_m = get_trend_metrics(fifth_m)
-    analysis_year_m = get_date_metrics(additional_m)
+def print_metrics(analytics_s, analytics_w, total_a, *m_data):
+    """
+    Consolidate and format security, analysis, and trend metrics for display
+    of an URL.
+
+    Returns a dictionary of localized metric headers and their calculated
+    values, ready for the final statistics output.
+    """
+    basic_m = get_basic_metrics(total_a, m_data[0])
+    error_m = get_security_metrics(analytics_s, m_data[1])
+    warning_m = get_warnings_metrics(m_data[3], analytics_w)
+    averages_m = get_averages_metrics(analytics_w, m_data[2])
+    fourth_m = get_highlights_metrics(m_data[4])
+    trend_m = get_trend_metrics(m_data[5])
+    analysis_year_m = get_date_metrics(m_data[3])
     totals_m = {**basic_m, **error_m, **warning_m, **averages_m, **fourth_m,
                 **trend_m, **analysis_year_m}
     return {get_detail(key, replace=True): value for key, value in
@@ -1813,9 +1817,8 @@ def validate_path(output_path):
 
 def validate_file_access(target_path, *, context='history'):
     """
-    Checks if the history or export files can be accessed or created. If an
-    error occurs, it either returns failure metadata or terminates the
-    execution depending on the provided context.
+    Checks if the history or export files can be accessed or created; if an
+    error occurs during the export of an analysis, execution is terminated.
     """
     try:
         with open(target_path, 'a+', encoding='utf8'):
