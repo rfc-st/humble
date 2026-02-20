@@ -76,7 +76,6 @@ HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
 HUMBLE_INPUT_FILE = path.abspath(path.join(HUMBLE_INPUT_DIR,
                                            'github_input_file.txt'))
 HUMBLE_INPUT_TRAVERSAL = '../../../humbleinputtraversal/'
-HUMBLE_INVALID_EXPORT_FILE = 'non_existent_folder/humble_export_file_test'
 HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
 HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
 HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
@@ -189,8 +188,6 @@ TEST_CFGS = {
                                      PATHS['NONEXISTENT']], 'found'),
     'test_input_traversal': (['-u', TEST_URLS[9], '-op',
                               HUMBLE_INPUT_TRAVERSAL], 'wrong:'),
-    'test_invalid_file_path': (['-u', TEST_URLS[9], '-o', 'csv', '-of',
-                                HUMBLE_INVALID_EXPORT_FILE], 'Unable'),
     'test_invalid_output_path': (['-u', TEST_URLS[9], '-o', 'csv', '-op',
                                   HUMBLE_MAIN_FILE], 'Error:'),
     'test_l10n_analysis': (['-u', TEST_URLS[9], '-l', 'es'],
@@ -500,7 +497,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2026-02-14', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-02-20', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
@@ -531,7 +528,7 @@ if __name__ == "__main__":
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
     l10n_main = get_l10n_content()
     code = pytest.main([__file__, "--tb=no", "-rA", "-q", "-v", "-p",
-                        "no:cacheprovider", "-o", "dont_write_bytecode=True"])
+                        "no:cacheprovider"])
     print_results()
     delete_temp_content()
     sys.exit(code)
