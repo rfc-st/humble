@@ -177,7 +177,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-02-20', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-02-21', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2001,29 +2001,48 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
         func()
 
 
+def build_cicd_totals(tmp_filename, info_lines, totals, labels):
+    """
+    Transform raw CI/CD sections and file metadata into a structured
+    dictionary, excluding the 'File' reference.
+    """
+    _, _, info_label = labels
+    file_label = get_detail('[cicd_file]', True)
+
+    info_dict = {
+        key.strip(): value.strip()
+        for line in info_lines
+        if ':' in line
+        for key, value in [line.split(':', 1)]
+        if key.strip() != file_label
+    }
+    return {
+        info_label: info_dict,
+        **totals,
+        get_detail('[cicd_detailed]', True): {
+            get_detail('[cicd_path]', True): path.abspath(tmp_filename)
+        },
+    }
+
+
 def print_cicd_totals(tmp_filename):
     """
-    Print a summary-only JSON analysis, designed for continuous integration and
-    continuous delivery/deployment, exports it to a txt file and terminate
-    execution; related to `-cicd` option
+    Parse the results from `tmp_filename` to print a JSON-formatted CI/CD
+    summary and terminate execution.
     """
     try:
-        with open(tmp_filename, 'r', encoding='utf-8') as txt_source:
-            lines = [line.strip() for line in txt_source if line.strip()]
-        (cicd_total_t, cicd_diff_t, cicd_info_t) = get_cicd_labels()
-        cicd_info_lines, cicd_total_lines = parse_cicd_sections(cicd_diff_t,
-                                                                cicd_total_t,
-                                                                lines)
-        cicd_info_dict = {
-            k.strip(): v.strip()
-            for k, v in (line.split(":", 1) for line in cicd_info_lines)
-        }
-        cicd_output = {cicd_info_t: cicd_info_dict, **cicd_total_lines}
+        cicd_labels = get_cicd_labels()  # sourcery skip
+        total_lbl, diff_lbl, _ = cicd_labels
+        with open(tmp_filename, encoding='utf-8') as f:
+            lines = [ln.strip() for ln in f if ln.strip()]
+        info_lines, totals = parse_cicd_sections(diff_lbl, total_lbl, lines)
+        cicd_output = build_cicd_totals(tmp_filename, info_lines, totals,
+                                        cicd_labels)
         print(dumps(cicd_output, indent=2, ensure_ascii=False))
         sys.exit(0)
-    except Exception as e:
-        print(dumps({get_detail('[cicd_error]', replace=True): str(e)},
-                    ensure_ascii=False))
+    except Exception as exc:
+        err_key = get_detail('[cicd_error]', True)
+        print(dumps({err_key: str(exc)}, ensure_ascii=False))
         sys.exit(1)
 
 
@@ -2065,8 +2084,7 @@ def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
 
 def get_cicd_labels():
     """
-    Print literals related to the analysis designed for continuous integration
-    and continuous delivery/deployment
+    Print literals related to the analysis designed for CI/CD
     """
     cidcd_labels = ['[cicd_total]', '[cicd_diff]', '[cicd_info]']
     return tuple(get_detail(label, replace=True) for label in cidcd_labels)

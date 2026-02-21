@@ -1905,6 +1905,9 @@ Section
 [csv_values]
 Values
 
+[cicd_file]
+File
+
 [cicd_total]
 Total
 
@@ -1922,6 +1925,12 @@ Analysis Grade
 
 [cicd_grade_note]
 Grade
+
+[cicd_detailed]
+Detailed analysis
+
+[cicd_path]
+Path
 
 [epilog_content]
 examples:

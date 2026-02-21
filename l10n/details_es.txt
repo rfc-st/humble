@@ -1906,6 +1906,9 @@ Sección
 [csv_values]
 Valores
 
+[cicd_file]
+Fich.
+
 [cicd_total]
 Total
 
@@ -1923,6 +1926,12 @@ Nota del análisis
 
 [cicd_grade_note]
 Nota
+
+[cicd_detailed]
+Análisis detallado
+
+[cicd_path]
+Ruta
 
 [fng_value]
 Valor:
