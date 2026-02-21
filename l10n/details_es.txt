@@ -1939,6 +1939,9 @@ Valor:
 [export_filename]
  Fich.:
 
+[export_filename_error]
+ Error: Indica un nombre de fichero para exportar el análisis
+
 [e_grade]
  Nota del análisis:                           E (Revisa 'Cabeceras habilitadas')
 
@@ -2080,6 +2083,9 @@ Generador
 
 [test_export_csv]
  verifica que se exporte a CSV un análisis detallado.
+
+[test_export_extension]
+ verifica que el nombre del fichero sea válido al exportar un análisis.
 
 [test_export_html]
  verifica que se exporte a HTML un análisis detallado.

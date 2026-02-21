@@ -2650,9 +2650,6 @@ def json_detailed_results(json_lns):
     duration_t = get_detail('[analysis_time]', replace=True)
     duration_key = get_detail('[json_det_analysis]', replace=True)
     for line in json_lns:
-        line = line.strip()
-        if not line:
-            continue
         if line.startswith(duration_t.strip()):
             result[duration_key] = line
         elif ':' in line:
@@ -3453,17 +3450,19 @@ def parse_input_file(input_headers, input_source, status_code):
 
 def normalize_output_file(filename):
     """
-    Normalizes the filename: strips path components and removes extensions
-    only if they match supported formats (defined in `EXPORT_EXTENSIONS`
-    constant) to avoid double extensions.
-
-    Example: `-of test.html` becomes `test`, but `-of test.old` stays
-    `test.old`.
+    Normalizes the filename by stripping paths and removing extensions.
+    Aborts execution if the resulting filename is invalid (e.g., '.html').
     """
-    safe_filename = path.basename(filename)
-    if safe_filename.lower().endswith(EXPORT_EXTENSIONS):
-        return safe_filename.rsplit(".", 1)[0]
-    return safe_filename
+    base_name = path.basename(filename)
+    while base_name.lower().endswith(EXPORT_EXTENSIONS):
+        dot_index = base_name.rfind(".")
+        if dot_index <= 0:
+            break
+        base_name = base_name[:dot_index]
+    if not base_name or base_name.startswith("."):
+        delete_lines()
+        print_error_detail('[export_filename_error]')
+    return base_name
 
 
 def get_tmp_file(args, export_date):

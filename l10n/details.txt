@@ -1959,6 +1959,9 @@ Value:
 [export_filename]
  File :
 
+[export_filename_error]
+ Error: Provide a filename to export the analysis
+
 [e_grade]
  Analysis Grade:               E (Review 'Enabled headers')
 
@@ -2100,6 +2103,9 @@ Generator
 
 [test_export_csv]
  verify a detailed analysis is exported to CSV.
+
+[test_export_extension]
+ verify the file name is valid when exporting an analysis.
 
 [test_export_html]
  verify a detailed analysis is exported to HTML.
