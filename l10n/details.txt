@@ -972,6 +972,9 @@ HTTP Response Headers
 [report]
   saved to
 
+[all_reports]
+ Exported analyses, in all available formats, in
+
 [0section]
 [0. Info]
 
@@ -2100,6 +2103,9 @@ Generator
 
 [test_detailed_analysis]
  verify the completion of a detailed analysis.
+
+[test_export_all]
+ verify an analysis is exported to all available formats.
 
 [test_export_csv]
  verify a detailed analysis is exported to CSV.

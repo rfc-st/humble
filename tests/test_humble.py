@@ -138,6 +138,7 @@ TEST_CFGS = {
     'test_csp_hex_nonce': (['-u', TEST_URLS[2], '-if', PATHS['CSP_HEX_NONCE']],
                            'Analysis Grade'),
     'test_detailed_analysis': (['-u', TEST_URLS[9]], 'Analysis Grade:'),
+    'test_export_all': (['-u', TEST_URLS[9], '-o', 'all'], 'Exported'),
     'test_export_csv': (['-u', TEST_URLS[9], '-o', 'csv'], 'CSV saved'),
     'test_export_extension': (['-u', TEST_URLS[9], '-o', 'html', '-of',
                                '.html'], 'Error:'),
@@ -499,7 +500,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2026-02-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-02-27', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

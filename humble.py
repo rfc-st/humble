@@ -42,10 +42,10 @@ from ipaddress import ip_address
 from urllib.parse import urlparse
 from threading import Event, Thread
 from shutil import copyfile, which
-from os import linesep, path, remove
 from os.path import dirname, abspath
 from socket import create_connection
 from subprocess import PIPE, Popen, STDOUT
+from os import linesep, path, rename, remove
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
@@ -177,7 +177,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-02-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-02-27', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1370,12 +1370,21 @@ def delete_lines(reliable=True):
     sys.stdout.write(DELETED_LINES)
 
 
-def print_export_path(filename, reliable):
-    """Print export path, related to `-o` option"""
+def print_export_path(filename, reliable, export_all=False):
+    """
+    Prints the export path for the `-o` option. If `export_all` is `False`, it
+    prints the full file path; otherwise, it prints the directory
+    containing all generated analysis reports.
+    """
     delete_lines(reliable=False) if reliable else delete_lines()
     if '-c' not in sys.argv:
-        print(f"\n {args.output.upper()} {print_detail_s('[report]').lstrip()}\
- '{path.abspath(filename)}'.")
+        if export_all is False:
+            print(f"\n {args.output.upper()} "
+                  f"{print_detail_s('[report]').lstrip()}"
+                  f"'{path.abspath(filename)}'.")
+        else:
+            print(f"\n {print_detail_s('[all_reports]').lstrip()}"
+                  f" '{path.dirname(path.abspath(filename))}'.")
 
 
 def print_nowarnings():
@@ -1970,6 +1979,26 @@ def print_unsupported_headers(unsupported_headers):
     sys.exit(1)
 
 
+def export_all_formats(final_filename, tmp_filename):
+    export_pdf_file(tmp_filename, export_all=True)
+    generate_csv(final_filename, tmp_filename, export_all=True)
+    generate_json(final_filename, tmp_filename, export_all=True)
+    generate_xml(final_filename, tmp_filename, export_all=True)
+    export_html_file(final_filename, tmp_filename, export_all=True)
+    generate_txt(tmp_filename)
+    print_export_path(final_filename, reliable, export_all=True)
+    sys.exit(0)
+
+
+def finalize_export(f_name, t_name, ext, export_all):
+    """Finalize the export process and handle termination or renaming"""
+    if not export_all:
+        print_export_path(f_name, reliable)
+        remove(t_name)
+        sys.exit(0)
+    rename(f_name, f"{f_name[:-4]}.{ext}")
+
+
 def check_output_format(args, final_filename, reliable, tmp_filename):
     """
     Dispatches the export logic based on the selected output format, related to
@@ -2103,7 +2132,8 @@ def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
     return None
 
 
-def generate_csv(final_filename, temp_filename, to_xlsx=False):
+def generate_csv(final_filename, temp_filename, to_xlsx=False,
+                 export_all=False):
     """
     CSV export of the analysis and terminates execution, related to `-o csv`
     option
@@ -2125,9 +2155,7 @@ def generate_csv(final_filename, temp_filename, to_xlsx=False):
         parse_csv(csv_section, txt_source.read(), csv_writer)
     if to_xlsx:
         generate_xlsx(final_filename, temp_filename)
-    print_export_path(final_filename, reliable)
-    remove(temp_filename)
-    sys.exit(0)
+    finalize_export(final_filename, temp_filename, 'csv', export_all)
 
 
 def parse_csv(csv_section, csv_source, csv_writer):
@@ -2245,7 +2273,7 @@ def set_xlsx_width(col_wd, worksheet):
         worksheet.set_column(col_idx, col_idx, actual_width)
 
 
-def generate_json(final_filename, temp_filename):
+def generate_json(final_filename, temp_filename, export_all=False):
     """
     JSON export of a brief analysis and and terminates execution,
     related to `-o json -b` options
@@ -2258,9 +2286,7 @@ def generate_json(final_filename, temp_filename):
         data = {}
         parse_json(data, section0, section5, section6, sectionh, txt_sections)
         dump(data, json_file, indent=4, ensure_ascii=False)
-    print_export_path(final_filename, reliable)
-    remove(temp_filename)
-    sys.exit(0)
+    finalize_export(final_filename, temp_filename, 'json', export_all)
 
 
 def parse_json(data, section0, section5, section6, sectionh, txt_sections):
@@ -2658,7 +2684,7 @@ def json_detailed_results(json_lns):
     return result
 
 
-def export_pdf_file(tmp_filename):
+def export_pdf_file(tmp_filename, export_all=False):
     """
     PDF export of the analysis, related to `-o pdf` option
 
@@ -2688,10 +2714,10 @@ def export_pdf_file(tmp_filename):
 {self.page_no()}{get_detail('[pdf_footer2]')} {{nb}}", align='C')
 
     pdf = PDF()
-    initialize_pdf(pdf, tmp_filename, ypos)
+    initialize_pdf(pdf, tmp_filename, ypos, export_all=export_all)
 
 
-def initialize_pdf(pdf, tmp_filename, ypos):
+def initialize_pdf(pdf, tmp_filename, ypos, export_all=False):
     """
     Retrieves literals to apply the appropriate formatting; related to analysis
     exported to PDF
@@ -2699,10 +2725,12 @@ def initialize_pdf(pdf, tmp_filename, ypos):
     pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
                  REF_LINKS[4])
     pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
-    generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos)
+    generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos,
+                 export_all=export_all)
 
 
-def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos):
+def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos,
+                 export_all=False):
     """
     Generates the required file structure, including metadata; related to
     analysis exported to PDF
@@ -2714,9 +2742,7 @@ def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos):
     set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
                     pdf_prefixes, ypos)
     pdf.output(final_filename)
-    print_export_path(final_filename, reliable)
-    remove(tmp_filename)
-    sys.exit(0)
+    finalize_export(final_filename, tmp_filename, 'pdf', export_all)
 
 
 def set_pdf_file(pdf):
@@ -2940,7 +2966,12 @@ def apply_pdf_color(colon_idx, hcolor, line, vcolor):
     )
 
 
-def export_html_file(final_filename, tmp_filename):
+def generate_txt(tmp_filename):
+    export_all_txt = f"{tmp_filename[:-5]}.txt"
+    rename(tmp_filename, export_all_txt)
+
+
+def export_html_file(final_filename, tmp_filename, export_all=False):
     """HTML export of the analysis, related to `-o html` option"""
     global inside_section
     inside_section = False
@@ -2958,9 +2989,7 @@ def export_html_file(final_filename, tmp_filename):
             inside_section = False
         html_final.write(HTML_TAGS[13])
     clean_html_final(final_filename)
-    print_export_path(final_filename, reliable)
-    remove(tmp_filename)
-    sys.exit(0)
+    finalize_export(final_filename, tmp_filename, 'html', export_all)
 
 
 def generate_html():
@@ -3225,7 +3254,7 @@ def clean_html_final(final_filename):
         html_final.truncate()
 
 
-def generate_xml(final_filename, temp_filename):
+def generate_xml(final_filename, temp_filename, export_all=False):
     """
     XML export of the analysis, related to `-o xml` option
 
@@ -3251,9 +3280,7 @@ def generate_xml(final_filename, temp_filename):
     xml_dtd = f'<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n'.encode('utf-8')
     with open(final_filename, 'wb') as xml_final:
         xml_final.write(xml_decl + xml_dtd + xml_content)
-    print_export_path(final_filename, reliable)
-    remove(temp_filename)
-    sys.exit(0)
+    finalize_export(final_filename, temp_filename, 'xml', export_all)
 
 
 def parse_xml(root, section, stripped_txt):
@@ -3748,10 +3775,10 @@ language for displaying analysis, errors and messages; if omitted, will be \
 printed in English")
 parser.add_argument("-lic", dest='license', action="store_true", help="Print \
 the license for 'humble', along with permissions, limitations and conditions")
-parser.add_argument("-o", dest='output', choices=['csv', 'html', 'json', 'pdf',
-                                                  'txt', 'xlsx', 'xml'],
+parser.add_argument("-o", dest='output', choices=['all', 'csv', 'html', 'json',
+                                                  'pdf', 'txt', 'xlsx', 'xml'],
                     help="Exports analysis to 'humble_scheme_URL_port_yyyymmdd\
-_hhmmss_language.ext' file")
+_hhmmss_language.ext' file.")
 parser.add_argument("-of", dest='output_file', type=str, help="Exports \
 analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 '-o' will be used")
@@ -4854,4 +4881,8 @@ if args.output:
     final_filename = f"{tmp_filename[:-5]}.{args.output}"
     sys.stdout = orig_stdout
     tmp_filename_content.close()
-    check_output_format(args, final_filename, reliable, tmp_filename)
+    if args.output != 'all':
+        check_output_format(args, final_filename, reliable, tmp_filename)
+    else:
+        export_all_formats(final_filename, tmp_filename)
+        sys.exit(0)

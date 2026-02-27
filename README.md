@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--02--21-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--02--27-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -353,34 +353,34 @@ $ sudo apt install --only-upgrade humble
 (macOS)   $ python3 humble.py
 
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
-                 [-o {csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
+                 [-o {all,csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-02-21
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-02-27
 
 options:
-  -h, --help                           show this help message and exit
-  -a                                   Print statistics of the performed analysis; if the '-u' parameter is omitted they will be global
-  -b                                   Print overall findings; if omitted detailed ones will be printed
-  -c                                   Checks URL response HTTP headers for compliance with OWASP 'Secure Headers Project' best practices
-  -cicd                                Print only analysis summary, totals and grade in JSON; suitable for CI/CD
-  -df                                  Do not follow redirects; if omitted the last redirection will be the one analyzed
-  -e [TESTSSL_PATH]                    Print only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
-  -f [FINGERPRINT_TERM]                Print fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 results will be printed
-  -g                                   Print guidelines for enabling security HTTP response headers on popular frameworks, servers and services
-  -grd                                 Print the checks to grade an analysis, along with advice for improvement
-  -H REQUEST_HEADER                    Adds REQUEST_HEADER to the request; must be in double quotes and can be used multiple times, e.g. -H "Host: example.com"
-  -if INPUT_FILE                       Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g., 'server: nginx'
-  -l {es}                              Defines the language for displaying analysis, errors and messages; if omitted, will be printed in English
-  -lic                                 Print the license for 'humble', along with permissions, limitations and conditions
-  -o {csv,html,json,pdf,txt,xlsx,xml}  Exports analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file
-  -of OUTPUT_FILE                      Exports analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter '-o' will be used
-  -op OUTPUT_PATH                      Exports analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of 'humble.py' will be used
-  -p PROXY                             Use a proxy for the analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will be used
-  -r                                   Print HTTP response headers and a detailed analysis; '-b' parameter will take priority
-  -s [SKIP_HEADERS ...]                Skips 'deprecated/insecure' and 'missing' checks for the indicated 'SKIP_HEADERS' (separated by spaces)
-  -u URL                               Scheme, host and port to analyze. E.g., https://google.com or https://google.com:443
-  -ua USER_AGENT                       User-Agent ID from 'additional/user_agents.txt' file to use. '0' will print all and '1' is the default
-  -v, --version                        Checks for updates at https://github.com/rfc-st/humble
+  -h, --help                               show this help message and exit
+  -a                                       Print statistics of the performed analysis; if the '-u' parameter is omitted they will be global
+  -b                                       Print overall findings; if omitted detailed ones will be printed
+  -c                                       Checks URL response HTTP headers for compliance with OWASP 'Secure Headers Project' best practices
+  -cicd                                    Print only analysis summary, totals and grade in JSON; suitable for CI/CD
+  -df                                      Do not follow redirects; if omitted the last redirection will be the one analyzed
+  -e [TESTSSL_PATH]                        Print only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
+  -f [FINGERPRINT_TERM]                    Print fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 results will be printed
+  -g                                       Print guidelines for enabling security HTTP response headers on popular frameworks, servers and services
+  -grd                                     Print the checks to grade an analysis, along with advice for improvement
+  -H REQUEST_HEADER                        Adds REQUEST_HEADER to the request; must be in double quotes and can be used multiple times, e.g. -H "Host: example.com"
+  -if INPUT_FILE                           Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g., 'server: nginx'
+  -l {es}                                  Defines the language for displaying analysis, errors and messages; if omitted, will be printed in English
+  -lic                                     Print the license for 'humble', along with permissions, limitations and conditions
+  -o {all,csv,html,json,pdf,txt,xlsx,xml}  Exports analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file.
+  -of OUTPUT_FILE                          Exports analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter '-o' will be used
+  -op OUTPUT_PATH                          Exports analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of 'humble.py' will be used
+  -p PROXY                                 Use a proxy for the analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will be used
+  -r                                       Print HTTP response headers and a detailed analysis; '-b' parameter will take priority
+  -s [SKIP_HEADERS ...]                    Skips 'deprecated/insecure' and 'missing' checks for the indicated 'SKIP_HEADERS' (separated by spaces)
+  -u URL                                   Scheme, host and port to analyze. E.g., https://google.com or https://google.com:443
+  -ua USER_AGENT                           User-Agent ID from 'additional/user_agents.txt' file to use. '0' will print all and '1' is the default
+  -v, --version                            Checks for updates at https://github.com/rfc-st/humble
 
 examples:
   -u URL -a                            Print statistics of the analysis performed against the URL

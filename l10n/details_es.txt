@@ -973,6 +973,9 @@ Cabeceras de respuesta HTTP
 [report]
  guardado en
 
+[all_reports]
+ Análisis exportados, en todos los formatos disponibles, en
+
 [0section]
 [0. Información]
 
@@ -2080,6 +2083,9 @@ Generador
 
 [test_detailed_analysis]
  verifica que un análisis detallado finalice correctamente.
+
+[test_export_all]
+ verifica que un análisis se exporte a todos los formatos disponibles.
 
 [test_export_csv]
  verifica que se exporte a CSV un análisis detallado.
