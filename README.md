@@ -372,7 +372,7 @@ options:
   -if INPUT_FILE                           Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g., 'server: nginx'
   -l {es}                                  Defines the language for displaying analysis, errors and messages; if omitted, will be printed in English
   -lic                                     Print the license for 'humble', along with permissions, limitations and conditions
-  -o {all,csv,html,json,pdf,txt,xlsx,xml}  Exports analysis to 'humble_scheme_URL_port_yyyymmdd_hhmmss_language.ext' file.
+  -o {all,csv,html,json,pdf,txt,xlsx,xml}  Export the analysis to the specified format; 'all' will export to all formats except xlsx (WIP)
   -of OUTPUT_FILE                          Exports analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter '-o' will be used
   -op OUTPUT_PATH                          Exports analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of 'humble.py' will be used
   -p PROXY                                 Use a proxy for the analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will be used

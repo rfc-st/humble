@@ -3808,8 +3808,8 @@ parser.add_argument("-lic", dest='license', action="store_true", help="Print \
 the license for 'humble', along with permissions, limitations and conditions")
 parser.add_argument("-o", dest='output', choices=['all', 'csv', 'html', 'json',
                                                   'pdf', 'txt', 'xlsx', 'xml'],
-                    help="Exports analysis to 'humble_scheme_URL_port_yyyymmdd\
-_hhmmss_language.ext' file.")
+                    help="Export the analysis to the specified format; 'all' \
+will export to all formats except xlsx (WIP)")
 parser.add_argument("-of", dest='output_file', type=str, help="Exports \
 analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 '-o' will be used")
