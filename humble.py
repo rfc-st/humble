@@ -177,7 +177,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-02-27', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-02-28', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1979,19 +1979,50 @@ def print_unsupported_headers(unsupported_headers):
     sys.exit(1)
 
 
+def check_export_scope():
+    """
+    Determines the scope of the export process based on the `-o` option.
+
+    If the value of that option is not `all` (e.g., `csv`), it proceeds to
+    export the analysis in that format; otherwise, it exports it to all
+    supported formats.
+    """
+    if args.output != 'all':
+        check_output_format(args, final_filename, reliable, tmp_filename)
+    else:
+        export_all_formats(final_filename, tmp_filename)
+        sys.exit(0)
+
+
 def export_all_formats(final_filename, tmp_filename):
-    export_pdf_file(tmp_filename, export_all=True)
+    """
+    Exports the analysis to all supported formats, triggered when the `-o`
+    option is set to `all`.
+
+    This function sequentially invokes the functions for CSV, JSON,
+    XML, HTML, PDF, and TXT exports. It passes the `export_all` flag where
+    applicable to ensure consistent processing and terminates execution after
+    displaying the final export path.
+    """
     generate_csv(final_filename, tmp_filename, export_all=True)
     generate_json(final_filename, tmp_filename, export_all=True)
     generate_xml(final_filename, tmp_filename, export_all=True)
     export_html_file(final_filename, tmp_filename, export_all=True)
+    export_pdf_file(tmp_filename, export_all=True)
     generate_txt(tmp_filename)
     print_export_path(final_filename, reliable, export_all=True)
     sys.exit(0)
 
 
 def finalize_export(f_name, t_name, ext, export_all):
-    """Finalize the export process and handle termination or renaming"""
+    """
+    Manages the completion of exporting an analysis, handling file cleanup,
+    renaming, and process termination logic.
+
+    If `export_all` is `False` (standalone mode), it displays the final file
+    path, removes temporary artifacts, and terminates execution. If `True`
+    (batch mode), it renames the generated file with the appropriate extension.
+    """
     if not export_all:
         print_export_path(f_name, reliable)
         remove(t_name)
@@ -2890,8 +2921,8 @@ def format_pdf_lines(line, pdf, ypos):
     Identify lines, by length and content, to apply formatting; related to
     analysis exported to PDF
     """
-    if len(line) > 101:
-        chunks = [line[i:i + 101] for i in range(0, len(line), 101)]
+    if len(line) > 102:
+        chunks = [line[i:i + 102] for i in range(0, len(line), 102)]
         set_pdf_chunks(chunks, pdf)
         pdf.ln(h=2)
         return
@@ -4876,13 +4907,9 @@ print_detail_r('[7result]')
 if '-c' not in sys.argv:
     get_analysis_results()
 
-# Exporting analysis results according to the file type
+# Export analysis according to the scope (single format or all of them)
 if args.output:
     final_filename = f"{tmp_filename[:-5]}.{args.output}"
     sys.stdout = orig_stdout
     tmp_filename_content.close()
-    if args.output != 'all':
-        check_output_format(args, final_filename, reliable, tmp_filename)
-    else:
-        export_all_formats(final_filename, tmp_filename)
-        sys.exit(0)
+    check_export_scope()
