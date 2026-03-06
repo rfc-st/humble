@@ -760,6 +760,9 @@
 [iwreprdigi_h]
  Want-Repr-Digest (Algoritmos inseguros)
 
+[iseclft_h]
+ Sec-Private-State-Token-Lifetime (Valores incorrectos)
+
 [itim_h]
  Server-Timing (Cabecera potencialmente insegura)
 
@@ -1456,6 +1459,10 @@ Cabeceras de respuesta HTTP
 [itao]
  El valor '*' permite a cualquier origen ver recursos pontencialmente sensibles.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin
+
+[iseclft]
+ Se ignora cualquier valor que no sea numérico en esta cabecera.
+ Ref: https://mdn.io/Sec-Private-State-Token-Lifetime
 
 [itim]
  Esta cabecera no debe exponer datos sensibles o de infraestructura.

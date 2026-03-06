@@ -759,6 +759,9 @@
 [iwreprdigi_h]
  Want-Repr-Digest (Unsafe Algorithms)
 
+[iseclft_h]
+ Sec-Private-State-Token-Lifetime (Incorrect Value)
+
 [itim_h]
  Server-Timing (Potentially Unsafe Header)
 
@@ -1455,6 +1458,10 @@ HTTP Response Headers
 [itao]
  The value '*' gives permission to any origin to see timing resources.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Timing-Allow-Origin
+
+[iseclft]
+ Any value other than a numeric value in this header is ignored.
+ Ref: https://mdn.io/Sec-Private-State-Token-Lifetime
 
 [itim]
  This header should not expose sensitive application or infrastructure information.

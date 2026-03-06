@@ -126,6 +126,7 @@ Report-To: Deprecated Header
 Reporting-Endpoints: Ignored Value
 Repr-Digest: No Secure Algorithms
 Repr-Digest: Unsafe Algorithms
+Sec-Private-State-Token-Lifetime: Incorrect Value
 Server-Timing: Potentially Unsafe Header
 Service-Worker-Allowed: Unsafe Value
 Set-Cookie: Cookie Prefixes

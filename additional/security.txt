@@ -65,6 +65,7 @@ Refresh
 Report-To
 Reporting-Endpoints
 Repr-Digest
+Sec-Private-State-Token-Lifetime
 Server-Timing
 Set-Cookie
 Set-Login
