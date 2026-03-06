@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--02--28-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--03--06-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -355,7 +355,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {all,csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-02-28
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-03-06
 
 options:
   -h, --help                               show this help message and exit
@@ -372,7 +372,7 @@ options:
   -if INPUT_FILE                           Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g., 'server: nginx'
   -l {es}                                  Defines the language for displaying analysis, errors and messages; if omitted, will be printed in English
   -lic                                     Print the license for 'humble', along with permissions, limitations and conditions
-  -o {all,csv,html,json,pdf,txt,xlsx,xml}  Export the analysis to the specified format; 'all' will export to all formats except xlsx (WIP)
+  -o {all,csv,html,json,pdf,txt,xlsx,xml}  Export the analysis to the specified format; 'all' will export to all formats
   -of OUTPUT_FILE                          Exports analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter '-o' will be used
   -op OUTPUT_PATH                          Exports analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of 'humble.py' will be used
   -p PROXY                                 Use a proxy for the analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will be used
@@ -596,7 +596,7 @@ Thanks for downloading _humble_, for trying it and for your time!.
 * <a href="https://github.com/kazet">kazet</a> for <a href="https://github.com/rfc-st/humble/pull/18">this</a> suggestion.
 * <a href="https://github.com/manuel-sommer">manuel-sommer</a> for <a href="https://github.com/rfc-st/humble/issues/8">this</a>, <a href="https://github.com/rfc-st/humble/issues/10">this</a> and <a href="https://github.com/rfc-st/humble/issues/13">this</a>!.
 * <a href="https://github.com/mfabbri">mfabbri</a> for <a href="https://github.com/rfc-st/humble/issues/25">this</a>.
-* <a href="https://github.com/mgrottenthaler">mgrottenthaler</a> for <a href="https://github.com/rfc-st/humble/issues/27">this</a> and <a href="https://github.com/rfc-st/humble/issues/33">this</a>.
+* <a href="https://github.com/mgrottenthaler">mgrottenthaler</a> for <a href="https://github.com/rfc-st/humble/issues/27">this</a>, <a href="https://github.com/rfc-st/humble/issues/33">this</a> and <a href="https://github.com/rfc-st/humble/issues/41">this!</a>.
 * <a href="https://github.com/MikeAnast">MikeAnast</a> for <a href="https://github.com/rfc-st/humble/pull/22">several</a> suggestions.
 * <a href="https://github.com/multipartninja">multipartninja</a> for <a href="https://github.com/rfc-st/humble/issues/35">this</a> and <a href="https://github.com/rfc-st/humble/issues/36">this</a>.
 * <a href="https://github.com/n3bojs4">n3bojs4</a>, <a href="https://github.com/ehlewis">ehlewis</a> and <a href="https://github.com/dkadev">dkadev</a> for <a href="https://github.com/rfc-st/humble/issues/7">this</a> and <a href="https://github.com/rfc-st/humble/pull/16">this</a>.

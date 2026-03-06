@@ -177,7 +177,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-02-28', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-03-06', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -372,7 +372,7 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
 
 def print_l10n_file(args, l10n_file, slice_ln=False):
     """
-    Print the contents of a file based on the language provided and terminates
+    Print the contents of a file based on the language provided and terminate
     execution
     """
     lang_es = args.lang == 'es'
@@ -391,7 +391,7 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
 
 def testssl_command(testssl_temp_path, uri):
     """
-    Prepare the TLS/SSL analysis and terminates execution based on user
+    Prepare the TLS/SSL analysis and terminate execution based on user
     compliance, related to `-e` option
 
     ??? tip
@@ -617,7 +617,7 @@ def adjust_old_analysis(url_ln):
 def url_analytics(is_global=False):
     """
     Print analysis statistics for all analyses performed on a URL and
-    terminates execution, related to `-a` option
+    terminate execution, related to `-a` option
     """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
     with open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
@@ -1985,7 +1985,7 @@ def check_export_scope():
 
     If the value of that option is not `all` (e.g., `csv`), it proceeds to
     export the analysis in that format; otherwise, it exports it to all
-    supported formats.
+    supported formats and terminate execution.
     """
     if args.output != 'all':
         check_output_format(args, final_filename, reliable, tmp_filename)
@@ -1999,12 +1999,13 @@ def export_all_formats(final_filename, tmp_filename):
     Exports the analysis to all supported formats, triggered when the `-o`
     option is set to `all`.
 
-    This function sequentially invokes the functions for CSV, JSON,
+    This function sequentially invokes the functions for CSV, XLSX, JSON,
     XML, HTML, PDF, and TXT exports. It passes the `export_all` flag where
-    applicable to ensure consistent processing and terminates execution after
+    applicable to ensure consistent processing and terminate execution after
     displaying the final export path.
     """
     generate_csv(final_filename, tmp_filename, export_all=True)
+    generate_csv(final_filename, tmp_filename, to_xlsx=True, export_all=True)
     generate_json(final_filename, tmp_filename, export_all=True)
     generate_xml(final_filename, tmp_filename, export_all=True)
     export_html_file(final_filename, tmp_filename, export_all=True)
@@ -2166,8 +2167,8 @@ def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
 def generate_csv(final_filename, temp_filename, to_xlsx=False,
                  export_all=False):
     """
-    CSV export of the analysis and terminates execution, related to `-o csv`
-    option
+    CSV or XSLX export of the analysis and terminates execution, related to
+    `-o csv` option
 
     ??? note
         This function uses `defusedcsv` to mitigate formula injection attacks
@@ -2185,8 +2186,9 @@ def generate_csv(final_filename, temp_filename, to_xlsx=False,
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
         parse_csv(csv_section, txt_source.read(), csv_writer)
     if to_xlsx:
-        generate_xlsx(final_filename, temp_filename)
-    finalize_export(final_filename, temp_filename, 'csv', export_all)
+        generate_xlsx(final_filename, temp_filename, export_all)
+    else:
+        finalize_export(final_filename, temp_filename, 'csv', export_all)
 
 
 def parse_csv(csv_section, csv_source, csv_writer):
@@ -2204,7 +2206,7 @@ def parse_csv(csv_section, csv_source, csv_writer):
             csv_writer.writerow([i, clean_ln])
 
 
-def generate_xlsx(final_filename, temp_filename):
+def generate_xlsx(final_filename, temp_filename, export_all=False):
     """
     XLSX spreadsheet export of the analysis and terminates execution, related
     to `-o xlsx` option
@@ -2218,9 +2220,7 @@ def generate_xlsx(final_filename, temp_filename):
     set_xlsx_metadata(workbook)
     set_xlsx_content(final_filename, workbook)
     workbook.close()
-    print_export_path(final_filename, reliable)
-    remove(temp_filename)
-    sys.exit(0)
+    finalize_export(final_filename, temp_filename, 'xlsx', export_all)
 
 
 def set_xlsx_metadata(workbook):
@@ -3347,17 +3347,19 @@ def print_http_exception(exception_id, exception_v):
     raise SystemExit from exception_v
 
 
-def check_ru_scope():
+def check_russian_scope():
     """
-    Blocks analysis of Russian domains
+    Validate if the target domain is within the Russian scope and terminate
+    execution if so.
 
     ??? note
         You can read my reasons <a href="https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326" target="_blank">here</a>.
     """  # noqa: E501
+    domain = urlparse(URL).netloc.split(':')[0]
     try:
-        sff = urlparse(URL).netloc.split(':')[0].encode('ascii').decode('idna')
+        sff = domain.encode('ascii').decode('idna')
     except UnicodeError:
-        sff = urlparse(URL).netloc.split(':')[0]
+        sff = domain
     if sff.split('.')[-1].upper() in {'RU', 'РФ'}:
         print_detail('[ru_check]', 3)
         sys.exit(1)
@@ -3675,7 +3677,9 @@ def parse_request_headers(request_headers):
 
 def process_request_headers(request_headers):
     """
-    Verify that the request headers provided are well-formed
+    Verify that the request headers provided are well-formed. It will
+    terminate execution if empty entries are found, while returning a list of
+    any malformed headers.
     """
     headers = {}
     malformed_headers = []
@@ -3699,8 +3703,12 @@ def process_request_headers(request_headers):
 
 def process_http_request(status_code, reliable, body, proxy, custom_headers):
     """
-    Perform an HTTP request to the provided URL with timeout handling and
-    response processing
+    Perform an HTTP request using a background thread to manage response
+    processing and ensure the target URL is reachable within a set timeout.
+
+    The analysis is flagged as unreliable if a response isn't received within
+    the (`REQ_TIMEOUT` - `REQ_WARNING`) constants. The function will terminate
+    execution if the request exceeds the `REQ_TIMEOUT` constant.
     """
     result = {}
     done = Event()
@@ -3809,7 +3817,7 @@ the license for 'humble', along with permissions, limitations and conditions")
 parser.add_argument("-o", dest='output', choices=['all', 'csv', 'html', 'json',
                                                   'pdf', 'txt', 'xlsx', 'xml'],
                     help="Export the analysis to the specified format; 'all' \
-will export to all formats except xlsx (WIP)")
+will export to all formats")
 parser.add_argument("-of", dest='output_file', type=str, help="Exports \
 analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 '-o' will be used")
@@ -3850,7 +3858,7 @@ if '-f' in sys.argv:
 URL = args.URL
 
 if URL is not None:
-    check_ru_scope()
+    check_russian_scope()
 
 if '-cicd' in sys.argv:
     args.output = 'txt'
