@@ -2217,6 +2217,9 @@ Generador
 [test_redirects]
  verifica que no se sigan las redirecciones en un análisis detallado.
 
+[test_incomplete_request_headers]
+ verifica que se muestre un error ante cabeceras de petición incompletas.
+
 [test_malformed_request_headers]
  verifica que se muestre un error ante cabeceras de petición malformadas.
 

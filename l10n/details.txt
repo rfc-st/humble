@@ -2237,6 +2237,9 @@ Generator
 [test_redirects]
  verify the parameter of not following redirects in an analysis is honored.
 
+[test_incomplete_request_headers]
+ verify an error is displayed for incomplete request headers.
+
 [test_malformed_request_headers]
  verify an error is displayed for malformed request headers.
 

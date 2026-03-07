@@ -220,6 +220,8 @@ TEST_CFGS = {
     'test_proxy_unreachable': (['-u', TEST_URLS[9], '-p', TEST_URLS[7]],
                                'reachable'),
     'test_redirects': (['-u', TEST_URLS[9], '-df'], 'Analysis Grade:'),
+    'test_incomplete_request_headers': (
+        ['-u', TEST_URLS[9], '-H', 'Cache-Control:'], 'malformed'),
     'test_malformed_request_headers': (
         ['-u', TEST_URLS[9], '-H', 'Cache-Control no-cache'], 'malformed'),
     'test_request_exception': (['-u', TEST_URLS[12]], 'Request', 25),
