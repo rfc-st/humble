@@ -2222,6 +2222,9 @@ Generator
 [test_non_existent_output_path]
  verify an error message is displayed when defining a non-existent export path.
 
+[test_outdated_humble]
+ verify an error message is displayed when the local version of humble.py is outdated.
+
 [test_owasp_compliance]
  verify the results of the OWASP 'Secure Headers Project' compliance check are displayed.
 
@@ -2279,8 +2282,14 @@ Generator
 [test_unsupported_header]
  verify an error is displayed for headers requested to be excluded but not supported.
 
+[test_unsupported_python_version]
+ verify an error message is displayed with Python versions below the minimum supported.
+
 [test_updates]
  verify the functionality of checking for updates.
+
+[test_updates_error]
+ verify an error is displayed when the update check fails.
 
 [test_url_statistics]
  verify statistics are displayed for a specific URL.

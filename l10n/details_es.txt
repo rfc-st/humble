@@ -2202,6 +2202,9 @@ Generador
 [test_non_existent_output_path]
  verifica que se muestre un mensaje de error al definir una ruta de exportación inexistente.
 
+[test_outdated_humble]
+ verifica que se muestre un mensaje de error si la versión local de humble.py no está actualizada.
+
 [test_owasp_compliance]
  verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
 
@@ -2259,8 +2262,14 @@ Generador
 [test_unsupported_header]
  verifica que las cabeceras indicadas a excluir en el análisis realmente se analicen.
 
+[test_unsupported_python_version]
+ verifica que se muestre mensaje de error con versiones de Python inferiores a la mínima compatible.
+
 [test_updates]
  verifica que la lógica para comprobar actualizaciones funcione correctamente.
+
+[test_updates_error]
+ Verifica que se muestre un error cuando falle la comprobación de actualizaciones.
 
 [test_url_statistics]
  verifica que se muestren las estadísticas para una URL concreta analizada.

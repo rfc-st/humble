@@ -30,14 +30,17 @@
 import sys
 import shutil
 import subprocess
+import importlib.util
 from platform import system
-from datetime import datetime
 from contextlib import suppress
+from unittest.mock import patch
+from datetime import datetime, date
 from os import listdir, path, remove, fsync
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 # Third-Party imports
 import pytest
+from requests.exceptions import RequestException
 
 # To-Do: Enable code coverage in Windows
 WIN_COV_ERROR = (
@@ -104,9 +107,13 @@ REQUIRED_PYTHON_VERSION = (3, 11)
 
 # Definition of unit tests; for each item:
 #
-# - Key: The name of the unit test.
+# - Key: The name of the unit test:
+#
+#        Matches an entry in the files 'details.txt' and 'details_es.txt' in
+#        '../l10n/' path to print its description.
+#
 # - Value: A tuple containing the command-line arguments for the test and the
-#          expected console output.
+#          expected string output.
 TEST_CFGS = {
     'test_help': (['-h'], 'want to contribute?'),
     'test_all_headers': (['-u', TEST_URLS[2], '-if', PATHS['ALL_HEADERS']],
@@ -205,6 +212,7 @@ TEST_CFGS = {
                                   PATHS['NO_SEC_HEADERS']], 'are present'),
     'test_non_existent_output_path': (['-u', TEST_URLS[9], '-o', 'txt', '-op',
                                        HUMBLE_OUTPUT_PATHS[1]], 'Error:'),
+    'test_outdated_humble': ([], 'humble'),
     'test_owasp_compliance': (['-u', TEST_URLS[9], '-c'],
                               'non-recommended values'),
     'test_owasp_perfect_compliance': (['-u', TEST_URLS[9], '-c', '-if',
@@ -237,7 +245,9 @@ TEST_CFGS = {
     'test_unreliable_analysis': (['-u', TEST_URLS[10]], 'Not'),
     'test_unsupported_header': (['-u', TEST_URLS[9], '-s', 'testhumbleheader'],
                                 'testhumbleheader'),
+    'test_unsupported_python_version': ([], 'humble'),
     'test_updates': (['-v'], 'Keeping your security tools'),
+    'test_updates_error': (['-v'], 'error'),
     'test_url_statistics': (['-u', TEST_URLS[5], '-if', PATHS['ALL_HEADERS'],
                              '-a'], 'Empty headers'),
     'test_url_insufficient_statistics': (['-u', TEST_URLS[6], '-if',
@@ -256,6 +266,10 @@ TEST_CFGS = {
     'test_wrong_testssl': (['-u', TEST_URLS[9], '-e',
                             HUMBLE_WRONG_TESTSSL_DIR], 'not found'),
 }
+
+# Required to access and mock internal functions in 'humble.py'
+_spec = importlib.util.spec_from_file_location("humble", HUMBLE_MAIN_FILE)
+humble_module = importlib.util.module_from_spec(_spec)
 
 
 class _Args:
@@ -367,6 +381,25 @@ for key in TEST_CFGS.keys():
     globals()[key] = make_test_func(key)
 
 
+def test_outdated_humble(capsys):
+    """
+    Verify an error is displayed when the local version of humble.py
+    is more than 30 days older than the GitHub version.
+    """
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main = l10n_main
+    humble_module.args = args
+    humble_module.STYLE = ('', '', '', '', '')
+    mock_github_version = date(2026, 3, 6)
+    mock_local_version = date(2026, 1, 1)
+    mock_days_diff = (mock_github_version - mock_local_version).days
+    humble_module.check_updates_diff(mock_days_diff, mock_github_version,
+                                     mock_local_version)
+    captured = capsys.readouterr()
+    assert mock_github_version.isoformat() in captured.out
+
+
 def test_python_version():
     """
     Returns an error message if the current Python version does not meet the
@@ -377,6 +410,39 @@ def test_python_version():
             f"{get_detail('[test_pythonm]', replace=True)} "
             f"{sys.version_info.major}.{sys.version_info.minor}"
         )
+
+
+def test_unsupported_python_version(capsys):
+    """
+    Verify an error is displayed if using a python version below the minimum
+    supported.
+    """
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main = l10n_main
+    humble_module.args = args
+    with patch('sys.version_info', (3, 10, 0)):
+        with pytest.raises(SystemExit) as wrapped_exit:
+            humble_module.check_python_version()
+        assert wrapped_exit.value.code == 1
+    captured = capsys.readouterr()
+    assert "humble" in captured.out.lower()
+
+
+def test_updates_error(capsys):
+    """
+    Verify an error message is displayed if the GitHub update check fails.
+    """
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main = l10n_main
+    humble_module.args = args
+    with patch('requests.get', side_effect=RequestException):
+        with pytest.raises(SystemExit) as wrapped_exit:
+            humble_module.check_updates(date(2026, 1, 1))
+        assert wrapped_exit.value.code == 1
+    captured = capsys.readouterr()
+    assert "error" in captured.out.lower()
 
 
 def test_missing_arguments():
@@ -500,7 +566,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2026-03-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-03-07', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

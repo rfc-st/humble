@@ -178,7 +178,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-03-06', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-03-07', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1373,19 +1373,20 @@ def delete_lines(reliable=True):
 
 def print_export_path(filename, reliable, export_all=False):
     """
-    Prints the export path for the `-o` option. If `export_all` is `False`, it
-    prints the full file path; otherwise, it prints the directory
-    containing all generated analysis reports.
+    Prints the export path for the `-o` option. It displays the file path
+    for single reports or the directory for bulk exports.
     """
     delete_lines(reliable=False) if reliable else delete_lines()
-    if '-c' not in sys.argv:
-        if export_all is False:
-            print(f"\n {args.output.upper()} "
-                  f"{print_detail_s('[report]').lstrip()}"
-                  f"'{path.abspath(filename)}'.")
-        else:
-            print(f"\n {print_detail_s('[all_reports]').lstrip()}"
-                  f" '{path.dirname(path.abspath(filename))}'.")
+    if '-c' in sys.argv:
+        return
+    abs_path = path.abspath(filename)
+    if export_all:
+        msg = f"{print_detail_s('[all_reports]').lstrip()} \
+'{path.dirname(abs_path)}'."
+    else:
+        msg = f"{args.output.upper()} {print_detail_s('[report]').lstrip()} \
+'{abs_path}'."
+    print(f"\n {msg}")
 
 
 def print_nowarnings():
@@ -1992,7 +1993,6 @@ def check_export_scope():
         check_output_format(args, final_filename, reliable, tmp_filename)
     else:
         export_all_formats(final_filename, tmp_filename)
-        sys.exit(0)
 
 
 def export_all_formats(final_filename, tmp_filename):
