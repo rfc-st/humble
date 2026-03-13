@@ -105,6 +105,9 @@
 [http_451]
  Nota : La URL devuelve un error (Código HTTP 451, 'Unavailable For Legal Reasons')
 
+[http_4xx]
+ Nota : La URL devuelve un error (Código HTTP
+
 [server_500]
  Error en servidor (Código HTTP 500, 'Internal Server Error')
 

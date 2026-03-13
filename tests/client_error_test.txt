@@ -1,4 +1,4 @@
-HTTP/2 403 
+HTTP/2 403
 server: nginx
 date: Wed, 10 Dec 2025 17:01:06 GMT
 content-type: text/html; charset=utf-8

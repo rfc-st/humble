@@ -91,6 +91,8 @@ HTML_TAGS = ('</a>', '<a href="', '">', '<span class="ko">',
              '<br>', '</pre></details></div><pre>', '</pre><br></body></html>',
              '<strong>', '</strong>', '&nbsp;<font color="', '</font><br><br>',
              '</font>', '<font color="')
+HTTP_ERROR_CODES = {*range(400, 408), *range(409, 418), *range(421, 427), 428,
+                    429, 431, 451}
 HTTP_SCHEMES = ('http:', 'https:')
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
 HUMBLE_DIRS = ('additional', 'l10n')
@@ -178,7 +180,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-03-12', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-03-13', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1423,7 +1425,11 @@ def print_general_info(reliable, export_filename):
 
 
 def print_basic_info(export_filename):
-    """Print basic information in the `[0. Info]` section of the analysis"""
+    """
+    Print basic analysis details to the `[0. Info]` section: date, time, URL,
+    User-Agent (`-ua` option), input file (`-if` option) and exported filename
+    (`-o` option)
+    """
     print(linesep.join(['']*2) if args.output == 'html' or not args.output
           else "")
     print_detail_r('[0section]')
@@ -1443,7 +1449,11 @@ def print_basic_info(export_filename):
 
 
 def print_extended_info(args, reliable, status_code):
-    """Print extended information in the `[0. Info]` section of the analysis"""
+    """
+    Print extended analysis details to the `[0. Info]` section: request
+    (`-H` option) and skipped (`-s` option) headers, proxy usage (`-p` option)
+    and specific HTTP 4xx errors
+    """
     if args.request_header:
         print_request_headers(added_request_headers)
     if args.skip_headers:
@@ -1457,12 +1467,16 @@ def print_extended_info(args, reliable, status_code):
 
 
 def print_extra_info(reliable):
-    """Print extra information in the `[0. Info]` section of the analysis"""
-    if (status_code is not None and 400 <= status_code <= 451):
+    """
+    Print supplementary analysis details to the `[0. Info]` section: specific
+    4xx errors, reliability warnings and redirects (`-df` option)
+    """
+    if status_code in HTTP_ERROR_CODES:
         id_mode = f'[http_{status_code}]'
-        if detail := print_detail(id_mode, 0):
-            print(detail)
+        print_detail(id_mode, 0)
         print(f"{URL_LIST[2]}{status_code}")
+    elif (status_code is not None and 400 <= status_code <= 451):
+        print(f"{get_detail('[http_4xx]', replace=True)} {status_code})")
     if reliable:
         print(get_detail('[unreliable_analysis_note]', replace=True))
     if args.redirects:
