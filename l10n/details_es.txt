@@ -2079,6 +2079,9 @@ Generador
 [test_client_error_response]
  verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
 
+[test_client_unsupported_error]
+ verifica que el análisis muestre un mensaje para los códigos de error HTTP 4xx no soportados.
+
 [test_corner_cases]
  verifica que se comprueben casos específicos en varias cabeceras.
 

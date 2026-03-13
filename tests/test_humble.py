@@ -101,7 +101,7 @@ TEST_URLS = ('https://github.com/rfc-st/humble',
              'ftp://google.com', 'https://\u0442\u0435\u0441\u0442.ru',
              'https://httpbin.org/status/529',
              'https://httpbin.org/status/520',
-             'http://nonexistenturl.com')
+             'http://nonexistenturl.com', 'https://httpbin.org/status/432')
 
 REQUIRED_PYTHON_VERSION = (3, 11)
 
@@ -136,6 +136,7 @@ TEST_CFGS = {
     'test_cicd_analysis': (['-u', TEST_URLS[9], '-cicd'], 'Analysis Grade'),
     'test_client_error_response': (['-u', TEST_URLS[1], '-if',
                                     PATHS['CLIENT_ERROR']], 'HTTP code'),
+    'test_client_unsupported_error': (['-u', TEST_URLS[18]], 'HTTP code'),
     'test_corner_cases': (['-u', TEST_URLS[2], '-if', PATHS['CORNER_CASES']],
                           'Analysis Grade'),
     'test_corner_cases_brief': (['-u', TEST_URLS[2], '-if',

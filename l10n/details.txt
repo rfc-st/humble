@@ -2099,6 +2099,9 @@ Generator
 [test_client_error_response]
  verify the analysis shows the HTTP 4xx error code response.
 
+[test_client_unsupported_error]
+ verify the analysis shows a message for unsupported HTTP 4xx error codes.
+
 [test_corner_cases]
  verify corner cases of headers are analyzed.
 
