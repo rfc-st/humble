@@ -1963,8 +1963,8 @@ examples:
 
 want to contribute?:
   How to                               https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
-  References (classes and functions)   https://humble.readthedocs.io/en/latest/references.html
   Acknowledgements                     https://github.com/rfc-st/humble/#acknowledgements
+  References and unit tests            https://humble.readthedocs.io
 
 [fng_value]
 Value:
