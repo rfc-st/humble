@@ -2189,6 +2189,9 @@ Generator
 [test_fingerprint_term_no_results]
  verify an error is displayed for a specific fingerprint term for which no data is available.
 
+[test_file_access_errors]
+ verify an error is displayed if the history or export files can not be accessed or created.
+
 [test_global_statistics]
  verify statistics are displayed for all analyses performed.
 

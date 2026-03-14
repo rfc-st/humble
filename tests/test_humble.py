@@ -50,6 +50,7 @@ WIN_COV_ERROR = (
 if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
     pytest.fail(WIN_COV_ERROR)
 
+ASSERT_STR = ["error", "Error"]
 EXTENDED_TAGS = ['[test_python_version]', '[test_missing_arguments]']
 HUMBLE_TESTS_DIR = path.dirname(__file__)
 HUMBLE_TEMP_HISTORY = path.join(HUMBLE_TESTS_DIR, 'analysis_h.txt')
@@ -192,6 +193,7 @@ TEST_CFGS = {
     'test_fingerprint_groups': (['-f'], 'Top 20 groups'),
     'test_fingerprint_term': (['-f', 'Google'], 'Headers related to'),
     'test_fingerprint_term_no_results': (['-f', 'TestingHumble'], 'quote'),
+    'test_file_access_errors': ([], 'Error'),
     'test_global_statistics': (['-a'], 'Empty headers'),
     'test_http_exception': (['-u', TEST_URLS[13]], 'scheme'),
     'test_input_file': (['-u', TEST_URLS[2], '-if', HUMBLE_INPUT_FILE],
@@ -398,12 +400,37 @@ def test_cicd_error(capsys):
     humble_module.l10n_main = l10n_main
     humble_module.args = args
     with patch.object(humble_module, 'get_cicd_labels', side_effect=Exception):
-        with patch.object(humble_module, 'get_detail', return_value="Error"):
+        with patch.object(humble_module, 'get_detail',
+                          return_value=ASSERT_STR[1]):
             with pytest.raises(SystemExit) as wrapped_exit:
                 humble_module.print_cicd_totals("any_file.tmp")
             assert wrapped_exit.value.code == 1
     captured = capsys.readouterr()
-    assert "error" in captured.out.lower()
+    assert ASSERT_STR[0] in captured.out.lower()
+
+
+def test_file_access_errors(capsys):
+    """
+    Verify an error is displayed if the export or history files can not be
+    accessed or created
+    """
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main, humble_module.args = l10n_main, args
+    with patch("builtins.open", side_effect=OSError), \
+         patch.object(humble_module, 'delete_lines'):
+        _, res = humble_module.validate_file_access("f.txt", context='history')
+        assert res[0] in ("Not available", "No disponible")
+        with patch.object(humble_module, 'get_detail',
+                          return_value=HUMBLE_TEMP_HISTORY):
+            humble_module.validate_file_access("f.txt", context='basic')
+            assert HUMBLE_TEMP_HISTORY in capsys.readouterr().out.lower()
+        with patch.object(humble_module, 'get_detail',
+                          return_value=ASSERT_STR[1]):
+            with pytest.raises(SystemExit) as wrapped_exit:
+                humble_module.validate_file_access("f.txt", context='export')
+            assert wrapped_exit.value.code == 1
+            assert ASSERT_STR[0] in capsys.readouterr().out.lower()
 
 
 def test_testssl_error(capsys):
@@ -415,7 +442,7 @@ def test_testssl_error(capsys):
             humble_module.testssl_analysis(TESTSSL_CMD)
         assert wrapped_exit.value.code == 1
     captured = capsys.readouterr()
-    assert "error" in captured.out.lower()
+    assert ASSERT_STR[0] in captured.out.lower()
 
 
 def test_outdated_humble(capsys):
@@ -479,7 +506,7 @@ def test_updates_error(capsys):
             humble_module.check_updates(date(2026, 1, 1))
         assert wrapped_exit.value.code == 1
     captured = capsys.readouterr()
-    assert "error" in captured.out.lower()
+    assert ASSERT_STR[0] in captured.out.lower()
 
 
 def test_missing_arguments():

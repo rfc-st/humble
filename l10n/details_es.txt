@@ -2169,6 +2169,9 @@ Generador
 [test_fingerprint_term_no_results]
  verifica que se muestre correctamente un error para el término 'TestingHumble'.
 
+[test_file_access_errors]
+ verifica que se muestre un error si los ficheros de export e histórico de análisis no son accesibles.
+
 [test_global_statistics]
  verifica que se muestren estadísticas sobre todos los análisis realizados.
 
