@@ -2076,6 +2076,9 @@ Generador
 [test_cicd_analysis]
  verifica que un análisis CI/CD finalice correctamente.
 
+[test_cicd_error]
+ verifica que el análisis muestra un error en caso de Excepción en los resultados para CI/CD.
+
 [test_client_error_response]
  verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
 
@@ -2261,6 +2264,9 @@ Generador
 
 [test_skipped_headers]
  verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
+
+[test_testssl_error]
+ verifica que se muestre un mensaje de error ante excepciones durante el análisis TLS/SSL.
 
 [test_unicode_error]
  verifica que las cabeceras de respuesta estén informadas como UTF-8.

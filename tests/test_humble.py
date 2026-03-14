@@ -134,6 +134,7 @@ TEST_CFGS = {
                               PATHS['NO_SEC_HEADERS']], 'E ('),
     'test_brief_analysis': (['-u', TEST_URLS[9], '-b'], 'Analysis Grade:'),
     'test_cicd_analysis': (['-u', TEST_URLS[9], '-cicd'], 'Analysis Grade'),
+    'test_cicd_error': (['-u', TEST_URLS[9], '-cicd'], 'Error'),
     'test_client_error_response': (['-u', TEST_URLS[1], '-if',
                                     PATHS['CLIENT_ERROR']], 'HTTP code'),
     'test_client_unsupported_error': (['-u', TEST_URLS[18]], 'HTTP code'),
@@ -243,6 +244,7 @@ TEST_CFGS = {
     'test_server_error_cdn': (['-u', TEST_URLS[16]], 'Server'),
     'test_skipped_headers': (['-u', TEST_URLS[9], '-s', 'ETAG', 'NEL'],
                              'expressly excluded'),
+    'test_testssl_error': ([], 'Error'),
     'test_unicode_error': (['-u', TEST_URLS[9], '-if', PATHS['UNICODE']],
                            'unicode'),
     'test_unreliable_analysis': (['-u', TEST_URLS[10]], 'Not'),
@@ -269,6 +271,9 @@ TEST_CFGS = {
     'test_wrong_testssl': (['-u', TEST_URLS[9], '-e',
                             HUMBLE_WRONG_TESTSSL_DIR], 'not found'),
 }
+
+TESTSSL_CMD = ['/non_existant_home_for_humble_test/testssl.sh', '-f', '-g',
+               '-p', '-U', '-s', '--hints', 'https://google.com']
 
 # Required to access and mock internal functions in 'humble.py'
 _spec = importlib.util.spec_from_file_location("humble", HUMBLE_MAIN_FILE)
@@ -384,10 +389,39 @@ for key in TEST_CFGS.keys():
     globals()[key] = make_test_func(key)
 
 
+def test_cicd_error(capsys):
+    """
+    Verify an error is displayed if there is an Exception in CI/CD results
+    """
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main = l10n_main
+    humble_module.args = args
+    with patch.object(humble_module, 'get_cicd_labels', side_effect=Exception):
+        with patch.object(humble_module, 'get_detail', return_value="Error"):
+            with pytest.raises(SystemExit) as wrapped_exit:
+                humble_module.print_cicd_totals("any_file.tmp")
+            assert wrapped_exit.value.code == 1
+    captured = capsys.readouterr()
+    assert "error" in captured.out.lower()
+
+
+def test_testssl_error(capsys):
+    """Verify an error is displayed for TLS/SSL check exceptions"""
+    humble_module.l10n_main = l10n_main
+    humble_module.args = args
+    with patch.object(humble_module, 'Popen', side_effect=Exception):
+        with pytest.raises(SystemExit) as wrapped_exit:
+            humble_module.testssl_analysis(TESTSSL_CMD)
+        assert wrapped_exit.value.code == 1
+    captured = capsys.readouterr()
+    assert "error" in captured.out.lower()
+
+
 def test_outdated_humble(capsys):
     """
     Verify an error is displayed when the local version of humble.py
-    is more than 30 days older than the GitHub version.
+    is more than 30 days older than the GitHub version
     """
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)

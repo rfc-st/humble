@@ -2096,6 +2096,9 @@ Generator
 [test_cicd_analysis]
  verify the completion of a CI/CD analysis.
 
+[test_cicd_error]
+ verify an error is displayed in case of an Exception in the CI/CD results summary.
+
 [test_client_error_response]
  verify the analysis shows the HTTP 4xx error code response.
 
@@ -2281,6 +2284,9 @@ Generator
 
 [test_skipped_headers]
  verify the specified headers are excluded from the detailed analysis.
+
+[test_testssl_error]
+ verify an error message is displayed for TLS/SSL check exceptions.
 
 [test_unicode_error]
  verify all response headers are encoded in UTF-8.
