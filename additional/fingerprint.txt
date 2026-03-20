@@ -450,7 +450,7 @@ X-Appengine-Resource-Usage (Google Cloud Platform)
 X-Application-Context (Spring Boot)
 X-Arastta (Arastta eCommerce)
 X-ARequestID (Atlassian Jira)
-X-Aruba-Cache (Aruba HiSpeed Cache WordPress Plugin)a
+X-Aruba-Cache (Aruba HiSpeed Cache WordPress Plugin)
 X-Aruba2-Cache (Aruba HiSpeed Cache WordPress Plugin)
 X-AspNet-Version (Microsoft ASP.NET Framework)
 X-AspNetMvc-Version (Microsoft ASP.NET Framework)
