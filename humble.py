@@ -45,8 +45,8 @@ from shutil import copyfile, which
 from os.path import dirname, abspath
 from socket import create_connection
 from subprocess import PIPE, Popen, STDOUT
-from os import linesep, path, rename, remove
 from collections import Counter, defaultdict
+from os import linesep, path, rename, remove
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 # Third-Party imports
@@ -139,6 +139,7 @@ RE_PATTERN = (
     r"(?<!')nonce-"
 )
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
+RESP_SECTION = ('[HTTP R', '[Cabeceras d')
 REQ_HEADERS = {
     'Accept': (
         'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
@@ -180,7 +181,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-03-20', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-03-21', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2024,10 +2025,63 @@ def export_all_formats(final_filename, tmp_filename):
     generate_json(final_filename, tmp_filename, export_all=True)
     generate_xml(final_filename, tmp_filename, export_all=True)
     export_html_file(final_filename, tmp_filename, export_all=True)
-    export_pdf_file(tmp_filename, export_all=True)
+    normalize_pdf_all_export(tmp_filename)
     generate_txt(tmp_filename)
     print_export_path(final_filename, reliable, export_all=True)
     sys.exit(0)
+
+
+def sections_pdf_all_export(line, in_sec_response, in_sec_headers):
+    """
+    Identifies the lines in an analysis to which a specific format should be
+    applied; applies when exporting to PDF using the `-o` option with the
+    value `all`.
+    """
+    if any(line.startswith(s) for s in BOLD_STRINGS + RESP_SECTION):
+        if line.startswith(RESP_SECTION):
+            return "\n", True, False
+        if line.startswith('[1.'):
+            return "\n", False, True
+        if line.startswith('[2.'):
+            return "\n", False, False
+        return "\n", in_sec_response, in_sec_headers
+    return "", in_sec_response, in_sec_headers
+
+
+def format_pdf_all_export(line, in_sec_response, in_sec_headers):
+    """
+    Formats the previously selected lines in an analysis; applies when
+    exporting to PDF using the `-o` option with the value `all`.
+    """
+    if line.startswith(" "):
+        if in_sec_headers:
+            return f"{line[0]}{STYLE[8]}{line[1:]}"
+        if in_sec_response:
+            return f"{line[0]}{STYLE[6]}{line[1:]}"
+    return line
+
+
+def normalize_pdf_all_export(tmp_filename):
+    """
+    Applies the required formatting to sections and lines of the analysis;
+    applies when exporting to PDF using the `-o` option with the value `all`.
+    """
+    with open(tmp_filename, 'r', encoding='utf-8') as temp_pdf_file:
+        lines = temp_pdf_file.readlines()
+    infosec_idx = next(i for i, line in enumerate(lines) if "[0. Info" in line)
+    in_sec_headers, in_sec_response = False, False
+    final_content = []
+    for line in lines[infosec_idx:]:
+        prefix, in_sec_response, in_sec_headers = sections_pdf_all_export(
+            line, in_sec_response, in_sec_headers
+        )
+        if prefix:
+            final_content.append(prefix)
+        final_content.append(format_pdf_all_export(line, in_sec_response,
+                                                   in_sec_headers))
+    with open(tmp_filename, 'w', encoding='utf-8') as updated_file:
+        updated_file.writelines(final_content)
+    export_pdf_file(tmp_filename, export_all=True)
 
 
 def finalize_export(f_name, t_name, ext, export_all):
