@@ -104,6 +104,7 @@ HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
                 'testssl_windows_es.txt', 'security_guides.txt',
                 'security_guides_es.txt', 'security.txt',
                 'owasp_best_practices.txt')
+INFO_SECTION = ("[0. Info")
 JSON_L10N = ('[json_det_fngheader]', '[json_det_refs]', '[json_det_fngval]')
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
 L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
@@ -181,7 +182,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-03-21', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-03-27', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2024,64 +2025,144 @@ def export_all_formats(final_filename, tmp_filename):
     generate_csv(final_filename, tmp_filename, to_xlsx=True, export_all=True)
     generate_json(final_filename, tmp_filename, export_all=True)
     generate_xml(final_filename, tmp_filename, export_all=True)
-    export_html_file(final_filename, tmp_filename, export_all=True)
+    normalize_html_all_export(final_filename, tmp_filename)
     normalize_pdf_all_export(tmp_filename)
-    generate_txt(tmp_filename)
+    normalize_txt_all_export(tmp_filename)
     print_export_path(final_filename, reliable, export_all=True)
     sys.exit(0)
 
 
-def sections_pdf_all_export(line, in_sec_response, in_sec_headers):
+def normalize_html_all_export(final_filename, tmp_filename):
+    """
+    Applies the required formatting to sections and lines of the analysis when
+    exporting to HTML using the `-o` option with the value `all`.
+    """
+    with open(tmp_filename, 'r', encoding='utf-8') as source_file:
+        lines = source_file.readlines()
+    info_idx = next(i for i, line in enumerate(lines) if INFO_SECTION in line)
+    final_content = lines[:info_idx]
+    in_resp = in_headers = in_browser = False
+    for line in lines[info_idx:]:
+        prefix, in_resp, in_headers, in_browser = sections_html_all_export(
+            line, in_resp, in_headers, in_browser
+        )
+        if prefix:
+            final_content.append(prefix)
+        final_content.append(format_html_all_export(line, in_headers,
+                                                    in_browser))
+    with open(tmp_filename, 'w', encoding='utf-8') as updated_file:
+        updated_file.writelines(final_content)
+    export_html_file(final_filename, tmp_filename, export_all=True)
+
+
+def sections_html_all_export(line, in_sec_response, in_sec_headers,
+                             in_sec_browser):
+    """
+    Identifies the lines in an analysis to which a specific format should be
+    applied; applies when exporting to HTML using the `-o` option with the
+    value `all`.
+    """
+    if not any(line.startswith(s) for s in BOLD_STRINGS + RESP_SECTION):
+        return "", in_sec_response, in_sec_headers, in_sec_browser
+    if line.startswith(RESP_SECTION):
+        return "\n", True, False, False
+    if line.startswith('[1.'):
+        return "\n", False, True, False
+    if line.startswith('[2.'):
+        return "\n", False, False, False
+    if line.startswith('[6.'):
+        return "\n", False, False, True
+    if line.startswith('[7.'):
+        return "\n", False, False, False
+    return "\n", in_sec_response, in_sec_headers, in_sec_browser
+
+
+def format_html_all_export(line, in_sec_headers, in_sec_browser=False):
+    """
+    Formats the previously selected lines in an analysis; applies when
+    exporting to HTML using the `-o` option with the value `all`.
+    """
+    if line.startswith(" ") and in_sec_headers:
+        return f"{line[0]}{STYLE[8]}{line[1:]}"
+    if in_sec_browser and line.strip() and not line.startswith("[6."):
+        line = f" {line}"
+    return line
+
+
+def sections_pdf_all_export(line, in_sec_response, in_sec_headers,
+                            in_sec_browser):
     """
     Identifies the lines in an analysis to which a specific format should be
     applied; applies when exporting to PDF using the `-o` option with the
     value `all`.
     """
-    if any(line.startswith(s) for s in BOLD_STRINGS + RESP_SECTION):
-        if line.startswith(RESP_SECTION):
-            return "\n", True, False
-        if line.startswith('[1.'):
-            return "\n", False, True
-        if line.startswith('[2.'):
-            return "\n", False, False
-        return "\n", in_sec_response, in_sec_headers
-    return "", in_sec_response, in_sec_headers
+    if not any(line.startswith(s) for s in BOLD_STRINGS + RESP_SECTION):
+        return "", in_sec_response, in_sec_headers, in_sec_browser
+    if line.startswith(RESP_SECTION):
+        return "\n", True, False, False
+    if line.startswith('[1.'):
+        return "\n", False, True, False
+    if line.startswith('[2.'):
+        return "\n", False, False, False
+    if line.startswith('[6.'):
+        return "\n", False, False, True
+    if line.startswith('[7.'):
+        return "\n", False, False, False
+    return "\n", in_sec_response, in_sec_headers, in_sec_browser
 
 
-def format_pdf_all_export(line, in_sec_response, in_sec_headers):
+def format_pdf_all_export(line, in_sec_response, in_sec_browser=False):
     """
     Formats the previously selected lines in an analysis; applies when
     exporting to PDF using the `-o` option with the value `all`.
     """
-    if line.startswith(" "):
-        if in_sec_headers:
-            return f"{line[0]}{STYLE[8]}{line[1:]}"
-        if in_sec_response:
-            return f"{line[0]}{STYLE[6]}{line[1:]}"
+    if in_sec_browser and not line.startswith("[6."):
+        if line.startswith("  "):
+            line = f" {line.lstrip(' ')}"
+        elif not line.startswith(" ") and line.strip():
+            line = f" {line}"
+    if in_sec_response and line.startswith(" "):
+        return f"{line[0]}{STYLE[6]}{line[1:]}"
     return line
 
 
 def normalize_pdf_all_export(tmp_filename):
     """
-    Applies the required formatting to sections and lines of the analysis;
-    applies when exporting to PDF using the `-o` option with the value `all`.
+    Applies the required formatting to sections and lines of the analysis when
+    exporting to PDF using the `-o` option with the value `all`.
     """
-    with open(tmp_filename, 'r', encoding='utf-8') as temp_pdf_file:
-        lines = temp_pdf_file.readlines()
-    infosec_idx = next(i for i, line in enumerate(lines) if "[0. Info" in line)
-    in_sec_headers, in_sec_response = False, False
+    with open(tmp_filename, 'r', encoding='utf-8') as source_file:
+        lines = source_file.readlines()
+    info_idx = next(i for i, line in enumerate(lines) if INFO_SECTION in line)
+    in_headers, in_resp, in_browser = False, False, False
     final_content = []
-    for line in lines[infosec_idx:]:
-        prefix, in_sec_response, in_sec_headers = sections_pdf_all_export(
-            line, in_sec_response, in_sec_headers
+    for line in lines[info_idx:]:
+        prefix, in_resp, in_headers, in_browser = sections_pdf_all_export(
+            line, in_resp, in_headers, in_browser
         )
         if prefix:
             final_content.append(prefix)
-        final_content.append(format_pdf_all_export(line, in_sec_response,
-                                                   in_sec_headers))
+        final_content.append(format_pdf_all_export(line, in_resp, in_browser))
     with open(tmp_filename, 'w', encoding='utf-8') as updated_file:
         updated_file.writelines(final_content)
     export_pdf_file(tmp_filename, export_all=True)
+
+
+def normalize_txt_all_export(tmp_filename):
+    """
+    Applies the required formatting to sections and lines of the analysis when
+    exporting to TXT using the `-o` option with the value `all`.
+    """
+    with open(tmp_filename, 'r', encoding='utf-8') as source_file:
+        lines = source_file.readlines()
+    cleaned_content = (
+        line.replace(STYLE[6], "").replace(STYLE[8], "")
+        for line in lines
+    )
+    with open(tmp_filename, 'w', encoding='utf-8') as updated_file:
+        updated_file.writelines(cleaned_content)
+    export_all_txt = f"{tmp_filename[:-5]}.txt"
+    rename(tmp_filename, export_all_txt)
 
 
 def finalize_export(f_name, t_name, ext, export_all):
@@ -3120,7 +3201,7 @@ def decrease_html_spacing(tmp_filename):
     cleaned_ln = []
     with open(tmp_filename, "r", encoding="utf8") as html_source:
         for line in html_source:
-            if not initial_ln and "[0. Info" in line:
+            if not initial_ln and INFO_SECTION in line:
                 initial_ln = True
             if initial_ln and not line.strip() and prev_blank_ln:
                 continue
