@@ -3147,11 +3147,6 @@ def apply_pdf_color(colon_idx, hcolor, line, vcolor):
     )
 
 
-def generate_txt(tmp_filename):
-    export_all_txt = f"{tmp_filename[:-5]}.txt"
-    rename(tmp_filename, export_all_txt)
-
-
 def export_html_file(final_filename, tmp_filename, export_all=False):
     """HTML export of the analysis, related to `-o html` option"""
     global inside_section
