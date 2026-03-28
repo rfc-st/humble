@@ -500,7 +500,6 @@ And is regularly audited manually using the following tools (for each of them, I
 - <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>: `opengrep scan --taint-intrafile --config /home/bluesman/humble_venv/opengrep-rules/python .`
 - <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument</a>: `pyinstrument -r html humble.py -u https://google.com`
 - <a href="https://github.com/rubik/radon" target="_blank">radon</a>: `radon cc humble.py -s -a`
-- <a href="https://github.com/semgrep/semgrep" target="_blank">semgrep</a>: `semgrep scan --config p/python humble.py`
 - <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a>: `vulture --min-confidence 60 humble.py`
 
 ## Checks: enabled headers
