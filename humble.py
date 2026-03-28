@@ -182,7 +182,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-03-27', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-03-28', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1369,7 +1369,12 @@ def permissions_print_broad(perm_broad_dirs, i_cnt):
 
 
 def delete_lines(reliable=True):
-    """Remove previously printed lines from the console output"""
+    """
+    Clear console lines to standardize the final analysis output format.
+
+    Removes previously printed lines to ensure that final messages (success
+    or error) are consistently padded with a blank line before and after.
+    """
     if not reliable:
         sys.stdout.write(DELETED_LINES)
     sys.stdout.write(DELETED_LINES)
@@ -1377,14 +1382,17 @@ def delete_lines(reliable=True):
 
 def print_export_path(filename, reliable, export_all=False):
     """
-    Prints the export path for the `-o` option. It displays the file path
-    for single reports or the directory for bulk exports.
+    Prints the export path for the `-o` option. Displays the file path for
+    single reports (e.g. 'html') or the directory for bulk exports (e.g. 'all')
+    .
     """
     delete_lines(reliable=False) if reliable else delete_lines()
     if '-c' in sys.argv:
         return
     abs_path = path.abspath(filename)
     if export_all:
+        if args.ret:
+            delete_lines()
         msg = f"{print_detail_s('[all_reports]').lstrip()} \
 '{path.dirname(abs_path)}'."
     else:
@@ -2032,98 +2040,82 @@ def export_all_formats(final_filename, tmp_filename):
     sys.exit(0)
 
 
-def normalize_html_all_export(final_filename, tmp_filename):
-    """
-    Applies the required formatting to sections and lines of the analysis when
-    exporting to HTML using the `-o` option with the value `all`.
-    """
-    with open(tmp_filename, 'r', encoding='utf-8') as source_file:
-        lines = source_file.readlines()
-    info_idx = next(i for i, line in enumerate(lines) if INFO_SECTION in line)
-    final_content = lines[:info_idx]
-    in_resp = in_headers = in_browser = False
-    for line in lines[info_idx:]:
-        prefix, in_resp, in_headers, in_browser = sections_html_all_export(
-            line, in_resp, in_headers, in_browser
-        )
-        if prefix:
-            final_content.append(prefix)
-        final_content.append(format_html_all_export(line, in_headers,
-                                                    in_browser))
-    with open(tmp_filename, 'w', encoding='utf-8') as updated_file:
-        updated_file.writelines(final_content)
-    export_html_file(final_filename, tmp_filename, export_all=True)
-
-
-def sections_html_all_export(line, in_sec_response, in_sec_headers,
-                             in_sec_browser):
+def sections_html_all_export(line, states):
     """
     Identifies the lines in an analysis to which a specific format should be
     applied; applies when exporting to HTML using the `-o` option with the
     value `all`.
     """
-    if not any(line.startswith(s) for s in BOLD_STRINGS + RESP_SECTION):
-        return "", in_sec_response, in_sec_headers, in_sec_browser
-    if line.startswith(RESP_SECTION):
-        return "\n", True, False, False
-    if line.startswith('[1.'):
-        return "\n", False, True, False
-    if line.startswith('[2.'):
-        return "\n", False, False, False
-    if line.startswith('[6.'):
-        return "\n", False, False, True
-    if line.startswith('[7.'):
-        return "\n", False, False, False
-    return "\n", in_sec_response, in_sec_headers, in_sec_browser
+    trig = {RESP_SECTION: (True, False, False),
+            '[1.': (False, True, False), '[2.': (False, False, False),
+            '[6.': (False, False, True), '[7.': (False, False, False)}
+    for prefix, new_states in trig.items():
+        if line.startswith(prefix):
+            return "\n", *new_states
+    return ("\n", *states) if any(line.startswith(s) for s in BOLD_STRINGS +
+                                  RESP_SECTION) else ("", *states)
 
 
-def format_html_all_export(line, in_sec_headers, in_sec_browser=False):
+def format_html_all_export(line, in_headers, in_browser):
     """
     Formats the previously selected lines in an analysis; applies when
     exporting to HTML using the `-o` option with the value `all`.
     """
-    if line.startswith(" ") and in_sec_headers:
-        return f"{line[0]}{STYLE[8]}{line[1:]}"
-    if in_sec_browser and line.strip() and not line.startswith("[6."):
+    if in_browser and line.strip() and not line.startswith("[6."):
         line = f" {line}"
-    return line
+    return f"{line[0]}{STYLE[8]}{line[1:]}" if line.startswith(" ") and \
+        in_headers else line
 
 
-def sections_pdf_all_export(line, in_sec_response, in_sec_headers,
-                            in_sec_browser):
+def normalize_html_all_export(final_filename, tmp_filename):
+    """
+    Applies the required formatting to sections and lines of the analysis when
+    exporting to HTML using the `-o` option with the value `all`.
+    """
+    with open(tmp_filename, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+    try:
+        idx = next(i for i, line in enumerate(lines) if INFO_SECTION in line)
+    except StopIteration:
+        return
+    res = lines[:idx]
+    states = (False, False, False)
+    for line in lines[idx:]:
+        prefix, *new_states = sections_html_all_export(line, states)
+        states = tuple(new_states)
+        if prefix:
+            res.append(prefix)
+        res.append(format_html_all_export(line, states[1], states[2]))
+    with open(tmp_filename, 'w', encoding='utf-8') as f:
+        f.writelines(res)
+    export_html_file(final_filename, tmp_filename, export_all=True)
+
+
+def sections_pdf_all_export(line, states):
     """
     Identifies the lines in an analysis to which a specific format should be
     applied; applies when exporting to PDF using the `-o` option with the
     value `all`.
     """
-    if not any(line.startswith(s) for s in BOLD_STRINGS + RESP_SECTION):
-        return "", in_sec_response, in_sec_headers, in_sec_browser
-    if line.startswith(RESP_SECTION):
-        return "\n", True, False, False
-    if line.startswith('[1.'):
-        return "\n", False, True, False
-    if line.startswith('[2.'):
-        return "\n", False, False, False
-    if line.startswith('[6.'):
-        return "\n", False, False, True
-    if line.startswith('[7.'):
-        return "\n", False, False, False
-    return "\n", in_sec_response, in_sec_headers, in_sec_browser
+    triggers = {RESP_SECTION: (True, False, False),
+                '[1.': (False, True, False), '[2.': (False, False, False),
+                '[6.': (False, False, True), '[7.': (False, False, False)}
+    for prefix, new_states in triggers.items():
+        if line.startswith(prefix):
+            return "\n", *new_states
+    return ("\n", *states) if any(line.startswith(s) for s in BOLD_STRINGS +
+                                  RESP_SECTION) else ("", *states)
 
 
-def format_pdf_all_export(line, in_sec_response, in_sec_browser=False):
+def format_pdf_all_export(line, in_resp, in_browser):
     """
     Formats the previously selected lines in an analysis; applies when
     exporting to PDF using the `-o` option with the value `all`.
     """
-    if in_sec_browser and not line.startswith("[6."):
-        if line.startswith("  "):
-            line = f" {line.lstrip(' ')}"
-        elif not line.startswith(" ") and line.strip():
-            line = f" {line}"
-    if in_sec_response and line.startswith(" "):
-        return f"{line[0]}{STYLE[6]}{line[1:]}"
-    return line
+    if in_browser and not line.startswith("[6."):
+        line = f" {line.lstrip()}" if line.strip() else line
+    return f" {STYLE[6]}{line[1:]}" if in_resp and \
+        line.startswith(" ") else line
 
 
 def normalize_pdf_all_export(tmp_filename):
@@ -2131,20 +2123,23 @@ def normalize_pdf_all_export(tmp_filename):
     Applies the required formatting to sections and lines of the analysis when
     exporting to PDF using the `-o` option with the value `all`.
     """
-    with open(tmp_filename, 'r', encoding='utf-8') as source_file:
-        lines = source_file.readlines()
-    info_idx = next(i for i, line in enumerate(lines) if INFO_SECTION in line)
-    in_headers, in_resp, in_browser = False, False, False
+    with open(tmp_filename, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+    try:
+        start_idx = next(i for i, line in enumerate(lines) if INFO_SECTION in
+                         line)
+    except StopIteration:
+        return
     final_content = []
-    for line in lines[info_idx:]:
-        prefix, in_resp, in_headers, in_browser = sections_pdf_all_export(
-            line, in_resp, in_headers, in_browser
-        )
+    states = (False, False, False)
+    for line in lines[start_idx:]:
+        prefix, *new_states = sections_pdf_all_export(line, states)
+        states = tuple(new_states)
         if prefix:
             final_content.append(prefix)
-        final_content.append(format_pdf_all_export(line, in_resp, in_browser))
-    with open(tmp_filename, 'w', encoding='utf-8') as updated_file:
-        updated_file.writelines(final_content)
+        final_content.append(format_pdf_all_export(line, states[0], states[2]))
+    with open(tmp_filename, 'w', encoding='utf-8') as f:
+        f.writelines(final_content)
     export_pdf_file(tmp_filename, export_all=True)
 
 
