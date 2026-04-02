@@ -182,7 +182,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-03-28', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-04-02', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2030,11 +2030,11 @@ def export_all_formats(final_filename, tmp_filename):
     displaying the final export path.
     """
     generate_csv(final_filename, tmp_filename, export_all=True)
-    generate_csv(final_filename, tmp_filename, to_xlsx=True, export_all=True)
     generate_json(final_filename, tmp_filename, export_all=True)
     generate_xml(final_filename, tmp_filename, export_all=True)
     normalize_html_all_export(final_filename, tmp_filename)
     normalize_pdf_all_export(tmp_filename)
+    generate_csv(final_filename, tmp_filename, to_xlsx=True, export_all=True)
     normalize_txt_all_export(tmp_filename)
     print_export_path(final_filename, reliable, export_all=True)
     sys.exit(0)
@@ -2118,6 +2118,20 @@ def format_pdf_all_export(line, in_resp, in_browser):
         line.startswith(" ") else line
 
 
+def fix_pdf_all_export(tmp_filename):
+    """
+    Applies the correct value to the name of the PDF inside it when exporting
+    using the `-o` option with the value `all`.
+    """
+    base_name = tmp_filename.rsplit('.', 1)[0][:-1]
+    with open(tmp_filename, 'r+', encoding='utf-8') as final_pdf_file:
+        content = final_pdf_file.read()
+        final_pdf_file.seek(0)
+        final_pdf_file.write(content.replace(f"{base_name}.all",
+                                             f"{base_name}.pdf"))
+        final_pdf_file.truncate()
+
+
 def normalize_pdf_all_export(tmp_filename):
     """
     Applies the required formatting to sections and lines of the analysis when
@@ -2140,6 +2154,7 @@ def normalize_pdf_all_export(tmp_filename):
         final_content.append(format_pdf_all_export(line, states[0], states[2]))
     with open(tmp_filename, 'w', encoding='utf-8') as f:
         f.writelines(final_content)
+    fix_pdf_all_export(tmp_filename)
     export_pdf_file(tmp_filename, export_all=True)
 
 
@@ -2150,12 +2165,16 @@ def normalize_txt_all_export(tmp_filename):
     """
     with open(tmp_filename, 'r', encoding='utf-8') as source_file:
         lines = source_file.readlines()
-    cleaned_content = (
+    cleaned_content = [
         line.replace(STYLE[6], "").replace(STYLE[8], "")
         for line in lines
-    )
+    ]
+    identity = tmp_filename.rsplit('.', 1)[0][:-1]
+    target = f"{identity}.pdf"
+    replacement = f"{identity}.txt"
     with open(tmp_filename, 'w', encoding='utf-8') as updated_file:
-        updated_file.writelines(cleaned_content)
+        for line in cleaned_content:
+            updated_file.write(line.replace(target, replacement))
     export_all_txt = f"{tmp_filename[:-5]}.txt"
     rename(tmp_filename, export_all_txt)
 
@@ -2167,13 +2186,22 @@ def finalize_export(f_name, t_name, ext, export_all):
 
     If `export_all` is `False` (standalone mode), it displays the final file
     path, removes temporary artifacts, and terminates execution. If `True`
-    (batch mode), it renames the generated file with the appropriate extension.
+    (batch mode), it renames the generated file with the appropriate extension
+    and replaces one line of the file with the correct value.
     """
     if not export_all:
         print_export_path(f_name, reliable)
         remove(t_name)
         sys.exit(0)
-    rename(f_name, f"{f_name[:-4]}.{ext}")
+    new_filename = f"{f_name[:-4]}.{ext}"
+    rename(f_name, new_filename)
+    dotted_ext = f".{ext}"
+    if dotted_ext not in (EXPORT_EXTENSIONS[3], EXPORT_EXTENSIONS[5]):
+        with open(new_filename, 'r+', encoding='utf-8') as f:
+            content = f.read().replace(f_name, new_filename)
+            f.seek(0)
+            f.write(content)
+            f.truncate()
 
 
 def check_output_format(args, final_filename, reliable, tmp_filename):
@@ -2330,7 +2358,9 @@ def generate_csv(final_filename, temp_filename, to_xlsx=False,
 {BANNER_VERSION}"])
         csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
         parse_csv(csv_section, txt_source.read(), csv_writer)
+        csv_final.close()
     if to_xlsx:
+        fix_xlsx_all_export(final_filename, export_all)
         generate_xlsx(final_filename, temp_filename, export_all)
     else:
         finalize_export(final_filename, temp_filename, 'csv', export_all)
@@ -2349,6 +2379,23 @@ def parse_csv(csv_section, csv_source, csv_writer):
             clean_ln = ": ".join([part.strip() for part in csv_ln.split(":",
                                                                         1)])
             csv_writer.writerow([i, clean_ln])
+
+
+def fix_xlsx_all_export(csv_filename, export_all):
+    """
+    Applies the correct value to the filename reference inside the CSV
+    before it is converted to XLSX; applies when exporting using the `-o`
+    option with the value `all`.
+    """
+    if export_all:
+        identity = csv_filename.rsplit('.', 1)[0]
+        if identity.endswith('t'):
+            identity = identity[:-1]
+        with open(csv_filename, 'r+', encoding='utf-8') as f:
+            content = f.read()
+            f.seek(0)
+            f.write(content.replace(f"{identity}.pdf", f"{identity}.xlsx"))
+            f.truncate()
 
 
 def generate_xlsx(final_filename, temp_filename, export_all=False):
