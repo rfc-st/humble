@@ -165,6 +165,11 @@ SECTION_V = ('[no_enabled]', '[no_missing]', '[no_fingerprint]',
              '[least_fingerprints]', '[most_insecure]', '[least_insecure]',
              '[most_empty]', '[least_empty]')
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 20)
+SECTIONS_EXPORT_STATES = {RESP_SECTION: (True, False, False),
+                          '[1.': (False, True, False),
+                          '[2.': (False, False, False),
+                          '[6.': (False, False, True),
+                          '[7.': (False, False, False)}
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
          Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
          f"(humble_sec_style){Fore.GREEN}", '(humble_sec_style)',
@@ -182,7 +187,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-04-02', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-04-03', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2040,31 +2045,32 @@ def export_all_formats(final_filename, tmp_filename):
     sys.exit(0)
 
 
-def sections_html_all_export(line, states):
+def sections_htmlpdf_all_export(line, states):
     """
     Identifies the lines in an analysis to which a specific format should be
-    applied; applies when exporting to HTML using the `-o` option with the
-    value `all`.
+    applied; applies when exporting to HTML and PDF using the `-o` option with
+    the value `all`.
     """
-    trig = {RESP_SECTION: (True, False, False),
-            '[1.': (False, True, False), '[2.': (False, False, False),
-            '[6.': (False, False, True), '[7.': (False, False, False)}
-    for prefix, new_states in trig.items():
+    for prefix, new_states in SECTIONS_EXPORT_STATES.items():
         if line.startswith(prefix):
             return "\n", *new_states
     return ("\n", *states) if any(line.startswith(s) for s in BOLD_STRINGS +
                                   RESP_SECTION) else ("", *states)
 
 
-def format_html_all_export(line, in_headers, in_browser):
+def format_htmlpdf_all_export(line, fmt, target_state, in_browser):
     """
     Formats the previously selected lines in an analysis; applies when
-    exporting to HTML using the `-o` option with the value `all`.
+    exporting to HTML and PDF using the `-o` option with the value `all`.
     """
     if in_browser and line.strip() and not line.startswith("[6."):
-        line = f" {line}"
-    return f"{line[0]}{STYLE[8]}{line[1:]}" if line.startswith(" ") and \
-        in_headers else line
+        line = f" {line}" if fmt == 'html' else f" {line.lstrip()}"
+    if line.startswith(" ") and target_state:
+        if fmt == 'html':
+            return f"{line[0]}{STYLE[8]}{line[1:]}"
+        else:
+            return f" {STYLE[6]}{line[1:]}"
+    return line
 
 
 def normalize_html_all_export(final_filename, tmp_filename):
@@ -2081,41 +2087,15 @@ def normalize_html_all_export(final_filename, tmp_filename):
     res = lines[:idx]
     states = (False, False, False)
     for line in lines[idx:]:
-        prefix, *new_states = sections_html_all_export(line, states)
+        prefix, *new_states = sections_htmlpdf_all_export(line, states)
         states = tuple(new_states)
         if prefix:
             res.append(prefix)
-        res.append(format_html_all_export(line, states[1], states[2]))
+        res.append(format_htmlpdf_all_export(line, 'html', states[1],
+                                             states[2]))
     with open(tmp_filename, 'w', encoding='utf-8') as f:
         f.writelines(res)
     export_html_file(final_filename, tmp_filename, export_all=True)
-
-
-def sections_pdf_all_export(line, states):
-    """
-    Identifies the lines in an analysis to which a specific format should be
-    applied; applies when exporting to PDF using the `-o` option with the
-    value `all`.
-    """
-    triggers = {RESP_SECTION: (True, False, False),
-                '[1.': (False, True, False), '[2.': (False, False, False),
-                '[6.': (False, False, True), '[7.': (False, False, False)}
-    for prefix, new_states in triggers.items():
-        if line.startswith(prefix):
-            return "\n", *new_states
-    return ("\n", *states) if any(line.startswith(s) for s in BOLD_STRINGS +
-                                  RESP_SECTION) else ("", *states)
-
-
-def format_pdf_all_export(line, in_resp, in_browser):
-    """
-    Formats the previously selected lines in an analysis; applies when
-    exporting to PDF using the `-o` option with the value `all`.
-    """
-    if in_browser and not line.startswith("[6."):
-        line = f" {line.lstrip()}" if line.strip() else line
-    return f" {STYLE[6]}{line[1:]}" if in_resp and \
-        line.startswith(" ") else line
 
 
 def fix_pdf_all_export(tmp_filename):
@@ -2147,11 +2127,12 @@ def normalize_pdf_all_export(tmp_filename):
     final_content = []
     states = (False, False, False)
     for line in lines[start_idx:]:
-        prefix, *new_states = sections_pdf_all_export(line, states)
+        prefix, *new_states = sections_htmlpdf_all_export(line, states)
         states = tuple(new_states)
         if prefix:
             final_content.append(prefix)
-        final_content.append(format_pdf_all_export(line, states[0], states[2]))
+        final_content.append(format_htmlpdf_all_export(line, 'pdf', states[0],
+                                                       states[2]))
     with open(tmp_filename, 'w', encoding='utf-8') as f:
         f.writelines(final_content)
     fix_pdf_all_export(tmp_filename)
