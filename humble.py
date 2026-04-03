@@ -2026,8 +2026,8 @@ def check_export_scope():
 
 def export_all_formats(final_filename, tmp_filename):
     """
-    Exports the analysis to all supported formats, triggered when the `-o`
-    option is set to `all`.
+    Exports the analysis to all supported formats, triggered when using `-o
+    all` option.
 
     This function sequentially invokes the functions for CSV, XLSX, JSON,
     XML, HTML, PDF, and TXT exports. It passes the `export_all` flag where
@@ -2037,19 +2037,60 @@ def export_all_formats(final_filename, tmp_filename):
     generate_csv(final_filename, tmp_filename, export_all=True)
     generate_json(final_filename, tmp_filename, export_all=True)
     generate_xml(final_filename, tmp_filename, export_all=True)
-    normalize_html_all_export(final_filename, tmp_filename)
-    normalize_pdf_all_export(tmp_filename)
     generate_csv(final_filename, tmp_filename, to_xlsx=True, export_all=True)
+    normalize_htmlpdf_all_export('html', tmp_filename, final_filename)
+    normalize_htmlpdf_all_export('pdf', tmp_filename)
     normalize_txt_all_export(tmp_filename)
     print_export_path(final_filename, reliable, export_all=True)
     sys.exit(0)
 
 
+def process_htmlpdf_all_export(lines, start_index, format, is_html):
+    """
+    Processes the state-based line formatting and section prefixing of an
+    analysis when exporting to HTML and PDF using the `-o all` option.
+    """
+    content = lines[:start_index]
+    states = (False, False, False)
+    for line in lines[start_index:]:
+        prefix, *new_states = sections_htmlpdf_all_export(line, states)
+        states = tuple(new_states)
+        if prefix:
+            content.append(prefix)
+        target_state = states[1] if is_html else states[0]
+        content.append(format_htmlpdf_all_export(line, format, target_state,
+                                                 states[2]))
+    return content
+
+
+def normalize_htmlpdf_all_export(format, tmp_filename, final_filename=None):
+    """
+    Applies the required formatting to sections and lines of the analysis when
+    exporting to HTML and PDF using the `-o all` option.
+    """
+    is_html = (format == 'html')
+    with open(tmp_filename, 'r+', encoding='utf-8') as export_file:
+        lines = export_file.readlines()
+        start_index = next((i for i, line in enumerate(lines) if
+                            INFO_SECTION in line), None)
+        if start_index is None:
+            return
+        processed_content = process_htmlpdf_all_export(lines, start_index,
+                                                       format, is_html)
+        export_file.seek(0)
+        export_file.writelines(processed_content)
+        export_file.truncate()
+    if is_html:
+        export_html_file(final_filename, tmp_filename, export_all=True)
+        return
+    fix_pdf_all_export(tmp_filename)
+    export_pdf_file(tmp_filename, export_all=True)
+
+
 def sections_htmlpdf_all_export(line, states):
     """
     Identifies the lines in an analysis to which a specific format should be
-    applied; applies when exporting to HTML and PDF using the `-o` option with
-    the value `all`.
+    applied; applies when exporting to HTML and PDF using the `-o all` option.
     """
     for prefix, new_states in SECTIONS_EXPORT_STATES.items():
         if line.startswith(prefix):
@@ -2058,50 +2099,25 @@ def sections_htmlpdf_all_export(line, states):
                                   RESP_SECTION) else ("", *states)
 
 
-def format_htmlpdf_all_export(line, fmt, target_state, in_browser):
+def format_htmlpdf_all_export(line, format, target_state, in_browser):
     """
     Formats the previously selected lines in an analysis; applies when
-    exporting to HTML and PDF using the `-o` option with the value `all`.
+    exporting to HTML and PDF using the `-o all` option.
     """
     if in_browser and line.strip() and not line.startswith("[6."):
-        line = f" {line}" if fmt == 'html' else f" {line.lstrip()}"
+        line = f" {line}" if format == 'html' else f" {line.lstrip()}"
     if line.startswith(" ") and target_state:
-        if fmt == 'html':
+        if format == 'html':
             return f"{line[0]}{STYLE[8]}{line[1:]}"
         else:
             return f" {STYLE[6]}{line[1:]}"
     return line
 
 
-def normalize_html_all_export(final_filename, tmp_filename):
-    """
-    Applies the required formatting to sections and lines of the analysis when
-    exporting to HTML using the `-o` option with the value `all`.
-    """
-    with open(tmp_filename, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-    try:
-        idx = next(i for i, line in enumerate(lines) if INFO_SECTION in line)
-    except StopIteration:
-        return
-    res = lines[:idx]
-    states = (False, False, False)
-    for line in lines[idx:]:
-        prefix, *new_states = sections_htmlpdf_all_export(line, states)
-        states = tuple(new_states)
-        if prefix:
-            res.append(prefix)
-        res.append(format_htmlpdf_all_export(line, 'html', states[1],
-                                             states[2]))
-    with open(tmp_filename, 'w', encoding='utf-8') as f:
-        f.writelines(res)
-    export_html_file(final_filename, tmp_filename, export_all=True)
-
-
 def fix_pdf_all_export(tmp_filename):
     """
     Applies the correct value to the name of the PDF inside it when exporting
-    using the `-o` option with the value `all`.
+    using the `-o all` option.
     """
     base_name = tmp_filename.rsplit('.', 1)[0][:-1]
     with open(tmp_filename, 'r+', encoding='utf-8') as final_pdf_file:
@@ -2112,37 +2128,10 @@ def fix_pdf_all_export(tmp_filename):
         final_pdf_file.truncate()
 
 
-def normalize_pdf_all_export(tmp_filename):
-    """
-    Applies the required formatting to sections and lines of the analysis when
-    exporting to PDF using the `-o` option with the value `all`.
-    """
-    with open(tmp_filename, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-    try:
-        start_idx = next(i for i, line in enumerate(lines) if INFO_SECTION in
-                         line)
-    except StopIteration:
-        return
-    final_content = []
-    states = (False, False, False)
-    for line in lines[start_idx:]:
-        prefix, *new_states = sections_htmlpdf_all_export(line, states)
-        states = tuple(new_states)
-        if prefix:
-            final_content.append(prefix)
-        final_content.append(format_htmlpdf_all_export(line, 'pdf', states[0],
-                                                       states[2]))
-    with open(tmp_filename, 'w', encoding='utf-8') as f:
-        f.writelines(final_content)
-    fix_pdf_all_export(tmp_filename)
-    export_pdf_file(tmp_filename, export_all=True)
-
-
 def normalize_txt_all_export(tmp_filename):
     """
     Applies the required formatting to sections and lines of the analysis when
-    exporting to TXT using the `-o` option with the value `all`.
+    exporting to TXT using the `-o all` option.
     """
     with open(tmp_filename, 'r', encoding='utf-8') as source_file:
         lines = source_file.readlines()
@@ -2318,33 +2307,42 @@ def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
     return None
 
 
+def write_csv_content(csv_file, txt_source):
+    """
+    Write headers and parse CSV content, related to `-o csv` option.
+
+    ??? note
+        `defusedcsv` is used to mitigate formula injection attacks by
+        sanitizing potentially dangerous values
+    """
+    writer = defusedcsv_logic.writer(csv_file,
+                                     quoting=defusedcsv_logic.QUOTE_ALL)
+    writer.writerow([
+        get_detail('[csv_section]', replace=True),
+        get_detail('[csv_values]', replace=True)
+    ])
+    writer.writerow([
+        get_detail('[0section]', replace=True),
+        f"{get_detail('[json_gen]', replace=True)}: {BANNER_VERSION}"
+    ])
+    section_titles = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
+    parse_csv(section_titles, txt_source.read(), writer)
+
+
 def generate_csv(final_filename, temp_filename, to_xlsx=False,
                  export_all=False):
     """
-    CSV or XSLX export of the analysis and terminates execution, related to
+    CSV and XSLX export of the analysis and terminates execution, related to
     `-o csv` option
-
-    ??? note
-        This function uses `defusedcsv` to mitigate formula injection attacks
-        by sanitizing potentially dangerous values.
     """
     with open(temp_filename, 'r', encoding='utf8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
-        csv_writer = defusedcsv_logic.writer(
-            csv_final, quoting=defusedcsv_logic.QUOTE_ALL)
-        csv_writer.writerow([get_detail('[csv_section]', replace=True),
-                             get_detail('[csv_values]', replace=True)])
-        csv_writer.writerow([get_detail('[0section]', replace=True),
-                             f"{get_detail('[json_gen]', replace=True)}: \
-{BANNER_VERSION}"])
-        csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
-        parse_csv(csv_section, txt_source.read(), csv_writer)
-        csv_final.close()
+        write_csv_content(csv_final, txt_source)
     if to_xlsx:
         fix_xlsx_all_export(final_filename, export_all)
         generate_xlsx(final_filename, temp_filename, export_all)
-    else:
-        finalize_export(final_filename, temp_filename, 'csv', export_all)
+        return
+    finalize_export(final_filename, temp_filename, 'csv', export_all)
 
 
 def parse_csv(csv_section, csv_source, csv_writer):
@@ -2365,8 +2363,8 @@ def parse_csv(csv_section, csv_source, csv_writer):
 def fix_xlsx_all_export(csv_filename, export_all):
     """
     Applies the correct value to the filename reference inside the CSV
-    before it is converted to XLSX; applies when exporting using the `-o`
-    option with the value `all`.
+    before it is converted to XLSX; applies when exporting using the `-o all`
+    option.
     """
     if export_all:
         identity = csv_filename.rsplit('.', 1)[0]
@@ -2375,7 +2373,7 @@ def fix_xlsx_all_export(csv_filename, export_all):
         with open(csv_filename, 'r+', encoding='utf-8') as f:
             content = f.read()
             f.seek(0)
-            f.write(content.replace(f"{identity}.pdf", f"{identity}.xlsx"))
+            f.write(content.replace(f"{identity}.all", f"{identity}.xlsx"))
             f.truncate()
 
 
