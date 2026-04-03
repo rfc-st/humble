@@ -1042,10 +1042,13 @@ Cabeceras de respuesta HTTP
 [analysis_date]
  Fecha:
 
-[python_version]
+[python_required_version]
 
- Error: 'humble' requiere, al menos, Python 3.11.
+ 'humble' requiere, al menos, Python 3.11.
  Ref: https://github.com/rfc-st/humble#installation--update
+
+[python_host_version]
+ Tu versión de Python es
 
 [no_warnings]
  Todo parece estar bien.

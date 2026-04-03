@@ -1041,10 +1041,13 @@ HTTP Response Headers
 [analysis_date]
  Date :
 
-[python_version]
+[python_required_version]
 
- Error: 'humble' requires, at least, Python 3.11.
+ 'humble' requires, at least, Python 3.11.
  Ref: https://github.com/rfc-st/humble?tab=readme-ov-file#installation--update-source-code
+
+[python_host_version]
+ Your Python's version is
 
 [no_warnings]
  Nothing to report, all seems OK!

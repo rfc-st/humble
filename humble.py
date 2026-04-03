@@ -118,6 +118,7 @@ PDF_SECTION = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
                '[3.': '[3fingerprint_s]', '[4.': '[4depinsecure_s]',
                '[5.': '[5empty_s]', '[6.': '[6compat_s]', '[7.': '[7result_s]',
                '[Cabeceras': '[0headers_s]'}
+PYTHON_REQUIRED_VERSION = (3, 11)
 RE_PATTERN = (
     r'\((.*?)\)',
     r'(?:(?:\d{1,3}\.){3}\d{1,3}|(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4})',
@@ -187,7 +188,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-04-03', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-04-04', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -219,11 +220,15 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
 
 def check_python_version():
     """
-    Returns an error message if the current Python version does not meet the
-    minimum requirement
+    Verifies that the host's Python version meets the minimum requirements
+    for `humble`. Prints an error and terminates execution if the version
+    is below the threshold defined in `PYTHON_REQUIRED_VERSION`.
     """
-    if sys.version_info < (3, 11):
-        print_detail('[python_version]', 3)
+    if sys.version_info < PYTHON_REQUIRED_VERSION:
+        host_python = f"{sys.version_info.major}.{sys.version_info.minor}"
+        host_msg = get_detail('[python_host_version]', replace=True)
+        print(f"\n{host_msg} {host_python}.")
+        print_detail('[python_required_version]', 3)
         sys.exit(1)
 
 
@@ -496,7 +501,7 @@ def save_analysis_results(t_cnt):
     Save analysis results to the analysis history file, `analysis_h.txt`
 
     ??? info
-        Values, in order, of each entry in the history file:<br>
+        Totals, in order, of each entry in the history file:<br>
 
         - Date of analysis
         - URL analyzed
@@ -513,8 +518,9 @@ def save_analysis_results(t_cnt):
     with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as all_analysis:
         all_analysis.seek(0)
         url_ln = [line for line in all_analysis if URL in line]
-        all_analysis.write(f"{current_time} ; {URL} ; {en_cnt} ; {m_cnt} ; "
-                           f"{f_cnt} ; {i_cnt[0]} ; {e_cnt} ; {t_cnt}\n")
+        analysis_totals = [current_time, URL, en_cnt, m_cnt, f_cnt, i_cnt[0],
+                           e_cnt, t_cnt]
+        all_analysis.write(" ; ".join(map(str, analysis_totals)) + "\n")
     return get_analysis_totals(url_ln) if url_ln else ("First",) * 6
 
 
@@ -2026,8 +2032,8 @@ def check_export_scope():
 
 def export_all_formats(final_filename, tmp_filename):
     """
-    Exports the analysis to all supported formats, triggered when the `-o`
-    option is set to `all`.
+    Exports the analysis to all supported formats, triggered when using `-o
+    all` option.
 
     This function sequentially invokes the functions for CSV, XLSX, JSON,
     XML, HTML, PDF, and TXT exports. It passes the `export_all` flag where
@@ -2037,19 +2043,60 @@ def export_all_formats(final_filename, tmp_filename):
     generate_csv(final_filename, tmp_filename, export_all=True)
     generate_json(final_filename, tmp_filename, export_all=True)
     generate_xml(final_filename, tmp_filename, export_all=True)
-    normalize_html_all_export(final_filename, tmp_filename)
-    normalize_pdf_all_export(tmp_filename)
     generate_csv(final_filename, tmp_filename, to_xlsx=True, export_all=True)
+    normalize_htmlpdf_all_export('html', tmp_filename, final_filename)
+    normalize_htmlpdf_all_export('pdf', tmp_filename)
     normalize_txt_all_export(tmp_filename)
     print_export_path(final_filename, reliable, export_all=True)
     sys.exit(0)
 
 
+def process_htmlpdf_all_export(lines, start_index, format, is_html):
+    """
+    Processes the state-based line formatting and section prefixing of an
+    analysis when exporting to HTML and PDF using the `-o all` option.
+    """
+    content = lines[:start_index]
+    states = (False, False, False)
+    for line in lines[start_index:]:
+        prefix, *new_states = sections_htmlpdf_all_export(line, states)
+        states = tuple(new_states)
+        if prefix:
+            content.append(prefix)
+        target_state = states[1] if is_html else states[0]
+        content.append(format_htmlpdf_all_export(line, format, target_state,
+                                                 states[2]))
+    return content
+
+
+def normalize_htmlpdf_all_export(format, tmp_filename, final_filename=None):
+    """
+    Applies the required formatting to sections and lines of the analysis when
+    exporting to HTML and PDF using the `-o all` option.
+    """
+    is_html = (format == 'html')
+    with open(tmp_filename, 'r+', encoding='utf-8') as export_file:
+        lines = export_file.readlines()
+        start_index = next((i for i, line in enumerate(lines) if
+                            INFO_SECTION in line), None)
+        if start_index is None:
+            return
+        processed_content = process_htmlpdf_all_export(lines, start_index,
+                                                       format, is_html)
+        export_file.seek(0)
+        export_file.writelines(processed_content)
+        export_file.truncate()
+    if is_html:
+        export_html_file(final_filename, tmp_filename, export_all=True)
+        return
+    fix_pdf_all_export(tmp_filename)
+    export_pdf_file(tmp_filename, export_all=True)
+
+
 def sections_htmlpdf_all_export(line, states):
     """
     Identifies the lines in an analysis to which a specific format should be
-    applied; applies when exporting to HTML and PDF using the `-o` option with
-    the value `all`.
+    applied; applies when exporting to HTML and PDF using the `-o all` option.
     """
     for prefix, new_states in SECTIONS_EXPORT_STATES.items():
         if line.startswith(prefix):
@@ -2058,50 +2105,25 @@ def sections_htmlpdf_all_export(line, states):
                                   RESP_SECTION) else ("", *states)
 
 
-def format_htmlpdf_all_export(line, fmt, target_state, in_browser):
+def format_htmlpdf_all_export(line, format, target_state, in_browser):
     """
     Formats the previously selected lines in an analysis; applies when
-    exporting to HTML and PDF using the `-o` option with the value `all`.
+    exporting to HTML and PDF using the `-o all` option.
     """
     if in_browser and line.strip() and not line.startswith("[6."):
-        line = f" {line}" if fmt == 'html' else f" {line.lstrip()}"
+        line = f" {line}" if format == 'html' else f" {line.lstrip()}"
     if line.startswith(" ") and target_state:
-        if fmt == 'html':
+        if format == 'html':
             return f"{line[0]}{STYLE[8]}{line[1:]}"
         else:
             return f" {STYLE[6]}{line[1:]}"
     return line
 
 
-def normalize_html_all_export(final_filename, tmp_filename):
-    """
-    Applies the required formatting to sections and lines of the analysis when
-    exporting to HTML using the `-o` option with the value `all`.
-    """
-    with open(tmp_filename, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-    try:
-        idx = next(i for i, line in enumerate(lines) if INFO_SECTION in line)
-    except StopIteration:
-        return
-    res = lines[:idx]
-    states = (False, False, False)
-    for line in lines[idx:]:
-        prefix, *new_states = sections_htmlpdf_all_export(line, states)
-        states = tuple(new_states)
-        if prefix:
-            res.append(prefix)
-        res.append(format_htmlpdf_all_export(line, 'html', states[1],
-                                             states[2]))
-    with open(tmp_filename, 'w', encoding='utf-8') as f:
-        f.writelines(res)
-    export_html_file(final_filename, tmp_filename, export_all=True)
-
-
 def fix_pdf_all_export(tmp_filename):
     """
     Applies the correct value to the name of the PDF inside it when exporting
-    using the `-o` option with the value `all`.
+    using the `-o all` option.
     """
     base_name = tmp_filename.rsplit('.', 1)[0][:-1]
     with open(tmp_filename, 'r+', encoding='utf-8') as final_pdf_file:
@@ -2112,37 +2134,10 @@ def fix_pdf_all_export(tmp_filename):
         final_pdf_file.truncate()
 
 
-def normalize_pdf_all_export(tmp_filename):
-    """
-    Applies the required formatting to sections and lines of the analysis when
-    exporting to PDF using the `-o` option with the value `all`.
-    """
-    with open(tmp_filename, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-    try:
-        start_idx = next(i for i, line in enumerate(lines) if INFO_SECTION in
-                         line)
-    except StopIteration:
-        return
-    final_content = []
-    states = (False, False, False)
-    for line in lines[start_idx:]:
-        prefix, *new_states = sections_htmlpdf_all_export(line, states)
-        states = tuple(new_states)
-        if prefix:
-            final_content.append(prefix)
-        final_content.append(format_htmlpdf_all_export(line, 'pdf', states[0],
-                                                       states[2]))
-    with open(tmp_filename, 'w', encoding='utf-8') as f:
-        f.writelines(final_content)
-    fix_pdf_all_export(tmp_filename)
-    export_pdf_file(tmp_filename, export_all=True)
-
-
 def normalize_txt_all_export(tmp_filename):
     """
     Applies the required formatting to sections and lines of the analysis when
-    exporting to TXT using the `-o` option with the value `all`.
+    exporting to TXT using the `-o all` option.
     """
     with open(tmp_filename, 'r', encoding='utf-8') as source_file:
         lines = source_file.readlines()
@@ -2318,33 +2313,42 @@ def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
     return None
 
 
+def write_csv_content(csv_file, txt_source):
+    """
+    Parse and write content to the CSV file, related to `-o csv` option.
+
+    ??? note
+        `defusedcsv` is used to mitigate formula injection attacks by
+        sanitizing potentially dangerous values
+    """
+    writer = defusedcsv_logic.writer(csv_file,
+                                     quoting=defusedcsv_logic.QUOTE_ALL)
+    writer.writerow([
+        get_detail('[csv_section]', replace=True),
+        get_detail('[csv_values]', replace=True)
+    ])
+    writer.writerow([
+        get_detail('[0section]', replace=True),
+        f"{get_detail('[json_gen]', replace=True)}: {BANNER_VERSION}"
+    ])
+    section_titles = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
+    parse_csv(section_titles, txt_source.read(), writer)
+
+
 def generate_csv(final_filename, temp_filename, to_xlsx=False,
                  export_all=False):
     """
-    CSV or XSLX export of the analysis and terminates execution, related to
+    CSV and XSLX export of the analysis and terminates execution, related to
     `-o csv` option
-
-    ??? note
-        This function uses `defusedcsv` to mitigate formula injection attacks
-        by sanitizing potentially dangerous values.
     """
     with open(temp_filename, 'r', encoding='utf8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
-        csv_writer = defusedcsv_logic.writer(
-            csv_final, quoting=defusedcsv_logic.QUOTE_ALL)
-        csv_writer.writerow([get_detail('[csv_section]', replace=True),
-                             get_detail('[csv_values]', replace=True)])
-        csv_writer.writerow([get_detail('[0section]', replace=True),
-                             f"{get_detail('[json_gen]', replace=True)}: \
-{BANNER_VERSION}"])
-        csv_section = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
-        parse_csv(csv_section, txt_source.read(), csv_writer)
-        csv_final.close()
+        write_csv_content(csv_final, txt_source)
     if to_xlsx:
         fix_xlsx_all_export(final_filename, export_all)
         generate_xlsx(final_filename, temp_filename, export_all)
-    else:
-        finalize_export(final_filename, temp_filename, 'csv', export_all)
+        return
+    finalize_export(final_filename, temp_filename, 'csv', export_all)
 
 
 def parse_csv(csv_section, csv_source, csv_writer):
@@ -2365,8 +2369,8 @@ def parse_csv(csv_section, csv_source, csv_writer):
 def fix_xlsx_all_export(csv_filename, export_all):
     """
     Applies the correct value to the filename reference inside the CSV
-    before it is converted to XLSX; applies when exporting using the `-o`
-    option with the value `all`.
+    before it is converted to XLSX; applies when exporting using the `-o all`
+    option.
     """
     if export_all:
         identity = csv_filename.rsplit('.', 1)[0]
@@ -2375,7 +2379,7 @@ def fix_xlsx_all_export(csv_filename, export_all):
         with open(csv_filename, 'r+', encoding='utf-8') as f:
             content = f.read()
             f.seek(0)
-            f.write(content.replace(f"{identity}.pdf", f"{identity}.xlsx"))
+            f.write(content.replace(f"{identity}.all", f"{identity}.xlsx"))
             f.truncate()
 
 
@@ -2494,9 +2498,7 @@ def generate_json(final_filename, temp_filename, export_all=False):
 
 
 def parse_json(data, section0, section5, section6, sectionh, txt_sections):
-    """
-    Parse sections; related to brief analysis exported to JSON
-    """
+    """Parse sections for a JSON export; related to `-o json -b` options"""
     for i in range(0, len(txt_sections), 2):
         json_section = f'[{txt_sections[i]}]'
         json_lns = [line.strip() for line in txt_sections[i + 1].split('\n')
@@ -2508,8 +2510,8 @@ def parse_json(data, section0, section5, section6, sectionh, txt_sections):
 
 def write_json(json_lns, json_section, section0, section5, section6, sectionh):
     """
-    Format content, with special handling for specific sections; related to
-    brief analysis exported to JSON
+    Format content, with special handling for specific sections, for a JSON
+    export; related to `-o json -b` options
     """
     if json_section in (section0, section5, section6, sectionh):
         json_data = {}
@@ -2524,8 +2526,8 @@ def write_json(json_lns, json_section, section0, section5, section6, sectionh):
 
 def format_json(json_data, json_lns):
     """
-    Format content, grouping duplicate keys; related to brief analysis exported
-    to JSON
+    Format content, grouping duplicate keys, for a JSON export; related to
+    `-o json -b` options
     """
     for line in json_lns:
         if ':' in line:
@@ -2544,8 +2546,7 @@ def json_detailed_sources(file_idx, slice_idx):
     """
     Access the contents of files in the `/additional` path, in order to use
     them as sources for specific sections (e.g., fingerprint and
-    deprecated/insecure headers); related to detailed analysis exported to
-    JSON.
+    deprecated/insecure headers) for a JSON export; related to `-o json` option
     """
     file_path = path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[file_idx])
     with open(file_path, 'r', encoding='utf8') as f:
@@ -2570,7 +2571,7 @@ def generate_json_detailed(final_filename, temp_filename):
 
 
 def json_detailed_parse(data, txt_sections):
-    """Parse sections; related to detailed analysis exported to JSON"""
+    """Parse sections for a JSON export; related to `-o json` option"""
     params = [JSON_L10N[0], '[json_det_details]', JSON_L10N[1]]
     details = [get_detail(p, replace=True) for p in params]
     for i in range(0, len(txt_sections), 2):
@@ -2584,7 +2585,7 @@ def json_detailed_parse(data, txt_sections):
 
 def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
                         json_miss_r):
-    """Write sections; related to detailed analysis exported to JSON"""
+    """Write sections for a JSON export; related to `-o json` option"""
     json_conditions = {
         BOLD_STRINGS[0]:
             lambda: json_detailed_info(json_lns),
@@ -2619,9 +2620,8 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
 
 def json_detailed_empty(json_lns):
     """
-    Print the contents of the section
-    `[5. Empty HTTP Response Headers Values]`; related to detailed analysis
-    exported to JSON
+    Print the contents of the section with empty HTTP response headers values
+    for a JSON export; related to `-o json` option
     """
     desc_key = get_detail('[json_det_empty]', replace=True)
     status_key = get_detail('[json_det_empty_s]', replace=True)
@@ -2637,8 +2637,8 @@ def json_detailed_empty(json_lns):
 
 def json_detailed_info(json_lns):
     """
-    Print the contents of the section `[0. Info]`; related to detailed analysis
-    exported to JSON
+    Print the contents of the section with basic info for a JSON export;
+    related to `-o json` option
     """
     info = {get_detail('[json_gen]', replace=True): BANNER_VERSION}
     for line in json_lns:
@@ -2650,8 +2650,8 @@ def json_detailed_info(json_lns):
 
 def json_detailed_response(json_lns):
     """
-    Print the contents of the section `[HTTP Response Headers]`; related to
-    detailed analysis exported to JSON
+    Print the contents of the section with HTTP response headers for a JSON
+    export; related to `-o json` option
     """
     header_key = get_detail(JSON_L10N[0], replace=True)
     value_key = get_detail(JSON_L10N[2], replace=True)
@@ -2671,7 +2671,7 @@ def json_detailed_response(json_lns):
 def json_detailed_format_add(json_lns, header_t, value_t):
     """
     Convert raw header lines into a list of dictionaries using the given header
-    and value keys; related to detailed analysis exported to JSON
+    and value keys for a JSON export; related to `-o json` option
     """
     result = []
     for line in map(str.strip, json_lns):
@@ -2688,7 +2688,7 @@ def json_detailed_format_add(json_lns, header_t, value_t):
 def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
     """
     Format lines in specific sections (e.g., enabled headers and browser
-    compatibility); related to detailed analysis exported to JSON
+    compatibility) for a JSON export; related to `-o json` option
     """
     l10n_txt = JSON_L10N[1] if is_l10n else JSON_L10N[2]
     header_t = get_detail(JSON_L10N[0], replace=True)
@@ -2702,8 +2702,8 @@ def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
                                json_miss_r, json_det_mref, result, entry,
                                current_header):
     """
-    Format the lines to be included in the missing headers section; related to
-    detailed analysis exported to JSON
+    Format the lines to be included in the section with missing headers for a
+    JSON export; related to `-o json` option
     """
     if line in l_miss or line.startswith('(*)'):
         if entry:
@@ -2719,8 +2719,8 @@ def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
 def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
                            json_miss_r, json_det_mref):
     """
-    Add lines to missing headers section; related to detailed analysis exported
-    to JSON
+    Add lines to the section with missing headers for a JSON export; related to
+    `-o json` option
     """
     result, entry, current_header = [], {}, None
     for line in json_lns:
@@ -2737,8 +2737,8 @@ def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
 def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
                        json_miss_r):
     """
-    Select the lines to include in the missing headers section; related to
-    detailed analysis exported to JSON
+    Select the lines to include in section with missing headers for a JSON
+    export; related to `-o json` option
     """
     json_det_mref = PDF_CONDITIONS[0]
     result = json_detailed_miss_add(
@@ -2754,8 +2754,8 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
 def json_detailed_fng_process(line, fingerprint_set, entry, current_header,
                               fng_header, fng_val):
     """
-    Format the lines to be included in the fingerprint headers section; related
-    to detailed analysis exported to JSON
+    Format the lines to be included in section with fingerprint headers for a
+    JSON export; related to `-o json` option
     """
     line_s = line.strip()
     for f in fingerprint_set:
@@ -2769,8 +2769,8 @@ def json_detailed_fng_process(line, fingerprint_set, entry, current_header,
 
 def json_detailed_fng(json_lns, fingerprint_set):
     """
-    Select the lines to include in the fingerprint headers section; related to
-    detailed analysis exported to JSON
+    Select the lines to include in section with fingerprint headers for a JSON
+    export; related to `-o json` option
     """
     result, entry, current_header = [], {}, None
     fng_header = get_detail('[json_det_fngheader]', replace=True)
@@ -2790,8 +2790,8 @@ def json_detailed_fng(json_lns, fingerprint_set):
 def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
                              detail_t, result, is_header):
     """
-    Add lines to deprecated/insecure headers section; related to detailed
-    analysis exported to JSON
+    Add lines to the section with deprecated/insecure headers for a JSON
+    export; related to `-o json` option
     """
     if is_header:
         if entry:
@@ -2808,8 +2808,8 @@ def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
 
 def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
     """
-    Determine if a line represents a deprecated/insecure header; related to
-    detailed analysis exported to JSON
+    Determine if a line represents a deprecated/insecure header for a JSON
+    export; related to `-o json` option
     """
     header_cond = line.startswith('(*)')
     header_cond2 = not line.startswith(ref_t)
@@ -2824,8 +2824,8 @@ def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
 def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
                               detail_t):
     """
-    Format the lines to be included in the deprecated/insecure headers section;
-    related to detailed analysis exported to JSON
+    Format the lines to be included in the section with deprecated/insecure
+    headers; related to `-o json` option
     """
     result, entry, header = [], {}, None
     for line in json_lns:
@@ -2845,8 +2845,8 @@ def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
 
 def json_detailed_ins(json_lns, insecure_checks):
     """
-    Select the lines to include in the deprecated/insecure headers section;
-    related to detailed analysis exported to JSON
+    Select the lines to include in the section with deprecated/insecure headers
+    for a JSON export; related to `-o json` option
     """
     header_t, detail_t, ref_t = (get_detail(text, replace=True)
                                  for text in [
@@ -2863,8 +2863,8 @@ def json_detailed_ins(json_lns, insecure_checks):
 
 def json_detailed_ins_checks(checks_list, insecure_checks):
     """
-    Select specific content from the lines in the obsolete/insecure headers
-    section; related to detailed analysis exported to JSON
+    Select specific content from the lines in the section with
+    obsolete/insecure headers for a JSON export; related to `-o json` option
     """
     for check in insecure_checks:
         check_s = check.strip()
@@ -2874,7 +2874,8 @@ def json_detailed_ins_checks(checks_list, insecure_checks):
 
 def json_detailed_results(json_lns):
     """
-    Add lines to results section; related to detailed analysis exported to JSON
+    Add lines to the section with results for a JSON export; related to
+    `-o json` option
     """
     result = {}
     duration_t = get_detail('[analysis_time]', replace=True)
