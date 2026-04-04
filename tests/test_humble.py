@@ -34,6 +34,7 @@ import importlib.util
 from platform import system
 from contextlib import suppress
 from unittest.mock import patch
+from collections import namedtuple
 from datetime import datetime, date
 from os import listdir, path, remove, fsync
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -478,14 +479,16 @@ def test_python_version():
 
 def test_unsupported_python_version(capsys):
     """
-    Verify an error is displayed if using a python version below the minimum
+    Verify an error is displayed if using a Python version below the minimum
     supported.
     """
+    python_version = namedtuple('VersionInfo', ['major', 'minor', 'micro'])
+    mock_version = python_version(major=3, minor=10, micro=0)
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
     humble_module.args = args
-    with patch('sys.version_info', (3, 10, 0)):
+    with patch('sys.version_info', mock_version):
         with pytest.raises(SystemExit) as wrapped_exit:
             humble_module.check_python_version()
         assert wrapped_exit.value.code == 1
