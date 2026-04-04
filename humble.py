@@ -32,6 +32,7 @@ import ssl
 import sys
 import xml.etree.ElementTree as ET  # nosemgrep
 from time import time
+from html import escape
 from platform import system
 from base64 import b64decode
 from json import dump, dumps
@@ -3399,16 +3400,19 @@ def format_html_bold(html_final, ln_rstrip):
 
 def format_html_headers(ln):
     """
-    Write formatted lines for HTTP response headers section of an HTML export;
-    related to `-o html` option.
+    Format HTTP response header lines for an HTML export.
+
+    This function sanitizes header values using HTML escaping to ensure that
+    special characters (e.g., `<` or `>` in headers) are rendered correctly and
+    do not interfere with the HTML structure; related to the `-o html` option.
     """
     for header in headers:
-        header_str = f"{header}: "
-        if header_str in ln:
-            header_pos = ln.index(":")
-            ln = ln.replace(ln[:header_pos], f"{HTML_TAGS[4]}{ln[:header_pos]}\
-{HTML_TAGS[5]}", 1)
+        if f"{header}: " in ln:
+            header_name, _, header_value = ln.partition(":")
+            safe_value = escape(header_value.strip())
+            ln = f"{HTML_TAGS[4]}{header_name}{HTML_TAGS[5]}: {safe_value}\n"
             ln = format_html_csp(ln)
+            break
     return ln
 
 
