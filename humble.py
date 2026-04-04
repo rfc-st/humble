@@ -2315,7 +2315,7 @@ def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
 
 def write_csv_content(csv_file, txt_source):
     """
-    Parse and write content to the CSV file, related to `-o csv` option.
+    Write headers and parse CSV content, related to `-o csv` option.
 
     ??? note
         `defusedcsv` is used to mitigate formula injection attacks by
