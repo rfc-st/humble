@@ -189,7 +189,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-04-04', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-04-10', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -2128,8 +2128,8 @@ def normalize_htmlpdf_all_export(format, tmp_filename, final_filename=None):
     if is_html:
         export_html_file(final_filename, tmp_filename, export_all=True)
         return
-    fix_pdf_all_export(tmp_filename)
-    export_pdf_file(tmp_filename, export_all=True)
+    fixed_pdffilename = fix_pdf_all_export(tmp_filename)
+    export_pdf_file(fixed_pdffilename, export_all=True)
 
 
 def sections_htmlpdf_all_export(line, states):
@@ -2161,16 +2161,19 @@ def format_htmlpdf_all_export(line, format, target_state, in_browser):
 
 def fix_pdf_all_export(tmp_filename):
     """
-    Applies the correct value to the name of the PDF inside it when exporting
-    using the `-o all` option.
+    Format and applies the correct extension to the PDF file; applies when
+    exporting using the `-o all` option.
     """
-    base_name = tmp_filename.rsplit('.', 1)[0][:-1]
-    with open(tmp_filename, 'r+', encoding='utf-8') as final_pdf_file:
-        content = final_pdf_file.read()
-        final_pdf_file.seek(0)
-        final_pdf_file.write(content.replace(f"{base_name}.all",
-                                             f"{base_name}.pdf"))
-        final_pdf_file.truncate()
+    fixed_pdffilename = tmp_filename
+    base_pdffilename = fixed_pdffilename.rsplit('.', 1)[0][:-1]
+    with open(fixed_pdffilename, 'r+', encoding='utf-8') as temp_pdffilename:
+        content = "".join(temp_pdffilename.readlines()[6:])
+        new_content = content.replace(f"{base_pdffilename}.all",
+                                      f"{base_pdffilename}.pdf")
+        temp_pdffilename.seek(0)
+        temp_pdffilename.write(new_content)
+        temp_pdffilename.truncate()
+    return fixed_pdffilename
 
 
 def normalize_txt_all_export(tmp_filename):
@@ -2410,19 +2413,17 @@ def parse_csv(csv_section, csv_source, csv_writer):
 
 def fix_xlsx_all_export(csv_filename, export_all):
     """
-    Applies the correct value to the filename reference inside the CSV
-    before it is converted to XLSX; applies when exporting using the `-o all`
-    option.
+    Applies the correct extension to the XSLX file; applies when exporting
+    using the `-o all` option.
     """
     if export_all:
         identity = csv_filename.rsplit('.', 1)[0]
-        if identity.endswith('t'):
-            identity = identity[:-1]
-        with open(csv_filename, 'r+', encoding='utf-8') as f:
-            content = f.read()
-            f.seek(0)
-            f.write(content.replace(f"{identity}.all", f"{identity}.xlsx"))
-            f.truncate()
+        with open(csv_filename, 'r+', encoding='utf-8') as fixed_xlsxfilename:
+            content = fixed_xlsxfilename.read()
+            fixed_xlsxfilename.seek(0)
+            fixed_xlsxfilename.write(content.replace(f"{identity}.all",
+                                                     f"{identity}.xlsx"))
+            fixed_xlsxfilename.truncate()
 
 
 def generate_xlsx(final_filename, temp_filename, export_all=False):
@@ -3220,12 +3221,18 @@ def apply_pdf_color(colon_idx, hcolor, line, vcolor):
     """
     Add the specific HTML tag to indicate the corresponding color for a PDF
     export; related to `-o pdf` option.
+
+    Sanitizes header values using HTML escaping to ensure that special
+    characters (e.g., `<` or `>` in headers) are rendered correctly and do not
+    interfere with the PDF structure.
     """
     if colon_idx == -1:
-        return f'{HTML_TAGS[16]}{hcolor}">{line}{HTML_TAGS[17]}'
+        return f'{HTML_TAGS[16]}{hcolor}">{escape(line)}{HTML_TAGS[17]}'
+    header_part = escape(line[:colon_idx + 2])
+    value_part = escape(line[colon_idx + 2:])
     return (
-        f'{HTML_TAGS[16]}{hcolor}">{line[:colon_idx + 2]}{HTML_TAGS[18]}'
-        f'{HTML_TAGS[19]}{vcolor}">{line[colon_idx + 2:]}{HTML_TAGS[17]}'
+        f'{HTML_TAGS[16]}{hcolor}">{header_part}{HTML_TAGS[18]}'
+        f'{HTML_TAGS[19]}{vcolor}">{value_part}{HTML_TAGS[17]}'
     )
 
 
@@ -3402,9 +3409,9 @@ def format_html_headers(ln):
     """
     Format HTTP response header lines for an HTML export.
 
-    This function sanitizes header values using HTML escaping to ensure that
-    special characters (e.g., `<` or `>` in headers) are rendered correctly and
-    do not interfere with the HTML structure; related to the `-o html` option.
+    Sanitizes header values using HTML escaping to ensure that special
+    characters (e.g., `<` or `>` in headers) are rendered correctly and do not
+    interfere with the HTML structure; related to the `-o html` option.
     """
     for header in headers:
         if f"{header}: " in ln:
