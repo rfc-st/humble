@@ -2106,6 +2106,9 @@ Generador
 [test_export_all]
  verifica que un análisis se exporte a todos los formatos disponibles.
 
+[test_export_all_responses]
+  verifica que un análisis, incluyendo cabeceras de respuesta HTTP, se exporte a todos los formatos disponibles.
+
 [test_export_csv]
  verifica que se exporte a CSV un análisis detallado.
 

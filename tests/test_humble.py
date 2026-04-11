@@ -150,6 +150,8 @@ TEST_CFGS = {
                            'Analysis Grade'),
     'test_detailed_analysis': (['-u', TEST_URLS[9]], 'Analysis Grade:'),
     'test_export_all': (['-u', TEST_URLS[9], '-o', 'all'], 'Exported'),
+    'test_export_all_responses': (['-u', TEST_URLS[9], '-o', 'all', '-r'],
+                                  'Exported'),
     'test_export_csv': (['-u', TEST_URLS[9], '-o', 'csv'], 'CSV saved'),
     'test_export_extension': (['-u', TEST_URLS[9], '-o', 'html', '-of',
                                '.html'], 'Error:'),

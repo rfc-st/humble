@@ -2126,6 +2126,9 @@ Generator
 [test_export_all]
  verify an analysis is exported to all available formats.
 
+[test_export_all_responses]
+ verify an analysis, including HTTP response headers, is exported to all available formats.
+
 [test_export_csv]
  verify a detailed analysis is exported to CSV.
 

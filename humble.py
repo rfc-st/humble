@@ -33,6 +33,7 @@ import sys
 import xml.etree.ElementTree as ET  # nosemgrep
 from time import time
 from html import escape
+from pathlib import Path
 from platform import system
 from base64 import b64decode
 from json import dump, dumps
@@ -1911,7 +1912,7 @@ def validate_file_access(target_path, *, context='history'):
         with open(target_path, 'a+', encoding='utf8'):
             pass
     except OSError as e:
-        err_str = e.strerror if e.strerror else type(e).__name__
+        err_str = e.strerror or type(e).__name__
         if context == 'history':
             return False, ("Not available",) * 6
         if context == 'basic':
@@ -2113,23 +2114,16 @@ def normalize_htmlpdf_all_export(format, tmp_filename, final_filename=None):
     Applies the required formatting to sections and lines of the analysis when
     exporting to HTML and PDF using the `-o all` option.
     """
-    is_html = (format == 'html')
-    with open(tmp_filename, 'r+', encoding='utf-8') as export_file:
-        lines = export_file.readlines()
-        start_index = next((i for i, line in enumerate(lines) if
-                            INFO_SECTION in line), None)
-        if start_index is None:
-            return
-        processed_content = process_htmlpdf_all_export(lines, start_index,
-                                                       format, is_html)
-        export_file.seek(0)
-        export_file.writelines(processed_content)
-        export_file.truncate()
+    is_html = (format == "html")
+    path = Path(tmp_filename)
+    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    idx = next((i for i, ln in enumerate(lines) if INFO_SECTION in ln), None)
+    processed = process_htmlpdf_all_export(lines, idx, format, is_html)
+    path.write_text("".join(processed), encoding="utf-8")
     if is_html:
         export_html_file(final_filename, tmp_filename, export_all=True)
-        return
-    fixed_pdffilename = fix_pdf_all_export(tmp_filename)
-    export_pdf_file(fixed_pdffilename, export_all=True)
+    else:
+        export_pdf_file(fix_pdf_all_export(tmp_filename), export_all=True)
 
 
 def sections_htmlpdf_all_export(line, states):
@@ -2154,7 +2148,7 @@ def format_htmlpdf_all_export(line, format, target_state, in_browser):
     if line.startswith(" ") and target_state:
         if format == 'html':
             return f"{line[0]}{STYLE[8]}{line[1:]}"
-        else:
+        if format == 'pdf':
             return f" {STYLE[6]}{line[1:]}"
     return line
 
