@@ -1911,17 +1911,17 @@ def validate_file_access(target_path, *, context='history'):
         with open(target_path, 'a+', encoding='utf8'):
             pass
     except OSError as e:
-        err_type = type(e).__name__
+        err_str = e.strerror if e.strerror else type(e).__name__
         if context == 'history':
             return False, ("Not available",) * 6
         if context == 'basic':
             msg = get_detail('[analysis_history_note]', replace=True)
-            print(f"{msg} ({err_type})")
+            print(f"{msg} ({err_str})")
             return False, None
         if context == 'export':
             delete_lines()
             err_msg = get_detail('[e_export_analysis]', replace=True)
-            print(f"\n{err_msg} ({err_type}).")
+            print(f"\n{err_msg} ({err_str}).")
             sys.exit(1)
     return True, None
 
