@@ -7,6 +7,6 @@ Classes and functions of **humble.py**, in alphabetical order (work in progress)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>April 10, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>April 11, 2026</em></span>
 </span>
 </aside>
