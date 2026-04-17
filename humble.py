@@ -443,12 +443,10 @@ def testssl_command(testssl_temp_path, uri):
     testssl_temp_path = path.abspath(testssl_temp_path)
     if not path.isdir(testssl_temp_path):
         print_error_detail('[notestssl_path]')
+    base_testssl_path = Path(testssl_temp_path)
     testssl_path = next(
-        (path.join(testssl_temp_path, filename)
-         for filename in TESTSSL_FILE
-         if path.isfile(path.join(testssl_temp_path, filename))),
-        None
-    )
+        (base_testssl_path / filename for filename in TESTSSL_FILE if
+         (base_testssl_path / filename).is_file()), None)
     if not testssl_path or not which(testssl_path):
         print_error_detail('[notestssl_fileexec]')
     print("")
@@ -1898,15 +1896,15 @@ def validate_path(output_path):
     of error, related to `-op` option.
     """
     try:
-        with open(path.join(output_path, HUMBLE_FILES[1]), 'w',
-                  encoding='utf8'):
+        validate_path = Path(output_path) / HUMBLE_FILES[1]
+        with validate_path.open('w', encoding='utf8'):
             pass
     except OSError as e:
-        print(f"\n {get_detail('[args_pathe]', replace=True)} '{output_path}' \
-({e.strerror})")
+        print(f"\n {get_detail('[args_pathe]', replace=True)} "
+              f"'{output_path}' ({e.strerror})")
         sys.exit(1)
     else:
-        remove(path.join(output_path, HUMBLE_FILES[1]))
+        validate_path.unlink()
 
 
 def validate_file_access(target_path, *, context='history'):
@@ -3787,8 +3785,7 @@ def get_tmp_file(args, export_date):
         lang = '_es' if args.lang else '_en'
         tmp_file = build_tmp_file(export_date, file_ext, lang, humble_str, url)
     if args.output_path:
-        full_path = path.join(args.output_path, tmp_file)
-        tmp_file = path.abspath(full_path)
+        tmp_file = (Path(args.output_path) / tmp_file).resolve()
     return tmp_file
 
 
