@@ -44,7 +44,6 @@ from ipaddress import ip_address
 from urllib.parse import urlparse
 from threading import Event, Thread
 from shutil import copyfile, which
-from os.path import dirname, abspath
 from socket import create_connection
 from subprocess import PIPE, Popen, STDOUT
 from collections import Counter, defaultdict
@@ -112,7 +111,18 @@ JSON_SECTION = ('0section', '0headers', '5compat', '6result')
 L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
              'security_guides': (15, 16)}
 METADATA_S = ('[pdf_meta_keywords', '[pdf_meta_subject]')
-OS_PATH = dirname(abspath(__file__))
+OS_PATH = Path(__file__).resolve().parent
+PATHS = {
+    'epilog': OS_PATH / HUMBLE_DIRS[1] / HUMBLE_FILES[5],
+    'fng_header': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
+    'fng_term': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
+    'fng_top': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
+    'html_source': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[8],
+    'insecure_header': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[7],
+    'owasp': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[18],
+    'security_headers': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[17],
+    'ua': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6]
+}
 PDF_COLORS = ('#008000', '#000000', '#660033')
 PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
 PDF_SECTION = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
@@ -185,12 +195,12 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/', 'https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py', 'https://github.com/rfc-st/humble')
 URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
-VALIDATE_FILE = path.join(OS_PATH, HUMBLE_FILES[0])
+VALIDATE_FILE = OS_PATH / HUMBLE_FILES[0]
 XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-04-11', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-04-17', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -305,8 +315,7 @@ def fng_statistics_top():
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    file_path = path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2])
-    with open(file_path, 'r', encoding='utf8') as fng_f:
+    with PATHS['fng_top'].open('r', encoding='utf8') as fng_f:
         fng_iterator = islice(fng_f, SLICE_INT[0], None)
         fng_lines = list(fng_iterator)
         fng_incl = len(fng_lines)
@@ -344,8 +353,7 @@ def fng_statistics_term(fng_term):
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    file_path = path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2])
-    with open(file_path, 'r', encoding='utf8') as fng_source:
+    with PATHS['fng_term'].open('r', encoding='utf8') as fng_source:
         fng_incl = list(islice(fng_source, SLICE_INT[0], None))
     fng_groups, term_cnt = fng_statistics_term_groups(fng_incl, fng_term)
     if not fng_groups:
@@ -403,7 +411,7 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
     lang_idx = 1 if lang_es else 0
     l10n_file = HUMBLE_FILES[L10N_IDXS[l10n_file][lang_idx]]
     l10n_slice = SLICE_INT[2 if lang_es else 3]
-    file_path = path.join(OS_PATH, HUMBLE_DIRS[1], l10n_file)
+    file_path = OS_PATH / HUMBLE_DIRS[1] / l10n_file
     with open(file_path, 'r', encoding='utf8') as l10n_source:
         l10n_lines = islice(l10n_source, l10n_slice, None) if slice_ln else \
             l10n_source
@@ -483,8 +491,8 @@ def get_l10n_content():
     Define the literal file to use, to print messages and errors, based on
     the language provided.
     """
-    l10n_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[4]
-                          if args.lang == 'es' else HUMBLE_FILES[5])
+    l10n_path = (OS_PATH / HUMBLE_DIRS[1] /
+                 (HUMBLE_FILES[4] if args.lang == 'es' else HUMBLE_FILES[5]))
     with open(l10n_path, 'r', encoding='utf8') as l10n_content:
         return l10n_content.readlines()
 
@@ -1667,10 +1675,9 @@ def get_epilog_content(id_mode):
     Print examples of use of `humble.py` and how to contribute to it, related
     to `-h` option.
     """
-    epilog_file_path = path.join(OS_PATH, HUMBLE_DIRS[1], HUMBLE_FILES[5])
     target = id_mode + '\n'
     content = []
-    with open(epilog_file_path, 'r', encoding='utf8') as epilog_source:
+    with PATHS['epilog'].open('r', encoding='utf8') as epilog_source:
         for line in epilog_source:
             if line == target:
                 break
@@ -1685,8 +1692,7 @@ def get_fingerprint_headers():
     ??? note
         The file associated with this check is `/additional/fingerprint.txt`.
     """
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[2]), 'r',
-              encoding='utf8') as fng_source:
+    with PATHS['fng_header'].open('r', encoding='utf8') as fng_source:
         l_fng_ex = [line.strip() for line in
                     islice(fng_source, SLICE_INT[0], None) if line.strip()]
         l_fng = [line.split(' (')[0].strip() for line in l_fng_ex]
@@ -1971,8 +1977,7 @@ def get_user_agent(user_agent_id):
     (from those available in `additional/user-agents.txt` file), terminating.
     execution if it is not found; related to `-ua` option
     """
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[6]), 'r',
-              encoding='utf8') as ua_source:
+    with PATHS['ua'].open('r', encoding='utf8') as ua_source:
         user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
                                                        None)]
     if user_agent_id == '0':
@@ -2001,8 +2006,7 @@ def get_insecure_checks():
     option.
     """
     headers_name = set()
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[7]), 'r',
-              encoding='utf-8') as ins_source:
+    with PATHS['insecure_header'].open('r', encoding='utf8') as ins_source:
         insecure_checks = islice(ins_source, SLICE_INT[2], None)
         for line in insecure_checks:
             insecure_header = line.split(':')[0]
@@ -2586,7 +2590,7 @@ def json_detailed_sources(file_idx, slice_idx):
     deprecated/insecure headers) for a JSON export; related to `-o json`
     option.
     """
-    file_path = path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[file_idx])
+    file_path = OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[file_idx]
     with open(file_path, 'r', encoding='utf8') as f:
         return {line.strip() for line in islice(f, SLICE_INT[slice_idx],
                                                 None) if line.strip()}
@@ -3257,8 +3261,7 @@ def generate_html():
     `/additional/html_template.html` for an HTML export; related to `-o html`
     option.
     """
-    copyfile(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[8]),
-             final_filename)
+    copyfile(PATHS['html_source'], final_filename)
     html_replace = {"html_title": get_detail(METADATA_S[1]),
                     "html_desc": get_detail('[pdf_meta_title]'),
                     "html_keywords": get_detail(METADATA_S[0]),
@@ -3612,8 +3615,7 @@ def check_owasp_compliance(tmp_filename):
     remove(tmp_filename)
     header_list = []
     header_dict = {}
-    with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[18]), 'r',
-              encoding='utf8') as owasp_file:
+    with PATHS['owasp'].open('r', encoding='utf8') as owasp_file:
         for line in islice(owasp_file, SLICE_INT[8], None):
             line = line.strip()
             header_name, header_val = map(str, line.split(': ', 1))
@@ -4238,8 +4240,7 @@ print_response_headers() if args.ret else print(linesep.join([''] * 2))
 # Section '1. Enabled HTTP Security Headers'
 print_detail_r('[1enabled]')
 
-with open(path.join(OS_PATH, HUMBLE_DIRS[0], HUMBLE_FILES[17]), 'r',
-          encoding='utf8') as sec_f:
+with PATHS['security_headers'].open('r', encoding='utf8') as sec_f:
     t_ena = tuple(line.strip() for line in islice(sec_f, SLICE_INT[2], None))
 
 en_cnt = get_enabled_headers(args, headers_l, t_ena)
