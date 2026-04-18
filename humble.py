@@ -113,15 +113,15 @@ L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
 METADATA_S = ('[pdf_meta_keywords', '[pdf_meta_subject]')
 OS_PATH = Path(__file__).resolve().parent
 PATHS = {
-    'epilog': OS_PATH / HUMBLE_DIRS[1] / HUMBLE_FILES[5],
-    'fng_header': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
-    'fng_term': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
-    'fng_top': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
+    'help_epilog': OS_PATH / HUMBLE_DIRS[1] / HUMBLE_FILES[5],
+    'fingerprint_header': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
+    'fingerprint_term': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
+    'fingerprint_top': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
     'html_source': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[8],
     'insecure_header': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[7],
-    'owasp': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[18],
+    'owasp_compliance': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[18],
     'security_headers': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[17],
-    'ua': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6]
+    'user_agents': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6]
 }
 PDF_COLORS = ('#008000', '#000000', '#660033')
 PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
@@ -200,7 +200,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-04-17', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-04-18', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -315,7 +315,7 @@ def fng_statistics_top():
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    with PATHS['fng_top'].open('r', encoding='utf8') as fng_f:
+    with PATHS['fingerprint_top'].open('r', encoding='utf8') as fng_f:
         fng_iterator = islice(fng_f, SLICE_INT[0], None)
         fng_lines = list(fng_iterator)
         fng_incl = len(fng_lines)
@@ -353,7 +353,7 @@ def fng_statistics_term(fng_term):
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    with PATHS['fng_term'].open('r', encoding='utf8') as fng_source:
+    with PATHS['fingerprint_term'].open('r', encoding='utf8') as fng_source:
         fng_incl = list(islice(fng_source, SLICE_INT[0], None))
     fng_groups, term_cnt = fng_statistics_term_groups(fng_incl, fng_term)
     if not fng_groups:
@@ -440,13 +440,12 @@ def testssl_command(testssl_temp_path, uri):
         Check the testssl.sh <a href="https://testssl.sh/doc/testssl.1.html"
         target="_blank">documentation</a> for a list of all available options
     """
-    testssl_temp_path = path.abspath(testssl_temp_path)
-    if not path.isdir(testssl_temp_path):
+    args_path = Path(testssl_temp_path).resolve()
+    if not args_path.is_dir():
         print_error_detail('[notestssl_path]')
-    base_testssl_path = Path(testssl_temp_path)
     testssl_path = next(
-        (base_testssl_path / filename for filename in TESTSSL_FILE if
-         (base_testssl_path / filename).is_file()), None)
+        (args_path / filename for filename in TESTSSL_FILE if
+         (args_path / filename).is_file()), None)
     if not testssl_path or not which(testssl_path):
         print_error_detail('[notestssl_fileexec]')
     print("")
@@ -1451,15 +1450,15 @@ def print_export_path(filename, reliable, export_all=False):
     delete_lines(reliable=False) if reliable else delete_lines()
     if '-c' in sys.argv:
         return
-    abs_path = path.abspath(filename)
+    export_path = Path(filename).resolve()
     if export_all:
         if args.ret:
             delete_lines()
-        msg = f"{print_detail_s('[all_reports]').lstrip()} \
-'{path.dirname(abs_path)}'."
+        msg = f"{print_detail_s('[all_reports]').lstrip()} " \
+              f"'{export_path.parent}'."
     else:
-        msg = f"{args.output.upper()} {print_detail_s('[report]').lstrip()} \
-'{abs_path}'."
+        msg = (f"{args.output.upper()} {print_detail_s('[report]').lstrip()} "
+               f"'{export_path}'.")
     print(f"\n {msg}")
 
 
@@ -1675,7 +1674,7 @@ def get_epilog_content(id_mode):
     """
     target = id_mode + '\n'
     content = []
-    with PATHS['epilog'].open('r', encoding='utf8') as epilog_source:
+    with PATHS['help_epilog'].open('r', encoding='utf8') as epilog_source:
         for line in epilog_source:
             if line == target:
                 break
@@ -1690,7 +1689,7 @@ def get_fingerprint_headers():
     ??? note
         The file associated with this check is `/additional/fingerprint.txt`.
     """
-    with PATHS['fng_header'].open('r', encoding='utf8') as fng_source:
+    with PATHS['fingerprint_header'].open('r', encoding='utf8') as fng_source:
         l_fng_ex = [line.strip() for line in
                     islice(fng_source, SLICE_INT[0], None) if line.strip()]
         l_fng = [line.split(' (')[0].strip() for line in l_fng_ex]
@@ -1975,7 +1974,7 @@ def get_user_agent(user_agent_id):
     (from those available in `additional/user-agents.txt` file), terminating.
     execution if it is not found; related to `-ua` option
     """
-    with PATHS['ua'].open('r', encoding='utf8') as ua_source:
+    with PATHS['user_agents'].open('r', encoding='utf8') as ua_source:
         user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
                                                        None)]
     if user_agent_id == '0':
@@ -2161,7 +2160,7 @@ def fix_pdf_all_export(tmp_filename):
     exporting using the `-o all` option.
     """
     fixed_pdffilename = tmp_filename
-    base_pdffilename = fixed_pdffilename.rsplit('.', 1)[0][:-1]
+    base_pdffilename = str(fixed_pdffilename).rsplit('.', 1)[0][:-1]
     with open(fixed_pdffilename, 'r+', encoding='utf-8') as temp_pdffilename:
         content = "".join(temp_pdffilename.readlines()[6:])
         new_content = content.replace(f"{base_pdffilename}.all",
@@ -2177,20 +2176,13 @@ def normalize_txt_all_export(tmp_filename):
     Applies the required formatting to sections and lines of the analysis when
     exporting to TXT using the `-o all` option.
     """
-    with open(tmp_filename, 'r', encoding='utf-8') as source_file:
-        lines = source_file.readlines()
-    cleaned_content = [
-        line.replace(STYLE[6], "").replace(STYLE[8], "")
-        for line in lines
-    ]
-    identity = tmp_filename.rsplit('.', 1)[0][:-1]
-    target = f"{identity}.pdf"
-    replacement = f"{identity}.txt"
-    with open(tmp_filename, 'w', encoding='utf-8') as updated_file:
-        for line in cleaned_content:
-            updated_file.write(line.replace(target, replacement))
-    export_all_txt = f"{tmp_filename[:-5]}.txt"
-    rename(tmp_filename, export_all_txt)
+    txt_path = Path(tmp_filename)
+    identity = txt_path.stem[:-1]
+    txt_content = (txt_path.read_text(encoding='utf-8')
+                   .replace(STYLE[6], "").replace(STYLE[8], "")
+                   .replace(f"{identity}.pdf", f"{identity}.txt"))
+    txt_path.write_text(txt_content, encoding='utf-8')
+    txt_path.rename(txt_path.with_name(f"{identity}.txt"))
 
 
 def finalize_export(f_name, t_name, ext, export_all):
@@ -2268,7 +2260,7 @@ def build_cicd_totals(tmp_filename, info_lines, totals, labels):
         info_label: info_dict,
         **totals,
         get_detail('[cicd_detailed]', True): {
-            get_detail('[cicd_path]', True): path.abspath(tmp_filename)
+            get_detail('[cicd_path]', True): str(Path(tmp_filename).resolve())
         },
     }
 
@@ -3613,7 +3605,7 @@ def check_owasp_compliance(tmp_filename):
     remove(tmp_filename)
     header_list = []
     header_dict = {}
-    with PATHS['owasp'].open('r', encoding='utf8') as owasp_file:
+    with PATHS['owasp_compliance'].open('r', encoding='utf8') as owasp_file:
         for line in islice(owasp_file, SLICE_INT[8], None):
             line = line.strip()
             header_name, header_val = map(str, line.split(': ', 1))
@@ -4162,7 +4154,7 @@ if args.guides:
     print_l10n_file(args, 'security_guides', slice_ln=True)
 
 if args.testssl_path:
-    testssl_command(path.abspath(args.testssl_path), URL)
+    testssl_command(args.testssl_path, URL)
 
 if args.URL_A:
     check_analysis(HUMBLE_FILES[0])
@@ -4228,7 +4220,7 @@ if args.output:
     tmp_filename_content = open(tmp_filename, 'w', encoding='utf8')
     sys.stdout = tmp_filename_content
     export_slice = SLICE_INT[4] if args.output == 'txt' else SLICE_INT[5]
-    export_filename = f"{tmp_filename[:export_slice]}.{args.output}"
+    export_filename = f"{str(tmp_filename)[:export_slice]}.{args.output}"
 
 # Section '0. Info & HTTP Response Headers'
 print_general_info(reliable, export_filename)
@@ -5159,7 +5151,7 @@ if '-c' not in sys.argv:
 
 # Export analysis according to the scope (single format or all of them)
 if args.output:
-    final_filename = f"{tmp_filename[:-5]}.{args.output}"
+    final_filename = f"{str(tmp_filename)[:-5]}.{args.output}"
     sys.stdout = orig_stdout
     tmp_filename_content.close()
     check_export_scope()
