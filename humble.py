@@ -32,6 +32,7 @@ import ssl
 import sys
 import xml.etree.ElementTree as ET  # nosemgrep
 from time import time
+from os import linesep
 from html import escape
 from pathlib import Path
 from platform import system
@@ -47,7 +48,6 @@ from shutil import copyfile, which
 from socket import create_connection
 from subprocess import PIPE, Popen, STDOUT
 from collections import Counter, defaultdict
-from os import linesep, path, rename, remove
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 # Third-Party imports
@@ -617,7 +617,7 @@ def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
 
 def check_analysis(filepath):
     """Check if analysis history file, `analysis_h.txt`, exists."""
-    if not path.exists(filepath):
+    if not Path(filepath).exists():
         detail = '[no_analysis]' if URL else '[no_global_analysis]'
         print_error_detail(detail)
 
@@ -1930,19 +1930,20 @@ def validate_file_access(target_path, *, context='history'):
     return True, None
 
 
-def check_output_path(args, output_path):
+def check_output_path(args):
     """
     Validations related to the provided path in `-op` option, terminating
     execution in case of error.
     """
     check_input_traversal(args.output_path)
+    output_path = Path(args.output_path).resolve()
     if args.output is None:
         print_error_detail('[args_nooutputfmt]')
-    elif path.exists(output_path):
+    elif output_path.exists():
         validate_path(output_path)
     else:
-        print(f"\n {get_detail('[args_noexportpath]', replace=True)} \
-('{output_path}')")
+        msg = get_detail('[args_noexportpath]', replace=True)
+        print(f"\n {msg} ('{output_path}')")
         sys.exit(1)
 
 
@@ -2197,10 +2198,10 @@ def finalize_export(f_name, t_name, ext, export_all):
     """
     if not export_all:
         print_export_path(f_name, reliable)
-        remove(t_name)
+        Path(t_name).unlink()
         sys.exit(0)
     new_filename = f"{f_name[:-4]}.{ext}"
-    rename(f_name, new_filename)
+    Path(f_name).rename(new_filename)
     dotted_ext = f".{ext}"
     if dotted_ext not in (EXPORT_EXTENSIONS[3], EXPORT_EXTENSIONS[5]):
         with open(new_filename, 'r+', encoding='utf-8') as f:
@@ -2598,7 +2599,7 @@ def generate_json_detailed(final_filename, temp_filename):
         json_detailed_parse(data, txt_sections)
         dump(data, json_file, indent=4, ensure_ascii=False)
     print_export_path(final_filename, reliable)
-    remove(temp_filename)
+    Path(temp_filename).unlink()
     sys.exit(0)
 
 
@@ -3602,7 +3603,7 @@ def check_owasp_compliance(tmp_filename):
     `OWASP Secure Headers Project` best practices checks, related to `-c`
     option.
     """
-    remove(tmp_filename)
+    Path(tmp_filename).unlink()
     header_list = []
     header_dict = {}
     with PATHS['owasp_compliance'].open('r', encoding='utf8') as owasp_file:
@@ -3707,7 +3708,7 @@ def analyze_input_file(input_file):
 
     It reads the provided file path and parses its content into header data.
     """
-    if not path.exists(input_file):
+    if not Path(input_file).exists():
         print_error_detail('[args_inputnotfound]')
     input_headers = {}
     status_code = 0
@@ -3744,7 +3745,7 @@ def normalize_output_file(filename):
     Normalizes the filename by stripping paths and removing extensions.
     Aborts execution if the resulting filename is invalid (e.g., '.html').
     """
-    base_name = path.basename(filename)
+    base_name = Path(filename).name
     while base_name.lower().endswith(EXPORT_EXTENSIONS):
         dot_index = base_name.rfind(".")
         if dot_index <= 0:
@@ -4131,8 +4132,7 @@ else:
         print_error_detail('[args_customfile]')
 
 if args.output_path is not None:
-    output_path = path.abspath(args.output_path)
-    check_output_path(args, output_path)
+    check_output_path(args)
 
 if any([args.brief, args.output, args.ret, args.redirects,
         args.skip_headers]) and (URL is None or args.guides is None or
