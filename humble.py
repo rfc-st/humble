@@ -3872,6 +3872,7 @@ def process_requests_exception(exception):
     else:
         print_detail_l('[unhandled_exception]')
         print(f" {type(exception).__name__}")
+        sys.exit(1)
 
 
 def process_http_error(r, exception_d):
@@ -3982,9 +3983,9 @@ def process_http_response(r, exception, status_code, reliable, body):
     """  # noqa: E501
     if exception:
         process_requests_exception(exception)
-        return {}, status_code, reliable, body
+        return {}, status_code, reliable, body, False
     if r is None:
-        return {}, status_code, reliable, body
+        return {}, status_code, reliable, body, False
     process_http_error(r, exception_d)
     status_code = r.status_code
     headers = CaseInsensitiveDict({
