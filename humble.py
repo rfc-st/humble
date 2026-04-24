@@ -32,7 +32,6 @@ import ssl
 import sys
 import xml.etree.ElementTree as ET  # nosemgrep
 from time import time
-from os import linesep
 from html import escape
 from pathlib import Path
 from platform import system
@@ -200,7 +199,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-04-18', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-04-24', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1501,8 +1500,7 @@ def print_basic_info(export_filename):
     time, URL, User-Agent (`-ua` option), input file (`-if` option) and
     exported filename (`-o` option).
     """
-    print(linesep.join(['']*2) if args.output == 'html' or not args.output
-          else "")
+    print("", end="\n\n" if args.output in ('html', 'pdf', None) else "")
     print_detail_r('[0section]')
     print_detail_l('[analysis_date]')
     print(f" {current_time}")
@@ -1556,7 +1554,7 @@ def print_extra_info(reliable):
 
 def print_response_headers():
     """Print response headers, related to `-r` option."""
-    print(linesep.join(['']*2))
+    print("", end="\n\n")
     print_detail_r('[0headers]')
     if not headers:
         print_nosec_headers(enabled=False)
@@ -3623,7 +3621,7 @@ def print_owasp_summary(missing, wrong):
     missing_txt = get_detail('[comp_missing]', replace=True)
     wrong_txt = get_detail('[comp_noncompliant]', replace=True)
     max_len = len(wrong_txt)
-    print(linesep.join([''] * 2))
+    print("", end="\n\n")
     print(f"{STYLE[0]}{get_detail('[comp_summary]')}")
     print(f" {missing_txt:{max_len}} : {len(missing)}")
     print(f" {wrong_txt:{max_len}} : {len(wrong)}")
@@ -3634,7 +3632,7 @@ def print_owasp_findings(header_dict, header_list):
     Print formatted lines for results section of an `OWASP Secure Headers
     Project` best practices checks, related to `-c` option.
     """
-    print(linesep.join([''] * 2))
+    print("", end="\n\n")
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
     print(" ", end='')
     print_detail_l('[analysis_date]')
@@ -4224,7 +4222,7 @@ if args.output:
 
 # Section '0. Info & HTTP Response Headers'
 print_general_info(reliable, export_filename)
-print_response_headers() if args.ret else print(linesep.join([''] * 2))
+print_response_headers() if args.ret else print("", end="\n\n")
 
 # Section '1. Enabled HTTP Security Headers'
 print_detail_r('[1enabled]')
@@ -5143,7 +5141,7 @@ print_browser_compatibility(compat_headers) if compat_headers else \
     print_nosec_headers()
 
 # Summary of the analysis and changes compared to the previous one
-print(linesep.join(['']*2))
+print("", end="\n\n")
 end = time()
 print_detail_r('[7result]')
 if '-c' not in sys.argv:
