@@ -2297,6 +2297,9 @@ Generator
 [test_testssl_error]
  verify an error message is displayed for TLS/SSL check exceptions.
 
+[test_testssl_nopath]
+ verify an error message is displayed for TLS/SSL check without a path for 'testssl'.
+
 [test_unicode_error]
  verify all response headers are encoded in UTF-8.
 

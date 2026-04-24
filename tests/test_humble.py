@@ -250,6 +250,7 @@ TEST_CFGS = {
     'test_skipped_headers': (['-u', TEST_URLS[9], '-s', 'ETAG', 'NEL'],
                              'expressly excluded'),
     'test_testssl_error': ([], 'Error'),
+    'test_testssl_nopath': (['-u', TEST_URLS[9], '-e'], 'requires'),
     'test_unicode_error': (['-u', TEST_URLS[9], '-if', PATHS['UNICODE']],
                            'unicode'),
     'test_unreliable_analysis': (['-u', TEST_URLS[10]], 'Not'),

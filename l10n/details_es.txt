@@ -2277,6 +2277,9 @@ Generador
 [test_testssl_error]
  verifica que se muestre un mensaje de error ante excepciones durante el análisis TLS/SSL.
 
+[test_testssl_nopath]
+ verifica que se muestre un mensaje de error ante análisis TLS/SSL sin la ruta de 'testssl'.
+
 [test_unicode_error]
  verifica que las cabeceras de respuesta estén informadas como UTF-8.
 
