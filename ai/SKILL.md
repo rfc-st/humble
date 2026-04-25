@@ -1,5 +1,5 @@
 ---
-name: ia
+name: ai
 description: Expert-level parsing and remediation of 'humble' HTTP security header reports.
 ---
 
