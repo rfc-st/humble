@@ -492,7 +492,8 @@ After following these steps, you'll be able to convert this:
 
 in a priority-based analysis!:
 
-<placeholder>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/ai_2.PNG" alt="AI-processed results for ‘humble’ (Gemini - Part 1)">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/ai_3.PNG" alt="AI-processed results for ‘humble’ (Gemini - Part 2)">
 
 ## Quality, style and security tools
 
