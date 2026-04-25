@@ -488,9 +488,7 @@ To perform a senior-level debrief among your IA:
 
 After following these steps, you'll be able to convert this:
 
-
-
-<placeholder>
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/ai_1.PNG" alt="Full analysis, including HTTP response headers">
 
 in a priority-based analysis!:
 
