@@ -34,7 +34,6 @@ import xml.etree.ElementTree as ET  # nosemgrep
 from time import time
 from html import escape
 from pathlib import Path
-from platform import system
 from base64 import b64decode
 from json import dump, dumps
 from itertools import islice
@@ -4115,7 +4114,7 @@ elif URL:
     ua_header = parse_user_agent()
 
 if '-e' in sys.argv:
-    if system().lower() == 'windows':
+    if sys.platform.startswith('win'):
         print_l10n_file(args, 'testssl', slice_ln=True)
     if (args.testssl_path is None or URL is None):
         print_error_detail('[args_notestssl]')
