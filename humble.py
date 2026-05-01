@@ -198,7 +198,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-04-30', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-05-01', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -572,7 +572,7 @@ def compare_analysis_results(analysis_totals, current_counts):
     return [
         get_detail('[no_changes]', replace=True) if (d - int(c)) == 0
         else f"{d - int(c):+d}" for d, c in zip(current_counts,
-                                                analysis_totals)
+                                                analysis_totals, strict=True)
     ]
 
 
@@ -591,7 +591,7 @@ def format_analysis_results(*diff, en_cnt_w, t_cnt):
 
 def print_analysis_results(totals, max_secl, en_cnt_w):
     """Print the totals for the current analysis."""
-    for idx, (literal, total) in enumerate(zip(SECTION_S, totals)):
+    for idx, (literal, total) in enumerate(zip(SECTION_S, totals, strict=True)):
         print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} {total}",
               end='')
         if idx == 0 and en_cnt_w:
@@ -819,7 +819,7 @@ def get_trends(adj_url_ln):
     fields_t = [3, 4, 5, 6, 7]
     max_secl = (get_max_lnlength(SECTION_S))-2
     trends = []
-    for section, field_idx in zip(sections_t, fields_t):
+    for section, field_idx in zip(sections_t, fields_t, strict=True):
         values = [int(parts[field_idx].strip()) for line in adj_url_ln
                   if len((parts := line.strip().split(';'))) > field_idx]
         trends.append(f"{(get_detail(section, replace=True).ljust(max_secl))}\
@@ -1104,7 +1104,8 @@ def csp_check_missing(csp_dirs):
                 ('[icspmr_h]', '[icspmr]'), ('[icspms_h]', '[icspms]'),
                 ('[icspmst_h]', '[icspmst]'), ('[icspmstt_h]', '[icspmstt]'),
                 ('[icspmsw_h]', '[icspmsw]')]
-    for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs):
+    for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs,
+                                                   strict=True):
         if directive not in csp_dirs:
             csp_print_missing(csp_ref, csp_ref_brief)
 
@@ -1809,6 +1810,11 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
     consider essential).
 
     ??? note
+        `strict=False` is used because `l_detail` contains `[mxfo]` but `l_miss`
+        does not yet contain `X-Frame-Options`: this header is checked for in
+        `check_frame_options` function.
+
+    ??? note
         The highlighted <a href="https://developer.mozilla.org/en-US/docs/
         MDN/Writing_guidelines/Experimental_deprecated_obsolete"
         target=blank">experimental</a> headers are defined in the EXP_HEADERS
@@ -1816,7 +1822,7 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
         https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers"
         target="_blank">list</a> of HTTP headers.
     """
-    for header, detail in zip(l_miss, l_detail):
+    for header, detail in zip(l_miss, l_detail, strict=False):
         lower_header = header.lower()
         if lower_header not in merged_set and not xfo_skipped:
             print_header(
@@ -4556,7 +4562,7 @@ t_robots = ('all', 'archive', 'follow', 'index', 'indexifembedded',
             'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
             'nosnippet', 'notranslate', 'noydir', 'unavailable_after')
 
-unsafe_scheme = True if URL.startswith(HTTP_SCHEMES[0]) else False
+unsafe_scheme = bool(URL.startswith(HTTP_SCHEMES[0]))
 
 if 'accept-ch' in headers_l and '1' not in skip_list:
     acceptch_header = headers_l['accept-ch']
