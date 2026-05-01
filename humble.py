@@ -1610,8 +1610,14 @@ def print_detail_l(id_mode, analytics=False, no_headers=False):
     """
     Print detailed information about the finding and removes lines from the
     output based on it.
+
+    ??? note
+        `strict=False` is needed because this function matches each bracketed ID
+        with its corresponding lines from `l10n_main` (the localized analysis
+        findings and error strings). The offset created by `l10n_main[1:]`
+        bridges the line break between a heading and its descriptive text.
     """
-    for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
+    for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:], strict=False):
         if idmode_ln.startswith(id_mode):
             if no_headers:
                 print(idnext_ln, end='')
@@ -1624,9 +1630,15 @@ def print_detail_l(id_mode, analytics=False, no_headers=False):
 def print_detail_r(id_mode, is_red=False):
     """
     Print detailed information about the finding using a distinctive format.
+
+    ??? note
+        `strict=False` is needed because this function matches each bracketed ID
+        with its corresponding lines from `l10n_main` (the localized analysis
+        findings and error strings). The offset created by `l10n_main[1:]`
+        bridges the line break between a heading and its descriptive text.
     """
     style_str = STYLE[1] if is_red else STYLE[0]
-    for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
+    for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:], strict=False):
         if idmode_ln.startswith(id_mode):
             if not args.output:
                 print(f"{style_str}{idnext_ln}", end='')
@@ -1639,8 +1651,14 @@ def print_detail_r(id_mode, is_red=False):
 def print_detail_s(id_mode, max_ln=False):
     """
     Print message with leading newline and optional whitespace preservation.
+
+    ??? note
+        `strict=False` is needed because this function matches each bracketed ID
+        with its corresponding lines from `l10n_main` (the localized analysis
+        findings and error strings). The offset created by `l10n_main[1:]`
+        bridges the line break between a heading and its descriptive text.
     """
-    for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:]):
+    for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:], strict=False):
         if idmode_ln.startswith(id_mode):
             return f"\n{idnext_ln.rstrip()}" if max_ln else \
                 f"\n{idnext_ln.strip()}"
@@ -4221,7 +4239,7 @@ if args.output:
     tmp_filename = get_tmp_file(args, export_date)
     validate_file_access(tmp_filename, context='export')
     # nosemgrep
-    tmp_filename_content = open(tmp_filename, 'w', encoding='utf8')
+    tmp_filename_content = open(tmp_filename, 'w', encoding='utf8') # noqa: SIM115
     sys.stdout = tmp_filename_content
     export_slice = SLICE_INT[4] if args.output == 'txt' else SLICE_INT[5]
     export_filename = f"{str(tmp_filename)[:export_slice]}.{args.output}"
