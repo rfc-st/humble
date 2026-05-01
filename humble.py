@@ -224,7 +224,7 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         context.cert_reqs = ssl.CERT_NONE  # noqa # nosemgrep
         context.set_ciphers(FORCED_CIPHERS)  # nosemgrep
         kwargs['ssl_context'] = context
-        return super(SSLContextAdapter, self).init_poolmanager(*args, **kwargs)
+        return super().init_poolmanager(*args, **kwargs)
 
 
 def check_python_version():
@@ -410,7 +410,7 @@ def print_l10n_file(args, l10n_file, slice_ln=False):
     l10n_file = HUMBLE_FILES[L10N_IDXS[l10n_file][lang_idx]]
     l10n_slice = SLICE_INT[2 if lang_es else 3]
     file_path = OS_PATH / HUMBLE_DIRS[1] / l10n_file
-    with open(file_path, 'r', encoding='utf8') as l10n_source:
+    with open(file_path, encoding='utf8') as l10n_source:
         l10n_lines = islice(l10n_source, l10n_slice, None) if slice_ln else \
             l10n_source
         for line in l10n_lines:
@@ -488,7 +488,7 @@ def get_l10n_content():
     """
     l10n_path = (OS_PATH / HUMBLE_DIRS[1] /
                  (HUMBLE_FILES[4] if args.lang == 'es' else HUMBLE_FILES[5]))
-    with open(l10n_path, 'r', encoding='utf8') as l10n_content:
+    with open(l10n_path, encoding='utf8') as l10n_content:
         return l10n_content.readlines()
 
 
@@ -648,7 +648,7 @@ def url_analytics(is_global=False):
     terminate execution, related to `-a` option.
     """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
-    with open(HUMBLE_FILES[0], 'r', encoding='utf8') as all_analysis:
+    with open(HUMBLE_FILES[0], encoding='utf8') as all_analysis:
         analysis_metrics = url_scope(all_analysis)
     l10n_det = '[global_stats_analysis]' if is_global else '[stats_analysis]'
     url_string = '' if is_global else URL
@@ -821,7 +821,7 @@ def get_trends(adj_url_ln):
     trends = []
     for section, field_idx in zip(sections_t, fields_t, strict=True):
         values = [int(parts[field_idx].strip()) for line in adj_url_ln
-                  if len((parts := line.strip().split(';'))) > field_idx]
+                  if len(parts := line.strip().split(';')) > field_idx]
         trends.append(f"{(get_detail(section, replace=True).ljust(max_secl))}\
  {calculate_trends(values)}")
     return trends
@@ -2053,7 +2053,7 @@ def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
     their security analysis.
     """
     print_detail_l('[analysis_skipped_note]')
-    print(" " + ", ".join("'{}'".format(h.title()) for h in
+    print(" " + ", ".join(f"'{h.title()}'" for h in
                           sorted(args.skip_headers, key=str.lower)) + ".")
 
 
@@ -2396,7 +2396,7 @@ def generate_csv(final_filename, temp_filename, to_xlsx=False,
     CSV and XSLX export of the analysis and terminates execution, related to
     `-o csv` option.
     """
-    with open(temp_filename, 'r', encoding='utf8') as txt_source, \
+    with open(temp_filename, encoding='utf8') as txt_source, \
          open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
         write_csv_content(csv_final, txt_source)
     if to_xlsx:
@@ -2495,7 +2495,7 @@ def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
         by sanitizing potentially dangerous values.
     """
     prev_section = None
-    with open(final_filename, 'r', encoding='utf-8', newline='') as csv_final:
+    with open(final_filename, encoding='utf-8', newline='') as csv_final:
         for row_index, row_data in enumerate(
                 defusedcsv_logic.reader(csv_final)):
             for col_index, cell_value in enumerate(row_data):
@@ -2541,7 +2541,7 @@ def generate_json(final_filename, temp_filename, export_all=False):
     """
     section0, sectionh, section5, section6 = (
         get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
-    with open(temp_filename, 'r', encoding='utf8') as txt_file, \
+    with open(temp_filename, encoding='utf8') as txt_file, \
          open(final_filename, 'w', encoding='utf8') as json_file:
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
@@ -2603,8 +2603,8 @@ def json_detailed_sources(file_idx, slice_idx):
     option.
     """
     file_path = OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[file_idx]
-    with open(file_path, 'r', encoding='utf8') as f:
-        return {line.strip() for line in islice(f, SLICE_INT[slice_idx],
+    with open(file_path, encoding='utf8') as json_file:
+        return {line.strip() for line in islice(json_file, SLICE_INT[slice_idx],
                                                 None) if line.strip()}
 
 
@@ -2613,7 +2613,7 @@ def generate_json_detailed(final_filename, temp_filename):
     JSON export of a detailed analysis and and terminates execution, related to
     `-o json` option.
     """
-    with open(temp_filename, 'r', encoding='utf8') as txt_file, \
+    with open(temp_filename, encoding='utf8') as txt_file, \
          open(final_filename, 'w', encoding='utf8') as json_file:
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
@@ -3035,7 +3035,7 @@ def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
     Set the format and sections for a PDF export; related to `-o pdf`
     option.
     """
-    with open(tmp_filename, 'r', encoding='utf8') as txt_source:
+    with open(tmp_filename, encoding='utf8') as txt_source:
         for line in txt_source:
             if any(no_header in line for no_header in no_headers):
                 set_pdf_warnings(line, pdf, ypos)
@@ -3255,7 +3255,7 @@ def export_html_file(final_filename, tmp_filename, export_all=False):
     ok_string = get_detail(DIR_MSG[2]).rstrip()
     ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
                                                           'no_enb_headers']]
-    with open(tmp_filename, 'r', encoding='utf8') as html_source, \
+    with open(tmp_filename, encoding='utf8') as html_source, \
             open(final_filename, 'a', encoding='utf8') as html_final:
         for ln in html_source:
             format_html_file(html_final, ko_strings, ln, ok_string)
@@ -3294,7 +3294,7 @@ def decrease_html_spacing(tmp_filename):
     """
     initial_ln, prev_blank_ln = False, False
     cleaned_ln = []
-    with open(tmp_filename, "r", encoding="utf8") as html_source:
+    with open(tmp_filename, encoding="utf8") as html_source:
         for line in html_source:
             if not initial_ln and INFO_SECTION in line:
                 initial_ln = True
@@ -3555,11 +3555,11 @@ def generate_xml(final_filename, temp_filename, export_all=False):
     """
     root = ET.Element('analysis', {'version': BANNER_VERSION,
                                    'generated': current_time})
-    with open(temp_filename, 'r', encoding='utf8') as txt_source:
+    with open(temp_filename, encoding='utf8') as txt_source:
         parse_xml(root, None, (line.strip() for line in txt_source))
-    xml_decl = '<?xml version="1.0" encoding="utf-8"?>\n'.encode('utf-8')
+    xml_decl = b'<?xml version="1.0" encoding="utf-8"?>\n'
     xml_content = ET.tostring(root, encoding='utf-8', xml_declaration=False)
-    xml_dtd = f'<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n'.encode('utf-8')
+    xml_dtd = f'<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n'.encode()
     with open(final_filename, 'wb') as xml_final:
         xml_final.write(xml_decl + xml_dtd + xml_content)
     finalize_export(final_filename, temp_filename, 'xml', export_all)
@@ -3734,7 +3734,7 @@ def analyze_input_file(input_file):
     input_headers = {}
     status_code = 0
     try:
-        with open(input_file, 'r', encoding='utf8') as input_source:
+        with open(input_file, encoding='utf8') as input_source:
             input_headers, status_code = parse_input_file(input_headers,
                                                           input_source,
                                                           status_code)
