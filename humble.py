@@ -198,7 +198,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-05-01', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-05-02', '%Y-%m-%d').date()
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -1625,6 +1625,7 @@ def print_detail_l(id_mode, analytics=False, no_headers=False):
                 print(idnext_ln.replace('\n', ''), end='')
             else:
                 return idnext_ln.replace('\n', '').replace(':', '')[1:]
+    return None
 
 
 def print_detail_r(id_mode, is_red=False):
@@ -1662,6 +1663,7 @@ def print_detail_s(id_mode, max_ln=False):
         if idmode_ln.startswith(id_mode):
             return f"\n{idnext_ln.rstrip()}" if max_ln else \
                 f"\n{idnext_ln.strip()}"
+    return None
 
 
 def get_detail(id_mode, replace=False):
@@ -1670,6 +1672,7 @@ def get_detail(id_mode, replace=False):
         if line.startswith(id_mode):
             return (l10n_main[i+1].replace('\n', '')) if replace else \
                 l10n_main[i+1]
+    return None
 
 
 def print_error_detail(id_mode, clean_lines=False):
@@ -1977,6 +1980,7 @@ def parse_user_agent(user_agent=False):
         nourl_user_agent(user_agent_id)
     else:
         return get_user_agent(user_agent_id)
+    return None
 
 
 def nourl_user_agent(user_agent_id):
@@ -1988,6 +1992,7 @@ def nourl_user_agent(user_agent_id):
     if user_agent_id == '0':
         return get_user_agent('0')
     print_error_detail('[args_useragent]')
+    return None
 
 
 def get_user_agent(user_agent_id):
@@ -2005,6 +2010,7 @@ def get_user_agent(user_agent_id):
         if line.startswith(f"{user_agent_id}.-"):
             return line[4:].strip()
     print_error_detail('[ua_invalid]')
+    return None
 
 
 def print_user_agents(user_agents):
@@ -3060,13 +3066,14 @@ def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
           pdf_links if string in line), None)
     if set_pdf_conditions(line, pdf, ypos):
         return True
-    elif ok_string in line:
+    if ok_string in line:
         set_pdf_nowarnings(line, pdf, ypos)
         return True
     pdf.set_text_color(255, 0, 0)
     if set_pdf_empty(l_empty, line, pdf, ypos):
         return True
     format_pdf_lines(line, pdf, ypos)
+    return False
 
 
 def set_pdf_sections(line, pdf):
@@ -3118,6 +3125,7 @@ def set_pdf_warnings(line, pdf, ypos):
         pdf.set_text_color(255, 0, 0)
         pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
         return True
+    return None
 
 
 def set_pdf_nowarnings(line, pdf, ypos):

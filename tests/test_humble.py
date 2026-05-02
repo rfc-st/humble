@@ -300,6 +300,7 @@ def get_detail(id_mode, replace=False):
         if line.startswith(id_mode):
             return (l10n_main[i+1].replace('\n', '')) if replace else \
                 l10n_main[i+1]
+    return None
 
 
 def get_l10n_content():
@@ -313,7 +314,7 @@ def get_l10n_content():
         l10n_file = HUMBLE_L10N_FILE[1]
 
     l10n_path = path.join(HUMBLE_TESTS_DIR, HUMBLE_L10N_DIR, l10n_file)
-    with open(l10n_path, 'r', encoding='utf8') as l10n_content:
+    with open(l10n_path, encoding='utf8') as l10n_content:
         return l10n_content.readlines()
 
 
@@ -330,7 +331,7 @@ def print_results():
     - `<HUMBLE_PROJECT_ROOT>/l10n/details_es.txt`
     """
     print()
-    dynamic_tags = [f"[{key}]" for key in TEST_CFGS.keys()]
+    dynamic_tags = [f"[{key}]" for key in TEST_CFGS]
     all_tags = dynamic_tags + EXTENDED_TAGS
     descriptions = [(tag, get_detail(tag, replace=True)) for tag in all_tags]
     max_len = max(len(tag.strip("[]")) for tag in all_tags)
@@ -365,7 +366,7 @@ def parse_expected_text(output, expected_text):
     """
     exp_msg = get_detail('[test_expected]', replace=True)
     not_found_msg = get_detail('[test_notfound]', replace=True)
-    if isinstance(expected_text, (list, tuple, set)):
+    if isinstance(expected_text, list | tuple | set):
         if all(e not in output for e in expected_text):
             pytest.fail(f"{exp_msg} {expected_text} {not_found_msg}")
         return
@@ -391,7 +392,7 @@ def make_test_func(cfg_key):
     return test_func
 
 
-for key in TEST_CFGS.keys():
+for key in TEST_CFGS:
     globals()[key] = make_test_func(key)
 
 
@@ -403,12 +404,13 @@ def test_cicd_error(capsys):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
     humble_module.args = args
-    with patch.object(humble_module, 'get_cicd_labels', side_effect=Exception):
-        with patch.object(humble_module, 'get_detail',
-                          return_value=ASSERT_STR[1]):
-            with pytest.raises(SystemExit) as wrapped_exit:
-                humble_module.print_cicd_totals("any_file.tmp")
-            assert wrapped_exit.value.code == 1
+    with (
+        patch.object(humble_module, 'get_cicd_labels', side_effect=Exception),
+        patch.object(humble_module, 'get_detail', return_value=ASSERT_STR[1])
+    ):
+        with pytest.raises(SystemExit) as wrapped_exit:
+            humble_module.print_cicd_totals("any_file.tmp")
+        assert wrapped_exit.value.code == 1
     captured = capsys.readouterr()
     assert ASSERT_STR[0] in captured.out.lower()
 
@@ -621,22 +623,19 @@ def cleanup_analysis_history():
     while preserving data required for testing
     """
     original_lines = []
-
-    with suppress(Exception):
-        with open(HUMBLE_TEMP_HISTORY, "r", encoding="utf-8") as history_file:
-            original_lines.extend(next(history_file) for _ in range(25))
-
+    with suppress(Exception), \
+         open(HUMBLE_TEMP_HISTORY, encoding="utf-8") as history_file:
+        original_lines.extend(next(history_file) for _ in range(25))
     if not original_lines:
         return
-
-    with suppress(Exception):
-        with open(HUMBLE_TEMP_HISTORY, "w", encoding="utf-8") as original_file:
+    with suppress(Exception), \
+        open(HUMBLE_TEMP_HISTORY, "w", encoding="utf-8") as original_file:
             original_file.writelines(original_lines)
             original_file.flush()
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2026-05-01', '%Y-%m-%d').date()
+local_version = datetime.strptime('2026-05-02', '%Y-%m-%d').date()
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
