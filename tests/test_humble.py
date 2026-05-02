@@ -347,7 +347,7 @@ def run_test(args, expected_text, timeout=15):
 
     try:
         result = subprocess.run(
-            [sys.executable, HUMBLE_MAIN_FILE] + test_args,
+            [sys.executable, HUMBLE_MAIN_FILE, *test_args],
             capture_output=True,
             text=True,
             timeout=timeout,

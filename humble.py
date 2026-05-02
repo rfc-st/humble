@@ -36,7 +36,6 @@ from html import escape
 from pathlib import Path
 from base64 import b64decode
 from json import dump, dumps
-from itertools import islice
 from datetime import datetime
 from contextlib import suppress
 from ipaddress import ip_address
@@ -44,6 +43,7 @@ from urllib.parse import urlparse
 from threading import Event, Thread
 from shutil import copyfile, which
 from socket import create_connection
+from itertools import islice, pairwise
 from subprocess import PIPE, Popen, STDOUT
 from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -453,7 +453,7 @@ def testssl_command(testssl_temp_path, uri):
     if choice != "y":
         sys.exit(0)
     delete_lines()
-    testssl_cmd = [testssl_path] + TESTSSL_OPTIONS + [uri]
+    testssl_cmd = [testssl_path, *TESTSSL_OPTIONS, uri]
     testssl_analysis(testssl_cmd)
     sys.exit(0)
 
@@ -1064,9 +1064,9 @@ def print_global_metrics(analytics_l, analytics_s, analytics_w,
 def csp_analyze_content(csp_header):
     """`Content-Security-Policy` header analysis."""
     csp_deprecated = set()
-    csp_dirs_vals = [dir.strip() for dir in csp_header.split(';') if
-                     dir.strip()]
-    csp_dirs = {dir.split()[0] for dir in csp_dirs_vals}
+    csp_dirs_vals = [directive.strip() for directive in csp_header.split(';') if
+                     directive.strip()]
+    csp_dirs = {directive.split()[0] for directive in csp_dirs_vals}
     for csp_dir in csp_dirs_vals:
         csp_deprecated |= ({value for value in t_csp_dep if value in csp_dir})
     if csp_deprecated:
@@ -1131,7 +1131,8 @@ def csp_check_additional(csp_dirs_vals):
     checks = [(t_csp_broad, csp_check_broad),
               (t_csp_insecs, csp_check_insecure)]
     for match, csp_func in checks:
-        if any(val in dir for dir in csp_dirs_vals for val in match):
+        if any(val in directive for directive in csp_dirs_vals for val in
+               match):
             csp_func(csp_dirs_vals)
     csp_check_eval(csp_dirs_vals)
     csp_check_inline(csp_dirs_vals)
@@ -1155,8 +1156,8 @@ def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
     print_detail_r('[icsw_h]', is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(csp_broad_dirs) > 1 else DIR_MSG[1])
-        print(" " + ", ".join(f"'{dir}'" for dir in sorted(csp_broad_dirs)) +
-              ".")
+        print(" " + ", ".join(f"'{directive}'" for directive in
+                              sorted(csp_broad_dirs)) + ".")
         print_detail_l('[icsw]')
         print(', '.join(f"'{value}'" for value in csp_broad_v))
         print_detail('[icsw_b]', num_lines=1)
@@ -1166,7 +1167,8 @@ def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
 def csp_check_insecure(csp_dirs_vals):
     """`Content-Security-Policy` header check related to insecure values."""
     csp_insec_v = sorted({value for value in t_csp_insecs if
-                          any(value in dir for dir in csp_dirs_vals)})
+                          any(value in directive for directive in
+                              csp_dirs_vals)})
     csp_insec_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
                       if any(unsafe_val in dir_vals for unsafe_val in
                              t_csp_insecs)}
@@ -1179,8 +1181,8 @@ def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
     if not args.brief:
         csp_values = ', '.join(f"'{value}'" for value in csp_insec_v)
         print_detail_l(DIR_MSG[0] if len(csp_insec_dirs) > 1 else DIR_MSG[1])
-        print(" " + ", ".join(f"'{dir}'" for dir in sorted(csp_insec_dirs)) +
-              ".")
+        print(" " + ", ".join(f"'{directive}'" for directive in
+                              sorted(csp_insec_dirs)) + ".")
         print_detail_l('[icsh]')
         print(csp_values)
         print_detail('[icsh_b]', num_lines=2)
@@ -1219,7 +1221,7 @@ def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
     print_detail_r(detail_t, is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(csp_unsafe_dirs) > 1 else DIR_MSG[1])
-        print(" " + ", ".join(f"'{dir}'" for dir in
+        print(" " + ", ".join(f"'{directive}'" for directive in
                               sorted(set(csp_unsafe_dirs))) + ".")
         print_detail(detail_d, num_lines=lines_n)
     i_cnt[0] += 1
@@ -1337,8 +1339,8 @@ def csp_check_unknown(csp_h):
     """`Content-Security-Policy` header check related to unknown directives."""
     unknown_dir = []
     csp_dirs = [d.strip() for d in csp_h.split(';') if d.strip()]
-    for dir in csp_dirs:
-        if match := re.match(RE_PATTERN[19], dir):
+    for directive in csp_dirs:
+        if match := re.match(RE_PATTERN[19], directive):
             dir_name = match[1]
             if dir_name not in t_csp_dirs + t_csp_dep:
                 unknown_dir.append(dir_name)
@@ -1352,8 +1354,8 @@ def csp_print_unknown(unknown_dir):
     print_detail_r('[icspiu_h]', is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(unknown_dir) > 1 else DIR_MSG[1])
-        print(" " + ", ".join(f"'{dir}'" for dir in sorted(unknown_dir)) +
-              ".")
+        print(" " + ", ".join(f"'{directive}'" for directive in
+                              sorted(unknown_dir)) + ".")
         print_detail('[icspiu]', num_lines=3)
     i_cnt[0] += 1
 
@@ -1400,7 +1402,7 @@ def permissions_print_deprecated(perm_header):
 
 def permissions_check_broad(perm_header):
     """`Permissions-Policy` header check related to broad values."""
-    if sum(dir in perm_header for dir in t_per_ft) < 2:
+    if sum(directive in perm_header for directive in t_per_ft) < 2:
         return None
     try:
         result = []
@@ -1422,8 +1424,8 @@ def permissions_print_broad(perm_broad_dirs, i_cnt):
     print_detail_r('[ifpol_h]', is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(perm_broad_dirs) > 1 else DIR_MSG[1])
-        print(" " + ", ".join(f"'{dir}'" for dir in sorted(perm_broad_dirs)) +
-              ".")
+        print(" " + ", ".join(f"'{directive}'" for directive in
+                              sorted(perm_broad_dirs)) + ".")
         print_detail('[ifpol]', num_lines=2)
     i_cnt[0] += 1
 
@@ -1612,12 +1614,12 @@ def print_detail_l(id_mode, analytics=False, no_headers=False):
     output based on it.
 
     ??? note
-        `strict=False` is needed because this function matches each bracketed ID
-        with its corresponding lines from `l10n_main` (the localized analysis
-        findings and error strings). The offset created by `l10n_main[1:]`
-        bridges the line break between a heading and its descriptive text.
+        `pairwise` is used to match each bracketed ID with its corresponding
+        descriptive text on the following line (bridging the line break) from
+        `l10n_main`, which contains the multilingual strings and descriptions
+        used for the final report.
     """
-    for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:], strict=False):
+    for idmode_ln, idnext_ln in pairwise(l10n_main):
         if idmode_ln.startswith(id_mode):
             if no_headers:
                 print(idnext_ln, end='')
@@ -1633,13 +1635,13 @@ def print_detail_r(id_mode, is_red=False):
     Print detailed information about the finding using a distinctive format.
 
     ??? note
-        `strict=False` is needed because this function matches each bracketed ID
-        with its corresponding lines from `l10n_main` (the localized analysis
-        findings and error strings). The offset created by `l10n_main[1:]`
-        bridges the line break between a heading and its descriptive text.
+        `pairwise` is used to match each bracketed ID with its corresponding
+        descriptive text on the following line (bridging the line break) from
+        `l10n_main`, which contains the multilingual strings and descriptions
+        used for the final report.
     """
     style_str = STYLE[1] if is_red else STYLE[0]
-    for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:], strict=False):
+    for idmode_ln, idnext_ln in pairwise(l10n_main):
         if idmode_ln.startswith(id_mode):
             if not args.output:
                 print(f"{style_str}{idnext_ln}", end='')
@@ -1654,12 +1656,12 @@ def print_detail_s(id_mode, max_ln=False):
     Print message with leading newline and optional whitespace preservation.
 
     ??? note
-        `strict=False` is needed because this function matches each bracketed ID
-        with its corresponding lines from `l10n_main` (the localized analysis
-        findings and error strings). The offset created by `l10n_main[1:]`
-        bridges the line break between a heading and its descriptive text.
+        `pairwise` is used to match each bracketed ID with its corresponding
+        descriptive text on the following line (bridging the line break) from
+        `l10n_main`, which contains the multilingual strings and descriptions
+        used for the final report.
     """
-    for idmode_ln, idnext_ln in zip(l10n_main, l10n_main[1:], strict=False):
+    for idmode_ln, idnext_ln in pairwise(l10n_main):
         if idmode_ln.startswith(id_mode):
             return f"\n{idnext_ln.rstrip()}" if max_ln else \
                 f"\n{idnext_ln.strip()}"
@@ -2064,11 +2066,14 @@ def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
 
 
 def print_request_headers(added_request_headers):
-    """Print the HTTP request headers explicitly added for the analysis."""
+    """
+    Print the HTTP request headers and their values explicitly added for the
+    analysis.
+    """
     print_detail_l('[analysis_request_note]')
     request_headers = ", ".join(
-        f"{repr(k)}: {repr(v)}"
-        for k, v in added_request_headers.items()
+        f"{header!r}: {value!r}"
+        for header, value in added_request_headers.items()
     )
     print(f" {request_headers}")
 
@@ -2120,7 +2125,7 @@ def export_all_formats(final_filename, tmp_filename):
     sys.exit(0)
 
 
-def process_htmlpdf_all_export(lines, start_index, format, is_html):
+def process_htmlpdf_all_export(lines, start_index, export_format, is_html):
     """
     Processes the state-based line formatting and section prefixing of an
     analysis when exporting to HTML and PDF using the `-o all` option.
@@ -2133,21 +2138,22 @@ def process_htmlpdf_all_export(lines, start_index, format, is_html):
         if prefix:
             content.append(prefix)
         target_state = states[1] if is_html else states[0]
-        content.append(format_htmlpdf_all_export(line, format, target_state,
-                                                 states[2]))
+        content.append(format_htmlpdf_all_export(line, export_format,
+                                                 target_state, states[2]))
     return content
 
 
-def normalize_htmlpdf_all_export(format, tmp_filename, final_filename=None):
+def normalize_htmlpdf_all_export(export_format, tmp_filename,
+                                 final_filename=None):
     """
     Applies the required formatting to sections and lines of the analysis when
     exporting to HTML and PDF using the `-o all` option.
     """
-    is_html = (format == "html")
+    is_html = (export_format == "html")
     path = Path(tmp_filename)
     lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
     idx = next((i for i, ln in enumerate(lines) if INFO_SECTION in ln), None)
-    processed = process_htmlpdf_all_export(lines, idx, format, is_html)
+    processed = process_htmlpdf_all_export(lines, idx, export_format, is_html)
     path.write_text("".join(processed), encoding="utf-8")
     if is_html:
         export_html_file(final_filename, tmp_filename, export_all=True)
@@ -2167,17 +2173,17 @@ def sections_htmlpdf_all_export(line, states):
                                   RESP_SECTION) else ("", *states)
 
 
-def format_htmlpdf_all_export(line, format, target_state, in_browser):
+def format_htmlpdf_all_export(line, export_format, target_state, in_browser):
     """
     Formats the previously selected lines in an analysis; applies when
     exporting to HTML and PDF using the `-o all` option.
     """
     if in_browser and line.strip() and not line.startswith("[6."):
-        line = f" {line}" if format == 'html' else f" {line.lstrip()}"
+        line = f" {line}" if export_format == 'html' else f" {line.lstrip()}"
     if line.startswith(" ") and target_state:
-        if format == 'html':
+        if export_format == 'html':
             return f"{line[0]}{STYLE[8]}{line[1:]}"
-        if format == 'pdf':
+        if export_format == 'pdf':
             return f" {STYLE[6]}{line[1:]}"
     return line
 
@@ -3477,7 +3483,7 @@ def format_html_totals(ln, l_total):
     """
     for i in l_total:
         if (not re.search(RE_PATTERN[11], ln)) and (
-             (i in ln) and ('"' not in ln) or ('HTTP (' in ln) or
+             ((i in ln) and ('"' not in ln)) or ('HTTP (' in ln) or
              (XFRAME_CHECK in ln)):
             ln = ln.replace(ln, HTML_TAGS[3] + ln + HTML_TAGS[5])
     return ln
@@ -5102,8 +5108,8 @@ if 'x-ua-compatible' in headers_l and '89' not in skip_list:
 
 if http_equiv:
     x_ua_meta = any('x-ua-compatible' in item for item in http_equiv)
-    if x_ua_meta and not any('IE=edge' in item for tuple in http_equiv for item
-                             in tuple):
+    if x_ua_meta and not any('IE=edge' in item for entry in http_equiv for item
+                             in entry):
         print_details('[ixuameta_h]', '[ixuameta]', 'd', i_cnt)
 
 if 'x-webkit-csp' in headers_l and '90' not in skip_list:
