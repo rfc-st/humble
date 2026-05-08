@@ -976,7 +976,7 @@ HTTP Response Headers
  Error: The URL scheme provided is either invalid or unsupported.
 
 [report]
-  saved to
+ Analysis saved to
 
 [all_reports]
  Exported analyses, in all available formats, in

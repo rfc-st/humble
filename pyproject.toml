@@ -26,5 +26,15 @@ select = [
     "RUF",
     # mccabe (Complexity)
     "C90",
+    # flake8-unused-arguments
+    "ARG",
+    # flake8-pie
+    "PIE",
+    # flake8-datetimez
+    "DTZ",
+    # flake8-implicit-str-concat
+    "ISC",
+    # flake8-boolean-trap
+    "FBT",
 ]
 ignore = ["RUF100"]

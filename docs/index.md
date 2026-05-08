@@ -45,6 +45,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Can display analysis statistics for a specific URL or across all of them.
 - Can display fingerprint statistics for a specific term or the Top 20.
 - Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.
+- <a href="https://github.com/rfc-st/humble/#AI" target="_blank">AI</a>-driven security triage and remediation guidance.
 - Provides dozens of <a href="https://github.com/rfc-st/humble/#unit-tests" target="_blank">unit tests</a> to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/"  target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/" target="_blank">pytest-cov</a>.
 - Code regularly audited with several quality, style and security <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#quality-style-and-security-tools" target="_blank">tools</a>.<br />
 - Tested, one by one, on thousands of URLs.
@@ -60,13 +61,13 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 Whatever you decide about **humble.py**, thank you for your time!.
 
 ## Notes
-About <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>, <a href="https://github.com/semgrep/semgrep" target="_blank">semgrep</a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> and <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a> checks:
+About <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> and <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a> checks:
 
 Inline comments are used to suppress certain tool-generated checks. These exclusions are necessary to preserve legacy syntax compatibility, reduce noise from non-critical findings, and support intentional design choices as noted in the code.
 
 You can identify them in the code by searching for:
 
-* `# nosemgrep` (should be valid for <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a> and <a href="https://github.com/semgrep/semgrep" target="_blank">semgrep</a>)
+* `# nosemgrep`
 * `# noqa`
 
 ## Last but not least
@@ -78,6 +79,6 @@ And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>May 2, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>May 8, 2026</em></span>
 </span>
 </aside>

@@ -152,47 +152,45 @@ TEST_CFGS = {
     'test_export_all': (['-u', TEST_URLS[9], '-o', 'all'], 'Exported'),
     'test_export_all_responses': (['-u', TEST_URLS[9], '-o', 'all', '-r'],
                                   'Exported'),
-    'test_export_csv': (['-u', TEST_URLS[9], '-o', 'csv'], 'CSV saved'),
+    'test_export_csv': (['-u', TEST_URLS[9], '-o', 'csv'], 'Analysis'),
     'test_export_extension': (['-u', TEST_URLS[9], '-o', 'html', '-of',
                                '.html'], 'Error:'),
-    'test_export_html': (['-u', TEST_URLS[9], '-o', 'html', '-r'],
-                         'HTML saved'),
+    'test_export_html': (['-u', TEST_URLS[9], '-o', 'html', '-r'], 'Analysis'),
     'test_export_html_brief': (['-u', TEST_URLS[9], '-o', 'html', '-b'],
-                               'HTML saved'),
+                               'Analysis'),
     'test_export_html_csp': (['-u', TEST_URLS[2], '-o', 'html', '-r'],
-                             'HTML saved'),
+                             'Analysis'),
     'test_export_html_empty_headers': (['-u', TEST_URLS[9], '-if',
                                        PATHS['GRADE_D'], '-o', 'html'],
-                                       'HTML saved'),
+                                       'Analysis'),
     'test_export_html_no_security_headers': (['-u', TEST_URLS[9], '-if',
                                              PATHS['NO_SEC_HEADERS'], '-o',
-                                             'html'], 'HTML saved'),
-    'test_export_json': (['-u', TEST_URLS[9], '-o', 'json', '-r'],
-                         'JSON saved'),
+                                             'html'], 'Analysis'),
+    'test_export_json': (['-u', TEST_URLS[9], '-o', 'json', '-r'], 'Analysis'),
     'test_export_json_brief': (['-u', TEST_URLS[9], '-o', 'json', '-b'],
-                               'JSON saved'),
+                               'Analysis'),
     'test_export_json_empty_headers': (['-u', TEST_URLS[9], '-if',
                                         PATHS['GRADE_D'], '-o', 'json'],
-                                       'JSON saved'),
+                                       'Analysis'),
     'test_export_json_l10n': (['-u', TEST_URLS[9], '-o', 'json', '-l', 'es'],
-                              'JSON guardado'),
+                              'Análisis'),
     'test_export_no_security_headers': (['-u', TEST_URLS[9], '-if',
                                          PATHS['NO_SEC_HEADERS'], '-o', 'txt'],
-                                        'TXT saved'),
-    'test_export_pdf': (['-u', TEST_URLS[9], '-o', 'pdf'], 'PDF saved'),
+                                        'Analysis'),
+    'test_export_pdf': (['-u', TEST_URLS[9], '-o', 'pdf'], 'Analysis'),
     'test_export_pdf_color': (['-u', TEST_URLS[9], '-if',
                                PATHS['PERFECT_GRADE'], '-o', 'pdf', '-b'],
-                              'PDF saved'),
+                              'Analysis'),
     'test_export_pdf_empty_headers': (['-u', TEST_URLS[9], '-if',
                                        PATHS['GRADE_D'], '-o', 'pdf'],
-                                      'PDF saved'),
+                                      'Analysis'),
     'test_export_pdf_no_security_headers': (['-u', TEST_URLS[9], '-if',
                                              PATHS['NO_SEC_HEADERS'], '-o',
-                                             'pdf'], 'PDF saved'),
+                                             'pdf'], 'Analysis'),
     'test_export_pdf_response_headers': (['-u', TEST_URLS[9], '-o', 'pdf',
-                                          '-r'], 'PDF saved'),
-    'test_export_xlsx': (['-u', TEST_URLS[9], '-o', 'xlsx'], 'XLSX saved'),
-    'test_export_xml': (['-u', TEST_URLS[9], '-o', 'xml'], 'XML saved'),
+                                          '-r'], 'Analysis'),
+    'test_export_xlsx': (['-u', TEST_URLS[9], '-o', 'xlsx'], 'Analysis'),
+    'test_export_xml': (['-u', TEST_URLS[9], '-o', 'xml'], 'Analysis'),
     'test_fingerprint_groups': (['-f'], 'Top 20 groups'),
     'test_fingerprint_term': (['-f', 'Google'], 'Headers related to'),
     'test_fingerprint_term_no_results': (['-f', 'TestingHumble'], 'quote'),
@@ -294,7 +292,7 @@ class _Args:
     lang = None
 
 
-def get_detail(id_mode, replace=False):
+def get_detail(id_mode, *, replace=False):
     """Print a message, optionally removing newlines"""
     for i, line in enumerate(l10n_main):
         if line.startswith(id_mode):
@@ -522,7 +520,7 @@ def test_missing_arguments():
     Consolidates multiple checks for missing required arguments into a single
     unit test
     """
-    expected = ["Error:", "error:", "TXT", "HTML"]
+    expected = ["Error:", "error:", "TXT", "HTML", "Analysis"]
     run_test(['-H', 'Cache-Control: no-cache'], expected)
     run_test(['-if', 'humble_test.txt', '-r'], expected)
     run_test(['-if', 'humble_test.txt'], expected)
@@ -601,7 +599,8 @@ def set_temp_content(current_time):
 
 def delete_temp_content():
     """Remove the files and folders after all unit tests have been run"""
-    current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
+    now = datetime.now().astimezone()
+    current_time = now.strftime("%Y/%m/%d - %H:%M:%S %Z")
     info_msgs = set_temp_content(current_time)
     error_msgs = [(msg, val) for msg, val in info_msgs
                   if msg.startswith("Failed")]
@@ -635,7 +634,7 @@ def cleanup_analysis_history():
             fsync(original_file.fileno())
 
 
-local_version = datetime.strptime('2026-05-02', '%Y-%m-%d').date()
+local_version = date.fromisoformat('2026-05-08')
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

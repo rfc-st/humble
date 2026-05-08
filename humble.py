@@ -36,12 +36,12 @@ from html import escape
 from pathlib import Path
 from base64 import b64decode
 from json import dump, dumps
-from datetime import datetime
 from contextlib import suppress
 from ipaddress import ip_address
 from urllib.parse import urlparse
 from threading import Event, Thread
 from shutil import copyfile, which
+from datetime import datetime, date
 from socket import create_connection
 from itertools import islice, pairwise
 from subprocess import PIPE, Popen, STDOUT
@@ -197,8 +197,8 @@ VALIDATE_FILE = OS_PATH / HUMBLE_FILES[0]
 XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
-current_time = datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = datetime.strptime('2026-05-02', '%Y-%m-%d').date()
+current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S %Z")
+local_version = date.fromisoformat('2026-05-08')
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -283,10 +283,10 @@ def check_updates(local_version):
         github_response.raise_for_status()
         github_repo = github_response.text
         github_date = re.search(RE_PATTERN[4], github_repo).group()
-        github_version = datetime.strptime(github_date, '%Y-%m-%d').date()
+        github_version = date.fromisoformat(github_date)
         days_diff = (github_version - local_version).days
         check_updates_diff(days_diff, github_version, local_version)
-    except requests.exceptions.RequestException:
+    except (requests.exceptions.RequestException, AttributeError, ValueError):
         print_error_detail('[update_error]')
     sys.exit(0)
 
@@ -400,7 +400,7 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     sys.exit(0)
 
 
-def print_l10n_file(args, l10n_file, slice_ln=False):
+def print_l10n_file(args, l10n_file, *, slice_ln=False):
     """
     Print the contents of a file based on the language provided and terminate
     execution.
@@ -642,7 +642,7 @@ def adjust_old_analysis(url_ln):
     return updated_lines
 
 
-def url_analytics(is_global=False):
+def url_analytics(*, is_global=False):
     """
     Print analysis statistics for all analyses performed on a URL and
     terminate execution, related to `-a` option.
@@ -1430,7 +1430,7 @@ def permissions_print_broad(perm_broad_dirs, i_cnt):
     i_cnt[0] += 1
 
 
-def delete_lines(reliable=True):
+def delete_lines(*, reliable=True):
     """
     Clear console lines to standardize the final analysis output format.
 
@@ -1442,7 +1442,7 @@ def delete_lines(reliable=True):
     sys.stdout.write(DELETED_LINES)
 
 
-def print_export_path(filename, reliable, export_all=False):
+def print_export_path(filename, reliable, *, export_all=False):
     """
     Prints the export path for the `-o` option. Displays the file path for
     single reports (e.g. 'html') or the directory for bulk exports (e.g. 'all')
@@ -1453,13 +1453,11 @@ def print_export_path(filename, reliable, export_all=False):
         return
     export_path = Path(filename).resolve()
     if export_all:
-        if args.ret:
-            delete_lines()
-        msg = f"{print_detail_s('[all_reports]').lstrip()} " \
-              f"'{export_path.parent}'."
+        all_reports = print_detail_s('[all_reports]').lstrip()
+        msg = f"{all_reports} '{export_path.parent}'."
     else:
-        msg = (f"{args.output.upper()} {print_detail_s('[report]').lstrip()} "
-               f"'{export_path}'.")
+        single_report = print_detail_s('[report]').lstrip()
+        msg = f"{single_report} '{export_path}'."
     print(f"\n {msg}")
 
 
@@ -1608,7 +1606,7 @@ def print_detail(id_mode, num_lines=1):
             print(l10n_main[idx+i+1], end='')
 
 
-def print_detail_l(id_mode, analytics=False, no_headers=False):
+def print_detail_l(id_mode, *, analytics=False, no_headers=False):
     """
     Print detailed information about the finding and removes lines from the
     output based on it.
@@ -1630,7 +1628,7 @@ def print_detail_l(id_mode, analytics=False, no_headers=False):
     return None
 
 
-def print_detail_r(id_mode, is_red=False):
+def print_detail_r(id_mode, *, is_red=False):
     """
     Print detailed information about the finding using a distinctive format.
 
@@ -1651,7 +1649,7 @@ def print_detail_r(id_mode, is_red=False):
                 print("")
 
 
-def print_detail_s(id_mode, max_ln=False):
+def print_detail_s(id_mode, *, max_ln=False):
     """
     Print message with leading newline and optional whitespace preservation.
 
@@ -1668,7 +1666,7 @@ def print_detail_s(id_mode, max_ln=False):
     return None
 
 
-def get_detail(id_mode, replace=False):
+def get_detail(id_mode, *, replace=False):
     """Print a message, optionally removing newlines."""
     for i, line in enumerate(l10n_main):
         if line.startswith(id_mode):
@@ -1677,7 +1675,7 @@ def get_detail(id_mode, replace=False):
     return None
 
 
-def print_error_detail(id_mode, clean_lines=False):
+def print_error_detail(id_mode, *, clean_lines=False):
     """
     Print an error message, optionally removing previously printed lines on
     the console, and terminate execution.
@@ -1795,7 +1793,7 @@ def print_enabled_headers(args, exp_s, header, headers_d):
     print(output_str)
 
 
-def print_nosec_headers(enabled=True):
+def print_nosec_headers(*, enabled=True):
     """
     Print a message if no security-related HTTP response headers are enabled
     or if none was received.
@@ -1973,7 +1971,7 @@ def check_output_path(args):
         sys.exit(1)
 
 
-def parse_user_agent(user_agent=False):
+def parse_user_agent(*, user_agent=False):
     """Select and validate the provided user agent, related to `-ua` option."""
     if not user_agent:
         return get_user_agent('1')
@@ -2281,7 +2279,7 @@ def build_cicd_totals(tmp_filename, info_lines, totals, labels):
     dictionary, excluding the 'File' reference; related to `-cicd` option.
     """
     _, _, info_label = labels
-    file_label = get_detail('[cicd_file]', True)
+    file_label = get_detail('[cicd_file]', replace=True)
 
     info_dict = {
         key.strip(): value.strip()
@@ -2293,8 +2291,9 @@ def build_cicd_totals(tmp_filename, info_lines, totals, labels):
     return {
         info_label: info_dict,
         **totals,
-        get_detail('[cicd_detailed]', True): {
-            get_detail('[cicd_path]', True): str(Path(tmp_filename).resolve())
+        get_detail('[cicd_detailed]', replace=True): {
+            get_detail('[cicd_path]',
+                       replace=True): str(Path(tmp_filename).resolve())
         },
     }
 
@@ -2315,7 +2314,7 @@ def print_cicd_totals(tmp_filename):
         print(dumps(cicd_output, indent=2, ensure_ascii=False))
         sys.exit(0)
     except Exception as exc:
-        err_key = get_detail('[cicd_error]', True)
+        err_key = get_detail('[cicd_error]', replace=True)
         print(dumps({err_key: str(exc)}, ensure_ascii=False))
         sys.exit(1)
 
@@ -2402,7 +2401,7 @@ def write_csv_content(csv_file, txt_source):
     parse_csv(section_titles, txt_source.read(), writer)
 
 
-def generate_csv(final_filename, temp_filename, to_xlsx=False,
+def generate_csv(final_filename, temp_filename, *, to_xlsx=False,
                  export_all=False):
     """
     CSV and XSLX export of the analysis and terminates execution, related to
@@ -2413,7 +2412,7 @@ def generate_csv(final_filename, temp_filename, to_xlsx=False,
         write_csv_content(csv_final, txt_source)
     if to_xlsx:
         fix_xlsx_all_export(final_filename, export_all)
-        generate_xlsx(final_filename, temp_filename, export_all)
+        generate_xlsx(final_filename, temp_filename, export_all=export_all)
         return
     finalize_export(final_filename, temp_filename, 'csv', export_all)
 
@@ -2448,7 +2447,7 @@ def fix_xlsx_all_export(csv_filename, export_all):
             fixed_xlsxfilename.truncate()
 
 
-def generate_xlsx(final_filename, temp_filename, export_all=False):
+def generate_xlsx(final_filename, temp_filename, *, export_all=False):
     """
     XLSX spreadsheet export of the analysis and terminates execution, related
     to `-o xlsx` option.
@@ -2546,7 +2545,7 @@ def set_xlsx_width(col_wd, worksheet):
         worksheet.set_column(col_idx, col_idx, actual_width)
 
 
-def generate_json(final_filename, temp_filename, export_all=False):
+def generate_json(final_filename, temp_filename, *, export_all=False):
     """
     JSON export of a brief analysis and and terminates execution,
     related to `-o json -b` options.
@@ -2751,7 +2750,7 @@ def json_detailed_format_add(json_lns, header_t, value_t):
     return result
 
 
-def json_detailed_format(json_lns, is_compat=False, is_l10n=False):
+def json_detailed_format(json_lns, *, is_compat=False, is_l10n=False):
     """
     Format lines in specific sections (e.g., enabled headers and browser
     compatibility) for a JSON export; related to `-o json` option.
@@ -2955,7 +2954,7 @@ def json_detailed_results(json_lns):
     return result
 
 
-def export_pdf_file(tmp_filename, export_all=False):
+def export_pdf_file(tmp_filename, *, export_all=False):
     """
     PDF export of the analysis, related to `-o pdf` option.
 
@@ -2988,7 +2987,7 @@ def export_pdf_file(tmp_filename, export_all=False):
     initialize_pdf(pdf, tmp_filename, ypos, export_all=export_all)
 
 
-def initialize_pdf(pdf, tmp_filename, ypos, export_all=False):
+def initialize_pdf(pdf, tmp_filename, ypos, *, export_all=False):
     """
     Retrieves literals to apply the appropriate formatting for a PDF export,
     related to `-o pdf` option.
@@ -3000,7 +2999,7 @@ def initialize_pdf(pdf, tmp_filename, ypos, export_all=False):
                  export_all=export_all)
 
 
-def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos,
+def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos, *,
                  export_all=False):
     """
     Generates the required file structure, including metadata for a PDF export;
@@ -3260,7 +3259,7 @@ def apply_pdf_color(colon_idx, hcolor, line, vcolor):
     )
 
 
-def export_html_file(final_filename, tmp_filename, export_all=False):
+def export_html_file(final_filename, tmp_filename, *, export_all=False):
     """HTML export of the analysis, related to `-o html` option."""
     global inside_section
     inside_section = False
@@ -3550,7 +3549,7 @@ def clean_html_final(final_filename):
         html_final.truncate()
 
 
-def generate_xml(final_filename, temp_filename, export_all=False):
+def generate_xml(final_filename, temp_filename, *, export_all=False):
     """
     XML export of the analysis, related to `-o xml` option.
 
@@ -4249,7 +4248,7 @@ export_filename = None
 
 if args.output:
     orig_stdout = sys.stdout
-    export_date = datetime.now().strftime("%Y%m%d_%H%M%S")
+    export_date = datetime.now().astimezone().strftime("%Y%m%d_%H%M%S")
     tmp_filename = get_tmp_file(args, export_date)
     validate_file_access(tmp_filename, context='export')
     # nosemgrep
