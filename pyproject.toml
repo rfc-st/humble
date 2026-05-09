@@ -38,5 +38,9 @@ select = [
     "FBT",
     # flake8-use-pathlib
     "PTH",
+    # Perflint
+    "PERF",
+    # tryceratops
+    "TRY",
 ]
 ignore = ["RUF100"]

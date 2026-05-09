@@ -1413,10 +1413,11 @@ def permissions_check_broad(perm_header):
                 value = value.strip()
                 if any(broad in value for broad in t_per_broad):
                     result.append(feature)
-        return result or None
     except (IndexError, ValueError):
         print_details('[ifpolf_h]', '[ifpolf]', "d", i_cnt)
         return None
+    else:
+        return result or None
 
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
@@ -3895,7 +3896,6 @@ def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
             timeout=REQ_TIMEOUT,
             proxies=proxy,
         )
-        return r, None, None
     except requests.exceptions.Timeout as e:
         return None, None, e
     except requests.exceptions.SSLError:
@@ -3904,6 +3904,8 @@ def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
         return None, None, e
     except Exception as e:
         return None, None, e
+    else:
+        return r, None, None
 
 
 def process_requests_exception(exception):
