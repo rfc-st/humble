@@ -197,8 +197,8 @@ VALIDATE_FILE = OS_PATH / HUMBLE_FILES[0]
 XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
-current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S %Z")
-local_version = date.fromisoformat('2026-05-08')
+current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
+local_version = date.fromisoformat('2026-05-09')
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
