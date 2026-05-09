@@ -31,12 +31,13 @@ import sys
 import shutil
 import subprocess
 import importlib.util
+from os import fsync
+from pathlib import Path
 from platform import system
 from contextlib import suppress
 from unittest.mock import patch
 from collections import namedtuple
 from datetime import datetime, date
-from os import listdir, path, remove, fsync
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 # Third-Party imports
@@ -53,8 +54,8 @@ if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
 
 ASSERT_STR = ["error", "Error"]
 EXTENDED_TAGS = ['[test_python_version]', '[test_missing_arguments]']
-HUMBLE_TESTS_DIR = path.dirname(__file__)
-HUMBLE_TEMP_HISTORY = path.join(HUMBLE_TESTS_DIR, 'analysis_h.txt')
+HUMBLE_TESTS_DIR = Path(__file__).parent
+HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / 'analysis_h.txt'
 HUMBLE_TEMP_PREFIX = 'humble_'
 HUMBLE_TEST_FILES = {
     'CORNER_CASES': 'headers_test_corner_cases.txt',
@@ -73,23 +74,22 @@ HUMBLE_TEST_FILES = {
     'PERFECT_OWASP': 'headers_test_perfect_owasp.txt',
     'UNICODE': 'headers_test_unicode.txt',
 }
-PATHS = {k: path.abspath(path.join(HUMBLE_TESTS_DIR, v)) for k, v in
-         HUMBLE_TEST_FILES.items()}
+PATHS = {
+    k: (HUMBLE_TESTS_DIR / v).resolve() for k, v in HUMBLE_TEST_FILES.items()
+}
 HUMBLE_DESC = "Basic unit tests for 'humble' (HTTP Headers Analyzer)"
-HUMBLE_PROJECT_ROOT = path.abspath(path.join(HUMBLE_TESTS_DIR, '..'))
-HUMBLE_INPUT_DIR = path.join(HUMBLE_PROJECT_ROOT, 'samples')
-HUMBLE_INPUT_FILE = path.abspath(path.join(HUMBLE_INPUT_DIR,
-                                           'github_input_file.txt'))
+HUMBLE_PROJECT_ROOT = HUMBLE_TESTS_DIR.parent.resolve()
+HUMBLE_INPUT_DIR = HUMBLE_PROJECT_ROOT / 'samples'
+HUMBLE_INPUT_FILE = (HUMBLE_INPUT_DIR / 'github_input_file.txt').resolve()
 HUMBLE_INPUT_TRAVERSAL = '../../../humbleinputtraversal/'
-HUMBLE_L10N_DIR = path.join(HUMBLE_PROJECT_ROOT, 'l10n')
+HUMBLE_L10N_DIR = HUMBLE_PROJECT_ROOT / 'l10n'
 HUMBLE_L10N_FILE = ('details.txt', 'details_es.txt')
-HUMBLE_MAIN_FILE = path.abspath(path.join(HUMBLE_TESTS_DIR, '..', 'humble.py'))
+HUMBLE_MAIN_FILE = (HUMBLE_PROJECT_ROOT / 'humble.py').resolve()
 HUMBLE_OUTPUT_PATHS = ('home/tests/test',
                        'non_existent_path_for_humble/39332524')
 HUMBLE_WRONG_TESTSSL_DIR = '/dev/'
 PYTEST_CACHE_DIRS = [
-    path.join(HUMBLE_TESTS_DIR, d)
-    for d in ['__pycache__', '.pytest_cache']
+    HUMBLE_TESTS_DIR / d for d in ['__pycache__', '.pytest_cache']
 ]
 
 # URLs to use in unit tests
@@ -310,9 +310,8 @@ def get_l10n_content():
         l10n_file = HUMBLE_L10N_FILE[0]
     elif args.lang == 'es':
         l10n_file = HUMBLE_L10N_FILE[1]
-
-    l10n_path = path.join(HUMBLE_TESTS_DIR, HUMBLE_L10N_DIR, l10n_file)
-    with open(l10n_path, encoding='utf8') as l10n_content:
+    l10n_path = HUMBLE_TESTS_DIR / HUMBLE_L10N_DIR / l10n_file
+    with l10n_path.open(encoding='utf-8') as l10n_content:
         return l10n_content.readlines()
 
 
@@ -428,7 +427,8 @@ def test_file_access_errors(capsys):
         with patch.object(humble_module, 'get_detail',
                           return_value=HUMBLE_TEMP_HISTORY):
             humble_module.validate_file_access("f.txt", context='basic')
-            assert HUMBLE_TEMP_HISTORY in capsys.readouterr().out.lower()
+            out = capsys.readouterr().out.lower()
+            assert str(HUMBLE_TEMP_HISTORY).lower() in out
         with patch.object(humble_module, 'get_detail',
                           return_value=ASSERT_STR[1]):
             with pytest.raises(SystemExit) as wrapped_exit:
@@ -545,18 +545,16 @@ def test_proxy_wrong():
 def delete_export_files(extension, ko_msg):
     """Remove temporary files from export unit tests"""
     msgs = []
-    test_files = [
-        f for f in listdir(HUMBLE_TESTS_DIR)
-        if f.lower().startswith(HUMBLE_TEMP_PREFIX)
-        and f.lower().endswith(extension)
-    ]
-    for file in test_files:
-        export_file = path.join(HUMBLE_TESTS_DIR, file)
-        try:
-            remove(export_file)
-        except Exception as e:
-            msgs.append((get_detail(ko_msg, replace=True),
-                         f"({type(e).__name__}) {export_file}"))
+    for export_file in HUMBLE_TESTS_DIR.iterdir():
+        name_lower = export_file.name.lower()
+        if (name_lower.startswith(HUMBLE_TEMP_PREFIX) and
+                name_lower.endswith(extension)):
+            try:
+                export_file.unlink()
+            except Exception as e:
+                error_detail = get_detail(ko_msg, replace=True)
+                msgs.append((error_detail,
+                             f"({type(e).__name__}) {export_file}"))
     return msgs
 
 
@@ -566,12 +564,14 @@ def delete_pytest_caches(dir_path):
     tests
     """
     msgs = []
-    if path.isdir(dir_path):
+    path_obj = Path(dir_path)
+    if path_obj.is_dir():
         try:
-            shutil.rmtree(dir_path)
+            shutil.rmtree(path_obj)
         except Exception as e:
-            msgs.append((get_detail('[test_fcache]', replace=True),
-                         f"({type(e).__name__}) {dir_path}"))
+            error_detail = get_detail('[test_fcache]', replace=True)
+            msgs.append((error_detail,
+                         f"({type(e).__name__}) {path_obj}"))
     return msgs
 
 
@@ -623,15 +623,15 @@ def cleanup_analysis_history():
     """
     original_lines = []
     with suppress(Exception), \
-         open(HUMBLE_TEMP_HISTORY, encoding="utf-8") as history_file:
+         HUMBLE_TEMP_HISTORY.open(encoding="utf-8") as history_file:
         original_lines.extend(next(history_file) for _ in range(25))
     if not original_lines:
         return
     with suppress(Exception), \
-        open(HUMBLE_TEMP_HISTORY, "w", encoding="utf-8") as original_file:
-            original_file.writelines(original_lines)
-            original_file.flush()
-            fsync(original_file.fileno())
+         HUMBLE_TEMP_HISTORY.open("w", encoding="utf-8") as original_file:
+        original_file.writelines(original_lines)
+        original_file.flush()
+        fsync(original_file.fileno())
 
 
 local_version = date.fromisoformat('2026-05-09')
