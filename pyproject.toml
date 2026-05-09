@@ -36,5 +36,7 @@ select = [
     "ISC",
     # flake8-boolean-trap
     "FBT",
+    # flake8-use-pathlib
+    "PTH",
 ]
 ignore = ["RUF100"]

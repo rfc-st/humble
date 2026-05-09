@@ -421,7 +421,7 @@ def test_file_access_errors(capsys):
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main, humble_module.args = l10n_main, args
-    with patch("builtins.open", side_effect=OSError), \
+    with patch("pathlib.Path.open", side_effect=OSError), \
          patch.object(humble_module, 'delete_lines'):
         _, res = humble_module.validate_file_access("f.txt", context='history')
         assert res[0] in ("Not available", "No disponible")

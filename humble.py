@@ -410,7 +410,7 @@ def print_l10n_file(args, l10n_file, *, slice_ln=False):
     l10n_file = HUMBLE_FILES[L10N_IDXS[l10n_file][lang_idx]]
     l10n_slice = SLICE_INT[2 if lang_es else 3]
     file_path = OS_PATH / HUMBLE_DIRS[1] / l10n_file
-    with open(file_path, encoding='utf8') as l10n_source:
+    with file_path.open(encoding='utf8') as l10n_source:
         l10n_lines = islice(l10n_source, l10n_slice, None) if slice_ln else \
             l10n_source
         for line in l10n_lines:
@@ -488,7 +488,7 @@ def get_l10n_content():
     """
     l10n_path = (OS_PATH / HUMBLE_DIRS[1] /
                  (HUMBLE_FILES[4] if args.lang == 'es' else HUMBLE_FILES[5]))
-    with open(l10n_path, encoding='utf8') as l10n_content:
+    with l10n_path.open(encoding='utf8') as l10n_content:
         return l10n_content.readlines()
 
 
@@ -527,7 +527,7 @@ def save_analysis_results(t_cnt):
     ok, fallback = validate_file_access(VALIDATE_FILE, context='history')
     if not ok:
         return fallback
-    with open(HUMBLE_FILES[0], 'a+', encoding='utf8') as all_analysis:
+    with Path(HUMBLE_FILES[0]).open('a+', encoding='utf8') as all_analysis:
         all_analysis.seek(0)
         url_ln = [line for line in all_analysis if URL in line]
         analysis_totals = [current_time, URL, en_cnt, m_cnt, f_cnt, i_cnt[0],
@@ -648,7 +648,7 @@ def url_analytics(*, is_global=False):
     terminate execution, related to `-a` option.
     """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
-    with open(HUMBLE_FILES[0], encoding='utf8') as all_analysis:
+    with Path(HUMBLE_FILES[0]).open(encoding='utf8') as all_analysis:
         analysis_metrics = url_scope(all_analysis)
     l10n_det = '[global_stats_analysis]' if is_global else '[stats_analysis]'
     url_string = '' if is_global else URL
@@ -1936,7 +1936,7 @@ def validate_file_access(target_path, *, context='history'):
     error occurs during the export of an analysis, execution is terminated.
     """
     try:
-        with open(target_path, 'a+', encoding='utf8'):
+        with Path(target_path).open('a+', encoding='utf8'):
             pass
     except OSError as e:
         err_str = e.strerror or type(e).__name__
@@ -2193,7 +2193,9 @@ def fix_pdf_all_export(tmp_filename):
     """
     fixed_pdffilename = tmp_filename
     base_pdffilename = str(fixed_pdffilename).rsplit('.', 1)[0][:-1]
-    with open(fixed_pdffilename, 'r+', encoding='utf-8') as temp_pdffilename:
+    with (
+        Path(fixed_pdffilename).open('r+', encoding='utf8')
+    ) as temp_pdffilename:
         content = "".join(temp_pdffilename.readlines()[6:])
         new_content = content.replace(f"{base_pdffilename}.all",
                                       f"{base_pdffilename}.pdf")
@@ -2217,7 +2219,7 @@ def normalize_txt_all_export(tmp_filename):
     txt_path.rename(txt_path.with_name(f"{identity}.txt"))
 
 
-def finalize_export(f_name, t_name, ext, export_all):
+def finalize_export(final_filename, temp_filename, file_extension, export_all):
     """
     Manages the completion of exporting an analysis, handling file cleanup,
     renaming, and process termination logic; related to `-o` option.
@@ -2228,18 +2230,19 @@ def finalize_export(f_name, t_name, ext, export_all):
     and replaces one line of the file with the correct value.
     """
     if not export_all:
-        print_export_path(f_name, reliable)
-        Path(t_name).unlink()
+        print_export_path(final_filename, reliable)
+        Path(temp_filename).unlink()
         sys.exit(0)
-    new_filename = f"{f_name[:-4]}.{ext}"
-    Path(f_name).rename(new_filename)
-    dotted_ext = f".{ext}"
+    new_filename = f"{final_filename[:-4]}.{file_extension}"
+    Path(final_filename).rename(new_filename)
+    dotted_ext = f".{file_extension}"
     if dotted_ext not in (EXPORT_EXTENSIONS[3], EXPORT_EXTENSIONS[5]):
-        with open(new_filename, 'r+', encoding='utf-8') as f:
-            content = f.read().replace(f_name, new_filename)
-            f.seek(0)
-            f.write(content)
-            f.truncate()
+        with Path(new_filename).open('r+', encoding='utf8') as processed_file:
+            content = processed_file.read().replace(final_filename,
+                                                    new_filename)
+            processed_file.seek(0)
+            processed_file.write(content)
+            processed_file.truncate()
 
 
 def check_output_format(args, final_filename, reliable, tmp_filename):
@@ -2306,8 +2309,8 @@ def print_cicd_totals(tmp_filename):
     try:
         cicd_labels = get_cicd_labels()  # sourcery skip
         total_lbl, diff_lbl, _ = cicd_labels
-        with open(tmp_filename, encoding='utf-8') as f:
-            lines = [ln.strip() for ln in f if ln.strip()]
+        with Path(tmp_filename).open(encoding='utf8') as cicd_filename:
+            lines = [ln.strip() for ln in cicd_filename if ln.strip()]
         info_lines, totals = parse_cicd_sections(diff_lbl, total_lbl, lines)
         cicd_output = build_cicd_totals(tmp_filename, info_lines, totals,
                                         cicd_labels)
@@ -2407,8 +2410,10 @@ def generate_csv(final_filename, temp_filename, *, to_xlsx=False,
     CSV and XSLX export of the analysis and terminates execution, related to
     `-o csv` option.
     """
-    with open(temp_filename, encoding='utf8') as txt_source, \
-         open(final_filename, 'w', newline='', encoding='utf8') as csv_final:
+    with (
+        Path(temp_filename).open(encoding='utf8') as txt_source,
+        Path(final_filename).open('w', newline='', encoding='utf8') as csv_final
+    ):
         write_csv_content(csv_final, txt_source)
     if to_xlsx:
         fix_xlsx_all_export(final_filename, export_all)
@@ -2439,7 +2444,9 @@ def fix_xlsx_all_export(csv_filename, export_all):
     """
     if export_all:
         identity = csv_filename.rsplit('.', 1)[0]
-        with open(csv_filename, 'r+', encoding='utf-8') as fixed_xlsxfilename:
+        with (
+            Path(csv_filename).open('r+', encoding='utf8')
+        ) as fixed_xlsxfilename:
             content = fixed_xlsxfilename.read()
             fixed_xlsxfilename.seek(0)
             fixed_xlsxfilename.write(content.replace(f"{identity}.all",
@@ -2506,7 +2513,7 @@ def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
         by sanitizing potentially dangerous values.
     """
     prev_section = None
-    with open(final_filename, encoding='utf-8', newline='') as csv_final:
+    with Path(final_filename).open(encoding='utf-8', newline='') as csv_final:
         for row_index, row_data in enumerate(
                 defusedcsv_logic.reader(csv_final)):
             for col_index, cell_value in enumerate(row_data):
@@ -2552,8 +2559,10 @@ def generate_json(final_filename, temp_filename, *, export_all=False):
     """
     section0, sectionh, section5, section6 = (
         get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
-    with open(temp_filename, encoding='utf8') as txt_file, \
-         open(final_filename, 'w', encoding='utf8') as json_file:
+    with (
+        Path(temp_filename).open(encoding='utf8') as txt_file,
+        Path(final_filename).open('w', encoding='utf8') as json_file
+    ):
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
         parse_json(data, section0, section5, section6, sectionh, txt_sections)
@@ -2614,7 +2623,7 @@ def json_detailed_sources(file_idx, slice_idx):
     option.
     """
     file_path = OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[file_idx]
-    with open(file_path, encoding='utf8') as json_file:
+    with Path(file_path).open(encoding='utf8') as json_file:
         return {line.strip() for line in islice(json_file, SLICE_INT[slice_idx],
                                                 None) if line.strip()}
 
@@ -2624,8 +2633,10 @@ def generate_json_detailed(final_filename, temp_filename):
     JSON export of a detailed analysis and and terminates execution, related to
     `-o json` option.
     """
-    with open(temp_filename, encoding='utf8') as txt_file, \
-         open(final_filename, 'w', encoding='utf8') as json_file:
+    with (
+       Path(temp_filename).open(encoding='utf8') as txt_file,
+       Path(final_filename).open('w', encoding='utf8') as json_file
+    ):
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
         json_detailed_parse(data, txt_sections)
@@ -3046,7 +3057,7 @@ def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
     Set the format and sections for a PDF export; related to `-o pdf`
     option.
     """
-    with open(tmp_filename, encoding='utf8') as txt_source:
+    with Path(tmp_filename).open(encoding='utf8') as txt_source:
         for line in txt_source:
             if any(no_header in line for no_header in no_headers):
                 set_pdf_warnings(line, pdf, ypos)
@@ -3268,8 +3279,10 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False):
     ok_string = get_detail(DIR_MSG[2]).rstrip()
     ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
                                                           'no_enb_headers']]
-    with open(tmp_filename, encoding='utf8') as html_source, \
-            open(final_filename, 'a', encoding='utf8') as html_final:
+    with (
+        Path(tmp_filename).open(encoding='utf8') as html_source,
+        Path(final_filename).open('a', encoding='utf8') as html_final
+        ):
         for ln in html_source:
             format_html_file(html_final, ko_strings, ln, ok_string)
         if inside_section:
@@ -3293,7 +3306,7 @@ def generate_html():
                     "humble_URL": URL_LIST[4],
                     "humble_local_v": local_version, "URL_analyzed": URL,
                     "html_body": '<body><pre>', "}}": '}', "{{": '}'}
-    with open(final_filename, 'r+', encoding='utf8') as html_file:
+    with Path(final_filename).open('r+', encoding='utf8') as html_file:
         temp_html_content = html_file.read()
         replaced_html = temp_html_content.format(**html_replace)
         html_file.seek(0)
@@ -3307,7 +3320,7 @@ def decrease_html_spacing(tmp_filename):
     """
     initial_ln, prev_blank_ln = False, False
     cleaned_ln = []
-    with open(tmp_filename, encoding="utf8") as html_source:
+    with Path(tmp_filename).open(encoding='utf8') as html_source:
         for line in html_source:
             if not initial_ln and INFO_SECTION in line:
                 initial_ln = True
@@ -3315,7 +3328,7 @@ def decrease_html_spacing(tmp_filename):
                 continue
             prev_blank_ln = initial_ln and not line.strip()
             cleaned_ln.append(line)
-    with open(tmp_filename, "w", encoding="utf8") as html_output:
+    with Path(tmp_filename).open('w', encoding='utf8') as html_output:
         html_output.writelines(cleaned_ln)
 
 
@@ -3540,7 +3553,7 @@ def clean_html_final(final_filename):
     Remove content related to preformatted text of an HTML export; related to
     `-o html` option.
     """
-    with open(final_filename, "r+", encoding="utf8") as html_final:
+    with Path(final_filename).open('r+', encoding='utf8') as html_final:
         html_content = html_final.read()
         html_content = re.sub(RE_PATTERN[22], "", html_content)
         html_content = html_content.replace(RE_PATTERN[23], "")
@@ -3568,12 +3581,12 @@ def generate_xml(final_filename, temp_filename, *, export_all=False):
     """
     root = ET.Element('analysis', {'version': BANNER_VERSION,
                                    'generated': current_time})
-    with open(temp_filename, encoding='utf8') as txt_source:
+    with Path(temp_filename).open(encoding='utf8') as txt_source:
         parse_xml(root, None, (line.strip() for line in txt_source))
     xml_decl = b'<?xml version="1.0" encoding="utf-8"?>\n'
     xml_content = ET.tostring(root, encoding='utf-8', xml_declaration=False)
     xml_dtd = f'<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n'.encode()
-    with open(final_filename, 'wb') as xml_final:
+    with Path(final_filename).open('wb') as xml_final:
         xml_final.write(xml_decl + xml_dtd + xml_content)
     finalize_export(final_filename, temp_filename, 'xml', export_all)
 
@@ -3747,7 +3760,7 @@ def analyze_input_file(input_file):
     input_headers = {}
     status_code = 0
     try:
-        with open(input_file, encoding='utf8') as input_source:
+        with Path(input_file).open(encoding='utf8') as input_source:
             input_headers, status_code = parse_input_file(input_headers,
                                                           input_source,
                                                           status_code)
@@ -4252,7 +4265,7 @@ if args.output:
     tmp_filename = get_tmp_file(args, export_date)
     validate_file_access(tmp_filename, context='export')
     # nosemgrep
-    tmp_filename_content = open(tmp_filename, 'w', encoding='utf8') # noqa: SIM115
+    tmp_filename_content = Path(tmp_filename).open('w', encoding='utf8') # noqa: SIM115
     sys.stdout = tmp_filename_content
     export_slice = SLICE_INT[4] if args.output == 'txt' else SLICE_INT[5]
     export_filename = f"{str(tmp_filename)[:export_slice]}.{args.output}"
