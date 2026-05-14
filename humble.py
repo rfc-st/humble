@@ -396,10 +396,10 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
     """
     for content in fng_groups:
         print(f"\n [{STYLE[0]}{content}]")
-        content = content.lower()
+        content_lower = content.lower()
         for line in fng_incl:
-            line_l = line.lower()
-            if content in line_l and fng_term in line_l:
+            line_lower = line.lower()
+            if content_lower in line_lower and fng_term in line_lower:
                 print(f"  {line[:line.find('(')].strip()}")
     sys.exit(0)
 
@@ -2744,10 +2744,10 @@ def json_detailed_response(json_lns):
     value_key = get_detail(JSON_L10N[2], replace=True)
     result = []
     for line in json_lns:
-        line = line.strip()
-        if not line or ':' not in line:
+        line_strip = line.strip()
+        if not line_strip or ':' not in line_strip:
             continue
-        header, value = line.split(':', 1)
+        header, value = line_strip.split(':', 1)
         result.append({
             header_key: header.strip(),
             value_key: value.strip()
@@ -3108,9 +3108,9 @@ def set_pdf_sections(line, pdf):
     Set the sections of the analysis for a PDF export; related to `-o pdf`
     option.
     """
-    for section in PDF_SECTION:
-        if line.startswith(section):
-            pdf.start_section(get_detail(PDF_SECTION[section]))
+    for section_key, section_val in PDF_SECTION.items():
+        if line.startswith(section_key):
+            pdf.start_section(get_detail(section_val))
             break
 
 
@@ -3668,8 +3668,8 @@ def check_owasp_compliance(tmp_filename):
     header_dict = {}
     with PATHS['owasp_compliance'].open('r', encoding='utf8') as owasp_file:
         for line in islice(owasp_file, SLICE_INT[8], None):
-            line = line.strip()
-            header_name, header_val = map(str, line.split(': ', 1))
+            line_strip = line.strip()
+            header_name, header_val = map(str, line_strip.split(': ', 1))
             header_list.append(header_name.lower())
             header_dict[header_name] = header_val
     print_owasp_findings(header_dict, header_list)
@@ -3790,10 +3790,10 @@ def parse_input_file(input_headers, input_source, status_code):
     parts = first_line.split()
     if len(parts) == LENGTH_BOUNDS[5] and parts[-1].isdigit():
         status_code = int(parts[-1])
-    for ln in input_source:
-        ln = ln.strip()
-        if ':' in ln:
-            input_header, input_value = ln.split(':', 1)
+    for line in input_source:
+        line_strip = line.strip()
+        if ':' in line:
+            input_header, input_value = line_strip.split(':', 1)
             input_headers[input_header.title()] = input_value.strip()
     if not input_headers:
         print_error_detail('[args_inputlines]')
@@ -4189,9 +4189,8 @@ if args.lang and not URL and not args.URL_A and not args.guides:
 if args.output_file and args.output and URL:
     output_file = args.output_file
     check_input_traversal(args.output_file)
-else:
-    if args.output_file and (not args.output or not URL):
-        print_error_detail('[args_customfile]')
+elif args.output_file and (not args.output or not URL):
+    print_error_detail('[args_customfile]')
 
 if args.output_path is not None:
     check_output_path(args)
