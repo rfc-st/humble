@@ -66,6 +66,7 @@ BOLD_STRINGS = ('[0.', 'HTTP R', '[1.', '[2.', '[3.', '[4.', '[5.', '[6.',
 CDN_HTTP_CODES = set(range(500, 512)) | set(range(520, 528)) | {530}
 CSV_SECTION = ('0section', '0headers', '1enabled', '2missing', '3fingerprint',
                '4depinsecure', '5empty', '6compat', '7result')
+DAYS_DIFF = 30
 DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
 DIR_MSG = ('[icsp_s]', '[icsp_si]', '[no_warnings]')
 DTD_CONTENT = '''<!ELEMENT analysis (section+)>
@@ -76,6 +77,9 @@ DTD_CONTENT = '''<!ELEMENT analysis (section+)>
 <!ELEMENT item (#PCDATA)>
 <!ATTLIST item name CDATA #IMPLIED>
 '''
+ERROR_CODES_CLIENT = {*range(400, 408), *range(409, 418), *range(421, 427), 428,
+                      429, 431, 451}
+ERROR_CODES_MIXED = (400, 451, 500, 511, 599)
 EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'nel', 'no-vary-search', 'permissions-policy',
                'sec-private-state-token-lifetime', 'speculation-rules',
@@ -90,8 +94,6 @@ HTML_TAGS = ('</a>', '<a href="', '">', '<span class="ko">',
              '<br>', '</pre></details></div><pre>', '</pre><br></body></html>',
              '<strong>', '</strong>', '&nbsp;<font color="', '</font><br><br>',
              '</font>', '<font color="')
-HTTP_ERROR_CODES = {*range(400, 408), *range(409, 418), *range(421, 427), 428,
-                    429, 431, 451}
 HTTP_SCHEMES = ('http:', 'https:')
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
 HUMBLE_DIRS = ('additional', 'l10n')
@@ -108,6 +110,7 @@ JSON_L10N = ('[json_det_fngheader]', '[json_det_refs]', '[json_det_fngval]')
 JSON_SECTION = ('0section', '0headers', '5compat', '6result')
 L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
              'security_guides': (15, 16)}
+LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2)
 METADATA_S = ('[pdf_meta_keywords', '[pdf_meta_subject]')
 OS_PATH = Path(__file__).resolve().parent
 PATHS = {
@@ -164,6 +167,7 @@ REQ_HEADERS = {
 }
 REQ_TIMEOUT = 15
 REQ_WARNING = 6
+SECONDS_BOUNDS = (86400, 31536000)
 SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
              '[empty_cnt]', '[total_cnt]')
 SECTION_V = ('[no_enabled]', '[no_missing]', '[no_fingerprint]',
@@ -198,7 +202,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat('2026-05-09')
+local_version = date.fromisoformat('2026-05-14')
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -299,7 +303,7 @@ def check_updates_diff(days_diff, github_version, local_version):
     print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
 {github_version} \n {get_detail('[humble_local]', replace=True)} \
 {local_version}{STYLE[4]}")
-    if days_diff > 30:
+    if days_diff > DAYS_DIFF:
         print(f"\n{get_detail('[humble_not_recent]')}\n\
 {get_detail('[github_humble]', replace=True)}\n")
     else:
@@ -446,7 +450,7 @@ def testssl_command(testssl_temp_path, uri):
          (args_path / filename).is_file()), None)
     if not testssl_path or not which(testssl_path):
         print_error_detail('[notestssl_fileexec]')
-    print("")
+    print()
     print(f"{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
     choice = input(  # nosemgrep
         f"{get_detail('[testssl_choice]', replace=True)} ")[:1].strip().lower()
@@ -551,7 +555,7 @@ def get_analysis_totals(url_ln):
     updated_lines = []
     for line in url_ln:
         fields = line.strip().split(' ; ')
-        if len(fields) == 7:
+        if len(fields) == LENGTH_BOUNDS[1]:
             fields.insert(2, '0')
         updated_lines.append(' ; '.join(fields))
     url_ln = updated_lines
@@ -633,7 +637,7 @@ def adjust_old_analysis(url_ln):
     updated_lines = []
     for i in url_ln:
         fields = i.strip().split(';')
-        if len(fields) == 7:
+        if len(fields) == LENGTH_BOUNDS[1]:
             fields = [field.strip() for field in fields]
             fields.insert(2, '0')
             updated_lines.append(' ; '.join(fields) + '\n')
@@ -846,7 +850,7 @@ def calculate_trends(values):
         - `Worsening`: totals consistently increase
         - `Fluctuating`: No clear trend is detected; totals alternate
     """
-    if len(values) < 5:
+    if len(values) < LENGTH_BOUNDS[0]:
         return print_detail_l('[t_insufficient]', analytics=True)
     trends_list = values[-5:]
     if all(x == trends_list[0] for x in trends_list):
@@ -1278,14 +1282,14 @@ def csp_hex_nonce(nonce, nonce_refs, i_cnt):
     `Content-Security-Policy` header checks related to hexadecimal nonces.
     """
     return csp_print_nonce(nonce, nonce_refs, i_cnt) \
-        if len(nonce) < 32 else False
+        if len(nonce) < LENGTH_BOUNDS[3] else False
 
 
 def csp_base64_nonce(nonce, nonce_refs, i_cnt):
     """`Content-Security-Policy` header checks related to Base64 nonces."""
     try:
         return csp_print_nonce(nonce, nonce_refs, i_cnt) if \
-            len(b64decode(nonce, validate=True)) < 16 else False
+            len(b64decode(nonce, validate=True)) < LENGTH_BOUNDS[2] else False
     except Exception:
         return csp_print_nonce(nonce, nonce_refs, i_cnt)
 
@@ -1501,7 +1505,7 @@ def print_basic_info(export_filename):
     time, URL, User-Agent (`-ua` option), input file (`-if` option) and
     exported filename (`-o` option).
     """
-    print("", end="\n\n" if args.output in ('html', 'pdf', None) else "")
+    print(end="\n\n" if args.output in ('html', 'pdf', None) else "")
     print_detail_r('[0section]')
     print_detail_l('[analysis_date]')
     print(f" {current_time}")
@@ -1531,8 +1535,11 @@ def print_extended_info(args, reliable, status_code):
     if args.proxy:
         print_detail_l('[proxy_analysis_note]')
         print(f" {args.proxy}")
-    if (status_code is not None and 400 <= status_code <= 451) or reliable or \
-       args.redirects or args.skip_headers:
+    if (
+        (status_code is not None and
+         ERROR_CODES_MIXED[0] <= status_code <= ERROR_CODES_MIXED[1]) or
+        reliable or args.redirects or args.skip_headers
+    ):
         print_extra_info(reliable)
 
 
@@ -1541,11 +1548,14 @@ def print_extra_info(reliable):
     Print supplementary analysis details to the section with basic information:
     specific 4xx errors, reliability warnings and redirects (`-df` option).
     """
-    if status_code in HTTP_ERROR_CODES:
+    if status_code in ERROR_CODES_CLIENT:
         id_mode = f'[http_{status_code}]'
         print_detail(id_mode, 0)
         print(f"{URL_LIST[2]}{status_code}")
-    elif (status_code is not None and 400 <= status_code <= 451):
+    elif (
+        status_code is not None and
+        ERROR_CODES_MIXED[0] <= status_code <= ERROR_CODES_MIXED[1]
+    ):
         print(f"{get_detail('[http_4xx]', replace=True)} {status_code})")
     if reliable:
         print(get_detail('[unreliable_analysis_note]', replace=True))
@@ -1555,7 +1565,7 @@ def print_extra_info(reliable):
 
 def print_response_headers():
     """Print response headers, related to `-r` option."""
-    print("", end="\n\n")
+    print(end="\n\n")
     print_detail_r('[0headers]')
     if not headers:
         print_nosec_headers(enabled=False)
@@ -1647,7 +1657,7 @@ def print_detail_r(id_mode, *, is_red=False):
             else:
                 print(idnext_ln, end='')
             if not is_red:
-                print("")
+                print()
 
 
 def print_detail_s(id_mode, *, max_ln=False):
@@ -1747,7 +1757,7 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
 '{header_value}'")
         else:
             print(get_detail('[empty_fng]', replace=True))
-        print("")
+        print()
     else:
         print_header(header)
 
@@ -3188,8 +3198,9 @@ def format_pdf_lines(line, pdf, ypos):
     Identify lines, by length and content, to apply formatting for a PDF export
     ; related to `-o pdf` option.
     """
-    if len(line) > 102:
-        chunks = [line[i:i + 102] for i in range(0, len(line), 102)]
+    if len(line) > LENGTH_BOUNDS[4]:
+        chunks = [line[i:i + LENGTH_BOUNDS[4]] for i in range(0, len(line),
+                                                              LENGTH_BOUNDS[4])]
         set_pdf_chunks(chunks, pdf)
         pdf.ln(h=2)
         return
@@ -3232,7 +3243,7 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
         chunk = f' {chunk}'
     y = pdf.get_y()
     if chunk_c != PDF_COLORS[2]:
-        if i == 1 and len(chunks) >= 2:
+        if i == 1 and len(chunks) >= LENGTH_BOUNDS[5]:
             y -= 1
         elif len(chunks) == 1:
             y -= 0.5
@@ -3249,7 +3260,8 @@ def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
     colon_idx = line.find(': ')
     ln_final = apply_pdf_color(colon_idx, hcolor, line, vcolor)
     pdf.write_html(ln_final)
-    return hcolor if chunks and len(chunks) == 2 and i == 0 else None
+    condition = chunks and len(chunks) == LENGTH_BOUNDS[5] and i == 0
+    return hcolor if condition else None
 
 
 def apply_pdf_color(colon_idx, hcolor, line, vcolor):
@@ -3623,7 +3635,7 @@ def add_xml_item(line, section):
 def print_http_exception(exception_id, exception_v):
     """Print the exception received during analysis."""
     delete_lines()
-    print("")
+    print()
     print_detail(exception_id)
     raise SystemExit from exception_v
 
@@ -3671,7 +3683,7 @@ def print_owasp_summary(missing, wrong):
     missing_txt = get_detail('[comp_missing]', replace=True)
     wrong_txt = get_detail('[comp_noncompliant]', replace=True)
     max_len = len(wrong_txt)
-    print("", end="\n\n")
+    print(end="\n\n")
     print(f"{STYLE[0]}{get_detail('[comp_summary]')}")
     print(f" {missing_txt:{max_len}} : {len(missing)}")
     print(f" {wrong_txt:{max_len}} : {len(wrong)}")
@@ -3682,7 +3694,7 @@ def print_owasp_findings(header_dict, header_list):
     Print formatted lines for results section of an `OWASP Secure Headers
     Project` best practices checks, related to `-c` option.
     """
-    print("", end="\n\n")
+    print(end="\n\n")
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
     print(" ", end='')
     print_detail_l('[analysis_date]')
@@ -3694,7 +3706,7 @@ def print_owasp_findings(header_dict, header_list):
     if wrong_owasp:
         print_owasp_rec(wrong_owasp, header_dict)
     print_owasp_summary(missing_owasp, wrong_owasp)
-    print("")
+    print()
     print_detail('[comp_experimental]', 2)
 
 
@@ -3776,7 +3788,7 @@ def parse_input_file(input_headers, input_source, status_code):
     """
     first_line = input_source.readline().strip()
     parts = first_line.split()
-    if len(parts) == 2 and parts[-1].isdigit():
+    if len(parts) == LENGTH_BOUNDS[5] and parts[-1].isdigit():
         status_code = int(parts[-1])
     for ln in input_source:
         ln = ln.strip()
@@ -3857,7 +3869,7 @@ def process_server_error(http_status_code, l10n_id):
     if http_status_code in CDN_HTTP_CODES:
         print()
         print_detail(l10n_id, 0)
-        if 500 <= http_status_code <= 511:
+        if ERROR_CODES_MIXED[2] <= http_status_code <= ERROR_CODES_MIXED[3]:
             print(URL_LIST[2])
         else:
             print(URL_LIST[1])
@@ -3935,7 +3947,7 @@ def process_http_error(r, exception_d):
     except requests.exceptions.HTTPError as err_http:
         status = err_http.response.status_code
         l10n_id = f'[server_{status}]'
-        if 500 <= status <= 599:
+        if ERROR_CODES_MIXED[2] <= status <= ERROR_CODES_MIXED[4]:
             process_server_error(status, l10n_id)
     except Exception as e:
         ex = exception_d.get(type(e))
@@ -3949,9 +3961,9 @@ def parse_request_headers(request_headers):
     headers, malformed_headers = process_request_headers(request_headers)
     if malformed_headers:
         delete_lines()
-        print("")
+        print()
         quoted = ', '.join(f'"{h}"' for h in malformed_headers)
-        print(f"{get_detail('[e_custom_headers]', replace=True)}; {quoted}")
+        print(f"{get_detail('[e_custom_headers]', replace=True)}: {quoted}")
         sys.exit(1)
     return headers
 
@@ -3967,7 +3979,7 @@ def process_request_headers(request_headers):
     for header in request_headers:
         if not header:
             delete_lines()
-            print("")
+            print()
             print(f"{get_detail('[e_custom_eheaders]', replace=True)}")
             sys.exit(1)
         if ":" not in header:
@@ -4217,7 +4229,7 @@ if not args.URL_A and not args.cicd:
         detail = '[analysis_output]' if args.output else '[analysis]'
     else:
         detail = '[compliance_output]'
-    print("")
+    print()
     print_detail(detail)
 
 exception_d = {
@@ -4274,7 +4286,7 @@ if args.output:
 
 # Section '0. Info & HTTP Response Headers'
 print_general_info(reliable, export_filename)
-print_response_headers() if args.ret else print("", end="\n\n")
+print_response_headers() if args.ret else print(end="\n\n")
 
 # Section '1. Enabled HTTP Security Headers'
 print_detail_r('[1enabled]')
@@ -4301,10 +4313,10 @@ l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
 m_cnt, skip_missing = print_missing_headers(args, headers_l, l_detail, l_miss)
 
 if args.brief and m_cnt != 0:
-    print("")
+    print()
 if m_cnt == 0:
     print_nowarnings()
-print("")
+print()
 
 # Section '3. Fingerprint HTTP Response Headers'
 print_detail_r('[3fingerprint]')
@@ -4316,10 +4328,10 @@ l_fng_ex, l_fng, titled_fng = get_fingerprint_headers()
 f_cnt = print_fingerprint_headers(headers_l, l_fng_ex, titled_fng)
 
 if args.brief and f_cnt != 0:
-    print("")
+    print()
 if f_cnt == 0:
     print_nowarnings()
-print("")
+print()
 
 # Section '4. Deprecated HTTP Response Headers/Protocols and Insecure Values'
 # The file associated with this check is /additional/insecure.txt
@@ -4653,7 +4665,10 @@ if accesso_header and accesso_header in t_accecao and not any(
     print_details('[iaccess_h]', '[iaccess]', 'd', i_cnt)
 
 accesma_header = headers_l.get("access-control-max-age", '')
-if accesma_header and int(accesma_header) > 86400 and '7' not in skip_list:
+if (
+    accesma_header and int(accesma_header) > SECONDS_BOUNDS[0] and
+    '7' not in skip_list
+):
     print_details('[iacessma_h]', '[iaccessma]', 'd', i_cnt)
 
 if 'activate-storage-access' in headers_l and '8' not in skip_list:
@@ -4982,10 +4997,14 @@ if sts_header and '64' not in skip_list:
         age = int(''.join(filter(str.isdigit, sts_header)))
         if unsafe_scheme:
             print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
-        if not all(elem in sts_header for elem in t_sts_dir) or age < 31536000:
+        if (
+            not all(elem in sts_header for elem in t_sts_dir) or
+            age < SECONDS_BOUNDS[1]
+        ):
             print_details('[ists_h]', '[ists]', 'm', i_cnt)
-        if 'preload' in sts_header and (t_sts_dir[0] not in sts_header
-                                        or age < 31536000):
+        if 'preload' in sts_header and (
+            t_sts_dir[0] not in sts_header or age < SECONDS_BOUNDS[1]
+        ):
             print_details('[istsr_h]', '[istsr]', 'd', i_cnt)
         if ',' in sts_header:
             print_details('[istsd_h]', '[istsd]', 'd', i_cnt)
@@ -5149,10 +5168,10 @@ if 'x-xss-protection' in headers_l and '92' not in skip_list:
         print_details('[ixxpd_h]', '[ixxpd]', 'd', i_cnt)
 
 if args.brief and i_cnt[0] != 0:
-    print("")
+    print()
 if i_cnt[0] == 0:
     print_nowarnings()
-print("")
+print()
 
 # Section '5. Empty HTTP Response Headers Values'
 print_detail_r('[5empty]')
@@ -5163,8 +5182,8 @@ if not args.brief:
 
 e_cnt = print_empty_headers(headers, l_empty)
 
-print("") if e_cnt != 0 else print_nowarnings()
-print("")
+print() if e_cnt != 0 else print_nowarnings()
+print()
 
 # Section '6. Browser Compatibility for Enabled HTTP Security Headers'
 print_detail_r('[6compat]')
@@ -5193,7 +5212,7 @@ print_browser_compatibility(compat_headers) if compat_headers else \
     print_nosec_headers()
 
 # Summary of the analysis and changes compared to the previous one
-print("", end="\n\n")
+print(end="\n\n")
 end = time()
 print_detail_r('[7result]')
 if '-c' not in sys.argv:

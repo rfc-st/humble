@@ -99,7 +99,7 @@ TEST_URLS = ('https://github.com/rfc-st/humble',
              'https://en.wikipedia.org', 'https://microsoft.com',
              'http://127.0.0.1:65535', 'https://tass.ru/',
              'https://google.com', 'https://httpbin.org/delay/10',
-             'https://httpbin.org/status/502', 'http://10.255.255.1',
+             'https://httpbin.org/status/502', 'http://10.255.255.1', # NOSONAR
              'ftp://google.com', 'https://\u0442\u0435\u0441\u0442.ru',
              'https://httpbin.org/status/529',
              'https://httpbin.org/status/520',
@@ -634,7 +634,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat('2026-05-09')
+local_version = date.fromisoformat('2026-05-14')
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

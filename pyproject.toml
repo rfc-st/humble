@@ -42,5 +42,9 @@ select = [
     "PERF",
     # tryceratops
     "TRY",
+    # refurbish
+    "FURB",
+    # Pylint
+    "PL",
 ]
 ignore = ["RUF100"]
