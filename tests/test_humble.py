@@ -349,7 +349,8 @@ def run_test(args, expected_text, timeout=15):
             text=True,
             timeout=timeout,
             encoding="utf-8",
-            errors="replace"
+            errors="replace",
+            check=False
         )
         output = result.stdout + result.stderr
     except subprocess.TimeoutExpired:
@@ -653,7 +654,7 @@ args = _Args()
 @pytest.fixture(scope="session", autouse=True) # noqa
 def delete_temp_coverage():
     global l10n_main
-    global args
+    global args # noqa: PLW0602
     args.lang = "en"
     l10n_main = get_l10n_content()
     yield

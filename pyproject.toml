@@ -47,4 +47,4 @@ select = [
     # Pylint
     "PL",
 ]
-ignore = ["RUF100"]
+ignore = ["PLR", "PLW0603", "RUF100"]
