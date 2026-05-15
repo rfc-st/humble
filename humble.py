@@ -30,6 +30,7 @@
 import re
 import ssl
 import sys
+import binascii
 import xml.etree.ElementTree as ET  # nosemgrep
 from time import time
 from html import escape
@@ -87,6 +88,7 @@ EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
 EXPORT_EXTENSIONS = ('.csv', '.html', '.json', '.pdf', '.txt', '.xlsx', '.xml')
 FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
 HASH_CHARS = {'sha256': 32, 'sha384': 48, 'sha512': 64}
+HEADERS_CHECKS = 2
 HTML_TAGS = ('</a>', '<a href="', '">', '<span class="ko">',
              '<span class="header">', '</span>', '<span class="ok">',
              '</pre><div><details open><summary><strong>',
@@ -202,7 +204,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat('2026-05-14')
+local_version = date.fromisoformat('2026-05-15')
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -273,7 +275,7 @@ def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
     try:
         with create_connection((proxy_host, proxy_port), timeout=timeout):
             pass
-    except Exception:
+    except OSError:
         failed_proxy.set()
 
 
@@ -481,7 +483,7 @@ def testssl_analysis(testssl_cmd):
                 process.terminate()
                 break
         process.wait()
-    except Exception:
+    except (OSError, ValueError):
         print_error_detail('[testssl_error]')
 
 
@@ -1241,7 +1243,7 @@ def csp_check_hashes(csp_h):
             decoded = b64decode(b64hash, validate=True)
             if len(decoded) != HASH_CHARS[algo]:
                 invalid_algos.add(algo)
-        except Exception:
+        except binascii.Error:
             invalid_algos.add(algo)
     if invalid_algos:
         print_detail_r('[icshash_h]', is_red=True)
@@ -1290,7 +1292,7 @@ def csp_base64_nonce(nonce, nonce_refs, i_cnt):
     try:
         return csp_print_nonce(nonce, nonce_refs, i_cnt) if \
             len(b64decode(nonce, validate=True)) < LENGTH_BOUNDS[2] else False
-    except Exception:
+    except binascii.Error:
         return csp_print_nonce(nonce, nonce_refs, i_cnt)
 
 
@@ -1406,7 +1408,9 @@ def permissions_print_deprecated(perm_header):
 
 def permissions_check_broad(perm_header):
     """`Permissions-Policy` header check related to broad values."""
-    if sum(directive in perm_header for directive in t_per_ft) < 2:
+    if sum(
+        directive in perm_header for directive in t_per_ft
+    ) < HEADERS_CHECKS:
         return None
     try:
         result = []
@@ -1933,9 +1937,9 @@ def validate_path(output_path):
         validate_path = Path(output_path) / HUMBLE_FILES[1]
         with validate_path.open('w', encoding='utf8'):
             pass
-    except OSError as e:
+    except OSError as path_err:
         print(f"\n {get_detail('[args_pathe]', replace=True)} "
-              f"'{output_path}' ({e.strerror})")
+              f"'{output_path}' ({path_err.strerror})")
         sys.exit(1)
     else:
         validate_path.unlink()
@@ -1949,8 +1953,8 @@ def validate_file_access(target_path, *, context='history'):
     try:
         with Path(target_path).open('a+', encoding='utf8'):
             pass
-    except OSError as e:
-        err_str = e.strerror or type(e).__name__
+    except OSError as file_err:
+        err_str = file_err.strerror or type(file_err).__name__
         if context == 'history':
             return False, ("Not available",) * 6
         if context == 'basic':
@@ -2327,7 +2331,7 @@ def print_cicd_totals(tmp_filename):
                                         cicd_labels)
         print(dumps(cicd_output, indent=2, ensure_ascii=False))
         sys.exit(0)
-    except Exception as exc:
+    except Exception as exc: # noqa: BLE001 # Catches unexpected exceptions
         err_key = get_detail('[cicd_error]', replace=True)
         print(dumps({err_key: str(exc)}, ensure_ascii=False))
         sys.exit(1)
@@ -2984,7 +2988,7 @@ def export_pdf_file(tmp_filename, *, export_all=False):
         `fpdf2` is lazy-loaded to avoid unnecessary overhead when PDF export is
         not used.
     """
-    from fpdf import FPDF, YPos as ypos  # type: ignore
+    from fpdf import FPDF, YPos
 
     class PDF(FPDF):
 
@@ -3006,7 +3010,7 @@ def export_pdf_file(tmp_filename, *, export_all=False):
 {self.page_no()}{get_detail('[pdf_footer2]')} {{nb}}", align='C')
 
     pdf = PDF()
-    initialize_pdf(pdf, tmp_filename, ypos, export_all=export_all)
+    initialize_pdf(pdf, tmp_filename, YPos, export_all=export_all)
 
 
 def initialize_pdf(pdf, tmp_filename, ypos, *, export_all=False):
@@ -3908,14 +3912,14 @@ def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
             timeout=REQ_TIMEOUT,
             proxies=proxy,
         )
-    except requests.exceptions.Timeout as e:
-        return None, None, e
+    except requests.exceptions.Timeout as timeout_err:
+        return None, None, timeout_err
     except requests.exceptions.SSLError:
         return None, None, None
-    except requests.exceptions.RequestException as e:
-        return None, None, e
-    except Exception as e:
-        return None, None, e
+    except requests.exceptions.RequestException as request_err:
+        return None, None, request_err
+    except Exception as unexpected_err: # noqa: BLE001 # Catches unexpected exceptions
+        return None, None, unexpected_err
     else:
         return r, None, None
 
@@ -3949,10 +3953,10 @@ def process_http_error(r, exception_d):
         l10n_id = f'[server_{status}]'
         if ERROR_CODES_MIXED[2] <= status <= ERROR_CODES_MIXED[4]:
             process_server_error(status, l10n_id)
-    except Exception as e:
-        ex = exception_d.get(type(e))
-        if ex and (not callable(ex) or ex(e)):
-            print_http_exception(ex, e)
+    except Exception as http_err: # noqa: BLE001 # Catches unexpected exceptions
+        ex = exception_d.get(type(http_err))
+        if ex and (not callable(ex) or ex(http_err)):
+            print_http_exception(ex, http_err)
 
 
 def parse_request_headers(request_headers):
@@ -4011,8 +4015,8 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
             r, _, exception = make_http_request(custom_headers, proxy)
             result['r'] = r
             result['exception'] = exception
-        except Exception as e:
-            result['exception'] = e
+        except Exception as thread_err: # noqa: BLE001 # Catches unexpected exceptions
+            result['exception'] = thread_err
         finally:
             done.set()
 
@@ -4341,9 +4345,7 @@ print()
 # https://github.com/lazd/mdn.io, which uses DuckDuckGo's Bang! to redirect to
 # the first search result associated with 'Mozilla Developer Network'.
 #
-# E.g., from https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/\
-# Headers/Cross-Origin-Embedder-Policy to https://mdn.io/Cross-Origin-Embedder\
-# -Policy.
+# E.g., https://mdn.io/Cross-Origin-Embedder-Policy.
 #
 # I have checked all of these short links one by one: they all resolve to the
 # original URL, but I cannot guarantee that they will remain that way over

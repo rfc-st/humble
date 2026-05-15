@@ -34,9 +34,9 @@ import importlib.util
 from os import fsync
 from pathlib import Path
 from platform import system
+from typing import NamedTuple
 from contextlib import suppress
 from unittest.mock import patch
-from collections import namedtuple
 from datetime import datetime, date
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
@@ -292,6 +292,13 @@ class _Args:
     lang = None
 
 
+class PythonVersion(NamedTuple):
+    """Python version fields for `test_unsupported_python_version`"""
+    major: int
+    minor: int
+    micro: int
+
+
 def get_detail(id_mode, *, replace=False):
     """Print a message, optionally removing newlines"""
     for i, line in enumerate(l10n_main):
@@ -442,7 +449,7 @@ def test_testssl_error(capsys):
     """Verify an error is displayed for TLS/SSL check exceptions"""
     humble_module.l10n_main = l10n_main
     humble_module.args = args
-    with patch.object(humble_module, 'Popen', side_effect=Exception):
+    with patch.object(humble_module, 'Popen', side_effect=OSError):
         with pytest.raises(SystemExit) as wrapped_exit:
             humble_module.testssl_analysis(TESTSSL_CMD)
         assert wrapped_exit.value.code == 1
@@ -486,13 +493,12 @@ def test_unsupported_python_version(capsys):
     Verify an error is displayed if using a Python version below the minimum
     supported.
     """
-    python_version = namedtuple('VersionInfo', ['major', 'minor', 'micro'])
-    mock_version = python_version(major=3, minor=10, micro=0)
+    mocked_python_version = PythonVersion(3, 10, 0)
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
     humble_module.args = args
-    with patch('sys.version_info', mock_version):
+    with patch('sys.version_info', mocked_python_version):
         with pytest.raises(SystemExit) as wrapped_exit:
             humble_module.check_python_version()
         assert wrapped_exit.value.code == 1
@@ -552,10 +558,10 @@ def delete_export_files(extension, ko_msg):
                 name_lower.endswith(extension)):
             try:
                 export_file.unlink()
-            except Exception as e:
+            except OSError as cleanup_err:
                 error_detail = get_detail(ko_msg, replace=True)
                 msgs.append((error_detail,
-                             f"({type(e).__name__}) {export_file}"))
+                             f"({type(cleanup_err).__name__}) {export_file}"))
     return msgs
 
 
@@ -569,10 +575,10 @@ def delete_pytest_caches(dir_path):
     if path_obj.is_dir():
         try:
             shutil.rmtree(path_obj)
-        except Exception as e:
+        except OSError as rmtree_err:
             error_detail = get_detail('[test_fcache]', replace=True)
             msgs.append((error_detail,
-                         f"({type(e).__name__}) {path_obj}"))
+                         f"({type(rmtree_err).__name__}) {path_obj}"))
     return msgs
 
 
@@ -635,7 +641,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat('2026-05-14')
+local_version = date.fromisoformat('2026-05-15')
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34

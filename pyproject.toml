@@ -3,48 +3,43 @@ line-length = 80
 target-version = "py311"
 
 [tool.ruff.lint]
+# Ruff's rules: https://docs.astral.sh/ruff/rules/
 select = [
-    # pycodestyle errors
-    "E",
-    # pycodestyle warnings
-    "W",
-    # Pyflakes
-    "F",
-    # flake8-bugbear
-    "B",
-    # flake8-simplify
-    "SIM",
-    # pyupgrade
-    "UP",
-    # flake8-comprehensions
-    "C4",
-    # flake8-return
-    "RET",
-    # flake8-builtins
-    "A",
-    # Ruff-specific rules
-    "RUF",
-    # mccabe (Complexity)
-    "C90",
-    # flake8-unused-arguments
-    "ARG",
-    # flake8-pie
-    "PIE",
-    # flake8-datetimez
-    "DTZ",
-    # flake8-implicit-str-concat
-    "ISC",
-    # flake8-boolean-trap
-    "FBT",
-    # flake8-use-pathlib
-    "PTH",
-    # Perflint
-    "PERF",
-    # tryceratops
-    "TRY",
-    # refurbish
-    "FURB",
-    # Pylint
-    "PL",
-]
-ignore = ["PLR", "PLW0603", "RUF100"]
+    "A",       # flake8-builtins
+    "ARG",     # flake8-unused-arguments
+    "B",       # flake8-bugbear
+    "BLE",     # flake8-blind-except
+    "C4",      # flake8-comprehensions
+    "C90",     # mccabe (Complexity)
+    "DTZ",     # flake8-datetimez
+    "E",       # pycodestyle errors
+    "ERA",     # eradicate
+    "F",       # Pyflakes
+    "FBT",     # flake8-boolean-trap
+    "FURB",    # refurbish
+    "ISC",     # flake8-implicit-str-concat
+    "N",       # pep8-naming
+    "PERF",    # Perflint
+    "PIE",     # flake8-pie
+    "PL",      # Pylint
+    "PT",      # flake8-pytest-style
+    "PTH",     # flake8-use-pathlib
+    "PYI",     # flake8-pyi
+    "RET",     # flake8-return
+    "RUF",     # Ruff-specific rules
+    "S",       # flake8-bandit
+    "SIM",     # flake8-simplify
+    "SLF",     # flake8-self
+    "TRY",     # tryceratops
+    "UP",      # pyupgrade
+    "W",       # pycodestyle warnings
+    ]
+ignore = [
+    "PLR0913", # TO-DO: related to functions having more than 5 arguments
+    "PLW0603", # TO-DO: related to 'global inside_section' findings
+    "RUF100",  # Related to 'noqa' findings needed for other security tools
+    "S101",    # All findings related to the use of 'assert' in 'test_humble.py'
+    "S323",    # Explained in 'SSLContextAdapter' doctrings
+    "S603",    # The input of 'testssl_analysis' is validated
+    "SLF001",  # 'ssl._create_unverified_context()' is an intentional stdlib call
+    ]
