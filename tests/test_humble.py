@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Unit tests for humble: a fast, security-oriented HTTP headers analyzer."""
 
 # 'humble' (HTTP Headers Analyzer)
 # https://humble.readthedocs.io/
@@ -285,22 +286,21 @@ humble_module = importlib.util.module_from_spec(_spec)
 
 
 class _Args:
-    """
-    Provides a default language setting to ensure localized messages load
-    during testing
-    """
+    """Provides a default language to ensure messages load during testing."""
+
     lang = None
 
 
 class PythonVersion(NamedTuple):
-    """Python version fields for `test_unsupported_python_version`"""
+    """Python version fields for `test_unsupported_python_version`."""
+
     major: int
     minor: int
     micro: int
 
 
 def get_detail(id_mode, *, replace=False):
-    """Print a message, optionally removing newlines"""
+    """Print a message, optionally removing newlines."""
     for i, line in enumerate(l10n_main):
         if line.startswith(id_mode):
             return (l10n_main[i+1].replace('\n', '')) if replace else \
@@ -309,10 +309,7 @@ def get_detail(id_mode, *, replace=False):
 
 
 def get_l10n_content():
-    """
-    Assign the correct lookup file to handle localized messaging and error
-    reporting
-    """
+    """Assign the lookup file to handle localized messages and errors."""
     if args.lang == 'en':
         l10n_file = HUMBLE_L10N_FILE[0]
     elif args.lang == 'es':
@@ -323,8 +320,7 @@ def get_l10n_content():
 
 
 def print_results():
-    """
-    Shows the description of each unit test
+    """Show the description of each unit test.
 
     Descriptions are retrieved via `get_detail` function using tags derived
     from `TEST_CFGS` keys plus extended ones for complex standalone unit tests.
@@ -346,7 +342,7 @@ def print_results():
 
 
 def run_test(args, expected_text, timeout=15):
-    """Run unit test and check for expected console output"""
+    """Run unit test and check for expected console output."""
     test_args = [TEST_URLS[9] if a is None else a for a in args]
 
     try:
@@ -366,9 +362,7 @@ def run_test(args, expected_text, timeout=15):
 
 
 def parse_expected_text(output, expected_text):
-    """
-    Validates console output against expected results after each unit test
-    """
+    """Validate output against expected results after each test."""
     exp_msg = get_detail('[test_expected]', replace=True)
     not_found_msg = get_detail('[test_notfound]', replace=True)
     if isinstance(expected_text, list | tuple | set):
@@ -380,10 +374,10 @@ def parse_expected_text(output, expected_text):
 
 
 def make_test_func(cfg_key):
-    """
-    Generate unit test execution function; skip `test_wrong_testssl` on Windows
-    due to the Unix-environment requirement (Cygwin, MSYS2, or Windows
-    Subsystem for Linux) for testssl.sh
+    """Generate unit test execution function.
+
+    Skips `test_wrong_testssl` on Windows due to the Unix-environment
+    requirement (Cygwin, MSYS2, or Windows Subsystem for Linux) for testssl.sh
     """
     def test_func():
         return run_test(*TEST_CFGS[cfg_key])
@@ -402,9 +396,7 @@ for key in TEST_CFGS:
 
 
 def test_cicd_error(capsys):
-    """
-    Verify an error is displayed if there is an Exception in CI/CD results
-    """
+    """Verify an error is displayed in CI/CD results."""
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
@@ -421,9 +413,8 @@ def test_cicd_error(capsys):
 
 
 def test_file_access_errors(capsys):
-    """
-    Verify an error is displayed if the export or history files can not be
-    accessed or created
+    """Verify an error is displayed if the export or history files can not be
+    accessed or created.
     """
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
@@ -446,7 +437,7 @@ def test_file_access_errors(capsys):
 
 
 def test_testssl_error(capsys):
-    """Verify an error is displayed for TLS/SSL check exceptions"""
+    """Verify an error is displayed for TLS/SSL check exceptions."""
     humble_module.l10n_main = l10n_main
     humble_module.args = args
     with patch.object(humble_module, 'Popen', side_effect=OSError):
@@ -458,9 +449,8 @@ def test_testssl_error(capsys):
 
 
 def test_outdated_humble(capsys):
-    """
-    Verify an error is displayed when the local version of humble.py
-    is more than 30 days older than the GitHub version
+    """Verify an error is displayed when the local version of humble.py
+    is more than 30 days older than the GitHub version.
     """
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
@@ -477,9 +467,8 @@ def test_outdated_humble(capsys):
 
 
 def test_python_version():
-    """
-    Returns an error message if the current Python version does not meet the
-    minimum requirement
+    """Returns an error message if the current Python version does not meet the
+    minimum requirement.
     """
     if sys.version_info[:2] < REQUIRED_PYTHON_VERSION:
         pytest.fail(
@@ -489,8 +478,7 @@ def test_python_version():
 
 
 def test_unsupported_python_version(capsys):
-    """
-    Verify an error is displayed if using a Python version below the minimum
+    """Verify an error is displayed if using a Python version below the minimum
     supported.
     """
     mocked_python_version = PythonVersion(3, 10, 0)
@@ -507,9 +495,7 @@ def test_unsupported_python_version(capsys):
 
 
 def test_updates_error(capsys):
-    """
-    Verify an error message is displayed if the GitHub update check fails.
-    """
+    """Verify an error message is displayed if the GitHub update check fails."""
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
@@ -523,9 +509,8 @@ def test_updates_error(capsys):
 
 
 def test_missing_arguments():
-    """
-    Consolidates multiple checks for missing required arguments into a single
-    unit test
+    """Consolidates multiple checks for missing required arguments into a single
+    unit test.
     """
     expected = ["Error:", "error:", "TXT", "HTML", "Analysis"]
     run_test(['-H', 'Cache-Control: no-cache'], expected)
@@ -540,17 +525,14 @@ def test_missing_arguments():
 
 
 def test_proxy_wrong():
-    """
-    Consolidates multiple checks for missing required arguments across various
-    proxy-related features
-    """
+    """Consolidate missing argument checks across proxy-related features."""
     expected = ["Error:", "error:"]
     run_test(['-p', 'https://'], expected)
     run_test(['-p', 'http://127.0.0.1:test'], expected)
 
 
 def delete_export_files(extension, ko_msg):
-    """Remove temporary files from export unit tests"""
+    """Remove temporary files from export unit tests."""
     msgs = []
     for export_file in HUMBLE_TESTS_DIR.iterdir():
         name_lower = export_file.name.lower()
@@ -566,10 +548,7 @@ def delete_export_files(extension, ko_msg):
 
 
 def delete_pytest_caches(dir_path):
-    """
-    Remove all `.pytest_cache` folders following the execution of all unit
-    tests
-    """
+    """Remove `.pytest_cache` folders following the run of unit tests."""
     msgs = []
     path_obj = Path(dir_path)
     if path_obj.is_dir():
@@ -583,9 +562,7 @@ def delete_pytest_caches(dir_path):
 
 
 def set_temp_content(current_time):
-    """
-    Define the files and folders to be purged upon completion of the test suite
-    """
+    """Define the files and folders to be purged upon completion of tests."""
     info_msgs = [(get_detail('[test_tests]', replace=True), current_time)]
     delete_extensions = [
         ('.csv', '[test_fcsv]'),
@@ -605,7 +582,7 @@ def set_temp_content(current_time):
 
 
 def delete_temp_content():
-    """Remove the files and folders after all unit tests have been run"""
+    """Remove the files and folders after all tests have been run."""
     now = datetime.now().astimezone()
     current_time = now.strftime("%Y/%m/%d - %H:%M:%S %Z")
     info_msgs = set_temp_content(current_time)
@@ -623,10 +600,10 @@ def delete_temp_content():
 
 
 def cleanup_analysis_history():
-    """
-    Truncate the test analysis history file after all unit tests complete,
-    retaining only the first twenty-five lines to ensure file size stability
-    while preserving data required for testing
+    """Truncate the test analysis history file.
+
+    After all unit tests complete, retaining only the first twenty-five lines to
+    ensure file size stability while preserving data required for testing
     """
     original_lines = []
     with suppress(Exception), \
@@ -659,6 +636,7 @@ args = _Args()
 
 @pytest.fixture(scope="session", autouse=True) # noqa
 def delete_temp_coverage():
+    """Set up session globals and clean up temporary files after testing."""
     global l10n_main
     global args # noqa: PLW0602
     args.lang = "en"
