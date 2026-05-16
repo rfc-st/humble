@@ -1,4 +1,5 @@
 #! /usr/bin/env python3
+"""A humble, and fast, security-oriented HTTP headers analyzer."""
 
 # 'humble' (HTTP Headers Analyzer)
 # https://humble.readthedocs.io/
@@ -27,33 +28,33 @@
 # SOFTWARE.
 
 # Standard Library imports
+import binascii
 import re
 import ssl
 import sys
-import binascii
 import xml.etree.ElementTree as ET  # nosemgrep
-from time import time
-from html import escape
-from pathlib import Path
-from base64 import b64decode
-from json import dump, dumps
-from contextlib import suppress
-from ipaddress import ip_address
-from urllib.parse import urlparse
-from threading import Event, Thread
-from shutil import copyfile, which
-from datetime import datetime, date
-from socket import create_connection
-from itertools import islice, pairwise
-from subprocess import PIPE, Popen, STDOUT
-from collections import Counter, defaultdict
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from base64 import b64decode
+from collections import Counter, defaultdict
+from contextlib import suppress
+from datetime import date, datetime
+from html import escape
+from ipaddress import ip_address
+from itertools import islice, pairwise
+from json import dump, dumps
+from pathlib import Path
+from shutil import copyfile, which
+from socket import create_connection
+from subprocess import PIPE, STDOUT, Popen
+from threading import Event, Thread
+from time import time
+from urllib.parse import urlparse
 
 # Third-Party imports
 import requests
 from colorama import Fore, Style, init
-from requests.adapters import HTTPAdapter
 from defusedcsv import csv as defusedcsv_logic
+from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
 
 BANNER = '''  _                     _     _
@@ -86,7 +87,7 @@ EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
                'sec-private-state-token-lifetime', 'speculation-rules',
                'supports-loading-mode')
 EXPORT_EXTENSIONS = ('.csv', '.html', '.json', '.pdf', '.txt', '.xlsx', '.xml')
-FORCED_CIPHERS = ":".join(["HIGH", "!DH", "!aNULL"])
+FORCED_CIPHERS = "HIGH:!DH:!aNULL"
 HASH_CHARS = {'sha256': 32, 'sha384': 48, 'sha512': 64}
 HEADERS_CHECKS = 2
 HTML_TAGS = ('</a>', '<a href="', '">', '<span class="ko">',
@@ -204,17 +205,22 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat('2026-05-15')
+local_version = date.fromisoformat('2026-05-16')
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
-    """
-    A custom SSL adapter that bypasses specific security validations to
-    ensure the analysis of a URL can proceed.
+    """Custom SSL adapter.
 
-    ??? note
+    Disables SSL validation for unrestricted URL analysis.
+    """
+
+    def init_poolmanager(self, *args, **kwargs):  # nosemgrep
+        """Initialize the pool manager with an unverified SSL context and
+        restricted ciphers.
+
+        ??? note
         The following checks are disabled to allow the analysis of URLs
         in environments with self-signed certificates, outdated software,
         or development configurations:
@@ -222,8 +228,7 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         - Certificate Verification
         - Hostname Verification
         - Certificate Requirement
-    """
-    def init_poolmanager(self, *args, **kwargs):  # nosemgrep
+        """
         context = ssl._create_unverified_context()  # nosemgrep
         context.check_hostname = False  # noqa
         context.verify_mode = ssl.CERT_NONE  # noqa
@@ -234,10 +239,10 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
 
 
 def check_python_version():
-    """
-    Verifies that the host's Python version meets the minimum requirements
-    for `humble`. Prints an error and terminates execution if the version
-    is below the threshold defined in `PYTHON_REQUIRED_VERSION`.
+    """Verify that the host's Python version meets the minimum requirements.
+
+    Prints an error and exit if the version is below the threshold defined in
+    `PYTHON_REQUIRED_VERSION`.
     """
     if sys.version_info < PYTHON_REQUIRED_VERSION:
         host_python = f"{sys.version_info.major}.{sys.version_info.minor}"
@@ -269,9 +274,7 @@ def process_proxy_url(proxy_url, timeout):
 
 
 def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
-    """
-    Check if the provided proxy server is reachable, related to `-p` option.
-    """
+    """Check if the proxy server is reachable, related to `-p` option."""
     try:
         with create_connection((proxy_host, proxy_port), timeout=timeout):
             pass
@@ -280,9 +283,9 @@ def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
 
 
 def check_updates(local_version):
-    """
-    Check for updated versions of `humble` on GitHub and terminate execution,
-    related to `-v` option.
+    """Check for updated versions of `humble` on GitHub.
+
+    After that exit; related to `-v` option.
     """
     try:
         github_response = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT)
@@ -298,9 +301,10 @@ def check_updates(local_version):
 
 
 def check_updates_diff(days_diff, github_version, local_version):
-    """
-    Check whether the local version of `humble` is more than a month older
-    than the latest on GitHub, related to `-v` option.
+    """`humble` update logic.
+
+    Check whether the local version is more than a month older than the latest
+    on GitHub, related to `-v` option.
     """
     print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
 {github_version} \n {get_detail('[humble_local]', replace=True)} \
@@ -313,9 +317,9 @@ def check_updates_diff(days_diff, github_version, local_version):
 
 
 def fng_statistics_top():
-    """
-    Print top 20 HTTP fingerprint header statistics grouped by service and
-    terminate execution, related to `-f` option.
+    """Print top 20 HTTP fingerprint header statistics.
+
+    Grouped by service and terminate execution, related to `-f` option.
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
@@ -336,9 +340,9 @@ def fng_statistics_top_groups(fng_lines, fng_incl):
 
 
 def fng_statistics_top_result(fng_top_groups, fng_incl):
-    """
-    Print services in the top 20 by total number of fingerprint headers,
-    related to `-f` option.
+    """Print the Top 20 services.
+
+    By total number of fingerprint headers, related to `-f` option.
     """
     max_ln_len = max(len(content) for content, _ in
                      fng_top_groups.most_common(20))
@@ -351,9 +355,9 @@ def fng_statistics_top_result(fng_top_groups, fng_incl):
 
 
 def fng_statistics_term(fng_term):
-    """
-    Count fingerprint headers per provided term and terminate execution if no
-    results are found, related to `-f` option.
+    """Count fingerprint headers per provided term.
+
+    Exit if no results are found, related to `-f` option.
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
@@ -368,9 +372,9 @@ def fng_statistics_term(fng_term):
 
 
 def fng_statistics_term_groups(fng_incl, fng_term):
-    """
-    Calculate the total of fingerprint headers per term provided and the
-    services that include them, related to `-f` option.
+    """Compute the total of fingerprint headers per provided term.
+
+    It takes into account also the service; related to `-f` option.
     """
     fng_matches = [match for line in fng_incl if
                    (match := re.search(RE_PATTERN[0], line)) and
@@ -381,9 +385,9 @@ def fng_statistics_term_groups(fng_incl, fng_term):
 
 
 def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl):
-    """
-    Calculate percentage of fingerprint headers matching the search term,
-    related to `-f` option.
+    """Compute percentage of fingerprint headers matching the search term.
+
+    Related to `-f` option.
     """
     fng_pct = round(term_cnt / len(fng_incl) * 100, 2)
     print(f"{get_detail('[fng_add]', replace=True)} '{fng_term}': {fng_pct}%\
@@ -392,9 +396,9 @@ def fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl):
 
 
 def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
-    """
-    Print, in alphabetical order, the service associated with the term
-    provided and terminate execution; related to `-f` option.
+    """Print the service associated with the term provided.
+
+    In alphabetical order and terminate execution; related to `-f` option.
     """
     for content in fng_groups:
         print(f"\n [{STYLE[0]}{content}]")
@@ -407,10 +411,7 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
 
 
 def print_l10n_file(args, l10n_file, *, slice_ln=False):
-    """
-    Print the contents of a file based on the language provided and terminate
-    execution.
-    """
+    """Print the contents of a file in the specified language and exit."""
     lang_es = args.lang == 'es'
     lang_idx = 1 if lang_es else 0
     l10n_file = HUMBLE_FILES[L10N_IDXS[l10n_file][lang_idx]]
@@ -426,9 +427,10 @@ def print_l10n_file(args, l10n_file, *, slice_ln=False):
 
 
 def testssl_command(testssl_temp_path, uri):
-    """
-    Prepare the TLS/SSL analysis and terminate execution based on user
-    compliance, related to `-e` option.
+    """Prepare the TLS/SSL analysis.
+
+    Prompt the user to accept terms and exit if declined; related to `-e`
+    option.
 
     ??? tip
         The options used in the analysis are defined in the `TESTSSL_OPTIONS`
@@ -465,8 +467,7 @@ def testssl_command(testssl_temp_path, uri):
 
 
 def testssl_analysis(testssl_cmd):
-    """
-    Run TLS/SSL analysis with testssl.sh, related to `-e` option.
+    """Run TLS/SSL analysis with testssl.sh, related to `-e` option.
 
     ??? note
         This function is safe from injection: `shell=True` is not used,
@@ -488,10 +489,7 @@ def testssl_analysis(testssl_cmd):
 
 
 def get_l10n_content():
-    """
-    Define the literal file to use, to print messages and errors, based on
-    the language provided.
-    """
+    """Load the localization file for the specified language."""
     l10n_path = (OS_PATH / HUMBLE_DIRS[1] /
                  (HUMBLE_FILES[4] if args.lang == 'es' else HUMBLE_FILES[5]))
     with l10n_path.open(encoding='utf8') as l10n_content:
@@ -515,8 +513,7 @@ def get_analysis_results():
 
 
 def save_analysis_results(t_cnt):
-    """
-    Save analysis results to the analysis history file, `analysis_h.txt`.
+    """Save analysis results to the analysis history file, `analysis_h.txt`.
 
     ??? info
         Totals, in order, of each entry in the history file:<br>
@@ -543,8 +540,7 @@ def save_analysis_results(t_cnt):
 
 
 def get_analysis_totals(url_ln):
-    """
-    Recover analysis totals, normalizing those performed before 11/28/2024.
+    """Recover analysis totals, normalizing those performed before 11/28/2024.
 
     ??? note
         To avoid errors with analyses performed before 11/28/2024, the date on
@@ -583,9 +579,9 @@ def compare_analysis_results(analysis_totals, current_counts):
 
 
 def format_analysis_results(*diff, en_cnt_w, t_cnt):
-    """
-    Format differences in totals between the last analysis and the current one,
-    for the same URL.
+    """Format differences in the analysis.
+
+    Between the last and the current one for the same URL.
     """
     results = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
     new_ln = ["\n" if int(en_cnt) > 0 else "", "", "", "", "", "\n\n"]
@@ -627,8 +623,7 @@ def check_analysis(filepath):
 
 
 def adjust_old_analysis(url_ln):
-    """
-    Adjusts analysis entries in analysis history file, `analysis_h.txt`.
+    """Adjust analysis entries in analysis history file, `analysis_h.txt`.
 
     ??? note
         Applied to those made before 2024-11-28 when the
@@ -649,9 +644,9 @@ def adjust_old_analysis(url_ln):
 
 
 def url_analytics(*, is_global=False):
-    """
-    Print analysis statistics for all analyses performed on a URL and
-    terminate execution, related to `-a` option.
+    """Print analysis statistics for all analyses performed on a URL and exit.
+
+    Related to the `-a` option.
     """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
     with Path(HUMBLE_FILES[0]).open(encoding='utf8') as all_analysis:
@@ -667,9 +662,9 @@ def url_analytics(*, is_global=False):
 
 
 def get_analysis_metrics(all_analysis):
-    """
-    Calculate metrics to print statistics of the analyses performed on a URL,
-    related to `-a` option.
+    """Compute statistics for all analyses performed on a given URL.
+
+    Related to `-a` option.
     """
     url_ln = [line for line in all_analysis if URL in line]
     if not url_ln:
@@ -690,9 +685,9 @@ def get_analysis_metrics(all_analysis):
 
 
 def get_first_metrics(adj_url_ln):
-    """
-    Calculate key analytics metrics of the analyses performed on a URL,
-    related to `-a` option.
+    """Compute key analytics metrics of the analyses performed on a URL.
+
+    Related to `-a` option.
     """
     first_a = min(line[:SLICE_INT[9]] for line in adj_url_ln)
     latest_a = max(line[:SLICE_INT[9]] for line in adj_url_ln)
@@ -704,9 +699,9 @@ def get_first_metrics(adj_url_ln):
 
 
 def get_second_metrics(adj_url_ln, index, total_a):
-    """
-    Calculate the total of analyses performed on a URL that meet a key metric,
-    related to `-a` option.
+    """Compute the total of analyses performed on a URL that meet a key metric.
+
+    Related to `-a` option.
     """
     metric_c = len([line for line in adj_url_ln if int(line.split(' ; ')
                                                        [index])
@@ -716,9 +711,9 @@ def get_second_metrics(adj_url_ln, index, total_a):
 
 
 def get_third_metrics(adj_url_ln):
-    """
-    Calculate metrics related to averages of analyses performed on a URL,
-    related to `-a` option.
+    """Compute metrics related to averages of analyses performed on a URL.
+
+    Related to `-a` option.
     """
     fields = [line.strip().split(';') for line in adj_url_ln]
     total_enb, total_miss, total_fng, total_dep, total_ety = \
@@ -731,9 +726,9 @@ def get_third_metrics(adj_url_ln):
 
 
 def get_additional_metrics(adj_url_ln):
-    """
-    Calculate the total of analyses performed on a URL, by month and year;
-    related to `-a` option.
+    """Compute the total of analyses performed on a URL, by month and year.
+
+    Related to `-a` option.
     """
     avg_w = int(sum(int(line.split(' ; ')[-1]) for line in adj_url_ln) /
                 len(adj_url_ln))
@@ -742,9 +737,9 @@ def get_additional_metrics(adj_url_ln):
 
 
 def extract_date_metrics(url_ln):
-    """
-    Extract totals, by month and year, from the analyses performed on a URL;
-    related to `-a` option.
+    """Extract totals, by month and year, from the analyses performed on a URL.
+
+    Related to `-a` option.
     """
     year_cnt, year_wng = defaultdict(int), defaultdict(int)
     for line in url_ln:
@@ -757,9 +752,9 @@ def extract_date_metrics(url_ln):
 
 
 def generate_date_groups(year_cnt, url_ln):
-    """
-    Generates a formatted summary of yearly and monthly analyses performed on a
-    URL, related to `-a` option.
+    """Generate a formatted summary of analyses performed on a URL.
+
+    By year and month; related to `-a` option.
     """
     years_str = []
     for year in sorted(year_cnt.keys()):
@@ -774,9 +769,9 @@ def generate_date_groups(year_cnt, url_ln):
 
 
 def get_month_counts(year, url_ln):
-    """
-    Calculate the total of analyses performed on a URL, by month: related to
-    `-a` option.
+    """Compute the total of analyses performed on a URL by month.
+
+    Related to `-a` option.
     """
     month_cnts = defaultdict(int)
     for line in url_ln:
@@ -788,9 +783,9 @@ def get_month_counts(year, url_ln):
 
 
 def get_highlights(adj_url_ln):
-    """
-    Calculate highlight metrics of analyses performed on a URL; related to
-    `-a` option.
+    """Compute highlight metrics of analyses performed on a URL.
+
+    Related to `-a` option.
     """
     sections_h = SECTION_S[:-1]
     best_lbl = print_detail_l('[best_analysis]', analytics=True)
@@ -807,9 +802,9 @@ def get_highlights(adj_url_ln):
 
 
 def calculate_highlights(url_ln, field_index, func):
-    """
-    Extract the specific date from an analysis, based on the required highlight
-    metric; related to `-a` option.
+    """Extract the specific date from an analysis.
+
+    Based on the required highlight metric; related to `-a` option.
     """
     values = [int(line.split(';')[field_index].strip()) for line in url_ln]
     target_value = func(values)
@@ -834,8 +829,7 @@ def get_trends(adj_url_ln):
 
 
 def calculate_trends(values):
-    """
-    Calculate trends based on several analyses of the same URL.
+    """Compute trends based on several analyses of the same URL.
 
     ??? info
         Trends are related to the totals of missing headers, fingerprints,
@@ -867,12 +861,10 @@ def calculate_trends(values):
 
 
 def print_metrics(analytics_s, analytics_w, total_a, *m_data):
-    """
-    Consolidate and format security, analysis, and trend metrics for display
-    of an URL.
+    """Build the metrics dictionary for the final statistics output of a URL.
 
-    Returns a dictionary of localized metric headers and their calculated
-    values, ready for the final statistics output.
+    Consolidates and formats security, analysis, and trend values with localized
+    headers.
     """
     basic_m = get_basic_metrics(total_a, m_data[0])
     error_m = get_security_metrics(analytics_s, m_data[1])
@@ -888,9 +880,9 @@ def print_metrics(analytics_s, analytics_w, total_a, *m_data):
 
 
 def get_basic_metrics(total_a, first_m):
-    """
-    Print base metrics details related to the analysis performed on a URL,
-    related to `-a` option.
+    """Print base metrics details for a URL analysis.
+
+    Related to `-a` option.
     """
     return {'[main]': "", '[total_analysis]': total_a,
             '[first_analysis_a]': first_m[0], '[latest_analysis]': first_m[1],
@@ -901,9 +893,9 @@ def get_basic_metrics(total_a, first_m):
 
 
 def get_security_metrics(analytics_s, second_m):
-    """
-    Print security-related metrics details to the analysis performed on a URL,
-    related to `-a` option.
+    """Print security metrics for a URL analysis.
+
+    Related to `-a` option.
     """
     return {'[analysis_y]': "",
             '[no_enabled]': f"{analytics_s[0]}{second_m[0]}",
@@ -914,9 +906,9 @@ def get_security_metrics(analytics_s, second_m):
 
 
 def get_warnings_metrics(additional_m, analytics_w):
-    """
-    Print warning-related metrics details to the analysis performed on a URL,
-    related to `-a` option.
+    """Print warning-related metrics details for a URL analysis.
+
+    Related to `-a` option.
     """
     return {'[averages]': "",
             '[average_warnings]': f"{analytics_w[0]}{additional_m[0]}",
@@ -924,9 +916,9 @@ def get_warnings_metrics(additional_m, analytics_w):
 
 
 def get_averages_metrics(analytics_w, third_m):
-    """
-    Print average-related metrics details related to the analysis performed on
-    a URL, related to `-a` option.
+    """Print average-related metrics details for a URL analysis.
+
+    Related to `-a` option.
     """
     return {'[average_enb]': f"{analytics_w[2]}{third_m[0]}",
             '[average_miss]': f"{analytics_w[3]}{third_m[1]}",
@@ -936,17 +928,15 @@ def get_averages_metrics(analytics_w, third_m):
 
 
 def get_highlights_metrics(fourth_m):
-    """
-    Print highlight-related metrics details to the analysis performed on a URL,
-    related to `-a` option.
+    """Print highlight-related metrics details for a URL analysis.
+
+    Related to `-a` option.
     """
     return {'[highlights]': "\n" + "\n".join(fourth_m)}
 
 
 def get_trend_metrics(fifth_m):
-    """
-    Print trend-related metrics details to the analysis performed on a URL.
-    """
+    """Print trend-related metrics details for a URL analysis."""
     if '5' in fifth_m[0]:
         trends_s = get_detail('[t_insufficient]')
         return {'[trends]': "\n" + trends_s}
@@ -959,9 +949,9 @@ def get_date_metrics(additional_m):
 
 
 def extract_global_metrics(all_analysis):
-    """
-    Calculate metrics to print statistics across all URL analyses, related to
-    `-a` option.
+    """Compute metrics to print statistics across all URL analyses.
+
+    Related to `-a` option.
     """
     url_ln = list(all_analysis)
     if not url_ln:
@@ -981,9 +971,9 @@ def extract_global_metrics(all_analysis):
 
 
 def get_global_first_metrics(adj_url_ln):
-    """
-    Calculate key analytics metrics across all URL analyses, related to `-a`
-    option.
+    """Compute key analytics metrics across all URL analyses.
+
+    Related to `-a` option.
     """
     split_lines = [line.split(' ; ') for line in adj_url_ln]
     url_lines = {}
@@ -994,9 +984,9 @@ def get_global_first_metrics(adj_url_ln):
 
 
 def get_global_metrics(url_ln, url_lines):
-    """
-    Calculate key analytics metrics across all URL analyses, related to
-    `-a` option.
+    """Compute key analytics metrics across all URL analyses.
+
+    Related to `-a` option.
     """
     first_a = min(line[:SLICE_INT[9]] for line in url_ln)
     latest_a = max(line[:SLICE_INT[9]] for line in url_ln)
@@ -1014,8 +1004,9 @@ def get_global_metrics(url_ln, url_lines):
 
 
 def get_global_totals(url_ln, field):
-    """
-    Calculate totals metrics across all URL analyses, related to `-a` option.
+    """Compute totals metrics across all URL analyses.
+
+    Related to `-a` option.
     """
     most_totals = max(url_ln, key=lambda line: int(line.split(' ; ')[field]))
     least_totals = min(url_ln, key=lambda line: int(line.split(' ; ')[field]))
@@ -1029,8 +1020,9 @@ def get_global_totals(url_ln, field):
 
 
 def get_basic_global_metrics(analytics_l, total_a, first_m):
-    """
-    Print metrics details across all URL analyses, related to `-a` option.
+    """Print metrics details across all URL analyses.
+
+    Related to `-a` option.
     """
     return {'[main]': "", '[total_analysis]': total_a,
             '[total_global_analysis]': str(first_m[2]),
@@ -1084,8 +1076,9 @@ def csp_analyze_content(csp_header):
 
 
 def csp_check_ignored(csp_header):
-    """
-    `Content-Security-Policy` header check related to `strict-dynamic` keyword.
+    """`Content-Security-Policy` header check.
+
+    Related to `strict-dynamic` keyword.
     """
     hash_p = bool(re.search(RE_PATTERN[17], csp_header))
     nonce_p = bool(re.search(RE_PATTERN[6], csp_header))
@@ -1100,8 +1093,9 @@ def csp_check_ignored(csp_header):
 
 
 def csp_check_missing(csp_dirs):
-    """
-    `Content-Security-Policy` header check related to missing directives.
+    """`Content-Security-Policy` header check.
+
+    Related to missing directives.
     """
     csp_refs = [('[icspmb_h]', '[icspmb]'), ('[icspmc_h]', '[icspmc]'),
                 ('[icspmcn_h]', '[icspmcn]'), ('[icspmfo_h]', '[icspmfo]'),
@@ -1130,9 +1124,9 @@ def csp_print_missing(csp_ref, csp_ref_brief):
 
 
 def csp_check_additional(csp_dirs_vals):
-    """
-    `Content-Security-Policy` header check related to broad and insecure
-    values.
+    """`Content-Security-Policy` header check.
+
+    Related to broad and insecure values.
     """
     checks = [(t_csp_broad, csp_check_broad),
               (t_csp_insecs, csp_check_insecure)]
@@ -1196,9 +1190,9 @@ def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
 
 
 def csp_check_eval(csp_dirs_vals):
-    """
-    `Content-Security-Policy` header check related to `unsafe-eval` and
-    `wasm-unsafe-eval` keywords.
+    """`Content-Security-Policy` header check.
+
+    Related to `unsafe-eval` and `wasm-unsafe-eval` keywords.
     """
     csp_unsafe_dirs = [
         dir_vals.split()[0] if ' ' in dir_vals else dir_vals
@@ -1209,8 +1203,9 @@ def csp_check_eval(csp_dirs_vals):
 
 
 def csp_check_inline(csp_dirs_vals):
-    """
-    `Content-Security-Policy` header check related to `unsafe-inline` keyword.
+    """`Content-Security-Policy` header check.
+
+    Related to `unsafe-inline` keyword.
     """
     csp_unsafe_dirs = [
         dir_vals.split()[0] if ' ' in dir_vals else dir_vals
@@ -1220,9 +1215,9 @@ def csp_check_inline(csp_dirs_vals):
 
 
 def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
-    """
-    Print the occurrences of `unsafe-eval` and `unsafe-inline` keywords in the
-    `Content-Security-Policy` header.
+    """`Content-Security-Policy` header check.
+
+    Print the occurrences of `unsafe-eval` and `unsafe-inline` keywords.
     """
     print_detail_r(detail_t, is_red=True)
     if not args.brief:
@@ -1264,9 +1259,9 @@ def csp_unquoted_hashes(csp_h):
 
 
 def csp_check_nonces(csp_h):
-    """
-    `Content-Security-Policy` header checks related to hexadecimal and
-    Base64 nonces.
+    """`Content-Security-Policy` header checks.
+
+    Related to hexadecimal and Base64 nonces.
     """
     if re.search(RE_PATTERN[24], csp_h):
         print_details('[icsncei_h]', '[icsncei]', 'd', i_cnt)
@@ -1280,8 +1275,9 @@ def csp_check_nonces(csp_h):
 
 
 def csp_hex_nonce(nonce, nonce_refs, i_cnt):
-    """
-    `Content-Security-Policy` header checks related to hexadecimal nonces.
+    """`Content-Security-Policy` header checks.
+
+    Related to hexadecimal nonces.
     """
     return csp_print_nonce(nonce, nonce_refs, i_cnt) \
         if len(nonce) < LENGTH_BOUNDS[3] else False
@@ -1297,9 +1293,9 @@ def csp_base64_nonce(nonce, nonce_refs, i_cnt):
 
 
 def csp_print_nonce(nonce, nonce_refs, i_cnt):
-    """
-    Print insecure Base64 and hexadecimal nonces in the
-    `Content-Security-Policy` header.
+    """`Content-Security-Policy` header checks.
+
+    Print insecure Base64 and hexadecimal nonces
     """
     print_detail_r(nonce_refs[0], is_red=True)
     if not args.brief:
@@ -1323,7 +1319,10 @@ def csp_check_ip(csp_h):
 
 
 def csp_print_deprecated(csp_deprecated):
-    """Print deprecated directives in the `Content-Security-Policy` header."""
+    """`Content-Security-Policy` header check.
+
+    Print deprecated directives.
+    """
     i_cnt[0] += 1
     print_detail_r('[icsi_d]', is_red=True) if args.brief else \
         csp_print_details(csp_deprecated, '[icsi_d]', '[icsi_d_s]',
@@ -1331,8 +1330,9 @@ def csp_print_deprecated(csp_deprecated):
 
 
 def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
-    """
-    Group the deprecated directives in the `Content-Security-Policy` header.
+    """Content-Security-Policy` header related.
+
+    Group the deprecated directives.
     """
     csp_values = ', '.join(f"'{value}'" for value in sorted(csp_values))
     print_detail_r(f'{csp_title}', is_red=True)
@@ -1440,8 +1440,7 @@ def permissions_print_broad(perm_broad_dirs, i_cnt):
 
 
 def delete_lines(*, reliable=True):
-    """
-    Clear console lines to standardize the final analysis output format.
+    """Clear console lines to standardize the final analysis output format.
 
     Removes previously printed lines to ensure that final messages (success
     or error) are consistently padded with a blank line before and after.
@@ -1452,10 +1451,10 @@ def delete_lines(*, reliable=True):
 
 
 def print_export_path(filename, reliable, *, export_all=False):
-    """
-    Prints the export path for the `-o` option. Displays the file path for
-    single reports (e.g. 'html') or the directory for bulk exports (e.g. 'all')
-    .
+    """Print the export path.
+
+    Displays the file path for single reports (e.g. 'html') or the directory
+    for bulk exports (e.g. 'all'); related to `-o` option.
     """
     delete_lines(reliable=False) if reliable else delete_lines()
     if '-c' in sys.argv:
@@ -1479,7 +1478,7 @@ def print_nowarnings():
 
 
 def print_header(header):
-    """Generic function to print the header name."""
+    """Print the header name."""
     print(f" {header}" if args.output else f"{STYLE[1]} {header}")
 
 
@@ -1504,9 +1503,9 @@ def print_general_info(reliable, export_filename):
 
 
 def print_basic_info(export_filename):
-    """
-    Print basic analysis details to the section with basic information: date,
-    time, URL, User-Agent (`-ua` option), input file (`-if` option) and
+    """Print basic analysis details.
+
+    Date, time, URL, User-Agent (`-ua` option), input file (`-if` option) and
     exported filename (`-o` option).
     """
     print(end="\n\n" if args.output in ('html', 'pdf', None) else "")
@@ -1527,9 +1526,9 @@ def print_basic_info(export_filename):
 
 
 def print_extended_info(args, reliable, status_code):
-    """
-    Print extended analysis details to the section with basic information:
-    request (`-H` option) and skipped (`-s` option) headers, proxy usage
+    """Print extended analysis details.
+
+    Request (`-H` option) and skipped (`-s` option) headers, proxy usage
     (`-p` option) and specific HTTP 4xx errors.
     """
     if args.request_header:
@@ -1548,9 +1547,9 @@ def print_extended_info(args, reliable, status_code):
 
 
 def print_extra_info(reliable):
-    """
-    Print supplementary analysis details to the section with basic information:
-    specific 4xx errors, reliability warnings and redirects (`-df` option).
+    """Print supplementary analysis details.
+
+    Specific 4xx errors, reliability warnings and redirects (`-df` option).
     """
     if status_code in ERROR_CODES_CLIENT:
         id_mode = f'[http_{status_code}]'
@@ -1583,7 +1582,7 @@ def print_response_headers():
 
 
 def get_max_lnlength(section):
-    """Calculate the longest item length in a section."""
+    """Return the length of the longest item in a section."""
     sec_val = []
     max_secl = 0
     for i in section:
@@ -1594,7 +1593,7 @@ def get_max_lnlength(section):
 
 
 def get_analytics_length(section):
-    """Calculate alignment padding for each item in a section."""
+    """Return the alignment padding for each item in a section."""
     basic_l = get_max_lnlength(section) - 1
     section_l = []
     for i in section:
@@ -1622,8 +1621,7 @@ def print_detail(id_mode, num_lines=1):
 
 
 def print_detail_l(id_mode, *, analytics=False, no_headers=False):
-    """
-    Print detailed information about the finding and removes lines from the
+    """Print detailed information about the finding and removes lines from the
     output based on it.
 
     ??? note
@@ -1644,8 +1642,7 @@ def print_detail_l(id_mode, *, analytics=False, no_headers=False):
 
 
 def print_detail_r(id_mode, *, is_red=False):
-    """
-    Print detailed information about the finding using a distinctive format.
+    """Print detailed information about the finding using a distinctive format.
 
     ??? note
         `pairwise` is used to match each bracketed ID with its corresponding
@@ -1665,8 +1662,7 @@ def print_detail_r(id_mode, *, is_red=False):
 
 
 def print_detail_s(id_mode, *, max_ln=False):
-    """
-    Print message with leading newline and optional whitespace preservation.
+    """Print message with leading newline and optional whitespace preservation.
 
     ??? note
         `pairwise` is used to match each bracketed ID with its corresponding
@@ -1691,10 +1687,7 @@ def get_detail(id_mode, *, replace=False):
 
 
 def print_error_detail(id_mode, *, clean_lines=False):
-    """
-    Print an error message, optionally removing previously printed lines on
-    the console, and terminate execution.
-    """
+    """Print an error message and exit, optionally clearing previous output."""
     if clean_lines:
         delete_lines()
     print(f"\n{get_detail(id_mode, replace=True)}")
@@ -1702,9 +1695,9 @@ def print_error_detail(id_mode, *, clean_lines=False):
 
 
 def get_epilog_content(id_mode):
-    """
-    Print examples of use of `humble.py` and how to contribute to it, related
-    to `-h` option.
+    """Return examples of use and contribution guidelines for `humble.py`.
+
+    Related to `-h` option.
     """
     target = id_mode + '\n'
     content = []
@@ -1717,8 +1710,7 @@ def get_epilog_content(id_mode):
 
 
 def get_fingerprint_headers():
-    """
-    Print the content in the section with fingerprint headers.
+    """Print the content in the section with fingerprint headers.
 
     ??? note
         The file associated with this check is `/additional/fingerprint.txt`.
@@ -1732,10 +1724,7 @@ def get_fingerprint_headers():
 
 
 def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
-    """
-    Identify and print, from among all response headers enabled in the URL,
-    those associated with fingerprint.
-    """
+    """Identify and print fingerprint headers."""
     f_cnt = 0
     sorted_headers = sorted({header.title() for header in headers_l})
     for header in sorted_headers:
@@ -1747,10 +1736,9 @@ def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
 
 
 def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
-    """
-    Print the name, the associated service (according to the
-    `/additional/fingerprint.txt` file), and the value of the header identified
-    as fingerprint.
+    """Print the name, service and value of the fingerprint header.
+
+    Source: `/additional/fingerprint.txt`.
     """
     if not args.brief:
         print_fng_header(l_fng_ex[idx_fng])
@@ -1767,8 +1755,7 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
 
 
 def get_enabled_headers(args, headers_l, t_enabled):
-    """
-    Print the contents of the section with enabled security headers,
+    """Print the contents of the section with enabled security headers,
     highlighting the experimental ones.
 
     ??? note
@@ -1795,9 +1782,9 @@ def get_enabled_headers(args, headers_l, t_enabled):
 
 
 def print_enabled_headers(args, exp_s, header, headers_d):
-    """
-    Print the enabled HTTP response headers considered to be security-related
-    (according to the `additional/security.txt` file).
+    """Print enabled HTTP response headers.
+
+    Source: `additional/security.txt`.
     """
     prefix = STYLE[8] if args.output in ('html', 'pdf') else ''
     header_display = f"{prefix}{exp_s}{header}"
@@ -1809,9 +1796,9 @@ def print_enabled_headers(args, exp_s, header, headers_d):
 
 
 def print_nosec_headers(*, enabled=True):
-    """
-    Print a message if no security-related HTTP response headers are enabled
-    or if none was received.
+    """Print a message if no security-related HTTP response headers are enabled.
+
+    Or if none was received.
     """
     id_mode = '[no_sec_headers]' if enabled else '[no_enb_headers]'
     if args.output:
@@ -1821,8 +1808,7 @@ def print_nosec_headers(*, enabled=True):
 
 
 def print_missing_headers(args, headers_l, l_detail, l_miss):
-    """
-    Print the contents of the section with missing HTTP Security Headers.
+    """Print the contents of the section with missing HTTP Security Headers.
 
     ??? note
         The file associated with this check is `/additional/missing.txt`.
@@ -1841,9 +1827,9 @@ def print_missing_headers(args, headers_l, l_detail, l_miss):
 
 
 def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
-    """
-    Print the missing security-related HTTP response headers (based on those I
-    consider essential).
+    """Print the missing security-related HTTP response headers.
+
+    Based on those I consider essential.
 
     ??? note
         `strict=False` is used because `l_detail` contains `[mxfo]` but `l_miss`
@@ -1871,10 +1857,7 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
 
 
 def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
-    """
-    Check whether the absence of the `X-Frame-Options` HTTP response header
-    should be reported.
-    """
+    """Determine whether to report a missing `X-Frame-Options` header."""
     xfo_needed = ('x-frame-options' not in skip_headers) and \
         ('x-frame-options' not in headers_l)
     fa_needed = 'frame-ancestors' not in \
@@ -1900,9 +1883,7 @@ def print_empty_headers(headers, l_empty):
 
 
 def print_browser_compatibility(compat_headers):
-    """
-    Print links in the section for browser compatibility of enabled HTTP
-    headers.
+    """Print links for browser compatibility of enabled HTTP headers.
 
     ??? note
         References provided by <a href="https://caniuse.com/" target="_blank">
@@ -1917,9 +1898,9 @@ def print_browser_compatibility(compat_headers):
 
 
 def check_input_traversal(user_input):
-    """
-    Check user input for path traversal patterns and terminates execution if
-    one is found, related to `-of` and `-op` options.
+    """Check user input for path traversal patterns.
+
+    Exit is one is found; related to `-of` and `-op` options.
     """
     input_traversal_ptrn = re.compile(RE_PATTERN[2])
     if input_traversal_ptrn.search(user_input):
@@ -1929,9 +1910,9 @@ def check_input_traversal(user_input):
 
 
 def validate_path(output_path):
-    """
-    Validate permissions in the provided path and terminates execution in case
-    of error, related to `-op` option.
+    """Validate permissions in the provided path.
+
+    Exit in case of error, related to `-op` option.
     """
     try:
         validate_path = Path(output_path) / HUMBLE_FILES[1]
@@ -1946,9 +1927,9 @@ def validate_path(output_path):
 
 
 def validate_file_access(target_path, *, context='history'):
-    """
-    Checks if the history or export files can be accessed or created; if an
-    error occurs during the export of an analysis, execution is terminated.
+    """Check if the history or export files can be accessed or created.
+
+    Exit if an error occurs during the export of an analysis.
     """
     try:
         with Path(target_path).open('a+', encoding='utf8'):
@@ -1970,9 +1951,9 @@ def validate_file_access(target_path, *, context='history'):
 
 
 def check_output_path(args):
-    """
-    Validations related to the provided path in `-op` option, terminating
-    execution in case of error.
+    """Validate the provided path when exporting an analysis.
+
+    Exit in case of error; related to `-op` option.
     """
     check_input_traversal(args.output_path)
     output_path = Path(args.output_path).resolve()
@@ -1999,10 +1980,10 @@ def parse_user_agent(*, user_agent=False):
 
 
 def nourl_user_agent(user_agent_id):
-    """
-    Display available User-Agents if the ID is `0`. Otherwise, display an
-    error indicating that a URL is required for the provided User-Agent ID;
-    related to `-ua` option.
+    """Display available User-Agents if the ID is `0`.
+
+    Otherwise, display an error indicating that a URL is required for the
+    provided User-Agent ID; related to `-ua` option.
     """
     if user_agent_id == '0':
         return get_user_agent('0')
@@ -2011,10 +1992,10 @@ def nourl_user_agent(user_agent_id):
 
 
 def get_user_agent(user_agent_id):
-    """
-    Select and validate the User-Agent identifier to be used in the analysis
-    (from those available in `additional/user-agents.txt` file), terminating.
-    execution if it is not found; related to `-ua` option
+    """Select and validate the User-Agent for a URL analysis.
+
+    Source: `additional/user-agents.txt`. Exit if it is not found; related to
+    `-ua` option.
     """
     with PATHS['user_agents'].open('r', encoding='utf8') as ua_source:
         user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
@@ -2029,9 +2010,9 @@ def get_user_agent(user_agent_id):
 
 
 def print_user_agents(user_agents):
-    """
-    Print available User-Agent identifiers and terminate execution, related to
-    `-ua` option.
+    """Print available User-Agents and exit.
+
+    Related to `-ua` option.
     """
     print(f"\n{STYLE[0]}{get_detail('[ua_available]', replace=True)}\
 {STYLE[4]}{get_detail('[ua_source]', replace=True)}\n")
@@ -2041,9 +2022,9 @@ def print_user_agents(user_agents):
 
 
 def get_insecure_checks():
-    """
-    Skips security checks for specified HTTP response headers, related to `-s`
-    option.
+    """Skips security checks for specified HTTP response headers.
+
+    Related to `-s` option.
     """
     headers_name = set()
     with PATHS['insecure_header'].open('r', encoding='utf8') as ins_source:
@@ -2056,9 +2037,10 @@ def get_insecure_checks():
 
 
 def get_skipped_unsupported_headers(args, insecure_headers):
-    """
-    Check whether the HTTP response headers specified for skipping security
-    checks are among those being analyzed.
+    """Validate skipped headers against the list of analyzed security headers.
+
+    Return unsupported header names and the list of headers to skip during
+    analysis.
     """
     insecure_set = {ins_header.strip().lower() for ins_header in
                     args.skip_headers}
@@ -2069,20 +2051,14 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 
 def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
-    """
-    Print the HTTP response headers for which it is expressly indicated to skip
-    their security analysis.
-    """
+    """Print skipped HTTP response headers."""
     print_detail_l('[analysis_skipped_note]')
     print(" " + ", ".join(f"'{h.title()}'" for h in
                           sorted(args.skip_headers, key=str.lower)) + ".")
 
 
 def print_request_headers(added_request_headers):
-    """
-    Print the HTTP request headers and their values explicitly added for the
-    analysis.
-    """
+    """Print requested HTTP request headers."""
     print_detail_l('[analysis_request_note]')
     request_headers = ", ".join(
         f"{header!r}: {value!r}"
@@ -2093,9 +2069,10 @@ def print_request_headers(added_request_headers):
 
 def print_unsupported_headers(unsupported_headers):
     # sourcery skip: use-fstring-for-concatenation
-    """
-    Print unsupported HTTP response headers, for which it has been expressly
-    indicated to skip their security analysis, and terminate execution.
+    """Print unsupported HTTP response headers.
+
+    For those which it has been expressly indicated to skip their security
+    analysis and exit.
     """
     quoted = ", ".join("'" + h + "'" for h in unsupported_headers)
     print(f"\n {get_detail('[args_skipped_unknown]', replace=True)} \
@@ -2104,8 +2081,7 @@ def print_unsupported_headers(unsupported_headers):
 
 
 def check_export_scope():
-    """
-    Determines the scope of the export process based on the `-o` option.
+    """Determine the scope of the export process based on the `-o` option.
 
     If the value of that option is not `all` (e.g., `csv`), it proceeds to
     export the analysis in that format; otherwise, it exports it to all
@@ -2118,14 +2094,14 @@ def check_export_scope():
 
 
 def export_all_formats(final_filename, tmp_filename):
-    """
-    Exports the analysis to all supported formats, triggered when using `-o
-    all` option.
+    """Export the analysis to all supported formats.
 
     This function sequentially invokes the functions for CSV, XLSX, JSON,
     XML, HTML, PDF, and TXT exports. It passes the `export_all` flag where
     applicable to ensure consistent processing and terminate execution after
     displaying the final export path.
+
+    Related to `-o all` option.
     """
     generate_csv(final_filename, tmp_filename, export_all=True)
     generate_json(final_filename, tmp_filename, export_all=True)
@@ -2139,9 +2115,9 @@ def export_all_formats(final_filename, tmp_filename):
 
 
 def process_htmlpdf_all_export(lines, start_index, export_format, is_html):
-    """
-    Processes the state-based line formatting and section prefixing of an
-    analysis when exporting to HTML and PDF using the `-o all` option.
+    """Process line formatting and section prefixing for HTML and PDF exports.
+
+    Applies state-based formatting to each line; related to `-o all` option.
     """
     content = lines[:start_index]
     states = (False, False, False)
@@ -2158,9 +2134,10 @@ def process_htmlpdf_all_export(lines, start_index, export_format, is_html):
 
 def normalize_htmlpdf_all_export(export_format, tmp_filename,
                                  final_filename=None):
-    """
-    Applies the required formatting to sections and lines of the analysis when
-    exporting to HTML and PDF using the `-o all` option.
+    """Normalize section and line formatting for HTML and PDF exports.
+
+    Processes the analysis output and delegates to the appropriate export
+    function; related to `-o all` option.
     """
     is_html = (export_format == "html")
     path = Path(tmp_filename)
@@ -2175,9 +2152,10 @@ def normalize_htmlpdf_all_export(export_format, tmp_filename,
 
 
 def sections_htmlpdf_all_export(line, states):
-    """
-    Identifies the lines in an analysis to which a specific format should be
-    applied; applies when exporting to HTML and PDF using the `-o all` option.
+    """Identify lines requiring specific formatting for HTML and PDF exports.
+
+    Matches each line against known section prefixes and returns the appropriate
+    formatting state; related to `-o all` option.
     """
     for prefix, new_states in SECTIONS_EXPORT_STATES.items():
         if line.startswith(prefix):
@@ -2187,9 +2165,9 @@ def sections_htmlpdf_all_export(line, states):
 
 
 def format_htmlpdf_all_export(line, export_format, target_state, in_browser):
-    """
-    Formats the previously selected lines in an analysis; applies when
-    exporting to HTML and PDF using the `-o all` option.
+    """Format the previously selected lines for HTML and PDF exports.
+
+    Related to `-o all` option.
     """
     if in_browser and line.strip() and not line.startswith("[6."):
         line = f" {line}" if export_format == 'html' else f" {line.lstrip()}"
@@ -2202,9 +2180,9 @@ def format_htmlpdf_all_export(line, export_format, target_state, in_browser):
 
 
 def fix_pdf_all_export(tmp_filename):
-    """
-    Format and applies the correct extension to the PDF file; applies when
-    exporting using the `-o all` option.
+    """Format and applies the correct extension to the PDF file.
+
+    Related to `-o all` option.
     """
     fixed_pdffilename = tmp_filename
     base_pdffilename = str(fixed_pdffilename).rsplit('.', 1)[0][:-1]
@@ -2221,9 +2199,9 @@ def fix_pdf_all_export(tmp_filename):
 
 
 def normalize_txt_all_export(tmp_filename):
-    """
-    Applies the required formatting to sections and lines of the analysis when
-    exporting to TXT using the `-o all` option.
+    """Apply format to section and lines to the TXT file.
+
+    Related to `-o all` option.
     """
     txt_path = Path(tmp_filename)
     identity = txt_path.stem[:-1]
@@ -2235,14 +2213,14 @@ def normalize_txt_all_export(tmp_filename):
 
 
 def finalize_export(final_filename, temp_filename, file_extension, export_all):
-    """
-    Manages the completion of exporting an analysis, handling file cleanup,
-    renaming, and process termination logic; related to `-o` option.
+    """Manage the completion of exporting an analysis.
 
-    If `export_all` is `False` (standalone mode), it displays the final file
-    path, removes temporary artifacts, and terminates execution. If `True`
-    (batch mode), it renames the generated file with the appropriate extension
-    and replaces one line of the file with the correct value.
+    Handle file cleanup, renaming, and termination based on the export mode:
+    in standalone mode (`export_all=False`), display the final path, remove
+    temporary files, and exit; in batch mode (`export_all=True`), rename the
+    generated file with the appropriate extension and update its content.
+
+    Related to `-o` option.
     """
     if not export_all:
         print_export_path(final_filename, reliable)
@@ -2261,13 +2239,14 @@ def finalize_export(final_filename, temp_filename, file_extension, export_all):
 
 
 def check_output_format(args, final_filename, reliable, tmp_filename):
-    """
-    Dispatches the export logic based on the selected output format, related to
-    `-o` option. It maps the `-o` options to specific generator functions for
-    text, CSV, JSON, Excel, XML, HTML, or PDF reports.
+    """Dispatch the export logic for the selected output format.
 
-    The function handles conditional triggers for CI/CD totals, OWASP
-    compliance checks, and toggles between brief and detailed JSON reports.
+    Maps each supported format (text, CSV, JSON, Excel, XML, HTML, PDF) to its
+    corresponding generator function. For text output, handles CI/CD totals and
+    OWASP compliance checks; for JSON, toggles between brief and detailed
+    reports.
+
+    Related to `-o` option.
     """
     dispatch = {
         "txt": lambda: (
@@ -2292,9 +2271,12 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
 
 
 def build_cicd_totals(tmp_filename, info_lines, totals, labels):
-    """
-    Transform raw CI/CD sections and file metadata into a structured
-    dictionary, excluding the 'File' reference; related to `-cicd` option.
+    """Build the CI/CD totals from analysis metadata and section totals.
+
+    Parses info lines into key-value pairs, excludes the file reference, and
+    combines the result with totals and path details.
+
+    Related to `--cicd` option.
     """
     _, _, info_label = labels
     file_label = get_detail('[cicd_file]', replace=True)
@@ -2317,9 +2299,9 @@ def build_cicd_totals(tmp_filename, info_lines, totals, labels):
 
 
 def print_cicd_totals(tmp_filename):
-    """
-    Parse the results from `tmp_filename` to print a JSON-formatted CI/CD
-    summary and terminate execution; related to `-cicd` option.
+    """Parse the results from `tmp_filename`.
+
+    To print a JSON-formatted CI/CD summary and exit; related to `-cicd` option.
     """
     try:
         cicd_labels = get_cicd_labels()  # sourcery skip
@@ -2338,10 +2320,10 @@ def print_cicd_totals(tmp_filename):
 
 
 def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
-    """
-    Define the sections in which to display the summary-only JSON analysis
-    results, designed for continuous integration and continuous
-    delivery/deployment; related to `-cicd` option.
+    """Parse analysis output into CI/CD info and totals sections.
+
+    Extracts metadata and scoring lines from the analysis, computes totals,
+    and appends the grade detail; related to `--cicd` option.
     """
     cicd_info_start = lines.index(next(line for line in lines if
                                        BOLD_STRINGS[0] in line))
@@ -2361,11 +2343,12 @@ def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
 
 
 def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
-    """
-    Print the total of findings per section, along with the differences between
-    the current analysis and the last one performed against the URL; designed
-    for continuous integration and continuous delivery/deployment. Related to
-    `-cicd` option.
+    """Print the total of findings per section.
+
+    Along with the differences between the current analysis and the last one
+    performed against the URL; designed for CI/CD.
+
+    Related to `-cicd` option.
     """
     return {
         k: v for line in cicd_totals_lines
@@ -2375,18 +2358,18 @@ def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
 
 
 def get_cicd_labels():
-    """
-    Print literals related to the analysis designed for CI/CD, related to
-    `-cicd` option.
+    """Print literals related to the analysis designed for CI/CD.
+
+    Related to `-cicd` option.
     """
     cidcd_labels = ['[cicd_total]', '[cicd_diff]', '[cicd_info]']
     return tuple(get_detail(label, replace=True) for label in cidcd_labels)
 
 
 def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
-    """
-    Process lines associated with analysis designed for continuous integration
-    and continuous delivery/deployment, related to `-cicd` option.
+    """Process lines associated with analysis designed for CI/CD.
+
+    Related to `-cicd` option.
     """
     if match := pattern.match(line):
         key = match[1].strip()
@@ -2397,9 +2380,9 @@ def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
 
 
 def write_csv_content(csv_file, txt_source):
-    """
-    Write headers and parse content for a CSV export; related to `-o csv`
-    option.
+    """Write headers and parse content.
+
+    Related to `-o csv` option.
 
     ??? note
         `defusedcsv` is used to mitigate formula injection attacks by
@@ -2421,9 +2404,9 @@ def write_csv_content(csv_file, txt_source):
 
 def generate_csv(final_filename, temp_filename, *, to_xlsx=False,
                  export_all=False):
-    """
-    CSV and XSLX export of the analysis and terminates execution, related to
-    `-o csv` option.
+    """Export to CSV and XSLX and exit.
+
+    Related to `-o csv` option.
     """
     with (
         Path(temp_filename).open(encoding='utf8') as txt_source,
@@ -2438,9 +2421,9 @@ def generate_csv(final_filename, temp_filename, *, to_xlsx=False,
 
 
 def parse_csv(csv_section, csv_source, csv_writer):
-    """
-    Extract and write data for matching section items for a CSV export; related
-    to `-o csv` option.
+    """Extract and write data for matching section items for a CSV export.
+
+    Related to `-o csv` option.
     """
     for i in (item for item in csv_section if item in csv_source):
         csv_content = csv_source.split(i)[1].split('[')[0]
@@ -2453,9 +2436,9 @@ def parse_csv(csv_section, csv_source, csv_writer):
 
 
 def fix_xlsx_all_export(csv_filename, export_all):
-    """
-    Applies the correct extension to the XSLX file; applies when exporting
-    using the `-o all` option.
+    """Apply the correct extension to the XSLX file.
+
+    Related to `-o all` option.
     """
     if export_all:
         identity = csv_filename.rsplit('.', 1)[0]
@@ -2470,9 +2453,9 @@ def fix_xlsx_all_export(csv_filename, export_all):
 
 
 def generate_xlsx(final_filename, temp_filename, *, export_all=False):
-    """
-    XLSX spreadsheet export of the analysis and terminates execution, related
-    to `-o xlsx` option.
+    """XLSX spreadsheet export of the analysis and exit.
+
+    Related to `-o xlsx` option.
 
     ??? tip
         `xlsxwriter` is lazy-loaded to avoid unnecessary overhead when XLSX
@@ -2500,9 +2483,9 @@ def set_xlsx_metadata(workbook):
 
 
 def set_xlsx_content(final_filename, workbook):
-    """
-    Define the content and format of the data for a XLSX export, related to
-    `-o xlsx` option.
+    """Define the content and format of the data for a XLSX export.
+
+    Related to `-o xlsx` option.
     """
     worksheet = workbook.add_worksheet(get_detail(METADATA_S[1], replace=True))
     bold_fmt = workbook.add_format({'bold': True, 'text_wrap': True,
@@ -2519,9 +2502,9 @@ def set_xlsx_content(final_filename, workbook):
 
 def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
                     worksheet):
-    """
-    Write formatted content with dynamic column widths for a XLSX export;
-    related to `-o xlsx` option.
+    """Write formatted content with dynamic column widths for a XLSX export.
+
+    Related to `-o xlsx` option.
 
     ??? note
         This function uses `defusedcsv` to mitigate formula injection attacks
@@ -2543,9 +2526,10 @@ def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
 
 def choose_xlsx_format(bold_fmt, cell_fmt, cell_value, col_index, hidden_fmt,
                        row_index, prev_section):
-    """
-    Determine cell format based on position and content, tracking section
-    changes for a XLSX export; related to `-o xlsx` option.
+    """Choose the cell format for an XLSX export based on position and content.
+
+    Tracks section changes across rows to apply bold, hidden, or standard
+    formatting; related to `-o xlsx` option.
     """
     if row_index == 0 and col_index in (0, 1):
         return bold_fmt, prev_section
@@ -2568,9 +2552,9 @@ def set_xlsx_width(col_wd, worksheet):
 
 
 def generate_json(final_filename, temp_filename, *, export_all=False):
-    """
-    JSON export of a brief analysis and and terminates execution,
-    related to `-o json -b` options.
+    """JSON export of a brief analysis and exit.
+
+    Related to `-o json -b` options.
     """
     section0, sectionh, section5, section6 = (
         get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
@@ -2597,9 +2581,9 @@ def parse_json(data, section0, section5, section6, sectionh, txt_sections):
 
 
 def write_json(json_lns, json_section, section0, section5, section6, sectionh):
-    """
-    Format content, with special handling for specific sections, for a JSON
-    export; related to `-o json -b` options.
+    """Format content for a JSON export.
+
+    Related to `-o json -b` options.
     """
     if json_section in (section0, section5, section6, sectionh):
         json_data = {}
@@ -2613,9 +2597,9 @@ def write_json(json_lns, json_section, section0, section5, section6, sectionh):
 
 
 def format_json(json_data, json_lns):
-    """
-    Format content, grouping duplicate keys, for a JSON export; related to
-    `-o json -b` options.
+    """Format content, grouping duplicate keys, for a JSON export.
+
+    Related to `-o json -b` options.
     """
     for line in json_lns:
         if ':' in line:
@@ -2631,11 +2615,10 @@ def format_json(json_data, json_lns):
 
 
 def json_detailed_sources(file_idx, slice_idx):
-    """
-    Access the contents of files in the `/additional` path, in order to use
-    them as sources for specific sections (e.g., fingerprint and
-    deprecated/insecure headers) for a JSON export; related to `-o json`
-    option.
+    """Read source file contents from the `/additional` path for a JSON export.
+
+    Extracts a sliced subset of lines for use in fingerprint and
+    deprecated/insecure header sections; related to `-o json` option.
     """
     file_path = OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[file_idx]
     with Path(file_path).open(encoding='utf8') as json_file:
@@ -2644,9 +2627,9 @@ def json_detailed_sources(file_idx, slice_idx):
 
 
 def generate_json_detailed(final_filename, temp_filename):
-    """
-    JSON export of a detailed analysis and and terminates execution, related to
-    `-o json` option.
+    """JSON export of a detailed analysis and exit.
+
+    Related to `-o json` option.
     """
     with (
        Path(temp_filename).open(encoding='utf8') as txt_file,
@@ -2710,9 +2693,9 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
 
 
 def json_detailed_empty(json_lns):
-    """
-    Print the contents of the section with empty HTTP response headers values
-    for a JSON export, related to `-o json` option.
+    """Print the contents of empty HTTP response headers values.
+
+    Related to `-o json` option.
     """
     desc_key = get_detail('[json_det_empty]', replace=True)
     status_key = get_detail('[json_det_empty_s]', replace=True)
@@ -2727,9 +2710,9 @@ def json_detailed_empty(json_lns):
 
 
 def json_detailed_info(json_lns):
-    """
-    Print the contents of the section with basic info for a JSON export;
-    related to `-o json` option.
+    """Print the contents of basic info.
+
+    Related to `-o json` option.
     """
     info = {get_detail('[json_gen]', replace=True): BANNER_VERSION}
     for line in json_lns:
@@ -2740,9 +2723,9 @@ def json_detailed_info(json_lns):
 
 
 def json_detailed_response(json_lns):
-    """
-    Print the contents of the section with HTTP response headers for a JSON
-    export; related to `-o json` option.
+    """Print the contents of HTTP response headers.
+
+    Related to `-o json` option.
     """
     header_key = get_detail(JSON_L10N[0], replace=True)
     value_key = get_detail(JSON_L10N[2], replace=True)
@@ -2760,9 +2743,9 @@ def json_detailed_response(json_lns):
 
 
 def json_detailed_format_add(json_lns, header_t, value_t):
-    """
-    Convert raw header lines into a list of dictionaries using the given header
-    and value keys for a JSON export; related to `-o json` option.
+    """Convert raw header lines into a list using the given header.
+
+    Related to `-o json` option.
     """
     result = []
     for line in map(str.strip, json_lns):
@@ -2777,9 +2760,9 @@ def json_detailed_format_add(json_lns, header_t, value_t):
 
 
 def json_detailed_format(json_lns, *, is_compat=False, is_l10n=False):
-    """
-    Format lines in specific sections (e.g., enabled headers and browser
-    compatibility) for a JSON export; related to `-o json` option.
+    """Format lines in specific sections.
+
+    Related to `-o json` option.
     """
     l10n_txt = JSON_L10N[1] if is_l10n else JSON_L10N[2]
     header_t = get_detail(JSON_L10N[0], replace=True)
@@ -2792,9 +2775,9 @@ def json_detailed_format(json_lns, *, is_compat=False, is_l10n=False):
 def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
                                json_miss_r, json_det_mref, result, entry,
                                current_header):
-    """
-    Format the lines to be included in the section with missing headers for a
-    JSON export; related to `-o json` option.
+    """Format lines in the missing section.
+
+    Related to `-o json` option.
     """
     if line in l_miss or line.startswith('(*)'):
         if entry:
@@ -2809,9 +2792,9 @@ def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
 
 def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
                            json_miss_r, json_det_mref):
-    """
-    Add lines to the section with missing headers for a JSON export; related to
-    `-o json` option.
+    """Add lines to the missing section.
+
+    Related to `-o json` option.
     """
     result, entry, current_header = [], {}, None
     for line in json_lns:
@@ -2827,9 +2810,9 @@ def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
 
 def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
                        json_miss_r):
-    """
-    Select the lines to include in section with missing headers for a JSON
-    export; related to `-o json` option.
+    """Select the lines to include in the missing section.
+
+    Related to `-o json` option.
     """
     json_det_mref = PDF_CONDITIONS[0]
     result = json_detailed_miss_add(
@@ -2844,9 +2827,9 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
 
 def json_detailed_fng_process(line, fingerprint_set, entry, current_header,
                               fng_header, fng_val):
-    """
-    Format the lines to be included in section with fingerprint headers for a
-    JSON export; related to `-o json` option.
+    """Format the lines to include in the fingerprint section.
+
+    Related to `-o json` option.
     """
     line_s = line.strip()
     for f in fingerprint_set:
@@ -2859,9 +2842,9 @@ def json_detailed_fng_process(line, fingerprint_set, entry, current_header,
 
 
 def json_detailed_fng(json_lns, fingerprint_set):
-    """
-    Select the lines to include in section with fingerprint headers for a JSON
-    export; related to `-o json` option.
+    """Select the lines to include in the fingerprint section.
+
+    Related to `-o json` option.
     """
     result, entry, current_header = [], {}, None
     fng_header = get_detail('[json_det_fngheader]', replace=True)
@@ -2880,9 +2863,9 @@ def json_detailed_fng(json_lns, fingerprint_set):
 
 def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
                              detail_t, result, is_header):
-    """
-    Add lines to the section with deprecated/insecure headers for a JSON
-    export; related to `-o json` option.
+    """Add lines to the deprecated/insecure headers section.
+
+    Related to `-o json` option.
     """
     if is_header:
         if entry:
@@ -2898,9 +2881,9 @@ def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
 
 
 def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
-    """
-    Determine if a line represents a deprecated/insecure header for a JSON
-    export; related to `-o json` option.
+    """Determine if a line represents a deprecated/insecure header.
+
+    Related to `-o json` option.
     """
     header_cond = line.startswith('(*)')
     header_cond2 = not line.startswith(ref_t)
@@ -2914,9 +2897,9 @@ def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
 
 def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
                               detail_t):
-    """
-    Format the lines to be included in the section with deprecated/insecure
-    headers; related to `-o json` option.
+    """Format the lines to include in the deprecated/insecure section.
+
+    Related to `-o json` option.
     """
     result, entry, header = [], {}, None
     for line in json_lns:
@@ -2935,9 +2918,9 @@ def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
 
 
 def json_detailed_ins(json_lns, insecure_checks):
-    """
-    Select the lines to include in the section with deprecated/insecure headers
-    for a JSON export; related to `-o json` option.
+    """Select the lines to include in the deprecated/insecure section.
+
+    Related to `-o json` option.
     """
     header_t, detail_t, ref_t = (get_detail(text, replace=True)
                                  for text in [
@@ -2953,9 +2936,9 @@ def json_detailed_ins(json_lns, insecure_checks):
 
 
 def json_detailed_ins_checks(checks_list, insecure_checks):
-    """
-    Select specific content from the lines in the section with
-    obsolete/insecure headers for a JSON export; related to `-o json` option.
+    """Select the content to include in the deprecated/insecure section.
+
+    Related to `-o json` option.
     """
     for check in insecure_checks:
         check_s = check.strip()
@@ -2964,9 +2947,9 @@ def json_detailed_ins_checks(checks_list, insecure_checks):
 
 
 def json_detailed_results(json_lns):
-    """
-    Add lines to the section with results for a JSON export; related to
-    `-o json` option.
+    """Add detailed content to the sections.
+
+    Related to `-o json` option.
     """
     result = {}
     duration_t = get_detail('[analysis_time]', replace=True)
@@ -2981,8 +2964,7 @@ def json_detailed_results(json_lns):
 
 
 def export_pdf_file(tmp_filename, *, export_all=False):
-    """
-    PDF export of the analysis, related to `-o pdf` option.
+    """PDF export of the analysis, related to `-o pdf` option.
 
     ??? tip
         `fpdf2` is lazy-loaded to avoid unnecessary overhead when PDF export is
@@ -3014,9 +2996,9 @@ def export_pdf_file(tmp_filename, *, export_all=False):
 
 
 def initialize_pdf(pdf, tmp_filename, ypos, *, export_all=False):
-    """
-    Retrieves literals to apply the appropriate formatting for a PDF export,
-    related to `-o pdf` option.
+    """Retrieve literals to apply the appropriate formatting.
+
+    Related to `-o pdf` option.
     """
     pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
                  REF_LINKS[4])
@@ -3027,9 +3009,9 @@ def initialize_pdf(pdf, tmp_filename, ypos, *, export_all=False):
 
 def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos, *,
                  export_all=False):
-    """
-    Generates the required file structure, including metadata for a PDF export;
-    related to `-o pdf` option.
+    """Generate the required file structure, including metadata.
+
+    Related to `-o pdf` option.
     """
     set_pdf_file(pdf)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
@@ -3042,9 +3024,9 @@ def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos, *,
 
 
 def set_pdf_file(pdf):
-    """
-    Set display parameters along with metadata for a PDF export; related to
-    `-o pdf` option.
+    """Set display parameters along with metadata.
+
+    Related to `-o pdf` option.
     """
     pdf.alias_nb_pages()
     set_pdf_metadata(pdf)
@@ -3068,9 +3050,9 @@ def set_pdf_metadata(pdf):
 
 def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
                     pdf_prefixes, ypos):
-    """
-    Set the format and sections for a PDF export; related to `-o pdf`
-    option.
+    """Set the format and sections.
+
+    Related to `-o pdf` option.
     """
     with Path(tmp_filename).open(encoding='utf8') as txt_source:
         for line in txt_source:
@@ -3085,9 +3067,9 @@ def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
 
 
 def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
-    """
-    Applies specific format to lines based on its content for a PDF export;
-    related to `-o pdf` option.
+    """Apply specific format to lines based on its content.
+
+    Related to `-o pdf` option.
     """
     if any(bold_str in line for bold_str in BOLD_STRINGS):
         pdf.set_font(style='B')
@@ -3108,9 +3090,9 @@ def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
 
 
 def set_pdf_sections(line, pdf):
-    """
-    Set the sections of the analysis for a PDF export; related to `-o pdf`
-    option.
+    """Set the sections of the analysis.
+
+    Related to `-o pdf` option.
     """
     for section_key, section_val in PDF_SECTION.items():
         if line.startswith(section_key):
@@ -3119,10 +3101,10 @@ def set_pdf_sections(line, pdf):
 
 
 def set_pdf_conditions(line, pdf, ypos):
-    """
-    Check whether the analysis line includes mention of a specific response
-    HTTP header in order to apply a specific format for a PDF export; related
-    to `-o pdf` option.
+    """Determine whether to apply specific formatting to a line in a PDF export.
+
+    Checks the line against response header conditions and delegates formatting
+    to `set_pdf_warnings` if matched; related to `-o pdf` option.
     """
     combined_h = l_miss + l_ins + l_fng + titled_fng
     combined_h.append(XFRAME_CHECK)
@@ -3133,9 +3115,9 @@ def set_pdf_conditions(line, pdf, ypos):
 
 
 def format_pdf_links(i, pdf_string, pdf, pdf_prefixes):
-    """
-    Applies a specific format to lines containing links for a PDF export;
-    related to `-o pdf` option.
+    """Apply a specific format to lines containing links.
+
+    Related to `-o pdf` option.
     """
     pdf_link = set_pdf_links(i, pdf_string)
     if pdf_string in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
@@ -3148,9 +3130,9 @@ def format_pdf_links(i, pdf_string, pdf, pdf_prefixes):
 
 
 def set_pdf_warnings(line, pdf, ypos):
-    """
-    Format warnings-related lines for a PDF export; related to `-o pdf`
-    option.
+    """Format warnings-related lines.
+
+    Related to `-o pdf` option.
     """
     if STYLE[8] not in line:
         pdf.set_text_color(255, 0, 0)
@@ -3160,17 +3142,18 @@ def set_pdf_warnings(line, pdf, ypos):
 
 
 def set_pdf_nowarnings(line, pdf, ypos):
-    """
-    Format line without warnings for a PDF export; related to `-o pdf` option.
+    """Format line without warnings.
+
+    Related to `-o pdf` option.
     """
     pdf.set_text_color(0, 128, 0)
     pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
 
 
 def set_pdf_empty(l_empty, line, pdf, ypos):
-    """
-    Format line with empty headers for a PDF export; related to `-o pdf`
-    option.
+    """Format line with empty headers.
+
+    Related to `-o pdf` option.
     """
     ln_strip = line.lstrip().lower()
     if (
@@ -3185,9 +3168,9 @@ def set_pdf_empty(l_empty, line, pdf, ypos):
 
 
 def set_pdf_links(i, pdf_string):
-    """
-    Check if the line includes a link, to display it with a specific format for
-    a PDF export; related to `-o pdf` option.
+    """Check if the line includes a link, to display it with a specific format.
+
+    Related to `-o pdf` option.
     """
     pdf_links_d = {URL_STRING[1]: URL,
                    REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
@@ -3198,9 +3181,9 @@ def set_pdf_links(i, pdf_string):
 
 
 def format_pdf_lines(line, pdf, ypos):
-    """
-    Identify lines, by length and content, to apply formatting for a PDF export
-    ; related to `-o pdf` option.
+    """Identify lines, by length and content, to apply formatting.
+
+    Relatede to `-o pdf` option.
     """
     if len(line) > LENGTH_BOUNDS[4]:
         chunks = [line[i:i + LENGTH_BOUNDS[4]] for i in range(0, len(line),
@@ -3221,9 +3204,9 @@ def format_pdf_lines(line, pdf, ypos):
 
 
 def set_pdf_chunks(chunks, pdf):
-    """
-    Identify blocks of text to format them for a PDF export; related to
-    `-o pdf` option.
+    """Identify blocks of text to format them.
+
+    Related to `-o pdf` option.
     """
     chunk_c = None
     for i, chunk in enumerate(chunks):
@@ -3238,9 +3221,9 @@ def set_pdf_chunks(chunks, pdf):
 
 
 def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
-    """
-    Apply formatting and positioning to blocks of text for a PDF export;
-    related to `-o pdf` option.
+    """Apply formatting and positioning to blocks of text.
+
+    Related to `-o pdf` option.
     """
     pdf.set_text_color(0, 0, 0)
     if i > 0:
@@ -3257,9 +3240,9 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
 
 
 def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
-    """
-    Locate lines to which a specific color should be applied for a PDF export;
-    related to `-o pdf` option.
+    """Locate lines to which a specific color should be applied.
+
+    Relate to `-o pdf` option.
     """
     colon_idx = line.find(': ')
     ln_final = apply_pdf_color(colon_idx, hcolor, line, vcolor)
@@ -3269,13 +3252,13 @@ def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
 
 
 def apply_pdf_color(colon_idx, hcolor, line, vcolor):
-    """
-    Add the specific HTML tag to indicate the corresponding color for a PDF
-    export; related to `-o pdf` option.
+    """Add the specific HTML tag to indicate the corresponding color.
 
     Sanitizes header values using HTML escaping to ensure that special
     characters (e.g., `<` or `>` in headers) are rendered correctly and do not
     interfere with the PDF structure.
+
+    Related to `-o pdf` option.
     """
     if colon_idx == -1:
         return f'{HTML_TAGS[16]}{hcolor}">{escape(line)}{HTML_TAGS[17]}'
@@ -3311,10 +3294,9 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False):
 
 
 def generate_html():
-    """
-    Provides content for the variables in the template
-    `/additional/html_template.html` for an HTML export; related to `-o html`
-    option.
+    """Provide content for the variables of the template.
+
+    Source: `/additional/html_template.html`; related to `-o html` option.
     """
     copyfile(PATHS['html_source'], final_filename)
     html_replace = {"html_title": get_detail(METADATA_S[1]),
@@ -3331,9 +3313,9 @@ def generate_html():
 
 
 def decrease_html_spacing(tmp_filename):
-    """
-    Decrease the spacing between sections for an HTML export; related to
-    `-o html` option.
+    """Decrease the spacing between sections.
+
+    Related to `-o html` option.
     """
     initial_ln, prev_blank_ln = False, False
     cleaned_ln = []
@@ -3350,9 +3332,9 @@ def decrease_html_spacing(tmp_filename):
 
 
 def format_html_file(html_final, ko_strings, ln, ok_string):
-    """
-    Format content for the main sections or an HTML export; related to
-    `-o html` option.
+    """Format content for the main sections.
+
+    Related to `-o html` option.
     """
     ln_formatted = format_html_lines(html_final, ko_strings, ln, ok_string)
     if not ln_formatted:
@@ -3360,9 +3342,9 @@ def format_html_file(html_final, ko_strings, ln, ok_string):
 
 
 def format_html_lines(html_final, ko_strings, ln, ok_string):
-    """
-    Write formatted lines for the main sections for an HTML export; related to
-    `-o html` option.
+    """Write formatted lines for the main sections.
+
+    Related to `-o html` option.
     """
     lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
     ln_rstrip = ln.rstrip('\n')
@@ -3375,9 +3357,11 @@ def format_html_lines(html_final, ko_strings, ln, ok_string):
 
 
 def format_html_info(html_final, ln_rstrip):
-    """
-    Write formatted lines for the GitHub URL of `humble` and the section
-    with basic information for an HTML export; related to `-o html` option.
+    """Write formatted lines.
+
+    For the GitHub URL of `humble` and the section with basic information.
+
+    Related to `-o html` option.
     """
     if URL_STRING[0] in ln_rstrip:
         html_final.write(
@@ -3395,10 +3379,12 @@ def format_html_info(html_final, ln_rstrip):
 
 
 def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string):
-    """
-    Write formatted lines for sections without results for an HTML export:
-    either because they have passed all checks or because the headers could
-    not be retrieved; related to `-o html` option.
+    """Write formatted lines for sections without results.
+
+    Either because they have passed all checks or because the headers could
+    not be retrieved.
+
+    Related to `-o html` option.
     """
     if ok_string in ln_rstrip:
         html_final.write(f'{HTML_TAGS[6]}{ln_rstrip}{HTML_TAGS[5]}\
@@ -3412,9 +3398,9 @@ def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string):
 
 
 def format_html_references(html_final, lang_slice, ln_rstrip):
-    """
-    Write formatted lines for references for an HTML export; related to
-    `-o html` option.
+    """Write formatted lines for references.
+
+    Related to `-o html` option.
     """
     for ref, off in [(REF_LINKS[1], 6), (REF_LINKS[0], 8), (REF_LINKS[4],
                                                             lang_slice)]:
@@ -3429,9 +3415,9 @@ def format_html_references(html_final, lang_slice, ln_rstrip):
 
 
 def format_html_compatibility(html_final, ln_rstrip):
-    """
-    Write formatted lines for browser compatibility section for an HTML export;
-    related to `-o html` option.
+    """Write formatted lines for browser compatibility section.
+
+    Related to `-o html` option.
     """
     if URL_STRING[2] not in ln_rstrip:
         return False
@@ -3444,8 +3430,9 @@ def format_html_compatibility(html_final, ln_rstrip):
 
 
 def format_html_bold(html_final, ln_rstrip):
-    """
-    Bold the section names of an HTML export, related to `-o html` option.
+    """Bold the section names.
+
+    Related to `-o html` option.
     """
     global inside_section
     if any(s in ln_rstrip for s in BOLD_STRINGS):
@@ -3458,8 +3445,7 @@ def format_html_bold(html_final, ln_rstrip):
 
 
 def format_html_headers(ln):
-    """
-    Format HTTP response header lines for an HTML export.
+    """Format HTTP response header lines for an HTML export.
 
     Sanitizes header values using HTML escaping to ensure that special
     characters (e.g., `<` or `>` in headers) are rendered correctly and do not
@@ -3476,9 +3462,9 @@ def format_html_headers(ln):
 
 
 def format_html_csp(ln):
-    """
-    Bold `Content-Security-Policy` header directives of an HTML export;
-    related to `-o html` option.
+    """Bold `Content-Security-Policy` header directives.
+
+    Related to `-o html` option.
     """
     csp_value = next((v for k, v in headers.items() if k.lower() ==
                       "content-security-policy"), None)
@@ -3492,9 +3478,9 @@ def format_html_csp(ln):
 
 
 def format_html_fingerprint(args, ln, l_fng):
-    """
-    Write formatted lines for the section with fingerprint headers of an HTML
-    export; related to `-o html` option.
+    """Write formatted lines for fingerprint headers.
+
+    Related to `-o html` option.
     """
     ln_cf = ln.casefold() if args.brief else ln
     for i in l_fng:
@@ -3506,9 +3492,9 @@ def format_html_fingerprint(args, ln, l_fng):
 
 
 def format_html_totals(ln, l_total):
-    """
-    Highlight in red the header that fails any of the checks of an HTML export;
-    related to `-o html` option.
+    """Highlight in red the header that fails any of the checks.
+
+    Related to `-o html` option.
     """
     for i in l_total:
         if (not re.search(RE_PATTERN[11], ln)) and (
@@ -3519,10 +3505,11 @@ def format_html_totals(ln, l_total):
 
 
 def format_html_empty(ln, ln_rstrip, l_empty):
-    """
-    Applies specific HTML formatting tags, to the section with empty HTTP
-    response headers of an HTML export, by validating line content against a
-    predefined list of empty headers; related to `-o html` option.
+    """Apply format to empty HTTP response headers.
+
+    By validating line content against a predefined list of empty headers.
+
+    Related to `-o html` option.
     """
     ln_strip = ln_rstrip.lstrip().lower()
     for i in l_empty:
@@ -3533,9 +3520,9 @@ def format_html_empty(ln, ln_rstrip, l_empty):
 
 
 def format_html_rest(html_final, l_empty, ln):
-    """
-    Write formatted lines for the rest of the sections of an HTML export; e.g.
-    highlighting in red the insecure headers; related to `-o html` option.
+    """Write formatted lines for the rest of the sections.
+
+    E.g. highlighting in red the insecure headers; related to `-o html` option.
     """
     l_total = sorted(set(l_miss + l_ins))
     ln, ln_enabled = format_html_enabled(ln, html_final)
@@ -3549,9 +3536,9 @@ def format_html_rest(html_final, l_empty, ln):
 
 
 def format_html_enabled(ln, html_final):
-    """
-    Write formatted lines for the section with enabled HTTP headers of an HTML
-    export; related to `-o html` option.
+    """Write formatted lines for the section with enabled HTTP headers.
+
+    Related to `-o html` option.
     """
     ln_enabled = STYLE[8] in ln
     if ln_enabled:
@@ -3566,9 +3553,9 @@ def format_html_enabled(ln, html_final):
 
 
 def clean_html_final(final_filename):
-    """
-    Remove content related to preformatted text of an HTML export; related to
-    `-o html` option.
+    """Remove content related to preformatted text.
+
+    Related to `-o html` option.
     """
     with Path(final_filename).open('r+', encoding='utf8') as html_final:
         html_content = html_final.read()
@@ -3580,8 +3567,7 @@ def clean_html_final(final_filename):
 
 
 def generate_xml(final_filename, temp_filename, *, export_all=False):
-    """
-    XML export of the analysis, related to `-o xml` option.
+    """XML export of the analysis, related to `-o xml` option.
 
     ??? note
         According to
@@ -3623,9 +3609,9 @@ def parse_xml(root, section, stripped_txt):
 
 
 def add_xml_item(line, section):
-    """
-    Adds a new item to the section of an XML export; related to `-o xml`
-    option.
+    """Add a new item to the section.
+
+    Related to `-o xml` option.
     """
     item = ET.SubElement(section, 'item')
     if ': ' in line and all(sub not in line for sub in XML_STRING):
@@ -3645,9 +3631,7 @@ def print_http_exception(exception_id, exception_v):
 
 
 def check_russian_scope():
-    """
-    Validate if the target domain is within the Russian scope and terminate
-    execution if so.
+    """Validate if the target domain is within the Russian scope and exit if so.
 
     ??? note
         You can read my reasons <a href="https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326" target="_blank">here</a>.
@@ -3663,9 +3647,9 @@ def check_russian_scope():
 
 
 def check_owasp_compliance(tmp_filename):
-    """
-    `OWASP Secure Headers Project` best practices checks, related to `-c`
-    option.
+    """`OWASP Secure Headers Project` best practices checks.
+
+    Related to `-c` option.
     """
     Path(tmp_filename).unlink()
     header_list = []
@@ -3680,9 +3664,9 @@ def check_owasp_compliance(tmp_filename):
 
 
 def print_owasp_summary(missing, wrong):
-    """
-    Format lines for results section of an `OWASP Secure Headers Project`
-    best practices checks, related to `-c` option.
+    """Format lines for results of `OWASP Secure Headers Project` checks.
+
+    Related to `-c` option.
     """
     missing_txt = get_detail('[comp_missing]', replace=True)
     wrong_txt = get_detail('[comp_noncompliant]', replace=True)
@@ -3694,9 +3678,9 @@ def print_owasp_summary(missing, wrong):
 
 
 def print_owasp_findings(header_dict, header_list):
-    """
-    Print formatted lines for results section of an `OWASP Secure Headers
-    Project` best practices checks, related to `-c` option.
+    """Print `OWASP Secure Headers Project` check results.
+
+    Related to `-c` option.
     """
     print(end="\n\n")
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
@@ -3715,9 +3699,9 @@ def print_owasp_findings(header_dict, header_list):
 
 
 def print_owasp_missing(header_list):
-    """
-    Print missing recommended headers of an `OWASP Secure Headers Project`
-    best practices checks, related to `-c` option.
+    """Print `OWASP Secure Headers Project` missing check results.
+
+    Related to `-c` option.
     """
     print(f"\n{STYLE[0]}{get_detail('[comp_rec]')}{STYLE[5]}")
     missing_owasp = [header.title() for header in header_list if header not in
@@ -3732,9 +3716,9 @@ def print_owasp_missing(header_list):
 
 
 def print_owasp_wrong(header_dict):
-    """
-    Print enabled headers with non-compliant values of an `OWASP Secure Headers
-    Project` best practices checks, related to `-c` option.
+    """Print `OWASP Secure Headers Project` enabled headers check results.
+
+    Related to `-c` option.
     """
     wrong_owasp = [
         (header.title(), value)
@@ -3753,9 +3737,9 @@ def print_owasp_wrong(header_dict):
 
 
 def print_owasp_rec(wrong_owasp, header_dict):
-    """
-    Print recommended values for enabled headers of an `OWASP Secure Headers
-    Project` best practices checks, related to `-c` option.
+    """Print `OWASP Secure Headers Project` recommended values check results.
+
+    Related to `-c` option.
     """
     print(f"\n\n{STYLE[0]}{get_detail('[comp_rec_val]')}{STYLE[5]}")
     for header, _ in sorted(wrong_owasp):
@@ -3765,12 +3749,11 @@ def print_owasp_rec(wrong_owasp, header_dict):
 
 
 def analyze_input_file(input_file):
-    """
-    Analyzes HTTP headers from a raw response file instead of a URL, related
-    to `-if` option. Ex: <a href="https://curl.se/docs/manpage.html#-D"
-    target="_blank">curl</a> option `--dump-header`.
+    """Analyze HTTP headers from a raw response file instead of a live URL.
 
-    It reads the provided file path and parses its content into header data.
+    See curl's [`--dump-header`](https://curl.se/docs/manpage.html#-D) option.
+
+    Related to `-if` option.
     """
     if not Path(input_file).exists():
         print_error_detail('[args_inputnotfound]')
@@ -3787,8 +3770,9 @@ def analyze_input_file(input_file):
 
 
 def parse_input_file(input_headers, input_source, status_code):
-    """
-    Parse the headers and values in the file provided, related to `-if` option.
+    """Parse the headers and values.
+
+    Related to `-if` option.
     """
     first_line = input_source.readline().strip()
     parts = first_line.split()
@@ -3805,8 +3789,8 @@ def parse_input_file(input_headers, input_source, status_code):
 
 
 def normalize_output_file(filename):
-    """
-    Normalizes the filename by stripping paths and removing extensions.
+    """Normalize the filename by stripping paths and removing extensions.
+
     Aborts execution if the resulting filename is invalid (e.g., '.html').
     """
     base_name = Path(filename).name
@@ -3822,15 +3806,13 @@ def normalize_output_file(filename):
 
 
 def get_tmp_file(args, export_date):
-    """
-    Manages the path selection for the temporary export file, related to `-o`
-    option. It chooses between a sanitized custom filename from `-of` option
-    and a generated name provided by `build_tmp_file` function based on the
-    current date, extension, language and URL.
+    """Determine the temporary export file path for the current analysis.
 
-    It ensures the correct file extension is applied and, if an output
-    directory is specified via `-op` option, joins and resolves the final
-    result into a secure, absolute filesystem path.
+    Selects between a custom name (via `-of`) or a generated one based on date,
+    language, and URL; applies the correct extension and resolves the absolute
+    path if an output directory is specified (via `-op` option).
+
+    Related to `-o` option.
     """
     file_ext = '.txt' if args.output == 'txt' else 't.txt'
     if args.output_file:
@@ -3847,10 +3829,10 @@ def get_tmp_file(args, export_date):
 
 
 def build_tmp_file(export_date, file_ext, lang, humble_str, url):
-    """
-    Constructs the default filename for the temporary export file, related to
-    `-o` option. It formats a string using the URL scheme, domain, port, and
-    timestamp to create a unique identifier.
+    """Build the default filename for the temporary export file.
+
+    Formats a unique name from the URL scheme, domain, port, and timestamp;
+    related to `-o` option.
 
     ??? tip
         `tldextract` is lazy-loaded to avoid unnecessary overhead when the
@@ -3883,9 +3865,7 @@ def process_server_error(http_status_code, l10n_id):
 
 
 def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
-    """
-    Make the request to the provided URL, disabling certain checks to
-    facilitate analysis.
+    """Make the request to the provided URL, disabling certain checks.
 
     ??? note
         I have disabled the following checks to allow the analysis of URLs in
@@ -3925,10 +3905,7 @@ def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
 
 
 def process_requests_exception(exception):
-    """
-    Print error messages for request timeout and unhandled exceptions during
-    analysis.
-    """
+    """Print error messages for request timeout and unhandled exceptions."""
     if isinstance(exception, requests.exceptions.Timeout):
         delete_lines()
         delete_lines()
@@ -3960,8 +3937,10 @@ def process_http_error(r, exception_d):
 
 
 def parse_request_headers(request_headers):
-    """Add the provided headers to the request, terminating execution if any of
-    them are not well-formed; related to `-H` option."""
+    """Add the provided headers to the request.
+
+    Exit if any of them are not well-formed; related to `-H` option.
+    """
     headers, malformed_headers = process_request_headers(request_headers)
     if malformed_headers:
         delete_lines()
@@ -3973,10 +3952,10 @@ def parse_request_headers(request_headers):
 
 
 def process_request_headers(request_headers):
-    """
-    Verify that the request headers provided are well-formed. It will
-    terminate execution if empty entries are found, while returning a list of
-    any malformed headers.
+    """Verify that the request headers provided are well-formed.
+
+    Exit if empty entries are found, while returning a list of any malformed
+    headers.
     """
     headers = {}
     malformed_headers = []
@@ -3999,9 +3978,10 @@ def process_request_headers(request_headers):
 
 
 def process_http_request(status_code, reliable, body, proxy, custom_headers):
-    """
-    Perform an HTTP request using a background thread to manage response
-    processing and ensure the target URL is reachable within a set timeout.
+    """Perform an HTTP request using a background thread.
+
+    It manages response processing and ensure the target URL is reachable within
+    a set timeout.
 
     The analysis is flagged as unreliable if a response isn't received within
     the (`REQ_TIMEOUT` - `REQ_WARNING`) constants. The function will terminate
@@ -4036,8 +4016,7 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
 
 
 def process_http_response(r, exception, status_code, reliable, body):
-    """
-    Process an HTTP response (and its exceptions), storing headers, status code
+    """Process an HTTP response (and its exceptions), storing headers, status code
     , and body, and determining if the analyzed URL returns an HTML document.
 
     ??? note
@@ -4066,7 +4045,7 @@ def process_http_response(r, exception, status_code, reliable, body):
 
 
 def custom_help_formatter(prog):
-    """Custom help formatter to allow more characters per line."""
+    """Format help output with an increased character limit per line."""
     return RawDescriptionHelpFormatter(prog, max_help_position=43)
 
 

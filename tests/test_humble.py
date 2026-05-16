@@ -27,18 +27,18 @@
 # SOFTWARE.
 
 # Standard Library imports
-import sys
+import importlib.util
 import shutil
 import subprocess
-import importlib.util
+import sys
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from contextlib import suppress
+from datetime import date, datetime
 from os import fsync
 from pathlib import Path
 from platform import system
 from typing import NamedTuple
-from contextlib import suppress
 from unittest.mock import patch
-from datetime import datetime, date
-from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 # Third-Party imports
 import pytest
@@ -641,7 +641,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat('2026-05-15')
+local_version = date.fromisoformat('2026-05-16')
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34
