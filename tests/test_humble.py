@@ -90,7 +90,10 @@ HUMBLE_OUTPUT_PATHS = ('home/tests/test',
                        'non_existent_path_for_humble/39332524')
 HUMBLE_WRONG_TESTSSL_DIR = '/dev/'
 PYTEST_CACHE_DIRS = [
-    HUMBLE_TESTS_DIR / d for d in ['__pycache__', '.pytest_cache']
+    HUMBLE_TESTS_DIR / '.pytest_cache',
+    HUMBLE_TESTS_DIR / '__pycache__',
+    HUMBLE_PROJECT_ROOT / '.pytest_cache',
+    HUMBLE_PROJECT_ROOT / '__pycache__',
 ]
 
 # URLs to use in unit tests
@@ -659,4 +662,6 @@ if __name__ == "__main__":
                         "no:cacheprovider"])
     print_results()
     delete_temp_content()
+    for cache_dir in PYTEST_CACHE_DIRS:
+        delete_pytest_caches(cache_dir)
     sys.exit(code)
