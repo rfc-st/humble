@@ -1,6 +1,6 @@
 # Unit Tests
 
-In ideal conditions, the entire unit test <a href="https://github.com/rfc-st/humble/#unit-tests" target="_blank">suite</a> is expected to complete in under one minute on Linux and under two minutes on Windows.
+In ideal conditions, the entire unit test <a href="https://github.com/rfc-st/humble/#unit-tests" target="_blank">suite</a> is expected to complete in just over one minute on Linux and approximately two minutes on Windows.
 <br/>
 <br/>
 Unit tests are defined in the `TEST_CFGS` dictionary using the following structure:
@@ -17,13 +17,11 @@ Unit test descriptions are retrieved via `print_results` and `get_detail` functi
 - `<HUMBLE_PROJECT_ROOT>/l10n/details_es.txt`
 
 <br/>
-Functions and unit tests of **test_humble.py**, in alphabetical order (work in progress):
-
 ::: test_humble
 <br />
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>May 16, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>May 21, 2026</em></span>
 </span>
 </aside>

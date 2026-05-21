@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-"""A humble, and fast, security-oriented HTTP headers analyzer."""
+"""A humble, and **fast**, security-oriented HTTP headers analyzer."""
 
 # 'humble' (HTTP Headers Analyzer)
 # https://humble.readthedocs.io/
@@ -125,7 +125,7 @@ PATHS = {
     'insecure_header': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[7],
     'owasp_compliance': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[18],
     'security_headers': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[17],
-    'user_agents': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6]
+    'user_agents': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6],
 }
 PDF_COLORS = ('#008000', '#000000', '#660033')
 PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
@@ -154,7 +154,7 @@ RE_PATTERN = (
     r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
     r"<pre(?:\s[^>]*)?>\s*</pre>",
     r"<pre>/pre>'",
-    r"(?<!')nonce-"
+    r"(?<!')nonce-",
 )
 REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
 RESP_SECTION = ('[HTTP R', '[Cabeceras d')
@@ -205,7 +205,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat('2026-05-16')
+local_version = date.fromisoformat('2026-05-21')
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -214,13 +214,8 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
     """Custom SSL adapter.
 
     Disables SSL validation for unrestricted URL analysis.
-    """
 
-    def init_poolmanager(self, *args, **kwargs):  # nosemgrep
-        """Initialize the pool manager with an unverified SSL context and
-        restricted ciphers.
-
-        ??? note
+    ??? note
         The following checks are disabled to allow the analysis of URLs
         in environments with self-signed certificates, outdated software,
         or development configurations:
@@ -228,6 +223,13 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         - Certificate Verification
         - Hostname Verification
         - Certificate Requirement
+    """
+
+    def init_poolmanager(self, *args, **kwargs):  # nosemgrep
+        """Initialize the pool manager.
+
+        With an unverified SSL context and restricted ciphers.
+
         """
         context = ssl._create_unverified_context()  # nosemgrep
         context.check_hostname = False  # noqa
@@ -680,7 +682,7 @@ def get_analysis_metrics(all_analysis):
         get_third_metrics(adj_url_ln),
         get_additional_metrics(adj_url_ln),
         get_highlights(adj_url_ln),
-        get_trends(adj_url_ln)
+        get_trends(adj_url_ln),
     )
 
 
@@ -1621,8 +1623,9 @@ def print_detail(id_mode, num_lines=1):
 
 
 def print_detail_l(id_mode, *, analytics=False, no_headers=False):
-    """Print detailed information about the finding and removes lines from the
-    output based on it.
+    """Print detailed information about the finding.
+
+    Removing lines from the output based on it.
 
     ??? note
         `pairwise` is used to match each bracketed ID with its corresponding
@@ -1755,8 +1758,9 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
 
 
 def get_enabled_headers(args, headers_l, t_enabled):
-    """Print the contents of the section with enabled security headers,
-    highlighting the experimental ones.
+    """Print the contents of the section with enabled security headers.
+
+    Highlighting the experimental ones.
 
     ??? note
         The file associated with this check is `/additional/security.txt`
@@ -2293,7 +2297,7 @@ def build_cicd_totals(tmp_filename, info_lines, totals, labels):
         **totals,
         get_detail('[cicd_detailed]', replace=True): {
             get_detail('[cicd_path]',
-                       replace=True): str(Path(tmp_filename).resolve())
+                       replace=True): str(Path(tmp_filename).resolve()),
         },
     }
 
@@ -2392,11 +2396,11 @@ def write_csv_content(csv_file, txt_source):
                                      quoting=defusedcsv_logic.QUOTE_ALL)
     writer.writerow([
         get_detail('[csv_section]', replace=True),
-        get_detail('[csv_values]', replace=True)
+        get_detail('[csv_values]', replace=True),
     ])
     writer.writerow([
         get_detail('[0section]', replace=True),
-        f"{get_detail('[json_gen]', replace=True)}: {BANNER_VERSION}"
+        f"{get_detail('[json_gen]', replace=True)}: {BANNER_VERSION}",
     ])
     section_titles = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
     parse_csv(section_titles, txt_source.read(), writer)
@@ -2410,7 +2414,9 @@ def generate_csv(final_filename, temp_filename, *, to_xlsx=False,
     """
     with (
         Path(temp_filename).open(encoding='utf8') as txt_source,
-        Path(final_filename).open('w', newline='', encoding='utf8') as csv_final
+        Path(final_filename).open(
+            'w', newline='', encoding='utf8',
+        ) as csv_final,
     ):
         write_csv_content(csv_final, txt_source)
     if to_xlsx:
@@ -2560,7 +2566,7 @@ def generate_json(final_filename, temp_filename, *, export_all=False):
         get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
     with (
         Path(temp_filename).open(encoding='utf8') as txt_file,
-        Path(final_filename).open('w', encoding='utf8') as json_file
+        Path(final_filename).open('w', encoding='utf8') as json_file,
     ):
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
@@ -2633,7 +2639,7 @@ def generate_json_detailed(final_filename, temp_filename):
     """
     with (
        Path(temp_filename).open(encoding='utf8') as txt_file,
-       Path(final_filename).open('w', encoding='utf8') as json_file
+       Path(final_filename).open('w', encoding='utf8') as json_file,
     ):
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
@@ -2653,7 +2659,7 @@ def json_detailed_parse(data, txt_sections):
         lines = [line.strip() for line in txt_sections[i + 1].split('\n')
                  if line.strip()]
         data[section] = json_detailed_write(
-            lines, section, *details
+            lines, section, *details,
         )
 
 
@@ -2737,7 +2743,7 @@ def json_detailed_response(json_lns):
         header, value = line_strip.split(':', 1)
         result.append({
             header_key: header.strip(),
-            value_key: value.strip()
+            value_key: value.strip(),
         })
     return result
 
@@ -2801,7 +2807,7 @@ def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
         if line := line.strip():
             entry, current_header = json_detailed_miss_process(
                 line, l_miss, json_miss_h, json_miss_d, json_miss_r,
-                json_det_mref, result, entry, current_header
+                json_det_mref, result, entry, current_header,
             )
     if entry:
         result.append(entry)
@@ -2817,7 +2823,7 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
     json_det_mref = PDF_CONDITIONS[0]
     result = json_detailed_miss_add(
         json_lns, l_miss, json_miss_h, json_miss_d, json_miss_r,
-        json_det_mref
+        json_det_mref,
     )
     for e in result:
         if len(e[json_miss_d]) == 1:
@@ -2906,11 +2912,11 @@ def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
         if line := line.strip():
             line_s = line.strip()
             is_header = json_detailed_ins_headers(
-                line, line_s, checks_list, ref_t
+                line, line_s, checks_list, ref_t,
             )
             entry, header = json_detailed_ins_append(
                 line, ref_t, ref_o, entry, header, header_t,
-                detail_t, result, is_header
+                detail_t, result, is_header,
             )
     if entry:
         result.append(entry)
@@ -2931,7 +2937,7 @@ def json_detailed_ins(json_lns, insecure_checks):
     checks_list = []
     json_detailed_ins_checks(checks_list, insecure_checks)
     return json_detailed_ins_process(
-        json_lns, checks_list, ref_t, PDF_CONDITIONS[0], header_t, detail_t
+        json_lns, checks_list, ref_t, PDF_CONDITIONS[0], header_t, detail_t,
     )
 
 
@@ -3281,7 +3287,7 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False):
                                                           'no_enb_headers']]
     with (
         Path(tmp_filename).open(encoding='utf8') as html_source,
-        Path(final_filename).open('a', encoding='utf8') as html_final
+        Path(final_filename).open('a', encoding='utf8') as html_final,
         ):
         for ln in html_source:
             format_html_file(html_final, ko_strings, ln, ok_string)
@@ -3366,13 +3372,13 @@ def format_html_info(html_final, ln_rstrip):
     if URL_STRING[0] in ln_rstrip:
         html_final.write(
             f"{HTML_TAGS[1]}{ln_rstrip[:32]}{HTML_TAGS[2]}"
-            f"{ln_rstrip[:32]}{HTML_TAGS[0]}{ln_rstrip[32:]}"
+            f"{ln_rstrip[:32]}{HTML_TAGS[0]}{ln_rstrip[32:]}",
         )
         return True
     if URL_STRING[1] in ln_rstrip:
         html_final.write(
             f"{ln_rstrip[:8]}{HTML_TAGS[1]}{ln_rstrip[8:]}"
-            f"{HTML_TAGS[2]}{ln_rstrip[8:]}{HTML_TAGS[0]}{HTML_TAGS[11]}"
+            f"{HTML_TAGS[2]}{ln_rstrip[8:]}{HTML_TAGS[0]}{HTML_TAGS[11]}",
         )
         return True
     return False
@@ -3408,7 +3414,7 @@ def format_html_references(html_final, lang_slice, ln_rstrip):
             content = ln_rstrip[off:].strip()
             html_final.write(
                 f"{ln_rstrip[:off]}{HTML_TAGS[1]}{content}"
-                f"{HTML_TAGS[2]}{content}{HTML_TAGS[0]}{HTML_TAGS[11]}"
+                f"{HTML_TAGS[2]}{content}{HTML_TAGS[0]}{HTML_TAGS[11]}",
             )
             return True
     return False
@@ -4016,8 +4022,10 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
 
 
 def process_http_response(r, exception, status_code, reliable, body):
-    """Process an HTTP response (and its exceptions), storing headers, status code
-    , and body, and determining if the analyzed URL returns an HTML document.
+    """Process an HTTP response and its exceptions.
+
+    Storing headers, status code and body, and determining if the analyzed URL
+    returns an HTML document.
 
     ??? note
         References:<br>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unit tests for humble: a fast, security-oriented HTTP headers analyzer."""
+"""Classes, Functions and unit tests of `test_humble.py`."""
 
 # 'humble' (HTTP Headers Analyzer)
 # https://humble.readthedocs.io/
@@ -122,7 +122,7 @@ TEST_CFGS = {
     'test_all_headers': (['-u', TEST_URLS[2], '-if', PATHS['ALL_HEADERS']],
                          'Input:'),
     'test_unsafe_all_headers': (['-u', TEST_URLS[3], '-if',
-                                 PATHS['ALL_HEADERS'], ], 'Input:'),
+                                 PATHS['ALL_HEADERS']], 'Input:'),
     'test_grade_perfect_headers': (['-u', TEST_URLS[4], '-if',
                                     PATHS['PERFECT_GRADE']], 'A+ ('),
     'test_grade_a_headers': (['-u', TEST_URLS[4], '-if', PATHS['GRADE_A']],
@@ -234,7 +234,7 @@ TEST_CFGS = {
     'test_request_headers': (
         ['-u', TEST_URLS[9], '-H', 'Cache-Control: no-cache', '-H',
          'If-Modified-Since: Wed, 21 Oct 2020 00:00:00 GMT'],
-        'Analysis Grade:'
+        'Analysis Grade:',
     ),
     'test_request_invalid_header': (
         ['-u', TEST_URLS[9], '-H', ''], 'least'),
@@ -263,8 +263,7 @@ TEST_CFGS = {
     'test_url_insufficient_statistics': (['-u', TEST_URLS[6], '-if',
                                           PATHS['ALL_HEADERS'], '-a'],
                                          'reliable'),
-    'test_url_non_existent_statistics': (['-u', TEST_URLS[17], '-a',],
-                                         'Error:'),
+    'test_url_non_existent_statistics': (['-u', TEST_URLS[17], '-a'], 'Error:'),
     'test_user_agent': (['-u', TEST_URLS[9], '-ua', '4'],
                         'Selected the User-Agent'),
     'test_user_agent_list': (['-ua', '0'], 'source: '),
@@ -353,7 +352,7 @@ def run_test(args, expected_text, timeout=15):
             timeout=timeout,
             encoding="utf-8",
             errors="replace",
-            check=False
+            check=False,
         )
         output = result.stdout + result.stderr
     except subprocess.TimeoutExpired:
@@ -385,7 +384,7 @@ def make_test_func(cfg_key):
     if cfg_key == "test_wrong_testssl":
         test_func = pytest.mark.skipif(
             system().lower() == "windows",
-            reason="'test_wrong_testssl' skipped on Windows"
+            reason="'test_wrong_testssl' skipped on Windows",
         )(test_func)
 
     return test_func
@@ -403,7 +402,7 @@ def test_cicd_error(capsys):
     humble_module.args = args
     with (
         patch.object(humble_module, 'get_cicd_labels', side_effect=Exception),
-        patch.object(humble_module, 'get_detail', return_value=ASSERT_STR[1])
+        patch.object(humble_module, 'get_detail', return_value=ASSERT_STR[1]),
     ):
         with pytest.raises(SystemExit) as wrapped_exit:
             humble_module.print_cicd_totals("any_file.tmp")
@@ -413,8 +412,9 @@ def test_cicd_error(capsys):
 
 
 def test_file_access_errors(capsys):
-    """Verify an error is displayed if the export or history files can not be
-    accessed or created.
+    """Verify an error is displayed related to file access.
+
+    Test whether the export or history files cannot be accessed or created.
     """
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
@@ -449,8 +449,10 @@ def test_testssl_error(capsys):
 
 
 def test_outdated_humble(capsys):
-    """Verify an error is displayed when the local version of humble.py
-    is more than 30 days older than the GitHub version.
+    """Verify an error is displayed related to outdated versions.
+
+    Test whether the local version of `humble.py` is more than 30 days older
+    than the GitHub version.
     """
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
@@ -467,19 +469,22 @@ def test_outdated_humble(capsys):
 
 
 def test_python_version():
-    """Returns an error message if the current Python version does not meet the
-    minimum requirement.
+    """Returns an error message related to Python version.
+
+    Test whether the current Python version does not meet the minimum
+    requirement.
     """
     if sys.version_info[:2] < REQUIRED_PYTHON_VERSION:
         pytest.fail(
             f"{get_detail('[test_pythonm]', replace=True)} "
-            f"{sys.version_info.major}.{sys.version_info.minor}"
+            f"{sys.version_info.major}.{sys.version_info.minor}",
         )
 
 
 def test_unsupported_python_version(capsys):
-    """Verify an error is displayed if using a Python version below the minimum
-    supported.
+    """Verify an error is displayed related to Python version.
+
+    Test whether the Python version is below the minimum supported version.
     """
     mocked_python_version = PythonVersion(3, 10, 0)
     with suppress(SystemExit):
@@ -509,8 +514,9 @@ def test_updates_error(capsys):
 
 
 def test_missing_arguments():
-    """Consolidates multiple checks for missing required arguments into a single
-    unit test.
+    """Consolidates multiple checks for missing required arguments.
+
+    Test multiple missing argument scenarios within a single unit test.
     """
     expected = ["Error:", "error:", "TXT", "HTML", "Analysis"]
     run_test(['-H', 'Cache-Control: no-cache'], expected)
@@ -603,7 +609,7 @@ def cleanup_analysis_history():
     """Truncate the test analysis history file.
 
     After all unit tests complete, retaining only the first twenty-five lines to
-    ensure file size stability while preserving data required for testing
+    ensure file size stability while preserving data required for testing.
     """
     original_lines = []
     with suppress(Exception), \
@@ -618,14 +624,14 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat('2026-05-16')
+local_version = date.fromisoformat('2026-05-21')
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
-        prog, max_help_position=34
+        prog, max_help_position=34,
     ),
     description=(
         f"{HUMBLE_DESC} | {TEST_URLS[0]} | v.{local_version}"
-    )
+    ),
 )
 
 parser.add_argument("-l", dest='lang', choices=['en', 'es'], help="Defines the\

@@ -11,6 +11,7 @@ select = [
     "BLE",     # flake8-blind-except
     "C4",      # flake8-comprehensions
     "C90",     # mccabe (Complexity)
+    "COM",     # flake8-commas
     "D",       # pydocstyle
     "DTZ",     # flake8-datetimez
     "E",       # pycodestyle errors
@@ -38,7 +39,6 @@ select = [
     "W",       # pycodestyle warnings
     ]
 ignore = [
-    "D205",    # Conflicts with MkDocs admonitions
     "PLR0913", # TO-DO: related to functions having more than 5 arguments
     "PLW0603", # TO-DO: related to 'global inside_section' findings
     "RUF100",  # Related to 'noqa' findings needed for other security tools
