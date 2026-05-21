@@ -557,7 +557,7 @@ def delete_export_files(extension, ko_msg):
 
 
 def delete_pytest_caches(dir_path):
-    """Remove `.pytest_cache` folders following the run of unit tests."""
+    """Remove `PYTEST_CACHE_DIRS` items following the run of unit tests."""
     msgs = []
     path_obj = Path(dir_path)
     if path_obj.is_dir():
