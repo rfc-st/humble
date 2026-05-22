@@ -11,7 +11,6 @@ ignore = [
     "ANN",     # TO-DO: and a big one, I know
     "ERA001",  # WONT-FIX: related to comments needed for opengrep
     "EXE001",  # WONT-FIX: Shebang is mandatory for apt/packages; execution mode varies by platform
-    "PLR0913", # TO-DO: related to functions having more than 5 arguments
     "Q",       # TO-DO: unify quotes style, double vs single
     "S323",    # WONT-FIX: Explained in 'SSLContextAdapter' doctrings
     "S603",    # WONT-FIX: The input of 'testssl_analysis' is validated
@@ -21,6 +20,9 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "test_humble.py" = ["S101"]  # All findings related to the use of 'assert'
+
+[tool.ruff.lint.pylint]
+max-args = 9
 
 [tool.vulture]
 # https://github.com/jendrikseipp/vulture#handling-false-positives
