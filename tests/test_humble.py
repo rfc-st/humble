@@ -627,7 +627,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat('2026-05-21')
+local_version = date.fromisoformat('2026-05-22')
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,
@@ -643,7 +643,7 @@ parser.add_argument("-l", dest='lang', choices=['en', 'es'], help="Defines the\
 args = _Args()
 
 
-@pytest.fixture(scope="session", autouse=True) # noqa
+@pytest.fixture(scope="session", autouse=True)
 def delete_temp_coverage():
     """Set up session globals and clean up temporary files after testing."""
     global l10n_main

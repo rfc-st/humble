@@ -61,14 +61,16 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 Whatever you decide about **humble.py**, thank you for your time!.
 
 ## Notes
-About <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> and <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a> checks:
+About <a href="https://github.com/nocomplexity/codeaudit" target="_blank">codeaudit</a>, <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>, <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a> and <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a> checks:
 
-Inline comments are used to suppress certain tool-generated checks. These exclusions are necessary to preserve legacy syntax compatibility, reduce noise from non-critical findings, and support intentional design choices as noted in the code.
+Inline comments are used to suppress certain tool-generated checks; the docstring for the associated class or function can provide additional information about them. You can identify them in the code by searching for:
 
-You can identify them in the code by searching for:
+* `# false-positive` (codeaudit)
+* `# nosemgrep` (opengrep)
+* `# noqa` (several)
+* `# sourcery skip` (Sourcery)
 
-* `# nosemgrep`
-* `# noqa`
+In the file <a href="https://github.com/rfc-st/humble/blob/master/pyproject.toml">pyproject.toml</a> you can review the specific exceptions to the ruff <a href="https://docs.astral.sh/ruff/rules/">rules</a> along with the reasons for doing so.
 
 ## Last but not least
 For those who maintain some essential tools for developing and testing **humble.py**, and to everyone who has contributed ideas, suggestions, or reported bugs: <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#acknowledgements" target="_blank">thank you</a>!.
@@ -79,6 +81,6 @@ And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>May 21, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>May 22, 2026</em></span>
 </span>
 </aside>

@@ -3,47 +3,26 @@ line-length = 80
 target-version = "py311"
 
 [tool.ruff.lint]
-# Ruff's rules: https://docs.astral.sh/ruff/rules/
+# https://docs.astral.sh/ruff/rules/
 select = [
-    "A",       # flake8-builtins
-    "ARG",     # flake8-unused-arguments
-    "B",       # flake8-bugbear
-    "BLE",     # flake8-blind-except
-    "C4",      # flake8-comprehensions
-    "C90",     # mccabe (Complexity)
-    "COM",     # flake8-commas
-    "D",       # pydocstyle
-    "DTZ",     # flake8-datetimez
-    "E",       # pycodestyle errors
-    "ERA",     # eradicate
-    "F",       # Pyflakes
-    "FBT",     # flake8-boolean-trap
-    "FLY",     # flynt
-    "FURB",    # refurbish
-    "I",       # isort
-    "ISC",     # flake8-implicit-str-concat
-    "N",       # pep8-naming
-    "PERF",    # Perflint
-    "PIE",     # flake8-pie
-    "PL",      # Pylint
-    "PT",      # flake8-pytest-style
-    "PTH",     # flake8-use-pathlib
-    "PYI",     # flake8-pyi
-    "RET",     # flake8-return
-    "RUF",     # Ruff-specific rules
-    "S",       # flake8-bandit
-    "SIM",     # flake8-simplify
-    "SLF",     # flake8-self
-    "TRY",     # tryceratops
-    "UP",      # pyupgrade
-    "W",       # pycodestyle warnings
+    "ALL",     # With the exceptions listed in the following section
     ]
 ignore = [
+    "ANN",     # TO-DO: and a big one, I know
+    "ERA001",  # WONT-FIX: related to comments needed for opengrep
+    "EXE001",  # WONT-FIX: Shebang is mandatory for apt/packages; execution mode varies by platform
     "PLR0913", # TO-DO: related to functions having more than 5 arguments
     "PLW0603", # TO-DO: related to 'global inside_section' findings
-    "RUF100",  # Related to 'noqa' findings needed for other security tools
-    "S101",    # All findings related to the use of 'assert' in 'test_humble.py'
-    "S323",    # Explained in 'SSLContextAdapter' doctrings
-    "S603",    # The input of 'testssl_analysis' is validated
-    "SLF001",  # 'ssl._create_unverified_context()' is an intentional stdlib call
+    "Q",       # TO-DO: unify quotes style, double vs single
+    "S323",    # WONT-FIX: Explained in 'SSLContextAdapter' doctrings
+    "S603",    # WONT-FIX: The input of 'testssl_analysis' is validated
+    "SLF001",  # WONT-FIX: 'ssl._create_unverified_context()' is an intentional stdlib call
+    "T201",    # WONT-FIX: 'print' findings are needed to output information not debugging/logging
     ]
+
+[tool.ruff.lint.per-file-ignores]
+"test_humble.py" = ["S101"]  # All findings related to the use of 'assert'
+
+[tool.vulture]
+# https://github.com/jendrikseipp/vulture#handling-false-positives
+ignore_names = ["cert_reqs", "footer"]

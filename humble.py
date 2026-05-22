@@ -32,7 +32,7 @@ import binascii
 import re
 import ssl
 import sys
-import xml.etree.ElementTree as ET  # nosemgrep
+import xml.etree.ElementTree as ET  # nosemgrep: use-defused-xml
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from base64 import b64decode
 from collections import Counter, defaultdict
@@ -205,7 +205,7 @@ XFRAME_CHECK = 'X-Frame-Options ('
 XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
 
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat('2026-05-21')
+local_version = date.fromisoformat('2026-05-22')
 
 BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
 
@@ -225,17 +225,18 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         - Certificate Requirement
     """
 
-    def init_poolmanager(self, *args, **kwargs):  # nosemgrep
+    def init_poolmanager(self, *args, **kwargs):
         """Initialize the pool manager.
 
         With an unverified SSL context and restricted ciphers.
 
         """
-        context = ssl._create_unverified_context()  # nosemgrep
-        context.check_hostname = False  # noqa
-        context.verify_mode = ssl.CERT_NONE  # noqa
-        context.cert_reqs = ssl.CERT_NONE  # noqa # nosemgrep
-        context.set_ciphers(FORCED_CIPHERS)  # nosemgrep
+        # nosemgrep: unverified-ssl-context
+        context = ssl._create_unverified_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
+        context.cert_reqs = ssl.CERT_NONE
+        context.set_ciphers(FORCED_CIPHERS) # nosemgrep: no-set-ciphers
         kwargs['ssl_context'] = context
         return super().init_poolmanager(*args, **kwargs)
 
@@ -458,7 +459,7 @@ def testssl_command(testssl_temp_path, uri):
         print_error_detail('[notestssl_fileexec]')
     print()
     print(f"{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
-    choice = input(  # nosemgrep
+    choice = input( # false-positive
         f"{get_detail('[testssl_choice]', replace=True)} ")[:1].strip().lower()
     if choice != "y":
         sys.exit(0)
@@ -477,9 +478,9 @@ def testssl_analysis(testssl_cmd):
         the `TESTSSL_OPTIONS` constant.
     """
     try:
-        # nosemgrep
+        # nosemgrep: dangerous-subprocess-use-audit
         process = Popen(testssl_cmd, stdout=PIPE, stderr=STDOUT,
-                        text=True)  # nosemgrep
+                        text=True) # false-positive
         for ln in iter(process.stdout.readline, ''):
             print(ln, end='')
             if 'Done' in ln:
@@ -2317,7 +2318,7 @@ def print_cicd_totals(tmp_filename):
                                         cicd_labels)
         print(dumps(cicd_output, indent=2, ensure_ascii=False))
         sys.exit(0)
-    except Exception as exc: # noqa: BLE001 # Catches unexpected exceptions
+    except Exception as exc: # noqa: BLE001
         err_key = get_detail('[cicd_error]', replace=True)
         print(dumps({err_key: str(exc)}, ensure_ascii=False))
         sys.exit(1)
@@ -2990,7 +2991,7 @@ def export_pdf_file(tmp_filename, *, export_all=False):
             self.cell(0, 5, BANNER_VERSION, align='C')
             self.ln(9 if self.page_no() == 1 else 13)
 
-        def footer(self):  # noqa
+        def footer(self):
             self.set_y(-15)
             self.set_font('Helvetica', 'I', 8)
             self.set_text_color(0, 0, 0)
@@ -3904,7 +3905,7 @@ def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
         return None, None, None
     except requests.exceptions.RequestException as request_err:
         return None, None, request_err
-    except Exception as unexpected_err: # noqa: BLE001 # Catches unexpected exceptions
+    except Exception as unexpected_err: # noqa: BLE001
         return None, None, unexpected_err
     else:
         return r, None, None
@@ -3936,7 +3937,7 @@ def process_http_error(r, exception_d):
         l10n_id = f'[server_{status}]'
         if ERROR_CODES_MIXED[2] <= status <= ERROR_CODES_MIXED[4]:
             process_server_error(status, l10n_id)
-    except Exception as http_err: # noqa: BLE001 # Catches unexpected exceptions
+    except Exception as http_err: # noqa: BLE001
         ex = exception_d.get(type(http_err))
         if ex and (not callable(ex) or ex(http_err)):
             print_http_exception(ex, http_err)
@@ -4001,7 +4002,7 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
             r, _, exception = make_http_request(custom_headers, proxy)
             result['r'] = r
             result['exception'] = exception
-        except Exception as thread_err: # noqa: BLE001 # Catches unexpected exceptions
+        except Exception as thread_err: # noqa: BLE001
             result['exception'] = thread_err
         finally:
             done.set()
@@ -4268,7 +4269,6 @@ if args.output:
     export_date = datetime.now().astimezone().strftime("%Y%m%d_%H%M%S")
     tmp_filename = get_tmp_file(args, export_date)
     validate_file_access(tmp_filename, context='export')
-    # nosemgrep
     tmp_filename_content = Path(tmp_filename).open('w', encoding='utf8') # noqa: SIM115
     sys.stdout = tmp_filename_content
     export_slice = SLICE_INT[4] if args.output == 'txt' else SLICE_INT[5]
