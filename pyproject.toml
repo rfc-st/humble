@@ -12,7 +12,6 @@ ignore = [
     "ERA001",  # WONT-FIX: related to comments needed for opengrep
     "EXE001",  # WONT-FIX: Shebang is mandatory for apt/packages; execution mode varies by platform
     "PLR0913", # TO-DO: related to functions having more than 5 arguments
-    "PLW0603", # TO-DO: related to 'global inside_section' findings
     "Q",       # TO-DO: unify quotes style, double vs single
     "S323",    # WONT-FIX: Explained in 'SSLContextAdapter' doctrings
     "S603",    # WONT-FIX: The input of 'testssl_analysis' is validated

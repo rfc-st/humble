@@ -3279,7 +3279,6 @@ def apply_pdf_color(colon_idx, hcolor, line, vcolor):
 
 def export_html_file(final_filename, tmp_filename, *, export_all=False):
     """HTML export of the analysis, related to `-o html` option."""
-    global inside_section
     inside_section = False
     generate_html()
     decrease_html_spacing(tmp_filename)
@@ -3291,7 +3290,9 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False):
         Path(final_filename).open('a', encoding='utf8') as html_final,
         ):
         for ln in html_source:
-            format_html_file(html_final, ko_strings, ln, ok_string)
+            inside_section = format_html_file(
+                html_final, ko_strings, ln, ok_string, inside_section,
+            )
         if inside_section:
             html_final.write(HTML_TAGS[12])
             inside_section = False
@@ -3338,29 +3339,39 @@ def decrease_html_spacing(tmp_filename):
         html_output.writelines(cleaned_ln)
 
 
-def format_html_file(html_final, ko_strings, ln, ok_string):
+def format_html_file(html_final, ko_strings, ln, ok_string, inside_section):
     """Format content for the main sections.
 
     Related to `-o html` option.
     """
-    ln_formatted = format_html_lines(html_final, ko_strings, ln, ok_string)
+    ln_formatted, inside_section = format_html_lines(
+        html_final, ko_strings, ln, ok_string, inside_section,
+    )
     if not ln_formatted:
         format_html_rest(html_final, l_empty, ln)
+    return inside_section
 
 
-def format_html_lines(html_final, ko_strings, ln, ok_string):
+def format_html_lines(html_final, ko_strings, ln, ok_string, inside_section):
     """Write formatted lines for the main sections.
 
     Related to `-o html` option.
     """
     lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
     ln_rstrip = ln.rstrip('\n')
-    return (format_html_info(html_final, ln_rstrip)
-            or format_html_bold(html_final, ln_rstrip)
-            or format_html_warnings(html_final, ko_strings, ln_rstrip,
-                                    ok_string)
-            or format_html_references(html_final, lang_slice, ln_rstrip)
-            or format_html_compatibility(html_final, ln_rstrip))
+    if format_html_info(html_final, ln_rstrip):
+        return True, inside_section
+    matched_bold, inside_section = format_html_bold(html_final, ln_rstrip,
+                                                    inside_section)
+    if matched_bold:
+        return True, inside_section
+    if format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string):
+        return True, inside_section
+    if format_html_references(html_final, lang_slice, ln_rstrip):
+        return True, inside_section
+    if format_html_compatibility(html_final, ln_rstrip):
+        return True, inside_section
+    return False, inside_section
 
 
 def format_html_info(html_final, ln_rstrip):
@@ -3436,19 +3447,18 @@ def format_html_compatibility(html_final, ln_rstrip):
     return True
 
 
-def format_html_bold(html_final, ln_rstrip):
+def format_html_bold(html_final, ln_rstrip, inside_section):
     """Bold the section names.
 
     Related to `-o html` option.
     """
-    global inside_section
     if any(s in ln_rstrip for s in BOLD_STRINGS):
         if inside_section:
             html_final.write(HTML_TAGS[12])
         html_final.write(f'{HTML_TAGS[7]}{ln_rstrip}{HTML_TAGS[8]}')
         inside_section = True
-        return True
-    return False
+        return True, inside_section
+    return False, inside_section
 
 
 def format_html_headers(ln):

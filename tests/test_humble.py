@@ -641,15 +641,14 @@ parser.add_argument("-l", dest='lang', choices=['en', 'es'], help="Defines the\
  language for displaying errors and messages")
 
 args = _Args()
+l10n_main = []
 
 
 @pytest.fixture(scope="session", autouse=True)
 def delete_temp_coverage():
     """Set up session globals and clean up temporary files after testing."""
-    global l10n_main
-    global args # noqa: PLW0602
     args.lang = "en"
-    l10n_main = get_l10n_content()
+    l10n_main[:] = get_l10n_content()
     yield
     cleanup_analysis_history()
     delete_temp_content()
