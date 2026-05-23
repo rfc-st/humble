@@ -5,21 +5,25 @@ target-version = "py311"
 [tool.ruff.lint]
 # https://docs.astral.sh/ruff/rules/
 select = [
-    "ALL",     # With the exceptions listed in the following section
+    "ALL",     # With the exceptions listed in the following sections
     ]
 ignore = [
     "ANN",     # TO-DO: and a big one, I know
-    "ERA001",  # WONT-FIX: related to comments needed for opengrep
     "EXE001",  # WONT-FIX: Shebang is mandatory for apt/packages; execution mode varies by platform
-    "Q",       # TO-DO: unify quotes style, double vs single
-    "S323",    # WONT-FIX: Explained in 'SSLContextAdapter' doctrings
     "S603",    # WONT-FIX: The input of 'testssl_analysis' is validated
-    "SLF001",  # WONT-FIX: 'ssl._create_unverified_context()' is an intentional stdlib call
     "T201",    # WONT-FIX: 'print' findings are needed to output information not debugging/logging
     ]
 
 [tool.ruff.lint.per-file-ignores]
-"test_humble.py" = ["S101"]  # All findings related to the use of 'assert'
+"humble.py" = [
+    "Q",       # TO-DO: unify quotes style
+    "ERA001",  # WONT-FIX: related to comments needed for opengrep
+    "S323",    # WONT-FIX: Explained in 'SSLContextAdapter' doctrings
+    "SLF001",  # WONT-FIX: 'ssl._create_unverified_context()' is an intentional stdlib call
+    ]
+"test_humble.py" = [
+    "S101",    # WONT-FIX: All findings related to the use of 'assert'
+    ]
 
 [tool.ruff.lint.pylint]
 max-args = 9
