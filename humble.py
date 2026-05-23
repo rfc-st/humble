@@ -235,7 +235,6 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         context = ssl._create_unverified_context()
         context.check_hostname = False
         context.verify_mode = ssl.CERT_NONE
-        context.cert_reqs = ssl.CERT_NONE
         context.set_ciphers(FORCED_CIPHERS) # nosemgrep: no-set-ciphers
         kwargs['ssl_context'] = context
         return super().init_poolmanager(*args, **kwargs)
