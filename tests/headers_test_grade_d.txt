@@ -1,6 +1,6 @@
 HTTP/2 200
 date: Sat, 13 Dec 2025 21:43:00 GMT
-content-type: text/html; charset=utf-8
+content-type: text/html
 content-language: en-US
 cache-control: no-cache, no-store, must-revalidate
 strict-transport-security: max-age=31536000; includeSubdomains; preload
@@ -17,6 +17,11 @@ set-cookie: logged_in=no; Path=/; Domain=github.com; Expires=Sun, 16 Aug 2026 19
 x-github-request-id: DE96:273306:40513AC:34CBEB7:68A0D917
 Clear-Site-Data: "cache"
 Cross-Origin-Embedder-Policy: require-corp
-Cross-Origin-Opener-Policy: same-origin-allow-popups
+Cross-Origin-Opener-Policy: unsafe-none
 No-Vary-Search: test
 test-header:
+attribution-reporting-register-source:
+attribution-reporting-register-trigger:
+sec-private-state-token-lifetime: test
+x-permitted-cross-domain-policies: all
+x-robots-tag: all
