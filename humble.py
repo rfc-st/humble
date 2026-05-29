@@ -57,157 +57,157 @@ from defusedcsv import csv as defusedcsv_logic
 from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
 
-BANNER = '''  _                     _     _
+BANNER = """  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
  | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
  | | | | |_| | | | | | | |_) | |  __/
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
-'''
-BOLD_STRINGS = ('[0.', 'HTTP R', '[1.', '[2.', '[3.', '[4.', '[5.', '[6.',
-                '[7.', '[Cabeceras')
+"""
+BOLD_STRINGS = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[6.",
+                "[7.", "[Cabeceras")
 CDN_HTTP_CODES = set(range(500, 512)) | set(range(520, 528)) | {530}
-CSV_SECTION = ('0section', '0headers', '1enabled', '2missing', '3fingerprint',
-               '4depinsecure', '5empty', '6compat', '7result')
+CSV_SECTION = ("0section", "0headers", "1enabled", "2missing", "3fingerprint",
+               "4depinsecure", "5empty", "6compat", "7result")
 DAYS_DIFF = 30
-DELETED_LINES = '\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
-DIR_MSG = ('[icsp_s]', '[icsp_si]', '[no_warnings]')
-DTD_CONTENT = '''<!ELEMENT analysis (section+)>
+DELETED_LINES = "\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K"
+DIR_MSG = ("[icsp_s]", "[icsp_si]", "[no_warnings]")
+DTD_CONTENT = """<!ELEMENT analysis (section+)>
 <!ATTLIST analysis version CDATA #REQUIRED>
 <!ATTLIST analysis generated CDATA #REQUIRED>
 <!ELEMENT section (item*)>
 <!ATTLIST section name CDATA #REQUIRED>
 <!ELEMENT item (#PCDATA)>
 <!ATTLIST item name CDATA #IMPLIED>
-'''
+"""
 ERROR_CODES_CLIENT = {*range(400, 408), *range(409, 418), *range(421, 427), 428,
                       429, 431, 451}
 ERROR_CODES_MIXED = (400, 451, 500, 511, 599)
-EXP_HEADERS = ('activate-storage-access', 'critical-ch', 'document-policy',
-               'nel', 'no-vary-search', 'permissions-policy',
-               'sec-private-state-token-lifetime', 'speculation-rules',
-               'supports-loading-mode')
-EXPORT_EXTENSIONS = ('.csv', '.html', '.json', '.pdf', '.txt', '.xlsx', '.xml')
+EXP_HEADERS = ("activate-storage-access", "critical-ch", "document-policy",
+               "nel", "no-vary-search", "permissions-policy",
+               "sec-private-state-token-lifetime", "speculation-rules",
+               "supports-loading-mode")
+EXPORT_EXTENSIONS = (".csv", ".html", ".json", ".pdf", ".txt", ".xlsx", ".xml")
 FORCED_CIPHERS = "HIGH:!DH:!aNULL"
-HASH_CHARS = {'sha256': 32, 'sha384': 48, 'sha512': 64}
+HASH_CHARS = {"sha256": 32, "sha384": 48, "sha512": 64}
 HEADERS_CHECKS = 2
-HTML_TAGS = ('</a>', '<a href="', '">', '<span class="ko">',
-             '<span class="header">', '</span>', '<span class="ok">',
-             '</pre><div><details open><summary><strong>',
-             '</strong></summary><pre>', 'class="ko"', '    class="ko"',
-             '<br>', '</pre></details></div><pre>', '</pre><br></body></html>',
-             '<strong>', '</strong>', '&nbsp;<font color="', '</font><br><br>',
-             '</font>', '<font color="')
-HTTP_SCHEMES = ('http:', 'https:')
+HTML_TAGS = ("</a>", '<a href="', '">', '<span class="ko">',
+             '<span class="header">', "</span>", '<span class="ok">',
+             "</pre><div><details open><summary><strong>",
+             "</strong></summary><pre>", 'class="ko"', '    class="ko"',
+             "<br>", "</pre></details></div><pre>", "</pre><br></body></html>",
+             "<strong>", "</strong>", '&nbsp;<font color="', "</font><br><br>",
+             "</font>", '<font color="')
+HTTP_SCHEMES = ("http:", "https:")
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
-HUMBLE_DIRS = ('additional', 'l10n')
-HUMBLE_FILES = ('analysis_h.txt', 'check_path_permissions', 'fingerprint.txt',
-                'guides.txt', 'details_es.txt', 'details.txt',
-                'user_agents.txt', 'insecure.txt', 'html_template.html',
-                'analysis_grades.txt', 'analysis_grades_es.txt', 'license.txt',
-                'license_es.txt', 'testssl_windows.txt',
-                'testssl_windows_es.txt', 'security_guides.txt',
-                'security_guides_es.txt', 'security.txt',
-                'owasp_best_practices.txt')
+HUMBLE_DIRS = ("additional", "l10n")
+HUMBLE_FILES = ("analysis_h.txt", "check_path_permissions", "fingerprint.txt",
+                "guides.txt", "details_es.txt", "details.txt",
+                "user_agents.txt", "insecure.txt", "html_template.html",
+                "analysis_grades.txt", "analysis_grades_es.txt", "license.txt",
+                "license_es.txt", "testssl_windows.txt",
+                "testssl_windows_es.txt", "security_guides.txt",
+                "security_guides_es.txt", "security.txt",
+                "owasp_best_practices.txt")
 INFO_SECTION = ("[0. Info")
-JSON_L10N = ('[json_det_fngheader]', '[json_det_refs]', '[json_det_fngval]')
-JSON_SECTION = ('0section', '0headers', '5compat', '6result')
-L10N_IDXS = {'grades': (9, 10), 'license': (11, 12), 'testssl': (13, 14),
-             'security_guides': (15, 16)}
+JSON_L10N = ("[json_det_fngheader]", "[json_det_refs]", "[json_det_fngval]")
+JSON_SECTION = ("0section", "0headers", "5compat", "6result")
+L10N_IDXS = {"grades": (9, 10), "license": (11, 12), "testssl": (13, 14),
+             "security_guides": (15, 16)}
 LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2)
-METADATA_S = ('[pdf_meta_keywords', '[pdf_meta_subject]')
+METADATA_S = ("[pdf_meta_keywords", "[pdf_meta_subject]")
 OS_PATH = Path(__file__).resolve().parent
 PATHS = {
-    'help_epilog': OS_PATH / HUMBLE_DIRS[1] / HUMBLE_FILES[5],
-    'fingerprint_header': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
-    'fingerprint_term': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
-    'fingerprint_top': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
-    'html_source': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[8],
-    'insecure_header': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[7],
-    'owasp_compliance': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[18],
-    'security_headers': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[17],
-    'user_agents': OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6],
+    "help_epilog": OS_PATH / HUMBLE_DIRS[1] / HUMBLE_FILES[5],
+    "fingerprint_header": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
+    "fingerprint_term": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
+    "fingerprint_top": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
+    "html_source": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[8],
+    "insecure_header": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[7],
+    "owasp_compliance": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[18],
+    "security_headers": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[17],
+    "user_agents": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6],
 }
-PDF_COLORS = ('#008000', '#000000', '#660033')
-PDF_CONDITIONS = ('Ref:', ':', '"', '(*) ')
-PDF_SECTION = {'[0.': '[0section_s]', '[HTTP R': '[0headers_s]',
-               '[1.': '[1enabled_s]', '[2.': '[2missing_s]',
-               '[3.': '[3fingerprint_s]', '[4.': '[4depinsecure_s]',
-               '[5.': '[5empty_s]', '[6.': '[6compat_s]', '[7.': '[7result_s]',
-               '[Cabeceras': '[0headers_s]'}
+PDF_COLORS = ("#008000", "#000000", "#660033")
+PDF_CONDITIONS = ("Ref:", ":", '"', "(*) ")
+PDF_SECTION = {"[0.": "[0section_s]", "[HTTP R": "[0headers_s]",
+               "[1.": "[1enabled_s]", "[2.": "[2missing_s]",
+               "[3.": "[3fingerprint_s]", "[4.": "[4depinsecure_s]",
+               "[5.": "[5empty_s]", "[6.": "[6compat_s]", "[7.": "[7result_s]",
+               "[Cabeceras": "[0headers_s]"}
 PYTHON_REQUIRED_VERSION = (3, 11)
 RE_PATTERN = (
-    r'\((.*?)\)',
-    r'(?:(?:\d{1,3}\.){3}\d{1,3}|(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4})',
-    (r'\.\./|/\.\.|\\\.\.|\\\.\\|'
-     r'%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|'
-     r'%uff0e%uff0e%u2215|%uff0e%uff0e%u2216'), r'\(([^)]+)\)',
-    r'\d{4}-\d{2}-\d{2}', r'\[(.*?)\]\n', r"'nonce-([^']+)'",
-    r'\(humble_pdf_style\)([^:]+):',
+    r"\((.*?)\)",
+    r"(?:(?:\d{1,3}\.){3}\d{1,3}|(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4})",
+    (r"\.\./|/\.\.|\\\.\.|\\\.\\|"
+     r"%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|"
+     r"%uff0e%uff0e%u2215|%uff0e%uff0e%u2216"), r"\(([^)]+)\)",
+    r"\d{4}-\d{2}-\d{2}", r"\[(.*?)\]\n", r"'nonce-([^']+)'",
+    r"\(humble_pdf_style\)([^:]+):",
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
-    r'\(humble_sec_style\)([^:]+)', r'\(humble_sec_style\)',
-    r'(?: Nota : | Note : )', r'^[0-9a-fA-F]+$', r'^[A-Za-z0-9+/=]+$',
-    r', (?=[^;,]+?=)', r"'nonce-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
+    r"\(humble_sec_style\)([^:]+)", r"\(humble_sec_style\)",
+    r"(?: Nota : | Note : )", r"^[0-9a-fA-F]+$", r"^[A-Za-z0-9+/=]+$",
+    r", (?=[^;,]+?=)", r"'nonce-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
     r"'(sha256|sha384|sha512)-([A-Za-z0-9+/=]+)'",
     r"(?<!')\b(sha256|sha384|sha512)-[A-Za-z0-9+/=]+(?!')",
-    r'^([a-zA-Z0-9\-]+)',
-    r'\s{2,},',
+    r"^([a-zA-Z0-9\-]+)",
+    r"\s{2,},",
     r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
     r"<pre(?:\s[^>]*)?>\s*</pre>",
     r"<pre>/pre>'",
     r"(?<!')nonce-",
 )
-REF_LINKS = (' Ref  : ', ' Ref: ', 'Ref  :', 'Ref: ', ' ref:')
-RESP_SECTION = ('[HTTP R', '[Cabeceras d')
+REF_LINKS = (" Ref  : ", " Ref: ", "Ref  :", "Ref: ", " ref:")
+RESP_SECTION = ("[HTTP R", "[Cabeceras d")
 REQ_HEADERS = {
-    'Accept': (
-        'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    "Accept": (
+        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
     ),
-    'Accept-Encoding': 'gzip, deflate, br, zstd',
-    'Accept-Language': 'en-US,en;q=0.9',
-    'Cache-Control': 'no-cache',
-    'Pragma': 'no-cache',
-    'Upgrade-Insecure-Requests': '1',
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
+    "Upgrade-Insecure-Requests": "1",
 }
 REQ_TIMEOUT = 15
 REQ_WARNING = 6
 SECONDS_BOUNDS = (86400, 31536000)
-SECTION_S = ('[enabled_cnt]', '[missing_cnt]', '[fng_cnt]', '[insecure_cnt]',
-             '[empty_cnt]', '[total_cnt]')
-SECTION_V = ('[no_enabled]', '[no_missing]', '[no_fingerprint]',
-             '[no_ins_deprecated]', '[no_empty]', '[average_warnings]',
-             '[average_warnings_year]', '[average_enb]', '[average_miss]',
-             '[average_fng]', '[average_dep]', '[average_ety]',
-             '[most_analyzed]', '[least_analyzed]', '[most_warnings]',
-             '[least_warnings]', '[most_enabled]', '[least_enabled]',
-             '[most_missing]', '[least_missing]', '[most_fingerprints]',
-             '[least_fingerprints]', '[most_insecure]', '[least_insecure]',
-             '[most_empty]', '[least_empty]')
+SECTION_S = ("[enabled_cnt]", "[missing_cnt]", "[fng_cnt]", "[insecure_cnt]",
+             "[empty_cnt]", "[total_cnt]")
+SECTION_V = ("[no_enabled]", "[no_missing]", "[no_fingerprint]",
+             "[no_ins_deprecated]", "[no_empty]", "[average_warnings]",
+             "[average_warnings_year]", "[average_enb]", "[average_miss]",
+             "[average_fng]", "[average_dep]", "[average_ety]",
+             "[most_analyzed]", "[least_analyzed]", "[most_warnings]",
+             "[least_warnings]", "[most_enabled]", "[least_enabled]",
+             "[most_missing]", "[least_missing]", "[most_fingerprints]",
+             "[least_fingerprints]", "[most_insecure]", "[least_insecure]",
+             "[most_empty]", "[least_empty]")
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 20)
 SECTIONS_EXPORT_STATES = {RESP_SECTION: (True, False, False),
-                          '[1.': (False, True, False),
-                          '[2.': (False, False, False),
-                          '[6.': (False, False, True),
-                          '[7.': (False, False, False)}
+                          "[1.": (False, True, False),
+                          "[2.": (False, False, False),
+                          "[6.": (False, False, True),
+                          "[7.": (False, False, False)}
 STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
-         Style.RESET_ALL, Fore.RESET, '(humble_pdf_style)',
-         f"(humble_sec_style){Fore.GREEN}", '(humble_sec_style)',
+         Style.RESET_ALL, Fore.RESET, "(humble_pdf_style)",
+         f"(humble_sec_style){Fore.GREEN}", "(humble_sec_style)",
          f"{Style.RESET_ALL}{Fore.RESET}", Fore.GREEN)
 TESTSSL_FILE = ("testssl", "testssl.sh")
-TESTSSL_OPTIONS = ['-f', '-g', '-p', '-U', '-s', '--hints']
-URL_LIST = (': https://caniuse.com/?search=', ' Ref  : https://developers.\
+TESTSSL_OPTIONS = ["-f", "-g", "-p", "-U", "-s", "--hints"]
+URL_LIST = (": https://caniuse.com/?search=", " Ref  : https://developers.\
 cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
-/', ' Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
-Reference/Status/', 'https://raw.githubusercontent.com/rfc-st/humble/master/\
-humble.py', 'https://github.com/rfc-st/humble')
-URL_STRING = ('rfc-st', ' URL  : ', 'https://caniuse.com/?')
+/", " Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
+Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
+humble.py", "https://github.com/rfc-st/humble")
+URL_STRING = ("rfc-st", " URL  : ", "https://caniuse.com/?")
 VALIDATE_FILE = OS_PATH / HUMBLE_FILES[0]
-XFRAME_CHECK = 'X-Frame-Options ('
-XML_STRING = ('Ref: ', 'Value: ', 'Valor: ')
+XFRAME_CHECK = "X-Frame-Options ("
+XML_STRING = ("Ref: ", "Value: ", "Valor: ")
 
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat('2026-05-23')
+local_version = date.fromisoformat("2026-05-29")
 
-BANNER_VERSION = f'{URL_LIST[4]} | v.{local_version}'
+BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -236,7 +236,7 @@ class SSLContextAdapter(requests.adapters.HTTPAdapter):
         context.check_hostname = False
         context.verify_mode = ssl.CERT_NONE
         context.set_ciphers(FORCED_CIPHERS) # nosemgrep: no-set-ciphers
-        kwargs['ssl_context'] = context
+        kwargs["ssl_context"] = context
         return super().init_poolmanager(*args, **kwargs)
 
 
@@ -248,9 +248,9 @@ def check_python_version():
     """
     if sys.version_info < PYTHON_REQUIRED_VERSION:
         host_python = f"{sys.version_info.major}.{sys.version_info.minor}"
-        host_msg = get_detail('[python_host_version]', replace=True)
+        host_msg = get_detail("[python_host_version]", replace=True)
         print(f"\n{host_msg} {host_python}.")
-        print_detail('[python_required_version]', 3)
+        print_detail("[python_required_version]", 3)
         sys.exit(1)
 
 
@@ -259,11 +259,11 @@ def process_proxy_url(proxy_url, timeout):
     parsed_proxy_url = urlparse(proxy_url)
     proxy_host = parsed_proxy_url.hostname
     if not proxy_host:
-        print_error_detail('[proxy_host]', clean_lines=True)
+        print_error_detail("[proxy_host]", clean_lines=True)
     try:
         proxy_port = parsed_proxy_url.port or 8080
     except ValueError:
-        print_error_detail('[proxy_port]', clean_lines=True)
+        print_error_detail("[proxy_port]", clean_lines=True)
     failed_proxy = Event()
     proxy_thread = Thread(target=check_proxy_url, args=(proxy_host, proxy_port,
                                                         timeout, failed_proxy),
@@ -271,7 +271,7 @@ def process_proxy_url(proxy_url, timeout):
     proxy_thread.start()
     proxy_thread.join(timeout)
     if proxy_thread.is_alive() or failed_proxy.is_set():
-        print_error_detail('[proxy_url]', clean_lines=True)
+        print_error_detail("[proxy_url]", clean_lines=True)
     return True
 
 
@@ -298,7 +298,7 @@ def check_updates(local_version):
         days_diff = (github_version - local_version).days
         check_updates_diff(days_diff, github_version, local_version)
     except (requests.exceptions.RequestException, AttributeError, ValueError):
-        print_error_detail('[update_error]')
+        print_error_detail("[update_error]")
     sys.exit(0)
 
 
@@ -315,7 +315,7 @@ def check_updates_diff(days_diff, github_version, local_version):
         print(f"\n{get_detail('[humble_not_recent]')}\n\
 {get_detail('[github_humble]', replace=True)}\n")
     else:
-        print_detail('[humble_recent]', 8)
+        print_detail("[humble_recent]", 8)
 
 
 def fng_statistics_top():
@@ -325,7 +325,7 @@ def fng_statistics_top():
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    with PATHS['fingerprint_top'].open('r', encoding='utf8') as fng_f:
+    with PATHS["fingerprint_top"].open("r", encoding="utf8") as fng_f:
         fng_iterator = islice(fng_f, SLICE_INT[0], None)
         fng_lines = list(fng_iterator)
         fng_incl = len(fng_lines)
@@ -352,7 +352,7 @@ def fng_statistics_top_result(fng_top_groups, fng_incl):
 {get_detail('[fng_top_2]', replace=True)}\n")
     for content, count in fng_top_groups.most_common(20):
         fng_global_pct = round(count / fng_incl * 100, 2)
-        fng_padding = ' ' * (max_ln_len - len(content))
+        fng_padding = " " * (max_ln_len - len(content))
         print(f" [{content}]: {fng_padding}{fng_global_pct:.2f}% ({count})")
 
 
@@ -363,7 +363,7 @@ def fng_statistics_term(fng_term):
     """
     print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
 {STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    with PATHS['fingerprint_term'].open('r', encoding='utf8') as fng_source:
+    with PATHS["fingerprint_term"].open("r", encoding="utf8") as fng_source:
         fng_incl = list(islice(fng_source, SLICE_INT[0], None))
     fng_groups, term_cnt = fng_statistics_term_groups(fng_incl, fng_term)
     if not fng_groups:
@@ -414,17 +414,17 @@ def fng_statistics_term_sorted(fng_incl, fng_term, fng_groups):
 
 def print_l10n_file(args, l10n_file, *, slice_ln=False):
     """Print the contents of a file in the specified language and exit."""
-    lang_es = args.lang == 'es'
+    lang_es = args.lang == "es"
     lang_idx = 1 if lang_es else 0
     l10n_file = HUMBLE_FILES[L10N_IDXS[l10n_file][lang_idx]]
     l10n_slice = SLICE_INT[2 if lang_es else 3]
     file_path = OS_PATH / HUMBLE_DIRS[1] / l10n_file
-    with file_path.open(encoding='utf8') as l10n_source:
+    with file_path.open(encoding="utf8") as l10n_source:
         l10n_lines = islice(l10n_source, l10n_slice, None) if slice_ln else \
             l10n_source
         for line in l10n_lines:
-            prefix = f" {STYLE[0]}" if line.startswith('[') else "  "
-            print(f"{prefix}{line}", end='')
+            prefix = f" {STYLE[0]}" if line.startswith("[") else "  "
+            print(f"{prefix}{line}", end="")
     sys.exit(0)
 
 
@@ -450,12 +450,12 @@ def testssl_command(testssl_temp_path, uri):
     """
     args_path = Path(testssl_temp_path).resolve()
     if not args_path.is_dir():
-        print_error_detail('[notestssl_path]')
+        print_error_detail("[notestssl_path]")
     testssl_path = next(
         (args_path / filename for filename in TESTSSL_FILE if
          (args_path / filename).is_file()), None)
     if not testssl_path or not which(testssl_path):
-        print_error_detail('[notestssl_fileexec]')
+        print_error_detail("[notestssl_fileexec]")
     print()
     print(f"{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
     choice = input( # false-positive
@@ -480,21 +480,21 @@ def testssl_analysis(testssl_cmd):
         # nosemgrep: dangerous-subprocess-use-audit
         process = Popen(testssl_cmd, stdout=PIPE, stderr=STDOUT,
                         text=True) # false-positive
-        for ln in iter(process.stdout.readline, ''):
-            print(ln, end='')
-            if 'Done' in ln:
+        for ln in iter(process.stdout.readline, ""):
+            print(ln, end="")
+            if "Done" in ln:
                 process.terminate()
                 break
         process.wait()
     except (OSError, ValueError):
-        print_error_detail('[testssl_error]')
+        print_error_detail("[testssl_error]")
 
 
 def get_l10n_content():
     """Load the localization file for the specified language."""
     l10n_path = (OS_PATH / HUMBLE_DIRS[1] /
-                 (HUMBLE_FILES[4] if args.lang == 'es' else HUMBLE_FILES[5]))
-    with l10n_path.open(encoding='utf8') as l10n_content:
+                 (HUMBLE_FILES[4] if args.lang == "es" else HUMBLE_FILES[5]))
+    with l10n_path.open(encoding="utf8") as l10n_content:
         return l10n_content.readlines()
 
 
@@ -507,11 +507,11 @@ def get_analysis_results():
     analysis_totals = save_analysis_results(t_cnt)
     current = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
     analysis_diff = compare_analysis_results(analysis_totals, current)
-    en_cnt_w = '1' if en_cnt == 0 else None
+    en_cnt_w = "1" if en_cnt == 0 else None
     format_analysis_results(*analysis_diff, en_cnt_w=en_cnt_w, t_cnt=t_cnt)
     analysis_grade = grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt)
     print(f"{get_detail(analysis_grade)}")
-    print_detail('[experimental_header]', 3)
+    print_detail("[experimental_header]", 3)
 
 
 def save_analysis_results(t_cnt):
@@ -529,10 +529,10 @@ def save_analysis_results(t_cnt):
         - Total number of empty headers
         - Total number of warnings (the four previous totals)
     """
-    ok, fallback = validate_file_access(VALIDATE_FILE, context='history')
+    ok, fallback = validate_file_access(VALIDATE_FILE, context="history")
     if not ok:
         return fallback
-    with Path(HUMBLE_FILES[0]).open('a+', encoding='utf8') as all_analysis:
+    with Path(HUMBLE_FILES[0]).open("a+", encoding="utf8") as all_analysis:
         all_analysis.seek(0)
         url_ln = [line for line in all_analysis if URL in line]
         analysis_totals = [current_time, URL, en_cnt, m_cnt, f_cnt, i_cnt[0],
@@ -554,27 +554,27 @@ def get_analysis_totals(url_ln):
     """
     updated_lines = []
     for line in url_ln:
-        fields = line.strip().split(' ; ')
+        fields = line.strip().split(" ; ")
         if len(fields) == LENGTH_BOUNDS[1]:
-            fields.insert(2, '0')
-        updated_lines.append(' ; '.join(fields))
+            fields.insert(2, "0")
+        updated_lines.append(" ; ".join(fields))
     url_ln = updated_lines
     analysis_date = max(line[:SLICE_INT[9]] for line in url_ln)
     for line in url_ln:
         if analysis_date in line:
-            *totals, = line.strip().split(' ; ')
+            *totals, = line.strip().split(" ; ")
             break
     return tuple(totals[2:])
 
 
 def compare_analysis_results(analysis_totals, current_counts):
     """Print the differences in totals between analyses of the same URL."""
-    status_map = {"First": '[first_analysis]',
-                  "Not available": '[notaval_analysis]'}
+    status_map = {"First": "[first_analysis]",
+                  "Not available": "[notaval_analysis]"}
     if analysis_totals[0] in status_map:
         return [get_detail(status_map[analysis_totals[0]], replace=True)] * 6
     return [
-        get_detail('[no_changes]', replace=True) if (d - int(c)) == 0
+        get_detail("[no_changes]", replace=True) if (d - int(c)) == 0
         else f"{d - int(c):+d}" for d, c in zip(current_counts,
                                                 analysis_totals, strict=True)
     ]
@@ -597,30 +597,30 @@ def print_analysis_results(totals, max_secl, en_cnt_w):
     """Print the totals for the current analysis."""
     for idx, (literal, total) in enumerate(zip(SECTION_S, totals, strict=True)):
         print(f"{print_detail_s(literal, max_ln=True):<{max_secl}} {total}",
-              end='')
+              end="")
         if idx == 0 and en_cnt_w:
-            val1 = print_detail_s('[enabled_cnt_w]', max_ln=True)
-            val2 = get_detail('[enabled_cnt_wt]')
-            print(f"{val1:<{max_secl}} {val2}", end='')
+            val1 = print_detail_s("[enabled_cnt_w]", max_ln=True)
+            val2 = get_detail("[enabled_cnt_wt]")
+            print(f"{val1:<{max_secl}} {val2}", end="")
 
 
 def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
     """Grade the analysis based on its results."""
     if en_cnt == 0:
-        return '[e_grade]'
+        return "[e_grade]"
     if i_cnt and sum(i_cnt) > 0:
-        return '[d_grade]'
+        return "[d_grade]"
     if m_cnt > 0:
-        return '[c_grade]'
+        return "[c_grade]"
     if f_cnt > 0:
-        return '[b_grade]'
-    return '[a_grade]' if e_cnt > 0 else '[perfect_grade]'
+        return "[b_grade]"
+    return "[a_grade]" if e_cnt > 0 else "[perfect_grade]"
 
 
 def check_analysis(filepath):
     """Check if analysis history file, `analysis_h.txt`, exists."""
     if not Path(filepath).exists():
-        detail = '[no_analysis]' if URL else '[no_global_analysis]'
+        detail = "[no_analysis]" if URL else "[no_global_analysis]"
         print_error_detail(detail)
 
 
@@ -635,11 +635,11 @@ def adjust_old_analysis(url_ln):
     """
     updated_lines = []
     for i in url_ln:
-        fields = i.strip().split(';')
+        fields = i.strip().split(";")
         if len(fields) == LENGTH_BOUNDS[1]:
             fields = [field.strip() for field in fields]
-            fields.insert(2, '0')
-            updated_lines.append(' ; '.join(fields) + '\n')
+            fields.insert(2, "0")
+            updated_lines.append(" ; ".join(fields) + "\n")
         else:
             updated_lines.append(i)
     return updated_lines
@@ -651,14 +651,14 @@ def url_analytics(*, is_global=False):
     Related to the `-a` option.
     """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
-    with Path(HUMBLE_FILES[0]).open(encoding='utf8') as all_analysis:
+    with Path(HUMBLE_FILES[0]).open(encoding="utf8") as all_analysis:
         analysis_metrics = url_scope(all_analysis)
-    l10n_det = '[global_stats_analysis]' if is_global else '[stats_analysis]'
-    url_string = '' if is_global else URL
+    l10n_det = "[global_stats_analysis]" if is_global else "[stats_analysis]"
+    url_string = "" if is_global else URL
     print(f"\n{get_detail(l10n_det, replace=True)} {url_string}\n")
     for key, value in analysis_metrics.items():
         key_style = f"{STYLE[0]}{key}{STYLE[4]}" if not value or not \
-            key.startswith(' ') else key
+            key.startswith(" ") else key
         print(f"{key_style}: {value}")
     sys.exit(0)
 
@@ -670,7 +670,7 @@ def get_analysis_metrics(all_analysis):
     """
     url_ln = [line for line in all_analysis if URL in line]
     if not url_ln:
-        print_error_detail('[no_analysis]')
+        print_error_detail("[no_analysis]")
     adj_url_ln = adjust_old_analysis(url_ln)
     total_a = len(adj_url_ln)
     return print_metrics(
@@ -705,7 +705,7 @@ def get_second_metrics(adj_url_ln, index, total_a):
 
     Related to `-a` option.
     """
-    metric_c = len([line for line in adj_url_ln if int(line.split(' ; ')
+    metric_c = len([line for line in adj_url_ln if int(line.split(" ; ")
                                                        [index])
                     == 0])
     return f"{metric_c / total_a:.0%} ({metric_c}\
@@ -717,7 +717,7 @@ def get_third_metrics(adj_url_ln):
 
     Related to `-a` option.
     """
-    fields = [line.strip().split(';') for line in adj_url_ln]
+    fields = [line.strip().split(";") for line in adj_url_ln]
     total_enb, total_miss, total_fng, total_dep, total_ety = \
         [sum(int(f[i]) for f in fields) for i in range(2, 7)]
     num_a = len(adj_url_ln)
@@ -732,7 +732,7 @@ def get_additional_metrics(adj_url_ln):
 
     Related to `-a` option.
     """
-    avg_w = int(sum(int(line.split(' ; ')[-1]) for line in adj_url_ln) /
+    avg_w = int(sum(int(line.split(" ; ")[-1]) for line in adj_url_ln) /
                 len(adj_url_ln))
     year_a, avg_w_y, month_a = extract_date_metrics(adj_url_ln)
     return (avg_w, year_a, avg_w_y, month_a)
@@ -747,7 +747,7 @@ def extract_date_metrics(url_ln):
     for line in url_ln:
         year = int(line[:SLICE_INT[11]])
         year_cnt[year] += 1
-        year_wng[year] += int(line.rsplit(' ; ', 1)[-1])
+        year_wng[year] += int(line.rsplit(" ; ", 1)[-1])
     years_str = generate_date_groups(year_cnt, url_ln)
     avg_wng_y = sum(year_wng.values()) // len(year_wng)
     return years_str, avg_wng_y, year_wng
@@ -763,11 +763,11 @@ def generate_date_groups(year_cnt, url_ln):
         year_str = f" {year}: {year_cnt[year]} \
 {get_detail('[analysis_y]').rstrip()}"
         month_cnts = get_month_counts(year, url_ln)
-        months_str = '\n'.join([f"  ({count}){month_name.rstrip()}" for
+        months_str = "\n".join([f"  ({count}){month_name.rstrip()}" for
                                 month_name, count in month_cnts.items()])
         year_str += f"\n{months_str}\n"
         years_str.append(year_str)
-    return '\n'.join(years_str)
+    return "\n".join(years_str)
 
 
 def get_month_counts(year, url_ln):
@@ -778,9 +778,9 @@ def get_month_counts(year, url_ln):
     month_cnts = defaultdict(int)
     for line in url_ln:
         date_str = line[:SLICE_INT[10]]
-        line_year, line_month, _ = map(int, date_str.split('/'))
+        line_year, line_month, _ = map(int, date_str.split("/"))
         if line_year == year:
-            month_cnts[get_detail(f'[month_{line_month:02d}]')] += 1
+            month_cnts[get_detail(f"[month_{line_month:02d}]")] += 1
     return month_cnts
 
 
@@ -790,8 +790,8 @@ def get_highlights(adj_url_ln):
     Related to `-a` option.
     """
     sections_h = SECTION_S[:-1]
-    best_lbl = print_detail_l('[best_analysis]', analytics=True)
-    worst_lbl = print_detail_l('[worst_analysis]', analytics=True)
+    best_lbl = print_detail_l("[best_analysis]", analytics=True)
+    worst_lbl = print_detail_l("[worst_analysis]", analytics=True)
     results = []
     for i, field in enumerate(range(2, 7)):
         fns_cond = (min, max) if i else (max, min)
@@ -808,12 +808,12 @@ def calculate_highlights(url_ln, field_index, func):
 
     Based on the required highlight metric; related to `-a` option.
     """
-    values = [int(line.split(';')[field_index].strip()) for line in url_ln]
+    values = [int(line.split(";")[field_index].strip()) for line in url_ln]
     target_value = func(values)
     target_line = next(line for line in url_ln
-                       if int(line.split(';')[field_index].strip()) ==
+                       if int(line.split(";")[field_index].strip()) ==
                        target_value)
-    return target_line.split(';')[0].strip()
+    return target_line.split(";")[0].strip()
 
 
 def get_trends(adj_url_ln):
@@ -824,7 +824,7 @@ def get_trends(adj_url_ln):
     trends = []
     for section, field_idx in zip(sections_t, fields_t, strict=True):
         values = [int(parts[field_idx].strip()) for line in adj_url_ln
-                  if len(parts := line.strip().split(';')) > field_idx]
+                  if len(parts := line.strip().split(";")) > field_idx]
         trends.append(f"{(get_detail(section, replace=True).ljust(max_secl))}\
  {calculate_trends(values)}")
     return trends
@@ -849,17 +849,17 @@ def calculate_trends(values):
         - `Fluctuating`: No clear trend is detected; totals alternate
     """
     if len(values) < LENGTH_BOUNDS[0]:
-        return print_detail_l('[t_insufficient]', analytics=True)
+        return print_detail_l("[t_insufficient]", analytics=True)
     trends_list = values[-5:]
     if all(x == trends_list[0] for x in trends_list):
-        return print_detail_l('[t_stable]', analytics=True)
+        return print_detail_l("[t_stable]", analytics=True)
     inc_trend = sum(trends_list[i] > trends_list[i - 1] for i in range(1, 5))
     dec_trend = sum(trends_list[i] < trends_list[i - 1] for i in range(1, 5))
     if dec_trend > inc_trend:
-        return print_detail_l('[t_improving]', analytics=True)
+        return print_detail_l("[t_improving]", analytics=True)
     if inc_trend > dec_trend:
-        return print_detail_l('[t_worsening]', analytics=True)
-    return print_detail_l('[t_fluctuating]', analytics=True)
+        return print_detail_l("[t_worsening]", analytics=True)
+    return print_detail_l("[t_fluctuating]", analytics=True)
 
 
 def print_metrics(analytics_s, analytics_w, total_a, *m_data):
@@ -886,11 +886,11 @@ def get_basic_metrics(total_a, first_m):
 
     Related to `-a` option.
     """
-    return {'[main]': "", '[total_analysis]': total_a,
-            '[first_analysis_a]': first_m[0], '[latest_analysis]': first_m[1],
-            '[best_analysis]': f"{first_m[2]} \
+    return {"[main]": "", "[total_analysis]": total_a,
+            "[first_analysis_a]": first_m[0], "[latest_analysis]": first_m[1],
+            "[best_analysis]": f"{first_m[2]} \
 {get_detail('[total_warnings]', replace=True)}{first_m[3]})",
-            '[worst_analysis]': f"{first_m[4]} \
+            "[worst_analysis]": f"{first_m[4]} \
 {get_detail('[total_warnings]', replace=True)}{first_m[5]})\n"}
 
 
@@ -899,12 +899,12 @@ def get_security_metrics(analytics_s, second_m):
 
     Related to `-a` option.
     """
-    return {'[analysis_y]': "",
-            '[no_enabled]': f"{analytics_s[0]}{second_m[0]}",
-            '[no_missing]': f"{analytics_s[1]}{second_m[1]}",
-            '[no_fingerprint]': f"{analytics_s[2]}{second_m[2]}",
-            '[no_ins_deprecated]': f"{analytics_s[3]}{second_m[3]}",
-            '[no_empty]': f"{analytics_s[4]}{second_m[4]}\n"}
+    return {"[analysis_y]": "",
+            "[no_enabled]": f"{analytics_s[0]}{second_m[0]}",
+            "[no_missing]": f"{analytics_s[1]}{second_m[1]}",
+            "[no_fingerprint]": f"{analytics_s[2]}{second_m[2]}",
+            "[no_ins_deprecated]": f"{analytics_s[3]}{second_m[3]}",
+            "[no_empty]": f"{analytics_s[4]}{second_m[4]}\n"}
 
 
 def get_warnings_metrics(additional_m, analytics_w):
@@ -912,9 +912,9 @@ def get_warnings_metrics(additional_m, analytics_w):
 
     Related to `-a` option.
     """
-    return {'[averages]': "",
-            '[average_warnings]': f"{analytics_w[0]}{additional_m[0]}",
-            '[average_warnings_year]': f"{analytics_w[1]}{additional_m[2]}\n"}
+    return {"[averages]": "",
+            "[average_warnings]": f"{analytics_w[0]}{additional_m[0]}",
+            "[average_warnings_year]": f"{analytics_w[1]}{additional_m[2]}\n"}
 
 
 def get_averages_metrics(analytics_w, third_m):
@@ -922,11 +922,11 @@ def get_averages_metrics(analytics_w, third_m):
 
     Related to `-a` option.
     """
-    return {'[average_enb]': f"{analytics_w[2]}{third_m[0]}",
-            '[average_miss]': f"{analytics_w[3]}{third_m[1]}",
-            '[average_fng]': f"{analytics_w[4]}{third_m[2]}",
-            '[average_dep]': f"{analytics_w[5]}{third_m[3]}",
-            '[average_ety]': f"{analytics_w[6]}{third_m[4]}\n"}
+    return {"[average_enb]": f"{analytics_w[2]}{third_m[0]}",
+            "[average_miss]": f"{analytics_w[3]}{third_m[1]}",
+            "[average_fng]": f"{analytics_w[4]}{third_m[2]}",
+            "[average_dep]": f"{analytics_w[5]}{third_m[3]}",
+            "[average_ety]": f"{analytics_w[6]}{third_m[4]}\n"}
 
 
 def get_highlights_metrics(fourth_m):
@@ -934,20 +934,20 @@ def get_highlights_metrics(fourth_m):
 
     Related to `-a` option.
     """
-    return {'[highlights]': "\n" + "\n".join(fourth_m)}
+    return {"[highlights]": "\n" + "\n".join(fourth_m)}
 
 
 def get_trend_metrics(fifth_m):
     """Print trend-related metrics details for a URL analysis."""
-    if '5' in fifth_m[0]:
-        trends_s = get_detail('[t_insufficient]')
-        return {'[trends]': "\n" + trends_s}
-    return {'[trends]': "\n" + "\n".join(fifth_m) + "\n"}
+    if "5" in fifth_m[0]:
+        trends_s = get_detail("[t_insufficient]")
+        return {"[trends]": "\n" + trends_s}
+    return {"[trends]": "\n" + "\n".join(fifth_m) + "\n"}
 
 
 def get_date_metrics(additional_m):
     """Print date-related metrics details related."""
-    return {'[analysis_year_month]': f"\n{additional_m[1]}"}
+    return {"[analysis_year_month]": f"\n{additional_m[1]}"}
 
 
 def extract_global_metrics(all_analysis):
@@ -957,7 +957,7 @@ def extract_global_metrics(all_analysis):
     """
     url_ln = list(all_analysis)
     if not url_ln:
-        print_error_detail('[no_global_analysis]')
+        print_error_detail("[no_global_analysis]")
     adj_url_ln = adjust_old_analysis(url_ln)
     total_a = len(adj_url_ln)
     first_m = get_global_first_metrics(adj_url_ln)
@@ -977,7 +977,7 @@ def get_global_first_metrics(adj_url_ln):
 
     Related to `-a` option.
     """
-    split_lines = [line.split(' ; ') for line in adj_url_ln]
+    split_lines = [line.split(" ; ") for line in adj_url_ln]
     url_lines = {}
     for entry in split_lines:
         url = entry[1]
@@ -992,7 +992,7 @@ def get_global_metrics(url_ln, url_lines):
     """
     first_a = min(line[:SLICE_INT[9]] for line in url_ln)
     latest_a = max(line[:SLICE_INT[9]] for line in url_ln)
-    unique_u = len({line.split(' ; ')[1] for line in url_ln})
+    unique_u = len({line.split(" ; ")[1] for line in url_ln})
     most_analyzed_u = max(url_lines, key=url_lines.get)
     most_analyzed_c = url_lines[most_analyzed_u]
     most_analyzed_cu = f"({most_analyzed_c}) {most_analyzed_u}"
@@ -1010,13 +1010,13 @@ def get_global_totals(url_ln, field):
 
     Related to `-a` option.
     """
-    most_totals = max(url_ln, key=lambda line: int(line.split(' ; ')[field]))
-    least_totals = min(url_ln, key=lambda line: int(line.split(' ; ')[field]))
-    most_totals_c, most_totals_cu = most_totals.split(' ; ')[1], \
-        str(most_totals.split(' ; ')[field]).strip()
+    most_totals = max(url_ln, key=lambda line: int(line.split(" ; ")[field]))
+    least_totals = min(url_ln, key=lambda line: int(line.split(" ; ")[field]))
+    most_totals_c, most_totals_cu = most_totals.split(" ; ")[1], \
+        str(most_totals.split(" ; ")[field]).strip()
     most_totals_p = f"({most_totals_cu}) {most_totals_c}"
-    least_totals_c, least_totals_cu = least_totals.split(' ; ')[1], \
-        str(least_totals.split(' ; ')[field]).strip()
+    least_totals_c, least_totals_cu = least_totals.split(" ; ")[1], \
+        str(least_totals.split(" ; ")[field]).strip()
     least_totals_p = f"({least_totals_cu}) {least_totals_c}"
     return (most_totals_p, least_totals_p)
 
@@ -1026,25 +1026,25 @@ def get_basic_global_metrics(analytics_l, total_a, first_m):
 
     Related to `-a` option.
     """
-    return {'[main]': "", '[total_analysis]': total_a,
-            '[total_global_analysis]': str(first_m[2]),
-            '[first_analysis_a]': first_m[0],
-            '[latest_analysis]': f"{first_m[1]}\n",
-            '[urls]': "",
-            '[most_analyzed]': f"{analytics_l[0]}{first_m[3]}",
-            '[least_analyzed]': f"{analytics_l[1]}{first_m[4]}\n",
-            '[most_enabled]': f"{analytics_l[4]}{first_m[7]}",
-            '[least_enabled]': f"{analytics_l[5]}{first_m[8]}\n",
-            '[most_missing]': f"{analytics_l[6]}{first_m[9]}",
-            '[least_missing]': f"{analytics_l[7]}{first_m[10]}\n",
-            '[most_fingerprints]': f"{analytics_l[8]}{first_m[11]}",
-            '[least_fingerprints]': f"{analytics_l[9]}{first_m[12]}\n",
-            '[most_insecure]': f"{analytics_l[10]}{first_m[13]}",
-            '[least_insecure]': f"{analytics_l[11]}{first_m[14]}\n",
-            '[most_empty]': f"{analytics_l[12]}{first_m[15]}",
-            '[least_empty]': f"{analytics_l[13]}{first_m[16]}\n",
-            '[most_warnings]': f"{analytics_l[2]}{first_m[5]}",
-            '[least_warnings]': f"{analytics_l[3]}{first_m[6]}\n"}
+    return {"[main]": "", "[total_analysis]": total_a,
+            "[total_global_analysis]": str(first_m[2]),
+            "[first_analysis_a]": first_m[0],
+            "[latest_analysis]": f"{first_m[1]}\n",
+            "[urls]": "",
+            "[most_analyzed]": f"{analytics_l[0]}{first_m[3]}",
+            "[least_analyzed]": f"{analytics_l[1]}{first_m[4]}\n",
+            "[most_enabled]": f"{analytics_l[4]}{first_m[7]}",
+            "[least_enabled]": f"{analytics_l[5]}{first_m[8]}\n",
+            "[most_missing]": f"{analytics_l[6]}{first_m[9]}",
+            "[least_missing]": f"{analytics_l[7]}{first_m[10]}\n",
+            "[most_fingerprints]": f"{analytics_l[8]}{first_m[11]}",
+            "[least_fingerprints]": f"{analytics_l[9]}{first_m[12]}\n",
+            "[most_insecure]": f"{analytics_l[10]}{first_m[13]}",
+            "[least_insecure]": f"{analytics_l[11]}{first_m[14]}\n",
+            "[most_empty]": f"{analytics_l[12]}{first_m[15]}",
+            "[least_empty]": f"{analytics_l[13]}{first_m[16]}\n",
+            "[most_warnings]": f"{analytics_l[2]}{first_m[5]}",
+            "[least_warnings]": f"{analytics_l[3]}{first_m[6]}\n"}
 
 
 def print_global_metrics(analytics_l, analytics_s, analytics_w,
@@ -1064,7 +1064,7 @@ def print_global_metrics(analytics_l, analytics_s, analytics_w,
 def csp_analyze_content(csp_header):
     """`Content-Security-Policy` header analysis."""
     csp_deprecated = set()
-    csp_dirs_vals = [directive.strip() for directive in csp_header.split(';') if
+    csp_dirs_vals = [directive.strip() for directive in csp_header.split(";") if
                      directive.strip()]
     csp_dirs = {directive.split()[0] for directive in csp_dirs_vals}
     for csp_dir in csp_dirs_vals:
@@ -1087,10 +1087,10 @@ def csp_check_ignored(csp_header):
     if not (hash_p or nonce_p):
         i_cnt[0] += 1
         if args.brief:
-            print_detail_r('[icsig_d]', is_red=True)
+            print_detail_r("[icsig_d]", is_red=True)
         else:
-            print_detail_r('[icsig_d]', is_red=True)
-            print_detail('[icsig]', num_lines=2)
+            print_detail_r("[icsig_d]", is_red=True)
+            print_detail("[icsig]", num_lines=2)
     return False
 
 
@@ -1099,13 +1099,13 @@ def csp_check_missing(csp_dirs):
 
     Related to missing directives.
     """
-    csp_refs = [('[icspmb_h]', '[icspmb]'), ('[icspmc_h]', '[icspmc]'),
-                ('[icspmcn_h]', '[icspmcn]'), ('[icspmfo_h]', '[icspmfo]'),
-                ('[icspmf_h]', '[icspmf]'), ('[icspmfa_h]', '[icspmfa]'),
-                ('[icspmi_h]', '[icspmi]'), ('[icspmo_h]', '[icspmo]'),
-                ('[icspmr_h]', '[icspmr]'), ('[icspms_h]', '[icspms]'),
-                ('[icspmst_h]', '[icspmst]'), ('[icspmstt_h]', '[icspmstt]'),
-                ('[icspmsw_h]', '[icspmsw]')]
+    csp_refs = [("[icspmb_h]", "[icspmb]"), ("[icspmc_h]", "[icspmc]"),
+                ("[icspmcn_h]", "[icspmcn]"), ("[icspmfo_h]", "[icspmfo]"),
+                ("[icspmf_h]", "[icspmf]"), ("[icspmfa_h]", "[icspmfa]"),
+                ("[icspmi_h]", "[icspmi]"), ("[icspmo_h]", "[icspmo]"),
+                ("[icspmr_h]", "[icspmr]"), ("[icspms_h]", "[icspms]"),
+                ("[icspmst_h]", "[icspmst]"), ("[icspmstt_h]", "[icspmstt]"),
+                ("[icspmsw_h]", "[icspmsw]")]
     for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs,
                                                    strict=True):
         if directive not in csp_dirs:
@@ -1117,12 +1117,12 @@ def csp_print_missing(csp_ref, csp_ref_brief):
     if args.brief:
         i_cnt[0] += 1
         print_detail_r(csp_ref_brief, is_red=True)
-    elif csp_ref == '[icspmfa]':
+    elif csp_ref == "[icspmfa]":
         i_cnt[0] += 1
         print_detail_r(csp_ref_brief, is_red=True)
         print_detail(csp_ref, num_lines=4)
     else:
-        print_details(csp_ref_brief, csp_ref, 'd', i_cnt)
+        print_details(csp_ref_brief, csp_ref, "d", i_cnt)
 
 
 def csp_check_additional(csp_dirs_vals):
@@ -1155,14 +1155,14 @@ def csp_check_broad(csp_dirs_vals):
 
 def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
     """Print the broad value in the `Content-Security-Policy` header."""
-    print_detail_r('[icsw_h]', is_red=True)
+    print_detail_r("[icsw_h]", is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(csp_broad_dirs) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{directive}'" for directive in
                               sorted(csp_broad_dirs)) + ".")
-        print_detail_l('[icsw]')
-        print(', '.join(f"'{value}'" for value in csp_broad_v))
-        print_detail('[icsw_b]', num_lines=1)
+        print_detail_l("[icsw]")
+        print(", ".join(f"'{value}'" for value in csp_broad_v))
+        print_detail("[icsw_b]", num_lines=1)
     i_cnt[0] += 1
 
 
@@ -1179,15 +1179,15 @@ def csp_check_insecure(csp_dirs_vals):
 
 def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
     """Print the insecure value in the `Content-Security-Policy` header."""
-    print_detail_r('[icsh_h]', is_red=True)
+    print_detail_r("[icsh_h]", is_red=True)
     if not args.brief:
-        csp_values = ', '.join(f"'{value}'" for value in csp_insec_v)
+        csp_values = ", ".join(f"'{value}'" for value in csp_insec_v)
         print_detail_l(DIR_MSG[0] if len(csp_insec_dirs) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{directive}'" for directive in
                               sorted(csp_insec_dirs)) + ".")
-        print_detail_l('[icsh]')
+        print_detail_l("[icsh]")
         print(csp_values)
-        print_detail('[icsh_b]', num_lines=2)
+        print_detail("[icsh_b]", num_lines=2)
     i_cnt[0] += 1
 
 
@@ -1197,11 +1197,11 @@ def csp_check_eval(csp_dirs_vals):
     Related to `unsafe-eval` and `wasm-unsafe-eval` keywords.
     """
     csp_unsafe_dirs = [
-        dir_vals.split()[0] if ' ' in dir_vals else dir_vals
+        dir_vals.split()[0] if " " in dir_vals else dir_vals
         for dir_vals in csp_dirs_vals
-        if 'unsafe-eval' in dir_vals and 'wasm-unsafe-eval' not in dir_vals]
+        if "unsafe-eval" in dir_vals and "wasm-unsafe-eval" not in dir_vals]
     if csp_unsafe_dirs:
-        csp_print_unsafe(csp_unsafe_dirs, '[icspe_h]', '[icspev]', 5, i_cnt)
+        csp_print_unsafe(csp_unsafe_dirs, "[icspe_h]", "[icspev]", 5, i_cnt)
 
 
 def csp_check_inline(csp_dirs_vals):
@@ -1210,10 +1210,10 @@ def csp_check_inline(csp_dirs_vals):
     Related to `unsafe-inline` keyword.
     """
     csp_unsafe_dirs = [
-        dir_vals.split()[0] if ' ' in dir_vals else dir_vals
-        for dir_vals in csp_dirs_vals if 'unsafe-inline' in dir_vals]
+        dir_vals.split()[0] if " " in dir_vals else dir_vals
+        for dir_vals in csp_dirs_vals if "unsafe-inline" in dir_vals]
     if csp_unsafe_dirs:
-        csp_print_unsafe(csp_unsafe_dirs, '[icsp_h]', '[icsp]', 5, i_cnt)
+        csp_print_unsafe(csp_unsafe_dirs, "[icsp_h]", "[icsp]", 5, i_cnt)
 
 
 def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
@@ -1243,21 +1243,21 @@ def csp_check_hashes(csp_h):
         except binascii.Error:
             invalid_algos.add(algo)
     if invalid_algos:
-        print_detail_r('[icshash_h]', is_red=True)
+        print_detail_r("[icshash_h]", is_red=True)
         i_cnt[0] += 1
         if not args.brief:
-            print(get_detail('[icshash_f]', replace=True))
-            print_detail('[icshashr_f]', num_lines=2)
+            print(get_detail("[icshash_f]", replace=True))
+            print_detail("[icshashr_f]", num_lines=2)
 
 
 def csp_unquoted_hashes(csp_h):
     """`Content-Security-Policy` header check related to unquoted hashes."""
     if re.search(RE_PATTERN[18], csp_h):
-        print_detail_r('[icshash_h]', is_red=True)
+        print_detail_r("[icshash_h]", is_red=True)
         i_cnt[0] += 1
         if not args.brief:
-            print(get_detail('[icshash_f]', replace=True))
-            print_detail('[icshashr_f]', num_lines=2)
+            print(get_detail("[icshash_f]", replace=True))
+            print_detail("[icshashr_f]", num_lines=2)
 
 
 def csp_check_nonces(csp_h):
@@ -1266,8 +1266,8 @@ def csp_check_nonces(csp_h):
     Related to hexadecimal and Base64 nonces.
     """
     if re.search(RE_PATTERN[24], csp_h):
-        print_details('[icsncei_h]', '[icsncei]', 'd', i_cnt)
-    nonce_refs = ('[icsnces_h]', '[icsncesn]', '[icsnces]')
+        print_details("[icsncei_h]", "[icsncei]", "d", i_cnt)
+    nonce_refs = ("[icsnces_h]", "[icsncesn]", "[icsnces]")
     for nonce in re.findall(RE_PATTERN[6], csp_h):
         if (re.match(RE_PATTERN[12], nonce) and
             csp_hex_nonce(nonce, nonce_refs, i_cnt)) or \
@@ -1316,7 +1316,7 @@ def csp_check_ip(csp_h):
         with suppress(ValueError):
             ip_match = ip_address(match)
             if ip_match != localhost_ip:
-                print_details('[icsipa_h]', '[icsipa]', 'm', i_cnt)
+                print_details("[icsipa_h]", "[icsipa]", "m", i_cnt)
                 break
 
 
@@ -1326,9 +1326,9 @@ def csp_print_deprecated(csp_deprecated):
     Print deprecated directives.
     """
     i_cnt[0] += 1
-    print_detail_r('[icsi_d]', is_red=True) if args.brief else \
-        csp_print_details(csp_deprecated, '[icsi_d]', '[icsi_d_s]',
-                          '[icsi_d_r]')
+    print_detail_r("[icsi_d]", is_red=True) if args.brief else \
+        csp_print_details(csp_deprecated, "[icsi_d]", "[icsi_d_s]",
+                          "[icsi_d_r]")
 
 
 def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
@@ -1336,9 +1336,9 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
 
     Group the deprecated directives.
     """
-    csp_values = ', '.join(f"'{value}'" for value in sorted(csp_values))
-    print_detail_r(f'{csp_title}', is_red=True)
-    print_detail_l(f'{csp_desc}')
+    csp_values = ", ".join(f"'{value}'" for value in sorted(csp_values))
+    print_detail_r(f"{csp_title}", is_red=True)
+    print_detail_l(f"{csp_desc}")
     print(csp_values)
     print_detail(csp_refs, num_lines=3)
 
@@ -1346,7 +1346,7 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
 def csp_check_unknown(csp_h):
     """`Content-Security-Policy` header check related to unknown directives."""
     unknown_dir = []
-    csp_dirs = [d.strip() for d in csp_h.split(';') if d.strip()]
+    csp_dirs = [d.strip() for d in csp_h.split(";") if d.strip()]
     for directive in csp_dirs:
         if match := re.match(RE_PATTERN[19], directive):
             dir_name = match[1]
@@ -1359,22 +1359,22 @@ def csp_check_unknown(csp_h):
 def csp_print_unknown(unknown_dir):
     """Print unknown directives in the `Content-Security-Policy` header."""
     # sourcery skip: use-fstring-for-concatenation
-    print_detail_r('[icspiu_h]', is_red=True)
+    print_detail_r("[icspiu_h]", is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(unknown_dir) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{directive}'" for directive in
                               sorted(unknown_dir)) + ".")
-        print_detail('[icspiu]', num_lines=3)
+        print_detail("[icspiu]", num_lines=3)
     i_cnt[0] += 1
 
 
 def check_unsafe_cookies():  # sourcery skip: use-named-expression
     """`Set-Cookie` header analysis."""
-    unsafe_cks = [ck.split('=', 1)[0].strip() for ck in
+    unsafe_cks = [ck.split("=", 1)[0].strip() for ck in
                   re.split(RE_PATTERN[14], stc_header) if
                   any(val not in ck.lower() for val in t_cookie_sec)]
     if unsafe_cks:
-        print_detail_r('[iset_h]', is_red=True)
+        print_detail_r("[iset_h]", is_red=True)
         if not args.brief:
             print_unsafe_cookies(unsafe_cks)
         i_cnt[0] += 1
@@ -1382,29 +1382,29 @@ def check_unsafe_cookies():  # sourcery skip: use-named-expression
 
 def print_unsafe_cookies(unsafe_cks):
     """Print unsafe cookies in the `Set-Cookie` header."""
-    print_detail_l('[icooks_s]' if len(unsafe_cks) > 1 else '[icook_s]')
+    print_detail_l("[icooks_s]" if len(unsafe_cks) > 1 else "[icook_s]")
     print(", ".join(f"'{ck}'" for ck in sorted(unsafe_cks)) + ".")
-    print_detail('[iset]', num_lines=2)
+    print_detail("[iset]", num_lines=2)
 
 
 def permissions_analyze_content(perm_header, i_cnt):
     """`Permissions-Policy` header analysis."""
     if any(value in perm_header for value in t_per_dep):
         permissions_print_deprecated(perm_header)
-    if 'none' in perm_header:
-        print_details('[ifpoli_h]', '[ifpoli]', 'd', i_cnt)
+    if "none" in perm_header:
+        print_details("[ifpoli_h]", "[ifpoli]", "d", i_cnt)
     if perm_broad_dirs := permissions_check_broad(perm_header):
         permissions_print_broad(perm_broad_dirs, i_cnt)
 
 
 def permissions_print_deprecated(perm_header):
     """Print deprecated directives in the `Permissions-Policy` header."""
-    print_detail_r('[ifpold_h]', is_red=True)
+    print_detail_r("[ifpold_h]", is_red=True)
     if not args.brief:
         matches_perm = [x for x in t_per_dep if x in perm_header]
-        print_detail_l('[ifpold_h_s]')
-        print(', '.join(f"'{x}'" for x in matches_perm))
-        print_detail('[ifpold]')
+        print_detail_l("[ifpold_h_s]")
+        print(", ".join(f"'{x}'" for x in matches_perm))
+        print_detail("[ifpold]")
     i_cnt[0] += 1
 
 
@@ -1416,15 +1416,15 @@ def permissions_check_broad(perm_header):
         return None
     try:
         result = []
-        for directive in perm_header.split(','):
-            if '=' in directive:
-                feature, value = directive.split('=')
+        for directive in perm_header.split(","):
+            if "=" in directive:
+                feature, value = directive.split("=")
                 feature = feature.strip()
                 value = value.strip()
                 if any(broad in value for broad in t_per_broad):
                     result.append(feature)
     except (IndexError, ValueError):
-        print_details('[ifpolf_h]', '[ifpolf]', "d", i_cnt)
+        print_details("[ifpolf_h]", "[ifpolf]", "d", i_cnt)
         return None
     else:
         return result or None
@@ -1432,12 +1432,12 @@ def permissions_check_broad(perm_header):
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
     """Print the broad values in the `Permissions-Policy` header."""
-    print_detail_r('[ifpol_h]', is_red=True)
+    print_detail_r("[ifpol_h]", is_red=True)
     if not args.brief:
         print_detail_l(DIR_MSG[0] if len(perm_broad_dirs) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{directive}'" for directive in
                               sorted(perm_broad_dirs)) + ".")
-        print_detail('[ifpol]', num_lines=2)
+        print_detail("[ifpol]", num_lines=2)
     i_cnt[0] += 1
 
 
@@ -1459,14 +1459,14 @@ def print_export_path(filename, reliable, *, export_all=False):
     for bulk exports (e.g. 'all'); related to `-o` option.
     """
     delete_lines(reliable=False) if reliable else delete_lines()
-    if '-c' in sys.argv:
+    if "-c" in sys.argv:
         return
     export_path = Path(filename).resolve()
     if export_all:
-        all_reports = print_detail_s('[all_reports]').lstrip()
+        all_reports = print_detail_s("[all_reports]").lstrip()
         msg = f"{all_reports} '{export_path.parent}'."
     else:
-        single_report = print_detail_s('[report]').lstrip()
+        single_report = print_detail_s("[report]").lstrip()
         msg = f"{single_report} '{export_path}'."
     print(f"\n {msg}")
 
@@ -1497,8 +1497,8 @@ def print_general_info(reliable, export_filename):
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
         print(f"\n{BANNER}\n ({BANNER_VERSION})")
-    elif args.output != 'pdf':
-        humble_desc = get_detail('[humble_desc]', replace=True)
+    elif args.output != "pdf":
+        humble_desc = get_detail("[humble_desc]", replace=True)
         print(f"\n\n{humble_desc}\n{BANNER_VERSION}\n")
     print_basic_info(export_filename)
     print_extended_info(args, reliable, status_code)
@@ -1510,12 +1510,12 @@ def print_basic_info(export_filename):
     Date, time, URL, User-Agent (`-ua` option), input file (`-if` option) and
     exported filename (`-o` option).
     """
-    print(end="\n\n" if args.output in ('html', 'pdf', None) else "")
-    print_detail_r('[0section]')
-    print_detail_l('[analysis_date]')
+    print(end="\n\n" if args.output in ("html", "pdf", None) else "")
+    print_detail_r("[0section]")
+    print_detail_l("[analysis_date]")
     print(f" {current_time}")
-    print(f'{URL_STRING[1]}{URL}')
-    if args.user_agent not in (None, '', '0'):
+    print(f"{URL_STRING[1]}{URL}")
+    if args.user_agent not in (None, "", "0"):
         print(f"{get_detail('[ua_custom]', replace=True)} '{args.user_agent}'"
               f"{get_detail('[ua_custom2]', replace=True)}")
     if args.input_file:
@@ -1524,7 +1524,7 @@ def print_basic_info(export_filename):
     if export_filename:
         print(f"{get_detail('[export_filename]', replace=True)} \
 {export_filename}")
-    validate_file_access(VALIDATE_FILE, context='basic')
+    validate_file_access(VALIDATE_FILE, context="basic")
 
 
 def print_extended_info(args, reliable, status_code):
@@ -1538,7 +1538,7 @@ def print_extended_info(args, reliable, status_code):
     if args.skip_headers:
         print_skipped_headers(args)
     if args.proxy:
-        print_detail_l('[proxy_analysis_note]')
+        print_detail_l("[proxy_analysis_note]")
         print(f" {args.proxy}")
     if (
         (status_code is not None and
@@ -1554,7 +1554,7 @@ def print_extra_info(reliable):
     Specific 4xx errors, reliability warnings and redirects (`-df` option).
     """
     if status_code in ERROR_CODES_CLIENT:
-        id_mode = f'[http_{status_code}]'
+        id_mode = f"[http_{status_code}]"
         print_detail(id_mode, 0)
         print(f"{URL_LIST[2]}{status_code}")
     elif (
@@ -1563,24 +1563,24 @@ def print_extra_info(reliable):
     ):
         print(f"{get_detail('[http_4xx]', replace=True)} {status_code})")
     if reliable:
-        print(get_detail('[unreliable_analysis_note]', replace=True))
+        print(get_detail("[unreliable_analysis_note]", replace=True))
     if args.redirects:
-        print(get_detail('[analysis_redirects_note]', replace=True))
+        print(get_detail("[analysis_redirects_note]", replace=True))
 
 
 def print_response_headers():
     """Print response headers, related to `-r` option."""
     print(end="\n\n")
-    print_detail_r('[0headers]')
+    print_detail_r("[0headers]")
     if not headers:
         print_nosec_headers(enabled=False)
-        print('\n')
+        print("\n")
         return
-    pdf_style = STYLE[6] if args.output == 'pdf' else ""
+    pdf_style = STYLE[6] if args.output == "pdf" else ""
     for key, value in sorted(headers.items()):
         print(f" {pdf_style}{key}:", value) if args.output else \
             print(f" {STYLE[2]}{key}:", value)
-    print('\n')
+    print("\n")
 
 
 def get_max_lnlength(section):
@@ -1599,7 +1599,7 @@ def get_analytics_length(section):
     basic_l = get_max_lnlength(section) - 1
     section_l = []
     for i in section:
-        section_l_item = ' ' * (basic_l - len(get_detail(i)))
+        section_l_item = " " * (basic_l - len(get_detail(i)))
         section_l.append(section_l_item)
     return section_l
 
@@ -1608,18 +1608,18 @@ def print_details(short_d, long_d, id_mode, i_cnt):
     """Print detailed information about the finding."""
     print_detail_r(short_d, is_red=True)
     if not args.brief:
-        print_detail(long_d, 2) if id_mode == 'd' else print_detail(long_d, 3)
+        print_detail(long_d, 2) if id_mode == "d" else print_detail(long_d, 3)
     i_cnt[0] += 1
     return i_cnt
 
 
 def print_detail(id_mode, num_lines=1):
     """Print detailed information about the finding across multiple lines."""
-    idx = l10n_main.index(id_mode + '\n')
-    print(l10n_main[idx+1], end='')
+    idx = l10n_main.index(id_mode + "\n")
+    print(l10n_main[idx+1], end="")
     for i in range(1, num_lines+1):
         if idx+i+1 < len(l10n_main):
-            print(l10n_main[idx+i+1], end='')
+            print(l10n_main[idx+i+1], end="")
 
 
 def print_detail_l(id_mode, *, analytics=False, no_headers=False):
@@ -1636,11 +1636,11 @@ def print_detail_l(id_mode, *, analytics=False, no_headers=False):
     for idmode_ln, idnext_ln in pairwise(l10n_main):
         if idmode_ln.startswith(id_mode):
             if no_headers:
-                print(idnext_ln, end='')
+                print(idnext_ln, end="")
             elif not analytics:
-                print(idnext_ln.replace('\n', ''), end='')
+                print(idnext_ln.replace("\n", ""), end="")
             else:
-                return idnext_ln.replace('\n', '').replace(':', '')[1:]
+                return idnext_ln.replace("\n", "").replace(":", "")[1:]
     return None
 
 
@@ -1657,9 +1657,9 @@ def print_detail_r(id_mode, *, is_red=False):
     for idmode_ln, idnext_ln in pairwise(l10n_main):
         if idmode_ln.startswith(id_mode):
             if not args.output:
-                print(f"{style_str}{idnext_ln}", end='')
+                print(f"{style_str}{idnext_ln}", end="")
             else:
-                print(idnext_ln, end='')
+                print(idnext_ln, end="")
             if not is_red:
                 print()
 
@@ -1684,7 +1684,7 @@ def get_detail(id_mode, *, replace=False):
     """Print a message, optionally removing newlines."""
     for i, line in enumerate(l10n_main):
         if line.startswith(id_mode):
-            return (l10n_main[i+1].replace('\n', '')) if replace else \
+            return (l10n_main[i+1].replace("\n", "")) if replace else \
                 l10n_main[i+1]
     return None
 
@@ -1702,14 +1702,14 @@ def get_epilog_content(id_mode):
 
     Related to `-h` option.
     """
-    target = id_mode + '\n'
+    target = id_mode + "\n"
     content = []
-    with PATHS['help_epilog'].open('r', encoding='utf8') as epilog_source:
+    with PATHS["help_epilog"].open("r", encoding="utf8") as epilog_source:
         for line in epilog_source:
             if line == target:
                 break
         content = list(islice(epilog_source, SLICE_INT[12] - 1))
-    return ''.join(content)
+    return "".join(content)
 
 
 def get_fingerprint_headers():
@@ -1718,10 +1718,10 @@ def get_fingerprint_headers():
     ??? note
         The file associated with this check is `/additional/fingerprint.txt`.
     """
-    with PATHS['fingerprint_header'].open('r', encoding='utf8') as fng_source:
+    with PATHS["fingerprint_header"].open("r", encoding="utf8") as fng_source:
         l_fng_ex = [line.strip() for line in
                     islice(fng_source, SLICE_INT[0], None) if line.strip()]
-        l_fng = [line.split(' (')[0].strip() for line in l_fng_ex]
+        l_fng = [line.split(" (")[0].strip() for line in l_fng_ex]
         titled_fng = [item.title() for item in l_fng]
         return l_fng_ex, l_fng, titled_fng
 
@@ -1745,13 +1745,13 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
     """
     if not args.brief:
         print_fng_header(l_fng_ex[idx_fng])
-        header_value = headers_l.get(header.lower()) if '-if' in sys.argv else\
+        header_value = headers_l.get(header.lower()) if "-if" in sys.argv else\
             headers[header]
         if header_value:
             print(f" {get_detail('[fng_value]', replace=True)} \
 '{header_value}'")
         else:
-            print(get_detail('[empty_fng]', replace=True))
+            print(get_detail("[empty_fng]", replace=True))
         print()
     else:
         print_header(header)
@@ -1776,12 +1776,12 @@ def get_enabled_headers(args, headers_l, t_enabled):
     t_enabled = sorted({header.title() for header in t_enabled})
     enabled_headers = [header for header in t_enabled if header in headers_d]
     for header in enabled_headers:
-        exp_s = get_detail('[exp_header]', replace=True) if header.lower() in\
+        exp_s = get_detail("[exp_header]", replace=True) if header.lower() in\
           EXP_HEADERS else ""
         print_enabled_headers(args, exp_s, header, headers_d)
     None if enabled_headers else print_nosec_headers()
     en_cnt = len(enabled_headers)
-    print('\n')
+    print("\n")
     return en_cnt
 
 
@@ -1790,7 +1790,7 @@ def print_enabled_headers(args, exp_s, header, headers_d):
 
     Source: `additional/security.txt`.
     """
-    prefix = STYLE[8] if args.output in ('html', 'pdf') else ''
+    prefix = STYLE[8] if args.output in ("html", "pdf") else ""
     header_display = f"{prefix}{exp_s}{header}"
     if not args.output:
         header_display = f"{STYLE[7]}{header_display}{STYLE[5]}"[18:]
@@ -1804,7 +1804,7 @@ def print_nosec_headers(*, enabled=True):
 
     Or if none was received.
     """
-    id_mode = '[no_sec_headers]' if enabled else '[no_enb_headers]'
+    id_mode = "[no_sec_headers]" if enabled else "[no_enb_headers]"
     if args.output:
         print_detail_l(id_mode, no_headers=True)
     else:
@@ -1823,7 +1823,7 @@ def print_missing_headers(args, headers_l, l_detail, l_miss):
     skip_headers = [h.lower() for h in (args.skip_headers or [])]
     skip_missing = {header for header in skip_headers if header in l_miss_set}
     merged_set = headers_set | skip_missing
-    xfo_skipped = 'x-frame-options' in skip_missing
+    xfo_skipped = "x-frame-options" in skip_missing
     m_cnt = check_missing_headers(m_cnt, l_miss, l_detail, merged_set,
                                   xfo_skipped)
     m_cnt = check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers)
@@ -1862,16 +1862,16 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
 
 def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
     """Determine whether to report a missing `X-Frame-Options` header."""
-    xfo_needed = ('x-frame-options' not in skip_headers) and \
-        ('x-frame-options' not in headers_l)
-    fa_needed = 'frame-ancestors' not in \
-        headers_l.get('content-security-policy', '')
+    xfo_needed = ("x-frame-options" not in skip_headers) and \
+        ("x-frame-options" not in headers_l)
+    fa_needed = "frame-ancestors" not in \
+        headers_l.get("content-security-policy", "")
     if xfo_needed and fa_needed:
-        l_miss.append('X-Frame-Options')
+        l_miss.append("X-Frame-Options")
         m_cnt += 1
-        print_header('X-Frame-Options')
+        print_header("X-Frame-Options")
         if not args.brief:
-            print_detail('[mxfo]', 2)
+            print_detail("[mxfo]", 2)
     return m_cnt
 
 
@@ -1893,10 +1893,10 @@ def print_browser_compatibility(compat_headers):
         References provided by <a href="https://caniuse.com/" target="_blank">
         Can I use</a>.
     """
-    style_blanks = "  " if args.output == 'html' else " "
+    style_blanks = "  " if args.output == "html" else " "
     for key in compat_headers:
         styled_header = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
-        csp_key = 'contentsecuritypolicy2' if key == 'Content-Security-Policy'\
+        csp_key = "contentsecuritypolicy2" if key == "Content-Security-Policy"\
             else key
         print(f"{style_blanks}{styled_header}{URL_LIST[0]}{csp_key}")
 
@@ -1920,7 +1920,7 @@ def validate_path(output_path):
     """
     try:
         validate_path = Path(output_path) / HUMBLE_FILES[1]
-        with validate_path.open('w', encoding='utf8'):
+        with validate_path.open("w", encoding="utf8"):
             pass
     except OSError as path_err:
         print(f"\n {get_detail('[args_pathe]', replace=True)} "
@@ -1930,25 +1930,25 @@ def validate_path(output_path):
         validate_path.unlink()
 
 
-def validate_file_access(target_path, *, context='history'):
+def validate_file_access(target_path, *, context="history"):
     """Check if the history or export files can be accessed or created.
 
     Exit if an error occurs during the export of an analysis.
     """
     try:
-        with Path(target_path).open('a+', encoding='utf8'):
+        with Path(target_path).open("a+", encoding="utf8"):
             pass
     except OSError as file_err:
         err_str = file_err.strerror or type(file_err).__name__
-        if context == 'history':
+        if context == "history":
             return False, ("Not available",) * 6
-        if context == 'basic':
-            msg = get_detail('[analysis_history_note]', replace=True)
+        if context == "basic":
+            msg = get_detail("[analysis_history_note]", replace=True)
             print(f"{msg} ({err_str})")
             return False, None
-        if context == 'export':
+        if context == "export":
             delete_lines()
-            err_msg = get_detail('[e_export_analysis]', replace=True)
+            err_msg = get_detail("[e_export_analysis]", replace=True)
             print(f"\n{err_msg} ({err_str}).")
             sys.exit(1)
     return True, None
@@ -1962,11 +1962,11 @@ def check_output_path(args):
     check_input_traversal(args.output_path)
     output_path = Path(args.output_path).resolve()
     if args.output is None:
-        print_error_detail('[args_nooutputfmt]')
+        print_error_detail("[args_nooutputfmt]")
     elif output_path.exists():
         validate_path(output_path)
     else:
-        msg = get_detail('[args_noexportpath]', replace=True)
+        msg = get_detail("[args_noexportpath]", replace=True)
         print(f"\n {msg} ('{output_path}')")
         sys.exit(1)
 
@@ -1974,8 +1974,8 @@ def check_output_path(args):
 def parse_user_agent(*, user_agent=False):
     """Select and validate the provided user agent, related to `-ua` option."""
     if not user_agent:
-        return get_user_agent('1')
-    user_agent_id = sys.argv[sys.argv.index('-ua') + 1].lstrip('-ua')
+        return get_user_agent("1")
+    user_agent_id = sys.argv[sys.argv.index("-ua") + 1].lstrip("-ua")
     if not URL:
         nourl_user_agent(user_agent_id)
     else:
@@ -1989,9 +1989,9 @@ def nourl_user_agent(user_agent_id):
     Otherwise, display an error indicating that a URL is required for the
     provided User-Agent ID; related to `-ua` option.
     """
-    if user_agent_id == '0':
-        return get_user_agent('0')
-    print_error_detail('[args_useragent]')
+    if user_agent_id == "0":
+        return get_user_agent("0")
+    print_error_detail("[args_useragent]")
     return None
 
 
@@ -2001,15 +2001,15 @@ def get_user_agent(user_agent_id):
     Source: `additional/user-agents.txt`. Exit if it is not found; related to
     `-ua` option.
     """
-    with PATHS['user_agents'].open('r', encoding='utf8') as ua_source:
+    with PATHS["user_agents"].open("r", encoding="utf8") as ua_source:
         user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
                                                        None)]
-    if user_agent_id == '0':
+    if user_agent_id == "0":
         print_user_agents(user_agents)
     for line in user_agents:
         if line.startswith(f"{user_agent_id}.-"):
             return line[4:].strip()
-    print_error_detail('[ua_invalid]')
+    print_error_detail("[ua_invalid]")
     return None
 
 
@@ -2021,7 +2021,7 @@ def print_user_agents(user_agents):
     print(f"\n{STYLE[0]}{get_detail('[ua_available]', replace=True)}\
 {STYLE[4]}{get_detail('[ua_source]', replace=True)}\n")
     for line in user_agents:
-        print(f' {line}')
+        print(f" {line}")
     sys.exit(0)
 
 
@@ -2031,10 +2031,10 @@ def get_insecure_checks():
     Related to `-s` option.
     """
     headers_name = set()
-    with PATHS['insecure_header'].open('r', encoding='utf8') as ins_source:
+    with PATHS["insecure_header"].open("r", encoding="utf8") as ins_source:
         insecure_checks = islice(ins_source, SLICE_INT[2], None)
         for line in insecure_checks:
-            insecure_header = line.split(':')[0]
+            insecure_header = line.split(":")[0]
             headers_name.add(insecure_header.strip().lower())
     headers_sorted = sorted(headers_name)
     return {key: str(index + 1) for index, key in enumerate(headers_sorted)}
@@ -2056,14 +2056,14 @@ def get_skipped_unsupported_headers(args, insecure_headers):
 
 def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
     """Print skipped HTTP response headers."""
-    print_detail_l('[analysis_skipped_note]')
+    print_detail_l("[analysis_skipped_note]")
     print(" " + ", ".join(f"'{h.title()}'" for h in
                           sorted(args.skip_headers, key=str.lower)) + ".")
 
 
 def print_request_headers(added_request_headers):
     """Print requested HTTP request headers."""
-    print_detail_l('[analysis_request_note]')
+    print_detail_l("[analysis_request_note]")
     request_headers = ", ".join(
         f"{header!r}: {value!r}"
         for header, value in added_request_headers.items()
@@ -2091,7 +2091,7 @@ def check_export_scope():
     export the analysis in that format; otherwise, it exports it to all
     supported formats and terminate execution.
     """
-    if args.output != 'all':
+    if args.output != "all":
         check_output_format(args, final_filename, reliable, tmp_filename)
     else:
         export_all_formats(final_filename, tmp_filename)
@@ -2111,8 +2111,8 @@ def export_all_formats(final_filename, tmp_filename):
     generate_json(final_filename, tmp_filename, export_all=True)
     generate_xml(final_filename, tmp_filename, export_all=True)
     generate_csv(final_filename, tmp_filename, to_xlsx=True, export_all=True)
-    normalize_htmlpdf_all_export('html', tmp_filename, final_filename)
-    normalize_htmlpdf_all_export('pdf', tmp_filename)
+    normalize_htmlpdf_all_export("html", tmp_filename, final_filename)
+    normalize_htmlpdf_all_export("pdf", tmp_filename)
     normalize_txt_all_export(tmp_filename)
     print_export_path(final_filename, reliable, export_all=True)
     sys.exit(0)
@@ -2174,11 +2174,11 @@ def format_htmlpdf_all_export(line, export_format, target_state, in_browser):
     Related to `-o all` option.
     """
     if in_browser and line.strip() and not line.startswith("[6."):
-        line = f" {line}" if export_format == 'html' else f" {line.lstrip()}"
+        line = f" {line}" if export_format == "html" else f" {line.lstrip()}"
     if line.startswith(" ") and target_state:
-        if export_format == 'html':
+        if export_format == "html":
             return f"{line[0]}{STYLE[8]}{line[1:]}"
-        if export_format == 'pdf':
+        if export_format == "pdf":
             return f" {STYLE[6]}{line[1:]}"
     return line
 
@@ -2189,9 +2189,9 @@ def fix_pdf_all_export(tmp_filename):
     Related to `-o all` option.
     """
     fixed_pdffilename = tmp_filename
-    base_pdffilename = str(fixed_pdffilename).rsplit('.', 1)[0][:-1]
+    base_pdffilename = str(fixed_pdffilename).rsplit(".", 1)[0][:-1]
     with (
-        Path(fixed_pdffilename).open('r+', encoding='utf8')
+        Path(fixed_pdffilename).open("r+", encoding="utf8")
     ) as temp_pdffilename:
         content = "".join(temp_pdffilename.readlines()[6:])
         new_content = content.replace(f"{base_pdffilename}.all",
@@ -2209,10 +2209,10 @@ def normalize_txt_all_export(tmp_filename):
     """
     txt_path = Path(tmp_filename)
     identity = txt_path.stem[:-1]
-    txt_content = (txt_path.read_text(encoding='utf-8')
+    txt_content = (txt_path.read_text(encoding="utf-8")
                    .replace(STYLE[6], "").replace(STYLE[8], "")
                    .replace(f"{identity}.pdf", f"{identity}.txt"))
-    txt_path.write_text(txt_content, encoding='utf-8')
+    txt_path.write_text(txt_content, encoding="utf-8")
     txt_path.rename(txt_path.with_name(f"{identity}.txt"))
 
 
@@ -2234,7 +2234,7 @@ def finalize_export(final_filename, temp_filename, file_extension, export_all):
     Path(final_filename).rename(new_filename)
     dotted_ext = f".{file_extension}"
     if dotted_ext not in (EXPORT_EXTENSIONS[3], EXPORT_EXTENSIONS[5]):
-        with Path(new_filename).open('r+', encoding='utf8') as processed_file:
+        with Path(new_filename).open("r+", encoding="utf8") as processed_file:
             content = processed_file.read().replace(final_filename,
                                                     new_filename)
             processed_file.seek(0)
@@ -2283,20 +2283,20 @@ def build_cicd_totals(tmp_filename, info_lines, totals, labels):
     Related to `--cicd` option.
     """
     _, _, info_label = labels
-    file_label = get_detail('[cicd_file]', replace=True)
+    file_label = get_detail("[cicd_file]", replace=True)
 
     info_dict = {
         key.strip(): value.strip()
         for line in info_lines
-        if ':' in line
-        for key, value in [line.split(':', 1)]
+        if ":" in line
+        for key, value in [line.split(":", 1)]
         if key.strip() != file_label
     }
     return {
         info_label: info_dict,
         **totals,
-        get_detail('[cicd_detailed]', replace=True): {
-            get_detail('[cicd_path]',
+        get_detail("[cicd_detailed]", replace=True): {
+            get_detail("[cicd_path]",
                        replace=True): str(Path(tmp_filename).resolve()),
         },
     }
@@ -2310,7 +2310,7 @@ def print_cicd_totals(tmp_filename):
     try:
         cicd_labels = get_cicd_labels()  # sourcery skip
         total_lbl, diff_lbl, _ = cicd_labels
-        with Path(tmp_filename).open(encoding='utf8') as cicd_filename:
+        with Path(tmp_filename).open(encoding="utf8") as cicd_filename:
             lines = [ln.strip() for ln in cicd_filename if ln.strip()]
         info_lines, totals = parse_cicd_sections(diff_lbl, total_lbl, lines)
         cicd_output = build_cicd_totals(tmp_filename, info_lines, totals,
@@ -2318,7 +2318,7 @@ def print_cicd_totals(tmp_filename):
         print(dumps(cicd_output, indent=2, ensure_ascii=False))
         sys.exit(0)
     except Exception as exc: # noqa: BLE001
-        err_key = get_detail('[cicd_error]', replace=True)
+        err_key = get_detail("[cicd_error]", replace=True)
         print(dumps({err_key: str(exc)}, ensure_ascii=False))
         sys.exit(1)
 
@@ -2339,8 +2339,8 @@ def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
     line_pattern = re.compile(RE_PATTERN[21])
     cicd_totals_result = parse_cicd_totals(cicd_totals_lines, cicd_total_t,
                                            cicd_diff_t, line_pattern)
-    cicd_totals_result[get_detail('[cicd_grade]', replace=True)] = (
-        {get_detail('[cicd_grade_note]', replace=True):
+    cicd_totals_result[get_detail("[cicd_grade]", replace=True)] = (
+        {get_detail("[cicd_grade_note]", replace=True):
          cicdi_grade_lines.split(":", 1)[1].strip()}
     )
     return cicd_info_lines, cicd_totals_result
@@ -2366,7 +2366,7 @@ def get_cicd_labels():
 
     Related to `-cicd` option.
     """
-    cidcd_labels = ['[cicd_total]', '[cicd_diff]', '[cicd_info]']
+    cidcd_labels = ["[cicd_total]", "[cicd_diff]", "[cicd_info]"]
     return tuple(get_detail(label, replace=True) for label in cidcd_labels)
 
 
@@ -2395,14 +2395,14 @@ def write_csv_content(csv_file, txt_source):
     writer = defusedcsv_logic.writer(csv_file,
                                      quoting=defusedcsv_logic.QUOTE_ALL)
     writer.writerow([
-        get_detail('[csv_section]', replace=True),
-        get_detail('[csv_values]', replace=True),
+        get_detail("[csv_section]", replace=True),
+        get_detail("[csv_values]", replace=True),
     ])
     writer.writerow([
-        get_detail('[0section]', replace=True),
+        get_detail("[0section]", replace=True),
         f"{get_detail('[json_gen]', replace=True)}: {BANNER_VERSION}",
     ])
-    section_titles = [get_detail(f'[{i}]', replace=True) for i in CSV_SECTION]
+    section_titles = [get_detail(f"[{i}]", replace=True) for i in CSV_SECTION]
     parse_csv(section_titles, txt_source.read(), writer)
 
 
@@ -2413,9 +2413,9 @@ def generate_csv(final_filename, temp_filename, *, to_xlsx=False,
     Related to `-o csv` option.
     """
     with (
-        Path(temp_filename).open(encoding='utf8') as txt_source,
+        Path(temp_filename).open(encoding="utf8") as txt_source,
         Path(final_filename).open(
-            'w', newline='', encoding='utf8',
+            "w", newline="", encoding="utf8",
         ) as csv_final,
     ):
         write_csv_content(csv_final, txt_source)
@@ -2423,7 +2423,7 @@ def generate_csv(final_filename, temp_filename, *, to_xlsx=False,
         fix_xlsx_all_export(final_filename, export_all)
         generate_xlsx(final_filename, temp_filename, export_all=export_all)
         return
-    finalize_export(final_filename, temp_filename, 'csv', export_all)
+    finalize_export(final_filename, temp_filename, "csv", export_all)
 
 
 def parse_csv(csv_section, csv_source, csv_writer):
@@ -2432,8 +2432,8 @@ def parse_csv(csv_section, csv_source, csv_writer):
     Related to `-o csv` option.
     """
     for i in (item for item in csv_section if item in csv_source):
-        csv_content = csv_source.split(i)[1].split('[')[0]
-        info_list = [line.strip() for line in csv_content.split('\n') if
+        csv_content = csv_source.split(i)[1].split("[")[0]
+        info_list = [line.strip() for line in csv_content.split("\n") if
                      line.strip()]
         for csv_ln in info_list:
             clean_ln = ": ".join([part.strip() for part in csv_ln.split(":",
@@ -2447,9 +2447,9 @@ def fix_xlsx_all_export(csv_filename, export_all):
     Related to `-o all` option.
     """
     if export_all:
-        identity = csv_filename.rsplit('.', 1)[0]
+        identity = csv_filename.rsplit(".", 1)[0]
         with (
-            Path(csv_filename).open('r+', encoding='utf8')
+            Path(csv_filename).open("r+", encoding="utf8")
         ) as fixed_xlsxfilename:
             content = fixed_xlsxfilename.read()
             fixed_xlsxfilename.seek(0)
@@ -2468,22 +2468,22 @@ def generate_xlsx(final_filename, temp_filename, *, export_all=False):
         export is not used.
     """
     from xlsxwriter import Workbook
-    workbook = Workbook(final_filename, {'in_memory': True})
+    workbook = Workbook(final_filename, {"in_memory": True})
     set_xlsx_metadata(workbook)
     set_xlsx_content(final_filename, workbook)
     workbook.close()
-    finalize_export(final_filename, temp_filename, 'xlsx', export_all)
+    finalize_export(final_filename, temp_filename, "xlsx", export_all)
 
 
 def set_xlsx_metadata(workbook):
     """Set metadata values for a XLSX export, related to `-o xlsx` option."""
     workbook.set_properties({
-        'author': BANNER_VERSION,
-        'category': get_detail(METADATA_S[1], replace=True),
-        'keywords': get_detail(METADATA_S[0], replace=True),
-        'subject': get_detail(METADATA_S[1], replace=True),
-        'title': f"{get_detail('[pdf_meta_title]', replace=True)} {URL}",
-        'comments': f"{get_detail('[excel_meta_generated]', replace=True)} \
+        "author": BANNER_VERSION,
+        "category": get_detail(METADATA_S[1], replace=True),
+        "keywords": get_detail(METADATA_S[0], replace=True),
+        "subject": get_detail(METADATA_S[1], replace=True),
+        "title": f"{get_detail('[pdf_meta_title]', replace=True)} {URL}",
+        "comments": f"{get_detail('[excel_meta_generated]', replace=True)} \
 {BANNER_VERSION}",
     })
 
@@ -2494,11 +2494,11 @@ def set_xlsx_content(final_filename, workbook):
     Related to `-o xlsx` option.
     """
     worksheet = workbook.add_worksheet(get_detail(METADATA_S[1], replace=True))
-    bold_fmt = workbook.add_format({'bold': True, 'text_wrap': True,
-                                    'align': 'center', 'valign': 'vcenter'})
-    cell_fmt = workbook.add_format({'text_wrap': True, 'valign': 'top'})
-    hidden_fmt = workbook.add_format({'font_color': '#FFFFFF',
-                                      'text_wrap': True, 'valign': 'top'})
+    bold_fmt = workbook.add_format({"bold": True, "text_wrap": True,
+                                    "align": "center", "valign": "vcenter"})
+    cell_fmt = workbook.add_format({"text_wrap": True, "valign": "top"})
+    hidden_fmt = workbook.add_format({"font_color": "#FFFFFF",
+                                      "text_wrap": True, "valign": "top"})
     col_wd = {}
     set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
                     worksheet)
@@ -2517,7 +2517,7 @@ def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
         by sanitizing potentially dangerous values.
     """
     prev_section = None
-    with Path(final_filename).open(encoding='utf-8', newline='') as csv_final:
+    with Path(final_filename).open(encoding="utf-8", newline="") as csv_final:
         for row_index, row_data in enumerate(
                 defusedcsv_logic.reader(csv_final)):
             for col_index, cell_value in enumerate(row_data):
@@ -2563,23 +2563,23 @@ def generate_json(final_filename, temp_filename, *, export_all=False):
     Related to `-o json -b` options.
     """
     section0, sectionh, section5, section6 = (
-        get_detail(f'[{i}]', replace=True) for i in JSON_SECTION)
+        get_detail(f"[{i}]", replace=True) for i in JSON_SECTION)
     with (
-        Path(temp_filename).open(encoding='utf8') as txt_file,
-        Path(final_filename).open('w', encoding='utf8') as json_file,
+        Path(temp_filename).open(encoding="utf8") as txt_file,
+        Path(final_filename).open("w", encoding="utf8") as json_file,
     ):
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
         parse_json(data, section0, section5, section6, sectionh, txt_sections)
         dump(data, json_file, indent=4, ensure_ascii=False)
-    finalize_export(final_filename, temp_filename, 'json', export_all)
+    finalize_export(final_filename, temp_filename, "json", export_all)
 
 
 def parse_json(data, section0, section5, section6, sectionh, txt_sections):
     """Parse sections for a JSON export; related to `-o json -b` options."""
     for i in range(0, len(txt_sections), 2):
-        json_section = f'[{txt_sections[i]}]'
-        json_lns = [line.strip() for line in txt_sections[i + 1].split('\n')
+        json_section = f"[{txt_sections[i]}]"
+        json_lns = [line.strip() for line in txt_sections[i + 1].split("\n")
                     if line.strip()]
         json_data = write_json(json_lns, json_section, section0, section5,
                                section6, sectionh)
@@ -2595,7 +2595,7 @@ def write_json(json_lns, json_section, section0, section5, section6, sectionh):
         json_data = {}
         format_json(json_data, json_lns)
         if json_section == section0:
-            json_data = {get_detail('[json_gen]', replace=True):
+            json_data = {get_detail("[json_gen]", replace=True):
                          BANNER_VERSION, **json_data}
     else:
         json_data = list(json_lns)
@@ -2608,8 +2608,8 @@ def format_json(json_data, json_lns):
     Related to `-o json -b` options.
     """
     for line in json_lns:
-        if ':' in line:
-            key, value = (part.strip() for part in line.split(':', 1))
+        if ":" in line:
+            key, value = (part.strip() for part in line.split(":", 1))
             if key in json_data:
                 if isinstance(json_data[key], list):
                     json_data[key].append(value)
@@ -2627,7 +2627,7 @@ def json_detailed_sources(file_idx, slice_idx):
     deprecated/insecure header sections; related to `-o json` option.
     """
     file_path = OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[file_idx]
-    with Path(file_path).open(encoding='utf8') as json_file:
+    with Path(file_path).open(encoding="utf8") as json_file:
         return {line.strip() for line in islice(json_file, SLICE_INT[slice_idx],
                                                 None) if line.strip()}
 
@@ -2638,8 +2638,8 @@ def generate_json_detailed(final_filename, temp_filename):
     Related to `-o json` option.
     """
     with (
-       Path(temp_filename).open(encoding='utf8') as txt_file,
-       Path(final_filename).open('w', encoding='utf8') as json_file,
+       Path(temp_filename).open(encoding="utf8") as txt_file,
+       Path(final_filename).open("w", encoding="utf8") as json_file,
     ):
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
@@ -2652,11 +2652,11 @@ def generate_json_detailed(final_filename, temp_filename):
 
 def json_detailed_parse(data, txt_sections):
     """Parse sections for a JSON export, related to `-o json` option."""
-    params = [JSON_L10N[0], '[json_det_details]', JSON_L10N[1]]
+    params = [JSON_L10N[0], "[json_det_details]", JSON_L10N[1]]
     details = [get_detail(p, replace=True) for p in params]
     for i in range(0, len(txt_sections), 2):
-        section = f'[{txt_sections[i]}]'
-        lines = [line.strip() for line in txt_sections[i + 1].split('\n')
+        section = f"[{txt_sections[i]}]"
+        lines = [line.strip() for line in txt_sections[i + 1].split("\n")
                  if line.strip()]
         data[section] = json_detailed_write(
             lines, section, *details,
@@ -2669,7 +2669,7 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
     json_conditions = {
         BOLD_STRINGS[0]:
             lambda: json_detailed_info(json_lns),
-        (f'[{BOLD_STRINGS[1]}', BOLD_STRINGS[9]):
+        (f"[{BOLD_STRINGS[1]}", BOLD_STRINGS[9]):
             lambda: json_detailed_response(json_lns),
         BOLD_STRINGS[2]:
             lambda: json_detailed_format(json_lns),
@@ -2703,9 +2703,9 @@ def json_detailed_empty(json_lns):
 
     Related to `-o json` option.
     """
-    desc_key = get_detail('[json_det_empty]', replace=True)
-    status_key = get_detail('[json_det_empty_s]', replace=True)
-    empty_key = get_detail('[json_det_empty_h]', replace=True)
+    desc_key = get_detail("[json_det_empty]", replace=True)
+    status_key = get_detail("[json_det_empty_s]", replace=True)
+    empty_key = get_detail("[json_det_empty_h]", replace=True)
     lines = [line.strip() for line in json_lns if line.strip()]
     result = {desc_key: lines[0][:-1]}
     if e_cnt == 0:
@@ -2720,9 +2720,9 @@ def json_detailed_info(json_lns):
 
     Related to `-o json` option.
     """
-    info = {get_detail('[json_gen]', replace=True): BANNER_VERSION}
+    info = {get_detail("[json_gen]", replace=True): BANNER_VERSION}
     for line in json_lns:
-        key, value = line.split(':', 1)
+        key, value = line.split(":", 1)
         key = key.strip()
         info[key] = value.strip()
     return info
@@ -2738,9 +2738,9 @@ def json_detailed_response(json_lns):
     result = []
     for line in json_lns:
         line_strip = line.strip()
-        if not line_strip or ':' not in line_strip:
+        if not line_strip or ":" not in line_strip:
             continue
-        header, value = line_strip.split(':', 1)
+        header, value = line_strip.split(":", 1)
         result.append({
             header_key: header.strip(),
             value_key: value.strip(),
@@ -2785,7 +2785,7 @@ def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
 
     Related to `-o json` option.
     """
-    if line in l_miss or line.startswith('(*)'):
+    if line in l_miss or line.startswith("(*)"):
         if entry:
             result.append(entry)
         return {json_miss_h: line, json_miss_d: [], json_miss_r: []}, line
@@ -2853,7 +2853,7 @@ def json_detailed_fng(json_lns, fingerprint_set):
     Related to `-o json` option.
     """
     result, entry, current_header = [], {}, None
-    fng_header = get_detail('[json_det_fngheader]', replace=True)
+    fng_header = get_detail("[json_det_fngheader]", replace=True)
     fng_val = get_detail(JSON_L10N[2], replace=True)
     for line in json_lns:
         new_entry, current_header = json_detailed_fng_process(
@@ -2891,7 +2891,7 @@ def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
 
     Related to `-o json` option.
     """
-    header_cond = line.startswith('(*)')
+    header_cond = line.startswith("(*)")
     header_cond2 = not line.startswith(ref_t)
     header_cond3 = any(
         (val and key in line and val in line)
@@ -2930,7 +2930,7 @@ def json_detailed_ins(json_lns, insecure_checks):
     """
     header_t, detail_t, ref_t = (get_detail(text, replace=True)
                                  for text in [
-        '[json_det_inscheck]', '[json_det_details]', JSON_L10N[1]])
+        "[json_det_inscheck]", "[json_det_details]", JSON_L10N[1]])
     if args.lang:
         insecure_checks = {check.split(": ")[0] + ":"
                            for check in insecure_checks}
@@ -2948,7 +2948,7 @@ def json_detailed_ins_checks(checks_list, insecure_checks):
     """
     for check in insecure_checks:
         check_s = check.strip()
-        key, val = check_s.split(':', 1)
+        key, val = check_s.split(":", 1)
         checks_list.append((key.strip(), val.strip()))
 
 
@@ -2958,13 +2958,13 @@ def json_detailed_results(json_lns):
     Related to `-o json` option.
     """
     result = {}
-    duration_t = get_detail('[analysis_time]', replace=True)
-    duration_key = get_detail('[json_det_analysis]', replace=True)
+    duration_t = get_detail("[analysis_time]", replace=True)
+    duration_key = get_detail("[json_det_analysis]", replace=True)
     for line in json_lns:
         if line.startswith(duration_t.strip()):
             result[duration_key] = line
-        elif ':' in line:
-            key, value = line.split(':', 1)
+        elif ":" in line:
+            key, value = line.split(":", 1)
             result[key.strip()] = value.strip()
     return result
 
@@ -2981,21 +2981,21 @@ def export_pdf_file(tmp_filename, *, export_all=False):
     class PDF(FPDF):
 
         def header(self):
-            self.set_font('Courier', 'B', 9)
+            self.set_font("Courier", "B", 9)
             self.set_y(10)
             self.set_text_color(0, 0, 0)
-            self.cell(0, 5, get_detail('[humble_desc]'), new_x="CENTER",
-                      new_y="NEXT", align='C')
+            self.cell(0, 5, get_detail("[humble_desc]"), new_x="CENTER",
+                      new_y="NEXT", align="C")
             self.ln(1)
-            self.cell(0, 5, BANNER_VERSION, align='C')
+            self.cell(0, 5, BANNER_VERSION, align="C")
             self.ln(9 if self.page_no() == 1 else 13)
 
         def footer(self):
             self.set_y(-15)
-            self.set_font('Helvetica', 'I', 8)
+            self.set_font("Helvetica", "I", 8)
             self.set_text_color(0, 0, 0)
             self.cell(0, 10, f"{print_detail_s('[pdf_footer]')} \
-{self.page_no()}{get_detail('[pdf_footer2]')} {{nb}}", align='C')
+{self.page_no()}{get_detail('[pdf_footer2]')} {{nb}}", align="C")
 
     pdf = PDF()
     initialize_pdf(pdf, tmp_filename, YPos, export_all=export_all)
@@ -3021,12 +3021,12 @@ def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos, *,
     """
     set_pdf_file(pdf)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
-    no_headers = [get_detail(f'[{i}]').strip() for i in ['no_sec_headers',
-                                                         'no_enb_headers']]
+    no_headers = [get_detail(f"[{i}]").strip() for i in ["no_sec_headers",
+                                                         "no_enb_headers"]]
     set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
                     pdf_prefixes, ypos)
     pdf.output(final_filename)
-    finalize_export(final_filename, tmp_filename, 'pdf', export_all)
+    finalize_export(final_filename, tmp_filename, "pdf", export_all)
 
 
 def set_pdf_file(pdf):
@@ -3048,7 +3048,7 @@ def set_pdf_metadata(pdf):
     pdf.set_author(git_urlc)
     pdf.set_creator(git_urlc)
     pdf.set_keywords(get_detail(METADATA_S[0], replace=True))
-    pdf.set_lang(get_detail('[pdf_meta_language]'))
+    pdf.set_lang(get_detail("[pdf_meta_language]"))
     pdf.set_subject(get_detail(METADATA_S[1], replace=True))
     pdf.set_title(title)
     pdf.set_producer(git_urlc)
@@ -3060,12 +3060,12 @@ def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
 
     Related to `-o pdf` option.
     """
-    with Path(tmp_filename).open(encoding='utf8') as txt_source:
+    with Path(tmp_filename).open(encoding="utf8") as txt_source:
         for line in txt_source:
             if any(no_header in line for no_header in no_headers):
                 set_pdf_warnings(line, pdf, ypos)
                 continue
-            if '[' in line:
+            if "[" in line:
                 set_pdf_sections(line, pdf)
             if set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes,
                               ypos):
@@ -3078,9 +3078,9 @@ def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
     Related to `-o pdf` option.
     """
     if any(bold_str in line for bold_str in BOLD_STRINGS):
-        pdf.set_font(style='B')
+        pdf.set_font(style="B")
     else:
-        pdf.set_font(style='')
+        pdf.set_font(style="")
     next((format_pdf_links(line, string, pdf, pdf_prefixes) for string in
           pdf_links if string in line), None)
     if set_pdf_conditions(line, pdf, ypos):
@@ -3142,7 +3142,7 @@ def set_pdf_warnings(line, pdf, ypos):
     """
     if STYLE[8] not in line:
         pdf.set_text_color(255, 0, 0)
-        pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
+        pdf.multi_cell(197, 6, text=line, align="L", new_y=ypos.LAST)
         return True
     return None
 
@@ -3153,7 +3153,7 @@ def set_pdf_nowarnings(line, pdf, ypos):
     Related to `-o pdf` option.
     """
     pdf.set_text_color(0, 128, 0)
-    pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
+    pdf.multi_cell(197, 6, text=line, align="L", new_y=ypos.LAST)
 
 
 def set_pdf_empty(l_empty, line, pdf, ypos):
@@ -3164,11 +3164,11 @@ def set_pdf_empty(l_empty, line, pdf, ypos):
     ln_strip = line.lstrip().lower()
     if (
         any(i.lower() in ln_strip for i in l_empty)
-        and '[' not in ln_strip
-        and ':' not in ln_strip
+        and "[" not in ln_strip
+        and ":" not in ln_strip
     ):
         pdf.set_text_color(255, 0, 0)
-        pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
+        pdf.multi_cell(197, 6, text=line, align="L", new_y=ypos.LAST)
         return True
     return False
 
@@ -3182,7 +3182,7 @@ def set_pdf_links(i, pdf_string):
                    REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
                    REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
                    REF_LINKS[4]: i.partition(REF_LINKS[4])[2].strip(),
-                   URL_LIST[0]: i.partition(': ')[2].strip()}
+                   URL_LIST[0]: i.partition(": ")[2].strip()}
     return pdf_links_d.get(pdf_string)
 
 
@@ -3206,7 +3206,7 @@ def format_pdf_lines(line, pdf, ypos):
                        pdf)
         return
     pdf.set_text_color(0, 0, 0)
-    pdf.multi_cell(197, 6, text=line, align='L', new_y=ypos.LAST)
+    pdf.multi_cell(197, 6, text=line, align="L", new_y=ypos.LAST)
 
 
 def set_pdf_chunks(chunks, pdf):
@@ -3233,7 +3233,7 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
     """
     pdf.set_text_color(0, 0, 0)
     if i > 0:
-        chunk = f' {chunk}'
+        chunk = f" {chunk}"
     y = pdf.get_y()
     if chunk_c != PDF_COLORS[2]:
         if i == 1 and len(chunks) >= LENGTH_BOUNDS[5]:
@@ -3241,7 +3241,7 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
         elif len(chunks) == 1:
             y -= 0.5
         pdf.set_y(y)
-    pdf.cell(104, 6, text=chunk, align='L')
+    pdf.cell(104, 6, text=chunk, align="L")
     pdf.ln(h=6)
 
 
@@ -3250,7 +3250,7 @@ def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
 
     Relate to `-o pdf` option.
     """
-    colon_idx = line.find(': ')
+    colon_idx = line.find(": ")
     ln_final = apply_pdf_color(colon_idx, hcolor, line, vcolor)
     pdf.write_html(ln_final)
     condition = chunks and len(chunks) == LENGTH_BOUNDS[5] and i == 0
@@ -3282,11 +3282,11 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False):
     generate_html()
     decrease_html_spacing(tmp_filename)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
-    ko_strings = [get_detail(f'[{i}]').rstrip() for i in ['no_sec_headers',
-                                                          'no_enb_headers']]
+    ko_strings = [get_detail(f"[{i}]").rstrip() for i in ["no_sec_headers",
+                                                          "no_enb_headers"]]
     with (
-        Path(tmp_filename).open(encoding='utf8') as html_source,
-        Path(final_filename).open('a', encoding='utf8') as html_final,
+        Path(tmp_filename).open(encoding="utf8") as html_source,
+        Path(final_filename).open("a", encoding="utf8") as html_final,
         ):
         for ln in html_source:
             inside_section = format_html_file(
@@ -3297,7 +3297,7 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False):
             inside_section = False
         html_final.write(HTML_TAGS[13])
     clean_html_final(final_filename)
-    finalize_export(final_filename, tmp_filename, 'html', export_all)
+    finalize_export(final_filename, tmp_filename, "html", export_all)
 
 
 def generate_html():
@@ -3305,14 +3305,14 @@ def generate_html():
 
     Source: `/additional/html_template.html`; related to `-o html` option.
     """
-    copyfile(PATHS['html_source'], final_filename)
+    copyfile(PATHS["html_source"], final_filename)
     html_replace = {"html_title": get_detail(METADATA_S[1]),
-                    "html_desc": get_detail('[pdf_meta_title]'),
+                    "html_desc": get_detail("[pdf_meta_title]"),
                     "html_keywords": get_detail(METADATA_S[0]),
                     "humble_URL": URL_LIST[4],
                     "humble_local_v": local_version, "URL_analyzed": URL,
-                    "html_body": '<body><pre>', "}}": '}', "{{": '}'}
-    with Path(final_filename).open('r+', encoding='utf8') as html_file:
+                    "html_body": "<body><pre>", "}}": "}", "{{": "}"}
+    with Path(final_filename).open("r+", encoding="utf8") as html_file:
         temp_html_content = html_file.read()
         replaced_html = temp_html_content.format(**html_replace)
         html_file.seek(0)
@@ -3326,7 +3326,7 @@ def decrease_html_spacing(tmp_filename):
     """
     initial_ln, prev_blank_ln = False, False
     cleaned_ln = []
-    with Path(tmp_filename).open(encoding='utf8') as html_source:
+    with Path(tmp_filename).open(encoding="utf8") as html_source:
         for line in html_source:
             if not initial_ln and INFO_SECTION in line:
                 initial_ln = True
@@ -3334,7 +3334,7 @@ def decrease_html_spacing(tmp_filename):
                 continue
             prev_blank_ln = initial_ln and not line.strip()
             cleaned_ln.append(line)
-    with Path(tmp_filename).open('w', encoding='utf8') as html_output:
+    with Path(tmp_filename).open("w", encoding="utf8") as html_output:
         html_output.writelines(cleaned_ln)
 
 
@@ -3357,7 +3357,7 @@ def format_html_lines(html_final, ko_strings, ln, ok_string, inside_section):
     Related to `-o html` option.
     """
     lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
-    ln_rstrip = ln.rstrip('\n')
+    ln_rstrip = ln.rstrip("\n")
     if format_html_info(html_final, ln_rstrip):
         return True, inside_section
     matched_bold, inside_section = format_html_bold(html_final, ln_rstrip,
@@ -3404,8 +3404,8 @@ def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string):
     Related to `-o html` option.
     """
     if ok_string in ln_rstrip:
-        html_final.write(f'{HTML_TAGS[6]}{ln_rstrip}{HTML_TAGS[5]}\
-{HTML_TAGS[11]}')
+        html_final.write(f"{HTML_TAGS[6]}{ln_rstrip}{HTML_TAGS[5]}\
+{HTML_TAGS[11]}")
         return True
     if any(ko in ln_rstrip for ko in ko_strings):
         html_final.write(f"{HTML_TAGS[3]}{ln_rstrip}{HTML_TAGS[5]}\
@@ -3438,7 +3438,7 @@ def format_html_compatibility(html_final, ln_rstrip):
     """
     if URL_STRING[2] not in ln_rstrip:
         return False
-    prefix, _, link = ln_rstrip.partition(': ')
+    prefix, _, link = ln_rstrip.partition(": ")
     html_final.write(
         f"{HTML_TAGS[4]}{prefix[1:]}: {HTML_TAGS[5]}"
         f"{HTML_TAGS[1]}{link}{HTML_TAGS[2]}{link}{HTML_TAGS[0]}\
@@ -3454,7 +3454,7 @@ def format_html_bold(html_final, ln_rstrip, inside_section):
     if any(s in ln_rstrip for s in BOLD_STRINGS):
         if inside_section:
             html_final.write(HTML_TAGS[12])
-        html_final.write(f'{HTML_TAGS[7]}{ln_rstrip}{HTML_TAGS[8]}')
+        html_final.write(f"{HTML_TAGS[7]}{ln_rstrip}{HTML_TAGS[8]}")
         inside_section = True
         return True, inside_section
     return False, inside_section
@@ -3501,7 +3501,7 @@ def format_html_fingerprint(args, ln, l_fng):
     ln_cf = ln.casefold() if args.brief else ln
     for i in l_fng:
         i_match = i.casefold() if args.brief else i
-        if i_match in ln_cf and ':' not in ln and HTML_TAGS[9] not in ln and \
+        if i_match in ln_cf and ":" not in ln and HTML_TAGS[9] not in ln and \
            HTML_TAGS[10] not in ln:
             return f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
     return ln
@@ -3514,7 +3514,7 @@ def format_html_totals(ln, l_total):
     """
     for i in l_total:
         if (not re.search(RE_PATTERN[11], ln)) and (
-             ((i in ln) and ('"' not in ln)) or ('HTTP (' in ln) or
+             ((i in ln) and ('"' not in ln)) or ("HTTP (" in ln) or
              (XFRAME_CHECK in ln)):
             ln = ln.replace(ln, HTML_TAGS[3] + ln + HTML_TAGS[5])
     return ln
@@ -3529,7 +3529,7 @@ def format_html_empty(ln, ln_rstrip, l_empty):
     """
     ln_strip = ln_rstrip.lstrip().lower()
     for i in l_empty:
-        if (i.lower() in ln_strip and '[' not in ln_strip and ':' not in
+        if (i.lower() in ln_strip and "[" not in ln_strip and ":" not in
            ln_strip):
             ln = f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
     return ln
@@ -3542,7 +3542,7 @@ def format_html_rest(html_final, l_empty, ln):
     """
     l_total = sorted(set(l_miss + l_ins))
     ln, ln_enabled = format_html_enabled(ln, html_final)
-    ln_rstrip = ln.rstrip('\n')
+    ln_rstrip = ln.rstrip("\n")
     if ln and not ln_enabled:
         ln = format_html_headers(ln)
         ln = format_html_fingerprint(args, ln, sorted(l_fng))
@@ -3559,7 +3559,7 @@ def format_html_enabled(ln, html_final):
     ln_enabled = STYLE[8] in ln
     if ln_enabled:
         ln = f" {ln[19:].rstrip()}"
-        if ':' in ln:
+        if ":" in ln:
             header, value = map(str.strip, ln.split(":", 1))
             ln = f"{HTML_TAGS[6]} {header}{HTML_TAGS[5]}: {value}"
         else:
@@ -3573,7 +3573,7 @@ def clean_html_final(final_filename):
 
     Related to `-o html` option.
     """
-    with Path(final_filename).open('r+', encoding='utf8') as html_final:
+    with Path(final_filename).open("r+", encoding="utf8") as html_final:
         html_content = html_final.read()
         html_content = re.sub(RE_PATTERN[22], "", html_content)
         html_content = html_content.replace(RE_PATTERN[23], "")
@@ -3598,16 +3598,16 @@ def generate_xml(final_filename, temp_filename, *, export_all=False):
         Additionally, the DTD used to generate the XML is defined in the
         constant `DTD_CONTENT`.
     """
-    root = ET.Element('analysis', {'version': BANNER_VERSION,
-                                   'generated': current_time})
-    with Path(temp_filename).open(encoding='utf8') as txt_source:
+    root = ET.Element("analysis", {"version": BANNER_VERSION,
+                                   "generated": current_time})
+    with Path(temp_filename).open(encoding="utf8") as txt_source:
         parse_xml(root, None, (line.strip() for line in txt_source))
     xml_decl = b'<?xml version="1.0" encoding="utf-8"?>\n'
-    xml_content = ET.tostring(root, encoding='utf-8', xml_declaration=False)
-    xml_dtd = f'<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n'.encode()
-    with Path(final_filename).open('wb') as xml_final:
+    xml_content = ET.tostring(root, encoding="utf-8", xml_declaration=False)
+    xml_dtd = f"<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n".encode()
+    with Path(final_filename).open("wb") as xml_final:
         xml_final.write(xml_decl + xml_dtd + xml_content)
-    finalize_export(final_filename, temp_filename, 'xml', export_all)
+    finalize_export(final_filename, temp_filename, "xml", export_all)
 
 
 def parse_xml(root, section, stripped_txt):
@@ -3615,8 +3615,8 @@ def parse_xml(root, section, stripped_txt):
     for line in stripped_txt:
         if not line:
             continue
-        if line.startswith('['):
-            section = ET.SubElement(root, 'section', {'name': line})
+        if line.startswith("["):
+            section = ET.SubElement(root, "section", {"name": line})
             continue
         if section is None:
             continue
@@ -3629,10 +3629,10 @@ def add_xml_item(line, section):
 
     Related to `-o xml` option.
     """
-    item = ET.SubElement(section, 'item')
-    if ': ' in line and all(sub not in line for sub in XML_STRING):
-        key, value = line.split(': ', 1)
-        item.set('name', key.strip())
+    item = ET.SubElement(section, "item")
+    if ": " in line and all(sub not in line for sub in XML_STRING):
+        key, value = line.split(": ", 1)
+        item.set("name", key.strip())
         item.text = value.strip()
     else:
         item.text = line
@@ -3652,13 +3652,13 @@ def check_russian_scope():
     ??? note
         You can read my reasons <a href="https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326" target="_blank">here</a>.
     """  # noqa: E501
-    domain = urlparse(URL).netloc.split(':')[0]
+    domain = urlparse(URL).netloc.split(":")[0]
     try:
-        sff = domain.encode('ascii').decode('idna')
+        sff = domain.encode("ascii").decode("idna")
     except UnicodeError:
         sff = domain
-    if sff.split('.')[-1].upper() in {'RU', 'РФ'}:
-        print_detail('[ru_check]', 3)
+    if sff.split(".")[-1].upper() in {"RU", "РФ"}:
+        print_detail("[ru_check]", 3)
         sys.exit(1)
 
 
@@ -3670,10 +3670,10 @@ def check_owasp_compliance(tmp_filename):
     Path(tmp_filename).unlink()
     header_list = []
     header_dict = {}
-    with PATHS['owasp_compliance'].open('r', encoding='utf8') as owasp_file:
+    with PATHS["owasp_compliance"].open("r", encoding="utf8") as owasp_file:
         for line in islice(owasp_file, SLICE_INT[8], None):
             line_strip = line.strip()
-            header_name, header_val = map(str, line_strip.split(': ', 1))
+            header_name, header_val = map(str, line_strip.split(": ", 1))
             header_list.append(header_name.lower())
             header_dict[header_name] = header_val
     print_owasp_findings(header_dict, header_list)
@@ -3684,8 +3684,8 @@ def print_owasp_summary(missing, wrong):
 
     Related to `-c` option.
     """
-    missing_txt = get_detail('[comp_missing]', replace=True)
-    wrong_txt = get_detail('[comp_noncompliant]', replace=True)
+    missing_txt = get_detail("[comp_missing]", replace=True)
+    wrong_txt = get_detail("[comp_noncompliant]", replace=True)
     max_len = len(wrong_txt)
     print(end="\n\n")
     print(f"{STYLE[0]}{get_detail('[comp_summary]')}")
@@ -3700,18 +3700,18 @@ def print_owasp_findings(header_dict, header_list):
     """
     print(end="\n\n")
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
-    print(" ", end='')
-    print_detail_l('[analysis_date]')
+    print(" ", end="")
+    print_detail_l("[analysis_date]")
     print(f" {current_time}")
-    print(f' {URL_STRING[1]}{URL}')
-    print_detail('[comp_ref]', num_lines=2)
+    print(f" {URL_STRING[1]}{URL}")
+    print_detail("[comp_ref]", num_lines=2)
     missing_owasp = print_owasp_missing(header_list)
     wrong_owasp = print_owasp_wrong(header_dict)
     if wrong_owasp:
         print_owasp_rec(wrong_owasp, header_dict)
     print_owasp_summary(missing_owasp, wrong_owasp)
     print()
-    print_detail('[comp_experimental]', 2)
+    print_detail("[comp_experimental]", 2)
 
 
 def print_owasp_missing(header_list):
@@ -3772,16 +3772,16 @@ def analyze_input_file(input_file):
     Related to `-if` option.
     """
     if not Path(input_file).exists():
-        print_error_detail('[args_inputnotfound]')
+        print_error_detail("[args_inputnotfound]")
     input_headers = {}
     status_code = 0
     try:
-        with Path(input_file).open(encoding='utf8') as input_source:
+        with Path(input_file).open(encoding="utf8") as input_source:
             input_headers, status_code = parse_input_file(input_headers,
                                                           input_source,
                                                           status_code)
     except UnicodeDecodeError:
-        print_error_detail('[args_inputunicode]')
+        print_error_detail("[args_inputunicode]")
     return input_headers, False, status_code
 
 
@@ -3796,11 +3796,11 @@ def parse_input_file(input_headers, input_source, status_code):
         status_code = int(parts[-1])
     for line in input_source:
         line_strip = line.strip()
-        if ':' in line:
-            input_header, input_value = line_strip.split(':', 1)
+        if ":" in line:
+            input_header, input_value = line_strip.split(":", 1)
             input_headers[input_header.title()] = input_value.strip()
     if not input_headers:
-        print_error_detail('[args_inputlines]')
+        print_error_detail("[args_inputlines]")
     return input_headers, status_code
 
 
@@ -3817,7 +3817,7 @@ def normalize_output_file(filename):
         base_name = base_name[:dot_index]
     if not base_name or base_name.startswith("."):
         delete_lines()
-        print_error_detail('[export_filename_error]')
+        print_error_detail("[export_filename_error]")
     return base_name
 
 
@@ -3830,14 +3830,14 @@ def get_tmp_file(args, export_date):
 
     Related to `-o` option.
     """
-    file_ext = '.txt' if args.output == 'txt' else 't.txt'
+    file_ext = ".txt" if args.output == "txt" else "t.txt"
     if args.output_file:
         name_part = normalize_output_file(args.output_file)
         tmp_file = f"{name_part}{file_ext}"
     else:
         url = urlparse(URL)
         humble_str = HUMBLE_DESC[1:7]
-        lang = '_es' if args.lang else '_en'
+        lang = "_es" if args.lang else "_en"
         tmp_file = build_tmp_file(export_date, file_ext, lang, humble_str, url)
     if args.output_path:
         tmp_file = (Path(args.output_path) / tmp_file).resolve()
@@ -3876,7 +3876,7 @@ def process_server_error(http_status_code, l10n_id):
         else:
             print(URL_LIST[1])
     else:
-        print_error_detail('[server_serror]')
+        print_error_detail("[server_serror]")
     sys.exit(1)
 
 
@@ -3930,7 +3930,7 @@ def process_requests_exception(exception):
     if exception_id := exception_d.get(type(exception)):
         print_http_exception(exception_id, exception)
     else:
-        print_detail_l('[unhandled_exception]')
+        print_detail_l("[unhandled_exception]")
         print(f" {type(exception).__name__}")
         sys.exit(1)
 
@@ -3943,7 +3943,7 @@ def process_http_error(r, exception_d):
         r.raise_for_status()
     except requests.exceptions.HTTPError as err_http:
         status = err_http.response.status_code
-        l10n_id = f'[server_{status}]'
+        l10n_id = f"[server_{status}]"
         if ERROR_CODES_MIXED[2] <= status <= ERROR_CODES_MIXED[4]:
             process_server_error(status, l10n_id)
     except Exception as http_err: # noqa: BLE001
@@ -3961,7 +3961,7 @@ def parse_request_headers(request_headers):
     if malformed_headers:
         delete_lines()
         print()
-        quoted = ', '.join(f'"{h}"' for h in malformed_headers)
+        quoted = ", ".join(f'"{h}"' for h in malformed_headers)
         print(f"{get_detail('[e_custom_headers]', replace=True)}: {quoted}")
         sys.exit(1)
     return headers
@@ -4009,25 +4009,25 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
     def worker():
         try:
             r, _, exception = make_http_request(custom_headers, proxy)
-            result['r'] = r
-            result['exception'] = exception
+            result["r"] = r
+            result["exception"] = exception
         except Exception as thread_err: # noqa: BLE001
-            result['exception'] = thread_err
+            result["exception"] = thread_err
         finally:
             done.set()
 
     thread = Thread(target=worker, daemon=True)
     thread.start()
     if not done.wait(timeout=REQ_TIMEOUT - REQ_WARNING):
-        print(get_detail('[unreliable_analysis]'))
+        print(get_detail("[unreliable_analysis]"))
         reliable = True
     if not done.wait(timeout=REQ_TIMEOUT):
         delete_lines()
         delete_lines()
         print(f"\n{get_detail('[e_timeout]', replace=True)}")
         sys.exit(1)
-    r = result.get('r')
-    exception = result.get('exception')
+    r = result.get("r")
+    exception = result.get("exception")
     return process_http_response(r, exception, status_code, reliable, body)
 
 
@@ -4053,12 +4053,12 @@ def process_http_response(r, exception, status_code, reliable, body):
     process_http_error(r, exception_d)
     status_code = r.status_code
     headers = CaseInsensitiveDict({
-        k: re.sub(RE_PATTERN[20], ' ', v).strip()
+        k: re.sub(RE_PATTERN[20], " ", v).strip()
         for k, v in r.headers.items()})
     body = r.text
     is_html = False
-    ctype = headers.get('content-type', '')
-    is_html = ctype.lower().startswith('text/html')
+    ctype = headers.get("content-type", "")
+    is_html = ctype.lower().startswith("text/html")
     return headers, status_code, reliable, body, is_html
 
 
@@ -4069,83 +4069,83 @@ def custom_help_formatter(prog):
 
 # Main functionality for argparse
 init(autoreset=True)
-epilog_content = get_epilog_content('[epilog_content]')
+epilog_content = get_epilog_content("[epilog_content]")
 
 parser = ArgumentParser(formatter_class=custom_help_formatter,
                         description=f"{HUMBLE_DESC} | {URL_LIST[4]} | \
 v.{local_version}", epilog=epilog_content)
 
-parser.add_argument("-a", dest='URL_A', action="store_true", help="Print \
+parser.add_argument("-a", dest="URL_A", action="store_true", help="Print \
 statistics of the performed analysis; if the '-u' parameter is omitted they \
 will be global")
-parser.add_argument("-b", dest='brief', action="store_true", help="Print \
+parser.add_argument("-b", dest="brief", action="store_true", help="Print \
 overall findings; if omitted detailed ones will be printed")
-parser.add_argument("-c", dest='compliance', action="store_true", help="Checks\
+parser.add_argument("-c", dest="compliance", action="store_true", help="Checks\
  URL response HTTP headers for compliance with OWASP 'Secure Headers Project' \
 best practices")
-parser.add_argument('-cicd', dest="cicd", action="store_true", help="Print \
+parser.add_argument("-cicd", dest="cicd", action="store_true", help="Print \
 only analysis summary, totals and grade in JSON; suitable for CI/CD")
-parser.add_argument("-df", dest='redirects', action="store_true", help="Do not\
+parser.add_argument("-df", dest="redirects", action="store_true", help="Do not\
  follow redirects; if omitted the last redirection will be the one analyzed")
-parser.add_argument("-e", nargs='?', type=str, dest='testssl_path', help="Prin\
+parser.add_argument("-e", nargs="?", type=str, dest="testssl_path", help="Prin\
 t only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)")
-parser.add_argument("-f", nargs='?', type=str, dest='fingerprint_term', help="\
+parser.add_argument("-f", nargs="?", type=str, dest="fingerprint_term", help="\
 Print fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is \
 omitted the top 20 results will be printed")
-parser.add_argument("-g", dest='guides', action="store_true", help="Print \
+parser.add_argument("-g", dest="guides", action="store_true", help="Print \
 guidelines for enabling security HTTP response headers on popular frameworks, \
 servers and services")
-parser.add_argument("-grd", dest='grades', action="store_true", help="Print \
+parser.add_argument("-grd", dest="grades", action="store_true", help="Print \
 the checks to grade an analysis, along with advice for improvement")
-parser.add_argument("-H", dest='request_header', type=str, action="append\
+parser.add_argument("-H", dest="request_header", type=str, action="append\
 ", help='Adds REQUEST_HEADER to the request;  must be in double quotes and can\
  be used multiple times, e.g. -H "Host: example.com"')
-parser.add_argument("-if", dest='input_file', type=str, help="Analyzes \
+parser.add_argument("-if", dest="input_file", type=str, help="Analyzes \
 'INPUT_FILE': must contain HTTP response headers and values separated by ': ';\
  E.g., 'server: nginx'")
-parser.add_argument("-l", dest='lang', choices=['es'], help="Defines the \
+parser.add_argument("-l", dest="lang", choices=["es"], help="Defines the \
 language for displaying analysis, errors and messages; if omitted, will be \
 printed in English")
-parser.add_argument("-lic", dest='license', action="store_true", help="Print \
+parser.add_argument("-lic", dest="license", action="store_true", help="Print \
 the license for 'humble', along with permissions, limitations and conditions")
-parser.add_argument("-o", dest='output', choices=['all', 'csv', 'html', 'json',
-                                                  'pdf', 'txt', 'xlsx', 'xml'],
+parser.add_argument("-o", dest="output", choices=["all", "csv", "html", "json",
+                                                  "pdf", "txt", "xlsx", "xml"],
                     help="Export the analysis to the specified format; 'all' \
 will export to all formats")
-parser.add_argument("-of", dest='output_file', type=str, help="Exports \
+parser.add_argument("-of", dest="output_file", type=str, help="Exports \
 analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 '-o' will be used")
-parser.add_argument("-op", dest='output_path', type=str, help="Exports \
+parser.add_argument("-op", dest="output_path", type=str, help="Exports \
 analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of \
 'humble.py' will be used")
-parser.add_argument('-p', dest="proxy", type=str, help="Use a proxy for the \
+parser.add_argument("-p", dest="proxy", type=str, help="Use a proxy for the \
 analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will \
 be used")
-parser.add_argument("-r", dest='ret', action="store_true", help="Print HTTP \
+parser.add_argument("-r", dest="ret", action="store_true", help="Print HTTP \
 response headers and a detailed analysis; '-b' parameter will take priority")
-parser.add_argument("-s", dest='skip_headers', nargs='*', type=str, help="S\
+parser.add_argument("-s", dest="skip_headers", nargs="*", type=str, help="S\
 kips 'deprecated/insecure' and 'missing' checks for the indicated \
 'SKIP_HEADERS' (separated by spaces)")
-parser.add_argument('-u', type=str, dest='URL', help="Scheme, host and port to\
+parser.add_argument("-u", type=str, dest="URL", help="Scheme, host and port to\
  analyze. E.g., https://google.com or https://google.com:443")
-parser.add_argument('-ua', type=str, dest='user_agent', help="User-Agent ID \
+parser.add_argument("-ua", type=str, dest="user_agent", help="User-Agent ID \
 from 'additional/user_agents.txt' file to use. '0' will print all and '1' is \
 the default")
 parser.add_argument("-v", "--version", action="store_true", help="Checks for \
 updates at https://github.com/rfc-st/humble")
 
-args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
 
 # Multilingual messages and Python version checking
 l10n_main = get_l10n_content()
 check_python_version()
 
 # Functionality for argparse parameters/values
-check_updates(local_version) if '-v' in sys.argv else None
-print_l10n_file(args, 'grades', slice_ln=True) if '-grd' in sys.argv else None
-print_l10n_file(args, 'license') if '-lic' in sys.argv else None
+check_updates(local_version) if "-v" in sys.argv else None
+print_l10n_file(args, "grades", slice_ln=True) if "-grd" in sys.argv else None
+print_l10n_file(args, "license") if "-lic" in sys.argv else None
 
-if '-f' in sys.argv:
+if "-f" in sys.argv:
     fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \
         fng_statistics_top()
 
@@ -4154,44 +4154,44 @@ URL = args.URL
 if URL is not None:
     check_russian_scope()
 
-if '-cicd' in sys.argv:
-    args.output = 'txt'
+if "-cicd" in sys.argv:
+    args.output = "txt"
 
-if '-c' in sys.argv:
+if "-c" in sys.argv:
     args.brief = False
-    args.output = 'txt'
-    args.user_agent = '1'
+    args.output = "txt"
+    args.user_agent = "1"
 
-if '-if' in sys.argv:
+if "-if" in sys.argv:
     if any([args.redirects, args.ret]):
-        print_error_detail('[args_inputfile]')
+        print_error_detail("[args_inputfile]")
     elif not args.URL:
-        print_error_detail('[args_urlinputfile]')
+        print_error_detail("[args_urlinputfile]")
     else:
         headers, reliable, status_code = analyze_input_file(args.input_file)
 
-if '-H' in sys.argv and not URL:
-    print_error_detail('[e_custom_uheaders]')
+if "-H" in sys.argv and not URL:
+    print_error_detail("[e_custom_uheaders]")
 
-if '-ua' in sys.argv:
+if "-ua" in sys.argv:
     ua_header = parse_user_agent(user_agent=True)
 elif URL:
     ua_header = parse_user_agent()
 
-if '-e' in sys.argv:
-    if sys.platform.startswith('win'):
-        print_l10n_file(args, 'testssl', slice_ln=True)
+if "-e" in sys.argv:
+    if sys.platform.startswith("win"):
+        print_l10n_file(args, "testssl", slice_ln=True)
     if (args.testssl_path is None or URL is None):
-        print_error_detail('[args_notestssl]')
+        print_error_detail("[args_notestssl]")
 
 if args.lang and not URL and not args.URL_A and not args.guides:
-    print_error_detail('[args_lang]')
+    print_error_detail("[args_lang]")
 
 if args.output_file and args.output and URL:
     output_file = args.output_file
     check_input_traversal(args.output_file)
 elif args.output_file and (not args.output or not URL):
-    print_error_detail('[args_customfile]')
+    print_error_detail("[args_customfile]")
 
 if args.output_path is not None:
     check_output_path(args)
@@ -4199,12 +4199,12 @@ if args.output_path is not None:
 if any([args.brief, args.output, args.ret, args.redirects,
         args.skip_headers]) and (URL is None or args.guides is None or
                                  args.URL_A is None):
-    print_error_detail('[args_several]')
+    print_error_detail("[args_several]")
 
 skip_list, unsupported_headers = [], []
 
-if '-s' in sys.argv and len(args.skip_headers) == 0:
-    print_error_detail('[args_skipped]')
+if "-s" in sys.argv and len(args.skip_headers) == 0:
+    print_error_detail("[args_skipped]")
 elif args.skip_headers:
     insecure_headers = get_insecure_checks()
     unsupported_headers, skip_list = \
@@ -4213,7 +4213,7 @@ elif args.skip_headers:
         None
 
 if args.guides:
-    print_l10n_file(args, 'security_guides', slice_ln=True)
+    print_l10n_file(args, "security_guides", slice_ln=True)
 
 if args.testssl_path:
     testssl_command(args.testssl_path, URL)
@@ -4226,40 +4226,40 @@ start = time()
 
 if not args.URL_A and not args.cicd:
     if not args.compliance:
-        detail = '[analysis_output]' if args.output else '[analysis]'
+        detail = "[analysis_output]" if args.output else "[analysis]"
     else:
-        detail = '[compliance_output]'
+        detail = "[compliance_output]"
     print()
     print_detail(detail)
 
 exception_d = {
-    requests.exceptions.ChunkedEncodingError: '[e_chunk]',
-    requests.exceptions.ConnectionError: '[e_connection]',
-    requests.exceptions.ContentDecodingError: '[e_decoding]',
-    requests.exceptions.InvalidSchema: '[e_ischema]',
-    requests.exceptions.InvalidURL: '[e_url]',
-    requests.exceptions.MissingSchema: '[e_mschema]',
+    requests.exceptions.ChunkedEncodingError: "[e_chunk]",
+    requests.exceptions.ConnectionError: "[e_connection]",
+    requests.exceptions.ContentDecodingError: "[e_decoding]",
+    requests.exceptions.InvalidSchema: "[e_ischema]",
+    requests.exceptions.InvalidURL: "[e_url]",
+    requests.exceptions.MissingSchema: "[e_mschema]",
     requests.exceptions.SSLError: None,
-    requests.exceptions.Timeout: '[e_timeout]',
-    requests.exceptions.TooManyRedirects: '[e_redirect]',
+    requests.exceptions.Timeout: "[e_timeout]",
+    requests.exceptions.TooManyRedirects: "[e_redirect]",
 }
 requests.packages.urllib3.disable_warnings()
 
-if '-if' not in sys.argv:
+if "-if" not in sys.argv:
     headers_l, http_equiv = {}, None
     status_code, reliable, body = None, None, None
 else:
     http_equiv = None
 
-if '-if' not in sys.argv:
+if "-if" not in sys.argv:
     proxy = None
     if args.proxy and process_proxy_url(args.proxy, 3.0):
         proxy = {"http": args.proxy, "https": args.proxy}
     custom_headers = REQ_HEADERS.copy()
-    if '-H' in sys.argv:
+    if "-H" in sys.argv:
         added_request_headers = parse_request_headers(args.request_header)
         custom_headers.update(added_request_headers)
-    custom_headers['User-Agent'] = ua_header
+    custom_headers["User-Agent"] = ua_header
     (headers, status_code, reliable, body, is_html) = (
         process_http_request(status_code, reliable, body, proxy,
                              custom_headers,
@@ -4277,10 +4277,10 @@ if args.output:
     orig_stdout = sys.stdout
     export_date = datetime.now().astimezone().strftime("%Y%m%d_%H%M%S")
     tmp_filename = get_tmp_file(args, export_date)
-    validate_file_access(tmp_filename, context='export')
-    tmp_filename_content = Path(tmp_filename).open('w', encoding='utf8') # noqa: SIM115
+    validate_file_access(tmp_filename, context="export")
+    tmp_filename_content = Path(tmp_filename).open("w", encoding="utf8") # noqa: SIM115
     sys.stdout = tmp_filename_content
-    export_slice = SLICE_INT[4] if args.output == 'txt' else SLICE_INT[5]
+    export_slice = SLICE_INT[4] if args.output == "txt" else SLICE_INT[5]
     export_filename = f"{str(tmp_filename)[:export_slice]}.{args.output}"
 
 # Section '0. Info & HTTP Response Headers'
@@ -4288,26 +4288,26 @@ print_general_info(reliable, export_filename)
 print_response_headers() if args.ret else print(end="\n\n")
 
 # Section '1. Enabled HTTP Security Headers'
-print_detail_r('[1enabled]')
+print_detail_r("[1enabled]")
 
-with PATHS['security_headers'].open('r', encoding='utf8') as sec_f:
+with PATHS["security_headers"].open("r", encoding="utf8") as sec_f:
     t_ena = tuple(line.strip() for line in islice(sec_f, SLICE_INT[2], None))
 
 en_cnt = get_enabled_headers(args, headers_l, t_ena)
 
 # Section '2. Missing HTTP Security Headers'
-print_detail_r('[2missing]')
+print_detail_r("[2missing]")
 
-l_miss = ['Cache-Control', 'Clear-Site-Data', 'Content-Type',
-          'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
-          'Cross-Origin-Resource-Policy', 'Content-Security-Policy',
-          'Integrity-Policy', 'NEL', 'Permissions-Policy', 'Referrer-Policy',
-          'Strict-Transport-Security', 'X-Content-Type-Options',
-          'X-Permitted-Cross-Domain-Policies']
+l_miss = ["Cache-Control", "Clear-Site-Data", "Content-Type",
+          "Cross-Origin-Embedder-Policy", "Cross-Origin-Opener-Policy",
+          "Cross-Origin-Resource-Policy", "Content-Security-Policy",
+          "Integrity-Policy", "NEL", "Permissions-Policy", "Referrer-Policy",
+          "Strict-Transport-Security", "X-Content-Type-Options",
+          "X-Permitted-Cross-Domain-Policies"]
 
-l_detail = ['[mcache]', '[mcsd]', '[mctype]', '[mcoe]', '[mcop]', '[mcor]',
-            '[mcsp]', '[mcipol]', '[mnel]', '[mpermission]', '[mreferrer]',
-            '[msts]', '[mxcto]', '[mxpcd]', '[mxfo]']
+l_detail = ["[mcache]", "[mcsd]", "[mctype]", "[mcoe]", "[mcop]", "[mcor]",
+            "[mcsp]", "[mcipol]", "[mnel]", "[mpermission]", "[mreferrer]",
+            "[msts]", "[mxcto]", "[mxpcd]", "[mxfo]"]
 
 m_cnt, skip_missing = print_missing_headers(args, headers_l, l_detail, l_miss)
 
@@ -4318,10 +4318,10 @@ if m_cnt == 0:
 print()
 
 # Section '3. Fingerprint HTTP Response Headers'
-print_detail_r('[3fingerprint]')
+print_detail_r("[3fingerprint]")
 
 if not args.brief:
-    print_detail('[afgp]')
+    print_detail("[afgp]")
 
 l_fng_ex, l_fng, titled_fng = get_fingerprint_headers()
 f_cnt = print_fingerprint_headers(headers_l, l_fng_ex, titled_fng)
@@ -4346,174 +4346,174 @@ print()
 # I have checked all of these short links one by one: they all resolve to the
 # original URL, but I cannot guarantee that they will remain that way over
 # time. I will keep an eye on them, though :)
-print_detail_r('[4depinsecure]')
+print_detail_r("[4depinsecure]")
 i_cnt = [0]
 
 if not args.brief:
-    print_detail('[aisc]')
+    print_detail("[aisc]")
 
 # The headers of 'l_miss' are excluded here, but are included in 'l_total'.
-l_ins = ['Accept-CH', 'Accept-CH-Lifetime', 'Accept-Patch',
-         'Access-Control-Allow-Credentials', 'Access-Control-Allow-Methods',
-         'Access-Control-Allow-Origin', 'Access-Control-Max-Age',
-         'Activate-Storage-Access', 'Allow',
-         'Attribution-Reporting-Register-Source',
-         'Attribution-Reporting-Register-Trigger', 'Content-Digest',
-         'Content-Disposition', 'Content-DPR', 'Content-Encoding',
-         'Content-Security-Policy-Report-Only', 'Content-Type', 'Critical-CH',
-         'Digest', 'Document-Isolation-Policy', 'Document-Policy', 'Etag',
-         'Expect-CT', 'Expires', 'Feature-Policy',
-         'Integrity-Policy-Report-Only', 'Keep-Alive', 'Large-Allocation',
-         'Mcp-Session-Id', 'No-Vary-Search', 'Observe-Browsing-Topics',
-         'Onion-Location', 'Origin-Agent-Cluster', 'P3P', 'Pragma',
-         'Proxy-Authenticate', 'Public-Key-Pins',
-         'Public-Key-Pins-Report-Only', 'Refresh', 'Report-To',
-         'Reporting-Endpoints', 'Repr-Digest', 'Server-Timing',
-         'Service-Worker-Allowed', 'Set-Cookie', 'Set-Login', 'SourceMap',
-         'Speculation-Rules', 'Strict-Dynamic', 'Supports-Loading-Mode',
-         'Surrogate-Control', 'Timing-Allow-Origin', 'Tk', 'Trailer',
-         'Transfer-Encoding', 'Vary', 'Want-Digest', 'Want-Content-Digest',
-         'Want-Repr-Digest', 'Warning', 'WWW-Authenticate',
-         'X-Content-Security-Policy', 'X-Content-Security-Policy-Report-Only',
-         'X-DNS-Prefetch-Control', 'X-Download-Options', 'X-Pad', 'X-Pingback',
-         'X-Robots-Tag', 'X-Runtime', 'X-SourceMap', 'X-UA-Compatible',
-         'X-Webkit-CSP', 'X-Webkit-CSP-Report-Only', 'X-XSS-Protection']
+l_ins = ["Accept-CH", "Accept-CH-Lifetime", "Accept-Patch",
+         "Access-Control-Allow-Credentials", "Access-Control-Allow-Methods",
+         "Access-Control-Allow-Origin", "Access-Control-Max-Age",
+         "Activate-Storage-Access", "Allow",
+         "Attribution-Reporting-Register-Source",
+         "Attribution-Reporting-Register-Trigger", "Content-Digest",
+         "Content-Disposition", "Content-DPR", "Content-Encoding",
+         "Content-Security-Policy-Report-Only", "Content-Type", "Critical-CH",
+         "Digest", "Document-Isolation-Policy", "Document-Policy", "Etag",
+         "Expect-CT", "Expires", "Feature-Policy",
+         "Integrity-Policy-Report-Only", "Keep-Alive", "Large-Allocation",
+         "Mcp-Session-Id", "No-Vary-Search", "Observe-Browsing-Topics",
+         "Onion-Location", "Origin-Agent-Cluster", "P3P", "Pragma",
+         "Proxy-Authenticate", "Public-Key-Pins",
+         "Public-Key-Pins-Report-Only", "Refresh", "Report-To",
+         "Reporting-Endpoints", "Repr-Digest", "Server-Timing",
+         "Service-Worker-Allowed", "Set-Cookie", "Set-Login", "SourceMap",
+         "Speculation-Rules", "Strict-Dynamic", "Supports-Loading-Mode",
+         "Surrogate-Control", "Timing-Allow-Origin", "Tk", "Trailer",
+         "Transfer-Encoding", "Vary", "Want-Digest", "Want-Content-Digest",
+         "Want-Repr-Digest", "Warning", "WWW-Authenticate",
+         "X-Content-Security-Policy", "X-Content-Security-Policy-Report-Only",
+         "X-DNS-Prefetch-Control", "X-Download-Options", "X-Pad", "X-Pingback",
+         "X-Robots-Tag", "X-Runtime", "X-SourceMap", "X-UA-Compatible",
+         "X-Webkit-CSP", "X-Webkit-CSP-Report-Only", "X-XSS-Protection"]
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-CH
-t_acceptch_dep = ('content-dpr', 'dpr', 'sec-ch-ua-full-version',
-                  'viewport-width', 'width')
+t_acceptch_dep = ("content-dpr", "dpr", "sec-ch-ua-full-version",
+                  "viewport-width", "width")
 
 # https://mdn.io/Access-Control-Allow-Origin
-t_accecao = ('*', 'null')
-t_accecaov = ('.*', '*.')
+t_accecao = ("*", "null")
+t_accecaov = (".*", "*.")
 
 # https://privacycg.github.io/storage-access-headers/#activate-storage-access-header
 # https://developers.google.com/privacy-sandbox/blog/storage-access-api-headers-logic
-t_act = ('allowed-origin', 'load', 'retry')
+t_act = ("allowed-origin", "load", "retry")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
-t_cache = ('no-cache', 'no-store')
-t_cachev = ('immutable', 'max-age', 'must-revalidate', 'must-understand',
-            'no-cache', 'no-store', 'no-transform', 'private',
-            'proxy-revalidate', 'public', 's-maxage', 'stale-if-error',
-            'stale-while-revalidate')
+t_cache = ("no-cache", "no-store")
+t_cachev = ("immutable", "max-age", "must-revalidate", "must-understand",
+            "no-cache", "no-store", "no-transform", "private",
+            "proxy-revalidate", "public", "s-maxage", "stale-if-error",
+            "stale-while-revalidate")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data
-t_csdata = ('cache', 'clientHints', 'cookies', 'executionContexts',
-            'prefetchCache', 'prerenderCache', 'storage', '*')
+t_csdata = ("cache", "clientHints", "cookies", "executionContexts",
+            "prefetchCache", "prerenderCache", "storage", "*")
 
 # https://mdn.io/Want-Content-Digest
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Repr-Digest
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Digest
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Want-Repr-Digest
-t_digest_sec = ('sha-256', 'sha-512')
-t_digest_ins = ('adler', 'crc32c', 'md5', 'sha-1', 'unixsum', 'unixcksum')
+t_digest_sec = ("sha-256", "sha-512")
+t_digest_ins = ("adler", "crc32c", "md5", "sha-1", "unixsum", "unixcksum")
 
 # https://mdn.io/Content-Disposition
-t_contdisp = ('filename', 'filename*')
+t_contdisp = ("filename", "filename*")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Encoding
-t_cencoding = ('br', 'compress', 'dcb', 'dcz', 'deflate', 'gzip', 'x-gzip',
-               'zstd')
+t_cencoding = ("br", "compress", "dcb", "dcz", "deflate", "gzip", "x-gzip",
+               "zstd")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 # https://www.w3.org/TR/CSP2/
 # https://www.w3.org/TR/CSP3/
-t_csp_broad = (' *', '* ', ' * ',  ' blob: ', ' data: ', ' ftp: ',
-               ' filesystem: ', ' https: ', ' https://* ', ' https://*.* ',
-               ' mailto: ', ' mediastream: ', ' schemes: ', ' tel: ', ' wss: ',
-               'wss://')
-t_csp_equal = ('nonce', 'sha', 'style-src-elem', 'report-to', 'report-uri')
-t_csp_dep = ('block-all-mixed-content', 'disown-opener', 'navigate-to',
-             'plugin-types', 'prefetch-src', 'referrer', 'report-uri',
-             'require-sri-for')
-t_csp_dirs = ('base-uri', 'child-src', 'connect-src', 'default-src',
-              'fenced-frame-src', 'font-src', 'form-action', 'frame-ancestors',
-              'frame-src', 'img-src', 'manifest-src', 'media-src',
-              'object-src', 'report-to', 'require-trusted-types-for',
-              'sandbox', 'script-src', 'script-src-attr', 'script-src-elem',
-              'style-src', 'style-src-attr', 'style-src-elem', 'trusted-types',
-              'upgrade-insecure-requests', 'webrtc', 'worker-src')
-t_csp_insecs = ('http:', 'ws:')
-t_csp_miss = ('base-uri', 'child-src', 'connect-src', 'font-src',
-              'form-action', 'frame-ancestors', 'img-src', 'object-src',
-              'require-trusted-types-for', 'script-src', 'style-src',
-              'trusted-types', 'worker-src')
-t_csp_checks = ('upgrade-insecure-requests', 'strict-transport-security',
-                'unsafe-hashes', 'nonce-', '127.0.0.1')
+t_csp_broad = (" *", "* ", " * ",  " blob: ", " data: ", " ftp: ",
+               " filesystem: ", " https: ", " https://* ", " https://*.* ",
+               " mailto: ", " mediastream: ", " schemes: ", " tel: ", " wss: ",
+               "wss://")
+t_csp_equal = ("nonce", "sha", "style-src-elem", "report-to", "report-uri")
+t_csp_dep = ("block-all-mixed-content", "disown-opener", "navigate-to",
+             "plugin-types", "prefetch-src", "referrer", "report-uri",
+             "require-sri-for")
+t_csp_dirs = ("base-uri", "child-src", "connect-src", "default-src",
+              "fenced-frame-src", "font-src", "form-action", "frame-ancestors",
+              "frame-src", "img-src", "manifest-src", "media-src",
+              "object-src", "report-to", "require-trusted-types-for",
+              "sandbox", "script-src", "script-src-attr", "script-src-elem",
+              "style-src", "style-src-attr", "style-src-elem", "trusted-types",
+              "upgrade-insecure-requests", "webrtc", "worker-src")
+t_csp_insecs = ("http:", "ws:")
+t_csp_miss = ("base-uri", "child-src", "connect-src", "font-src",
+              "form-action", "frame-ancestors", "img-src", "object-src",
+              "require-trusted-types-for", "script-src", "style-src",
+              "trusted-types", "worker-src")
+t_csp_checks = ("upgrade-insecure-requests", "strict-transport-security",
+                "unsafe-hashes", "nonce-", "127.0.0.1")
 
 # https://mdn.io/Content-Security-Policy-Report-Only
-l_csp_ro_dep = ['block-all-mixed-content', 'disown-opener', 'plugin-types',
-                'prefetch-src', 'referrer', 'report-uri', 'require-sri-for',
-                'sandbox', 'violated-directive']
+l_csp_ro_dep = ["block-all-mixed-content", "disown-opener", "plugin-types",
+                "prefetch-src", "referrer", "report-uri", "require-sri-for",
+                "sandbox", "violated-directive"]
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
 # https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
-t_ct_mime = ('application/xhtml+xml', 'text/html')
+t_ct_mime = ("application/xhtml+xml", "text/html")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta#charset
 # https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type
-t_ct_equiv = ('text/html; charset=utf-8', 'text/html; charset=UTF-8')
+t_ct_equiv = ("text/html; charset=utf-8", "text/html; charset=UTF-8")
 
 # https://mdn.io/Cross-Origin-Embedder-Policy
-t_coep = ('credentialless', 'require-corp', 'unsafe-none')
+t_coep = ("credentialless", "require-corp", "unsafe-none")
 
 # https://html.spec.whatwg.org/dev/browsers.html#the-coep-headers
-t_coepr = ('require-corp', 'unsafe-none')
+t_coepr = ("require-corp", "unsafe-none")
 
 # https://mdn.io/Cross-Origin-Opener-Policy
 # https://html.spec.whatwg.org/dev/browsers.html#the-coop-headers
 # https://html.spec.whatwg.org/multipage/browsers.html#cross-origin-opener-policies
-t_coop = ('noopener-allow-popups', 'same-origin', 'same-origin-allow-popups',
-          'same-origin-plus-COEP', 'unsafe-none')
+t_coop = ("noopener-allow-popups", "same-origin", "same-origin-allow-popups",
+          "same-origin-plus-COEP", "unsafe-none")
 
 # https://mdn.io/Cross-Origin-Resource-Policy
-t_corp = ('cross-origin', 'same-origin', 'same-site')
+t_corp = ("cross-origin", "same-origin", "same-site")
 
 # https://wicg.github.io/document-isolation-policy/
-t_doci = ('isolate-and-credentialless', 'isolate-and-require-corp', 'none')
+t_doci = ("isolate-and-credentialless", "isolate-and-require-corp", "none")
 
 # https://wicg.github.io/document-policy/
 # https://github.com/WICG/document-policy/blob/main/document-policy-explainer.md
 # https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/PerformanceControlOfEmbeddedContent/explainer.md
-t_docp = ('basic', 'bpp', 'document-write', 'early-script', 'escape-in-popups',
-          'expect-no-linked-resources', 'frame-loading', 'forms', 'globals',
-          'image-compression', 'include-js-call-stacks-in-crash-reports',
-          'max-image-bpp', 'modals', 'no-document-write', 'no-scripts',
-          'no-unsized-media', 'pointer-lock', 'popups', 'presentation-lock',
-          'report-to', 'script', 'scripts', 'unsized-media', 'vertical-scroll',
-          'viewport-capture')
+t_docp = ("basic", "bpp", "document-write", "early-script", "escape-in-popups",
+          "expect-no-linked-resources", "frame-loading", "forms", "globals",
+          "image-compression", "include-js-call-stacks-in-crash-reports",
+          "max-image-bpp", "modals", "no-document-write", "no-scripts",
+          "no-unsized-media", "pointer-lock", "popups", "presentation-lock",
+          "report-to", "script", "scripts", "unsized-media", "vertical-scroll",
+          "viewport-capture")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Expires
-t_excc = ('max-age', 's-maxage')
+t_excc = ("max-age", "s-maxage")
 
 # https://mdn.io/Integrity-Policy-Report-Only
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
-t_ipol = ('blocked-destinations', 'endpoints', 'sources')
+t_ipol = ("blocked-destinations", "endpoints", "sources")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods
 # https://cyberwhite.co.uk/http-verbs-and-their-security-risks/
-t_methods = ('*', 'CONNECT', 'DEBUG', 'DELETE', 'HEAD', 'OPTIONS', 'PATCH',
-             'PUT', 'TRACE', 'TRACK')
+t_methods = ("*", "CONNECT", "DEBUG", "DELETE", "HEAD", "OPTIONS", "PATCH",
+             "PUT", "TRACE", "TRACK")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/MIME_types
-t_legacy = ('application/javascript', 'application/ecmascript',
-            'application/x-ecmascript', 'application/x-javascript',
-            'text/ecmascript', 'text/javascript1.0', 'text/javascript1.1',
-            'text/javascript1.2', 'text/javascript1.3', 'text/javascript1.4',
-            'text/javascript1.5', 'text/jscript', 'text/livescript',
-            'text/x-ecmascript', 'text/x-javascript')
+t_legacy = ("application/javascript", "application/ecmascript",
+            "application/x-ecmascript", "application/x-javascript",
+            "text/ecmascript", "text/javascript1.0", "text/javascript1.1",
+            "text/javascript1.2", "text/javascript1.3", "text/javascript1.4",
+            "text/javascript1.5", "text/jscript", "text/livescript",
+            "text/x-ecmascript", "text/x-javascript")
 
 # https://w3c.github.io/network-error-logging/#nel-response-header
-t_nel_dir = ('failure_fraction', 'include_subdomains', 'max_age', 'report_to',
-             'request_headers', 'response_headers', 'success_fraction')
-t_nel_req = ('report_to', 'max_age')
+t_nel_dir = ("failure_fraction", "include_subdomains", "max_age", "report_to",
+             "request_headers", "response_headers", "success_fraction")
+t_nel_req = ("report_to", "max_age")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
-t_nvarysearch = ('except', 'key-order', 'params')
+t_nvarysearch = ("except", "key-order", "params")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Origin-Agent-Cluster
-l_origcluster = ['?1']
+l_origcluster = ["?1"]
 
 # https://developer.chrome.com/origintrials/
 # https://privacysandbox.google.com/overview/status
@@ -4521,170 +4521,170 @@ l_origcluster = ['?1']
 # https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
-t_per_broad = ('*', ' * ')
-t_per_dep = ('document-domain', 'window-placement')
-t_per_ft = ('accelerometer', 'all-screens-capture', 'ambient-light-sensor',
-            'aria-notify', 'attribution-reporting', 'autofill', 'autoplay',
-            'battery', 'bluetooth', 'browsing-topics', 'camera',
-            'captured-surface-control', 'ch-ua-high-entropy-values',
-            'ch-ua', 'ch-ua-arch', 'ch-ua-bitness',
-            'ch-ua-full-version', 'ch-ua-full-version-list', 'ch-ua-mobile',
-            'ch-ua-model', 'ch-ua-platform', 'ch-ua-platform-version',
-            'ch-ua-wow64', 'clipboard-read', 'clipboard-write',
-            'compute-pressure', 'conversion-measurement',
-            'cross-origin-isolated', 'deferred-fetch',
-            'deferred-fetch-minimal', 'device-attributes',
-            'digital-credentials-create', 'digital-credentials-get',
-            'direct-sockets', 'display-capture', 'encrypted-media',
-            'execution-while-not-rendered', 'execution-while-out-of-viewport',
-            'focus-without-user-activation', 'fullscreen', 'gamepad',
-            'geolocation', 'gyroscope', 'hid', 'identity-credentials-get',
-            'idle-detection', 'interest-cohort', 'join-ad-interest-group',
-            'keyboard-map', 'language-detector', 'language-model',
-            'layout-animations', 'local-fonts', 'magnetometer', 'manual-text',
-            'media-playback-while-not-visible', 'microphone', 'midi',
-            'monetization', 'navigation-override',
-            'on-device-speech-recognition', 'otp-credentials', 'payment',
-            'picture-in-picture', 'private-aggregation',
-            'private-state-token-issuance', 'private-state-token-redemption',
-            'publickey-credentials-create', 'publickey-credentials-get',
-            'rewriter', 'run-ad-auction', 'screen-wake-lock', 'serial',
-            'shared-autofill', 'shared-storage', 'shared-storage-select-url',
-            'smart-card', 'speaker-selection', 'storage-access', 'summarizer',
-            'sync-script', 'sync-xhr', 'top-level-storage-access',
-            'translator', 'trust-token-redemption', 'unload', 'usb',
-            'vertical-scroll', 'web-share', 'window-management', 'writer',
-            'xr-spatial-tracking')
+t_per_broad = ("*", " * ")
+t_per_dep = ("document-domain", "window-placement")
+t_per_ft = ("accelerometer", "all-screens-capture", "ambient-light-sensor",
+            "aria-notify", "attribution-reporting", "autofill", "autoplay",
+            "battery", "bluetooth", "browsing-topics", "camera",
+            "captured-surface-control", "ch-ua-high-entropy-values",
+            "ch-ua", "ch-ua-arch", "ch-ua-bitness",
+            "ch-ua-full-version", "ch-ua-full-version-list", "ch-ua-mobile",
+            "ch-ua-model", "ch-ua-platform", "ch-ua-platform-version",
+            "ch-ua-wow64", "clipboard-read", "clipboard-write",
+            "compute-pressure", "conversion-measurement",
+            "cross-origin-isolated", "deferred-fetch",
+            "deferred-fetch-minimal", "device-attributes",
+            "digital-credentials-create", "digital-credentials-get",
+            "direct-sockets", "display-capture", "encrypted-media",
+            "execution-while-not-rendered", "execution-while-out-of-viewport",
+            "focus-without-user-activation", "fullscreen", "gamepad",
+            "geolocation", "gyroscope", "hid", "identity-credentials-get",
+            "idle-detection", "interest-cohort", "join-ad-interest-group",
+            "keyboard-map", "language-detector", "language-model",
+            "layout-animations", "local-fonts", "magnetometer", "manual-text",
+            "media-playback-while-not-visible", "microphone", "midi",
+            "monetization", "navigation-override",
+            "on-device-speech-recognition", "otp-credentials", "payment",
+            "picture-in-picture", "private-aggregation",
+            "private-state-token-issuance", "private-state-token-redemption",
+            "publickey-credentials-create", "publickey-credentials-get",
+            "rewriter", "run-ad-auction", "screen-wake-lock", "serial",
+            "shared-autofill", "shared-storage", "shared-storage-select-url",
+            "smart-card", "speaker-selection", "storage-access", "summarizer",
+            "sync-script", "sync-xhr", "top-level-storage-access",
+            "translator", "trust-token-redemption", "unload", "usb",
+            "vertical-scroll", "web-share", "window-management", "writer",
+            "xr-spatial-tracking")
 
 # https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Proxy-Authenticate
-t_proxy_auth = ('AWS4-HMAC-SHA256', 'Basic', 'Bearer', 'Concealed', 'Digest',
-                'DPoP', 'GNAP', 'HOBA', 'Mutual', 'Negotiate', 'OAuth',
-                'PrivateToken', 'SCRAM-SHA-1', 'SCRAM-SHA-256', 'vapid')
+t_proxy_auth = ("AWS4-HMAC-SHA256", "Basic", "Bearer", "Concealed", "Digest",
+                "DPoP", "GNAP", "HOBA", "Mutual", "Negotiate", "OAuth",
+                "PrivateToken", "SCRAM-SHA-1", "SCRAM-SHA-256", "vapid")
 
 # https://www.w3.org/TR/referrer-policy/#information-leakage
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referrer-Policy
-t_ref_secure = ('same-origin', 'strict-origin',
-                'strict-origin-when-cross-origin', 'no-referrer',
-                'no-referrer-when-downgrade')
-t_ref_values = ('no-referrer', 'no-referrer-when-downgrade', 'origin',
-                'origin-when-cross-origin', 'same-origin', 'strict-origin',
-                'strict-origin-when-cross-origin', 'unsafe-url')
+t_ref_secure = ("same-origin", "strict-origin",
+                "strict-origin-when-cross-origin", "no-referrer",
+                "no-referrer-when-downgrade")
+t_ref_values = ("no-referrer", "no-referrer-when-downgrade", "origin",
+                "origin-when-cross-origin", "same-origin", "strict-origin",
+                "strict-origin-when-cross-origin", "unsafe-url")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Refresh
-t_refresh = ('QA==', '@')
+t_refresh = ("QA==", "@")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
-t_cookie_prf = ('__Host-', '__Secure-')
-t_cookie_sec = ('httponly', 'secure')
+t_cookie_prf = ("__Host-", "__Secure-")
+t_cookie_sec = ("httponly", "secure")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Login
-t_setlogin = ('logged-in', 'logged-out')
+t_setlogin = ("logged-in", "logged-out")
 
 # https://mdn.io/Strict-Transport-Security
-t_sts_dir = ('includeSubDomains', 'max-age')
+t_sts_dir = ("includeSubDomains", "max-age")
 
 # https://mdn.io/Supports-Loading-Mode
-t_support_mode = ('credentialed-prerender', 'fenced-frame')
+t_support_mode = ("credentialed-prerender", "fenced-frame")
 
 # https://www.w3.org/TR/edge-arch/
-t_surrogate = ('content', 'extension-directive', 'max-age', 'no-store',
-               'no-store-remote')
+t_surrogate = ("content", "extension-directive", "max-age", "no-store",
+               "no-store-remote")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Trailer
-t_trailer = ('authorization', 'cache-control', 'content-encoding',
-             'content-length', 'content-type', 'content-range', 'host',
-             'max-forwards', 'set-cookie', 'te', 'trailer',
-             'transfer-encoding')
+t_trailer = ("authorization", "cache-control", "content-encoding",
+             "content-length", "content-type", "content-range", "host",
+             "max-forwards", "set-cookie", "te", "trailer",
+             "transfer-encoding")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Transfer-Encoding
-t_transfer = ('chunked', 'compress', 'deflate', 'gzip', 'x-gzip')
+t_transfer = ("chunked", "compress", "deflate", "gzip", "x-gzip")
 
 # https://getbutterfly.com/security-headers-a-concise-guide/
 # https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
-t_permcross = ('all', 'by-content-only', 'by-ftp-only', 'master-only', 'none',
-               'none-this-response')
+t_permcross = ("all", "by-content-only", "by-ftp-only", "master-only", "none",
+               "none-this-response")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options
-t_xfo_dir = ('DENY', 'SAMEORIGIN')
+t_xfo_dir = ("DENY", "SAMEORIGIN")
 
 # https://seranking.com/blog/guide-meta-tag-robots-x-robots-tag/
 # https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag
 # https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240
-t_robots = ('all', 'archive', 'follow', 'index', 'indexifembedded',
-            'max-image-preview', 'max-snippet', 'max-video-preview',
-            'noarchive', 'nocache', 'noodp', 'nofollow', 'noimageindex',
-            'noindex', 'none', 'nopagereadaloud', 'nositelinkssearchbox',
-            'nosnippet', 'notranslate', 'noydir', 'unavailable_after')
+t_robots = ("all", "archive", "follow", "index", "indexifembedded",
+            "max-image-preview", "max-snippet", "max-video-preview",
+            "noarchive", "nocache", "noodp", "nofollow", "noimageindex",
+            "noindex", "none", "nopagereadaloud", "nositelinkssearchbox",
+            "nosnippet", "notranslate", "noydir", "unavailable_after")
 
 unsafe_scheme = bool(URL.startswith(HTTP_SCHEMES[0]))
 
-if 'accept-ch' in headers_l and '1' not in skip_list:
-    acceptch_header = headers_l['accept-ch']
+if "accept-ch" in headers_l and "1" not in skip_list:
+    acceptch_header = headers_l["accept-ch"]
     if unsafe_scheme:
-        print_details('[ixach_h]', '[ixach]', 'd', i_cnt)
+        print_details("[ixach_h]", "[ixach]", "d", i_cnt)
     if any(value in acceptch_header for value in t_acceptch_dep):
-        print_detail_r('[ixachd_h]', is_red=True)
+        print_detail_r("[ixachd_h]", is_red=True)
         if not args.brief:
             match_value = [x for x in t_acceptch_dep if x in acceptch_header]
-            match_value_str = ', '.join(f"'{x}'" for x in match_value)
-            print_detail_l('[ixachd_s]')
+            match_value_str = ", ".join(f"'{x}'" for x in match_value)
+            print_detail_l("[ixachd_s]")
             print(match_value_str)
-            print_detail('[ixachd]')
+            print_detail("[ixachd]")
         i_cnt[0] += 1
 
-if 'accept-ch-lifetime' in headers_l and '2' not in skip_list:
-    print_details('[ixacl_h]', '[ixacld]', 'd', i_cnt)
+if "accept-ch-lifetime" in headers_l and "2" not in skip_list:
+    print_details("[ixacl_h]", "[ixacld]", "d", i_cnt)
 
-if 'accept-patch' in headers_l and '3' not in skip_list:
-    print_details('[ixacp_h]', '[ixacp]', 'm', i_cnt)
+if "accept-patch" in headers_l and "3" not in skip_list:
+    print_details("[ixacp_h]", "[ixacp]", "m", i_cnt)
 
-accescred_header = headers_l.get("access-control-allow-credentials", '')
-if accescred_header and accescred_header != 'true' and '4' not in skip_list:
-    print_details('[icred_h]', '[icred]', 'd', i_cnt)
+accescred_header = headers_l.get("access-control-allow-credentials", "")
+if accescred_header and accescred_header != "true" and "4" not in skip_list:
+    print_details("[icred_h]", "[icred]", "d", i_cnt)
 
-if 'access-control-allow-methods' in headers_l and '5' not in skip_list:
+if "access-control-allow-methods" in headers_l and "5" not in skip_list:
     methods = headers_l["access-control-allow-methods"]
     if any(method in methods for method in t_methods):
-        print_detail_r('[imethods_h]', is_red=True)
+        print_detail_r("[imethods_h]", is_red=True)
         if not args.brief:
             match_method = [x for x in t_methods if x in methods]
             quoted_methods = ", ".join(f"'{m}'" for m in match_method)
             match_method_str = f"{quoted_methods}."
-            print_detail_l('[imethods_s]')
+            print_detail_l("[imethods_s]")
             print(match_method_str)
-            print_detail('[imethods]')
+            print_detail("[imethods]")
         i_cnt[0] += 1
 
-accesso_header = headers_l.get("access-control-allow-origin", '')
+accesso_header = headers_l.get("access-control-allow-origin", "")
 if accesso_header and accesso_header in t_accecao and not any(
- val in accesso_header for val in t_accecaov) and '6' not in skip_list:
-    print_details('[iaccess_h]', '[iaccess]', 'd', i_cnt)
+ val in accesso_header for val in t_accecaov) and "6" not in skip_list:
+    print_details("[iaccess_h]", "[iaccess]", "d", i_cnt)
 
-accesma_header = headers_l.get("access-control-max-age", '')
+accesma_header = headers_l.get("access-control-max-age", "")
 if (
     accesma_header and int(accesma_header) > SECONDS_BOUNDS[0] and
-    '7' not in skip_list
+    "7" not in skip_list
 ):
-    print_details('[iacessma_h]', '[iaccessma]', 'd', i_cnt)
+    print_details("[iacessma_h]", "[iaccessma]", "d", i_cnt)
 
-if 'activate-storage-access' in headers_l and '8' not in skip_list:
-    act_h = headers_l['activate-storage-access']
+if "activate-storage-access" in headers_l and "8" not in skip_list:
+    act_h = headers_l["activate-storage-access"]
     if not any(elem in act_h for elem in t_act):
-        print_details('[iact_h]', '[iact]', 'm', i_cnt)
-    if ('retry' in act_h) and ('allowed-origin' not in act_h):
-        print_details('[iactr_h]', '[iactr]', 'd', i_cnt)
+        print_details("[iact_h]", "[iact]", "m", i_cnt)
+    if ("retry" in act_h) and ("allowed-origin" not in act_h):
+        print_details("[iactr_h]", "[iactr]", "d", i_cnt)
 
-if 'allow' in headers_l and '9' not in skip_list:
+if "allow" in headers_l and "9" not in skip_list:
     methods = headers_l["allow"]
     if any(method in methods for method in t_methods):
-        print_detail_r('[imethods_hh]', is_red=True)
+        print_detail_r("[imethods_hh]", is_red=True)
         if not args.brief:
             match_method = [x for x in t_methods if x in methods]
-            match_method_str = ', '.join(match_method)
-            print_detail_l('[imethods_s]')
+            match_method_str = ", ".join(match_method)
+            print_detail_l("[imethods_s]")
             print(match_method_str)
-            print_detail('[imethods]')
+            print_detail("[imethods]")
         i_cnt[0] += 1
 
 
@@ -4692,477 +4692,477 @@ if (
     "attribution-reporting-register-source" in headers_l
     and "10" not in skip_list
 ):
-    print_details('[iarrs_h]', '[iarrs]', 'm', i_cnt)
+    print_details("[iarrs_h]", "[iarrs]", "m", i_cnt)
 
 
 if (
     "attribution-reporting-register-trigger" in headers_l
     and "11" not in skip_list
 ):
-    print_details('[iarrt_h]', '[iarrt]', 'm', i_cnt)
+    print_details("[iarrt_h]", "[iarrt]", "m", i_cnt)
 
 
-cache_header = headers_l.get("cache-control", '')
-if cache_header and '12' not in skip_list:
+cache_header = headers_l.get("cache-control", "")
+if cache_header and "12" not in skip_list:
     if not any(elem in cache_header for elem in t_cachev):
-        print_details('[icachev_h]', '[icachev]', 'd', i_cnt)
+        print_details("[icachev_h]", "[icachev]", "d", i_cnt)
     if not all(elem in cache_header for elem in t_cache):
-        print_details('[icache_h]', '[icache]', 'd', i_cnt)
+        print_details("[icache_h]", "[icache]", "d", i_cnt)
 
-if 'clear-site-data' in headers_l and '13' not in skip_list:
-    clsdata_header = headers_l['clear-site-data']
+if "clear-site-data" in headers_l and "13" not in skip_list:
+    clsdata_header = headers_l["clear-site-data"]
     if unsafe_scheme:
-        print_details('[icsd_h]', '[icsd]', 'd', i_cnt)
+        print_details("[icsd_h]", "[icsd]", "d", i_cnt)
     if not any(elem in clsdata_header for elem in t_csdata):
-        print_details('[icsdn_h]', '[icsdn]', 'd', i_cnt)
+        print_details("[icsdn_h]", "[icsdn]", "d", i_cnt)
 
-contdig_header = headers_l.get('content-digest', '')
-if contdig_header and '14' not in skip_list:
+contdig_header = headers_l.get("content-digest", "")
+if contdig_header and "14" not in skip_list:
     if not any(elem in contdig_header for elem in t_digest_sec):
-        print_details('[icontdig_h]', '[icontdig]', 'd', i_cnt)
+        print_details("[icontdig_h]", "[icontdig]", "d", i_cnt)
     if any(elem in contdig_header for elem in t_digest_ins):
-        print_details('[icontdigi_h]', '[icontdigi]', 'd', i_cnt)
+        print_details("[icontdigi_h]", "[icontdigi]", "d", i_cnt)
 
-if 'content-dpr' in headers_l and '15' not in skip_list:
-    print_details('[ixcdpr_h]', '[ixcdprd]', 'd', i_cnt)
+if "content-dpr" in headers_l and "15" not in skip_list:
+    print_details("[ixcdpr_h]", "[ixcdprd]", "d", i_cnt)
 
-cdis_header = headers_l.get("content-disposition", '')
-if cdis_header and ('16' not in skip_list) and (any(elem in cdis_header for
+cdis_header = headers_l.get("content-disposition", "")
+if cdis_header and ("16" not in skip_list) and (any(elem in cdis_header for
                                                     elem in t_contdisp)):
-    print_details('[ixcdisp_h]', '[ixcdisp]', 'm', i_cnt)
+    print_details("[ixcdisp_h]", "[ixcdisp]", "m", i_cnt)
 
-cencod_header = headers_l.get("content-enconding", '')
+cencod_header = headers_l.get("content-enconding", "")
 if cencod_header and not any(elem in cencod_header for elem in t_cencoding) \
-     and '17' not in skip_list:
-    print_details('[icencod_h]', '[icencod]', 'd', i_cnt)
+     and "17" not in skip_list:
+    print_details("[icencod_h]", "[icencod]", "d", i_cnt)
 
-if 'content-security-policy' in headers_l and '18' not in skip_list:
-    csp_h = headers_l['content-security-policy']
+if "content-security-policy" in headers_l and "18" not in skip_list:
+    csp_h = headers_l["content-security-policy"]
     if not any(elem in csp_h for elem in t_csp_dirs):
-        print_details('[icsi_h]', '[icsi]', 'd', i_cnt)
-    if ('=' in csp_h) and not (any(elem in csp_h for elem in t_csp_equal)):
-        print_details('[icsn_h]', '[icsn]', 'd', i_cnt)
+        print_details("[icsi_h]", "[icsi]", "d", i_cnt)
+    if ("=" in csp_h) and not (any(elem in csp_h for elem in t_csp_equal)):
+        print_details("[icsn_h]", "[icsn]", "d", i_cnt)
     csp_analyze_content(csp_h)
     if t_csp_checks[0] in csp_h and t_csp_checks[1] not in headers:
-        print_details('[icspi_h]', '[icspi]', 'm', i_cnt)
+        print_details("[icspi_h]", "[icspi]", "m", i_cnt)
     csp_check_unknown(csp_h)
     if t_csp_checks[2] in csp_h:
-        print_details('[icsu_h]', '[icsu]', 'd', i_cnt)
+        print_details("[icsu_h]", "[icsu]", "d", i_cnt)
     csp_check_hashes(csp_h)
     if t_csp_checks[3] in csp_h:
         csp_check_nonces(csp_h)
     if re.search(RE_PATTERN[1], csp_h):
         csp_check_ip(csp_h)
 
-if 'content-security-policy-report-only' in headers_l and '19' not in \
+if "content-security-policy-report-only" in headers_l and "19" not in \
      skip_list:
-    csp_ro_header = headers_l['content-security-policy-report-only']
+    csp_ro_header = headers_l["content-security-policy-report-only"]
     if any(elem in csp_ro_header for elem in l_csp_ro_dep):
-        print_detail_r('[icsiro_d]', is_red=True)
+        print_detail_r("[icsiro_d]", is_red=True)
         if not args.brief:
             matches_csp_ro = [x for x in l_csp_ro_dep if x in csp_ro_header]
-            print_detail_l('[icsi_d_s]')
-            print(', '.join(f"'{x}'" for x in matches_csp_ro))
-            print_detail('[icsiro_d_r]')
+            print_detail_l("[icsi_d_s]")
+            print(", ".join(f"'{x}'" for x in matches_csp_ro))
+            print_detail("[icsiro_d_r]")
         i_cnt[0] += 1
-    if 'report-to' not in csp_ro_header:
-        print_details('[icsiroi_d]', '[icsiroi]', 'd', i_cnt)
+    if "report-to" not in csp_ro_header:
+        print_details("[icsiroi_d]", "[icsiroi]", "d", i_cnt)
 
-ctype_header = headers_l.get('content-type', '')
-if ctype_header and '20' not in skip_list:
+ctype_header = headers_l.get("content-type", "")
+if ctype_header and "20" not in skip_list:
     if any(elem in ctype_header for elem in t_legacy):
-        print_details('[ictlg_h]', '[ictlg]', 'm', i_cnt)
-    if 'html' not in ctype_header:
-        print_details('[ictlhtml_h]', '[ictlhtml]', 'd', i_cnt)
-    if any(elem in ctype_header for elem in t_ct_mime) and ('charset' not in
+        print_details("[ictlg_h]", "[ictlg]", "m", i_cnt)
+    if "html" not in ctype_header:
+        print_details("[ictlhtml_h]", "[ictlhtml]", "d", i_cnt)
+    if any(elem in ctype_header for elem in t_ct_mime) and ("charset" not in
                                                             ctype_header):
-        print_details('[ictlchar_h]', '[ictlchar]', 'd', i_cnt)
+        print_details("[ictlchar_h]", "[ictlchar]", "d", i_cnt)
 
 if http_equiv:
-    ctype_meta = any('content-type' in name for name, _ in http_equiv)
+    ctype_meta = any("content-type" in name for name, _ in http_equiv)
     if ctype_meta and not any(val in content for val in t_ct_equiv for _,
                               content in http_equiv):
-        print_details('[ictlmeta_h]', '[ictlmeta]', 'm', i_cnt)
+        print_details("[ictlmeta_h]", "[ictlmeta]", "m", i_cnt)
 
-if 'critical-ch' in headers_l and unsafe_scheme and '21' not in skip_list:
-    print_details('[icrch_h]', '[icrch]', 'd', i_cnt)
+if "critical-ch" in headers_l and unsafe_scheme and "21" not in skip_list:
+    print_details("[icrch_h]", "[icrch]", "d", i_cnt)
 
-if 'cross-origin-embedder-policy' in headers_l and '22' not in skip_list:
-    coep_h = headers_l['cross-origin-embedder-policy']
+if "cross-origin-embedder-policy" in headers_l and "22" not in skip_list:
+    coep_h = headers_l["cross-origin-embedder-policy"]
     if not any(elem in coep_h for elem in t_coep):
-        print_details('[icoep_h]', '[icoep]', 'd', i_cnt)
-    if 'credentialless' in coep_h:
-        print_details('[icoepu_h]', '[icoepu]', 'd', i_cnt)
+        print_details("[icoep_h]", "[icoep]", "d", i_cnt)
+    if "credentialless" in coep_h:
+        print_details("[icoepu_h]", "[icoepu]", "d", i_cnt)
 
-if 'cross-origin-embedder-policy-report-only' in headers_l and \
-        '23' not in skip_list:
-    coepr_h = headers_l['cross-origin-embedder-policy-report-only']
+if "cross-origin-embedder-policy-report-only" in headers_l and \
+        "23" not in skip_list:
+    coepr_h = headers_l["cross-origin-embedder-policy-report-only"]
     if not any(elem in coepr_h for elem in t_coepr):
-        print_details('[icoepr_h]', '[icoepr]', 'd', i_cnt)
+        print_details("[icoepr_h]", "[icoepr]", "d", i_cnt)
 
-if 'cross-origin-opener-policy' in headers_l and '24' not in skip_list:
-    coop_h = headers_l['cross-origin-opener-policy']
+if "cross-origin-opener-policy" in headers_l and "24" not in skip_list:
+    coop_h = headers_l["cross-origin-opener-policy"]
     if not any(elem in coop_h for elem in t_coop):
-        print_details('[icoop_h]', '[icoop]', 'd', i_cnt)
-    if 'unsafe-none' in coop_h:
-        print_details('[icoopi_h]', '[icoopi]', 'd', i_cnt)
+        print_details("[icoop_h]", "[icoop]", "d", i_cnt)
+    if "unsafe-none" in coop_h:
+        print_details("[icoopi_h]", "[icoopi]", "d", i_cnt)
 
-if 'cross-origin-opener-policy-report-only' in headers_l and \
-      '25' not in skip_list:
-    coopr_h = headers_l['cross-origin-opener-policy-report-only']
+if "cross-origin-opener-policy-report-only" in headers_l and \
+      "25" not in skip_list:
+    coopr_h = headers_l["cross-origin-opener-policy-report-only"]
     if not any(elem in coopr_h for elem in t_coop):
-        print_details('[icoopr_h]', '[icoopr]', 'd', i_cnt)
+        print_details("[icoopr_h]", "[icoopr]", "d", i_cnt)
 
-if 'cross-origin-resource-policy' in headers_l and '26' not in skip_list:
-    corp_h = headers_l['cross-origin-resource-policy']
+if "cross-origin-resource-policy" in headers_l and "26" not in skip_list:
+    corp_h = headers_l["cross-origin-resource-policy"]
     if not any(elem in corp_h for elem in t_corp):
-        print_details('[icorp_h]', '[icorp]', 'd', i_cnt)
+        print_details("[icorp_h]", "[icorp]", "d", i_cnt)
 
-if 'digest' in headers_l and '27' not in skip_list:
-    print_details('[idig_h]', '[idig]', 'd', i_cnt)
+if "digest" in headers_l and "27" not in skip_list:
+    print_details("[idig_h]", "[idig]", "d", i_cnt)
 
-if 'document-isolation-policy' in headers_l and '28' not in skip_list:
-    doci_h = headers_l['document-isolation-policy']
+if "document-isolation-policy" in headers_l and "28" not in skip_list:
+    doci_h = headers_l["document-isolation-policy"]
     if not any(elem in doci_h for elem in t_doci):
-        print_details('[idocpi_h]', '[idocpi]', 'd', i_cnt)
+        print_details("[idocpi_h]", "[idocpi]", "d", i_cnt)
 
-if 'document-policy' in headers_l and '29' not in skip_list:
-    docp_h = headers_l['document-policy']
+if "document-policy" in headers_l and "29" not in skip_list:
+    docp_h = headers_l["document-policy"]
     if not any(elem in docp_h for elem in t_docp):
-        print_details('[idocp_h]', '[idoc]', 'm', i_cnt)
+        print_details("[idocp_h]", "[idoc]", "m", i_cnt)
 
-if 'etag' in headers_l and '30' not in skip_list:
-    print_details('[ieta_h]', '[ieta]', 'd', i_cnt)
+if "etag" in headers_l and "30" not in skip_list:
+    print_details("[ieta_h]", "[ieta]", "d", i_cnt)
 
-if 'expect-ct' in headers_l and '31' not in skip_list:
-    print_details('[iexct_h]', '[iexct]', 'm', i_cnt)
+if "expect-ct" in headers_l and "31" not in skip_list:
+    print_details("[iexct_h]", "[iexct]", "m", i_cnt)
 
-if 'expires' in headers_l and any(elem in headers_l.get('cache-control', '')
-                                  for elem in t_excc) and '32' \
+if "expires" in headers_l and any(elem in headers_l.get("cache-control", "")
+                                  for elem in t_excc) and "32" \
                                     not in skip_list:
-    print_details('[iexpi_h]', '[iexpi]', 'd', i_cnt)
+    print_details("[iexpi_h]", "[iexpi]", "d", i_cnt)
 
-if 'feature-policy' in headers_l and '33' not in skip_list:
-    print_details('[iffea_h]', '[iffea]', 'd', i_cnt)
+if "feature-policy" in headers_l and "33" not in skip_list:
+    print_details("[iffea_h]", "[iffea]", "d", i_cnt)
 
 if unsafe_scheme:
-    print_details('[ihttp_h]', '[ihttp]', 'd', i_cnt)
+    print_details("[ihttp_h]", "[ihttp]", "d", i_cnt)
 
-if 'integrity-policy' in headers_l and '35' not in skip_list:
-    ipol_header = headers_l['integrity-policy']
+if "integrity-policy" in headers_l and "35" not in skip_list:
+    ipol_header = headers_l["integrity-policy"]
     if not any(elem in ipol_header for elem in t_ipol):
-        print_details('[ipol_h]', '[ipol]', 'd', i_cnt)
+        print_details("[ipol_h]", "[ipol]", "d", i_cnt)
 
-if 'integrity-policy-report-only' in headers_l and '36' not in skip_list:
-    ipol_header = headers_l['integrity-policy-report-only']
+if "integrity-policy-report-only" in headers_l and "36" not in skip_list:
+    ipol_header = headers_l["integrity-policy-report-only"]
     if not any(elem in ipol_header for elem in t_ipol):
-        print_details('[ipolr_h]', '[ipolr]', 'd', i_cnt)
+        print_details("[ipolr_h]", "[ipolr]", "d", i_cnt)
 
-if ('keep-alive' in headers_l and headers_l['keep-alive'] and
-    ('connection' not in headers_l or
-     headers_l['connection'] != 'keep-alive')) and '37' not in skip_list:
-    print_details('[ickeep_h]', '[ickeep]', 'd', i_cnt)
+if ("keep-alive" in headers_l and headers_l["keep-alive"] and
+    ("connection" not in headers_l or
+     headers_l["connection"] != "keep-alive")) and "37" not in skip_list:
+    print_details("[ickeep_h]", "[ickeep]", "d", i_cnt)
 
-if 'large-allocation' in headers_l and '38' not in skip_list:
-    print_details('[ixlalloc_h]', '[ixallocd]', 'd', i_cnt)
+if "large-allocation" in headers_l and "38" not in skip_list:
+    print_details("[ixlalloc_h]", "[ixallocd]", "d", i_cnt)
 
-if 'mcp-session-id' in headers_l and '39' not in skip_list:
-    print_details('[imcp_h]', '[imcp]', 'm', i_cnt)
+if "mcp-session-id" in headers_l and "39" not in skip_list:
+    print_details("[imcp_h]", "[imcp]", "m", i_cnt)
 
-if 'nel' in headers_l and '40' not in skip_list:
-    nel_header = headers_l['nel']
+if "nel" in headers_l and "40" not in skip_list:
+    nel_header = headers_l["nel"]
     if not any(elem in nel_header for elem in t_nel_dir):
-        print_details('[inel_h]', '[inel]', 'd', i_cnt)
+        print_details("[inel_h]", "[inel]", "d", i_cnt)
     if not all(elem in nel_header for elem in t_nel_req):
-        print_details('[inelm_h]', '[inelm]', "d", i_cnt)
+        print_details("[inelm_h]", "[inelm]", "d", i_cnt)
 
-if 'no-vary-search' in headers_l and '41' not in skip_list:
-    nvarys_header = headers_l['no-vary-search']
+if "no-vary-search" in headers_l and "41" not in skip_list:
+    nvarys_header = headers_l["no-vary-search"]
     if not any(elem in nvarys_header for elem in t_nvarysearch):
-        print_details('[ifnvarys_h]', '[ifnvarys]', 'd', i_cnt)
+        print_details("[ifnvarys_h]", "[ifnvarys]", "d", i_cnt)
 
-if 'observe-browsing-topics' in headers_l and '42' not in skip_list:
-    print_details('[iobsb_h]', '[iobsb]', 'd', i_cnt)
+if "observe-browsing-topics" in headers_l and "42" not in skip_list:
+    print_details("[iobsb_h]", "[iobsb]", "d", i_cnt)
 
-if 'onion-location' in headers_l and '43' not in skip_list:
-    print_details('[ionloc_h]', '[ionloc]', 'm', i_cnt)
+if "onion-location" in headers_l and "43" not in skip_list:
+    print_details("[ionloc_h]", "[ionloc]", "m", i_cnt)
 
-if 'origin-agent-cluster' in headers_l and '44' not in skip_list:
-    origin_cluster_h = headers_l['origin-agent-cluster']
+if "origin-agent-cluster" in headers_l and "44" not in skip_list:
+    origin_cluster_h = headers_l["origin-agent-cluster"]
     if not any(elem in origin_cluster_h for elem in l_origcluster):
-        print_details('[iorigcluster_h]', '[iorigcluster]', 'd', i_cnt)
+        print_details("[iorigcluster_h]", "[iorigcluster]", "d", i_cnt)
 
-if 'p3p' in headers_l and '45' not in skip_list:
-    print_details('[ip3p_h]', '[ip3p]', 'd', i_cnt)
+if "p3p" in headers_l and "45" not in skip_list:
+    print_details("[ip3p_h]", "[ip3p]", "d", i_cnt)
 
-if 'permissions-policy' in headers_l and '46' not in skip_list:
-    perm_header = headers_l['permissions-policy']
+if "permissions-policy" in headers_l and "46" not in skip_list:
+    perm_header = headers_l["permissions-policy"]
     if not any(elem in perm_header for elem in t_per_ft):
-        print_details('[ifpoln_h]', '[ifpoln]', 'm', i_cnt)
+        print_details("[ifpoln_h]", "[ifpoln]", "m", i_cnt)
     permissions_analyze_content(perm_header, i_cnt)
 
-if 'pragma' in headers_l and '47' not in skip_list:
-    print_details('[iprag_h]', '[iprag]', 'd', i_cnt)
+if "pragma" in headers_l and "47" not in skip_list:
+    print_details("[iprag_h]", "[iprag]", "d", i_cnt)
 
-if 'proxy-authenticate' in headers_l and '48' not in skip_list:
-    prxyauth_h = headers_l['proxy-authenticate']
-    if 'basic' in prxyauth_h and unsafe_scheme:
-        print_details('[iprxauth_h]', '[ihbas]', 'd', i_cnt)
+if "proxy-authenticate" in headers_l and "48" not in skip_list:
+    prxyauth_h = headers_l["proxy-authenticate"]
+    if "basic" in prxyauth_h and unsafe_scheme:
+        print_details("[iprxauth_h]", "[ihbas]", "d", i_cnt)
     if not any(elem in prxyauth_h for elem in t_proxy_auth):
-        print_details('[iprxauthn_h]', '[iprxauthn]', 'd', i_cnt)
+        print_details("[iprxauthn_h]", "[iprxauthn]", "d", i_cnt)
 
-if 'public-key-pins' in headers_l and '49' not in skip_list:
-    print_details('[ipkp_h]', '[ipkp]', 'd', i_cnt)
+if "public-key-pins" in headers_l and "49" not in skip_list:
+    print_details("[ipkp_h]", "[ipkp]", "d", i_cnt)
 
-if 'public-key-pins-report-only' in headers_l and '50' not in skip_list:
-    print_details('[ipkpr_h]', '[ipkp]', 'd', i_cnt)
+if "public-key-pins-report-only" in headers_l and "50" not in skip_list:
+    print_details("[ipkpr_h]", "[ipkp]", "d", i_cnt)
 
-referrer_header = headers_l.get('referrer-policy', '')
-if referrer_header and '51' not in skip_list:
-    if ',' in referrer_header:
-        print_details('[irefd_h]', '[irefd]', 'd', i_cnt)
+referrer_header = headers_l.get("referrer-policy", "")
+if referrer_header and "51" not in skip_list:
+    if "," in referrer_header:
+        print_details("[irefd_h]", "[irefd]", "d", i_cnt)
     if not any(elem in referrer_header for elem in t_ref_secure):
-        print_details('[iref_h]', '[iref]', 'd', i_cnt)
-    if 'unsafe-url' in referrer_header:
-        print_details('[irefi_h]', '[irefi]', 'd', i_cnt)
+        print_details("[iref_h]", "[iref]", "d", i_cnt)
+    if "unsafe-url" in referrer_header:
+        print_details("[irefi_h]", "[irefi]", "d", i_cnt)
     if not any(elem in referrer_header for elem in t_ref_values):
-        print_details('[irefn_h]', '[irefn]', 'd', i_cnt)
+        print_details("[irefn_h]", "[irefn]", "d", i_cnt)
 
-refresh_header = headers_l.get('refresh', '')
-if refresh_header and '52' not in skip_list and \
+refresh_header = headers_l.get("refresh", "")
+if refresh_header and "52" not in skip_list and \
      any(elem in refresh_header for elem in t_refresh):
-    print_details('[irefr_h]', '[irefr]', 'd', i_cnt)
+    print_details("[irefr_h]", "[irefr]", "d", i_cnt)
 
-if 'report-to' in headers_l and '53' not in skip_list:
-    print_details('[irept_h]', '[irept]', 'd', i_cnt)
+if "report-to" in headers_l and "53" not in skip_list:
+    print_details("[irept_h]", "[irept]", "d", i_cnt)
 
-report_h = headers_l.get('reporting-endpoints', '')
-if report_h and '54' not in skip_list and HTTP_SCHEMES[0] in report_h:
-    print_details('[irepe_h]', '[irepe]', 'd', i_cnt)
+report_h = headers_l.get("reporting-endpoints", "")
+if report_h and "54" not in skip_list and HTTP_SCHEMES[0] in report_h:
+    print_details("[irepe_h]", "[irepe]", "d", i_cnt)
 
-repdig_header = headers_l.get('repr-digest', '')
-if repdig_header and '55' not in skip_list:
+repdig_header = headers_l.get("repr-digest", "")
+if repdig_header and "55" not in skip_list:
     if not any(elem in repdig_header for elem in t_digest_sec):
-        print_details('[irepdig_h]', '[irepdig]', 'd', i_cnt)
+        print_details("[irepdig_h]", "[irepdig]", "d", i_cnt)
     if any(elem in repdig_header for elem in t_digest_ins):
-        print_details('[irepdigi_h]', '[irepdigi]', 'd', i_cnt)
+        print_details("[irepdigi_h]", "[irepdigi]", "d", i_cnt)
 
-seclft_header = headers_l.get('sec-private-state-token-lifetime', '')
-if seclft_header and '56' not in skip_list and not seclft_header.isdigit():
-    print_details('[iseclft_h]', '[iseclft]', 'd', i_cnt)
+seclft_header = headers_l.get("sec-private-state-token-lifetime", "")
+if seclft_header and "56" not in skip_list and not seclft_header.isdigit():
+    print_details("[iseclft_h]", "[iseclft]", "d", i_cnt)
 
-if 'server-timing' in headers_l and '57' not in skip_list:
-    print_details('[itim_h]', '[itim]', 'd', i_cnt)
+if "server-timing" in headers_l and "57" not in skip_list:
+    print_details("[itim_h]", "[itim]", "d", i_cnt)
 
-servwall_header = headers_l.get('service-worker-allowed', '')
-if servwall_header and '58' not in skip_list and servwall_header == '/':
-    print_details('[itwall_h]', '[itwall]', 'm', i_cnt)
+servwall_header = headers_l.get("service-worker-allowed", "")
+if servwall_header and "58" not in skip_list and servwall_header == "/":
+    print_details("[itwall_h]", "[itwall]", "m", i_cnt)
 
-stc_header = headers_l.get("set-cookie", '')
-if stc_header and '59' not in skip_list:
+stc_header = headers_l.get("set-cookie", "")
+if stc_header and "59" not in skip_list:
     if not unsafe_scheme:
         check_unsafe_cookies()
     if unsafe_scheme:
-        if 'secure' in stc_header:
-            print_details('[iseti_h]', '[iseti]', "d", i_cnt)
+        if "secure" in stc_header:
+            print_details("[iseti_h]", "[iseti]", "d", i_cnt)
         if any(prefix in stc_header for prefix in t_cookie_prf):
-            print_details('[ispref_m]', '[ispref]', "d", i_cnt)
+            print_details("[ispref_m]", "[ispref]", "d", i_cnt)
     if "samesite=none" in stc_header and "secure" not in stc_header:
-        print_details('[iseti_m]', '[isetm]', "d", i_cnt)
+        print_details("[iseti_m]", "[isetm]", "d", i_cnt)
 
-setlogin_header = headers_l.get("set-login", '')
+setlogin_header = headers_l.get("set-login", "")
 if setlogin_header and not any(elem in setlogin_header for elem in t_setlogin)\
-     and '60' not in skip_list:
-    print_details('[islogin_h]', '[islogin]', 'd', i_cnt)
+     and "60" not in skip_list:
+    print_details("[islogin_h]", "[islogin]", "d", i_cnt)
 
-if 'sourcemap' in headers_l and '61' not in skip_list:
-    print_details('[ismap_m]', '[ismap]', 'd', i_cnt)
+if "sourcemap" in headers_l and "61" not in skip_list:
+    print_details("[ismap_m]", "[ismap]", "d", i_cnt)
 
-if 'speculation-rules' in headers_l and '62' not in skip_list:
-    print_details('[ispec_m]', '[ispec]', 'm', i_cnt)
+if "speculation-rules" in headers_l and "62" not in skip_list:
+    print_details("[ispec_m]", "[ispec]", "m", i_cnt)
 
 if (
-    'strict-dynamic' in headers_l
-    and 'content-security-policy' not in headers_l
-    and '63' not in skip_list
+    "strict-dynamic" in headers_l
+    and "content-security-policy" not in headers_l
+    and "63" not in skip_list
 ):
-    print_details('[isdyn_h]', '[isdyn]', 'd', i_cnt)
+    print_details("[isdyn_h]", "[isdyn]", "d", i_cnt)
 
-sts_header = headers_l.get('strict-transport-security', '')
-if sts_header and '64' not in skip_list:
+sts_header = headers_l.get("strict-transport-security", "")
+if sts_header and "64" not in skip_list:
     try:
-        age = int(''.join(filter(str.isdigit, sts_header)))
+        age = int("".join(filter(str.isdigit, sts_header)))
         if unsafe_scheme:
-            print_details('[ihsts_h]', '[ihsts]', 'd', i_cnt)
+            print_details("[ihsts_h]", "[ihsts]", "d", i_cnt)
         if (
             not all(elem in sts_header for elem in t_sts_dir) or
             age < SECONDS_BOUNDS[1]
         ):
-            print_details('[ists_h]', '[ists]', 'm', i_cnt)
-        if 'preload' in sts_header and (
+            print_details("[ists_h]", "[ists]", "m", i_cnt)
+        if "preload" in sts_header and (
             t_sts_dir[0] not in sts_header or age < SECONDS_BOUNDS[1]
         ):
-            print_details('[istsr_h]', '[istsr]', 'd', i_cnt)
-        if ',' in sts_header:
-            print_details('[istsd_h]', '[istsd]', 'd', i_cnt)
+            print_details("[istsr_h]", "[istsr]", "d", i_cnt)
+        if "," in sts_header:
+            print_details("[istsd_h]", "[istsd]", "d", i_cnt)
     except ValueError:
-        print_details('[ists_h]', '[ists]', 'm', i_cnt)
+        print_details("[ists_h]", "[ists]", "m", i_cnt)
 
-if 'supports-loading-mode' in headers_l and '65' not in skip_list:
-    support_mode_h = headers_l['supports-loading-mode']
+if "supports-loading-mode" in headers_l and "65" not in skip_list:
+    support_mode_h = headers_l["supports-loading-mode"]
     if unsafe_scheme:
-        print_details('[islmodei_h]', '[islmodei]', 'd', i_cnt)
+        print_details("[islmodei_h]", "[islmodei]", "d", i_cnt)
     if not any(elem in support_mode_h for elem in t_support_mode):
-        print_details('[islmode_h]', '[islmode]', 'd', i_cnt)
+        print_details("[islmode_h]", "[islmode]", "d", i_cnt)
 
-if 'surrogate-control' in headers_l and '66' not in skip_list:
-    surrogate_mode_h = headers_l['surrogate-control']
+if "surrogate-control" in headers_l and "66" not in skip_list:
+    surrogate_mode_h = headers_l["surrogate-control"]
     if not any(elem in surrogate_mode_h for elem in t_surrogate):
-        print_details('[isurrmode_h]', '[isurrmode]', 'd', i_cnt)
+        print_details("[isurrmode_h]", "[isurrmode]", "d", i_cnt)
 
-if headers_l.get('timing-allow-origin', '') == '*' and '67' not in skip_list:
-    print_details('[itao_h]', '[itao]', 'd', i_cnt)
+if headers_l.get("timing-allow-origin", "") == "*" and "67" not in skip_list:
+    print_details("[itao_h]", "[itao]", "d", i_cnt)
 
-if 'tk' in headers_l and '68' not in skip_list:
-    print_details('[ixtk_h]', '[ixtkd]', 'd', i_cnt)
+if "tk" in headers_l and "68" not in skip_list:
+    print_details("[ixtk_h]", "[ixtkd]", "d", i_cnt)
 
-if 'trailer' in headers_l and '69' not in skip_list:
-    trailer_h = headers_l['trailer']
+if "trailer" in headers_l and "69" not in skip_list:
+    trailer_h = headers_l["trailer"]
     if any(elem in trailer_h for elem in t_trailer):
-        print_detail_r('[itrailer_h]', is_red=True)
+        print_detail_r("[itrailer_h]", is_red=True)
         if not args.brief:
             matches_trailer = [x for x in t_trailer if x in trailer_h]
-            print_detail_l('[itrailer_d_s]')
-            print(', '.join(matches_trailer))
-            print_detail('[itrailer_d_r]')
+            print_detail_l("[itrailer_d_s]")
+            print(", ".join(matches_trailer))
+            print_detail("[itrailer_d_r]")
         i_cnt[0] += 1
 
-if 'transfer-encoding' in headers_l and '70' not in skip_list:
-    transfer_h = headers_l['transfer-encoding']
+if "transfer-encoding" in headers_l and "70" not in skip_list:
+    transfer_h = headers_l["transfer-encoding"]
     if not any(elem in transfer_h for elem in t_transfer):
-        print_details('[ictrf_h]', '[itrf]', 'd', i_cnt)
+        print_details("[ictrf_h]", "[itrf]", "d", i_cnt)
 
-if 'vary' in headers_l and '71' not in skip_list:
-    print_details('[ixvary_h]', '[ixvary]', 'm', i_cnt)
+if "vary" in headers_l and "71" not in skip_list:
+    print_details("[ixvary_h]", "[ixvary]", "m", i_cnt)
 
-wcondig_header = headers_l.get('want-content-digest', '')
-if wcondig_header and '72' not in skip_list:
+wcondig_header = headers_l.get("want-content-digest", "")
+if wcondig_header and "72" not in skip_list:
     if not any(elem in wcondig_header for elem in t_digest_sec):
-        print_details('[iwcondig_h]', '[iwcondig]', 'd', i_cnt)
+        print_details("[iwcondig_h]", "[iwcondig]", "d", i_cnt)
     if any(elem in wcondig_header for elem in t_digest_ins):
-        print_details('[iwcondigi_h]', '[iwcondigi]', 'd', i_cnt)
+        print_details("[iwcondigi_h]", "[iwcondigi]", "d", i_cnt)
 
-if 'want-digest' in headers_l and '73' not in skip_list:
-    print_details('[ixwandig_h]', '[ixwandig]', 'd', i_cnt)
+if "want-digest" in headers_l and "73" not in skip_list:
+    print_details("[ixwandig_h]", "[ixwandig]", "d", i_cnt)
 
-wreprdig_header = headers_l.get('want-repr-digest', '')
-if wreprdig_header and '74' not in skip_list:
+wreprdig_header = headers_l.get("want-repr-digest", "")
+if wreprdig_header and "74" not in skip_list:
     if not any(elem in wreprdig_header for elem in t_digest_sec):
-        print_details('[iwreprdig_h]', '[iwreprdig]', 'd', i_cnt)
+        print_details("[iwreprdig_h]", "[iwreprdig]", "d", i_cnt)
     if any(elem in wreprdig_header for elem in t_digest_ins):
-        print_details('[iwreprdigi_h]', '[iwreprdigi]', 'd', i_cnt)
+        print_details("[iwreprdigi_h]", "[iwreprdigi]", "d", i_cnt)
 
-if 'warning' in headers_l and '75' not in skip_list:
-    print_details('[ixwar_h]', '[ixward]', 'd', i_cnt)
+if "warning" in headers_l and "75" not in skip_list:
+    print_details("[ixwar_h]", "[ixward]", "d", i_cnt)
 
-wwwa_header = headers_l.get('www-authenticate', '')
-if wwwa_header and unsafe_scheme and ('basic' in wwwa_header) and '76' not in \
+wwwa_header = headers_l.get("www-authenticate", "")
+if wwwa_header and unsafe_scheme and ("basic" in wwwa_header) and "76" not in \
      skip_list:
-    print_details('[ihbas_h]', '[ihbas]', 'd', i_cnt)
+    print_details("[ihbas_h]", "[ihbas]", "d", i_cnt)
 
-if 'x-content-security-policy' in headers_l and '77' not in skip_list:
-    print_detail_r('[ixcsp_h]', is_red=True)
+if "x-content-security-policy" in headers_l and "77" not in skip_list:
+    print_detail_r("[ixcsp_h]", is_red=True)
     i_cnt[0] += 1
     if not args.brief:
-        print_detail('[ixcsp]', num_lines=5)
+        print_detail("[ixcsp]", num_lines=5)
 
-if 'x-content-security-policy-report-only' in headers_l and '78' not in \
+if "x-content-security-policy-report-only" in headers_l and "78" not in \
      skip_list:
-    print_details('[ixcspr_h]', '[ixcspr]', 'd', i_cnt)
+    print_details("[ixcspr_h]", "[ixcspr]", "d", i_cnt)
 
-if 'x-content-type-options' in headers_l and '79' not in skip_list:
-    if ',' in headers_l['x-content-type-options']:
-        print_details('[ictpd_h]', '[ictpd]', 'm', i_cnt)
-    if 'nosniff' not in headers_l['x-content-type-options']:
-        print_details('[ictp_h]', '[ictp]', 'd', i_cnt)
+if "x-content-type-options" in headers_l and "79" not in skip_list:
+    if "," in headers_l["x-content-type-options"]:
+        print_details("[ictpd_h]", "[ictpd]", "m", i_cnt)
+    if "nosniff" not in headers_l["x-content-type-options"]:
+        print_details("[ictp_h]", "[ictp]", "d", i_cnt)
 
 # The short link for this header (https://tinyurl.com/dns-prefetch) resolves to
 # https://blog.compass-security.com/2016/10/bypassing-content-security-policy-with-dns-prefetching/
-if headers_l.get('x-dns-prefetch-control', '') == 'on' and '80' not in \
+if headers_l.get("x-dns-prefetch-control", "") == "on" and "80" not in \
      skip_list:
-    print_details('[ixdp_h]', '[ixdp]', 'd', i_cnt)
+    print_details("[ixdp_h]", "[ixdp]", "d", i_cnt)
 
-if 'x-download-options' in headers_l and '81' not in skip_list:
-    print_details('[ixdow_h]', '[ixdow]', 'm', i_cnt)
+if "x-download-options" in headers_l and "81" not in skip_list:
+    print_details("[ixdow_h]", "[ixdow]", "m", i_cnt)
 
-xfo_header = headers_l.get('x-frame-options', '')
-if xfo_header and '82' not in skip_list:
-    if ',' in xfo_header:
-        print_details('[ixfo_h]', '[ixfo]', 'm', i_cnt)
-    if 'allow-from' in xfo_header:
-        print_details('[ixfod_h]', '[ixfod]', 'm', i_cnt)
+xfo_header = headers_l.get("x-frame-options", "")
+if xfo_header and "82" not in skip_list:
+    if "," in xfo_header:
+        print_details("[ixfo_h]", "[ixfo]", "m", i_cnt)
+    if "allow-from" in xfo_header:
+        print_details("[ixfod_h]", "[ixfod]", "m", i_cnt)
     if xfo_header not in t_xfo_dir:
-        print_details('[ixfoi_h]', '[ixfodi]', 'm', i_cnt)
+        print_details("[ixfoi_h]", "[ixfodi]", "m", i_cnt)
 
-if 'x-pad' in headers_l and '83' not in skip_list:
-    print_details('[ixpad_h]', '[ixpad]', 'd', i_cnt)
+if "x-pad" in headers_l and "83" not in skip_list:
+    print_details("[ixpad_h]", "[ixpad]", "d", i_cnt)
 
-permcross_header = headers_l.get('x-permitted-cross-domain-policies', '')
-if permcross_header and '84' not in skip_list:
+permcross_header = headers_l.get("x-permitted-cross-domain-policies", "")
+if permcross_header and "84" not in skip_list:
     if not any(elem in permcross_header for elem in t_permcross):
-        print_details('[ixpermcross_h]', '[ixpermcross]', 'm', i_cnt)
-    if 'all' in permcross_header:
-        print_details('[ixpermcrossu_h]', '[ixpermcrossu]', 'm', i_cnt)
-    if ',' in permcross_header:
-        print_details('[ixpermcrossd_h]', '[ixpermcrossd]', 'm', i_cnt)
+        print_details("[ixpermcross_h]", "[ixpermcross]", "m", i_cnt)
+    if "all" in permcross_header:
+        print_details("[ixpermcrossu_h]", "[ixpermcrossu]", "m", i_cnt)
+    if "," in permcross_header:
+        print_details("[ixpermcrossd_h]", "[ixpermcrossd]", "m", i_cnt)
 
-if headers_l.get('x-pingback', '').endswith('xmlrpc.php') and '85' not in \
+if headers_l.get("x-pingback", "").endswith("xmlrpc.php") and "85" not in \
      skip_list:
-    print_details('[ixpb_h]', '[ixpb]', 'd', i_cnt)
+    print_details("[ixpb_h]", "[ixpb]", "d", i_cnt)
 
-robots_header = headers_l.get('x-robots-tag', '')
-if robots_header and '86' not in skip_list:
+robots_header = headers_l.get("x-robots-tag", "")
+if robots_header and "86" not in skip_list:
     if not any(elem in robots_header for elem in t_robots):
-        print_details('[ixrobv_h]', '[ixrobv]', 'm', i_cnt)
-    if 'all' in robots_header:
-        print_details('[ixrob_h]', '[ixrob]', 'm', i_cnt)
+        print_details("[ixrobv_h]", "[ixrobv]", "m", i_cnt)
+    if "all" in robots_header:
+        print_details("[ixrob_h]", "[ixrob]", "m", i_cnt)
 
-if 'x-runtime' in headers_l and '87' not in skip_list:
-    print_details('[ixrun_h]', '[ixrun]', 'd', i_cnt)
+if "x-runtime" in headers_l and "87" not in skip_list:
+    print_details("[ixrun_h]", "[ixrun]", "d", i_cnt)
 
-if 'x-sourcemap' in headers_l and '88' not in skip_list:
-    print_details('[ixsrc_h]', '[ixsrc]', 'd', i_cnt)
+if "x-sourcemap" in headers_l and "88" not in skip_list:
+    print_details("[ixsrc_h]", "[ixsrc]", "d", i_cnt)
 
-if 'x-ua-compatible' in headers_l and '89' not in skip_list:
-    print_details('[ixuacom_h]', '[ixuacom]', 'm', i_cnt)
+if "x-ua-compatible" in headers_l and "89" not in skip_list:
+    print_details("[ixuacom_h]", "[ixuacom]", "m", i_cnt)
 
 if http_equiv:
-    x_ua_meta = any('x-ua-compatible' in item for item in http_equiv)
-    if x_ua_meta and not any('IE=edge' in item for entry in http_equiv for item
+    x_ua_meta = any("x-ua-compatible" in item for item in http_equiv)
+    if x_ua_meta and not any("IE=edge" in item for entry in http_equiv for item
                              in entry):
-        print_details('[ixuameta_h]', '[ixuameta]', 'd', i_cnt)
+        print_details("[ixuameta_h]", "[ixuameta]", "d", i_cnt)
 
-if 'x-webkit-csp' in headers_l and '90' not in skip_list:
-    print_detail_r('[ixwcsp_h]', is_red=True)
+if "x-webkit-csp" in headers_l and "90" not in skip_list:
+    print_detail_r("[ixwcsp_h]", is_red=True)
     i_cnt[0] += 1
     if not args.brief:
-        print_detail('[ixcsp]', num_lines=5)
+        print_detail("[ixcsp]", num_lines=5)
 
-if 'x-webkit-csp-report-only' in headers_l and '91' not in skip_list:
-    print_details('[ixwcspr_h]', '[ixcspr]', 'd', i_cnt)
+if "x-webkit-csp-report-only" in headers_l and "91" not in skip_list:
+    print_details("[ixwcspr_h]", "[ixcspr]", "d", i_cnt)
 
-if 'x-xss-protection' in headers_l and '92' not in skip_list:
-    print_detail_r('[ixxpdp_h]', is_red=True)
+if "x-xss-protection" in headers_l and "92" not in skip_list:
+    print_detail_r("[ixxpdp_h]", is_red=True)
     i_cnt[0] += 1
     if not args.brief:
-        print_detail('[ixxpdp]', num_lines=6)
-    if '0' not in headers_l['x-xss-protection']:
-        print_detail_r('[ixxp_h]', is_red=True)
+        print_detail("[ixxpdp]", num_lines=6)
+    if "0" not in headers_l["x-xss-protection"]:
+        print_detail_r("[ixxp_h]", is_red=True)
         i_cnt[0] += 1
         if not args.brief:
-            print_detail('[ixxp]', num_lines=6)
-    if ',' in headers_l['x-xss-protection']:
-        print_details('[ixxpd_h]', '[ixxpd]', 'd', i_cnt)
+            print_detail("[ixxp]", num_lines=6)
+    if "," in headers_l["x-xss-protection"]:
+        print_details("[ixxpd_h]", "[ixxpd]", "d", i_cnt)
 
 if args.brief and i_cnt[0] != 0:
     print()
@@ -5171,11 +5171,11 @@ if i_cnt[0] == 0:
 print()
 
 # Section '5. Empty HTTP Response Headers Values'
-print_detail_r('[5empty]')
+print_detail_r("[5empty]")
 l_empty = []
 
 if not args.brief:
-    print_detail('[aemp]')
+    print_detail("[aemp]")
 
 e_cnt = print_empty_headers(headers, l_empty)
 
@@ -5183,25 +5183,25 @@ print() if e_cnt != 0 else print_nowarnings()
 print()
 
 # Section '6. Browser Compatibility for Enabled HTTP Security Headers'
-print_detail_r('[6compat]')
+print_detail_r("[6compat]")
 
-t_sec = ('Access-Control-Allow-Credentials', 'Access-Control-Allow-Headers',
-         'Access-Control-Allow-Methods', 'Access-Control-Expose-Headers',
-         'Access-Control-Max-Age', 'Cache-Control', 'Clear-Site-Data',
-         'Content-Disposition', 'Content-Security-Policy',
-         'Content-Security-Policy-Report-Only', 'Content-Type', 'Critical-CH',
-         'Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy',
-         'Cross-Origin-Resource-Policy', 'Document-Policy', 'ETag',
-         'Expect-CT', 'Feature-Policy', 'Integrity-Policy',
-         'Integrity-Policy-Report-Only', 'NEL', 'Origin-Agent-Cluster',
-         'Permissions-Policy', 'Pragma', 'Proxy-Authenticate',
-         'Referrer-Policy', 'Refresh', 'Report-To', 'Reporting-Endpoints',
-         'Sec-Private-State-Token-Lifetime',
-         'Server-Timing', 'Service-Worker-Allowed', 'Set-Cookie', 'Set-Login',
-         'Speculation-Rules', 'Strict-Transport-Security',
-         'Supports-Loading-Mode', 'Timing-Allow-Origin', 'Trailer', 'Vary',
-         'WWW-Authenticate', 'X-Content-Type-Options',
-         'X-DNS-Prefetch-Control', 'X-Frame-Options', 'X-XSS-Protection')
+t_sec = ("Access-Control-Allow-Credentials", "Access-Control-Allow-Headers",
+         "Access-Control-Allow-Methods", "Access-Control-Expose-Headers",
+         "Access-Control-Max-Age", "Cache-Control", "Clear-Site-Data",
+         "Content-Disposition", "Content-Security-Policy",
+         "Content-Security-Policy-Report-Only", "Content-Type", "Critical-CH",
+         "Cross-Origin-Embedder-Policy", "Cross-Origin-Opener-Policy",
+         "Cross-Origin-Resource-Policy", "Document-Policy", "ETag",
+         "Expect-CT", "Feature-Policy", "Integrity-Policy",
+         "Integrity-Policy-Report-Only", "NEL", "Origin-Agent-Cluster",
+         "Permissions-Policy", "Pragma", "Proxy-Authenticate",
+         "Referrer-Policy", "Refresh", "Report-To", "Reporting-Endpoints",
+         "Sec-Private-State-Token-Lifetime",
+         "Server-Timing", "Service-Worker-Allowed", "Set-Cookie", "Set-Login",
+         "Speculation-Rules", "Strict-Transport-Security",
+         "Supports-Loading-Mode", "Timing-Allow-Origin", "Trailer", "Vary",
+         "WWW-Authenticate", "X-Content-Type-Options",
+         "X-DNS-Prefetch-Control", "X-Frame-Options", "X-XSS-Protection")
 
 compat_headers = sorted(header for header in t_sec if header in headers)
 
@@ -5211,8 +5211,8 @@ print_browser_compatibility(compat_headers) if compat_headers else \
 # Summary of the analysis and changes compared to the previous one
 print(end="\n\n")
 end = time()
-print_detail_r('[7result]')
-if '-c' not in sys.argv:
+print_detail_r("[7result]")
+if "-c" not in sys.argv:
     get_analysis_results()
 
 # Export analysis according to the scope (single format or all of them)
