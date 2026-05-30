@@ -1029,6 +1029,9 @@ HTTP Response Headers
 [analysis_skipped_note]
  Note : The HTTP headers expressly excluded from this analysis are
 
+[analysis_skipped_note_single]
+ Note : The HTTP header expressly excluded from this analysis is
+
 [analysis_history_note]
  Note : The history file, analysis_h.txt, could not be accessed
 

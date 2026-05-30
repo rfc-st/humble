@@ -2045,15 +2045,18 @@ def get_skipped_unsupported_headers(args, insecure_headers):
     Return unsupported header names and the list of headers to skip during
     analysis.
     """
-    insecure_set = {h.strip().lower() for h in args.skip_headers}
-    skip_list = [h for h in insecure_set if h in insecure_headers]
+    insecure_set = {header.strip().lower() for header in args.skip_headers}
+    skip_list = [header for header in insecure_set
+             if header in insecure_headers]
     unsupported_headers = list(insecure_set - insecure_headers)
     return unsupported_headers, skip_list
 
 
 def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
     """Print skipped HTTP response headers."""
-    print_detail_l("[analysis_skipped_note]")
+    note = "[analysis_skipped_note]" if len(args.skip_headers) > 1 \
+        else "[analysis_skipped_note_single]"
+    print_detail_l(note)
     print(" " + ", ".join(f"'{h.title()}'" for h in
                           sorted(args.skip_headers, key=str.lower)) + ".")
 
