@@ -298,7 +298,6 @@ class PythonVersion(NamedTuple):
 
     major: int
     minor: int
-    micro: int
 
 
 def get_detail(id_mode, *, replace=False):
@@ -461,7 +460,6 @@ def test_outdated_humble(capsys):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
     humble_module.args = args
-    humble_module.STYLE = ("", "", "", "", "")
     mock_github_version = date(2026, 3, 6)
     mock_local_version = date(2026, 1, 1)
     mock_days_diff = (mock_github_version - mock_local_version).days
@@ -489,7 +487,7 @@ def test_unsupported_python_version(capsys):
 
     Test whether the Python version is below the minimum supported version.
     """
-    mocked_python_version = PythonVersion(3, 10, 0)
+    mocked_python_version = PythonVersion(3, 10)
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
@@ -627,7 +625,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-05-30")
+local_version = date.fromisoformat("2026-06-05")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,
@@ -644,7 +642,7 @@ args = _Args()
 l10n_main = []
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session", autouse=True) # noqa: vulture
 def delete_temp_coverage():
     """Set up session globals and clean up temporary files after testing."""
     args.lang = "en"
