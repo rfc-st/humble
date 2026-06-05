@@ -57,65 +57,38 @@ from defusedcsv import csv as defusedcsv_logic
 from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
 
+# Core globals, metadata and versioning
 BANNER = """  _                     _     _
  | |__  _   _ _ __ ___ | |__ | | ___
  | '_ \\| | | | '_ ` _ \\| '_ \\| |/ _ \\
  | | | | |_| | | | | | | |_) | |  __/
  |_| |_|\\__,_|_| |_| |_|_.__/|_|\\___|
 """
-BOLD_STRINGS = ("[0.", "HTTP R", "[1.", "[2.", "[3.", "[4.", "[5.", "[6.",
-                "[7.", "[Cabeceras")
-CDN_HTTP_CODES = set(range(500, 512)) | set(range(520, 528)) | {530}
-CSV_SECTION = ("0section", "0headers", "1enabled", "2missing", "3fingerprint",
-               "4depinsecure", "5empty", "6compat", "7result")
 DAYS_DIFF = 30
-DELETED_LINES = "\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K"
-DIR_MSG = ("[icsp_s]", "[icsp_si]", "[no_warnings]")
-DTD_CONTENT = """<!ELEMENT analysis (section+)>
-<!ATTLIST analysis version CDATA #REQUIRED>
-<!ATTLIST analysis generated CDATA #REQUIRED>
-<!ELEMENT section (item*)>
-<!ATTLIST section name CDATA #REQUIRED>
-<!ELEMENT item (#PCDATA)>
-<!ATTLIST item name CDATA #IMPLIED>
-"""
-ERROR_CODES_CLIENT = {*range(400, 408), *range(409, 418), *range(421, 427), 428,
-                      429, 431, 451}
-ERROR_CODES_MIXED = (400, 451, 500, 511, 599)
-EXP_HEADERS = ("activate-storage-access", "critical-ch", "document-policy",
-               "nel", "no-vary-search", "permissions-policy",
-               "sec-private-state-token-lifetime", "speculation-rules",
-               "supports-loading-mode")
-EXPORT_EXTENSIONS = (".csv", ".html", ".json", ".pdf", ".txt", ".xlsx", ".xml")
-FORCED_CIPHERS = "HIGH:!DH:!aNULL"
-HASH_CHARS = {"sha256": 32, "sha384": 48, "sha512": 64}
-HEADERS_CHECKS = 2
-HTML_TAGS = ("</a>", '<a href="', '">', '<span class="ko">',
-             '<span class="header">', "</span>", '<span class="ok">',
-             "</pre><div><details open><summary><strong>",
-             "</strong></summary><pre>", 'class="ko"', '    class="ko"',
-             "<br>", "</pre></details></div><pre>", "</pre><br></body></html>",
-             "<strong>", "</strong>", '&nbsp;<font color="', "</font><br><br>",
-             "</font>", '<font color="')
-HTTP_SCHEMES = ("http:", "https:")
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
-HUMBLE_DIRS = ("additional", "l10n")
-HUMBLE_FILES = ("analysis_h.txt", "check_path_permissions", "fingerprint.txt",
-                "guides.txt", "details_es.txt", "details.txt",
-                "user_agents.txt", "insecure.txt", "html_template.html",
-                "analysis_grades.txt", "analysis_grades_es.txt", "license.txt",
-                "license_es.txt", "testssl_windows.txt",
-                "testssl_windows_es.txt", "security_guides.txt",
-                "security_guides_es.txt", "security.txt",
-                "owasp_best_practices.txt")
-INFO_SECTION = ("[0. Info")
-JSON_L10N = ("[json_det_fngheader]", "[json_det_refs]", "[json_det_fngval]")
-JSON_SECTION = ("0section", "0headers", "5compat", "6result")
-L10N_IDXS = {"grades": (9, 10), "license": (11, 12), "testssl": (13, 14),
-             "security_guides": (15, 16)}
-LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2)
-METADATA_S = ("[pdf_meta_keywords", "[pdf_meta_subject]")
+PYTHON_REQUIRED_VERSION = (3, 11)
 OS_PATH = Path(__file__).resolve().parent
+URL_LIST = (": https://caniuse.com/?search=", " Ref  : https://developers.\
+cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
+/", " Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
+Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
+humble.py", "https://github.com/rfc-st/humble")
+current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
+local_version = date.fromisoformat("2026-06-05")
+BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
+
+# Files, path resolution and system directories
+HUMBLE_DIRS = ("additional", "l10n")
+HUMBLE_FILES = (
+    "analysis_h.txt", "check_path_permissions", "fingerprint.txt",
+    "guides.txt", "details_es.txt", "details.txt",
+    "user_agents.txt", "insecure.txt", "html_template.html",
+    "analysis_grades.txt", "analysis_grades_es.txt", "license.txt",
+    "license_es.txt", "testssl_windows.txt",
+    "testssl_windows_es.txt", "security_guides.txt",
+    "security_guides_es.txt", "security.txt",
+    "owasp_best_practices.txt",
+)
 PATHS = {
     "help_epilog": OS_PATH / HUMBLE_DIRS[1] / HUMBLE_FILES[5],
     "fingerprint_header": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
@@ -127,20 +100,118 @@ PATHS = {
     "security_headers": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[17],
     "user_agents": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6],
 }
+TESTSSL_FILE = ("testssl", "testssl.sh")
+VALIDATE_FILE = OS_PATH / HUMBLE_FILES[0]
+
+# HTTP status codes, network analysis and timeouts
+CDN_HTTP_CODES = {*range(500, 512), *range(520, 528), 530}
+ERROR_CODES_CLIENT = {*range(400, 408), *range(409, 418), *range(421, 427),
+                      428, 429, 431, 451}
+ERROR_CODES_MIXED = (400, 451, 500, 511, 599)
+EXP_HEADERS = (
+    "activate-storage-access", "critical-ch", "document-policy",
+    "nel", "no-vary-search", "permissions-policy",
+    "sec-private-state-token-lifetime", "speculation-rules",
+    "supports-loading-mode",
+)
+FORCED_CIPHERS = "HIGH:!DH:!aNULL"
+HEADERS_CHECKS = 2
+REQ_HEADERS = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
+    "Upgrade-Insecure-Requests": "1",
+}
+REQ_TIMEOUT = 15
+REQ_WARNING = 6
+XFRAME_CHECK = "X-Frame-Options ("
+
+# Index matching, localization (l10n) and sections
+DIR_MSG = ("[icsp_s]", "[icsp_si]", "[no_warnings]")
+INFO_SECTION = ("[0. Info")
+JSON_L10N = ("[json_det_fngheader]", "[json_det_refs]", "[json_det_fngval]")
+L10N_IDXS = {
+    "grades": (9, 10), "license": (11, 12), "testssl": (13, 14),
+    "security_guides": (15, 16),
+}
+RESP_SECTION = ("[HTTP R", "[Cabeceras d")
+SECTION_S = ("[enabled_cnt]", "[missing_cnt]", "[fng_cnt]", "[insecure_cnt]",
+             "[empty_cnt]", "[total_cnt]")
+SECTION_V = (
+    "[no_enabled]", "[no_missing]", "[no_fingerprint]", "[no_ins_deprecated]",
+    "[no_empty]", "[average_warnings]", "[average_warnings_year]",
+    "[average_enb]", "[average_miss]", "[average_fng]", "[average_dep]",
+    "[average_ety]", "[most_analyzed]", "[least_analyzed]", "[most_warnings]",
+    "[least_warnings]", "[most_enabled]", "[least_enabled]", "[most_missing]",
+    "[least_missing]", "[most_fingerprints]", "[least_fingerprints]",
+    "[most_insecure]", "[least_insecure]", "[most_empty]", "[least_empty]",
+)
+
+# Export formats, structs and parsing logic
+CSV_SECTION = ("0section", "0headers", "1enabled", "2missing", "3fingerprint",
+               "4depinsecure", "5empty", "6compat", "7result")
+DTD_CONTENT = """<!ELEMENT analysis (section+)>
+<!ATTLIST analysis version CDATA #REQUIRED>
+<!ATTLIST analysis generated CDATA #REQUIRED>
+<!ELEMENT section (item*)>
+<!ATTLIST section name CDATA #REQUIRED>
+<!ELEMENT item (#PCDATA)>
+<!ATTLIST item name CDATA #IMPLIED>
+"""
+EXPORT_EXTENSIONS = (".csv", ".html", ".json", ".pdf", ".txt", ".xlsx", ".xml")
+HTML_TAGS = (
+    "</a>", '<a href="', '">', '<span class="ko">', '<span class="header">',
+    "</span>", '<span class="ok">',
+    "</pre><div><details open><summary><strong>", "</strong></summary><pre>",
+    'class="ko"', '    class="ko"', "<br>", "</pre></details></div><pre>",
+    "</pre><br></body></html>", "<strong>", "</strong>",
+    '&nbsp;<font color="', "</font><br><br>", "</font>", '<font color="',
+)
+JSON_SECTION = ("0section", "0headers", "5compat", "6result")
+METADATA_S = ("[pdf_meta_keywords", "[pdf_meta_subject]")
 PDF_COLORS = ("#008000", "#000000", "#660033")
 PDF_CONDITIONS = ("Ref:", ":", '"', "(*) ")
-PDF_SECTION = {"[0.": "[0section_s]", "[HTTP R": "[0headers_s]",
-               "[1.": "[1enabled_s]", "[2.": "[2missing_s]",
-               "[3.": "[3fingerprint_s]", "[4.": "[4depinsecure_s]",
-               "[5.": "[5empty_s]", "[6.": "[6compat_s]", "[7.": "[7result_s]",
-               "[Cabeceras": "[0headers_s]"}
-PYTHON_REQUIRED_VERSION = (3, 11)
+PDF_SECTION = {
+    "[0.": "[0section_s]", "[HTTP R": "[0headers_s]", "[1.": "[1enabled_s]",
+    "[2.": "[2missing_s]", "[3.": "[3fingerprint_s]", "[4.": "[4depinsecure_s]",
+    "[5.": "[5empty_s]", "[6.": "[6compat_s]", "[7.": "[7result_s]",
+    "[Cabeceras": "[0headers_s]",
+}
+REF_LINKS = (" Ref  : ", " Ref: ", "Ref  :", "Ref: ", " ref:")
+SECTIONS_EXPORT_STATES = {RESP_SECTION: (True, False, False),
+                          "[1.": (False, True, False),
+                          "[2.": (False, False, False),
+                          "[6.": (False, False, True),
+                          "[7.": (False, False, False)}
+STRINGS_BOLD = tuple(PDF_SECTION.keys())
+URL_STRING = ("rfc-st", " URL   : ", "https://caniuse.com/?")
+XML_STRING = ("Ref: ", "Value: ", "Valor: ")
+
+# Terminal ui, raw internals and styling
+DELETED_LINES = "\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K"
+HASH_CHARS = {"sha256": 32, "sha384": 48, "sha512": 64}
+HTTP_SCHEMES = ("http:", "https:")
+LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2)
+SECONDS_BOUNDS = (86400, 31536000)
+SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 20)
+STYLE = (
+    Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
+    Style.RESET_ALL, Fore.RESET, "(humble_pdf_style)",
+    f"(humble_sec_style){Fore.GREEN}", "(humble_sec_style)",
+    f"{Style.RESET_ALL}{Fore.RESET}", Fore.GREEN,
+)
+TESTSSL_OPTIONS = ("-f", "-g", "-p", "-U", "-s", "--hints")
+
+# Regular expressions patterns
 RE_PATTERN = (
     r"\((.*?)\)",
     r"(?:(?:\d{1,3}\.){3}\d{1,3}|(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4})",
     (r"\.\./|/\.\.|\\\.\.|\\\.\\|"
      r"%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|"
-     r"%uff0e%uff0e%u2215|%uff0e%uff0e%u2216"), r"\(([^)]+)\)",
+     r"%uff0e%uff0e%u2215|%uff0e%uff0e%u2216"),
+    r"\(([^)]+)\)",
     r"\d{4}-\d{2}-\d{2}", r"\[(.*?)\]\n", r"'nonce-([^']+)'",
     r"\(humble_pdf_style\)([^:]+):",
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
@@ -156,58 +227,6 @@ RE_PATTERN = (
     r"<pre>/pre>'",
     r"(?<!')nonce-",
 )
-REF_LINKS = (" Ref  : ", " Ref: ", "Ref  :", "Ref: ", " ref:")
-RESP_SECTION = ("[HTTP R", "[Cabeceras d")
-REQ_HEADERS = {
-    "Accept": (
-        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-    ),
-    "Accept-Encoding": "gzip, deflate, br, zstd",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Cache-Control": "no-cache",
-    "Pragma": "no-cache",
-    "Upgrade-Insecure-Requests": "1",
-}
-REQ_TIMEOUT = 15
-REQ_WARNING = 6
-SECONDS_BOUNDS = (86400, 31536000)
-SECTION_S = ("[enabled_cnt]", "[missing_cnt]", "[fng_cnt]", "[insecure_cnt]",
-             "[empty_cnt]", "[total_cnt]")
-SECTION_V = ("[no_enabled]", "[no_missing]", "[no_fingerprint]",
-             "[no_ins_deprecated]", "[no_empty]", "[average_warnings]",
-             "[average_warnings_year]", "[average_enb]", "[average_miss]",
-             "[average_fng]", "[average_dep]", "[average_ety]",
-             "[most_analyzed]", "[least_analyzed]", "[most_warnings]",
-             "[least_warnings]", "[most_enabled]", "[least_enabled]",
-             "[most_missing]", "[least_missing]", "[most_fingerprints]",
-             "[least_fingerprints]", "[most_insecure]", "[least_insecure]",
-             "[most_empty]", "[least_empty]")
-SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 20)
-SECTIONS_EXPORT_STATES = {RESP_SECTION: (True, False, False),
-                          "[1.": (False, True, False),
-                          "[2.": (False, False, False),
-                          "[6.": (False, False, True),
-                          "[7.": (False, False, False)}
-STYLE = (Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
-         Style.RESET_ALL, Fore.RESET, "(humble_pdf_style)",
-         f"(humble_sec_style){Fore.GREEN}", "(humble_sec_style)",
-         f"{Style.RESET_ALL}{Fore.RESET}", Fore.GREEN)
-TESTSSL_FILE = ("testssl", "testssl.sh")
-TESTSSL_OPTIONS = ["-f", "-g", "-p", "-U", "-s", "--hints"]
-URL_LIST = (": https://caniuse.com/?search=", " Ref  : https://developers.\
-cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
-/", " Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
-Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
-humble.py", "https://github.com/rfc-st/humble")
-URL_STRING = ("rfc-st", " URL  : ", "https://caniuse.com/?")
-VALIDATE_FILE = OS_PATH / HUMBLE_FILES[0]
-XFRAME_CHECK = "X-Frame-Options ("
-XML_STRING = ("Ref: ", "Value: ", "Valor: ")
-
-current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-06-05")
-
-BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 
 class SSLContextAdapter(requests.adapters.HTTPAdapter):
@@ -2175,7 +2194,7 @@ def sections_htmlpdf_all_export(line, states):
     for prefix, new_states in SECTIONS_EXPORT_STATES.items():
         if line.startswith(prefix):
             return "\n", *new_states
-    return ("\n", *states) if any(line.startswith(s) for s in BOLD_STRINGS +
+    return ("\n", *states) if any(line.startswith(s) for s in STRINGS_BOLD +
                                   RESP_SECTION) else ("", *states)
 
 
@@ -2341,10 +2360,10 @@ def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
     and appends the grade detail; related to `--cicd` option.
     """
     cicd_info_start = lines.index(next(line for line in lines if
-                                       BOLD_STRINGS[0] in line))
+                                       STRINGS_BOLD[0] in line))
     cicd_info_lines = lines[cicd_info_start + 1:cicd_info_start + 4]
     cicd_totals_start = lines.index(next(line for line in lines if
-                                         BOLD_STRINGS[8] in line))
+                                         STRINGS_BOLD[8] in line))
     cicd_totals_lines = lines[cicd_totals_start + 2:-3]
     cicdi_grade_lines = lines[cicd_totals_start + 8]
     line_pattern = re.compile(RE_PATTERN[21])
@@ -2678,27 +2697,27 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
                         json_miss_r):
     """Write sections for a JSON export, related to `-o json` option."""
     json_conditions = {
-        BOLD_STRINGS[0]:
+        STRINGS_BOLD[0]:
             lambda: json_detailed_info(json_lns),
-        (f"[{BOLD_STRINGS[1]}", BOLD_STRINGS[9]):
+        (f"[{STRINGS_BOLD[1]}", STRINGS_BOLD[9]):
             lambda: json_detailed_response(json_lns),
-        BOLD_STRINGS[2]:
+        STRINGS_BOLD[2]:
             lambda: json_detailed_format(json_lns),
-        BOLD_STRINGS[3]:
+        STRINGS_BOLD[3]:
             lambda: json_detailed_miss(json_lns, l_miss, json_miss_h,
                                        json_miss_d, json_miss_r),
-        BOLD_STRINGS[4]:
+        STRINGS_BOLD[4]:
             lambda: json_detailed_fng(
                 json_lns, json_detailed_sources(2, 0)),
-        BOLD_STRINGS[5]:
+        STRINGS_BOLD[5]:
             lambda: json_detailed_ins(
                 json_lns, json_detailed_sources(7, 2)),
-        BOLD_STRINGS[6]:
+        STRINGS_BOLD[6]:
             lambda: json_detailed_empty(json_lns),
-        BOLD_STRINGS[7]:
+        STRINGS_BOLD[7]:
             lambda: json_detailed_format(json_lns, is_compat=True,
                                          is_l10n=True),
-        BOLD_STRINGS[8]:
+        STRINGS_BOLD[8]:
             lambda: json_detailed_results(json_lns),
     }
     return next(
@@ -3088,7 +3107,7 @@ def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
 
     Related to `-o pdf` option.
     """
-    if any(bold_str in line for bold_str in BOLD_STRINGS):
+    if any(bold_str in line for bold_str in STRINGS_BOLD):
         pdf.set_font(style="B")
     else:
         pdf.set_font(style="")
@@ -3462,7 +3481,7 @@ def format_html_bold(html_final, ln_rstrip, inside_section):
 
     Related to `-o html` option.
     """
-    if any(s in ln_rstrip for s in BOLD_STRINGS):
+    if any(s in ln_rstrip for s in STRINGS_BOLD):
         if inside_section:
             html_final.write(HTML_TAGS[12])
         html_final.write(f"{HTML_TAGS[7]}{ln_rstrip}{HTML_TAGS[8]}")
