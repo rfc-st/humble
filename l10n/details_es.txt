@@ -2328,6 +2328,9 @@ Generador
 [test_wrong_testssl]
  verifica que se muestre un error al no encontrar el fichero de testssl.sh.
 
+[test_print_detail_s]
+ verifica que la función devuelva 'None' para IDs desconocidos, evitando errores.
+
 [test_tests]
 Pruebas realizadas el
 

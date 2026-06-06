@@ -2699,7 +2699,7 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
     json_conditions = {
         STRINGS_BOLD[0]:
             lambda: json_detailed_info(json_lns),
-        (f"[{STRINGS_BOLD[1]}", STRINGS_BOLD[9]):
+        (STRINGS_BOLD[1], STRINGS_BOLD[9]):
             lambda: json_detailed_response(json_lns),
         STRINGS_BOLD[2]:
             lambda: json_detailed_format(json_lns),
@@ -2723,7 +2723,9 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
     return next(
         (condition()
          for prefix, condition in json_conditions.items()
-         if json_section.startswith(prefix)),
+         if (json_section.startswith(prefix)
+             if isinstance(prefix, str)
+             else any(json_section.startswith(p) for p in prefix))),
         list(json_lns),
     )
 

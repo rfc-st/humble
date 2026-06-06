@@ -54,7 +54,8 @@ if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
     pytest.fail(WIN_COV_ERROR)
 
 ASSERT_STR = ["error", "Error"]
-EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]"]
+EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
+                 "[test_print_detail_s]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -529,6 +530,20 @@ def test_missing_arguments():
              expected)
     run_test(["-b"], expected)
     run_test(["-s"], expected)
+
+
+def test_print_detail_s():
+    """Verify `print_detail_s` functions returns `None` for unknown IDs.
+
+    Ensures that if this function is called with an ID not present in
+    `l10n_main` it returns `None` instead of crashing.
+    """
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main = l10n_main
+    humble_module.args = args
+    result = humble_module.print_detail_s("[nonexistent_id]")
+    assert result is None
 
 
 def test_proxy_wrong():

@@ -2348,6 +2348,9 @@ Generator
 [test_wrong_testssl]
  verify an error is displayed when the testssl.sh file is not found.
 
+[test_print_detail_s]
+ verify the function returns 'None' for unknown IDs, preventing crashes.
+
 [test_tests]
 Tests run at
 
