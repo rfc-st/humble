@@ -74,7 +74,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-06-05")
+local_version = date.fromisoformat("2026-06-06")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -4980,14 +4980,15 @@ if header_eligible("service-worker-allowed") and servwall_header == "/":
 
 if header_eligible("set-cookie"):
     stc_header = headers_l.get("set-cookie", "")
+    stc_header_l = stc_header.lower()
     if not unsafe_scheme:
         check_unsafe_cookies()
     else:
-        if "secure" in stc_header:
+        if "secure" in stc_header_l:
             print_details("[iseti_h]", "[iseti]", "d", i_cnt)
         if any(prefix in stc_header for prefix in t_cookie_prf):
             print_details("[ispref_m]", "[ispref]", "d", i_cnt)
-    if "samesite=none" in stc_header and "secure" not in stc_header:
+    if "samesite=none" in stc_header_l and "secure" not in stc_header_l:
         print_details("[iseti_m]", "[isetm]", "d", i_cnt)
 
 setlogin_header = headers_l.get("set-login", "")
