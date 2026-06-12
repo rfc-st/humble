@@ -1693,19 +1693,25 @@ def print_detail_s(id_mode, *, max_ln=False):
         `l10n_main`, which contains the multilingual strings and descriptions
         used for the final report.
     """
-    for idmode_ln, idnext_ln in pairwise(l10n_main):
-        if idmode_ln.startswith(id_mode):
-            return f"\n{idnext_ln.rstrip()}" if max_ln else \
-                f"\n{idnext_ln.strip()}"
+    if match := next(
+        (pr for pr in pairwise(l10n_main) if pr[0].startswith(id_mode)),
+        None,
+    ):
+        _, idnext_ln = match
+        return (
+            f"\n{idnext_ln.rstrip()}" if max_ln else f"\n{idnext_ln.strip()}"
+        )
     return None
 
 
 def get_detail(id_mode, *, replace=False):
     """Print a message, optionally removing newlines."""
-    for i, line in enumerate(l10n_main):
-        if line.startswith(id_mode):
-            return (l10n_main[i+1].replace("\n", "")) if replace else \
-                l10n_main[i+1]
+    if match := next(
+        (i for i, ln in enumerate(l10n_main) if ln.startswith(id_mode)),
+        None,
+    ):
+        next_ln = l10n_main[match + 1]
+        return next_ln.replace("\n", "") if replace else next_ln
     return None
 
 
