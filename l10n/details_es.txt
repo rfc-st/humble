@@ -1937,6 +1937,12 @@ Diferencias
 [cicd_error]
 Error
 
+[cicd_invalid]
+es una nota incorrecta
+
+[cicd_valid]
+las permitidas son
+
 [cicd_info]
 Info
 
@@ -2423,3 +2429,15 @@ Error: el parámetro '-H' requiere el parámetro '-u'.
 
 [e_export_analysis]
  Error: No se puede exportar el análisis
+
+[cicd_gate]
+Umbral de seguridad
+
+[cicd_gate_grade]
+Resultado
+
+[cicd_ok]
+OK: El análisis alcanza la nota requerida
+
+[cicd_ko]
+KO: El análisis no alcanza la nota requerida

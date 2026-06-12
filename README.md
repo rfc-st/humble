@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--06--06-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--06--12-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -353,17 +353,17 @@ $ sudo apt install --only-upgrade humble
 (Linux)   $ python3 humble.py
 (macOS)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-c] [-cicd] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
+usage: humble.py [-h] [-a] [-b] [-c] [-cicd [GRADE]] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {all,csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-05-15
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-06-12
 
 options:
   -h, --help                               show this help message and exit
   -a                                       Print statistics of the performed analysis; if the '-u' parameter is omitted they will be global
   -b                                       Print overall findings; if omitted detailed ones will be printed
   -c                                       Checks URL response HTTP headers for compliance with OWASP 'Secure Headers Project' best practices
-  -cicd                                    Print only analysis summary, totals and grade in JSON; suitable for CI/CD
+  -cicd [GRADE]                            Print analysis for CI/CD processing; optionally, set the minimum required GRADE (E, D, C, B, A, A+)
   -df                                      Do not follow redirects; if omitted the last redirection will be the one analyzed
   -e [TESTSSL_PATH]                        Print only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
   -f [FINGERPRINT_TERM]                    Print fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 results will be printed
@@ -387,6 +387,7 @@ examples:
   -u URL -a                            Print statistics of the analysis performed against the URL
   -u URL -b                            Analyzes the URL and prints overall findings
   -u URL -b -o csv                     Analyzes the URL and exports overall findings to CSV format
+  -u URL -cicd A                       Analyzes the URL and prints CI/CD results, warning if they do not reach an 'A' grade
   -u URL -l es                         Analyzes the URL and prints (in Spanish) detailed findings
   -u URL -o pdf                        Analyzes the URL and exports detailed findings to PDF format
   -u URL -o html -of test              Analyzes the URL and exports detailed findings to HTML format and 'test' filename

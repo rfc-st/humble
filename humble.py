@@ -74,7 +74,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-06-06")
+local_version = date.fromisoformat("2026-06-12")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -161,6 +161,7 @@ DTD_CONTENT = """<!ELEMENT analysis (section+)>
 <!ATTLIST item name CDATA #IMPLIED>
 """
 EXPORT_EXTENSIONS = (".csv", ".html", ".json", ".pdf", ".txt", ".xlsx", ".xml")
+GRADE_ORDER = ["E", "D", "C", "B", "A", "A+"]
 HTML_TAGS = (
     "</a>", '<a href="', '">', '<span class="ko">', '<span class="header">',
     "</span>", '<span class="ok">',
@@ -2284,7 +2285,10 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
     """
     dispatch = {
         "txt": lambda: (
-            args.cicd and print_cicd_totals(tmp_filename),
+            args.cicd and print_cicd_totals(
+                tmp_filename,
+                args.cicd if isinstance(args.cicd, str) else None,
+            ),
             print_export_path(tmp_filename, reliable),
             "-c" in sys.argv and check_owasp_compliance(tmp_filename),
         ),
@@ -2304,50 +2308,118 @@ def check_output_format(args, final_filename, reliable, tmp_filename):
         func()
 
 
-def build_cicd_totals(tmp_filename, info_lines, totals, labels):
-    """Build the CI/CD totals from analysis metadata and section totals.
+def check_cicd(analysis_grade, threshold_grade):
+    """Check if the analysis grade meets the minimum required for CI/CD.
 
-    Parses info lines into key-value pairs, excludes the file reference, and
-    combines the result with totals and path details.
-
-    Related to `--cicd` option.
+    Compares grades against `GRADE_ORDER`; equal grades pass.
     """
-    _, _, info_label = labels
-    file_label = get_detail("[cicd_file]", replace=True)
+    if analysis_grade not in GRADE_ORDER or threshold_grade not in GRADE_ORDER:
+        return False
+    analysis_idx = GRADE_ORDER.index(analysis_grade)
+    threshold_idx = GRADE_ORDER.index(threshold_grade)
+    return analysis_idx < threshold_idx
 
-    info_dict = {
+
+def build_cicd_info(info_lines):
+    """Build the CI/CD info dict from analysis metadata lines.
+
+    Related to `-cicd` option.
+    """
+    file_label = get_detail("[cicd_file]", replace=True)
+    return {
         key.strip(): value.strip()
         for line in info_lines
         if ":" in line
         for key, value in [line.split(":", 1)]
         if key.strip() != file_label
     }
+
+
+def build_cicd_totals(tmp_filename, info_lines, totals, labels, threshold=None):
+    """Build the CI/CD totals from analysis metadata and section totals.
+
+    If `threshold` is provided, appends a 'Security Gate' field with pass/fail
+    status; related to `-cicd GRADE` option.
+    """
+    _, _, info_label = labels
     return {
-        info_label: info_dict,
+        info_label: build_cicd_info(info_lines),
         **totals,
         get_detail("[cicd_detailed]", replace=True): {
             get_detail("[cicd_path]",
                        replace=True): str(Path(tmp_filename).resolve()),
         },
+        **(
+            {get_detail("[cicd_gate]", replace=True): {
+                get_detail("[cicd_gate_grade]", replace=True): threshold,
+            }}
+            if threshold is not None else {}
+        ),
     }
 
+def fetch_cicd_grade(totals):
+    """Fetch the analysis grade from the totals.
 
-def print_cicd_totals(tmp_filename):
-    """Parse the results from `tmp_filename`.
+    Related to `-cicd GRADE` option.
+    """
+    grade_note = (
+        totals
+        .get(get_detail("[cicd_grade]", replace=True), {})
+        .get(get_detail("[cicd_grade_note]", replace=True), "")
+    )
+    return grade_note.split()[0].strip().upper() if grade_note else ""
 
-    To print a JSON-formatted CI/CD summary and exit; related to `-cicd` option.
+
+def validate_cicd_grade(threshold_norm, threshold_grade, totals):
+    """Validate the target threshold and retrieve the actual analysis grade.
+
+    Ensures threshold exists within `GRADE_ORDER`.
+    """
+    if threshold_norm not in GRADE_ORDER:
+        err_key, inv_msg, val_msg = [get_detail(k, replace=True) for k in
+                                     ["[cicd_error]", "[cicd_invalid]",
+                                      "[cicd_valid]"]]
+        grades = ", ".join(f"'{g}'" for g in GRADE_ORDER)
+        print(f"\n{err_key}: '{threshold_grade}' {inv_msg}; {val_msg} \
+{grades}.")
+        sys.exit(2)
+    return fetch_cicd_grade(totals)
+
+
+def threshold_cicd(threshold_grade, totals):
+    """CI/CD threshold validation.
+
+    Related to `-cicd GRADE` option.
+    """
+    threshold_norm = threshold_grade.strip().upper()
+    analysis_grade = validate_cicd_grade(threshold_norm, threshold_grade,
+                                         totals)
+    failed = check_cicd(analysis_grade, threshold_norm)
+    msg_key = "[cicd_ko]" if failed else "[cicd_ok]"
+    return f"{get_detail(msg_key, replace=True)}, '{threshold_norm}'", failed
+
+
+def print_cicd_totals(tmp_filename, threshold_grade=None):
+    """Print a JSON-formatted CI/CD summary and exits.
+
+    If `threshold_grade` is provided, appends a 'Security Gate' field and exits
+    if the analysis grade does not reach that threshold; equal grades pass.
     """
     try:
-        cicd_labels = get_cicd_labels()  # sourcery skip
+        cicd_labels = get_cicd_labels()
         total_lbl, diff_lbl, _ = cicd_labels
         with Path(tmp_filename).open(encoding="utf8") as cicd_filename:
             lines = [ln.strip() for ln in cicd_filename if ln.strip()]
         info_lines, totals = parse_cicd_sections(diff_lbl, total_lbl, lines)
+        threshold, failed = (
+            threshold_cicd(threshold_grade, totals)
+            if threshold_grade else (None, False)
+        )
         cicd_output = build_cicd_totals(tmp_filename, info_lines, totals,
-                                        cicd_labels)
+                                        cicd_labels, threshold=threshold)
         print(dumps(cicd_output, indent=2, ensure_ascii=False))
-        sys.exit(0)
-    except Exception as exc: # noqa: BLE001
+        sys.exit(1 if failed else 0)
+    except Exception as exc:  # noqa: BLE001
         err_key = get_detail("[cicd_error]", replace=True)
         print(dumps({err_key: str(exc)}, ensure_ascii=False))
         sys.exit(1)
@@ -4115,8 +4187,9 @@ overall findings; if omitted detailed ones will be printed")
 parser.add_argument("-c", dest="compliance", action="store_true", help="Checks\
  URL response HTTP headers for compliance with OWASP 'Secure Headers Project' \
 best practices")
-parser.add_argument("-cicd", dest="cicd", action="store_true", help="Print \
-only analysis summary, totals and grade in JSON; suitable for CI/CD")
+parser.add_argument("-cicd", dest="cicd", nargs="?", const=True,
+metavar="GRADE", help="Print analysis for CI/CD processing; optionally, set the\
+ minimum required GRADE (E, D, C, B, A, A+)")
 parser.add_argument("-df", dest="redirects", action="store_true", help="Do not\
  follow redirects; if omitted the last redirection will be the one analyzed")
 parser.add_argument("-e", nargs="?", type=str, dest="testssl_path", help="Prin\

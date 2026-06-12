@@ -1936,6 +1936,12 @@ Differences
 [cicd_error]
 Error
 
+[cicd_invalid]
+is an invalid grade
+
+[cicd_valid]
+valid ones are
+
 [cicd_info]
 Info
 
@@ -1956,6 +1962,7 @@ examples:
   -u URL -a                            Print statistics of the analysis performed against the URL
   -u URL -b                            Analyzes the URL and prints overall findings
   -u URL -b -o csv                     Analyzes the URL and exports overall findings to CSV format
+  -u URL -cicd A                       Analyzes the URL and prints CI/CD results, warning if they do not reach an 'A' grade
   -u URL -l es                         Analyzes the URL and prints (in Spanish) detailed findings
   -u URL -o pdf                        Analyzes the URL and exports detailed findings to PDF format
   -u URL -o html -of test              Analyzes the URL and exports detailed findings to HTML format and 'test' filename
@@ -2440,3 +2447,15 @@ Error: the '-H' parameter requires the parameter '-u'.
 
 [e_export_analysis]
  Error: Unable to export the analysis
+
+[cicd_gate]
+Security Gate
+
+[cicd_gate_grade]
+Result
+
+[cicd_ok]
+OK: The analysis meets the required grade
+
+[cicd_ko]
+KO: The analysis does not meet the required grade
