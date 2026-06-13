@@ -184,37 +184,37 @@
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_guidelines.JPG" alt="(Windows) - Guidelines for enabling security HTTP response headers">
 </p>
 <br />
-.: (Linux) - Brief analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_facebook.com_20250426_191942_en.csv">Example.</a><br />
+.: (Linux) - Brief analysis saved as CSV. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_facebook.com_20260613_183347_en.csv">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_csv_s.PNG" alt="(Linux) - Brief analysis saved as CSV">
 </p>
 <br />
-.: (Windows) - Detailed analysis saved as PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_samsung_com_20241122_213022_en.pdf">Example.</a><br />
+.: (Windows) - Detailed analysis saved as PDF. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_samsung.com_20260613_183612_en.pdf">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_pdf_s.PNG" alt="(Windows) - Detailed analysis saved as PDF">
 </p>
 <br />
-.: (Linux) - Detailed analysis saved as HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/humble_https_en.wikipedia.org_20250816_205605_en.html">Example.</a><br />
+.: (Linux) - Detailed analysis saved as HTML. <a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/humble_https_en.wikipedia.org_20260613_183915_en.html">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_html_s.PNG" alt="(Linux) - Detailed analysis saved as HTML">
 </p>
 <br />
-.: (Linux) - Detailed analysis saved as JSON. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_google.com_20251005_205346_en.json">Example.</a><br />
+.: (Linux) - Detailed analysis saved as JSON. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_google.com_20260613_184157_en.json">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_json_s.PNG" alt="(Linux) - Brief analysis saved as JSON">
 </p>
 <br />
-.: (Linux) - Detailed analysis saved as XLSX. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_google.com_20250823_184837_en.xlsx">Example.</a><br />
+.: (Linux) - Detailed analysis saved as XLSX. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_google.com_20260613_184337_en.xlsx">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_xlsx_s.PNG" alt="(Linux) - Brief analysis saved as XSLX">
 </p>
 <br />
-.: (Linux) - Brief analysis saved as XML. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_en.wikipedia.org_20250711_175924_en.xml">Example.</a><br />
+.: (Linux) - Brief analysis saved as XML. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_en.wikipedia.org_20260613_184523_en.xml">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_xml_s.PNG" alt="(Linux) - Brief analysis saved as XML">

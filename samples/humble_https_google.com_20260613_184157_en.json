@@ -1,8 +1,9 @@
 {
     "[0. Info]": {
-        "Date": "2025/10/05 - 20:53:45",
+        "Generator": "https://github.com/rfc-st/humble | v.2026-06-13",
+        "Date": "2026/06/13 - 18:41:57",
         "URL": "https://google.com",
-        "File": "humble_https_google.com_20251005_205346_en.json"
+        "File": "humble_https_google.com_20260613_184157_en.json"
     },
     "[1. Enabled HTTP Security Headers]": [
         {
@@ -11,7 +12,7 @@
         },
         {
             "Header": "Content-Security-Policy-Report-Only",
-            "Value": "object-src 'none';base-uri 'self';script-src 'nonce-BmVy7hTZXJwMseLMlTHrzQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"
+            "Value": "object-src 'none';base-uri 'self';script-src 'nonce-hdlivt7hK-51FrWeiFW5Uw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"
         },
         {
             "Header": "Content-Type",
@@ -35,7 +36,7 @@
         },
         {
             "Header": "Set-Cookie",
-            "Value": "AEC=AaJma5vsgG7asK5T5cHzu8mWtR4_hVMr-a6ImtIlrebhcjbnx-2LmDuXkg; expires=Fri, 03-Apr-2026 18:53:45 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax, __Secure-ENID=28.SE=PSWnuB7T8gbnDDXeiyMLsIMztsDQjf5PHQ5Ec2XNVQs-D54K_dmRsVpGZTFPwYoRbjyk8yfl2_QQKt1H2wiydjxg1KO7l6I3flpdELZnPfItuZwfpzV2uGQi3wq-3zA-tViUPP89qBWpzVNl-nn2sXxVS75YQUz0btOpOMVs2B5dxXDdAokM9HPbOdsz4nLEoa572B1hx9lEsUiR5hiA4zK3FYPBGy2D5IQ0op9F4OPf2JGiDi3QL4nIGIKCgjF1; expires=Thu, 05-Nov-2026 11:12:03 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax"
+            "Value": "AEC=AaJma5vcrBnhcs15eEB546YdDpsbL0RPkFx_4HZq2UMQMNk8d3Z3wJVl-w; expires=Thu, 10-Dec-2026 16:41:58 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax, __Secure-ENID=34.SE=UE9KRFGzgTIU0upeob16u24rEbC7l7jO8zSGbaW1b_yQu6pPqt_db87t5WC5aqpDnFDzjNV_s_-PM5g_U4nEz25feUNWz1U61HFiqWtmCIm4o9KGVGONgg-TzFq2JOkhtvkMnvRiNGj5B388-TEHMOP4iF83837mf_9Plu0VNn-9E_xrLq7tgqk-Dg0IjzRNn8lOB3gm3nyLy0IBrJH-xJQdt4nmWKWC4KYWG1YMdx_r_4scOn-05vgwV3-8lg; expires=Wed, 14-Jul-2027 09:00:16 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax, __Secure-BUCKET=CFE; expires=Thu, 10-Dec-2026 16:41:58 GMT; path=/; domain=.google.com; Secure; HttpOnly"
         },
         {
             "Header": "Strict-Transport-Security",
@@ -55,28 +56,28 @@
             "Header": "Clear-Site-Data",
             "Details": "Clears browsing data (cookies, storage, cache) associated with the requesting website.",
             "References": [
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data"
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data"
             ]
         },
         {
             "Header": "Cross-Origin-Embedder-Policy",
             "Details": "Prevents documents and workers from loading non-same-origin requests unless allowed.",
             "References": [
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy"
+                "https://mdn.io/Cross-Origin-Embedder-Policy"
             ]
         },
         {
             "Header": "Cross-Origin-Resource-Policy",
             "Details": "Protect servers against certain cross-origin or cross-site embedding of the returned source.",
             "References": [
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)"
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy"
             ]
         },
         {
             "Header": "Content-Security-Policy",
             "Details": "Detect and mitigate Cross Site Scripting (XSS) and data injection attacks, among others.",
             "References": [
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy"
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy"
             ]
         },
         {
@@ -104,7 +105,7 @@
             "Header": "X-Content-Type-Options",
             "Details": "Indicate that MIME types in the \"Content-Type\" headers should be followed.",
             "References": [
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options"
+                "https://mdn.io/X-Content-Type-Options"
             ]
         },
         {
@@ -128,7 +129,7 @@
                 "Enable 'no-cache' and 'no-store' if there are sensitive data in the URL analyzed."
             ],
             "References": [
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control"
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control"
             ]
         },
         {
@@ -137,7 +138,7 @@
                 "Avoid deprecated or ignored directives: 'report-uri'"
             ],
             "References": [
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only"
+                "https://mdn.io/Content-Security-Policy-Report-Only"
             ]
         },
         {
@@ -146,7 +147,7 @@
                 "Use the 'report-to' directive or this header has no effect."
             ],
             "References": [
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only"
+                "https://mdn.io/Content-Security-Policy-Report-Only"
             ]
         },
         {
@@ -155,7 +156,7 @@
                 "Header ignored by the directives 'max-age' or 's-maxage' in the header that controls the cache."
             ],
             "References": [
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires"
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Expires"
             ]
         },
         {
@@ -173,7 +174,7 @@
                 "This header is deprecated. Use instead \"Reporting-Endpoints\"."
             ],
             "References": [
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Report-To"
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Report-To"
             ]
         },
         {
@@ -183,7 +184,7 @@
             ],
             "References": [
                 "https://https.cio.gov/hsts/",
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security"
+                "https://mdn.io/Strict-Transport-Security"
             ]
         },
         {
@@ -195,7 +196,7 @@
             "References": [
                 "https://web.dev/articles/strict-csp",
                 "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp",
-                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection",
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection",
                 "https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP"
             ]
         }
@@ -247,7 +248,7 @@
         }
     ],
     "[7. Analysis Results]": {
-        "Duration": "Done in 0.33 seconds! (changes with respect to the last analysis in parentheses)",
+        "Duration": "Done in 0.4 seconds! (changes with respect to the last analysis in parentheses)",
         "Enabled headers": "11 (First Analysis)",
         "Missing headers": "9 (First Analysis)",
         "Fingerprint headers": "1 (First Analysis)",
@@ -256,6 +257,7 @@
         "Findings to review": "18 (First Analysis)",
         "Analysis Grade": "D (Review 'Deprecated/Insecure headers')",
         "'(*)' meaning": "Experimental HTTP response directive or header",
-        "'(*)' ref": "https://mdn.io/Experimental_deprecated_obsolete"
+        "'(*)' ref": "https://mdn.io/Experimental_deprecated_obsolete",
+        "'(Not available)' meaning": "The history file, analysis_h.txt, could not be accessed"
     }
 }
