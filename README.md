@@ -483,7 +483,7 @@ Open the index.html file in a browser.
 
 ## Global humble.skip
 
-If you want to persistently exclude certain HTTP response headers from being analyzed across **all** analyses, without specifying the `-s` parameter every time, you can adjust the provided `humble.skip` file.
+If you need to persistently exclude certain HTTP response headers from being analyzed across **all** analyses, without specifying the `-s` parameter every time, you can adjust the provided [`humble.skip`](https://github.com/rfc-st/humble/blob/master/humble.skip) file.
 
 ## AI
 
