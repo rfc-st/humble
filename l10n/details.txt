@@ -1907,7 +1907,7 @@ Error: The parameter '-op' requires the parameter '-o'.
 Error: The parameter '-s' requires at least the name of one HTTP response header.
 
 [args_skipped_unknown]
-Error: Remove these HTTP headers from the '-s' parameter as they are not analyzed
+Error: Remove these HTTP headers from the '-s' parameter or from the 'humble.skip' file, as they are not analyzed
 
 [args_noexportpath]
 Error: The indicated PATH does not exist

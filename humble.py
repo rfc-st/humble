@@ -1512,7 +1512,7 @@ def print_fng_header(header):
         print(f"{STYLE[1]} {header}")
 
 
-def print_general_info(reliable, export_filename):
+def print_general_info(reliable, export_filename, headers_skipped, skip_set):
     """Print the content in the section with basic information."""
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
@@ -1521,7 +1521,7 @@ def print_general_info(reliable, export_filename):
         humble_desc = get_detail("[humble_desc]", replace=True)
         print(f"\n\n{humble_desc}\n{BANNER_VERSION}\n")
     print_basic_info(export_filename)
-    print_extended_info(args, reliable, status_code)
+    print_extended_info(args, reliable, status_code, headers_skipped, skip_set)
 
 
 def print_basic_info(export_filename):
@@ -1547,7 +1547,7 @@ def print_basic_info(export_filename):
     validate_file_access(VALIDATE_FILE, context="basic")
 
 
-def print_extended_info(args, reliable, status_code):
+def print_extended_info(args, reliable, status_code, headers_skipped, skip_set):
     """Print extended analysis details.
 
     Request (`-H` option) and skipped (`-s` option) headers, proxy usage
@@ -1555,8 +1555,8 @@ def print_extended_info(args, reliable, status_code):
     """
     if args.request_header:
         print_request_headers(added_request_headers)
-    if args.skip_headers:
-        print_skipped_headers(args)
+    if headers_skipped:
+        print_skipped_headers(skip_set)
     if args.proxy:
         print_detail_l("[proxy_analysis_note]")
         print(f" {args.proxy}")
@@ -2051,6 +2051,25 @@ def print_user_agents(user_agents):
     sys.exit(0)
 
 
+def check_skip_file():
+    """Exclude the headers defined in the `humble.skip` file from the analysis.
+
+    Returns a list of clean header name strings.
+    """
+    file_skipped = []
+    skip_file = Path("humble.skip")
+    if skip_file.exists():
+        try:
+            with skip_file.open("r", encoding="utf-8") as humble_skip_file:
+                file_skipped = [
+                    line.strip() for line in humble_skip_file
+                    if line.strip() and not line.strip().startswith("#")
+                ]
+        except (FileNotFoundError, PermissionError):
+            pass
+    return file_skipped
+
+
 def get_insecure_checks():
     """Skips security checks for specified HTTP response headers.
 
@@ -2065,26 +2084,28 @@ def get_insecure_checks():
     return headers_name
 
 
-def get_skipped_unsupported_headers(args, insecure_headers):
+def get_skipped_unsupported_headers(cli_headers, insecure_headers,
+                                    file_skipped):
     """Validate skipped headers against the list of analyzed security headers.
 
     Return unsupported header names and the list of headers to skip during
     analysis.
     """
-    insecure_set = {header.strip().lower() for header in args.skip_headers}
+    cli_list = cli_headers if cli_headers else []
+    combined_headers = cli_list + file_skipped
+    insecure_set = {header.strip().lower() for header in combined_headers}
     skip_list = [header for header in insecure_set
-             if header in insecure_headers]
+                 if header in insecure_headers]
     unsupported_headers = list(insecure_set - insecure_headers)
     return unsupported_headers, skip_list
 
-
-def print_skipped_headers(args):  # sourcery skip: use-fstring-for-formatting
+def print_skipped_headers(skip_set):  # sourcery skip: use-fstring-for-formatting
     """Print skipped HTTP response headers."""
-    note = "[analysis_skipped_note]" if len(args.skip_headers) > 1 \
+    note = "[analysis_skipped_note]" if len(skip_set) > 1 \
         else "[analysis_skipped_note_single]"
     print_detail_l(note)
     print(" " + ", ".join(f"'{h.title()}'" for h in
-                          sorted(args.skip_headers, key=str.lower)) + ".")
+                          sorted(skip_set, key=str.lower)) + ".")
 
 
 def header_eligible(header):
@@ -4316,13 +4337,16 @@ if any([args.brief, args.output, args.ret, args.redirects,
     print_error_detail("[args_several]")
 
 skip_list, unsupported_headers, skip_set = [], [], set()
+humble_skip_file = check_skip_file()
+headers_skipped = args.skip_headers or humble_skip_file
 
 if "-s" in sys.argv and len(args.skip_headers) == 0:
     print_error_detail("[args_skipped]")
-elif args.skip_headers:
+elif headers_skipped:
     insecure_headers = get_insecure_checks()
     unsupported_headers, skip_list = \
-        get_skipped_unsupported_headers(args, insecure_headers)
+        get_skipped_unsupported_headers(args.skip_headers, insecure_headers,
+                                        humble_skip_file)
     skip_set = set(skip_list)
     print_unsupported_headers(unsupported_headers) if unsupported_headers else\
         None
@@ -4399,7 +4423,7 @@ if args.output:
     export_filename = f"{str(tmp_filename)[:export_slice]}.{args.output}"
 
 # Section '0. Info & HTTP Response Headers'
-print_general_info(reliable, export_filename)
+print_general_info(reliable, export_filename, headers_skipped, skip_set)
 print_response_headers() if args.ret else print(end="\n\n")
 
 # Section '1. Enabled HTTP Security Headers'

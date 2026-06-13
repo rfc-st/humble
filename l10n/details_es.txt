@@ -1905,7 +1905,7 @@ AVISO: Vas a ejecutar el fichero
 Error: El parámetro '-s' requiere, al menos, el nombre de una cabecera HTTP de respuesta.
 
 [args_skipped_unknown]
-Error: Elimine estas cabeceras HTTP del parámetro '-s' ya que no se analizan
+Error: Elimine estas cabeceras HTTP del parámetro '-s' o del fichero 'humble.skip' ya que no se analizan.
 
 [args_nooutputfmt]
 Error: El parámetro '-op' requiere el parámetro '-o'.
