@@ -56,8 +56,8 @@
 [Checks: Fingerprint Headers](#checks-fingerprint-headers)<br />
 [Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
 [Checks: Empty Values](#checks-empty-values)<br />
+[Global skip file](#global-humbleskip)<br />
 [Guidelines included](#guidelines-included-to-enable-security-http-headers)<br />
-[Global skip file](#global-configuration-humbleskip)<br />
 [To-Do](#to-do)<br />
 [Further Reading](#further-reading)<br />
 [Contribute](#contribute)<br />
@@ -89,7 +89,7 @@
 :heavy_check_mark: Can display analysis statistics for a specific URL or across all of them.<br />
 :heavy_check_mark: Can display fingerprint statistics for a specific term or the Top 20.<br />
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
-:heavy_check_mark: Can exclude HTTP response headers across all analyses via [humble.skip](#global-configuration-humbleskip) file.<br />
+:heavy_check_mark: Can exclude HTTP response headers across all analyses via [humble.skip](#global-humbleskip) file.<br />
 :heavy_check_mark: [AI](#AI)-driven security triage and remediation guidance.<br />
 :heavy_check_mark: Provides dozens of [unit tests](#unit-tests) to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
 :heavy_check_mark: Classes and functions documented at <a href="https://humble.readthedocs.io/en/latest/" target="_blank">Read the Docs</a>.<br />
@@ -481,7 +481,7 @@ Open the index.html file in a browser.
 > - `-W ignore`: Ignore all warnings during test execution
 > - `--p no:cacheprovider`: Prevents creation of `.pytest_cache`
 
-## Global Configuration (humble.skip)
+## Global humble.skip
 
 If you want to persistently exclude certain HTTP response headers from being analyzed across **all** analyses, without specifying the `-s` parameter every time, you can adjust the provided `humble.skip` file.
 
