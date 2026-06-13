@@ -142,6 +142,10 @@ TEST_CFGS = {
     "test_brief_analysis": (["-u", TEST_URLS[9], "-b"], "Analysis Grade:"),
     "test_cicd_analysis": (["-u", TEST_URLS[9], "-cicd"], "Analysis Grade"),
     "test_cicd_error": (["-u", TEST_URLS[9], "cicd"], "Error"),
+    "test_cicd_grade_error": (["-u", TEST_URLS[9], "-cicd", "g"], "Error"),
+    "test_cicd_grade_pass": (["-u", TEST_URLS[9], "-cicd", "E"], "meets"),
+    "test_cicd_grade_fail": (["-u", TEST_URLS[9], "-cicd", "A+"],
+                             "does not meet"),
     "test_client_error_response": (["-u", TEST_URLS[1], "-if",
                                     PATHS["CLIENT_ERROR"]], "HTTP code"),
     "test_client_unsupported_error": (["-u", TEST_URLS[18]], "HTTP code"),
@@ -640,7 +644,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-06-12")
+local_version = date.fromisoformat("2026-06-13")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

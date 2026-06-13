@@ -2112,6 +2112,15 @@ Generator
 [test_cicd_error]
  verify an error is displayed in case of an Exception in the CI/CD results summary.
 
+[test_cicd_grade_error]
+ verify an error is displayed in case of an unsupported grade.
+
+[test_cicd_grade_pass]
+ verify the completion of a CI/CD analysis with a passing security gate.
+
+[test_cicd_grade_fail]
+ verify the completion of a CI/CD analysis with a failing security gate.
+
 [test_client_error_response]
  verify the analysis shows the HTTP 4xx error code response.
 

@@ -74,7 +74,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-06-12")
+local_version = date.fromisoformat("2026-06-13")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -2400,9 +2400,12 @@ def threshold_cicd(threshold_grade, totals):
     threshold_norm = threshold_grade.strip().upper()
     analysis_grade = validate_cicd_grade(threshold_norm, threshold_grade,
                                          totals)
-    failed = check_cicd(analysis_grade, threshold_norm)
-    msg_key = "[cicd_ko]" if failed else "[cicd_ok]"
-    return f"{get_detail(msg_key, replace=True)}, '{threshold_norm}'", failed
+    fails_security_gate = check_cicd(analysis_grade, threshold_norm)
+    msg_key = "[cicd_ko]" if fails_security_gate else "[cicd_ok]"
+    return (
+        f"{get_detail(msg_key, replace=True)}, '{threshold_norm}'",
+        fails_security_gate,
+    )
 
 
 def print_cicd_totals(tmp_filename, threshold_grade=None):

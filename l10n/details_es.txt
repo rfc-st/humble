@@ -2089,7 +2089,16 @@ Generador
  verifica que un análisis CI/CD finalice correctamente.
 
 [test_cicd_error]
- verifica que el análisis muestra un error en caso de Excepción en los resultados para CI/CD.
+ verifica que un análisis CI/CD muestra un error ante excepciones.
+
+[test_cicd_grade_error]
+ verifica que un análisis CI/CD muestra un error ante notas de seguridad no soportadas.
+
+[test_cicd_grade_pass]
+ verifica que un análisis CI/CD finalice correctamente con un umbral de seguridad satisfactorio.
+
+[test_cicd_grade_fail]
+ verifica que un análisis CI/CD finalice correctamente con un umbral de seguridad fallido.
 
 [test_client_error_response]
  verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
