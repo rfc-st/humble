@@ -526,6 +526,8 @@ And is regularly audited manually using the following tools (for each of them, I
 - <a href="https://github.com/rubik/radon" target="_blank">radon</a>: `radon cc humble.py -s -a`
 - <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a>: `vulture --min-confidence 60 humble.py`
 
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_secqa.PNG" alt="Security and QA checks">
+
 ## Checks: enabled headers
 
 Check <a href="https://github.com/rfc-st/humble/blob/master/additional/security.txt">this</a> file.

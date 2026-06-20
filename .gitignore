@@ -1,4 +1,4 @@
 .vscode/
 humble.code-workspace
 releases.sh
-security_checks.sh
+security.sh

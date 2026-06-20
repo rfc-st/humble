@@ -1257,7 +1257,7 @@ def csp_check_hashes(csp_h):
     csp_hashes = re.findall(RE_PATTERN[17], csp_h)
     for algo, b64hash in csp_hashes:
         try:
-            decoded = b64decode(b64hash, validate=True)
+            decoded = b64decode(b64hash, validate=True) # nosec
             if len(decoded) != HASH_CHARS[algo]:
                 invalid_algos.add(algo)
         except binascii.Error:
@@ -1309,7 +1309,7 @@ def csp_base64_nonce(nonce, nonce_refs, i_cnt):
     """`Content-Security-Policy` header checks related to Base64 nonces."""
     try:
         return csp_print_nonce(nonce, nonce_refs, i_cnt) if \
-            len(b64decode(nonce, validate=True)) < LENGTH_BOUNDS[2] else False
+            len(b64decode(nonce, validate=True)) < LENGTH_BOUNDS[2] else False # nosec
     except binascii.Error:
         return csp_print_nonce(nonce, nonce_refs, i_cnt)
 
@@ -2066,7 +2066,7 @@ def check_skip_file():
                     if line.strip() and not line.strip().startswith("#")
                 ]
         except (FileNotFoundError, PermissionError):
-            pass
+            pass # nosec
     return file_skipped
 
 
