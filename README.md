@@ -518,11 +518,11 @@ It is also reviewed with the following extensions in Visual Studio Code:
 
 And is regularly audited manually using the following tools (for each of them, I indicate how I use them):
 
-- <a href="https://pypi.org/project/bandit/" target="_blank">Bandit</a>: `bandit -r /home/bluesman/humble_venv/humble --severity-level high`
+- <a href="https://pypi.org/project/bandit/" target="_blank">Bandit</a>: `bandit -r /home/bluesman/humble/humble.py --severity-level high`
 - <a href="https://github.com/nocomplexity/codeaudit" target="_blank">Codeaudit</a>: `codeaudit filescan humble.py --n`
-- <a href="https://github.com/rohaquinlop/complexipy" target="_blank">Complexipy</a>: `complexipy . --exclude /home/bluesman/humble_venv/humble/tests`
-- <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>: `opengrep scan --taint-intrafile --config /home/bluesman/humble_venv/opengrep-rules/python .`
-- <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument</a>: `pyinstrument -r html humble.py -u https://google.com`
+- <a href="https://github.com/rohaquinlop/complexipy" target="_blank">Complexipy</a>: `complexipy . --exclude /home/bluesman/humble/tests`
+- <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>: `opengrep scan --taint-intrafile --config /home/bluesman/opengrep-rules/python humble.py`
+- <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument</a>: `python -m pyinstrument -r html humble.py -u https://google.com`
 - <a href="https://github.com/rubik/radon" target="_blank">radon</a>: `radon cc humble.py -s -a`
 - <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a>: `vulture --min-confidence 60 humble.py`
 
