@@ -74,7 +74,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-06-13")
+local_version = date.fromisoformat("2026-06-20")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -2091,7 +2091,7 @@ def get_skipped_unsupported_headers(cli_headers, insecure_headers,
     Return unsupported header names and the list of headers to skip during
     analysis.
     """
-    cli_list = cli_headers if cli_headers else []
+    cli_list = cli_headers or []
     combined_headers = cli_list + file_skipped
     insecure_set = {header.strip().lower() for header in combined_headers}
     skip_list = [header for header in insecure_set
@@ -2099,7 +2099,7 @@ def get_skipped_unsupported_headers(cli_headers, insecure_headers,
     unsupported_headers = list(insecure_set - insecure_headers)
     return unsupported_headers, skip_list
 
-def print_skipped_headers(skip_set):  # sourcery skip: use-fstring-for-formatting
+def print_skipped_headers(skip_set):
     """Print skipped HTTP response headers."""
     note = "[analysis_skipped_note]" if len(skip_set) > 1 \
         else "[analysis_skipped_note_single]"

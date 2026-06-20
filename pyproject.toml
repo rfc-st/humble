@@ -17,6 +17,7 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "humble.py" = [
     "ERA001",  # WONT-FIX: related to comments needed for opengrep
+    "PLC0415", # WONT-FIX: Allow lazy-loading heavy libraries within functions
     "S323",    # WONT-FIX: Explained in 'SSLContextAdapter' doctrings
     "SLF001",  # WONT-FIX: 'ssl._create_unverified_context()' is an intentional stdlib call
     ]
