@@ -328,7 +328,9 @@ $ docker run -it --rm --name humble humble:1.61 python3 humble.py -u https://goo
 $ docker rmi humble:1.61
 ```
 Or if you'd prefer a faster way:
-$ docker run --rm ghcr.io/rfc-st/humble:dev -u https://google.com 
+```bash
+$ docker run --rm ghcr.io/rfc-st/humble:dev -u https://google.com
+```
 
 ## Installation & update (Kali Linux)
 
