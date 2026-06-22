@@ -35,7 +35,7 @@ jobs:
             type=raw,value=${{ github.ref_name }},enable=${{ github.event_name == 'release' }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
       - name: Build and Push Multi-Platform Image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
