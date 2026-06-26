@@ -34,12 +34,14 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=dev,enable={{is_default_branch}},annotation.org.opencontainers.image.description=A humble, and fast, security-oriented HTTP headers analyzer.
-            type=raw,value=${{ github.ref_name }},enable=${{ github.event_name == 'release' }},annotation.org.opencontainers.image.description=A humble, and fast, security-oriented HTTP headers analyzer.
-            type=raw,value=latest,enable=${{ github.event_name == 'release' }},annotation.org.opencontainers.image.description=A humble, and fast, security-oriented HTTP headers analyzer.
+            type=raw,value=dev,enable={{is_default_branch}}
+            type=raw,value=${{ github.ref_name }},enable=${{ github.event_name == 'release' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'release' }}
           labels: |
             org.opencontainers.image.source=https://github.com/rfc-st/humble
             org.opencontainers.image.licenses=MIT
+          annotations: |
+            org.opencontainers.image.description=A humble and fast security-oriented HTTP headers analyzer.
       - name: Build and Push Multi-Platform Image
         uses: docker/build-push-action@v7
         with:
@@ -49,6 +51,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          annotations: ${{ steps.meta.outputs.annotations }}
+          annotations: |
+            index:${{ steps.meta.outputs.annotations }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
