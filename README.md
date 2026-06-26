@@ -318,11 +318,11 @@ $ docker build -t humble:1.62 .
 
 # (Linux/macOS)
 # E.g. Analyze https://google.com (brief analysis)
-$ docker run -it --rm --name humble humble:1.62 /bin/bash -c "python3 humble.py -u https://google.com -b"
+$ docker run -it --rm --name humble humble:1.62 -u https://google.com -b
 
 # (Windows)
 # E.g. Analyze https://google.com (detailed analysis)
-$ docker run -it --rm --name humble humble:1.62 python3 humble.py -u https://google.com
+$ docker run -it --rm --name humble humble:1.62 -u https://google.com
 
 # (Optional) Remove and untag the previous 'humble' image after upgrading
 $ docker rmi humble:1.62
