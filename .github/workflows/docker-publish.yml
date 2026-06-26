@@ -38,6 +38,7 @@ jobs:
             type=raw,value=${{ github.ref_name }},enable=${{ github.event_name == 'release' }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
           labels: |
+            org.opencontainers.image.description=A humble and fast security-oriented HTTP headers analyzer.
             org.opencontainers.image.source=https://github.com/rfc-st/humble
             org.opencontainers.image.licenses=MIT
           annotations: |
