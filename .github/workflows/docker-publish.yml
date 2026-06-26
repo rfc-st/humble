@@ -38,9 +38,10 @@ jobs:
             type=raw,value=${{ github.ref_name }},enable=${{ github.event_name == 'release' }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
           labels: |
-            org.opencontainers.image.description=A humble, and fast, security-oriented HTTP headers analyzer.
             org.opencontainers.image.source=https://github.com/rfc-st/humble
             org.opencontainers.image.licenses=MIT
+          annotations: |
+            org.opencontainers.image.description=A humble, and fast, security-oriented HTTP headers analyzer.
       - name: Build and Push Multi-Platform Image
         uses: docker/build-push-action@v7
         with:
@@ -50,5 +51,6 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
