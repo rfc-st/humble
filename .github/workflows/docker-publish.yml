@@ -6,6 +6,9 @@ on:
     branches:
       - master
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -34,6 +37,10 @@ jobs:
             type=raw,value=dev,enable={{is_default_branch}}
             type=raw,value=${{ github.ref_name }},enable=${{ github.event_name == 'release' }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
+          labels: |
+            org.opencontainers.image.description=A humble, and fast, security-oriented HTTP headers analyzer.
+            org.opencontainers.image.source=https://github.com/rfc-st/humble
+            org.opencontainers.image.licenses=MIT
       - name: Build and Push Multi-Platform Image
         uses: docker/build-push-action@v7
         with:
