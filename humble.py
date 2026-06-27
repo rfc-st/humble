@@ -29,6 +29,7 @@
 
 # Standard Library imports
 import binascii
+import operator
 import re
 import ssl
 import sys
@@ -40,7 +41,7 @@ from contextlib import suppress
 from datetime import date, datetime
 from html import escape
 from ipaddress import ip_address
-from itertools import islice, pairwise
+from itertools import chain, islice, pairwise
 from json import dump, dumps
 from pathlib import Path
 from shutil import copyfile, which
@@ -74,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-06-26")
+local_version = date.fromisoformat("2026-06-27")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -530,7 +531,7 @@ def get_analysis_results():
     en_cnt_w = "1" if en_cnt == 0 else None
     format_analysis_results(*analysis_diff, en_cnt_w=en_cnt_w, t_cnt=t_cnt)
     analysis_grade = grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt)
-    print(f"{get_detail(analysis_grade)}")
+    print(get_detail(analysis_grade))
     print_detail("[experimental_header]", 3)
 
 
@@ -715,8 +716,8 @@ def get_first_metrics(adj_url_ln):
     latest_a = max(line[:SLICE_INT[9]] for line in adj_url_ln)
     date_w = [(line[:SLICE_INT[9]], int(line.strip().split(" ; ")[-1]))
               for line in adj_url_ln]
-    best_d, best_w = min(date_w, key=lambda x: x[1])
-    worst_d, worst_w = max(date_w, key=lambda x: x[1])
+    best_d, best_w = min(date_w, key=operator.itemgetter(1))
+    worst_d, worst_w = max(date_w, key=operator.itemgetter(1))
     return (first_a, latest_a, best_d, best_w, worst_d, worst_w)
 
 
@@ -1022,7 +1023,7 @@ def get_global_metrics(url_ln, url_lines):
     fields = [-1, 2, 3, 4, 5, 6]
     totals = [get_global_totals(url_ln, field) for field in fields]
     return (first_a, latest_a, unique_u, most_analyzed_cu, least_analyzed_cu,
-            *(item for total in totals for item in total))
+            *chain.from_iterable(totals))
 
 
 def get_global_totals(url_ln, field):
@@ -1357,8 +1358,8 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
     Group the deprecated directives.
     """
     csp_values = ", ".join(f"'{value}'" for value in sorted(csp_values))
-    print_detail_r(f"{csp_title}", is_red=True)
-    print_detail_l(f"{csp_desc}")
+    print_detail_r(csp_title, is_red=True)
+    print_detail_l(csp_desc)
     print(csp_values)
     print_detail(csp_refs, num_lines=3)
 
@@ -1906,7 +1907,7 @@ def print_empty_headers(headers, l_empty):
     e_cnt = 0
     for key in sorted(headers):
         if not headers[key]:
-            l_empty.append(f"{key}")
+            l_empty.append(key)
             print_header(key.title())
             e_cnt += 1
     return e_cnt
@@ -2059,14 +2060,12 @@ def check_skip_file():
     file_skipped = []
     skip_file = Path("humble.skip")
     if skip_file.exists():
-        try:
-            with skip_file.open("r", encoding="utf-8") as humble_skip_file:
-                file_skipped = [
-                    line.strip() for line in humble_skip_file
-                    if line.strip() and not line.strip().startswith("#")
-                ]
-        except (FileNotFoundError, PermissionError):
-            pass # nosec
+        with suppress(FileNotFoundError, PermissionError), \
+             skip_file.open("r", encoding="utf-8") as humble_skip_file:
+            file_skipped = [
+                line.strip() for line in humble_skip_file
+                if line.strip() and not line.strip().startswith("#")
+            ]
     return file_skipped
 
 
@@ -2404,8 +2403,8 @@ def validate_cicd_grade(threshold_norm, threshold_grade, totals):
     """
     if threshold_norm not in GRADE_ORDER:
         err_key, inv_msg, val_msg = [get_detail(k, replace=True) for k in
-                                     ["[cicd_error]", "[cicd_invalid]",
-                                      "[cicd_valid]"]]
+                                     ("[cicd_error]", "[cicd_invalid]",
+                                      "[cicd_valid]")]
         grades = ", ".join(f"'{g}'" for g in GRADE_ORDER)
         print(f"\n{err_key}: '{threshold_grade}' {inv_msg}; {val_msg} \
 {grades}.")
@@ -3063,8 +3062,8 @@ def json_detailed_ins(json_lns, insecure_checks):
     Related to `-o json` option.
     """
     header_t, detail_t, ref_t = (get_detail(text, replace=True)
-                                 for text in [
-        "[json_det_inscheck]", "[json_det_details]", JSON_L10N[1]])
+                                 for text in (
+        "[json_det_inscheck]", "[json_det_details]", JSON_L10N[1]))
     if args.lang:
         insecure_checks = {check.split(": ")[0] + ":"
                            for check in insecure_checks}
@@ -3155,8 +3154,8 @@ def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos, *,
     """
     set_pdf_file(pdf)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
-    no_headers = [get_detail(f"[{i}]").strip() for i in ["no_sec_headers",
-                                                         "no_enb_headers"]]
+    no_headers = [get_detail(f"[{i}]").strip() for i in ("no_sec_headers",
+                                                         "no_enb_headers")]
     set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
                     pdf_prefixes, ypos)
     pdf.output(final_filename)
@@ -3416,8 +3415,8 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False):
     generate_html()
     decrease_html_spacing(tmp_filename)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
-    ko_strings = [get_detail(f"[{i}]").rstrip() for i in ["no_sec_headers",
-                                                          "no_enb_headers"]]
+    ko_strings = [get_detail(f"[{i}]").rstrip() for i in ("no_sec_headers",
+                                                          "no_enb_headers")]
     with (
         Path(tmp_filename).open(encoding="utf8") as html_source,
         Path(final_filename).open("a", encoding="utf8") as html_final,
@@ -3553,8 +3552,8 @@ def format_html_references(html_final, lang_slice, ln_rstrip):
 
     Related to `-o html` option.
     """
-    for ref, off in [(REF_LINKS[1], 6), (REF_LINKS[0], 8), (REF_LINKS[4],
-                                                            lang_slice)]:
+    for ref, off in ((REF_LINKS[1], 6), (REF_LINKS[0], 8), (REF_LINKS[4],
+                                                            lang_slice)):
         if ref in ln_rstrip:
             content = ln_rstrip[off:].strip()
             html_final.write(
@@ -3924,8 +3923,7 @@ def parse_input_file(input_headers, input_source, status_code):
 
     Related to `-if` option.
     """
-    first_line = input_source.readline().strip()
-    parts = first_line.split()
+    parts = input_source.readline().strip().split()
     if len(parts) == LENGTH_BOUNDS[5] and parts[-1].isdigit():
         status_code = int(parts[-1])
     for line in input_source:
@@ -4113,7 +4111,7 @@ def process_request_headers(request_headers):
         if not header:
             delete_lines()
             print()
-            print(f"{get_detail('[e_custom_eheaders]', replace=True)}")
+            print(get_detail("[e_custom_eheaders]", replace=True))
             sys.exit(1)
         if ":" not in header:
             malformed_headers.append(header)
@@ -4190,9 +4188,7 @@ def process_http_response(r, exception, status_code, reliable, body):
         k: re.sub(RE_PATTERN[20], " ", v).strip()
         for k, v in r.headers.items()})
     body = r.text
-    is_html = False
-    ctype = headers.get("content-type", "")
-    is_html = ctype.lower().startswith("text/html")
+    is_html = headers.get("content-type", "").lower().startswith("text/html")
     return headers, status_code, reliable, body, is_html
 
 

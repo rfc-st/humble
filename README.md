@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--06--26-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--06--27-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -526,8 +526,10 @@ And is regularly audited manually using the following tools (for each of them, I
 - <a href="https://github.com/nocomplexity/codeaudit" target="_blank">Codeaudit</a>: `codeaudit filescan humble.py --n`
 - <a href="https://github.com/rohaquinlop/complexipy" target="_blank">Complexipy</a>: `complexipy . --exclude /home/bluesman/humble/tests`
 - <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>: `opengrep scan --taint-intrafile --config /home/bluesman/opengrep-rules/python humble.py`
+- <a href="https://github.com/pypa/pip-audit" target="_blank">pip-audit</a>: `pip-audit -r requirements.txt`
 - <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument</a>: `python -m pyinstrument -r html humble.py -u https://google.com`
 - <a href="https://github.com/rubik/radon" target="_blank">radon</a>: `radon cc humble.py -s -a`
+- <a href="https://github.com/dosisod/refurb" target="_blank">Refurb</a>: `refurb humble.py`
 - <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a>: `vulture --min-confidence 60 humble.py`
 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_secqa.PNG" alt="Security and QA checks">
