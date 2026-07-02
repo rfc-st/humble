@@ -2245,10 +2245,9 @@ def fix_pdf_all_export(tmp_filename):
 
     Related to `-o all` option.
     """
-    fixed_pdffilename = tmp_filename
-    base_pdffilename = str(fixed_pdffilename).rsplit(".", 1)[0][:-1]
+    base_pdffilename = Path(tmp_filename).stem[:-1]
     with (
-        Path(fixed_pdffilename).open("r+", encoding="utf8")
+        Path(tmp_filename).open("r+", encoding="utf8")
     ) as temp_pdffilename:
         content = "".join(temp_pdffilename.readlines()[6:])
         new_content = content.replace(f"{base_pdffilename}.all",
@@ -2256,7 +2255,7 @@ def fix_pdf_all_export(tmp_filename):
         temp_pdffilename.seek(0)
         temp_pdffilename.write(new_content)
         temp_pdffilename.truncate()
-    return fixed_pdffilename
+    return tmp_filename
 
 
 def normalize_txt_all_export(tmp_filename):
@@ -2797,39 +2796,29 @@ def json_detailed_parse(data, txt_sections):
 def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
                         json_miss_r):
     """Write sections for a JSON export, related to `-o json` option."""
-    json_conditions = {
-        STRINGS_BOLD[0]:
-            lambda: json_detailed_info(json_lns),
-        (STRINGS_BOLD[1], STRINGS_BOLD[9]):
-            lambda: json_detailed_response(json_lns),
-        STRINGS_BOLD[2]:
-            lambda: json_detailed_format(json_lns),
-        STRINGS_BOLD[3]:
-            lambda: json_detailed_miss(json_lns, l_miss, json_miss_h,
-                                       json_miss_d, json_miss_r),
-        STRINGS_BOLD[4]:
-            lambda: json_detailed_fng(
-                json_lns, json_detailed_sources(2, 0)),
-        STRINGS_BOLD[5]:
-            lambda: json_detailed_ins(
-                json_lns, json_detailed_sources(7, 2)),
-        STRINGS_BOLD[6]:
-            lambda: json_detailed_empty(json_lns),
-        STRINGS_BOLD[7]:
-            lambda: json_detailed_format(json_lns, is_compat=True,
-                                         is_l10n=True),
-        STRINGS_BOLD[8]:
-            lambda: json_detailed_results(json_lns),
-    }
-    return next(
-        (condition()
-         for prefix, condition in json_conditions.items()
-         if (json_section.startswith(prefix)
-             if isinstance(prefix, str)
-             else any(json_section.startswith(p) for p in prefix))),
-        list(json_lns),
-    )
-
+    match json_section:
+        case s if s.startswith(STRINGS_BOLD[0]):
+            return json_detailed_info(json_lns)
+        case s if any(s.startswith(p) for p in (STRINGS_BOLD[1],
+                                                STRINGS_BOLD[9])):
+            return json_detailed_response(json_lns)
+        case s if s.startswith(STRINGS_BOLD[2]):
+            return json_detailed_format(json_lns)
+        case s if s.startswith(STRINGS_BOLD[3]):
+            return json_detailed_miss(json_lns, l_miss, json_miss_h,
+                                      json_miss_d, json_miss_r)
+        case s if s.startswith(STRINGS_BOLD[4]):
+            return json_detailed_fng(json_lns, json_detailed_sources(2, 0))
+        case s if s.startswith(STRINGS_BOLD[5]):
+            return json_detailed_ins(json_lns, json_detailed_sources(7, 2))
+        case s if s.startswith(STRINGS_BOLD[6]):
+            return json_detailed_empty(json_lns)
+        case s if s.startswith(STRINGS_BOLD[7]):
+            return json_detailed_format(json_lns, is_compat=True, is_l10n=True)
+        case s if s.startswith(STRINGS_BOLD[8]):
+            return json_detailed_results(json_lns)
+        case _:
+            return list(json_lns)
 
 def json_detailed_empty(json_lns):
     """Print the contents of empty HTTP response headers values.
