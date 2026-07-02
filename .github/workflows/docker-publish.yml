@@ -30,17 +30,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Extract Docker Metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=dev,enable={{is_default_branch}}
             type=raw,value=${{ github.ref_name }},enable=${{ github.event_name == 'release' }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
-          labels: |
-            org.opencontainers.image.description=A humble and fast security-oriented HTTP headers analyzer.
-            org.opencontainers.image.source=https://github.com/rfc-st/humble
-            org.opencontainers.image.licenses=MIT
           annotations: |
             org.opencontainers.image.description=A humble and fast security-oriented HTTP headers analyzer.
       - name: Build and Push Multi-Platform Image
@@ -52,8 +48,6 @@ jobs:
           push: true
           provenance: false
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          annotations: |
-            index:${{ steps.meta.outputs.annotations }}
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=A humble and fast security-oriented HTTP headers analyzer
           cache-from: type=gha
           cache-to: type=gha,mode=max
