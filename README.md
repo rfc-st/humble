@@ -328,8 +328,26 @@ $ docker run -it --rm --name humble humble:1.62 -u https://google.com
 $ docker rmi humble:1.62
 ```
 Or if you'd prefer a faster way:
+
+.: Just analyze an URL without exporting results (Universal)
 ```bash
 $ docker run --rm ghcr.io/rfc-st/humble:dev -u https://google.com
+```
+.: Analyze an URL and export results
+
+```bash
+# Linux / macOS / Git Bash
+$ docker run --rm -v $(pwd):/app ghcr.io/rfc-st/humble:dev -u https://google.com -o pdf
+```
+
+```bash
+# Windows (PowerShell)
+$ docker run --rm -v ${PWD}:/app ghcr.io/rfc-st/humble:dev -u https://google.com -o pdf
+```
+
+```bash
+# Windows (Command Prompt)
+$ docker run --rm -v %cd%:/app ghcr.io/rfc-st/humble:dev -u https://google.com -o pdf
 ```
 
 ## Installation & update (Kali Linux)
