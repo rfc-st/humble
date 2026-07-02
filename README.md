@@ -301,8 +301,8 @@ https://github.com/rfc-st/humble/releases
 ```bash
 # Install Docker and ensure it is running:
 # E.g. (Linux): https://www.kali.org/docs/containers/installing-docker-on-kali/
-# E.g. (macOs): https://docs.docker.com/desktop/install/mac-install/
-# E.g. (Windows): https://docs.docker.com/desktop/install/windows-install/
+# E.g. (macOs): https://docs.docker.com/desktop/setup/install/mac-install/
+# E.g. (Windows): https://docs.docker.com/desktop/setup/install/windows-install/
 
 # Clone the repository or download the latest release
 $ git clone https://github.com/rfc-st/humble.git
@@ -310,21 +310,21 @@ https://github.com/rfc-st/humble/releases
 
 # Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.62)
 # https://github.com/rfc-st/humble/releases (On Windows, this may require running the terminal with admin privileges)
+$ cd humble
 $ docker build -t humble:1.62 .
 
 # Run the analysis specifying the above TAG, along with the specific options for 'humble':
-# '-it', required: allocate a pseudo-TTY and keep input interactive.
-# '-rm', required: automatically remove the container after it exits.
+# '-it' allocates a pseudo-TTY to keep text output clean and formatted.
+# '--rm' automatically cleans up and removes the container after it exits.
 
-# (Linux/macOS)
-# E.g. Analyze https://google.com (brief analysis)
-$ docker run -it --rm --name humble humble:1.62 -u https://google.com -b
+# (Linux / macOS / Windows)
+# E.g. Brief analysis of a URL
+$ docker run -it --rm humble:1.62 -u https://google.com -b
 
-# (Windows)
-# E.g. Analyze https://google.com (detailed analysis)
-$ docker run -it --rm --name humble humble:1.62 -u https://google.com
+# E.g. Detailed analysis of a URL
+$ docker run -it --rm humble:1.62 -u https://google.com
 
-# (Optional) Remove and untag the previous 'humble' image after upgrading
+# (Optional) Clean up and remove the old image when upgrading:
 $ docker rmi humble:1.62
 ```
 Or if you'd prefer a faster way:
