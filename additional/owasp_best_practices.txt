@@ -1,5 +1,5 @@
 # OWASP Secure Headers Project - Best Practices
-# https://owasp.org/www-project-secure-headers/#div-bestpractices
+# https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/03_best_practices.md
 #
 # Apache License 2.0
 # https://github.com/OWASP/www-project-secure-headers/blob/master/LICENSE.txt

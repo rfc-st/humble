@@ -17,7 +17,7 @@
 <a target="_blank" href="https://headerscan.com/humble/" title="Security Header Scanner"><img src="https://img.shields.io/badge/HeaderScan-blue"></a>
 <a target="_blank" href="https://www.linux-magazin.de/ausgaben/2022/11/tooltipps/" title="Linux Magazin"><img src="https://img.shields.io/badge/Linux%20Magazin-blue"></a>
 <a target="_blank" href="https://merginit.com/blog/18082025-http-security-header-checker-tools" title="MerginIT"><img src="https://img.shields.io/badge/MerginIT-blue"></a>
-<a target="_blank" href="https://owasp.org/www-project-secure-headers/#div-technical" title="OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-blue"></a>
+<a target="_blank" href="https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/04_technical_resources.md?plain=1#L32" title="OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-blue"></a>
 <a target="_blank" href="https://qiita.com/prograti/items/8eea5d60056f6df0d160#humble" title="Security Tools in Kali Linux"><img src="https://img.shields.io/badge/Qiita-blue"></a>
 <br />
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml" title="Vulnerability analysis with Bandit"><img src="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml/badge.svg"></a>
@@ -72,7 +72,7 @@
 :heavy_check_mark: 1286 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 158 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: 28 [checks](https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L46-L73) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
-:heavy_check_mark: Can check for compliance with the OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">Secure Headers Project</a> Best Practices.<br />
+:heavy_check_mark: Can check for compliance with the OWASP <a href="https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/03_best_practices.md" target="_blank">Secure Headers Project</a> Best Practices.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
 :heavy_check_mark: Can analyze _raw response files_: text files with HTTP response headers and values. Ex: curl option '<a href="https://curl.se/docs/manpage.html#-D" target="_blank">--dump-header</a>'.<br />
 :heavy_check_mark: Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.<br />
@@ -162,7 +162,7 @@
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_request_header.PNG" alt="(Linux) - Custom HTTP request header">
 </p>
 <br />
-.: (Linux) - Compliance with OWASP <a href="https://owasp.org/www-project-secure-headers/#div-bestpractices" target="_blank">'Secure Headers Project'</a> best practices.
+.: (Linux) - Compliance with OWASP <a href="https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/03_best_practices.md" target="_blank">'Secure Headers Project'</a> best practices.
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_compliance_owasp.PNG" alt="(Linux) - Compliance with OWASP 'Secure Headers Project' best practices">
@@ -603,7 +603,7 @@ Any HTTP response header.
 <a href="https://github.com/search?q=http+headers+analyze">'HTTP Headers Analyze'</a><br />
 <a href="https://github.com/search?q=http+headers+secure">'HTTP Headers Secure'</a><br />
 <a href="https://github.com/search?q=http+headers+security">'HTTP Headers Security'</a><br />
-<a href="https://owasp.org/www-project-secure-headers/#div-technical">OWASP Secure Headers Project</a><br />
+<a href="https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/04_technical_resources.md#analysis-tools">OWASP Secure Headers Project</a><br />
 
 * References and standards:<br />
 <a href="https://caniuse.com/">Can I use?</a><br />

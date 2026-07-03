@@ -112,7 +112,7 @@
             "Header": "X-Permitted-Cross-Domain-Policies",
             "Details": "Limit which data external resources (e.g. Adobe Flash/PDF documents), can access on the domain.",
             "References": [
-                "https://owasp.org/www-project-secure-headers/#div-headers"
+                "https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/01_headers.md"
             ]
         }
     ],
