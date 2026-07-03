@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-02")
+local_version = date.fromisoformat("2026-07-03")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -2817,8 +2817,7 @@ def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
             return json_detailed_format(json_lns, is_compat=True, is_l10n=True)
         case s if s.startswith(STRINGS_BOLD[8]):
             return json_detailed_results(json_lns)
-        case _:
-            return list(json_lns)
+    return list(json_lns)
 
 def json_detailed_empty(json_lns):
     """Print the contents of empty HTTP response headers values.

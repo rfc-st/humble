@@ -27,7 +27,7 @@ ignore = [
 
 [tool.ruff.lint.pylint]
 max-args = 9
-max-returns = 12
+max-returns = 10
 
 [tool.vulture]
 # https://github.com/jendrikseipp/vulture#handling-false-positives

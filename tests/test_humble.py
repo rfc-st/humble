@@ -379,26 +379,43 @@ def parse_expected_text(output, expected_text):
         pytest.fail(f"{exp_msg} '{expected_text}' {not_found_msg}")
 
 
-def make_test_func(cfg_key):
-    """Generate unit test execution function.
+def test_humble_scenarios(cfg_key):
+    """Execute dynamic validation tests managed via TEST_CFGS.
 
     Skips `test_wrong_testssl` on Windows due to the Unix-environment
     requirement (Cygwin, MSYS2, or Windows Subsystem for Linux) for testssl.sh
     """
-    def test_func():
-        return run_test(*TEST_CFGS[cfg_key])
-
-    if cfg_key == "test_wrong_testssl":
-        test_func = pytest.mark.skipif(
-            system().lower() == "windows",
-            reason="'test_wrong_testssl' skipped on Windows",
-        )(test_func)
-
-    return test_func
+    if cfg_key == "test_wrong_testssl" and system().lower() == "windows":
+        pytest.skip("'test_wrong_testssl' skipped on Windows")
+    run_test(*TEST_CFGS[cfg_key])
 
 
-for key in TEST_CFGS:
-    globals()[key] = make_test_func(key)
+def pytest_generate_tests(metafunc):
+    """Hooks into pytest configuration to generate standalone test entries.
+
+    Tests in `TEST_CFGS` that have dedicated functions are ignored to avoid
+    duplicate runs.
+    """
+    if "cfg_key" in metafunc.fixturenames:
+        ignored_scenarios = {
+            "test_cicd_error",
+            "test_file_access_errors",
+            "test_testssl_error",
+            "test_updates_error",
+            "test_outdated_humble",
+            "test_unsupported_python_version",
+        }
+        target_keys = [k for k in TEST_CFGS if k not in ignored_scenarios]
+        metafunc.parametrize("cfg_key", target_keys)
+
+
+def pytest_runtest_logreport(report):
+    """Clean up the displayed test node identity in console reports."""
+    if "test_humble_scenarios[" in report.nodeid:
+        start = report.nodeid.find("[") + 1
+        end = report.nodeid.find("]")
+        cfg_key = report.nodeid[start:end]
+        report.nodeid = report.nodeid.split("::")[0] + f"::{cfg_key}"
 
 
 def test_cicd_error(capsys):
@@ -609,8 +626,7 @@ def set_temp_content(current_time):
 
 def delete_temp_content():
     """Remove the files and folders after all tests have been run."""
-    now = datetime.now().astimezone()
-    current_time = now.strftime("%Y/%m/%d - %H:%M:%S")
+    current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
     info_msgs = set_temp_content(current_time)
     error_msgs = [(msg, val) for msg, val in info_msgs
                   if msg.startswith("Failed")]
@@ -644,7 +660,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-07-02")
+local_version = date.fromisoformat("2026-07-03")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,
@@ -672,10 +688,18 @@ def delete_temp_coverage():
 
 
 if __name__ == "__main__":
+    import io
+    import re
+
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
     l10n_main = get_l10n_content()
-    code = pytest.main([__file__, "--tb=no", "-rA", "-q", "-v", "-p",
-                        "no:cacheprovider"])
+    captured_output = io.StringIO()
+    with patch("sys.stdout", captured_output):
+        code = pytest.main([__file__, "--tb=no", "-rA", "-q", "-v", "-p",
+                            "no:cacheprovider"])
+    raw_text = captured_output.getvalue()
+    cleaned_text = re.sub(r"test_humble_scenarios\[(.*?)\]", r"\1", raw_text)
+    print(cleaned_text, end="")
     print_results()
     delete_temp_content()
     for cache_dir in PYTEST_CACHE_DIRS:
