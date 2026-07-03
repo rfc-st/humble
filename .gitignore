@@ -1,4 +1,5 @@
 .vscode/
+check_links.py
 humble.code-workspace
 releases.sh
 security.sh
