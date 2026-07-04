@@ -1078,7 +1078,7 @@ Cabeceras de respuesta HTTP
 
 [mcor]
  Evita la carga de ciertos recursos por otras fuentes.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy
 
 [mcsp]
  Detecta y mitiga, entre otros, ataques Cross-site scripting.
