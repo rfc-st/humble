@@ -42,7 +42,7 @@ from datetime import date, datetime
 from html import escape
 from ipaddress import ip_address
 from itertools import chain, islice, pairwise
-from json import dump, dumps
+from json import dump, dumps, load
 from pathlib import Path
 from shutil import copyfile, which
 from socket import create_connection
@@ -1735,7 +1735,7 @@ def get_epilog_content(id_mode):
         for line in epilog_source:
             if line == target:
                 break
-        content = list(islice(epilog_source, SLICE_INT[12] - 1))
+        content = list(islice(epilog_source, SLICE_INT[12]))
     return "".join(content)
 
 
@@ -3885,22 +3885,55 @@ def print_owasp_rec(wrong_owasp, header_dict):
             print(f"{STYLE[10]}  {prefix}{header}{STYLE[4]}: {rec_val}")
 
 
-def analyze_input_file(input_file):
-    """Analyze HTTP headers from a raw response file instead of a live URL.
+def parse_har_file(file_path):
+    """Parse a HAR file and extract the response headers."""
+    try:
+        with file_path.open(encoding="utf8") as f:
+            har_data = load(f)
+    except (ValueError, KeyError):
+        return {}, 0
+    else:
+        entries = har_data.get("log", {}).get("entries", [])
+        if not entries:
+            return {}, 0
+        first_response = entries[0].get("response", {})
+        status_code = int(first_response.get("status", 0))
+        input_headers = {}
+        for header in first_response.get("headers", []):
+            name = header.get("name", "").title()
+            value = header.get("value", "").strip()
+            if name:
+                input_headers[name] = value
+        return input_headers, status_code
 
-    See curl's [`--dump-header`](https://curl.se/docs/manpage.html#-D) option.
+
+def analyze_input_file(input_file):
+    """Analyze HTTP response headers from a raw text dump or a HAR file.
+
+    See curl's [`--dump-header`](https://curl.se/docs/manpage.html#-D) and
+    the [`HAR specification`](https://w3c.github.io/web-performance/specs/HAR/Overview.html)
+    or its historical [`draft`](http://www.softwareishard.com/blog/har-12-spec/).
 
     Related to `-if` option.
     """
-    if not Path(input_file).exists():
+    file_path = Path(input_file)
+    if not file_path.exists():
         print_error_detail("[args_inputnotfound]")
+        return {}, False, 0
     input_headers = {}
     status_code = 0
     try:
-        with Path(input_file).open(encoding="utf8") as input_source:
-            input_headers, status_code = parse_input_file(input_headers,
-                                                          input_source,
-                                                          status_code)
+        with file_path.open(encoding="utf8") as f:
+            first_char = f.read(1).strip()
+        if first_char == "{":
+            input_headers, status_code = parse_har_file(file_path)
+            if not input_headers:
+                print_error_detail("[args_inputlines]")
+            return input_headers, False, status_code
+        with file_path.open(encoding="utf8") as input_source:
+            input_headers, status_code = parse_input_file(
+                input_headers, input_source, status_code,
+            )
     except UnicodeDecodeError:
         print_error_detail("[args_inputunicode]")
     return input_headers, False, status_code
@@ -4220,8 +4253,7 @@ parser.add_argument("-H", dest="request_header", type=str, action="append\
 ", help='Adds REQUEST_HEADER to the request;  must be in double quotes and can\
  be used multiple times, e.g. -H "Host: example.com"')
 parser.add_argument("-if", dest="input_file", type=str, help="Analyzes \
-'INPUT_FILE': must contain HTTP response headers and values separated by ': ';\
- E.g., 'server: nginx'")
+'INPUT_FILE': curl's '--dump-header' file or HTTP Archive (HAR) file")
 parser.add_argument("-l", dest="lang", choices=["es"], help="Defines the \
 language for displaying analysis, errors and messages; if omitted, will be \
 printed in English")

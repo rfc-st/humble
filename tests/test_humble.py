@@ -83,6 +83,7 @@ HUMBLE_DESC = "Basic unit tests for 'humble' (HTTP Headers Analyzer)"
 HUMBLE_PROJECT_ROOT = HUMBLE_TESTS_DIR.parent.resolve()
 HUMBLE_INPUT_DIR = HUMBLE_PROJECT_ROOT / "samples"
 HUMBLE_INPUT_FILE = (HUMBLE_INPUT_DIR / "github_input_file.txt").resolve()
+HUMBLE_HAR_FILE = (HUMBLE_INPUT_DIR / "github.com_edited.har").resolve()
 HUMBLE_INPUT_TRAVERSAL = "../../../humbleinputtraversal/"
 HUMBLE_L10N_DIR = HUMBLE_PROJECT_ROOT / "l10n"
 HUMBLE_L10N_FILE = ("details.txt", "details_es.txt")
@@ -205,6 +206,8 @@ TEST_CFGS = {
     "test_fingerprint_term_no_results": (["-f", "TestingHumble"], "quote"),
     "test_file_access_errors": ([], "Error"),
     "test_global_statistics": (["-a"], "Empty headers"),
+    "test_har_file": (["-u", TEST_URLS[2], "-if", HUMBLE_HAR_FILE],
+                        "Input:"),
     "test_http_exception": (["-u", TEST_URLS[13]], "scheme"),
     "test_input_file": (["-u", TEST_URLS[2], "-if", HUMBLE_INPUT_FILE],
                         "Input:"),

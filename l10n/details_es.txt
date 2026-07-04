@@ -1869,13 +1869,13 @@ Error: El parámetro '-if' no requiere los parámetros '-df' o '-r'.
 Error: El parámetro '-if' requiere el parámetro '-u'.
 
 [args_inputnotfound]
-Error: No se encuentra el fichero de entrada en la ruta indicada.
+Error: No se encuentra el fichero en la ruta indicada.
 
 [args_inputunicode]
-Error: El fichero de entrada no contiene texto unicode válido en formato UTF-8 o es un binario.
+Error: El fichero no contiene texto unicode válido en formato UTF-8 o es un binario.
 
 [args_inputlines]
-Error: El fichero de entrada no contiene líneas con el formato 'cabecera http: valor'. Ej. 'x-frame-options: deny'.
+Error: El fichero no contiene líneas con el formato 'cabecera http: valor'. Ej. 'x-frame-options: deny'.
 
 [args_lang]
 Error: Los parámetros '-c' y '-l' requieren de los parámetros '-u' o '-a'. El parámetro '-cicd' requiere el parámetro '-u'.
@@ -2198,6 +2198,9 @@ Generador
 
 [test_global_statistics]
  verifica que se muestren estadísticas sobre todos los análisis realizados.
+
+[test_har_file]
+ verifica que se analice correctamente un fichero HAR.
 
 [test_http_exception]
  verifica que se muestre un error por excepción HTTP durante el análisis.

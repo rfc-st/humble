@@ -74,7 +74,7 @@
 :heavy_check_mark: 28 [checks](https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L46-L73) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
 :heavy_check_mark: Can check for compliance with the OWASP <a href="https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/03_best_practices.md" target="_blank">Secure Headers Project</a> Best Practices.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
-:heavy_check_mark: Can analyze _raw response files_: text files with HTTP response headers and values. Ex: curl option '<a href="https://curl.se/docs/manpage.html#-D" target="_blank">--dump-header</a>'.<br />
+:heavy_check_mark: Can analyze <a href="https://curl.se/docs/manpage.html#-D" target="_blank">raw response</a> and <a href="https://w3c.github.io/web-performance/specs/HAR/Overview.html" target="_blank">HAR</a> files.<br />
 :heavy_check_mark: Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.<br />
 :heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** <a href="https://testssl.sh/" target="_blank">testssl.sh</a>.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
@@ -380,7 +380,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd [GRADE]] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {all,csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-06-12
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-07-04
 
 options:
   -h, --help                               show this help message and exit
@@ -394,7 +394,7 @@ options:
   -g                                       Print guidelines for enabling security HTTP response headers on popular frameworks, servers and services
   -grd                                     Print the checks to grade an analysis, along with advice for improvement
   -H REQUEST_HEADER                        Adds REQUEST_HEADER to the request; must be in double quotes and can be used multiple times, e.g. -H "Host: example.com"
-  -if INPUT_FILE                           Analyzes 'INPUT_FILE': must contain HTTP response headers and values separated by ': '; E.g., 'server: nginx'
+  -if INPUT_FILE                           Analyzes 'INPUT_FILE': curl's '--dump-header' file or HTTP Archive (HAR) file
   -l {es}                                  Defines the language for displaying analysis, errors and messages; if omitted, will be printed in English
   -lic                                     Print the license for 'humble', along with permissions, limitations and conditions
   -o {all,csv,html,json,pdf,txt,xlsx,xml}  Export the analysis to the specified format; 'all' will export to all formats
