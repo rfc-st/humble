@@ -1114,7 +1114,7 @@ Cabeceras de respuesta HTTP
 
 [mxpcd]
  Limita el acceso a datos por recursos externos (ej. documentos Adobe Flash/PDF) en el dominio.
- Ref: https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/01_headers.md
+ Ref: https://github.com/OWASP/www-project-secure-headers/blob/master/mainsite/01_headers.md
 
 [iaccess]
  Revise los valores '*' o 'null', y sus requisitos de intercambio de recursos de origen cruzado.
@@ -2006,7 +2006,7 @@ Excepción no gestionada:
  [Resumen de las mejores prácticas de OWASP Secure Headers]
 
 [comp_ref]
-  Ref  : https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/03_best_practices.md
+  Ref  : https://github.com/OWASP/www-project-secure-headers/blob/master/mainsite/03_best_practices.md
   Note : Usa este análisis como base para asegurar las cabeceras HTTP y sus valores.
 
 [comp_experimental]

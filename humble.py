@@ -2149,7 +2149,7 @@ def check_export_scope():
     supported formats and terminate execution.
     """
     if args.output != "all":
-        check_output_format(args, final_filename, reliable, tmp_filename)
+        check_output_format(final_filename, reliable, tmp_filename)
     else:
         export_all_formats(final_filename, tmp_filename)
 
@@ -2298,39 +2298,36 @@ def finalize_export(final_filename, temp_filename, file_extension, export_all):
             processed_file.truncate()
 
 
-def check_output_format(args, final_filename, reliable, tmp_filename):
+def check_output_format(final_filename, reliable, tmp_filename):
     """Dispatch the export logic for the selected output format.
 
-    Maps each supported format (text, CSV, JSON, Excel, XML, HTML, PDF) to its
-    corresponding generator function. For text output, handles CI/CD totals and
-    OWASP compliance checks; for JSON, toggles between brief and detailed
-    reports.
+    Maps each supported format (text, CSV, JSON, XLSX, XML, HTML and PDF) to its
+    corresponding function. For text output, handles CI/CD totals and OWASP
+    compliance checks; for JSON, toggles between brief and detailed reports.
 
     Related to `-o` option.
     """
-    dispatch = {
-        "txt": lambda: (
-            args.cicd and print_cicd_totals(
-                tmp_filename,
-                args.cicd if isinstance(args.cicd, str) else None,
-            ),
-            print_export_path(tmp_filename, reliable),
-            "-c" in sys.argv and check_owasp_compliance(tmp_filename),
-        ),
-        "csv": lambda: generate_csv(final_filename, tmp_filename),
-        "json": lambda: (
-            generate_json(final_filename, tmp_filename)
-            if args.brief else
-            generate_json_detailed(final_filename, tmp_filename)
-        ),
-        "xlsx": lambda: generate_csv(final_filename, tmp_filename,
-                                     to_xlsx=True),
-        "xml": lambda: generate_xml(final_filename, tmp_filename),
-        "html": lambda: export_html_file(final_filename, tmp_filename),
-        "pdf": lambda: export_pdf_file(tmp_filename),
-    }
-    if func := dispatch.get(args.output):
-        func()
+    match args.output:
+        case "txt":
+            if args.cicd:
+                print_cicd_totals(tmp_filename, args.cicd if
+                                  isinstance(args.cicd, str) else None)
+            print_export_path(tmp_filename, reliable)
+            if "-c" in sys.argv:
+                check_owasp_compliance(tmp_filename)
+        case "csv":
+            generate_csv(final_filename, tmp_filename)
+        case "json":
+            (generate_json(final_filename, tmp_filename) if args.brief else
+             generate_json_detailed(final_filename, tmp_filename))
+        case "xlsx":
+            generate_csv(final_filename, tmp_filename, to_xlsx=True)
+        case "xml":
+            generate_xml(final_filename, tmp_filename)
+        case "html":
+            export_html_file(final_filename, tmp_filename)
+        case "pdf":
+            export_pdf_file(tmp_filename)
 
 
 def check_cicd(analysis_grade, threshold_grade):
@@ -2434,11 +2431,11 @@ def print_cicd_totals(tmp_filename, threshold_grade=None):
     if the analysis grade does not reach that threshold; equal grades pass.
     """
     try:
-        cicd_labels = get_cicd_labels()
-        total_lbl, diff_lbl, _ = cicd_labels
-        with Path(tmp_filename).open(encoding="utf8") as cicd_filename:
-            lines = [ln.strip() for ln in cicd_filename if ln.strip()]
-        info_lines, totals = parse_cicd_sections(diff_lbl, total_lbl, lines)
+        cicd_labels = get_cicd_labels() # sourcery skip: extract-method
+        with Path(tmp_filename).open(encoding="utf8") as f:
+            lines = [ln.strip() for ln in f if ln.strip()]
+        info_lines, totals = parse_cicd_sections(cicd_labels[1], cicd_labels[0],
+                                                  lines)
         threshold, failed = (
             threshold_cicd(threshold_grade, totals)
             if threshold_grade else (None, False)
@@ -2446,7 +2443,7 @@ def print_cicd_totals(tmp_filename, threshold_grade=None):
         cicd_output = build_cicd_totals(tmp_filename, info_lines, totals,
                                         cicd_labels, threshold=threshold)
         print(dumps(cicd_output, indent=2, ensure_ascii=False))
-        sys.exit(1 if failed else 0)
+        sys.exit(int(failed))
     except Exception as exc:  # noqa: BLE001
         err_key = get_detail("[cicd_error]", replace=True)
         print(dumps({err_key: str(exc)}, ensure_ascii=False))
@@ -3344,7 +3341,10 @@ def set_pdf_chunks(chunks, pdf):
             chunk_c = color_pdf_line(chunk[19:], PDF_COLORS[2], PDF_COLORS[1],
                                      chunks, i, pdf)
         else:
-            format_pdf_chunks(chunk, chunks, chunk_c, i, pdf)
+            pdf.set_text_color(0, 0, 0)
+            formatted_chunk = format_pdf_chunks(chunk, chunks, chunk_c, i, pdf)
+            pdf.cell(104, 6, text=formatted_chunk, align="L")
+            pdf.ln(h=6)
 
 
 def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
@@ -3352,18 +3352,15 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
 
     Related to `-o pdf` option.
     """
-    pdf.set_text_color(0, 0, 0)
     if i > 0:
         chunk = f" {chunk}"
-    y = pdf.get_y()
-    if chunk_c != PDF_COLORS[2]:
-        if i == 1 and len(chunks) >= LENGTH_BOUNDS[5]:
-            y -= 1
-        elif len(chunks) == 1:
-            y -= 0.5
-        pdf.set_y(y)
-    pdf.cell(104, 6, text=chunk, align="L")
-    pdf.ln(h=6)
+    if chunk_c == PDF_COLORS[2]:
+        return chunk
+    if i == 1 and len(chunks) >= LENGTH_BOUNDS[5]:
+        pdf.set_y(pdf.get_y() - 1)
+    elif len(chunks) == 1:
+        pdf.set_y(pdf.get_y() - 0.5)
+    return chunk
 
 
 def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
@@ -3886,25 +3883,29 @@ def print_owasp_rec(wrong_owasp, header_dict):
 
 
 def parse_har_file(file_path):
-    """Parse a HAR file and extract the response headers."""
+    """Parse a HAR file."""
     try:
-        with file_path.open(encoding="utf8") as f:
-            har_data = load(f)
+        with file_path.open(encoding="utf8") as har_file:
+            har_data = load(har_file)
     except (ValueError, KeyError):
         return {}, 0
-    else:
-        entries = har_data.get("log", {}).get("entries", [])
-        if not entries:
-            return {}, 0
-        first_response = entries[0].get("response", {})
-        status_code = int(first_response.get("status", 0))
-        input_headers = {}
-        for header in first_response.get("headers", []):
-            name = header.get("name", "").title()
-            value = header.get("value", "").strip()
-            if name:
-                input_headers[name] = value
-        return input_headers, status_code
+    return extract_har_content(har_data)
+
+
+def extract_har_content(har_data):
+    """Extract response headers and status code from a HAR file."""
+    entries = har_data.get("log", {}).get("entries", [])
+    if not entries:
+        return {}, 0
+    first_response = entries[0].get("response", {})
+    status_code = int(first_response.get("status", 0))
+    input_headers = {}
+    for header in first_response.get("headers", []):
+        name = header.get("name", "").title()
+        value = header.get("value", "").strip()
+        if name:
+            input_headers[name] = value
+    return input_headers, status_code
 
 
 def analyze_input_file(input_file):
