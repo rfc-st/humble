@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-05")
+local_version = date.fromisoformat("2026-07-06")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -344,12 +344,15 @@ def fng_statistics_top():
 
     Grouped by service and terminate execution, related to `-f` option.
     """
-    print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
-{STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    with PATHS["fingerprint_top"].open("r", encoding="utf8") as fng_f:
-        fng_iterator = islice(fng_f, SLICE_INT[0], None)
-        fng_lines = list(fng_iterator)
-        fng_incl = len(fng_lines)
+    print(
+        f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}"
+        f"{STYLE[4]}{get_detail('[fng_source]', replace=True)}\n",
+    )
+    fng_lines = PATHS["fingerprint_top"].read_text(encoding="utf8").splitlines(
+        keepends=True,
+    )
+    fng_lines = fng_lines[SLICE_INT[0]:]
+    fng_incl = len(fng_lines)
     fng_statistics_top_groups(fng_lines, fng_incl)
     sys.exit(0)
 
@@ -382,14 +385,19 @@ def fng_statistics_term(fng_term):
 
     Exit if no results are found, related to `-f` option.
     """
-    print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}\
-{STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
-    with PATHS["fingerprint_term"].open("r", encoding="utf8") as fng_source:
-        fng_incl = list(islice(fng_source, SLICE_INT[0], None))
+    print(
+        f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}"
+        f"{STYLE[4]}{get_detail('[fng_source]', replace=True)}\n",
+    )
+    fng_incl = PATHS["fingerprint_term"].read_text(encoding="utf8").splitlines(
+        keepends=True,
+    )[SLICE_INT[0]:]
     fng_groups, term_cnt = fng_statistics_term_groups(fng_incl, fng_term)
     if not fng_groups:
-        print(f"{get_detail('[fng_zero]', replace=True)} '{fng_term}'.\n\n\
-{get_detail('[fng_zero_2]', replace=True)}.\n")
+        print(
+            f"{get_detail('[fng_zero]', replace=True)} '{fng_term}'.\n\n"
+            f"{get_detail('[fng_zero_2]', replace=True)}.\n",
+        )
         sys.exit(0)
     fng_statistics_term_content(fng_groups, fng_term, term_cnt, fng_incl)
 
@@ -1730,12 +1738,11 @@ def get_epilog_content(id_mode):
     Related to `-h` option.
     """
     target = id_mode + "\n"
-    content = []
-    with PATHS["help_epilog"].open("r", encoding="utf8") as epilog_source:
-        for line in epilog_source:
-            if line == target:
-                break
-        content = list(islice(epilog_source, SLICE_INT[12]))
+    lines = PATHS["help_epilog"].read_text(encoding="utf8").splitlines(
+        keepends=True,
+    )
+    start_idx = lines.index(target) + 1
+    content = lines[start_idx : start_idx + SLICE_INT[12]]
     return "".join(content)
 
 
@@ -1745,12 +1752,11 @@ def get_fingerprint_headers():
     ??? note
         The file associated with this check is `/additional/fingerprint.txt`.
     """
-    with PATHS["fingerprint_header"].open("r", encoding="utf8") as fng_source:
-        l_fng_ex = [line.strip() for line in
-                    islice(fng_source, SLICE_INT[0], None) if line.strip()]
-        l_fng = [line.split(" (")[0].strip() for line in l_fng_ex]
-        titled_fng = [item.title() for item in l_fng]
-        return l_fng_ex, l_fng, titled_fng
+    lines = PATHS["fingerprint_header"].read_text(encoding="utf8").splitlines()
+    l_fng_ex = lines[SLICE_INT[0]:]
+    l_fng = [line.split(" (")[0] for line in l_fng_ex]
+    titled_fng = [item.title() for item in l_fng]
+    return l_fng_ex, l_fng, titled_fng
 
 
 def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
@@ -2028,9 +2034,8 @@ def get_user_agent(user_agent_id):
     Source: `additional/user-agents.txt`. Exit if it is not found; related to
     `-ua` option.
     """
-    with PATHS["user_agents"].open("r", encoding="utf8") as ua_source:
-        user_agents = [line.strip() for line in islice(ua_source, SLICE_INT[1],
-                                                       None)]
+    lines = PATHS["user_agents"].read_text(encoding="utf8").splitlines()
+    user_agents = lines[SLICE_INT[1]:]
     if user_agent_id == "0":
         print_user_agents(user_agents)
     for line in user_agents:
@@ -2074,12 +2079,11 @@ def get_insecure_checks():
 
     Related to `-s` option.
     """
+    lines = PATHS["insecure_header"].read_text(encoding="utf8").splitlines()
     headers_name = set()
-    with PATHS["insecure_header"].open("r", encoding="utf8") as ins_source:
-        insecure_checks = islice(ins_source, SLICE_INT[2], None)
-        for line in insecure_checks:
-            insecure_header = line.split(":")[0]
-            headers_name.add(insecure_header.strip().lower())
+    for line in lines[SLICE_INT[2]:]:
+        insecure_header = line.split(":")[0]
+        headers_name.add(insecure_header.lower())
     return headers_name
 
 
@@ -3790,10 +3794,9 @@ def check_owasp_compliance(tmp_filename):
     header_dict = {}
     with PATHS["owasp_compliance"].open("r", encoding="utf8") as owasp_file:
         for line in islice(owasp_file, SLICE_INT[8], None):
-            line_strip = line.strip()
-            header_name, header_val = map(str, line_strip.split(": ", 1))
+            header_name, header_val = line.split(": ", 1)
             header_list.append(header_name.lower())
-            header_dict[header_name] = header_val
+            header_dict[header_name] = header_val.rstrip()
     print_owasp_findings(header_dict, header_list)
 
 
@@ -4445,10 +4448,8 @@ print_response_headers() if args.ret else print(end="\n\n")
 
 # Section '1. Enabled HTTP Security Headers'
 print_detail_r("[1enabled]")
-
-with PATHS["security_headers"].open("r", encoding="utf8") as sec_f:
-    t_ena = tuple(line.strip() for line in islice(sec_f, SLICE_INT[2], None))
-
+sec_headers = PATHS["security_headers"].read_text(encoding="utf8").splitlines()
+t_ena = tuple(sec_headers[SLICE_INT[2]:])
 en_cnt = get_enabled_headers(args, headers_l, t_ena)
 
 # Section '2. Missing HTTP Security Headers'
