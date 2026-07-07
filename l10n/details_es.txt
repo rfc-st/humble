@@ -460,7 +460,10 @@
  Content-Security-Policy-Report-Only (Directivas ignoradas)
 
 [icsiro_d_r]
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
+ Ref: https://mdn.io/Content-Security-Policy-Report-Only
+
+[ipermro_d_r]
+ Ref: https://mdn.io/Permissions-Policy-Report-Only
 
 [icsi_d_s]
  Evite directivas ignoradas u obsoletas: 
@@ -687,6 +690,9 @@
 
 [ifpoln_h]
  (*) Permissions-Policy (Sin valores adecuados)
+
+[ifpolnd_h]
+ (*) Permissions-Policy-Report-Only (Directivas ignoradas)
 
 [ifnvarys_h]
  (*) No-Vary-Search (Sin directivas adecuadas)

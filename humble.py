@@ -4529,9 +4529,9 @@ l_ins = ["Accept-CH", "Accept-CH-Lifetime", "Accept-Patch",
          "Integrity-Policy-Report-Only", "Keep-Alive", "Large-Allocation",
          "Mcp-Session-Id", "No-Vary-Search", "Observe-Browsing-Topics",
          "Onion-Location", "Origin-Agent-Cluster", "P3P", "Pragma",
-         "Proxy-Authenticate", "Public-Key-Pins",
-         "Public-Key-Pins-Report-Only", "Refresh", "Report-To",
-         "Reporting-Endpoints", "Repr-Digest", "Server-Timing",
+         "Permissions-Policy-Report-Only", "Proxy-Authenticate",
+         "Public-Key-Pins", "Public-Key-Pins-Report-Only", "Refresh",
+         "Report-To", "Reporting-Endpoints", "Repr-Digest", "Server-Timing",
          "Service-Worker-Allowed", "Set-Cookie", "Set-Login", "SourceMap",
          "Speculation-Rules", "Strict-Dynamic", "Supports-Loading-Mode",
          "Surrogate-Control", "Timing-Allow-Origin", "Tk", "Trailer",
@@ -4685,17 +4685,16 @@ l_origcluster = ["?1"]
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
 t_per_broad = ("*", " * ")
-t_per_dep = ("document-domain", "window-placement")
+t_per_dep = ("attribution-reporting", "browsing-topics", "document-domain",
+             "window-placement")
 t_per_ft = ("accelerometer", "all-screens-capture", "ambient-light-sensor",
-            "aria-notify", "attribution-reporting", "autofill", "autoplay",
-            "battery", "bluetooth", "browsing-topics", "camera",
-            "captured-surface-control", "ch-ua-high-entropy-values",
-            "ch-ua", "ch-ua-arch", "ch-ua-bitness",
-            "ch-ua-full-version", "ch-ua-full-version-list", "ch-ua-mobile",
-            "ch-ua-model", "ch-ua-platform", "ch-ua-platform-version",
-            "ch-ua-wow64", "clipboard-read", "clipboard-write",
-            "compute-pressure", "conversion-measurement",
-            "cross-origin-isolated", "deferred-fetch",
+            "aria-notify", "autofill", "autoplay", "battery", "bluetooth"
+            "camera", "captured-surface-control", "ch-ua-high-entropy-values",
+            "ch-ua", "ch-ua-arch", "ch-ua-bitness", "ch-ua-full-version",
+            "ch-ua-full-version-list", "ch-ua-mobile", "ch-ua-model",
+            "ch-ua-platform", "ch-ua-platform-version", "ch-ua-wow64",
+            "clipboard-read", "clipboard-write", "compute-pressure",
+            "conversion-measurement", "cross-origin-isolated", "deferred-fetch",
             "deferred-fetch-minimal", "device-attributes",
             "digital-credentials-create", "digital-credentials-get",
             "direct-sockets", "display-capture", "encrypted-media",
@@ -5052,6 +5051,17 @@ if header_eligible("permissions-policy"):
     if not any(elem in perm_header for elem in t_per_ft):
         print_details("[ifpoln_h]", "[ifpoln]", "m", i_cnt)
     permissions_analyze_content(perm_header, i_cnt)
+
+if header_eligible("permissions-policy-report-only"):
+    perm_ro_header = headers_l["permissions-policy-report-only"]
+    if any(elem in perm_ro_header for elem in t_per_dep):
+        print_detail_r("[ifpolnd_h]", is_red=True)
+        if not args.brief:
+            matches_perm_ro = [x for x in t_per_dep if x in perm_ro_header]
+            print_detail_l("[icsi_d_s]")
+            print(", ".join(f"'{x}'" for x in matches_perm_ro))
+            print_detail("[ipermro_d_r]")
+        i_cnt[0] += 1
 
 if header_eligible("pragma"):
     print_details("[iprag_h]", "[iprag]", "d", i_cnt)

@@ -461,6 +461,9 @@
 [icsiro_d_r]
  Ref: https://mdn.io/Content-Security-Policy-Report-Only
 
+[ipermro_d_r]
+ Ref: https://mdn.io/Permissions-Policy-Report-Only
+
 [icsi_d_s]
  Avoid deprecated or ignored directives: 
 
@@ -686,6 +689,9 @@
 
 [ifpoln_h]
  (*) Permissions-Policy (No Valid Features)
+
+[ifpolnd_h]
+ (*) Permissions-Policy-Report-Only (Ignored Directives)
 
 [ifnvarys_h]
  (*) No-Vary-Search (No Valid Directives)

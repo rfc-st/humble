@@ -112,6 +112,7 @@ Permissions-Policy: Incorrect Values
 Permissions-Policy: Incorrect Format
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value
+Permissions-Policy-Report-Only: Ignored Directives
 Pragma: Deprecated Header
 Proxy-Authenticate: No Valid Directives
 Proxy-Authenticate: Unsafe Value

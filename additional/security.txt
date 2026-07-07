@@ -56,6 +56,7 @@ NEL
 Origin-Agent-Cluster
 P3P
 Permissions-Policy
+Permissions-Policy-Report-Only
 Pragma
 Proxy-Authenticate
 Public-Key-Pins
