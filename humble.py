@@ -3155,10 +3155,16 @@ def set_pdf_file(pdf):
     """Set display parameters along with metadata.
 
     Related to `-o pdf` option.
+
+    ??? note
+        The defined `zoom=100` percentage may be ignored by some PDF readers.
+        For optimal viewing, set the zoom level to 100% manually after opening
+        the file.
+
     """
     pdf.alias_nb_pages()
     set_pdf_metadata(pdf)
-    pdf.set_display_mode(zoom=125)
+    pdf.set_display_mode(zoom=100)
     pdf.add_page()
     pdf.set_font("Courier", size=9)
 

@@ -13,11 +13,11 @@
 <a target="_blank" href="https://artemis-scanner.readthedocs.io/en/latest/search.html?q=humble&check_keywords=yes&area=default" title="Artemis vulnerability scanner"><img src="https://img.shields.io/badge/Artemis-blue"></a>
 <a target="_blank" href="https://blog.csdn.net/gitblog_01072/article/details/141745712" title="Chinese Software Developer Network"><img src="https://img.shields.io/badge/CSDN-blue"></a>
 <a target="_blank" href="https://docs.defectdojo.com/supported_tools/parsers/file/humble/" title="Importing and parsing 'humble' results in DefectDojo"><img src="https://img.shields.io/badge/DefectDojo-blue"></a>
-<a target="_blank" href="https://book.hacktricks.wiki/en/network-services-pentesting/pentesting-web/special-http-headers.html" title="HackTricks"><img src="https://img.shields.io/badge/HackTricks-blue"></a>
+<a target="_blank" href="https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/special-http-headers.html" title="HackTricks"><img src="https://img.shields.io/badge/HackTricks-blue"></a>
 <a target="_blank" href="https://headerscan.com/humble/" title="Security Header Scanner"><img src="https://img.shields.io/badge/HeaderScan-blue"></a>
 <a target="_blank" href="https://www.linux-magazin.de/ausgaben/2022/11/tooltipps/" title="Linux Magazin"><img src="https://img.shields.io/badge/Linux%20Magazin-blue"></a>
 <a target="_blank" href="https://merginit.com/blog/18082025-http-security-header-checker-tools" title="MerginIT"><img src="https://img.shields.io/badge/MerginIT-blue"></a>
-<a target="_blank" href="https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/04_technical_resources.md?plain=1#L32" title="OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-blue"></a>
+<a target="_blank" href="https://github.com/OWASP/www-project-secure-headers/blob/master/mainsite/04_technical_resources.md" title="OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-blue"></a>
 <a target="_blank" href="https://qiita.com/prograti/items/8eea5d60056f6df0d160#humble" title="Security Tools in Kali Linux"><img src="https://img.shields.io/badge/Qiita-blue"></a>
 <br />
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml" title="Vulnerability analysis with Bandit"><img src="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml/badge.svg"></a>
