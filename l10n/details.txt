@@ -1876,6 +1876,12 @@ Error: The file does not contain valid unicode text in UTF-8 format or its a bin
 [args_inputlines]
 Error: The file does not contain lines with the format 'http header: value'. E.g. 'x-frame-options: deny'.
 
+[args_harlines]
+Error: The HAR file does not contain any valid HTTP response headers.
+
+[args_malformedhar]
+Error: The HAR file contains invalid JSON syntax.
+
 [args_lang]
 Error: The '-l' parameter requires the parameters '-u' or '-a'.
 
@@ -2222,6 +2228,12 @@ Generator
 
 [test_har_file]
  verify HAR files are analyzed.
+
+[test_har_empty_file]
+ verify an error is displayed when analyzing an empty HAR file.
+
+[test_har_malformed_file]
+ verify an error is displayed when analyzing a malformed HAR file.
 
 [test_http_exception]
  verify an error is displayed for HTTP exceptions during analysis.

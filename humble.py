@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-06")
+local_version = date.fromisoformat("2026-07-07")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -3891,7 +3891,7 @@ def parse_har_file(file_path):
         with file_path.open(encoding="utf8") as har_file:
             har_data = load(har_file)
     except (ValueError, KeyError):
-        return {}, 0
+        print_error_detail("[args_malformedhar]")
     return extract_har_content(har_data)
 
 
@@ -3932,7 +3932,7 @@ def analyze_input_file(input_file):
         if first_char == "{":
             input_headers, status_code = parse_har_file(file_path)
             if not input_headers:
-                print_error_detail("[args_inputlines]")
+                print_error_detail("[args_harlines]")
             return input_headers, False, status_code
         with file_path.open(encoding="utf8") as input_source:
             input_headers, status_code = parse_input_file(

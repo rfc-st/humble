@@ -83,7 +83,9 @@ HUMBLE_DESC = "Basic unit tests for 'humble' (HTTP Headers Analyzer)"
 HUMBLE_PROJECT_ROOT = HUMBLE_TESTS_DIR.parent.resolve()
 HUMBLE_INPUT_DIR = HUMBLE_PROJECT_ROOT / "samples"
 HUMBLE_INPUT_FILE = (HUMBLE_INPUT_DIR / "github_input_file.txt").resolve()
-HUMBLE_HAR_FILE = (HUMBLE_INPUT_DIR / "github.com_edited.har").resolve()
+HUMBLE_HAR_FILE = (HUMBLE_INPUT_DIR / "github_edited.har").resolve()
+HUMBLE_HAR_EMPTY_FILE = (HUMBLE_INPUT_DIR / "github_empty.har").resolve()
+HUMBLE_HAR_MALFORMED_FILE = (HUMBLE_INPUT_DIR / "github_malformed.har").resolve()
 HUMBLE_INPUT_TRAVERSAL = "../../../humbleinputtraversal/"
 HUMBLE_L10N_DIR = HUMBLE_PROJECT_ROOT / "l10n"
 HUMBLE_L10N_FILE = ("details.txt", "details_es.txt")
@@ -208,6 +210,10 @@ TEST_CFGS = {
     "test_global_statistics": (["-a"], "Empty headers"),
     "test_har_file": (["-u", TEST_URLS[2], "-if", HUMBLE_HAR_FILE],
                         "Input:"),
+    "test_har_empty_file": (["-u", TEST_URLS[2], "-if", HUMBLE_HAR_EMPTY_FILE],
+                        "Error:"),
+    "test_har_malformed_file": (["-u", TEST_URLS[2], "-if",
+                                 HUMBLE_HAR_MALFORMED_FILE], "Error:"),
     "test_http_exception": (["-u", TEST_URLS[13]], "scheme"),
     "test_input_file": (["-u", TEST_URLS[2], "-if", HUMBLE_INPUT_FILE],
                         "Input:"),
@@ -310,10 +316,12 @@ class PythonVersion(NamedTuple):
 
 def get_detail(id_mode, *, replace=False):
     """Print a message, optionally removing newlines."""
-    for i, line in enumerate(l10n_main):
-        if line.startswith(id_mode):
-            return (l10n_main[i+1].replace("\n", "")) if replace else \
-                l10n_main[i+1]
+    if match := next(
+        (i for i, ln in enumerate(l10n_main) if ln.startswith(id_mode)),
+        None,
+    ):
+        next_ln = l10n_main[match + 1]
+        return next_ln.replace("\n", "") if replace else next_ln
     return None
 
 
@@ -663,7 +671,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-07-06")
+local_version = date.fromisoformat("2026-07-07")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

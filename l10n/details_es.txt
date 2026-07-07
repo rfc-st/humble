@@ -1877,6 +1877,12 @@ Error: El fichero no contiene texto unicode válido en formato UTF-8 o es un bin
 [args_inputlines]
 Error: El fichero no contiene líneas con el formato 'cabecera http: valor'. Ej. 'x-frame-options: deny'.
 
+[args_harlines]
+Error: El fichero HAR no contiene cabeceras de respuesta HTTP válidas.
+
+[args_malformedhar]
+Error: El fichero HAR contiene sintáxis JSON inválida.
+
 [args_lang]
 Error: Los parámetros '-c' y '-l' requieren de los parámetros '-u' o '-a'. El parámetro '-cicd' requiere el parámetro '-u'.
 
@@ -2201,6 +2207,12 @@ Generador
 
 [test_har_file]
  verifica que se analice correctamente un fichero HAR.
+
+[test_har_empty_file]
+ verifica que se muestre un error al analizar un fichero HAR vacío.
+
+[test_har_malformed_file]
+ verifica que se muestre un error al analizar un fichero HAR con sintáxis JSON inválida.
 
 [test_http_exception]
  verifica que se muestre un error por excepción HTTP durante el análisis.
