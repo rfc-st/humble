@@ -2236,10 +2236,12 @@ def format_htmlpdf_all_export(line, export_format, target_state, in_browser):
     """
     if in_browser and line.strip() and not line.startswith("[6."):
         line = f" {line}" if export_format == "html" else f" {line.lstrip()}"
-    if line.startswith(" ") and target_state:
-        if export_format == "html":
-            return f"{line[0]}{STYLE[8]}{line[1:]}"
-        if export_format == "pdf":
+    if not (target_state and line.startswith(" ")):
+        return line
+    match export_format:
+        case "html":
+            return f" {STYLE[8]}{line[1:]}"
+        case "pdf":
             return f" {STYLE[6]}{line[1:]}"
     return line
 
@@ -3032,10 +3034,8 @@ def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
     result, entry, header = [], {}, None
     for line in json_lns:
         if line := line.strip():
-            line_s = line.strip()
-            is_header = json_detailed_ins_headers(
-                line, line_s, checks_list, ref_t,
-            )
+            is_header = json_detailed_ins_headers(line, line, checks_list,
+                                                  ref_t)
             entry, header = json_detailed_ins_append(
                 line, ref_t, ref_o, entry, header, header_t,
                 detail_t, result, is_header,
