@@ -2169,7 +2169,10 @@ def export_all_formats(final_filename, tmp_filename):
     Related to `-o all` option.
     """
     generate_csv(final_filename, tmp_filename, export_all=True)
-    generate_json(final_filename, tmp_filename, export_all=True)
+    if args.brief:
+        generate_json(final_filename, tmp_filename, export_all=True)
+    else:
+        generate_json_detailed(final_filename, tmp_filename, export_all=True)
     generate_xml(final_filename, tmp_filename, export_all=True)
     generate_csv(final_filename, tmp_filename, to_xlsx=True, export_all=True)
     normalize_htmlpdf_all_export("html", tmp_filename, final_filename)
@@ -2765,22 +2768,20 @@ def json_detailed_sources(file_idx, slice_idx):
                                                 None) if line.strip()}
 
 
-def generate_json_detailed(final_filename, temp_filename):
+def generate_json_detailed(final_filename, temp_filename, *, export_all=False):
     """JSON export of a detailed analysis and exit.
 
     Related to `-o json` option.
     """
     with (
-       Path(temp_filename).open(encoding="utf8") as txt_file,
-       Path(final_filename).open("w", encoding="utf8") as json_file,
+        Path(temp_filename).open(encoding="utf8") as txt_file,
+        Path(final_filename).open("w", encoding="utf8") as json_file,
     ):
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
         data = {}
         json_detailed_parse(data, txt_sections)
         dump(data, json_file, indent=4, ensure_ascii=False)
-    print_export_path(final_filename, reliable)
-    Path(temp_filename).unlink()
-    sys.exit(0)
+    finalize_export(final_filename, temp_filename, "json", export_all)
 
 
 def json_detailed_parse(data, txt_sections):
