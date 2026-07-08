@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-07")
+local_version = date.fromisoformat("2026-07-08")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -3406,23 +3406,22 @@ def apply_pdf_color(colon_idx, hcolor, line, vcolor):
 
 def export_html_file(final_filename, tmp_filename, *, export_all=False):
     """HTML export of the analysis, related to `-o html` option."""
-    inside_section = False
     generate_html()
     decrease_html_spacing(tmp_filename)
     ok_string = get_detail(DIR_MSG[2]).rstrip()
     ko_strings = [get_detail(f"[{i}]").rstrip() for i in ("no_sec_headers",
                                                           "no_enb_headers")]
+    inside_section = False
     with (
         Path(tmp_filename).open(encoding="utf8") as html_source,
         Path(final_filename).open("a", encoding="utf8") as html_final,
-        ):
+    ):
         for ln in html_source:
             inside_section = format_html_file(
                 html_final, ko_strings, ln, ok_string, inside_section,
             )
         if inside_section:
             html_final.write(HTML_TAGS[12])
-            inside_section = False
         html_final.write(HTML_TAGS[13])
     clean_html_final(final_filename)
     finalize_export(final_filename, tmp_filename, "html", export_all)
@@ -3484,7 +3483,6 @@ def format_html_lines(html_final, ko_strings, ln, ok_string, inside_section):
 
     Related to `-o html` option.
     """
-    lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
     ln_rstrip = ln.rstrip("\n")
     if format_html_info(html_final, ln_rstrip):
         return True, inside_section
@@ -3492,11 +3490,10 @@ def format_html_lines(html_final, ko_strings, ln, ok_string, inside_section):
                                                     inside_section)
     if matched_bold:
         return True, inside_section
-    if format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string):
-        return True, inside_section
-    if format_html_references(html_final, lang_slice, ln_rstrip):
-        return True, inside_section
-    if format_html_compatibility(html_final, ln_rstrip):
+    lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
+    if (format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string) or
+        format_html_references(html_final, lang_slice, ln_rstrip) or
+        format_html_compatibility(html_final, ln_rstrip)):
         return True, inside_section
     return False, inside_section
 
