@@ -474,8 +474,8 @@ def testssl_command(testssl_temp_path, uri):
         - `-s`: tests lists of cipher suites/categories by strength
         - `--hints`: (available in the future) give hints how to fix a finding
 
-        Check the testssl.sh <a href="https://testssl.sh/doc/testssl.1.html"
-        target="_blank">documentation</a> for a list of all available options
+        Check the testssl.sh [documentation](https://testssl.sh/doc/testssl.1.html){:target="_blank"}
+        for a list of all available options.
     """
     args_path = Path(testssl_temp_path).resolve()
     if not args_path.is_dir():
@@ -1750,7 +1750,7 @@ def get_fingerprint_headers():
     """Print the content in the section with fingerprint headers.
 
     ??? note
-        The file associated with this check is `/additional/fingerprint.txt`.
+        The file associated with this check is [fingerprint.txt](https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt){:target="_blank"}.
     """
     lines = PATHS["fingerprint_header"].read_text(encoding="utf8").splitlines()
     l_fng_ex = lines[SLICE_INT[0]:]
@@ -1796,14 +1796,13 @@ def get_enabled_headers(args, headers_l, t_enabled):
     Highlighting the experimental ones.
 
     ??? note
-        The file associated with this check is `/additional/security.txt`
+        The file associated with this check is [security.txt](https://github.com/rfc-st/humble/blob/master/additional/security.txt){:target="_blank"}.
 
-        The highlighted <a href="https://developer.mozilla.org/en-US/docs/
-        MDN/Writing_guidelines/Experimental_deprecated_obsolete"
-        target=blank">experimental</a> headers are defined in the EXP_HEADERS
-        tuple and correspond to some of those indicated in the MDN <a href="
-        https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers"
-        target="_blank">list</a> of HTTP headers.
+        The highlighted [headers](https://developer.mozilla.org/en-US/docs/
+        MDN/Writing_guidelines/Experimental_deprecated_obsolete){:target="_blank"}
+        are defined in the `EXP_HEADERS` tuple and correspond to some of those
+        indicated in the MDN [list](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers){:target="_blank"}
+        of HTTP headers.
     """
     headers_d = {key.title(): value for key, value in headers_l.items()}
     t_enabled = sorted({header.title() for header in t_enabled})
@@ -1848,7 +1847,7 @@ def print_missing_headers(args, headers_l, l_detail, l_miss):
     """Print the contents of the section with missing HTTP Security Headers.
 
     ??? note
-        The file associated with this check is `/additional/missing.txt`.
+        The file associated with this check is [missing.txt](https://github.com/rfc-st/humble/blob/master/additional/missing.txt){:target="_blank"}.
     """
     m_cnt = 0
     headers_set = set(headers_l)
@@ -1874,12 +1873,11 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
         `check_frame_options` function.
 
     ??? note
-        The highlighted <a href="https://developer.mozilla.org/en-US/docs/
-        MDN/Writing_guidelines/Experimental_deprecated_obsolete"
-        target=blank">experimental</a> headers are defined in the EXP_HEADERS
-        tuple and correspond to some of those indicated in the MDN <a href="
-        https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers"
-        target="_blank">list</a> of HTTP headers.
+        The highlighted [headers](https://developer.mozilla.org/en-US/docs/
+        MDN/Writing_guidelines/Experimental_deprecated_obsolete){:target="_blank"}
+        are defined in the `EXP_HEADERS` tuple and correspond to some of those
+        indicated in the MDN [list](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers){:target="_blank"}
+        of HTTP headers.
     """
     for header, detail in zip(l_miss, l_detail, strict=False):
         lower_header = header.lower()
@@ -1894,7 +1892,17 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
 
 
 def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
-    """Determine whether to report a missing `X-Frame-Options` header."""
+    """Determine whether to report a missing `X-Frame-Options` header.
+
+    ??? info
+        `X-Frame-Options` won't be reported as missing if the
+        `frame-ancestors` directive of `Content-Security-Policy` is
+        present: the latter is the [comprehensive](https://developer.
+        mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/
+        X-Frame-Options){:target="_blank"}, [modern](https://developer.mozilla.org/en-US/
+        docs/Web/HTTP/Reference/Headers/Content-Security-Policy/
+        frame-ancestors){:target="_blank"}, and preferred way.
+    """
     xfo_needed = ("x-frame-options" not in skip_headers) and \
         ("x-frame-options" not in headers_l)
     fa_needed = "frame-ancestors" not in \
@@ -1923,8 +1931,7 @@ def print_browser_compatibility(compat_headers):
     """Print links for browser compatibility of enabled HTTP headers.
 
     ??? note
-        References provided by <a href="https://caniuse.com/" target="_blank">
-        Can I use</a>.
+        References provided by [Can I use](https://caniuse.com/){:target="_blank"}.
     """
     style_blanks = "  " if args.output == "html" else " "
     for key in compat_headers:
@@ -3706,14 +3713,11 @@ def generate_xml(final_filename, temp_filename, *, export_all=False):
     """XML export of the analysis, related to `-o xml` option.
 
     ??? note
-        According to
-        <a href="https://docs.python.org/3.11/library/xml.html"
-        target="_blank">here</a> (*XML vulnerabilities* section),
-        <a href="https://github.com/python/cpython/pull/135294"
-        target="_blank">here</a> and
-        <a href="https://github.com/python/cpython/issues/127502"
-        target="_blank">here</a> the minimum Python version required to run
-        *humble* (3.11) should not be vulnerable to common XML attacks.
+        According to [here](https://docs.python.org/3.11/library/xml.html){:target="_blank"}
+        (*XML vulnerabilities* section), [here](https://github.com/python/cpython/pull/135294){:target="_blank"}
+        and [here](https://github.com/python/cpython/issues/127502){:target="_blank"}
+        the minimum Python version required to run *humble* (3.11) should not be
+        vulnerable to common XML attacks.
 
         Additionally, the DTD used to generate the XML is defined in the
         constant `DTD_CONTENT`.
@@ -3770,8 +3774,8 @@ def check_russian_scope():
     """Validate if the target domain is within the Russian scope and exit if so.
 
     ??? note
-        You can read my reasons <a href="https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326" target="_blank">here</a>.
-    """  # noqa: E501
+        You can read my reasons [here](https://github.com/rfc-st/humble/blob/master/CODE_OF_CONDUCT.md#update-20220326){:target="_blank"}.
+    """
     domain = urlparse(URL).netloc.split(":")[0]
     try:
         sff = domain.encode("ascii").decode("idna")
@@ -4195,11 +4199,11 @@ def process_http_response(r, exception, status_code, reliable, body):
     ??? note
         References:<br>
 
-        - <a href="https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/" target="_blank">Exceptions in the HTTP library 'requests' </a>
-        - <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors" target="_blank">Generic HTTP 5xx errors</a>
-        - <a href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/" target="_blank">Cloudflare 5xx HTTP errors</a>
-        - <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type" target="_blank">MDN docs regarding HTML <meta> and content-type</a>
-    """  # noqa: E501
+        - [Exceptions in the HTTP library 'requests'](https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/){:target="_blank"}
+        - [Generic HTTP 5xx errors](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors){:target="_blank"}
+        - [Cloudflare 5xx HTTP errors](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/){:target="_blank"}
+        - [MDN docs regarding HTML `<meta>` and `content-type`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type){:target="_blank"}
+    """
     if exception:
         process_requests_exception(exception)
         return {}, status_code, reliable, body, False
