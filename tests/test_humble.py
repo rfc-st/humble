@@ -85,7 +85,9 @@ HUMBLE_INPUT_DIR = HUMBLE_PROJECT_ROOT / "samples"
 HUMBLE_INPUT_FILE = (HUMBLE_INPUT_DIR / "github_input_file.txt").resolve()
 HUMBLE_HAR_FILE = (HUMBLE_INPUT_DIR / "github_edited.har").resolve()
 HUMBLE_HAR_EMPTY_FILE = (HUMBLE_INPUT_DIR / "github_empty.har").resolve()
-HUMBLE_HAR_MALFORMED_FILE = (HUMBLE_INPUT_DIR / "github_malformed.har").resolve()
+HUMBLE_HAR_MALFORMED_FILE = (
+    HUMBLE_INPUT_DIR / "github_malformed.har"
+).resolve()
 HUMBLE_INPUT_TRAVERSAL = "../../../humbleinputtraversal/"
 HUMBLE_L10N_DIR = HUMBLE_PROJECT_ROOT / "l10n"
 HUMBLE_L10N_FILE = ("details.txt", "details_es.txt")
@@ -671,7 +673,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-07-08")
+local_version = date.fromisoformat("2026-07-09")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

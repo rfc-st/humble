@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-08")
+local_version = date.fromisoformat("2026-07-09")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -2698,43 +2698,40 @@ def generate_json(final_filename, temp_filename, *, export_all=False):
 
     Related to `-o json -b` options.
     """
-    section0, sectionh, section5, section6 = (
-        get_detail(f"[{i}]", replace=True) for i in JSON_SECTION)
+    sections = tuple(get_detail(f"[{i}]", replace=True) for i in JSON_SECTION)
     with (
         Path(temp_filename).open(encoding="utf8") as txt_file,
         Path(final_filename).open("w", encoding="utf8") as json_file,
     ):
         txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
-        data = {}
-        parse_json(data, section0, section5, section6, sectionh, txt_sections)
-        dump(data, json_file, indent=4, ensure_ascii=False)
+        dump(parse_json(sections, txt_sections), json_file,
+             indent=4, ensure_ascii=False)
     finalize_export(final_filename, temp_filename, "json", export_all)
 
 
-def parse_json(data, section0, section5, section6, sectionh, txt_sections):
+def parse_json(sections, txt_sections):
     """Parse sections for a JSON export; related to `-o json -b` options."""
+    data = {}
     for i in range(0, len(txt_sections), 2):
         json_section = f"[{txt_sections[i]}]"
         json_lns = [line.strip() for line in txt_sections[i + 1].split("\n")
                     if line.strip()]
-        json_data = write_json(json_lns, json_section, section0, section5,
-                               section6, sectionh)
-        data[json_section] = json_data
+        data[json_section] = write_json(json_lns, json_section, sections)
+    return data
 
 
-def write_json(json_lns, json_section, section0, section5, section6, sectionh):
+def write_json(json_lns, json_section, sections):
     """Format content for a JSON export.
 
     Related to `-o json -b` options.
     """
-    if json_section in (section0, section5, section6, sectionh):
-        json_data = {}
-        format_json(json_data, json_lns)
-        if json_section == section0:
-            json_data = {get_detail("[json_gen]", replace=True):
-                         BANNER_VERSION, **json_data}
-    else:
-        json_data = list(json_lns)
+    if json_section not in sections:
+        return list(json_lns)
+    json_data = {}
+    format_json(json_data, json_lns)
+    if json_section == sections[0]:
+        json_data = {get_detail("[json_gen]", replace=True):
+                     BANNER_VERSION, **json_data}
     return json_data
 
 
@@ -2903,36 +2900,33 @@ def json_detailed_format(json_lns, *, is_compat=False, is_l10n=False):
     return json_detailed_format_add(json_lns, header_t, value_t)
 
 
-def json_detailed_miss_process(line, l_miss, json_miss_h, json_miss_d,
-                               json_miss_r, json_det_mref, result, entry,
-                               current_header):
+def json_detailed_miss_process(line, l_miss, json_miss_keys, json_det_mref,
+                               result, entry):
     """Format lines in the missing section.
 
     Related to `-o json` option.
     """
+    json_miss_h, json_miss_d, json_miss_r = json_miss_keys
     if line in l_miss or line.startswith("(*)"):
-        if entry:
-            result.append(entry)
-        return {json_miss_h: line, json_miss_d: [], json_miss_r: []}, line
-    if line.startswith(json_det_mref) and current_header:
-        entry[json_miss_r].append(line.replace(json_det_mref, "").strip())
-    elif current_header:
+        result.extend(filter(None, (entry,)))
+        return {json_miss_h: line, json_miss_d: [], json_miss_r: []}
+    if entry and line.startswith(json_det_mref):
+        entry[json_miss_r].append(line.removeprefix(json_det_mref).strip())
+    elif entry:
         entry[json_miss_d].append(line)
-    return entry, current_header
+    return entry
 
 
-def json_detailed_miss_add(json_lns, l_miss, json_miss_h, json_miss_d,
-                           json_miss_r, json_det_mref):
+def json_detailed_miss_add(json_lns, l_miss, json_miss_keys, json_det_mref):
     """Add lines to the missing section.
 
     Related to `-o json` option.
     """
-    result, entry, current_header = [], {}, None
+    result, entry = [], {}
     for line in json_lns:
         if line := line.strip():
-            entry, current_header = json_detailed_miss_process(
-                line, l_miss, json_miss_h, json_miss_d, json_miss_r,
-                json_det_mref, result, entry, current_header,
+            entry = json_detailed_miss_process(
+                line, l_miss, json_miss_keys, json_det_mref, result, entry,
             )
     if entry:
         result.append(entry)
@@ -2946,9 +2940,9 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
     Related to `-o json` option.
     """
     json_det_mref = PDF_CONDITIONS[0]
+    json_miss_keys = (json_miss_h, json_miss_d, json_miss_r)
     result = json_detailed_miss_add(
-        json_lns, l_miss, json_miss_h, json_miss_d, json_miss_r,
-        json_det_mref,
+        json_lns, l_miss, json_miss_keys, json_det_mref,
     )
     for e in result:
         if len(e[json_miss_d]) == 1:
@@ -3682,16 +3676,16 @@ def format_html_enabled(ln, html_final):
 
     Related to `-o html` option.
     """
-    ln_enabled = STYLE[8] in ln
-    if ln_enabled:
-        ln = f" {ln[19:].rstrip()}"
-        if ":" in ln:
-            header, value = map(str.strip, ln.split(":", 1))
-            ln = f"{HTML_TAGS[6]} {header}{HTML_TAGS[5]}: {value}"
-        else:
-            ln = f"{HTML_TAGS[6]} {ln.strip()}{HTML_TAGS[5]}"
-        html_final.write(f"{format_html_csp(ln)}{HTML_TAGS[11]}")
-    return ln, ln_enabled
+    if STYLE[8] not in ln:
+        return ln, False
+    ln = f" {ln[19:].rstrip()}"
+    if ":" in ln:
+        header, value = map(str.strip, ln.split(":", 1))
+        ln = f"{HTML_TAGS[6]} {header}{HTML_TAGS[5]}: {value}"
+    else:
+        ln = f"{HTML_TAGS[6]} {ln.strip()}{HTML_TAGS[5]}"
+    html_final.write(f"{format_html_csp(ln)}{HTML_TAGS[11]}")
+    return ln, True
 
 
 def clean_html_final(final_filename):
