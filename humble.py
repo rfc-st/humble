@@ -39,16 +39,19 @@ from base64 import b64decode
 from collections import Counter, defaultdict
 from contextlib import suppress
 from datetime import date, datetime
+from functools import partial
 from html import escape
 from ipaddress import ip_address
 from itertools import chain, islice, pairwise
 from json import dump, dumps, load
 from pathlib import Path
-from shutil import copyfile, which
+from shutil import which
 from socket import create_connection
+from string import Template
 from subprocess import PIPE, STDOUT, Popen
 from threading import Event, Thread
 from time import time
+from typing import NamedTuple
 from urllib.parse import urlparse
 
 # Third-Party imports
@@ -75,7 +78,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-09")
+local_version = date.fromisoformat("2026-07-10")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -163,6 +166,7 @@ DTD_CONTENT = """<!ELEMENT analysis (section+)>
 """
 EXPORT_EXTENSIONS = (".csv", ".html", ".json", ".pdf", ".txt", ".xlsx", ".xml")
 GRADE_ORDER = ["E", "D", "C", "B", "A", "A+"]
+HTML_PRE_ARTIFACT = "<pre>/pre>'"
 HTML_TAGS = (
     "</a>", '<a href="', '">', '<span class="ko">', '<span class="header">',
     "</span>", '<span class="ok">',
@@ -226,7 +230,6 @@ RE_PATTERN = (
     r"\s{2,},",
     r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
     r"<pre(?:\s[^>]*)?>\s*</pre>",
-    r"<pre>/pre>'",
     r"(?<!')nonce-",
 )
 
@@ -1294,7 +1297,7 @@ def csp_check_nonces(csp_h):
 
     Related to hexadecimal and Base64 nonces.
     """
-    if re.search(RE_PATTERN[24], csp_h):
+    if re.search(RE_PATTERN[23], csp_h):
         print_details("[icsncei_h]", "[icsncei]", "d", i_cnt)
     nonce_refs = ("[icsnces_h]", "[icsncesn]", "[icsnces]")
     for nonce in re.findall(RE_PATTERN[6], csp_h):
@@ -2189,21 +2192,29 @@ def export_all_formats(final_filename, tmp_filename):
     sys.exit(0)
 
 
+class ExportStates(NamedTuple):
+    """Formatting states for HTML/PDF exports, related to `-o all` option."""
+
+    response: bool
+    enabled: bool
+    browser: bool
+
+
 def process_htmlpdf_all_export(lines, start_index, export_format, is_html):
     """Process line formatting and section prefixing for HTML and PDF exports.
 
     Applies state-based formatting to each line; related to `-o all` option.
     """
     content = lines[:start_index]
-    states = (False, False, False)
+    states = ExportStates(response=False, enabled=False, browser=False)
     for line in lines[start_index:]:
-        prefix, *new_states = sections_htmlpdf_all_export(line, states)
-        states = tuple(new_states)
+        prefix, states = sections_htmlpdf_all_export(line, states)
         if prefix:
             content.append(prefix)
-        target_state = states[1] if is_html else states[0]
+        target_state = states.enabled if is_html else states.response
         content.append(format_htmlpdf_all_export(line, export_format,
-                                                 target_state, states[2]))
+                                                 target_state,
+                                                 states.browser))
     return content
 
 
@@ -2234,9 +2245,10 @@ def sections_htmlpdf_all_export(line, states):
     """
     for prefix, new_states in SECTIONS_EXPORT_STATES.items():
         if line.startswith(prefix):
-            return "\n", *new_states
-    return ("\n", *states) if any(line.startswith(s) for s in STRINGS_BOLD +
-                                  RESP_SECTION) else ("", *states)
+            return "\n", ExportStates(*new_states)
+    if any(line.startswith(s) for s in STRINGS_BOLD + RESP_SECTION):
+        return "\n", states
+    return "", states
 
 
 def format_htmlpdf_all_export(line, export_format, target_state, in_browser):
@@ -3410,18 +3422,15 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False):
     """HTML export of the analysis, related to `-o html` option."""
     generate_html()
     decrease_html_spacing(tmp_filename)
-    ok_string = get_detail(DIR_MSG[2]).rstrip()
-    ko_strings = [get_detail(f"[{i}]").rstrip() for i in ("no_sec_headers",
-                                                          "no_enb_headers")]
+    html_writers, html_rest = build_html_writers()
     inside_section = False
     with (
         Path(tmp_filename).open(encoding="utf8") as html_source,
         Path(final_filename).open("a", encoding="utf8") as html_final,
     ):
         for ln in html_source:
-            inside_section = format_html_file(
-                html_final, ko_strings, ln, ok_string, inside_section,
-            )
+            inside_section = write_html_line(html_final, ln, html_writers,
+                                             html_rest, inside_section)
         if inside_section:
             html_final.write(HTML_TAGS[12])
         html_final.write(HTML_TAGS[13])
@@ -3434,18 +3443,15 @@ def generate_html():
 
     Source: `/additional/html_template.html`; related to `-o html` option.
     """
-    copyfile(PATHS["html_source"], final_filename)
+    html_shell = Path(PATHS["html_source"]).read_text(encoding="utf8")
     html_replace = {"html_title": get_detail(METADATA_S[1]),
                     "html_desc": get_detail("[pdf_meta_title]"),
                     "html_keywords": get_detail(METADATA_S[0]),
                     "humble_URL": URL_LIST[4],
                     "humble_local_v": local_version, "URL_analyzed": URL,
-                    "html_body": "<body><pre>", "}}": "}", "{{": "}"}
-    with Path(final_filename).open("r+", encoding="utf8") as html_file:
-        temp_html_content = html_file.read()
-        replaced_html = temp_html_content.format(**html_replace)
-        html_file.seek(0)
-        html_file.write(replaced_html)
+                    "html_body": "<body><pre>"}
+    replaced_html = Template(html_shell).substitute(html_replace)
+    Path(final_filename).write_text(replaced_html, encoding="utf8")
 
 
 def decrease_html_spacing(tmp_filename):
@@ -3467,37 +3473,52 @@ def decrease_html_spacing(tmp_filename):
         html_output.writelines(cleaned_ln)
 
 
-def format_html_file(html_final, ko_strings, ln, ok_string, inside_section):
-    """Format content for the main sections.
+def build_html_writers():
+    """Build the ordered rules that format the main sections.
+
+    Each writer takes `(html_final, ln_rstrip)`, writes the line if it
+    matches and returns whether it did; the values they depend on are
+    resolved once here, instead of once per line.
 
     Related to `-o html` option.
     """
-    ln_formatted, inside_section = format_html_lines(
-        html_final, ko_strings, ln, ok_string, inside_section,
+    ok_string = get_detail(DIR_MSG[2]).rstrip()
+    ko_strings = [get_detail(f"[{i}]").rstrip() for i in ("no_sec_headers",
+                                                          "no_enb_headers")]
+    lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
+    html_writers = (
+        partial(format_html_warnings, ko_strings=ko_strings,
+                ok_string=ok_string),
+        partial(format_html_references, lang_slice=lang_slice),
+        format_html_compatibility,
     )
-    if not ln_formatted:
-        format_html_rest(html_final, l_empty, ln)
-    return inside_section
+    html_rest = partial(format_html_rest, l_empty=l_empty,
+                        l_total=sorted(set(l_miss + l_ins)),
+                        fng_sorted=sorted(l_fng),
+                        header_prefixes=tuple((header, f"{header}: ") for
+                                              header in headers))
+    return html_writers, html_rest
 
 
-def format_html_lines(html_final, ko_strings, ln, ok_string, inside_section):
-    """Write formatted lines for the main sections.
+def write_html_line(html_final, ln, html_writers, html_rest,
+                    inside_section):
+    """Write a single line of the analysis, applying the first matching rule.
+
+    Section names are handled apart, being the only stateful case; lines
+    matching no rule fall through to `format_html_rest()`.
 
     Related to `-o html` option.
     """
     ln_rstrip = ln.rstrip("\n")
     if format_html_info(html_final, ln_rstrip):
-        return True, inside_section
+        return inside_section
     matched_bold, inside_section = format_html_bold(html_final, ln_rstrip,
                                                     inside_section)
-    if matched_bold:
-        return True, inside_section
-    lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
-    if (format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string) or
-        format_html_references(html_final, lang_slice, ln_rstrip) or
-        format_html_compatibility(html_final, ln_rstrip)):
-        return True, inside_section
-    return False, inside_section
+    if matched_bold or any(writer(html_final, ln_rstrip) for writer in
+                           html_writers):
+        return inside_section
+    html_rest(html_final, ln)
+    return inside_section
 
 
 def format_html_info(html_final, ln_rstrip):
@@ -3522,7 +3543,7 @@ def format_html_info(html_final, ln_rstrip):
     return False
 
 
-def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string):
+def format_html_warnings(html_final, ln_rstrip, *, ko_strings, ok_string):
     """Write formatted lines for sections without results.
 
     Either because they have passed all checks or because the headers could
@@ -3541,7 +3562,7 @@ def format_html_warnings(html_final, ko_strings, ln_rstrip, ok_string):
     return False
 
 
-def format_html_references(html_final, lang_slice, ln_rstrip):
+def format_html_references(html_final, ln_rstrip, *, lang_slice):
     """Write formatted lines for references.
 
     Related to `-o html` option.
@@ -3587,15 +3608,15 @@ def format_html_bold(html_final, ln_rstrip, inside_section):
     return False, inside_section
 
 
-def format_html_headers(ln):
+def format_html_headers(ln, header_prefixes):
     """Format HTTP response header lines for an HTML export.
 
     Sanitizes header values using HTML escaping to ensure that special
     characters (e.g., `<` or `>` in headers) are rendered correctly and do not
     interfere with the HTML structure; related to the `-o html` option.
     """
-    for header in headers:
-        if f"{header}: " in ln:
+    for _header, header_prefix in header_prefixes:
+        if header_prefix in ln:
             header_name, _, header_value = ln.partition(":")
             safe_value = escape(header_value.strip())
             ln = f"{HTML_TAGS[4]}{header_name}{HTML_TAGS[5]}: {safe_value}\n"
@@ -3609,15 +3630,11 @@ def format_html_csp(ln):
 
     Related to `-o html` option.
     """
-    csp_value = next((v for k, v in headers.items() if k.lower() ==
-                      "content-security-policy"), None)
-    if not csp_value:
+    if "content-security-policy" not in ln.casefold():
         return ln
-    for directive in t_csp_dirs:
-        pattern = RE_PATTERN[16].format(dir=re.escape(directive))
-        ln = re.sub(pattern, lambda m: f"{m.group(1)}{HTML_TAGS[14]}\
-{m.group(2)}{HTML_TAGS[15]}{m.group(3)}", ln)
-    return ln
+    return RE_CSP_DIRS.sub(
+        lambda m: f"{m.group(1)}{HTML_TAGS[14]}{m.group(2)}{HTML_TAGS[15]}\
+{m.group(3)}", ln)
 
 
 def format_html_fingerprint(args, ln, l_fng):
@@ -3643,7 +3660,8 @@ def format_html_totals(ln, l_total):
         if (not re.search(RE_PATTERN[11], ln)) and (
              ((i in ln) and ('"' not in ln)) or ("HTTP (" in ln) or
              (XFRAME_CHECK in ln)):
-            ln = ln.replace(ln, HTML_TAGS[3] + ln + HTML_TAGS[5])
+            ln = f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
+            break
     return ln
 
 
@@ -3657,22 +3675,23 @@ def format_html_empty(ln, ln_rstrip, l_empty):
     ln_strip = ln_rstrip.lstrip().lower()
     for i in l_empty:
         if (i.lower() in ln_strip and "[" not in ln_strip and ":" not in
-           ln_strip):
+           ln_strip and HTML_TAGS[3] not in ln):
             ln = f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
+            break
     return ln
 
 
-def format_html_rest(html_final, l_empty, ln):
+def format_html_rest(html_final, ln, *, l_empty, l_total, fng_sorted,
+                     header_prefixes):
     """Write formatted lines for the rest of the sections.
 
     E.g. highlighting in red the insecure headers; related to `-o html` option.
     """
-    l_total = sorted(set(l_miss + l_ins))
     ln, ln_enabled = format_html_enabled(ln, html_final)
     ln_rstrip = ln.rstrip("\n")
     if ln and not ln_enabled:
-        ln = format_html_headers(ln)
-        ln = format_html_fingerprint(args, ln, sorted(l_fng))
+        ln = format_html_headers(ln, header_prefixes)
+        ln = format_html_fingerprint(args, ln, fng_sorted)
         ln = format_html_totals(ln, l_total)
         ln = format_html_empty(ln, ln_rstrip, l_empty)
         html_final.write(ln)
@@ -3700,13 +3719,10 @@ def clean_html_final(final_filename):
 
     Related to `-o html` option.
     """
-    with Path(final_filename).open("r+", encoding="utf8") as html_final:
-        html_content = html_final.read()
-        html_content = re.sub(RE_PATTERN[22], "", html_content)
-        html_content = html_content.replace(RE_PATTERN[23], "")
-        html_final.seek(0)
-        html_final.write(html_content)
-        html_final.truncate()
+    html_path = Path(final_filename)
+    html_content = re.sub(RE_PATTERN[22], "", html_path.read_text(
+        encoding="utf8")).replace(HTML_PRE_ARTIFACT, "")
+    html_path.write_text(html_content, encoding="utf8")
 
 
 def generate_xml(final_filename, temp_filename, *, export_all=False):
@@ -4593,6 +4609,8 @@ t_csp_dirs = ("base-uri", "child-src", "connect-src", "default-src",
               "sandbox", "script-src", "script-src-attr", "script-src-elem",
               "style-src", "style-src-attr", "style-src-elem", "trusted-types",
               "upgrade-insecure-requests", "webrtc", "worker-src")
+RE_CSP_DIRS = re.compile(
+    RE_PATTERN[16].format(dir="|".join(map(re.escape, t_csp_dirs))))
 t_csp_insecs = ("http:", "ws:")
 t_csp_miss = ("base-uri", "child-src", "connect-src", "font-src",
               "form-action", "frame-ancestors", "img-src", "object-src",
