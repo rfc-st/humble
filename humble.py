@@ -3449,7 +3449,8 @@ def generate_html():
                     "html_desc": get_detail("[pdf_meta_title]"),
                     "html_keywords": get_detail(METADATA_S[0]),
                     "humble_URL": URL_LIST[4],
-                    "humble_local_v": local_version, "URL_analyzed": URL,
+                    "humble_local_v": local_version,
+                    "URL_analyzed": escape(URL),
                     "html_body": "<body><pre>"}
     replaced_html = Template(html_shell).substitute(html_replace)
     Path(final_filename).write_text(replaced_html, encoding="utf8")
@@ -3536,9 +3537,10 @@ def format_html_info(html_final, ln_rstrip):
         )
         return True
     if URL_STRING[1] in ln_rstrip:
+        safe_url = escape(ln_rstrip[8:])
         html_final.write(
-            f"{ln_rstrip[:8]}{HTML_TAGS[1]}{ln_rstrip[8:]}"
-            f"{HTML_TAGS[2]}{ln_rstrip[8:]}{HTML_TAGS[0]}{HTML_TAGS[11]}",
+            f"{ln_rstrip[:8]}{HTML_TAGS[1]}{safe_url}"
+            f"{HTML_TAGS[2]}{safe_url}{HTML_TAGS[0]}{HTML_TAGS[11]}",
         )
         return True
     return False
