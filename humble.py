@@ -193,6 +193,7 @@ SECTIONS_EXPORT_STATES = {RESP_SECTION: (True, False, False),
                           "[7.": (False, False, False)}
 STRINGS_BOLD = tuple(PDF_SECTION.keys())
 URL_STRING = ("rfc-st", " URL   : ", "https://caniuse.com/?")
+VALUE_LABELS = ("Value: ", "Valor: ")
 XML_STRING = ("Ref: ", "Value: ", "Valor: ")
 
 # Terminal ui, raw internals and styling
@@ -3694,7 +3695,26 @@ def format_html_rest(html_final, ln, *, l_empty, l_total, fng_sorted,
         ln = format_html_fingerprint(args, ln, fng_sorted)
         ln = format_html_totals(ln, l_total)
         ln = format_html_empty(ln, ln_rstrip, l_empty)
-        html_final.write(ln)
+        html_final.write(escape_html_value(ln))
+
+
+def escape_html_value(ln):
+    """Escape a label-delimited value while preserving humble's own tags.
+
+    Only the content inside the single quotes following a localized value
+    label (`Value:`/`Valor:`) is escaped, with `quote=False` so benign
+    output is unchanged; lines without such a label are returned unaltered.
+    Related to `-o html` option.
+    """
+    for label in VALUE_LABELS:
+        head, sep, tail = ln.partition(f"{label}'")
+        if sep and tail.endswith("'\n"):
+            value = escape(tail[:-2], quote=False)
+            return f"{head}{sep}{value}'\n"
+        if sep and tail.endswith("'"):
+            value = escape(tail[:-1], quote=False)
+            return f"{head}{sep}{value}'"
+    return ln
 
 
 def format_html_enabled(ln, html_final):
@@ -3707,7 +3727,8 @@ def format_html_enabled(ln, html_final):
     ln = f" {ln[19:].rstrip()}"
     if ":" in ln:
         header, value = map(str.strip, ln.split(":", 1))
-        ln = f"{HTML_TAGS[6]} {header}{HTML_TAGS[5]}: {value}"
+        ln = (f"{HTML_TAGS[6]} {header}{HTML_TAGS[5]}: "
+              f"{escape(value, quote=False)}")
     else:
         ln = f"{HTML_TAGS[6]} {ln.strip()}{HTML_TAGS[5]}"
     html_final.write(f"{format_html_csp(ln)}{HTML_TAGS[11]}")
