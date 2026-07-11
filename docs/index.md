@@ -25,7 +25,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 ## Features
 - Covers 63 <a href="https://github.com/rfc-st/humble/#checks-enabled-headers" target="_blank">enabled</a> security-related HTTP response headers.
 - 15 <a href="https://github.com/rfc-st/humble/#checks-missing-headers" target="_blank">checks</a> for missing security-related HTTP response headers.
-- 1286 <a href="https://github.com/rfc-st/humble/#checks-fingerprint-headers" target="_blank">checks</a> for fingerprinting through HTTP response headers.
+- 1287 <a href="https://github.com/rfc-st/humble/#checks-fingerprint-headers" target="_blank">checks</a> for fingerprinting through HTTP response headers.
 - 159 <a href="https://github.com/rfc-st/humble/#checks-deprecated-headersprotocols-and-insecure-values" target="_blank">checks</a> for deprecated HTTP response headers/protocols or with insecure/wrong values.
 - 28 <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L46-L73" target="_blank">checks</a> related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
 - Can check for compliance with the OWASP <a href="https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/03_best_practices.md" target="_blank">Secure Headers Project</a> Best Practices.

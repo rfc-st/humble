@@ -69,7 +69,7 @@
 
 :heavy_check_mark: Covers 63 [enabled](#checks-enabled-headers) security-related HTTP response headers.<br />
 :heavy_check_mark: 15 [checks](#checks-missing-headers) for missing security-related HTTP response headers (the ones I consider essential).<br />
-:heavy_check_mark: 1286 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
+:heavy_check_mark: 1287 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
 :heavy_check_mark: 159 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: 28 [checks](https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L46-L73) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
 :heavy_check_mark: Can check for compliance with the OWASP <a href="https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/03_best_practices.md" target="_blank">Secure Headers Project</a> Best Practices.<br />
