@@ -3982,18 +3982,21 @@ def parse_har_file(file_path):
 
 
 def extract_har_content(har_data):
-    """Extract response headers and status code from a HAR file."""
-    entries = har_data.get("log", {}).get("entries", [])
-    if not entries:
+    """Extract response headers and status code from a HAR file.
+
+    A HAR file may be valid JSON yet not follow the expected structure, so
+    any unexpected type yields empty headers, reported by the caller via
+    `[args_harlines]`.
+    """
+    try:
+        response = har_data["log"]["entries"][0]["response"]
+        status_code = int(response.get("status", 0))
+        input_headers = {header["name"].title():
+                         (header.get("value") or "").strip()
+                         for header in response["headers"]
+                         if header.get("name")}
+    except (AttributeError, IndexError, KeyError, TypeError, ValueError):
         return {}, 0
-    first_response = entries[0].get("response", {})
-    status_code = int(first_response.get("status", 0))
-    input_headers = {}
-    for header in first_response.get("headers", []):
-        name = header.get("name", "").title()
-        value = header.get("value", "").strip()
-        if name:
-            input_headers[name] = value
     return input_headers, status_code
 
 
