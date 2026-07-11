@@ -200,6 +200,7 @@ XML_STRING = ("Ref: ", "Value: ", "Valor: ")
 DELETED_LINES = "\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K"
 HASH_CHARS = {"sha256": 32, "sha384": 48, "sha512": 64}
 HTTP_SCHEMES = ("http:", "https:")
+HTTP_SCHEMES_S = ("http", "https")
 LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2)
 SECONDS_BOUNDS = (86400, 31536000)
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 20)
@@ -461,11 +462,26 @@ def print_l10n_file(args, l10n_file, *, slice_ln=False):
     sys.exit(0)
 
 
+def validate_testssl_uri(uri):
+    """Check that the URI is well-formed before analyzing it.
+
+    Exit with a specific message if the URI has no scheme, an unsupported
+    one, or no host; related to `-e` option.
+    """
+    parsed_uri = urlparse(uri)
+    if not parsed_uri.scheme:
+        print_error_detail("[e_mschema]")
+    if parsed_uri.scheme not in HTTP_SCHEMES_S:
+        print_error_detail("[e_ischema]")
+    if not parsed_uri.netloc:
+        print_error_detail("[e_url]")
+
+
 def testssl_command(testssl_temp_path, uri):
     """Prepare the TLS/SSL analysis.
 
-    Prompt the user to accept terms and exit if declined; related to `-e`
-    option.
+    Validate the URI and prompt the user to accept terms and exit if declined;
+    related to `-e` option.
 
     ??? tip
         The options used in the analysis are defined in the `TESTSSL_OPTIONS`
@@ -481,6 +497,7 @@ def testssl_command(testssl_temp_path, uri):
         Check the testssl.sh [documentation](https://testssl.sh/doc/testssl.1.html){:target="_blank"}
         for a list of all available options.
     """
+    validate_testssl_uri(uri)
     args_path = Path(testssl_temp_path).resolve()
     if not args_path.is_dir():
         print_error_detail("[notestssl_path]")

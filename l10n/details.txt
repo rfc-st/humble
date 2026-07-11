@@ -2382,6 +2382,15 @@ Generator
 [test_valid_output_path]
  verify an analysis is exported to the specified path.
 
+[test_testssl_uri_no_scheme]
+ verify an error is displayed when the URI to analyze with testssl.sh has no scheme.
+
+[test_testssl_uri_invalid_scheme]
+ verify an error is displayed when the URI to analyze with testssl.sh has an invalid scheme.
+
+[test_testssl_uri_no_host]
+ verify an error is displayed when the URI to analyze with testssl.sh has no host.
+
 [test_wrong_testssl]
  verify an error is displayed when the testssl.sh file is not found.
 

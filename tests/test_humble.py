@@ -113,7 +113,8 @@ TEST_URLS = ("https://github.com/rfc-st/humble",
              "ftp://google.com", "https://\u0442\u0435\u0441\u0442.ru",
              "https://httpbin.org/status/529",
              "https://httpbin.org/status/520",
-             "http://nonexistenturl.com", "https://httpbin.org/status/432")
+             "http://nonexistenturl.com", "https://httpbin.org/status/432",
+             "google.com", "https://")
 
 REQUIRED_PYTHON_VERSION = (3, 11)
 
@@ -291,6 +292,13 @@ TEST_CFGS = {
                               "available"),
     "test_valid_output_path": (["-u", TEST_URLS[9], "-o", "csv", "-op", "."],
                                "saved"),
+    "test_testssl_uri_no_scheme": (["-u", TEST_URLS[19], "-e",
+                                    HUMBLE_WRONG_TESTSSL_DIR], "scheme"),
+    "test_testssl_uri_invalid_scheme": (["-u", TEST_URLS[13], "-e",
+                                         HUMBLE_WRONG_TESTSSL_DIR],
+                                        "unsupported"),
+    "test_testssl_uri_no_host": (["-u", TEST_URLS[20], "-e",
+                                  HUMBLE_WRONG_TESTSSL_DIR], "not valid"),
     "test_wrong_testssl": (["-u", TEST_URLS[9], "-e",
                             HUMBLE_WRONG_TESTSSL_DIR], "not found"),
 }

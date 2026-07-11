@@ -2361,6 +2361,15 @@ Generador
 [test_valid_output_path]
  verifica que se exporte un análisis en la ruta indicada.
 
+[test_testssl_uri_no_scheme]
+ verifica que se muestra un error cuando la URI a analizar con testssl.sh no tiene esquema.
+
+[test_testssl_uri_invalid_scheme]
+ verifica que se muestra un error cuando la URI a analizar con testssl.sh tiene un esquema no válido.
+
+[test_testssl_uri_no_host]
+ verifica que se muestra un error cuando la URI a analizar con testssl.sh no tiene host.
+
 [test_wrong_testssl]
  verifica que se muestre un error al no encontrar el fichero de testssl.sh.
 
