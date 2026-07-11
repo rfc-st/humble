@@ -3837,6 +3837,23 @@ def print_http_exception(exception_id, exception_v):
     raise SystemExit from exception_v
 
 
+def validate_url(url):
+    """Exit cleanly if the URL cannot be parsed.
+
+    `urlparse()` raises `ValueError` on malformed URLs (e.g. an unclosed
+    IPv6 bracket), and accessing `.port` does so on an invalid port; this
+    guards `check_russian_scope()` and every later consumer from an
+    uncaught traceback. Scheme and host remain the responsibility of the
+    `requests` library, reported via `exception_d`.
+
+    Related to `-u` option.
+    """
+    try:
+        _ = urlparse(url).port
+    except ValueError:
+        print_error_detail("[e_url]")
+
+
 def check_russian_scope():
     """Validate if the target domain is within the Russian scope and exit if so.
 
@@ -4376,6 +4393,7 @@ if "-f" in sys.argv:
 URL = args.URL
 
 if URL is not None:
+    validate_url(URL)
     check_russian_scope()
 
 if "-cicd" in sys.argv:
