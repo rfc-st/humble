@@ -106,7 +106,7 @@ PYTEST_CACHE_DIRS = [
 TEST_URLS = ("https://github.com/rfc-st/humble",
              "https://httpbin.org/status/403", "https://github.com",
              "http://github.com", "https://humbletestresponseheaders.com",
-             "https://en.wikipedia.org", "https://microsoft.com",
+             "https://en.wikipedia.org/", "https://microsoft.com",
              "http://127.0.0.1:65535", "https://tass.ru/",
              "https://google.com", "https://httpbin.org/delay/10",
              "https://httpbin.org/status/502", "http://10.255.255.1", # NOSONAR
@@ -673,7 +673,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-07-10")
+local_version = date.fromisoformat("2026-07-11")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

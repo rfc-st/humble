@@ -1691,10 +1691,10 @@ URLs
 (Advertencias: 
 
 [no_analysis]
-Error: Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análisis contra esa URL.
+Error: Para usar esta opción ('-a') debes haber realizado al menos un análisis contra esa URL exacta ('https://example.com' y 'https://example.com/' son distintas).
 
 [no_global_analysis]
-Error: Para utilizar esta opción ('-a') debes haber ejecutado, como mínimo, un análisis contra una URL.
+Error: Para usar esta opción ('-a') debes haber realizado como mínimo un análisis contra una URL.
 
 [no_enabled]
  Sin cabeceras habilitadas

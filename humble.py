@@ -78,7 +78,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-10")
+local_version = date.fromisoformat("2026-07-11")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -547,6 +547,17 @@ def get_analysis_results():
     print_detail("[experimental_header]", 3)
 
 
+def match_url_lines(all_analysis):
+    """Return history lines whose URL field exactly matches `URL`.
+
+    Splitting on `" ; "` and comparing the URL field (index 1) avoids
+    substring collisions (e.g. `example.com` vs `example.com.evil.com`);
+    related to `-a` option and to the analysis history file.
+    """
+    return [line for line in all_analysis
+            if line.split(" ; ")[1:2] == [URL]]
+
+
 def save_analysis_results(t_cnt):
     """Save analysis results to the analysis history file, `analysis_h.txt`.
 
@@ -567,7 +578,7 @@ def save_analysis_results(t_cnt):
         return fallback
     with Path(HUMBLE_FILES[0]).open("a+", encoding="utf8") as all_analysis:
         all_analysis.seek(0)
-        url_ln = [line for line in all_analysis if URL in line]
+        url_ln = match_url_lines(all_analysis)
         analysis_totals = [current_time, URL, en_cnt, m_cnt, f_cnt, i_cnt[0],
                            e_cnt, t_cnt]
         all_analysis.write(" ; ".join(map(str, analysis_totals)) + "\n")
@@ -701,7 +712,7 @@ def get_analysis_metrics(all_analysis):
 
     Related to `-a` option.
     """
-    url_ln = [line for line in all_analysis if URL in line]
+    url_ln = match_url_lines(all_analysis)
     if not url_ln:
         print_error_detail("[no_analysis]")
     adj_url_ln = adjust_old_analysis(url_ln)
@@ -3931,7 +3942,7 @@ def parse_har_file(file_path):
     try:
         with file_path.open(encoding="utf8") as har_file:
             har_data = load(har_file)
-    except (ValueError, KeyError):
+    except (ValueError, KeyError, AttributeError, TypeError):
         print_error_detail("[args_malformedhar]")
     return extract_har_content(har_data)
 

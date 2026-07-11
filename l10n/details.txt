@@ -1690,7 +1690,7 @@ URLs
 (Warnings: 
 
 [no_analysis]
-Error: To use this option ('-a') you must have run at least one scan against that URL.
+Error: To use this option ('-a') you must have run at least one scan against that exact URL ('https://example.com' and 'https://example.com/' differ).
 
 [no_global_analysis]
 Error: To use this option ('-a') you must have run at least one scan against any URL.
