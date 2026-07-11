@@ -4774,7 +4774,7 @@ t_per_broad = ("*", " * ")
 t_per_dep = ("attribution-reporting", "browsing-topics", "document-domain",
              "window-placement")
 t_per_ft = ("accelerometer", "all-screens-capture", "ambient-light-sensor",
-            "aria-notify", "autofill", "autoplay", "battery", "bluetooth"
+            "aria-notify", "autofill", "autoplay", "battery", "bluetooth",
             "camera", "captured-surface-control", "ch-ua-high-entropy-values",
             "ch-ua", "ch-ua-arch", "ch-ua-bitness", "ch-ua-full-version",
             "ch-ua-full-version-list", "ch-ua-mobile", "ch-ua-model",
