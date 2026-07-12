@@ -2136,6 +2136,9 @@ Generador
 [test_export_all]
  verifica que un análisis se exporte a todos los formatos disponibles.
 
+[test_export_all_brief]
+ verifica que un análisis breve se exporte a todos los formatos disponibles.
+
 [test_export_all_responses]
  verifica que un análisis, incluyendo cabeceras de respuesta HTTP, se exporte a todos los formatos disponibles.
 
@@ -2337,6 +2340,9 @@ Generador
 [test_updates_error]
  Verifica que se muestre un error cuando falle la comprobación de actualizaciones.
 
+[test_url_malformed]
+ verifica que se muestre mensaje de error al analizar una URL mal formada.
+
 [test_url_statistics]
  verifica que se muestren las estadísticas para una URL concreta analizada.
 
@@ -2375,6 +2381,9 @@ Generador
 
 [test_print_detail_s]
  verifica que la función devuelva 'None' para IDs desconocidos, evitando errores.
+
+[test_skip_file]
+ verifica que se excluya en el análisis el contenido del fichero 'humble.skip'.
 
 [test_tests]
 Pruebas realizadas el

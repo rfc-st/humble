@@ -55,7 +55,7 @@ if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
 
 ASSERT_STR = ["error", "Error"]
 EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
-                 "[test_print_detail_s]"]
+                 "[test_print_detail_s]", "[test_skip_file]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -114,7 +114,7 @@ TEST_URLS = ("https://github.com/rfc-st/humble",
              "https://httpbin.org/status/529",
              "https://httpbin.org/status/520",
              "http://nonexistenturl.com", "https://httpbin.org/status/432",
-             "google.com", "https://")
+             "google.com", "https://", "https://google.com:443g")
 
 REQUIRED_PYTHON_VERSION = (3, 11)
 
@@ -165,6 +165,8 @@ TEST_CFGS = {
                            "Analysis Grade"),
     "test_detailed_analysis": (["-u", TEST_URLS[9]], "Analysis Grade:"),
     "test_export_all": (["-u", TEST_URLS[9], "-o", "all"], "Exported"),
+    "test_export_all_brief": (["-u", TEST_URLS[9], "-o", "all", "-b"],
+                              "Exported"),
     "test_export_all_responses": (["-u", TEST_URLS[9], "-o", "all", "-r"],
                                   "Exported"),
     "test_export_csv": (["-u", TEST_URLS[9], "-o", "csv"], "Analysis"),
@@ -278,6 +280,7 @@ TEST_CFGS = {
     "test_unsupported_python_version": ([], "humble"),
     "test_updates": (["-v"], "Keeping your security tools"),
     "test_updates_error": (["-v"], "error"),
+    "test_url_malformed": (["-u", TEST_URLS[21]], "Error"),
     "test_url_statistics": (["-u", TEST_URLS[5], "-if", PATHS["ALL_HEADERS"],
                              "-a"], "Empty headers"),
     "test_url_insufficient_statistics": (["-u", TEST_URLS[6], "-if",
@@ -593,6 +596,25 @@ def test_proxy_wrong():
     expected = ["Error:", "error:"]
     run_test(["-p", "https://"], expected)
     run_test(["-p", "http://127.0.0.1:test"], expected)
+
+
+def test_skip_file(tmp_path, monkeypatch):
+    """Verify 'humble.skip' parsing and the exclusion of its headers.
+
+    Uses a modified copy of the file in a temporary directory; the
+    original bundled 'humble.skip' is never modified.
+    """
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main, humble_module.args = l10n_main, args
+    monkeypatch.chdir(tmp_path)
+    assert humble_module.check_skip_file() == []
+    skip_content = (HUMBLE_PROJECT_ROOT / "humble.skip").read_text(
+        encoding="utf-8").replace("# Vary", "Vary").replace(
+        "# X-XSS-Protection", "X-XSS-Protection")
+    (tmp_path / "humble.skip").write_text(skip_content, encoding="utf-8")
+    assert humble_module.check_skip_file() == ["Vary", "X-XSS-Protection"]
+    run_test(["-u", TEST_URLS[5]], "excluded from this analysis")
 
 
 def delete_export_files(extension, ko_msg):

@@ -2157,6 +2157,9 @@ Generator
 [test_export_all]
  verify an analysis is exported to all available formats.
 
+[test_export_all_brief]
+ verify a brief analysis is exported to all available formats.
+
 [test_export_all_responses]
  verify an analysis, including HTTP response headers, is exported to all available formats.
 
@@ -2358,6 +2361,9 @@ Generator
 [test_updates_error]
  verify an error is displayed when the update check fails.
 
+[test_url_malformed]
+ verify an error is displayed when analyzing a malformed URL.
+
 [test_url_statistics]
  verify statistics are displayed for a specific URL.
 
@@ -2396,6 +2402,9 @@ Generator
 
 [test_print_detail_s]
  verify the function returns 'None' for unknown IDs, preventing crashes.
+
+[test_skip_file]
+ verify 'humble.skip' file parsing and the exclusion of its headers.
 
 [test_tests]
 Tests run at
