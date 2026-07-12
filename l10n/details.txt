@@ -2498,3 +2498,6 @@ OK: The analysis meets the required grade
 
 [cicd_ko]
 KO: The analysis does not meet the required grade
+
+[cicd_no_grade]
+Error: the analysis grade could not be determined; the analysis output may be malformed or incomplete.

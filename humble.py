@@ -78,7 +78,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-11")
+local_version = date.fromisoformat("2026-07-12")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -2388,15 +2388,13 @@ def check_output_format(final_filename, reliable, tmp_filename):
 
 
 def check_cicd(analysis_grade, threshold_grade):
-    """Check if the analysis grade meets the minimum required for CI/CD.
+    """Check if the analysis grade fails the minimum required for CI/CD.
 
-    Compares grades against `GRADE_ORDER`; equal grades pass.
+    Both grades must belong to `GRADE_ORDER`, which is guaranteed by
+    `validate_cicd_grade`; equal grades pass.
     """
-    if analysis_grade not in GRADE_ORDER or threshold_grade not in GRADE_ORDER:
-        return False
-    analysis_idx = GRADE_ORDER.index(analysis_grade)
-    threshold_idx = GRADE_ORDER.index(threshold_grade)
-    return analysis_idx < threshold_idx
+    return GRADE_ORDER.index(analysis_grade) < GRADE_ORDER.index(
+        threshold_grade)
 
 
 def build_cicd_info(info_lines):
@@ -2450,19 +2448,23 @@ def fetch_cicd_grade(totals):
 
 
 def validate_cicd_grade(threshold_norm, threshold_grade, totals):
-    """Validate the target threshold and retrieve the actual analysis grade.
+    """Validate the target threshold and the actual analysis grade.
 
-    Ensures threshold exists within `GRADE_ORDER`.
+    Ensures both grades exist within `GRADE_ORDER`: exits in case of an invalid
+    threshold or an undeterminable analysis grade.
     """
-    if threshold_norm not in GRADE_ORDER:
-        err_key, inv_msg, val_msg = [get_detail(k, replace=True) for k in
-                                     ("[cicd_error]", "[cicd_invalid]",
-                                      "[cicd_valid]")]
-        grades = ", ".join(f"'{g}'" for g in GRADE_ORDER)
-        print(f"\n{err_key}: '{threshold_grade}' {inv_msg}; {val_msg} \
-{grades}.")
-        sys.exit(2)
-    return fetch_cicd_grade(totals)
+    analysis_grade = fetch_cicd_grade(totals)
+    if threshold_norm in GRADE_ORDER and analysis_grade in GRADE_ORDER:
+        return analysis_grade
+    bad_thold = threshold_norm not in GRADE_ORDER
+    msg = (
+        f"'{threshold_grade}' {get_detail('[cicd_invalid]', replace=True)}; "
+        f"{get_detail('[cicd_valid]', replace=True)} "
+        + ", ".join(f"'{g}'" for g in GRADE_ORDER) + "."
+        if bad_thold else get_detail("[cicd_no_grade]", replace=True)
+    )
+    print(f"\n{get_detail('[cicd_error]', replace=True)}: {msg}")
+    sys.exit(2 if bad_thold else 1)
 
 
 def threshold_cicd(threshold_grade, totals):
