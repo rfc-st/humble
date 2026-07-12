@@ -91,7 +91,7 @@
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
 :heavy_check_mark: Can exclude HTTP response headers across all analyses via [humble.skip](#global-humbleskip) file.<br />
 :heavy_check_mark: [AI](#AI)-driven security triage and remediation guidance.<br />
-:heavy_check_mark: Provides dozens of [unit tests](#unit-tests) to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
+:heavy_check_mark: Includes over 100 [unit tests](#unit-tests) to help verify it works correctly in your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
 :heavy_check_mark: Classes and functions documented at <a href="https://humble.readthedocs.io/en/latest/" target="_blank">Read the Docs</a>.<br />
 :heavy_check_mark: Code regularly audited with several quality, style and security [tools](#quality-style-and-security-tools).<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
