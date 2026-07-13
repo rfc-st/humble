@@ -2406,6 +2406,9 @@ Generator
 [test_skip_file]
  verify 'humble.skip' file parsing and the exclusion of its headers.
 
+[test_response_headers_none]
+ verify an error is displayed when an analysis receives no HTTP response headers.
+
 [test_tests]
 Tests run at
 

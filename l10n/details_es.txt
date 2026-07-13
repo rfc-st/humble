@@ -2385,6 +2385,9 @@ Generador
 [test_skip_file]
  verifica que se excluya en el análisis el contenido del fichero 'humble.skip'.
 
+[test_response_headers_none]
+ verifica que se muestra un error cuando no se reciben cabeceras de respuesta HTTP.
+
 [test_tests]
 Pruebas realizadas el
 

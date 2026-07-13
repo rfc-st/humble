@@ -55,7 +55,8 @@ if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
 
 ASSERT_STR = ["error", "Error"]
 EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
-                 "[test_print_detail_s]", "[test_skip_file]"]
+                 "[test_print_detail_s]", "[test_skip_file]",
+                 "[test_response_headers_none]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -615,6 +616,18 @@ def test_skip_file(tmp_path, monkeypatch):
     (tmp_path / "humble.skip").write_text(skip_content, encoding="utf-8")
     assert humble_module.check_skip_file() == ["Vary", "X-XSS-Protection"]
     run_test(["-u", TEST_URLS[5]], "excluded from this analysis")
+
+
+def test_response_headers_none(capsys):
+    """Verify the error shown when an analysis receives no response headers."""
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main, humble_module.args = l10n_main, args
+    args.output = None
+    humble_module.headers = {}
+    humble_module.print_response_headers()
+    expected = get_detail("[no_enb_headers]", replace=True).strip()
+    assert expected in capsys.readouterr().out
 
 
 def delete_export_files(extension, ko_msg):

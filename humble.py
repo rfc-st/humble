@@ -51,7 +51,7 @@ from string import Template
 from subprocess import PIPE, STDOUT, Popen
 from threading import Event, Thread
 from time import time
-from typing import NamedTuple
+from typing import NamedTuple, NoReturn
 from urllib.parse import urlparse
 
 # Third-Party imports
@@ -1758,7 +1758,7 @@ def get_detail(id_mode, *, replace=False):
     return None
 
 
-def print_error_detail(id_mode, *, clean_lines=False):
+def print_error_detail(id_mode, *, clean_lines=False) -> NoReturn:
     """Print an error message and exit, optionally clearing previous output."""
     if clean_lines:
         delete_lines()
@@ -2049,12 +2049,10 @@ def parse_user_agent(*, user_agent=False):
     """Select and validate the provided user agent, related to `-ua` option."""
     if not user_agent:
         return get_user_agent("1")
-    user_agent_id = sys.argv[sys.argv.index("-ua") + 1].lstrip("-ua")
+    user_agent_id = sys.argv[sys.argv.index("-ua") + 1].removeprefix("-ua")
     if not URL:
-        nourl_user_agent(user_agent_id)
-    else:
-        return get_user_agent(user_agent_id)
-    return None
+        return nourl_user_agent(user_agent_id)
+    return get_user_agent(user_agent_id)
 
 
 def nourl_user_agent(user_agent_id):
@@ -2066,7 +2064,6 @@ def nourl_user_agent(user_agent_id):
     if user_agent_id == "0":
         return get_user_agent("0")
     print_error_detail("[args_useragent]")
-    return None
 
 
 def get_user_agent(user_agent_id):
@@ -2083,7 +2080,6 @@ def get_user_agent(user_agent_id):
         if line.startswith(f"{user_agent_id}.-"):
             return line[4:].strip()
     print_error_detail("[ua_invalid]")
-    return None
 
 
 def print_user_agents(user_agents):
@@ -2291,12 +2287,8 @@ def format_htmlpdf_all_export(line, export_format, target_state, in_browser):
         line = f" {line}" if export_format == "html" else f" {line.lstrip()}"
     if not (target_state and line.startswith(" ")):
         return line
-    match export_format:
-        case "html":
-            return f" {STYLE[8]}{line[1:]}"
-        case "pdf":
-            return f" {STYLE[6]}{line[1:]}"
-    return line
+    style = STYLE[8] if export_format == "html" else STYLE[6]
+    return f" {style}{line[1:]}"
 
 
 def fix_pdf_all_export(tmp_filename):
@@ -3399,12 +3391,12 @@ def set_pdf_chunks(chunks, pdf):
                                      chunks, i, pdf)
         else:
             pdf.set_text_color(0, 0, 0)
-            formatted_chunk = format_pdf_chunks(chunk, chunks, chunk_c, i, pdf)
+            formatted_chunk = format_pdf_chunks(chunk, chunk_c, i, pdf)
             pdf.cell(104, 6, text=formatted_chunk, align="L")
             pdf.ln(h=6)
 
 
-def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
+def format_pdf_chunks(chunk, chunk_c, i, pdf):
     """Apply formatting and positioning to blocks of text.
 
     Related to `-o pdf` option.
@@ -3413,10 +3405,8 @@ def format_pdf_chunks(chunk, chunks, chunk_c, i, pdf):
         chunk = f" {chunk}"
     if chunk_c == PDF_COLORS[2]:
         return chunk
-    if i == 1 and len(chunks) >= LENGTH_BOUNDS[5]:
+    if i == 1:
         pdf.set_y(pdf.get_y() - 1)
-    elif len(chunks) == 1:
-        pdf.set_y(pdf.get_y() - 0.5)
     return chunk
 
 
