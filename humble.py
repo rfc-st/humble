@@ -60,6 +60,7 @@ from colorama import Fore, Style, init
 from defusedcsv import csv as defusedcsv_logic
 from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
+from urllib3 import disable_warnings
 
 # Core globals, metadata and versioning
 BANNER = """  _                     _     _
@@ -78,7 +79,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-12")
+local_version = date.fromisoformat("2026-07-13")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -319,11 +320,13 @@ def check_updates(local_version):
         github_response = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT)
         github_response.raise_for_status()
         github_repo = github_response.text
-        github_date = re.search(RE_PATTERN[4], github_repo).group()
+        if (github_match := re.search(RE_PATTERN[4], github_repo)) is None:
+            print_error_detail("[update_error]")
+        github_date = github_match.group()
         github_version = date.fromisoformat(github_date)
         days_diff = (github_version - local_version).days
         check_updates_diff(days_diff, github_version, local_version)
-    except (requests.exceptions.RequestException, AttributeError, ValueError):
+    except (requests.exceptions.RequestException, ValueError):
         print_error_detail("[update_error]")
     sys.exit(0)
 
@@ -528,14 +531,13 @@ def testssl_analysis(testssl_cmd):
     """
     try:
         # nosemgrep: dangerous-subprocess-use-audit
-        process = Popen(testssl_cmd, stdout=PIPE, stderr=STDOUT,
-                        text=True) # false-positive
-        for ln in iter(process.stdout.readline, ""):
-            print(ln, end="")
-            if "Done" in ln:
-                process.terminate()
-                break
-        process.wait()
+        with Popen(testssl_cmd, stdout=PIPE, stderr=STDOUT,
+                   text=True) as process:  # false-positive
+            for ln in iter(process.stdout.readline, ""):
+                print(ln, end="")
+                if "Done" in ln:
+                    process.terminate()
+                    break
     except (OSError, ValueError):
         print_error_detail("[testssl_error]")
 
@@ -4014,7 +4016,6 @@ def analyze_input_file(input_file):
     file_path = Path(input_file)
     if not file_path.exists():
         print_error_detail("[args_inputnotfound]")
-        return {}, False, 0
     input_headers = {}
     status_code = 0
     try:
@@ -4088,7 +4089,7 @@ def get_tmp_file(args, export_date):
         lang = "_es" if args.lang else "_en"
         tmp_file = build_tmp_file(export_date, file_ext, lang, humble_str, url)
     if args.output_path:
-        tmp_file = (Path(args.output_path) / tmp_file).resolve()
+        tmp_file = str((Path(args.output_path) / tmp_file).resolve())
     return tmp_file
 
 
@@ -4189,8 +4190,8 @@ def process_http_error(r, exception_d):
         return
     try:
         r.raise_for_status()
-    except requests.exceptions.HTTPError as err_http:
-        status = err_http.response.status_code
+    except requests.exceptions.HTTPError:
+        status = r.status_code
         l10n_id = f"[server_{status}]"
         if ERROR_CODES_MIXED[2] <= status <= ERROR_CODES_MIXED[4]:
             process_server_error(status, l10n_id)
@@ -4494,7 +4495,7 @@ exception_d = {
     requests.exceptions.Timeout: "[e_timeout]",
     requests.exceptions.TooManyRedirects: "[e_redirect]",
 }
-requests.packages.urllib3.disable_warnings()
+disable_warnings() # via urllib3 import
 
 if "-if" not in sys.argv:
     headers_l, http_equiv = {}, None
