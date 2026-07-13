@@ -407,11 +407,11 @@ def parse_expected_text(output, expected_text):
 def test_humble_scenarios(cfg_key):
     """Execute dynamic validation tests managed via TEST_CFGS.
 
-    Skips `test_wrong_testssl` on Windows due to the Unix-environment
+    Skips testssl-related scenarios on Windows due to the Unix-environment
     requirement (Cygwin, MSYS2, or Windows Subsystem for Linux) for testssl.sh
     """
-    if cfg_key == "test_wrong_testssl" and system().lower() == "windows":
-        pytest.skip("'test_wrong_testssl' skipped on Windows")
+    if system().lower() == "windows" and cfg_key.startswith("test_testssl"):
+        pytest.skip(f"'{cfg_key}' skipped on Windows")
     run_test(*TEST_CFGS[cfg_key])
 
 
