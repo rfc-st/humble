@@ -4321,7 +4321,7 @@ def process_http_response(r, exception, status_code, reliable, body):
         - [Exceptions in the HTTP library 'requests'](https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/){:target="_blank"}
         - [Generic HTTP 5xx errors](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors){:target="_blank"}
         - [Cloudflare 5xx HTTP errors](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/){:target="_blank"}
-        - [MDN docs regarding HTML `<meta>` and `content-type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Elements/meta/http-equiv#content-type){:target="_blank"}
+        - [MDN docs regarding HTML `<meta>` and `content-type`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type){:target="_blank"}
     """
     if exception:
         process_requests_exception(exception)
