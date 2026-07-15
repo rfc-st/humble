@@ -1048,7 +1048,22 @@ HTTP Response Headers
  Analyzing URL and saving the report, please wait ...
 
 [analysis_date]
- Date :
+ Date  :
+
+[analysis_finalurl]
+ Final URL  :
+
+[analysys_redir_ip]
+ Final IP   :
+
+[analysis_ip]
+ IP    :
+
+[analysis_code]
+ Code  :
+
+[analysis_redir_code]
+ Final Code :
 
 [python_required_version]
 

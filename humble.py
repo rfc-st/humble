@@ -42,11 +42,11 @@ from datetime import date, datetime
 from functools import partial
 from html import escape
 from ipaddress import ip_address
-from itertools import chain, islice, pairwise
+from itertools import chain, islice, pairwise, takewhile
 from json import dump, dumps, load
 from pathlib import Path
 from shutil import which
-from socket import create_connection
+from socket import create_connection, getaddrinfo
 from string import Template
 from subprocess import PIPE, STDOUT, Popen
 from threading import Event, Thread
@@ -1578,17 +1578,37 @@ def print_general_info(reliable, export_filename, headers_skipped, skip_set):
     print_extended_info(args, reliable, status_code, headers_skipped, skip_set)
 
 
+def print_response_info():
+    """Print details of the analyzed response.
+
+    Final URL (if redirects occurred), resolved IP and HTTP status code.
+    For input file analysis (`-if` option) only the status code, when
+    declared in the file, is printed.
+    """
+    redirected = bool(final_url) and final_url.rstrip("/") != URL.rstrip("/")
+    if redirected:
+        print(f"{get_detail('[analysis_finalurl]', replace=True)} \
+{final_url}")
+    ip_id = "[analysys_redir_ip]" if redirected else "[analysis_ip]"
+    code_id = ("[analysis_redir_code]" if redirected else "[analysis_code]")
+    if analysis_ip := get_analysis_ip(final_url):
+        print(f"{get_detail(ip_id, replace=True)} {analysis_ip}")
+    if status_code:
+        print(f"{get_detail(code_id, replace=True)} {status_code}")
+
+
 def print_basic_info(export_filename):
     """Print basic analysis details.
 
-    Date, time, URL, User-Agent (`-ua` option), input file (`-if` option) and
-    exported filename (`-o` option).
+    Date, time, URL, response details, User-Agent (`-ua` option), input
+    file (`-if` option) and exported filename (`-o` option).
     """
     print(end="\n\n" if args.output in ("html", "pdf", None) else "")
     print_detail_r("[0section]")
     print_detail_l("[analysis_date]")
     print(f" {current_time}")
     print(f"{URL_STRING[1]}{URL}")
+    print_response_info()
     if args.user_agent not in (None, "", "0"):
         print(f"{get_detail('[ua_custom]', replace=True)} '{args.user_agent}'"
               f"{get_detail('[ua_custom2]', replace=True)}")
@@ -2522,7 +2542,9 @@ def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
     """
     cicd_info_start = lines.index(next(line for line in lines if
                                        STRINGS_BOLD[0] in line))
-    cicd_info_lines = lines[cicd_info_start + 1:cicd_info_start + 4]
+    cicd_info_lines = list(takewhile(
+        lambda line: not line.startswith(STRINGS_BOLD),
+        lines[cicd_info_start + 1:]))
     cicd_totals_start = lines.index(next(line for line in lines if
                                          STRINGS_BOLD[8] in line))
     cicd_totals_lines = lines[cicd_totals_start + 2:-3]
@@ -3842,6 +3864,18 @@ def print_http_exception(exception_id, exception_v):
     raise SystemExit from exception_v
 
 
+def get_analysis_ip(final_url):
+    """Resolve the IP address of the analyzed (final) URL's host.
+
+    Resolved at analysis time: under DNS round-robin or anycast it may
+    differ from the peer that answered. Returns `None` when unresolvable.
+    """
+    try:
+        return getaddrinfo(urlparse(final_url).hostname, None)[0][4][0]
+    except (OSError, TypeError):
+        return None
+
+
 def validate_url(url):
     """Exit cleanly if the URL cannot be parsed.
 
@@ -4278,8 +4312,8 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
 def process_http_response(r, exception, status_code, reliable, body):
     """Process an HTTP response and its exceptions.
 
-    Storing headers, status code and body, and determining if the analyzed URL
-    returns an HTML document.
+    Storing headers, status code, body and final URL, and determining if the
+    analyzed URL returns an HTML document.
 
     ??? note
         References:<br>
@@ -4287,13 +4321,13 @@ def process_http_response(r, exception, status_code, reliable, body):
         - [Exceptions in the HTTP library 'requests'](https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/){:target="_blank"}
         - [Generic HTTP 5xx errors](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors){:target="_blank"}
         - [Cloudflare 5xx HTTP errors](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/){:target="_blank"}
-        - [MDN docs regarding HTML `<meta>` and `content-type`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type){:target="_blank"}
+        - [MDN docs regarding HTML `<meta>` and `content-type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Elements/meta/http-equiv#content-type){:target="_blank"}
     """
     if exception:
         process_requests_exception(exception)
-        return {}, status_code, reliable, body, False
+        return {}, status_code, reliable, body, False, None
     if r is None:
-        return {}, status_code, reliable, body, False
+        return {}, status_code, reliable, body, False, None
     process_http_error(r)
     status_code = r.status_code
     headers = CaseInsensitiveDict({
@@ -4301,7 +4335,7 @@ def process_http_response(r, exception, status_code, reliable, body):
         for k, v in r.headers.items()})
     body = r.text
     is_html = headers.get("content-type", "").lower().startswith("text/html")
-    return headers, status_code, reliable, body, is_html
+    return headers, status_code, reliable, body, is_html, r.url
 
 
 def custom_help_formatter(prog):
@@ -4492,6 +4526,7 @@ exception_d = {
 }
 disable_warnings() # via urllib3 import
 
+final_url = None
 if "-if" not in sys.argv:
     headers_l, http_equiv = {}, None
     status_code, reliable, body = None, None, None
@@ -4507,7 +4542,7 @@ if "-if" not in sys.argv:
         added_request_headers = parse_request_headers(args.request_header)
         custom_headers.update(added_request_headers)
     custom_headers["User-Agent"] = ua_header
-    (headers, status_code, reliable, body, is_html) = (
+    (headers, status_code, reliable, body, is_html, final_url) = (
         process_http_request(status_code, reliable, body, proxy,
                              custom_headers,
                              )
