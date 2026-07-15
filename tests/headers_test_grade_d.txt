@@ -27,4 +27,5 @@ sec-private-state-token-lifetime: test
 x-permitted-cross-domain-policies: all
 x-robots-tag: all
 Permissions-Policy: humbletest=()
+permissions-policy-report-only: attribution-reporting=(); browsing-topics=()
 activate-storage-access: retry

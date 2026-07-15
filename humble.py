@@ -79,7 +79,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-13")
+local_version = date.fromisoformat("2026-07-15")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -4174,10 +4174,8 @@ def process_requests_exception(exception):
         sys.exit(1)
 
 
-def process_http_error(r, exception_d):
+def process_http_error(r):
     """Print error messages based on HTTP response code during analysis."""
-    if r is None:
-        return
     try:
         r.raise_for_status()
     except requests.exceptions.HTTPError:
@@ -4185,10 +4183,6 @@ def process_http_error(r, exception_d):
         l10n_id = f"[server_{status}]"
         if ERROR_CODES_MIXED[2] <= status <= ERROR_CODES_MIXED[4]:
             process_server_error(status, l10n_id)
-    except Exception as http_err: # noqa: BLE001
-        ex = exception_d.get(type(http_err))
-        if ex and (not callable(ex) or ex(http_err)):
-            print_http_exception(ex, http_err)
 
 
 def parse_request_headers(request_headers):
@@ -4289,7 +4283,7 @@ def process_http_response(r, exception, status_code, reliable, body):
         return {}, status_code, reliable, body, False
     if r is None:
         return {}, status_code, reliable, body, False
-    process_http_error(r, exception_d)
+    process_http_error(r)
     status_code = r.status_code
     headers = CaseInsensitiveDict({
         k: re.sub(RE_PATTERN[20], " ", v).strip()
