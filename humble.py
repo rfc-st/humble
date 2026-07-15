@@ -1430,13 +1430,24 @@ def csp_print_unknown(unknown_dir):
         print_detail("[icspiu]", num_lines=3)
     i_cnt[0] += 1
 
+def parse_cookie_attributes(stc_header):
+    """Split the folded `Set-Cookie` header into names and attribute sets.
 
-def check_unsafe_cookies():  # sourcery skip: use-named-expression
-    """`Set-Cookie` header analysis."""
-    unsafe_cks = [ck.split("=", 1)[0].strip() for ck in
-                  re.split(RE_PATTERN[14], stc_header) if
-                  any(val not in ck.lower() for val in t_cookie_sec)]
-    if unsafe_cks:
+    Attributes exclude the `name=value` segment, so cookie values cannot
+    mimic attribute keywords.
+    """
+    cookies = []
+    for ck in re.split(RE_PATTERN[14], stc_header):
+        name = ck.split("=", 1)[0].strip()
+        attrs = {attr.strip().lower() for attr in ck.split(";")[1:]}
+        cookies.append((name, attrs))
+    return cookies
+
+
+def check_unsafe_cookies(stc_cookies):
+    """Check unsafe cookies in the `Set-Cookie` header."""
+    if unsafe_cks := [name for name, attrs in stc_cookies
+                      if any(val not in attrs for val in t_cookie_sec)]:
         print_detail_r("[iset_h]", is_red=True)
         if not args.brief:
             print_unsafe_cookies(unsafe_cks)
@@ -5196,15 +5207,16 @@ if header_eligible("service-worker-allowed") and servwall_header == "/":
 
 if header_eligible("set-cookie"):
     stc_header = headers_l.get("set-cookie", "")
-    stc_header_l = stc_header.lower()
+    stc_cookies = parse_cookie_attributes(stc_header)
     if not unsafe_scheme:
-        check_unsafe_cookies()
+        check_unsafe_cookies(stc_cookies)
     else:
-        if "secure" in stc_header_l:
+        if any("secure" in attrs for _, attrs in stc_cookies):
             print_details("[iseti_h]", "[iseti]", "d", i_cnt)
-        if any(prefix in stc_header for prefix in t_cookie_prf):
+        if any(name.startswith(t_cookie_prf) for name, _ in stc_cookies):
             print_details("[ispref_m]", "[ispref]", "d", i_cnt)
-    if "samesite=none" in stc_header_l and "secure" not in stc_header_l:
+    if any("samesite=none" in attrs and "secure" not in attrs
+           for _, attrs in stc_cookies):
         print_details("[iseti_m]", "[isetm]", "d", i_cnt)
 
 setlogin_header = headers_l.get("set-login", "")
