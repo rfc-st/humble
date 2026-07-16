@@ -79,7 +79,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-15")
+local_version = date.fromisoformat("2026-07-16")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1589,12 +1589,16 @@ def print_response_info():
     if redirected:
         print(f"{get_detail('[analysis_finalurl]', replace=True)} \
 {final_url}")
-    ip_id = "[analysys_redir_ip]" if redirected else "[analysis_ip]"
-    code_id = ("[analysis_redir_code]" if redirected else "[analysis_code]")
+    ip_id, code_id = (
+        ("[analysis_redir_ip]", "[analysis_redir_code]") if redirected
+        else ("[analysis_ip]", "[analysis_code]")
+    )
     if analysis_ip := get_analysis_ip(final_url):
         print(f"{get_detail(ip_id, replace=True)} {analysis_ip}")
     if status_code:
         print(f"{get_detail(code_id, replace=True)} {status_code}")
+    if redirected:
+        print(get_detail("[analysis_redirects_note]", replace=True))
 
 
 def print_basic_info(export_filename):
@@ -1659,7 +1663,7 @@ def print_extra_info(reliable):
     if reliable:
         print(get_detail("[unreliable_analysis_note]", replace=True))
     if args.redirects:
-        print(get_detail("[analysis_redirects_note]", replace=True))
+        print(get_detail("[analysis_noredirects_note]", replace=True))
 
 
 def print_response_headers():

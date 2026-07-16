@@ -1027,7 +1027,10 @@ HTTP Response Headers
  Note : Exporting to JSON is currently limited to a brief analysis
 
 [analysis_redirects_note]
- Note : The exact URL will be analyzed, without following redirects.
+ Note : The final URL redirect was analyzed; use the '-df' parameter to change this behavior.
+
+[analysis_noredirects_note]
+ Note : Redirects were not followed due to the '-df' parameter.
 
 [analysis_request_note]
  Note : The HTTP request headers expressly included for this analysis are
@@ -1053,7 +1056,7 @@ HTTP Response Headers
 [analysis_finalurl]
  Final URL  :
 
-[analysys_redir_ip]
+[analysis_redir_ip]
  Final IP   :
 
 [analysis_ip]

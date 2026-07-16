@@ -1028,7 +1028,10 @@ Cabeceras de respuesta HTTP
  Nota: Exportar a JSON limita actualmente a un análisis breve
 
 [analysis_redirects_note]
- Nota : Se analizará la URL exacta, sin seguir redireccionamientos.
+ Nota : Se analizó la última redirección; usa el parámetro '-df' para cambiar este comportamiento.
+
+[analysis_noredirects_note]
+ Nota : No se siguieron redirecciones debido al parámetro '-df'.
 
 [analysis_request_note]
  Nota : Las cabeceras HTTP de petición incluídas expresamente en este análisis son
@@ -1054,7 +1057,7 @@ Cabeceras de respuesta HTTP
 [analysis_finalurl]
  URL final     :
 
-[analysys_redir_ip]
+[analysis_redir_ip]
  IP final      :
 
 [analysis_ip]
