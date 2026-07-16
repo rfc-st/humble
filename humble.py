@@ -1578,17 +1578,24 @@ def print_general_info(reliable, export_filename, headers_skipped, skip_set):
     print_extended_info(args, reliable, status_code, headers_skipped, skip_set)
 
 
+def print_redirect_info():
+    """Print the final URL, its redirect count and the analysis note."""
+    redir_id = ("[analysis_redirect_single]" if redirect_count == 1
+                else "[analysis_redirect_plural]")
+    print(f"{get_detail('[analysis_finalurl]', replace=True)} \
+{final_url} ({redirect_count} {get_detail(redir_id, replace=True).strip()})")
+
+
 def print_response_info():
     """Print details of the analyzed response.
 
-    Final URL (if redirects occurred), resolved IP and HTTP status code.
-    For input file analysis (`-if` option) only the status code, when
-    declared in the file, is printed.
+    Final URL and redirect count (if redirects occurred), resolved IP and
+    HTTP status code. For input file analysis (`-if` option) only the
+    status code, when declared in the file, is printed.
     """
-    redirected = bool(final_url) and final_url.rstrip("/") != URL.rstrip("/")
+    redirected = redirect_count > 0
     if redirected:
-        print(f"{get_detail('[analysis_finalurl]', replace=True)} \
-{final_url}")
+        print_redirect_info()
     ip_id, code_id = (
         ("[analysis_redir_ip]", "[analysis_redir_code]") if redirected
         else ("[analysis_ip]", "[analysis_code]")
@@ -4316,8 +4323,8 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
 def process_http_response(r, exception, status_code, reliable, body):
     """Process an HTTP response and its exceptions.
 
-    Storing headers, status code, body and final URL, and determining if the
-    analyzed URL returns an HTML document.
+    Storing headers, status code, body, final URL and redirect count, and
+    determining if the analyzed URL returns an HTML document.
 
     ??? note
         References:<br>
@@ -4339,7 +4346,7 @@ def process_http_response(r, exception, status_code, reliable, body):
         for k, v in r.headers.items()})
     body = r.text
     is_html = headers.get("content-type", "").lower().startswith("text/html")
-    return headers, status_code, reliable, body, is_html, r.url
+    return headers, status_code, reliable, body, is_html, r.url, len(r.history)
 
 
 def custom_help_formatter(prog):
@@ -4530,7 +4537,7 @@ exception_d = {
 }
 disable_warnings() # via urllib3 import
 
-final_url = None
+final_url, redirect_count = None, 0
 if "-if" not in sys.argv:
     headers_l, http_equiv = {}, None
     status_code, reliable, body = None, None, None
@@ -4546,7 +4553,8 @@ if "-if" not in sys.argv:
         added_request_headers = parse_request_headers(args.request_header)
         custom_headers.update(added_request_headers)
     custom_headers["User-Agent"] = ua_header
-    (headers, status_code, reliable, body, is_html, final_url) = (
+    (headers, status_code, reliable, body, is_html, final_url,
+     redirect_count) = (
         process_http_request(status_code, reliable, body, proxy,
                              custom_headers,
                              )

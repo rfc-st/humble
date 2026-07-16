@@ -1029,6 +1029,12 @@ HTTP Response Headers
 [analysis_redirects_note]
  Note : The final URL redirect was analyzed; use the '-df' parameter to change this behavior.
 
+[analysis_redirect_single]
+ redirect
+
+[analysis_redirect_plural]
+ redirects
+
 [analysis_noredirects_note]
  Note : Redirects were not followed due to the '-df' parameter.
 

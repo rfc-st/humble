@@ -1030,6 +1030,12 @@ Cabeceras de respuesta HTTP
 [analysis_redirects_note]
  Nota : Se analizó la última redirección; usa el parámetro '-df' para cambiar este comportamiento.
 
+[analysis_redirect_single]
+ redirección
+
+[analysis_redirect_plural]
+ redirecciones
+
 [analysis_noredirects_note]
  Nota : No se siguieron redirecciones debido al parámetro '-df'.
 
