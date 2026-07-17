@@ -39,7 +39,7 @@ from os import fsync
 from pathlib import Path
 from platform import system
 from typing import NamedTuple
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 # Third-Party imports
 import pytest
@@ -56,7 +56,8 @@ if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
 ASSERT_STR = ["error", "Error"]
 EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_print_detail_s]", "[test_skip_file]",
-                 "[test_response_headers_none]"]
+                 "[test_response_headers_none]", "[test_testssl_command]",
+                 "[test_testssl_analysis]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -460,6 +461,70 @@ def test_cicd_error(capsys):
     assert ASSERT_STR[0] in captured.out.lower()
 
 
+def set_testssl_env(tmp_path):
+    """Prepare an isolated environment for `testssl_command` tests."""
+    if system().lower() == "windows":
+        pytest.skip("testssl unit tests skipped on Windows")
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main, humble_module.args = l10n_main, args
+    fake_testssl = tmp_path / humble_module.TESTSSL_FILE[0]
+    fake_testssl.write_text("#!/bin/sh\n", encoding="utf-8")
+    fake_testssl.chmod(0o755)
+    return fake_testssl
+
+
+def test_testssl_command(capsys, tmp_path):
+    """Verify accepting the terms builds and runs the `-e` analysis."""
+    fake_testssl = set_testssl_env(tmp_path)
+    with (
+        patch("builtins.input", return_value="Y"),
+        patch.object(humble_module, "delete_lines"),
+        patch.object(humble_module, "testssl_analysis") as mock_run,
+        pytest.raises(SystemExit) as wrapped_exit,
+    ):
+        humble_module.testssl_command(str(tmp_path), TEST_URLS[9])
+    assert wrapped_exit.value.code == 0
+    mock_run.assert_called_once_with(
+        [fake_testssl, *humble_module.TESTSSL_OPTIONS, TEST_URLS[9]])
+    assert str(fake_testssl) in capsys.readouterr().out
+
+
+def test_testssl_command_declined(tmp_path):
+    """Verify declining the terms exits without running the analysis."""
+    set_testssl_env(tmp_path)
+    with (
+        patch("builtins.input", return_value="n"),
+        patch.object(humble_module, "testssl_analysis") as mock_run,
+        pytest.raises(SystemExit) as wrapped_exit,
+    ):
+        humble_module.testssl_command(str(tmp_path), TEST_URLS[9])
+    assert wrapped_exit.value.code == 0
+    mock_run.assert_not_called()
+
+
+def test_testssl_analysis(capsys):
+    """Verify the streamed `testssl.sh` output stops upon completion.
+
+    The mocked process emits a line containing 'Done'; the loop must
+    print up to that line, terminate the process and never read past
+    it.
+    """
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main, humble_module.args = l10n_main, args
+    mock_process = MagicMock()
+    mock_process.stdout.readline.side_effect = [
+        "Testing protocols\n", "Done\n", "never printed\n", ""]
+    with patch.object(humble_module, "Popen") as mock_popen:
+        mock_popen.return_value.__enter__.return_value = mock_process
+        humble_module.testssl_analysis(TESTSSL_CMD)
+    mock_process.terminate.assert_called_once()
+    output = capsys.readouterr().out
+    assert "Done" in output
+    assert "never printed" not in output
+
+
 def test_file_access_errors(capsys):
     """Verify an error is displayed related to file access.
 
@@ -716,7 +781,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-07-16")
+local_version = date.fromisoformat("2026-07-17")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

@@ -2367,6 +2367,12 @@ Generator
 [test_testssl_nopath]
  verify an error message is displayed for TLS/SSL check without a path for 'testssl'.
 
+[test_testssl_command]
+ verify the confirmation prompt and command build for testssl.sh
+
+[test_testssl_analysis]
+ verify the output of a mocked up testssl.sh test stops upon completion.
+
 [test_unicode_error]
  verify all response headers are encoded in UTF-8.
 
