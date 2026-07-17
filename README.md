@@ -548,6 +548,7 @@ And is regularly audited manually using the following tools (for each of them, I
 - <a href="https://github.com/joerick/pyinstrument" target="_blank">pyinstrument</a>: `python -m pyinstrument -r html humble.py -u https://google.com`
 - <a href="https://github.com/rubik/radon" target="_blank">radon</a>: `radon cc humble.py -s -a`
 - <a href="https://github.com/dosisod/refurb" target="_blank">Refurb</a>: `refurb humble.py --python-version 3.11`
+- <a href="https://github.com/koalaman/shellcheck" target="_blank">ShellCheck</a>: `shellcheck internal/releases.sh internal/security.sh`
 - <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a>: `vulture --min-confidence 60 humble.py`
 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_secqa.PNG" alt="Security and QA checks">

@@ -2391,36 +2391,39 @@ def finalize_export(final_filename, temp_filename, file_extension, export_all):
             processed_file.truncate()
 
 
+def generate_txt(reliable, tmp_filename):
+    """Handle TXT export, including CI/CD totals and OWASP compliance.
+
+    Related to `-o txt` option.
+    """
+    if args.cicd:
+        threshold = args.cicd if isinstance(args.cicd, str) else None
+        print_cicd_totals(tmp_filename, threshold)
+    print_export_path(tmp_filename, reliable)
+    if "-c" in sys.argv:
+        check_owasp_compliance(tmp_filename)
+
+
 def check_output_format(final_filename, reliable, tmp_filename):
     """Dispatch the export logic for the selected output format.
 
-    Maps each supported format (text, CSV, JSON, XLSX, XML, HTML and PDF) to its
-    corresponding function. For text output, handles CI/CD totals and OWASP
-    compliance checks; for JSON, toggles between brief and detailed reports.
+    Maps each supported format (TXT, CSV, JSON, XLSX, XML, HTML and PDF) to
+    its corresponding function.
 
     Related to `-o` option.
     """
-    match args.output:
-        case "txt":
-            if args.cicd:
-                print_cicd_totals(tmp_filename, args.cicd if
-                                  isinstance(args.cicd, str) else None)
-            print_export_path(tmp_filename, reliable)
-            if "-c" in sys.argv:
-                check_owasp_compliance(tmp_filename)
-        case "csv":
-            generate_csv(final_filename, tmp_filename)
-        case "json":
-            (generate_json(final_filename, tmp_filename) if args.brief else
-             generate_json_detailed(final_filename, tmp_filename))
-        case "xlsx":
-            generate_csv(final_filename, tmp_filename, to_xlsx=True)
-        case "xml":
-            generate_xml(final_filename, tmp_filename)
-        case "html":
-            export_html_file(final_filename, tmp_filename)
-        case "pdf":
-            export_pdf_file(tmp_filename)
+    exporters = {
+        "txt": lambda: generate_txt(reliable, tmp_filename),
+        "csv": lambda: generate_csv(final_filename, tmp_filename),
+        "json": lambda: (generate_json if args.brief else
+                         generate_json_detailed)(final_filename, tmp_filename),
+        "xlsx": lambda: generate_csv(final_filename, tmp_filename,
+                                     to_xlsx=True),
+        "xml": lambda: generate_xml(final_filename, tmp_filename),
+        "html": lambda: export_html_file(final_filename, tmp_filename),
+        "pdf": lambda: export_pdf_file(tmp_filename),
+    }
+    exporters[args.output]()
 
 
 def check_cicd(analysis_grade, threshold_grade):
