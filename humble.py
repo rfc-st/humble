@@ -79,7 +79,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-18")
+local_version = date.fromisoformat("2026-07-24")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -166,6 +166,7 @@ DTD_CONTENT = """<!ELEMENT analysis (section+)>
 <!ATTLIST item name CDATA #IMPLIED>
 """
 EXPORT_EXTENSIONS = (".csv", ".html", ".json", ".pdf", ".txt", ".xlsx", ".xml")
+EXPORT_ORDER = ("txt", "csv", "json", "xlsx", "xml", "html", "pdf")
 GRADE_ORDER = ["E", "D", "C", "B", "A", "A+"]
 HTML_PRE_ARTIFACT = "<pre>/pre>'"
 HTML_TAGS = (
@@ -204,7 +205,7 @@ HTTP_SCHEMES = ("http:", "https:")
 HTTP_SCHEMES_S = ("http", "https")
 LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2)
 SECONDS_BOUNDS = (86400, 31536000)
-SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 20)
+SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 21)
 STYLE = (
     Style.BRIGHT, f"{Style.BRIGHT}{Fore.RED}", Fore.CYAN, Style.NORMAL,
     Style.RESET_ALL, Fore.RESET, "(humble_pdf_style)",
@@ -1537,8 +1538,11 @@ def print_export_path(filename, reliable, *, export_all=False):
         return
     export_path = Path(filename).resolve()
     if export_all:
-        all_reports = print_detail_s("[all_reports]").lstrip()
-        msg = f"{all_reports} '{export_path.parent}'."
+        detail_id = ("[all_formats]"
+                     if len(args.output) == len(EXPORT_ORDER)
+                     else "[requested_formats]")
+        bulk_reports = print_detail_s(detail_id).lstrip()
+        msg = f"{bulk_reports} '{export_path.parent}'."
     else:
         single_report = print_detail_s("[report]").lstrip()
         msg = f"{single_report} '{export_path}'."
@@ -1571,7 +1575,7 @@ def print_general_info(reliable, export_filename, headers_skipped, skip_set):
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
         print(f"\n{BANNER}\n ({BANNER_VERSION})")
-    elif args.output != "pdf":
+    elif single_output() != "pdf":
         humble_desc = get_detail("[humble_desc]", replace=True)
         print(f"\n\n{humble_desc}\n{BANNER_VERSION}\n")
     print_basic_info(export_filename)
@@ -1614,7 +1618,8 @@ def print_basic_info(export_filename):
     Date, time, URL, response details, User-Agent (`-ua` option), input
     file (`-if` option) and exported filename (`-o` option).
     """
-    print(end="\n\n" if args.output in ("html", "pdf", None) else "")
+    print(end="\n\n" if single_output() in ("html", "pdf")
+      or args.output is None else "")
     print_detail_r("[0section]")
     print_detail_l("[analysis_date]")
     print(f" {current_time}")
@@ -1681,7 +1686,7 @@ def print_response_headers():
         print_nosec_headers(enabled=False)
         print("\n")
         return
-    pdf_style = STYLE[6] if args.output == "pdf" else ""
+    pdf_style = STYLE[6] if single_output() == "pdf" else ""
     for key, value in sorted(headers.items()):
         print(f" {pdf_style}{key}:", value) if args.output else \
             print(f" {STYLE[2]}{key}:", value)
@@ -1898,7 +1903,7 @@ def print_enabled_headers(args, exp_s, header, headers_d):
 
     Source: `additional/security.txt`.
     """
-    prefix = STYLE[8] if args.output in ("html", "pdf") else ""
+    prefix = STYLE[8] if single_output() in ("html", "pdf") else ""
     header_display = f"{prefix}{exp_s}{header}"
     if not args.output:
         header_display = f"{STYLE[7]}{header_display}{STYLE[5]}"[18:]
@@ -2009,7 +2014,7 @@ def print_browser_compatibility(compat_headers):
     ??? note
         References provided by [Can I use](https://caniuse.com/){:target="_blank"}.
     """
-    style_blanks = "  " if args.output == "html" else " "
+    style_blanks = "  " if single_output() == "html" else " "
     for key in compat_headers:
         styled_header = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
         csp_key = "contentsecuritypolicy2" if key == "Content-Security-Policy"\
@@ -2225,38 +2230,53 @@ def print_unsupported_headers(unsupported_headers):
 
 
 def check_export_scope():
-    """Determine the scope of the export process based on the `-o` option.
+    """Dispatch the export according to the number of requested formats.
 
-    If the value of that option is not `all` (e.g., `csv`), it proceeds to
-    export the analysis in that format; otherwise, it exports it to all
-    supported formats and terminate execution.
+    A single format uses the direct exporters; several formats reuse
+    the batch pipeline, processed in `EXPORT_ORDER`.
     """
-    if args.output != "all":
+    if single_output():
         check_output_format(final_filename, reliable, tmp_filename)
     else:
-        export_all_formats(final_filename, tmp_filename)
+        export_selected_formats(final_filename, tmp_filename)
 
 
-def export_all_formats(final_filename, tmp_filename):
-    """Export the analysis to all supported formats.
+def export_selected_formats(final_filename, tmp_filename):
+    """Export the analysis to every requested format, in canonical order.
 
-    This function sequentially invokes the functions for CSV, XLSX, JSON,
-    XML, HTML, PDF, and TXT exports. It passes the `export_all` flag where
-    applicable to ensure consistent processing and terminate execution after
-    displaying the final export path.
+    Sequentially invokes the export functions for the formats requested
+    via the `-o` option, following `EXPORT_ORDER` (TXT, CSV, JSON, XLSX,
+    XML, HTML and PDF) regardless of the order they were supplied in. It
+    passes the `export_all` flag where applicable to ensure consistent
+    processing, restores the temporary file to its pristine content after
+    the HTML and PDF passes (which mutate it), and terminates execution
+    after displaying the final export path.
 
-    Related to `-o all` option.
+    Related to `-o` option; `all` is equivalent to requesting every
+    format.
     """
-    generate_csv(final_filename, tmp_filename, export_all=True)
-    if args.brief:
-        generate_json(final_filename, tmp_filename, export_all=True)
-    else:
-        generate_json_detailed(final_filename, tmp_filename, export_all=True)
-    generate_xml(final_filename, tmp_filename, export_all=True)
-    generate_csv(final_filename, tmp_filename, to_xlsx=True, export_all=True)
-    normalize_htmlpdf_all_export("html", tmp_filename, final_filename)
-    normalize_htmlpdf_all_export("pdf", tmp_filename)
-    normalize_txt_all_export(tmp_filename)
+    pristine = Path(tmp_filename).read_text(encoding="utf-8")
+    actions = {
+        "txt": lambda: normalize_txt_all_export(tmp_filename),
+        "csv": lambda: generate_csv(final_filename, tmp_filename,
+                                    export_all=True),
+        "json": lambda: (generate_json if args.brief else
+                         generate_json_detailed)(final_filename,
+                                                 tmp_filename,
+                                                 export_all=True),
+        "xlsx": lambda: generate_csv(final_filename, tmp_filename,
+                                     to_xlsx=True, export_all=True),
+        "xml": lambda: generate_xml(final_filename, tmp_filename,
+                                    export_all=True),
+        "html": lambda: normalize_htmlpdf_all_export("html", tmp_filename,
+                                                     final_filename),
+        "pdf": lambda: normalize_htmlpdf_all_export("pdf", tmp_filename),
+    }
+    for fmt in args.output:
+        actions[fmt]()
+        if fmt in ("html", "pdf"):
+            Path(tmp_filename).write_text(pristine, encoding="utf-8")
+    Path(tmp_filename).unlink()
     print_export_path(final_filename, reliable, export_all=True)
     sys.exit(0)
 
@@ -2354,15 +2374,15 @@ def fix_pdf_all_export(tmp_filename):
 def normalize_txt_all_export(tmp_filename):
     """Apply format to section and lines to the TXT file.
 
-    Related to `-o all` option.
+    Writes the normalized content to the final TXT file, leaving the
+    temporary file intact for later formats; related to `-o` option.
     """
     txt_path = Path(tmp_filename)
     identity = txt_path.stem[:-1]
-    txt_content = (txt_path.read_text(encoding="utf-8")
-                   .replace(STYLE[6], "").replace(STYLE[8], "")
-                   .replace(f"{identity}.pdf", f"{identity}.txt"))
-    txt_path.write_text(txt_content, encoding="utf-8")
-    txt_path.rename(txt_path.with_name(f"{identity}.txt"))
+    txt_content = txt_path.read_text(encoding="utf-8").replace(
+        f"{identity}.all", f"{identity}.txt")
+    txt_path.with_name(f"{identity}.txt").write_text(txt_content,
+                                                     encoding="utf-8")
 
 
 def finalize_export(final_filename, temp_filename, file_extension, export_all):
@@ -2423,7 +2443,7 @@ def check_output_format(final_filename, reliable, tmp_filename):
         "html": lambda: export_html_file(final_filename, tmp_filename),
         "pdf": lambda: export_pdf_file(tmp_filename),
     }
-    exporters[args.output]()
+    exporters[single_output()]()
 
 
 def check_cicd(analysis_grade, threshold_grade):
@@ -4128,7 +4148,7 @@ def get_tmp_file(args, export_date):
 
     Related to `-o` option.
     """
-    file_ext = ".txt" if args.output == "txt" else "t.txt"
+    file_ext = ".txt" if single_output() == "txt" else "t.txt"
     if args.output_file:
         name_part = normalize_output_file(args.output_file)
         tmp_file = f"{name_part}{file_ext}"
@@ -4352,9 +4372,33 @@ def process_http_response(r, exception, status_code, reliable, body):
     return headers, status_code, reliable, body, is_html, r.url, len(r.history)
 
 
+class HumbleHelpFormatter(RawDescriptionHelpFormatter):
+    """Display a single metavar for multi-value options ('-o')."""
+
+    def _format_args(self, action, default_metavar):
+        if action.nargs == "+":
+            get_metavar = self._metavar_formatter(action, default_metavar)
+            return get_metavar(1)[0]
+        return super()._format_args(action, default_metavar)
+
+
 def custom_help_formatter(prog):
-    """Format help output with an increased character limit per line."""
-    return RawDescriptionHelpFormatter(prog, max_help_position=43)
+    """Return the custom formatter for the argparse help."""
+    return HumbleHelpFormatter(prog, max_help_position=43)
+
+
+def single_output():
+    """Return the requested export format, if exactly one; else None.
+
+    Multi-format exports behave like the former `-o all`: no print-time
+    styling, formatting is applied later per format.
+    """
+    return args.output[0] if args.output and len(args.output) == 1 else None
+
+
+def output_extension():
+    """Return the filename extension token ('all' if multi-format)."""
+    return single_output() or "all"
 
 
 # Main functionality for argparse
@@ -4398,10 +4442,11 @@ language for displaying analysis, errors and messages; if omitted, will be \
 printed in English")
 parser.add_argument("-lic", dest="license", action="store_true", help="Print \
 the license for 'humble', along with permissions, limitations and conditions")
-parser.add_argument("-o", dest="output", choices=["all", "csv", "html", "json",
-                                                  "pdf", "txt", "xlsx", "xml"],
-                    help="Export the analysis to the specified format; 'all' \
-will export to all formats")
+parser.add_argument("-o", dest="output", nargs="+",
+                    choices=["all", "csv", "html", "json", "pdf", "txt",
+                             "xlsx", "xml"],
+                    help="Export the analysis to the specified formats \
+(separated by spaces); 'all' will export to all formats")
 parser.add_argument("-of", dest="output_file", type=str, help="Exports \
 analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter \
 '-o' will be used")
@@ -4425,6 +4470,10 @@ parser.add_argument("-v", "--version", action="store_true", help="Checks for \
 updates at https://github.com/rfc-st/humble")
 
 args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
+if args.output:
+    requested = set(args.output)
+    formats = EXPORT_ORDER if "all" in requested else requested
+    args.output = [fmt for fmt in EXPORT_ORDER if fmt in formats]
 
 # Multilingual messages and Python version checking
 l10n_main = get_l10n_content()
@@ -4446,11 +4495,11 @@ if URL is not None:
     check_russian_scope()
 
 if "-cicd" in sys.argv:
-    args.output = "txt"
+    args.output = ["txt"]
 
 if "-c" in sys.argv:
     args.brief = False
-    args.output = "txt"
+    args.output = ["txt"]
     args.user_agent = "1"
 
 if "-if" in sys.argv:
@@ -4577,8 +4626,8 @@ if args.output:
     validate_file_access(tmp_filename, context="export")
     tmp_filename_content = Path(tmp_filename).open("w", encoding="utf8") # noqa: SIM115
     sys.stdout = tmp_filename_content
-    export_slice = SLICE_INT[4] if args.output == "txt" else SLICE_INT[5]
-    export_filename = f"{str(tmp_filename)[:export_slice]}.{args.output}"
+    export_slice = SLICE_INT[4] if single_output() == "txt" else SLICE_INT[5]
+    export_filename = f"{str(tmp_filename)[:export_slice]}.{output_extension()}"
 
 # Section '0. Info & HTTP Response Headers'
 print_general_info(reliable, export_filename, headers_skipped, skip_set)
@@ -5513,7 +5562,7 @@ if "-c" not in sys.argv:
 
 # Export analysis according to the scope (single format or all of them)
 if args.output:
-    final_filename = f"{str(tmp_filename)[:-5]}.{args.output}"
+    final_filename = f"{str(tmp_filename)[:-5]}.{output_extension()}"
     sys.stdout = orig_stdout
     tmp_filename_content.close()
     check_export_scope()

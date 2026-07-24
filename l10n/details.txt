@@ -984,8 +984,11 @@ HTTP Response Headers
 [report]
  Analysis saved to
 
-[all_reports]
+[all_formats]
  Exported analyses, in all available formats, in
+
+[requested_formats]
+ Exported analyses, in all requested formats, in
 
 [0section]
 [0. Info]
@@ -2002,6 +2005,7 @@ examples:
   -u URL -l es                         Analyzes the URL and prints (in Spanish) detailed findings
   -u URL -o pdf                        Analyzes the URL and exports detailed findings to PDF format
   -u URL -o html -of test              Analyzes the URL and exports detailed findings to HTML format and 'test' filename
+  -u URL -o html json                  Analyzes the URL and exports detailed findings to HTML and JSON formats
   -u URL -o pdf -op D:/Tests           Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
   -u URL -p http://127.0.0.1:8080      Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
   -u URL -r                            Analyzes the URL and prints detailed findings along with HTTP response headers
@@ -2219,6 +2223,9 @@ Generator
 
 [test_export_json_l10n]
  verify a brief analysis is exported to JSON in Spanish.
+
+[test_export_multiple_formats]
+ verifies an analysis is exported to the requested formats.
 
 [test_export_no_security_headers]
  verify a detailed analysis is exported without security response headers enabled.

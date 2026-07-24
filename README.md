@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--07--18-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--07--24-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -380,7 +380,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd [GRADE]] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {all,csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-07-04
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-07-24
 
 options:
   -h, --help                               show this help message and exit
@@ -397,7 +397,7 @@ options:
   -if INPUT_FILE                           Analyzes 'INPUT_FILE': curl's '--dump-header' file or HTTP Archive (HAR) file
   -l {es}                                  Defines the language for displaying analysis, errors and messages; if omitted, will be printed in English
   -lic                                     Print the license for 'humble', along with permissions, limitations and conditions
-  -o {all,csv,html,json,pdf,txt,xlsx,xml}  Export the analysis to the specified format; 'all' will export to all formats
+  -o {all,csv,html,json,pdf,txt,xlsx,xml}  Export the analysis to the specified formats (separated by spaces); 'all' will export to all formats
   -of OUTPUT_FILE                          Exports analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter '-o' will be used
   -op OUTPUT_PATH                          Exports analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of 'humble.py' will be used
   -p PROXY                                 Use a proxy for the analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will be used
@@ -415,6 +415,7 @@ examples:
   -u URL -l es                         Analyzes the URL and prints (in Spanish) detailed findings
   -u URL -o pdf                        Analyzes the URL and exports detailed findings to PDF format
   -u URL -o html -of test              Analyzes the URL and exports detailed findings to HTML format and 'test' filename
+  -u URL -o html json                  Analyzes the URL and exports detailed findings to HTML and JSON formats
   -u URL -o pdf -op D:/Tests           Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
   -u URL -p http://127.0.0.1:8080      Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
   -u URL -r                            Analyzes the URL and prints detailed findings along with HTTP response headers

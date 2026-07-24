@@ -193,6 +193,8 @@ TEST_CFGS = {
                                        "Analysis"),
     "test_export_json_l10n": (["-u", TEST_URLS[9], "-o", "json", "-l", "es"],
                               "Análisis"),
+    "test_export_multiple_formats": (["-u", TEST_URLS[9], "-o", "html", "json"],
+                                     "requested"),
     "test_export_no_security_headers": (["-u", TEST_URLS[9], "-if",
                                          PATHS["NO_SEC_HEADERS"], "-o", "txt"],
                                         "Analysis"),
@@ -781,7 +783,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-07-18")
+local_version = date.fromisoformat("2026-07-24")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

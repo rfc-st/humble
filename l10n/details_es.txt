@@ -985,8 +985,11 @@ Cabeceras de respuesta HTTP
 [report]
  Análisis exportado en
 
-[all_reports]
+[all_formats]
  Análisis exportados, en todos los formatos disponibles, en
+
+[requested_formats]
+ Análisis exportados, en los formatos solicitados, en
 
 [0section]
 [0. Información]
@@ -2198,6 +2201,9 @@ Generador
 
 [test_export_json_l10n]
  verifica que se exporte a JSON un análisis detallado en castellano.
+
+[test_export_multiple_formats]
+ verifica que se exporte a los formatos solicitados un análisis detallado.
 
 [test_export_no_security_headers]
  verifica que se exporte un análisis detallado sin cabeceras de respuesta de seguridad habilitadas.
