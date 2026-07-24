@@ -1575,7 +1575,7 @@ def print_general_info(reliable, export_filename, headers_skipped, skip_set):
     if not args.output:
         delete_lines(reliable=False) if reliable else delete_lines()
         print(f"\n{BANNER}\n ({BANNER_VERSION})")
-    elif single_output() != "pdf":
+    elif single_export() != "pdf":
         humble_desc = get_detail("[humble_desc]", replace=True)
         print(f"\n\n{humble_desc}\n{BANNER_VERSION}\n")
     print_basic_info(export_filename)
@@ -1618,7 +1618,7 @@ def print_basic_info(export_filename):
     Date, time, URL, response details, User-Agent (`-ua` option), input
     file (`-if` option) and exported filename (`-o` option).
     """
-    print(end="\n\n" if single_output() in ("html", "pdf")
+    print(end="\n\n" if single_export() in ("html", "pdf")
       or args.output is None else "")
     print_detail_r("[0section]")
     print_detail_l("[analysis_date]")
@@ -1686,7 +1686,7 @@ def print_response_headers():
         print_nosec_headers(enabled=False)
         print("\n")
         return
-    pdf_style = STYLE[6] if single_output() == "pdf" else ""
+    pdf_style = STYLE[6] if single_export() == "pdf" else ""
     for key, value in sorted(headers.items()):
         print(f" {pdf_style}{key}:", value) if args.output else \
             print(f" {STYLE[2]}{key}:", value)
@@ -1903,7 +1903,7 @@ def print_enabled_headers(args, exp_s, header, headers_d):
 
     Source: `additional/security.txt`.
     """
-    prefix = STYLE[8] if single_output() in ("html", "pdf") else ""
+    prefix = STYLE[8] if single_export() in ("html", "pdf") else ""
     header_display = f"{prefix}{exp_s}{header}"
     if not args.output:
         header_display = f"{STYLE[7]}{header_display}{STYLE[5]}"[18:]
@@ -2014,7 +2014,7 @@ def print_browser_compatibility(compat_headers):
     ??? note
         References provided by [Can I use](https://caniuse.com/){:target="_blank"}.
     """
-    style_blanks = "  " if single_output() == "html" else " "
+    style_blanks = "  " if single_export() == "html" else " "
     for key in compat_headers:
         styled_header = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
         csp_key = "contentsecuritypolicy2" if key == "Content-Security-Policy"\
@@ -2235,28 +2235,19 @@ def check_export_scope():
     A single format uses the direct exporters; several formats reuse
     the batch pipeline, processed in `EXPORT_ORDER`.
     """
-    if single_output():
+    if single_export():
         check_output_format(final_filename, reliable, tmp_filename)
     else:
         export_selected_formats(final_filename, tmp_filename)
 
 
-def export_selected_formats(final_filename, tmp_filename):
-    """Export the analysis to every requested format, in canonical order.
+def build_export_actions(final_filename, tmp_filename):
+    """Map each export format to its generation function.
 
-    Sequentially invokes the export functions for the formats requested
-    via the `-o` option, following `EXPORT_ORDER` (TXT, CSV, JSON, XLSX,
-    XML, HTML and PDF) regardless of the order they were supplied in. It
-    passes the `export_all` flag where applicable to ensure consistent
-    processing, restores the temporary file to its pristine content after
-    the HTML and PDF passes (which mutate it), and terminates execution
-    after displaying the final export path.
-
-    Related to `-o` option; `all` is equivalent to requesting every
-    format.
+    The mapping is consumed by `export_selected_formats`, which iterates
+    it in `EXPORT_ORDER`; related to `-o` option.
     """
-    pristine = Path(tmp_filename).read_text(encoding="utf-8")
-    actions = {
+    return {
         "txt": lambda: normalize_txt_all_export(tmp_filename),
         "csv": lambda: generate_csv(final_filename, tmp_filename,
                                     export_all=True),
@@ -2272,6 +2263,21 @@ def export_selected_formats(final_filename, tmp_filename):
                                                      final_filename),
         "pdf": lambda: normalize_htmlpdf_all_export("pdf", tmp_filename),
     }
+
+
+def export_selected_formats(final_filename, tmp_filename):
+    """Export the analysis to every requested format, in canonical order.
+
+    Iterates the formats requested via the `-o` option following
+    `EXPORT_ORDER`, restores the temporary file to its pristine content
+    after the HTML and PDF passes (which mutate it), and terminates
+    execution after displaying the final export path.
+
+    Related to `-o` option; `all` is equivalent to requesting every
+    format.
+    """
+    pristine = Path(tmp_filename).read_text(encoding="utf-8")
+    actions = build_export_actions(final_filename, tmp_filename)
     for fmt in args.output:
         actions[fmt]()
         if fmt in ("html", "pdf"):
@@ -2443,7 +2449,7 @@ def check_output_format(final_filename, reliable, tmp_filename):
         "html": lambda: export_html_file(final_filename, tmp_filename),
         "pdf": lambda: export_pdf_file(tmp_filename),
     }
-    exporters[single_output()]()
+    exporters[single_export()]()
 
 
 def check_cicd(analysis_grade, threshold_grade):
@@ -4148,7 +4154,7 @@ def get_tmp_file(args, export_date):
 
     Related to `-o` option.
     """
-    file_ext = ".txt" if single_output() == "txt" else "t.txt"
+    file_ext = ".txt" if single_export() == "txt" else "t.txt"
     if args.output_file:
         name_part = normalize_output_file(args.output_file)
         tmp_file = f"{name_part}{file_ext}"
@@ -4387,7 +4393,7 @@ def custom_help_formatter(prog):
     return HumbleHelpFormatter(prog, max_help_position=43)
 
 
-def single_output():
+def single_export():
     """Return the requested export format, if exactly one; else None.
 
     Multi-format exports behave like the former `-o all`: no print-time
@@ -4398,7 +4404,7 @@ def single_output():
 
 def output_extension():
     """Return the filename extension token ('all' if multi-format)."""
-    return single_output() or "all"
+    return single_export() or "all"
 
 
 # Main functionality for argparse
@@ -4626,7 +4632,7 @@ if args.output:
     validate_file_access(tmp_filename, context="export")
     tmp_filename_content = Path(tmp_filename).open("w", encoding="utf8") # noqa: SIM115
     sys.stdout = tmp_filename_content
-    export_slice = SLICE_INT[4] if single_output() == "txt" else SLICE_INT[5]
+    export_slice = SLICE_INT[4] if single_export() == "txt" else SLICE_INT[5]
     export_filename = f"{str(tmp_filename)[:export_slice]}.{output_extension()}"
 
 # Section '0. Info & HTTP Response Headers'
