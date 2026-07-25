@@ -2886,31 +2886,35 @@ def json_detailed_parse(data, txt_sections):
         )
 
 
+def json_detailed_actions(json_lns, json_miss):
+    """Map each section prefix to its JSON export handler.
+
+    Related to `-o json` option.
+    """
+    return {
+        "[0.": lambda: json_detailed_info(json_lns),
+        "[HTTP R": lambda: json_detailed_response(json_lns),
+        "[Cabeceras": lambda: json_detailed_response(json_lns),
+        "[1.": lambda: json_detailed_format(json_lns),
+        "[2.": lambda: json_detailed_miss(json_lns, l_miss, *json_miss),
+        "[3.": lambda: json_detailed_fng(json_lns, json_detailed_sources(2, 0)),
+        "[4.": lambda: json_detailed_ins(json_lns, json_detailed_sources(7, 2)),
+        "[5.": lambda: json_detailed_empty(json_lns),
+        "[6.": lambda: json_detailed_format(json_lns, is_compat=True,
+                                            is_l10n=True),
+        "[7.": lambda: json_detailed_results(json_lns),
+    }
+
+
 def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
                         json_miss_r):
     """Write sections for a JSON export, related to `-o json` option."""
-    match json_section:
-        case s if s.startswith(STRINGS_BOLD[0]):
-            return json_detailed_info(json_lns)
-        case s if any(s.startswith(p) for p in (STRINGS_BOLD[1],
-                                                STRINGS_BOLD[9])):
-            return json_detailed_response(json_lns)
-        case s if s.startswith(STRINGS_BOLD[2]):
-            return json_detailed_format(json_lns)
-        case s if s.startswith(STRINGS_BOLD[3]):
-            return json_detailed_miss(json_lns, l_miss, json_miss_h,
-                                      json_miss_d, json_miss_r)
-        case s if s.startswith(STRINGS_BOLD[4]):
-            return json_detailed_fng(json_lns, json_detailed_sources(2, 0))
-        case s if s.startswith(STRINGS_BOLD[5]):
-            return json_detailed_ins(json_lns, json_detailed_sources(7, 2))
-        case s if s.startswith(STRINGS_BOLD[6]):
-            return json_detailed_empty(json_lns)
-        case s if s.startswith(STRINGS_BOLD[7]):
-            return json_detailed_format(json_lns, is_compat=True, is_l10n=True)
-        case s if s.startswith(STRINGS_BOLD[8]):
-            return json_detailed_results(json_lns)
-    return list(json_lns)
+    actions = json_detailed_actions(json_lns, (json_miss_h, json_miss_d,
+                                               json_miss_r))
+    action = next((act for prefix, act in actions.items()
+                   if json_section.startswith(prefix)), None)
+    return action() if action else list(json_lns)
+
 
 def json_detailed_empty(json_lns):
     """Print the contents of empty HTTP response headers values.
