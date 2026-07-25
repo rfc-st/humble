@@ -79,7 +79,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-24")
+local_version = date.fromisoformat("2026-07-25")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -2295,7 +2295,7 @@ class ExportStates(NamedTuple):
     browser: bool
 
 
-def process_htmlpdf_all_export(lines, start_index, export_format, is_html):
+def process_htmlpdf_all_export(lines, start_index, is_html):
     """Process line formatting and section prefixing for HTML and PDF exports.
 
     Applies state-based formatting to each line; related to `-o all` option.
@@ -2304,12 +2304,9 @@ def process_htmlpdf_all_export(lines, start_index, export_format, is_html):
     states = ExportStates(response=False, enabled=False, browser=False)
     for line in lines[start_index:]:
         prefix, states = sections_htmlpdf_all_export(line, states)
-        if prefix:
+        if prefix and is_html:
             content.append(prefix)
-        target_state = states.enabled if is_html else states.response
-        content.append(format_htmlpdf_all_export(line, export_format,
-                                                 target_state,
-                                                 states.browser))
+        content.append(format_htmlpdf_all_export(line, is_html, states))
     return content
 
 
@@ -2324,7 +2321,7 @@ def normalize_htmlpdf_all_export(export_format, tmp_filename,
     path = Path(tmp_filename)
     lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
     idx = next((i for i, ln in enumerate(lines) if INFO_SECTION in ln), None)
-    processed = process_htmlpdf_all_export(lines, idx, export_format, is_html)
+    processed = process_htmlpdf_all_export(lines, idx, is_html)
     path.write_text("".join(processed), encoding="utf-8")
     if is_html:
         export_html_file(final_filename, tmp_filename, export_all=True)
@@ -2346,17 +2343,18 @@ def sections_htmlpdf_all_export(line, states):
     return "", states
 
 
-def format_htmlpdf_all_export(line, export_format, target_state, in_browser):
+def format_htmlpdf_all_export(line, is_html, states):
     """Format the previously selected lines for HTML and PDF exports.
 
     Related to `-o all` option.
     """
-    if in_browser and line.strip() and not line.startswith("[6."):
-        line = f" {line}" if export_format == "html" else f" {line.lstrip()}"
-    if not (target_state and line.startswith(" ")):
+    if states.browser and line.strip() and not line.startswith("[6."):
+        line = f" {line}" if is_html else f" {line.lstrip()}"
+    if not line.startswith(" "):
         return line
-    style = STYLE[8] if export_format == "html" else STYLE[6]
-    return f" {style}{line[1:]}"
+    if states.enabled:
+        return f" {STYLE[8]}{line[1:]}"
+    return f" {STYLE[6]}{line[1:]}" if states.response and not is_html else line
 
 
 def fix_pdf_all_export(tmp_filename):
@@ -2368,7 +2366,11 @@ def fix_pdf_all_export(tmp_filename):
     with (
         Path(tmp_filename).open("r+", encoding="utf8")
     ) as temp_pdffilename:
-        content = "".join(temp_pdffilename.readlines()[6:])
+        lines = temp_pdffilename.readlines()
+        first = next((i for i, ln in enumerate(lines) if ln.strip()), 0)
+        idx = next((i for i, ln in enumerate(lines) if INFO_SECTION in ln),
+                   first)
+        content = "".join(lines[:first] + lines[idx:])
         new_content = content.replace(f"{base_pdffilename}.all",
                                       f"{base_pdffilename}.pdf")
         temp_pdffilename.seek(0)
@@ -3303,7 +3305,7 @@ def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
     with Path(tmp_filename).open(encoding="utf8") as txt_source:
         for line in txt_source:
             if any(no_header in line for no_header in no_headers):
-                set_pdf_warnings(line, pdf, ypos)
+                set_pdf_warnings(line.replace(STYLE[8], "", 1), pdf, ypos)
                 continue
             if "[" in line:
                 set_pdf_sections(line, pdf)
