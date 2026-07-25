@@ -1489,6 +1489,18 @@ def permissions_print_deprecated(perm_header):
     i_cnt[0] += 1
 
 
+def permissions_broad_features(perm_header):
+    """Return `Permissions-Policy` features with broad values."""
+    result = []
+    for directive in perm_header.split(","):
+        if "=" not in directive:
+            continue
+        feature, value = directive.split("=")
+        if any(broad in value.strip() for broad in t_per_broad):
+            result.append(feature.strip())
+    return result
+
+
 def permissions_check_broad(perm_header):
     """`Permissions-Policy` header check related to broad values."""
     if sum(
@@ -1496,19 +1508,10 @@ def permissions_check_broad(perm_header):
     ) < HEADERS_CHECKS:
         return None
     try:
-        result = []
-        for directive in perm_header.split(","):
-            if "=" in directive:
-                feature, value = directive.split("=")
-                feature = feature.strip()
-                value = value.strip()
-                if any(broad in value for broad in t_per_broad):
-                    result.append(feature)
+        return permissions_broad_features(perm_header) or None
     except (IndexError, ValueError):
         print_details("[ifpolf_h]", "[ifpolf]", "d", i_cnt)
         return None
-    else:
-        return result or None
 
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
