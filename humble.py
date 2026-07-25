@@ -42,7 +42,7 @@ from datetime import date, datetime
 from functools import partial
 from html import escape
 from ipaddress import ip_address
-from itertools import chain, islice, pairwise, takewhile
+from itertools import chain, islice, takewhile
 from json import dump, dumps, load
 from pathlib import Path
 from shutil import which
@@ -177,8 +177,8 @@ HTML_TAGS = (
     "</pre><br></body></html>", "<strong>", "</strong>",
     '&nbsp;<font color="', "</font><br><br>", "</font>", '<font color="',
 )
-JSON_SECTION = ("0section", "0headers", "5compat", "6result")
-METADATA_S = ("[pdf_meta_keywords", "[pdf_meta_subject]")
+JSON_SECTION = ("0section", "0headers")
+METADATA_S = ("[pdf_meta_keywords]", "[pdf_meta_subject]")
 PDF_COLORS = ("#008000", "#000000", "#660033")
 PDF_CONDITIONS = ("Ref:", ":", '"', "(*) ")
 PDF_SECTION = {
@@ -549,6 +549,12 @@ def get_l10n_content():
                  (HUMBLE_FILES[4] if args.lang == "es" else HUMBLE_FILES[5]))
     with l10n_path.open(encoding="utf8") as l10n_content:
         return l10n_content.readlines()
+
+
+def get_l10n_map(l10n_lines):
+    """Map each l10n ID to the index of its descriptive text."""
+    return {ln.strip(): i + 1 for i, ln in enumerate(l10n_lines)
+            if ln.startswith("[")}
 
 
 def get_analysis_results():
@@ -1725,84 +1731,51 @@ def print_details(short_d, long_d, id_mode, i_cnt):
 
 def print_detail(id_mode, num_lines=1):
     """Print detailed information about the finding across multiple lines."""
-    idx = l10n_main.index(id_mode + "\n")
-    print(l10n_main[idx+1], end="")
-    for i in range(1, num_lines+1):
-        if idx+i+1 < len(l10n_main):
-            print(l10n_main[idx+i+1], end="")
+    idx = l10n_map[id_mode]
+    for i in range(num_lines + 1):
+        if idx + i < len(l10n_main):
+            print(l10n_main[idx + i], end="")
 
 
 def print_detail_l(id_mode, *, analytics=False, no_headers=False):
     """Print detailed information about the finding.
 
     Removing lines from the output based on it.
-
-    ??? note
-        `pairwise` is used to match each bracketed ID with its corresponding
-        descriptive text on the following line (bridging the line break) from
-        `l10n_main`, which contains the multilingual strings and descriptions
-        used for the final report.
     """
-    for idmode_ln, idnext_ln in pairwise(l10n_main):
-        if idmode_ln.startswith(id_mode):
-            if no_headers:
-                print(idnext_ln, end="")
-            elif not analytics:
-                print(idnext_ln.replace("\n", ""), end="")
-            else:
-                return idnext_ln.replace("\n", "").replace(":", "")[1:]
+    detail_ln = l10n_main[l10n_map[id_mode]]
+    if no_headers:
+        print(detail_ln, end="")
+    elif not analytics:
+        print(detail_ln.replace("\n", ""), end="")
+    else:
+        return detail_ln.replace("\n", "").replace(":", "")[1:]
     return None
 
 
 def print_detail_r(id_mode, *, is_red=False):
-    """Print detailed information about the finding using a distinctive format.
-
-    ??? note
-        `pairwise` is used to match each bracketed ID with its corresponding
-        descriptive text on the following line (bridging the line break) from
-        `l10n_main`, which contains the multilingual strings and descriptions
-        used for the final report.
-    """
+    """Print detailed information about the finding, distinctly styled."""
     style_str = STYLE[1] if is_red else STYLE[0]
-    for idmode_ln, idnext_ln in pairwise(l10n_main):
-        if idmode_ln.startswith(id_mode):
-            if not args.output:
-                print(f"{style_str}{idnext_ln}", end="")
-            else:
-                print(idnext_ln, end="")
-            if not is_red:
-                print()
+    detail_ln = l10n_main[l10n_map[id_mode]]
+    if not args.output:
+        print(f"{style_str}{detail_ln}", end="")
+    else:
+        print(detail_ln, end="")
+    if not is_red:
+        print()
 
 
 def print_detail_s(id_mode, *, max_ln=False):
-    """Print message with leading newline and optional whitespace preservation.
-
-    ??? note
-        `pairwise` is used to match each bracketed ID with its corresponding
-        descriptive text on the following line (bridging the line break) from
-        `l10n_main`, which contains the multilingual strings and descriptions
-        used for the final report.
-    """
-    if match := next(
-        (pr for pr in pairwise(l10n_main) if pr[0].startswith(id_mode)),
-        None,
-    ):
-        _, idnext_ln = match
-        return (
-            f"\n{idnext_ln.rstrip()}" if max_ln else f"\n{idnext_ln.strip()}"
-        )
-    return None
+    """Print message with a leading newline, optionally keeping spaces."""
+    if (idx := l10n_map.get(id_mode)) is None:
+        return None
+    detail_ln = l10n_main[idx]
+    return f"\n{detail_ln.rstrip()}" if max_ln else f"\n{detail_ln.strip()}"
 
 
 def get_detail(id_mode, *, replace=False):
     """Print a message, optionally removing newlines."""
-    if match := next(
-        (i for i, ln in enumerate(l10n_main) if ln.startswith(id_mode)),
-        None,
-    ):
-        next_ln = l10n_main[match + 1]
-        return next_ln.replace("\n", "") if replace else next_ln
-    return None
+    detail_ln = l10n_main[l10n_map[id_mode]]
+    return detail_ln.replace("\n", "") if replace else detail_ln
 
 
 def print_error_detail(id_mode, *, clean_lines=False) -> NoReturn:
@@ -4485,6 +4458,7 @@ if args.output:
 
 # Multilingual messages and Python version checking
 l10n_main = get_l10n_content()
+l10n_map = get_l10n_map(l10n_main)
 check_python_version()
 
 # Functionality for argparse parameters/values

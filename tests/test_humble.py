@@ -353,6 +353,12 @@ def get_l10n_content():
         return l10n_content.readlines()
 
 
+def get_l10n_map(l10n_lines):
+    """Map each l10n ID to the index of its descriptive text."""
+    return {ln.strip(): i + 1 for i, ln in enumerate(l10n_lines)
+            if ln.startswith("[")}
+
+
 def print_results():
     """Show the description of each unit test.
 
@@ -451,6 +457,7 @@ def test_cicd_error(capsys):
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
+    humble_module.l10n_map = l10n_map
     humble_module.args = args
     with (
         patch.object(humble_module, "get_cicd_labels", side_effect=Exception),
@@ -470,6 +477,7 @@ def set_testssl_env(tmp_path):
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main, humble_module.args = l10n_main, args
+    humble_module.l10n_map = l10n_map
     fake_testssl = tmp_path / humble_module.TESTSSL_FILE[0]
     fake_testssl.write_text("#!/bin/sh\n", encoding="utf-8")
     fake_testssl.chmod(0o755)
@@ -515,6 +523,7 @@ def test_testssl_analysis(capsys):
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main, humble_module.args = l10n_main, args
+    humble_module.l10n_map = l10n_map
     mock_process = MagicMock()
     mock_process.stdout.readline.side_effect = [
         "Testing protocols\n", "Done\n", "never printed\n", ""]
@@ -535,6 +544,7 @@ def test_file_access_errors(capsys):
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main, humble_module.args = l10n_main, args
+    humble_module.l10n_map = l10n_map
     with patch("pathlib.Path.open", side_effect=OSError), \
          patch.object(humble_module, "delete_lines"):
         _, res = humble_module.validate_file_access("f.txt", context="history")
@@ -555,6 +565,7 @@ def test_file_access_errors(capsys):
 def test_testssl_error(capsys):
     """Verify an error is displayed for TLS/SSL check exceptions."""
     humble_module.l10n_main = l10n_main
+    humble_module.l10n_map = l10n_map
     humble_module.args = args
     with patch.object(humble_module, "Popen", side_effect=OSError):
         with pytest.raises(SystemExit) as wrapped_exit:
@@ -573,6 +584,7 @@ def test_outdated_humble(capsys):
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
+    humble_module.l10n_map = l10n_map
     humble_module.args = args
     mock_github_version = date(2026, 3, 6)
     mock_local_version = date(2026, 1, 1)
@@ -605,6 +617,7 @@ def test_unsupported_python_version(capsys):
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
+    humble_module.l10n_map = l10n_map
     humble_module.args = args
     with patch("sys.version_info", mocked_python_version):
         with pytest.raises(SystemExit) as wrapped_exit:
@@ -619,6 +632,7 @@ def test_updates_error(capsys):
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
+    humble_module.l10n_map = l10n_map
     humble_module.args = args
     with patch("requests.get", side_effect=RequestException):
         with pytest.raises(SystemExit) as wrapped_exit:
@@ -654,6 +668,7 @@ def test_print_detail_s():
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main = l10n_main
+    humble_module.l10n_map = l10n_map
     humble_module.args = args
     result = humble_module.print_detail_s("[nonexistent_id]")
     assert result is None
@@ -675,6 +690,7 @@ def test_skip_file(tmp_path, monkeypatch):
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main, humble_module.args = l10n_main, args
+    humble_module.l10n_map = l10n_map
     monkeypatch.chdir(tmp_path)
     assert humble_module.check_skip_file() == []
     skip_content = (HUMBLE_PROJECT_ROOT / "humble.skip").read_text(
@@ -690,6 +706,7 @@ def test_response_headers_none(capsys):
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     humble_module.l10n_main, humble_module.args = l10n_main, args
+    humble_module.l10n_map = l10n_map
     args.output = None
     humble_module.headers = {}
     humble_module.print_response_headers()
@@ -798,6 +815,7 @@ parser.add_argument("-l", dest="lang", choices=["en", "es"], help="Defines the\
 
 args = _Args()
 l10n_main = []
+l10n_map = {}
 
 
 @pytest.fixture(scope="session", autouse=True) # noqa: vulture
@@ -805,6 +823,7 @@ def delete_temp_coverage():
     """Set up session globals and clean up temporary files after testing."""
     args.lang = "en"
     l10n_main[:] = get_l10n_content()
+    l10n_map.update(get_l10n_map(l10n_main))
     yield
     cleanup_analysis_history()
     delete_temp_content()
