@@ -25,9 +25,6 @@ ignore = [
     "S101",    # WONT-FIX: All findings related to the use of 'assert'
     ]
 
-[tool.ruff.lint.pylint]
-max-returns = 10
-
 [tool.vulture]
 # https://github.com/jendrikseipp/vulture#handling-false-positives
 ignore_names = ["cert_reqs", "footer"]
