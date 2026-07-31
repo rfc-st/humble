@@ -79,7 +79,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-25")
+local_version = date.fromisoformat("2026-07-31")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -194,6 +194,7 @@ SECTIONS_EXPORT_STATES = {RESP_SECTION: (True, False, False),
                           "[6.": (False, False, True),
                           "[7.": (False, False, False)}
 STRINGS_BOLD = tuple(PDF_SECTION.keys())
+SECTIONS_EXPORT_PREFIXES = STRINGS_BOLD + RESP_SECTION
 URL_STRING = ("rfc-st", " URL   : ", "https://caniuse.com/?")
 VALUE_LABELS = ("Value: ", "Valor: ")
 XML_STRING = ("Ref: ", "Value: ", "Valor: ")
@@ -2314,7 +2315,7 @@ def sections_htmlpdf_all_export(line, states):
     for prefix, new_states in SECTIONS_EXPORT_STATES.items():
         if line.startswith(prefix):
             return "\n", ExportStates(*new_states)
-    if any(line.startswith(s) for s in STRINGS_BOLD + RESP_SECTION):
+    if any(line.startswith(s) for s in SECTIONS_EXPORT_PREFIXES):
         return "\n", states
     return "", states
 
@@ -3185,6 +3186,18 @@ def json_detailed_results(json_lns):
     return result
 
 
+class PdfContext(NamedTuple):
+    """Loop-invariant context for per-line formatting in PDF exports."""
+
+    ok_string: str
+    no_headers: list
+    combined_h: tuple
+    pdf: object
+    pdf_links: tuple
+    pdf_prefixes: dict
+    ypos: object
+
+
 def export_pdf_file(tmp_filename, *, export_all=False):
     """PDF export of the analysis, related to `-o pdf` option.
 
@@ -3236,11 +3249,17 @@ def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos, *,
     Related to `-o pdf` option.
     """
     set_pdf_file(pdf)
-    ok_string = get_detail(DIR_MSG[2]).rstrip()
-    no_headers = [get_detail(f"[{i}]").strip() for i in ("no_sec_headers",
-                                                         "no_enb_headers")]
-    set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
-                    pdf_prefixes, ypos)
+    ctx = PdfContext(
+        ok_string=get_detail(DIR_MSG[2]).rstrip(),
+        no_headers=[get_detail(f"[{i}]").strip() for i in ("no_sec_headers",
+                                                           "no_enb_headers")],
+        combined_h=(*l_miss, *l_ins, *l_fng, *titled_fng, XFRAME_CHECK),
+        pdf=pdf,
+        pdf_links=pdf_links,
+        pdf_prefixes=pdf_prefixes,
+        ypos=ypos,
+    )
+    set_pdf_content(tmp_filename, ctx)
     pdf.output(final_filename)
     finalize_export(final_filename, tmp_filename, "pdf", export_all)
 
@@ -3276,44 +3295,41 @@ def set_pdf_metadata(pdf):
     pdf.set_producer(git_urlc)
 
 
-def set_pdf_content(tmp_filename, ok_string, no_headers, pdf, pdf_links,
-                    pdf_prefixes, ypos):
+def set_pdf_content(tmp_filename, ctx):
     """Set the format and sections.
 
     Related to `-o pdf` option.
     """
     with Path(tmp_filename).open(encoding="utf8") as txt_source:
         for line in txt_source:
-            if any(no_header in line for no_header in no_headers):
-                set_pdf_warnings(line.replace(STYLE[8], "", 1), pdf, ypos)
+            if any(no_header in line for no_header in ctx.no_headers):
+                set_pdf_warnings(line.replace(STYLE[8], "", 1), ctx.pdf,
+                                 ctx.ypos)
                 continue
             if "[" in line:
-                set_pdf_sections(line, pdf)
-            if set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes,
-                              ypos):
+                set_pdf_sections(line, ctx.pdf)
+            if set_pdf_format(line, ctx):
                 continue
 
 
-def set_pdf_format(line, ok_string, pdf, pdf_links, pdf_prefixes, ypos):
+def set_pdf_format(line, ctx):
     """Apply specific format to lines based on its content.
 
     Related to `-o pdf` option.
     """
-    if any(bold_str in line for bold_str in STRINGS_BOLD):
-        pdf.set_font(style="B")
-    else:
-        pdf.set_font(style="")
-    next((format_pdf_links(line, string, pdf, pdf_prefixes) for string in
-          pdf_links if string in line), None)
-    if set_pdf_conditions(line, pdf, ypos):
+    ctx.pdf.set_font(
+        style="B" if any(bold in line for bold in STRINGS_BOLD) else "")
+    next((format_pdf_links(line, string, ctx.pdf, ctx.pdf_prefixes)
+          for string in ctx.pdf_links if string in line), None)
+    if set_pdf_conditions(line, ctx.combined_h, ctx.pdf, ctx.ypos):
         return True
-    if ok_string in line:
-        set_pdf_nowarnings(line, pdf, ypos)
+    if ctx.ok_string in line:
+        set_pdf_nowarnings(line, ctx.pdf, ctx.ypos)
         return True
-    pdf.set_text_color(255, 0, 0)
-    if set_pdf_empty(l_empty, line, pdf, ypos):
+    ctx.pdf.set_text_color(255, 0, 0)
+    if set_pdf_empty(l_empty, line, ctx.pdf, ctx.ypos):
         return True
-    format_pdf_lines(line, pdf, ypos)
+    format_pdf_lines(line, ctx.pdf, ctx.ypos)
     return False
 
 
@@ -3328,14 +3344,12 @@ def set_pdf_sections(line, pdf):
             break
 
 
-def set_pdf_conditions(line, pdf, ypos):
+def set_pdf_conditions(line, combined_h, pdf, ypos):
     """Determine whether to apply specific formatting to a line in a PDF export.
 
     Checks the line against response header conditions and delegates formatting
     to `set_pdf_warnings` if matched; related to `-o pdf` option.
     """
-    combined_h = l_miss + l_ins + l_fng + titled_fng
-    combined_h.append(XFRAME_CHECK)
     return (
         all(condition not in line for condition in PDF_CONDITIONS[:3]) and
         (PDF_CONDITIONS[3] in line or any(item in line for item in combined_h))
