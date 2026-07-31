@@ -1149,15 +1149,18 @@ def print_global_metrics(ctx):
             totals_m.items()}
 
 
+def csp_deprecated_values(csp_dirs_vals):
+    """Return deprecated values present in `Content-Security-Policy`."""
+    return {value for csp_dir in csp_dirs_vals
+            for value in t_csp_dep if value in csp_dir}
+
+
 def csp_analyze_content(csp_header):
     """`Content-Security-Policy` header analysis."""
-    csp_deprecated = set()
     csp_dirs_vals = [directive.strip() for directive in csp_header.split(";") if
                      directive.strip()]
     csp_dirs = {directive.split()[0] for directive in csp_dirs_vals}
-    for csp_dir in csp_dirs_vals:
-        csp_deprecated |= ({value for value in t_csp_dep if value in csp_dir})
-    if csp_deprecated:
+    if csp_deprecated := csp_deprecated_values(csp_dirs_vals):
         csp_print_deprecated(csp_deprecated)
     if "'strict-dynamic'" in csp_header:
         csp_check_ignored(csp_header)
@@ -1228,17 +1231,21 @@ def csp_check_additional(csp_dirs_vals):
     csp_check_inline(csp_dirs_vals)
 
 
+def csp_broad_values(dir_vals):
+    """Return broad values in a `Content-Security-Policy` directive."""
+    return {value for value in dir_vals.split()[1:]
+            if f" {value} " in t_csp_broad}
+
+
 def csp_check_broad(csp_dirs_vals):
     """`Content-Security-Policy` header check related to broad values."""
-    csp_broad_v = sorted({value for dir_vals in csp_dirs_vals if
-                          dir_vals.strip() for value in dir_vals.split()[1:]
-                          if f" {value} " in t_csp_broad})
-    if not csp_broad_v:
-        return
-    csp_broad_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
-                      if any(f" {broad_val} " in t_csp_broad for broad_val in
-                             dir_vals.split()[1:])}
-    csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt)
+    csp_broad_v, csp_broad_dirs = set(), set()
+    for dir_vals in filter(str.strip, csp_dirs_vals):
+        if broad := csp_broad_values(dir_vals):
+            csp_broad_v |= broad
+            csp_broad_dirs.add(dir_vals.split()[0])
+    if csp_broad_v:
+        csp_print_broad(csp_broad_dirs, sorted(csp_broad_v), i_cnt)
 
 
 def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
