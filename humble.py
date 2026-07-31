@@ -1039,8 +1039,12 @@ def extract_global_metrics(all_analysis):
     analytics_l = get_analytics_length(SECTION_V[12:26])
     analytics_s = get_analytics_length(SECTION_V[:5])
     analytics_w = get_analytics_length(SECTION_V[5:12])
-    return print_global_metrics(analytics_l, analytics_s, analytics_w, total_a,
-                                first_m, second_m, third_m, additional_m)
+    ctx = GlobalMetricsContext(
+        analytics_l=analytics_l, analytics_s=analytics_s,
+        analytics_w=analytics_w, total_a=total_a, first_m=first_m,
+        second_m=second_m, third_m=third_m, additional_m=additional_m,
+    )
+    return print_global_metrics(ctx)
 
 
 def get_global_first_metrics(adj_url_ln):
@@ -1118,14 +1122,27 @@ def get_basic_global_metrics(analytics_l, total_a, first_m):
             "[least_warnings]": f"{analytics_l[3]}{first_m[6]}\n"}
 
 
-def print_global_metrics(analytics_l, analytics_s, analytics_w,
-                         total_a, first_m, second_m, third_m, additional_m):
+class GlobalMetricsContext(NamedTuple):
+    """Aggregated values and labels for global metrics (`-a` option)."""
+
+    analytics_l: list
+    analytics_s: list
+    analytics_w: list
+    total_a: int
+    first_m: tuple
+    second_m: list
+    third_m: tuple
+    additional_m: tuple
+
+
+def print_global_metrics(ctx):
     """Print metrics across all URL analyses, related to `-a` option."""
-    basic_m = get_basic_global_metrics(analytics_l, total_a, first_m)
-    error_m = get_security_metrics(analytics_s, second_m)
-    warning_m = get_warnings_metrics(additional_m, analytics_w)
-    averages_m = get_averages_metrics(analytics_w, third_m)
-    analysis_year_m = get_date_metrics(additional_m)
+    basic_m = get_basic_global_metrics(ctx.analytics_l, ctx.total_a,
+                                       ctx.first_m)
+    error_m = get_security_metrics(ctx.analytics_s, ctx.second_m)
+    warning_m = get_warnings_metrics(ctx.additional_m, ctx.analytics_w)
+    averages_m = get_averages_metrics(ctx.analytics_w, ctx.third_m)
+    analysis_year_m = get_date_metrics(ctx.additional_m)
     totals_m = {**basic_m, **error_m, **warning_m, **averages_m,
                 **analysis_year_m}
     return {get_detail(key, replace=True): value for key, value in
@@ -2720,26 +2737,34 @@ def set_xlsx_metadata(workbook):
     })
 
 
+class XlsxFormats(NamedTuple):
+    """Cell formats for a XLSX export, related to `-o xlsx` option."""
+
+    bold: object
+    cell: object
+    hidden: object
+
+
 def set_xlsx_content(final_filename, workbook):
     """Define the content and format of the data for a XLSX export.
 
     Related to `-o xlsx` option.
     """
     worksheet = workbook.add_worksheet(get_detail(METADATA_S[1], replace=True))
-    bold_fmt = workbook.add_format({"bold": True, "text_wrap": True,
-                                    "align": "center", "valign": "vcenter"})
-    cell_fmt = workbook.add_format({"text_wrap": True, "valign": "top"})
-    hidden_fmt = workbook.add_format({"font_color": "#FFFFFF",
-                                      "text_wrap": True, "valign": "top"})
+    fmts = XlsxFormats(
+        bold=workbook.add_format({"bold": True, "text_wrap": True,
+                                  "align": "center", "valign": "vcenter"}),
+        cell=workbook.add_format({"text_wrap": True, "valign": "top"}),
+        hidden=workbook.add_format({"font_color": "#FFFFFF",
+                                    "text_wrap": True, "valign": "top"}),
+    )
     col_wd = {}
-    set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
-                    worksheet)
+    set_xlsx_format(fmts, col_wd, final_filename, worksheet)
     set_xlsx_width(col_wd, worksheet)
     worksheet.autofilter(0, 0, 0, 1)
 
 
-def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
-                    worksheet):
+def set_xlsx_format(fmts, col_wd, final_filename, worksheet):
     """Write formatted content with dynamic column widths for a XLSX export.
 
     Related to `-o xlsx` option.
@@ -2753,28 +2778,26 @@ def set_xlsx_format(bold_fmt, cell_fmt, col_wd, final_filename, hidden_fmt,
         for row_index, row_data in enumerate(
                 defusedcsv_logic.reader(csv_final)):
             for col_index, cell_value in enumerate(row_data):
-                fmt, prev_section = choose_xlsx_format(bold_fmt, cell_fmt,
-                                                       cell_value, col_index,
-                                                       hidden_fmt, row_index,
+                fmt, prev_section = choose_xlsx_format(fmts, cell_value,
+                                                       col_index, row_index,
                                                        prev_section)
                 worksheet.write(row_index, col_index, cell_value, fmt)
                 col_wd[col_index] = max(col_wd.get(col_index, 0),
                                         len(cell_value))
 
 
-def choose_xlsx_format(bold_fmt, cell_fmt, cell_value, col_index, hidden_fmt,
-                       row_index, prev_section):
+def choose_xlsx_format(fmts, cell_value, col_index, row_index, prev_section):
     """Choose the cell format for an XLSX export based on position and content.
 
     Tracks section changes across rows to apply bold, hidden, or standard
     formatting; related to `-o xlsx` option.
     """
     if row_index == 0 and col_index in (0, 1):
-        return bold_fmt, prev_section
+        return fmts.bold, prev_section
     if col_index == 0 and row_index > 0:
-        return (hidden_fmt, prev_section) if cell_value == prev_section \
-            else (cell_fmt, cell_value)
-    return cell_fmt, prev_section
+        return (fmts.hidden, prev_section) if cell_value == prev_section \
+            else (fmts.cell, cell_value)
+    return fmts.cell, prev_section
 
 
 def set_xlsx_width(col_wd, worksheet):
@@ -3086,23 +3109,32 @@ def json_detailed_fng(json_lns, fingerprint_set):
     return result
 
 
-def json_detailed_ins_append(line, ref_t, ref_o, entry, header, header_t,
-                             detail_t, result, is_header):
+def json_detailed_ins_append(line, ctx, entry, header, result):
     """Add lines to the deprecated/insecure headers section.
 
     Related to `-o json` option.
     """
-    if is_header:
+    if json_detailed_ins_headers(line, line, ctx.checks_list, ctx.ref_t):
         if entry:
             result.append(entry)
         header = line
-        entry = {header_t: header, detail_t: [], ref_t: []}
+        entry = {ctx.header_t: header, ctx.detail_t: [], ctx.ref_t: []}
     elif header:
-        if line.startswith(ref_o):
-            entry[ref_t].append(line[len(ref_o):].strip())
+        if line.startswith(ctx.ref_o):
+            entry[ctx.ref_t].append(line[len(ctx.ref_o):].strip())
         else:
-            entry[detail_t].append(line)
+            entry[ctx.detail_t].append(line)
     return entry, header
+
+
+class JsonInsContext(NamedTuple):
+    """Loop-invariant context for the deprecated/insecure JSON section."""
+
+    header_t: str
+    detail_t: str
+    ref_t: str
+    ref_o: str
+    checks_list: list
 
 
 def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
@@ -3120,8 +3152,7 @@ def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
     return header_cond or (header_cond2 and header_cond3)
 
 
-def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
-                              detail_t):
+def json_detailed_ins_process(json_lns, ctx):
     """Format the lines to include in the deprecated/insecure section.
 
     Related to `-o json` option.
@@ -3129,12 +3160,8 @@ def json_detailed_ins_process(json_lns, checks_list, ref_t, ref_o, header_t,
     result, entry, header = [], {}, None
     for line in json_lns:
         if line := line.strip():
-            is_header = json_detailed_ins_headers(line, line, checks_list,
-                                                  ref_t)
-            entry, header = json_detailed_ins_append(
-                line, ref_t, ref_o, entry, header, header_t,
-                detail_t, result, is_header,
-            )
+            entry, header = json_detailed_ins_append(line, ctx, entry, header,
+                                                     result)
     if entry:
         result.append(entry)
     return result
@@ -3153,9 +3180,9 @@ def json_detailed_ins(json_lns, insecure_checks):
                            for check in insecure_checks}
     checks_list = []
     json_detailed_ins_checks(checks_list, insecure_checks)
-    return json_detailed_ins_process(
-        json_lns, checks_list, ref_t, PDF_CONDITIONS[0], header_t, detail_t,
-    )
+    ctx = JsonInsContext(header_t=header_t, detail_t=detail_t, ref_t=ref_t,
+                         ref_o=PDF_CONDITIONS[0], checks_list=checks_list)
+    return json_detailed_ins_process(json_lns, ctx)
 
 
 def json_detailed_ins_checks(checks_list, insecure_checks):
