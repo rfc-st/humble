@@ -3023,24 +3023,22 @@ def json_detailed_format(json_lns, *, is_compat=False, is_l10n=False):
     return json_detailed_format_add(json_lns, header_t, value_t)
 
 
-def json_detailed_miss_process(line, l_miss, json_miss_keys, json_det_mref,
-                               result, entry):
+def json_detailed_miss_process(line, ctx, result, entry):
     """Format lines in the missing section.
 
     Related to `-o json` option.
     """
-    json_miss_h, json_miss_d, json_miss_r = json_miss_keys
-    if line in l_miss or line.startswith("(*)"):
+    if line in ctx.l_miss or line.startswith("(*)"):
         result.extend(filter(None, (entry,)))
-        return {json_miss_h: line, json_miss_d: [], json_miss_r: []}
-    if entry and line.startswith(json_det_mref):
-        entry[json_miss_r].append(line.removeprefix(json_det_mref).strip())
+        return {ctx.miss_h: line, ctx.miss_d: [], ctx.miss_r: []}
+    if entry and line.startswith(ctx.mref):
+        entry[ctx.miss_r].append(line.removeprefix(ctx.mref).strip())
     elif entry:
-        entry[json_miss_d].append(line)
+        entry[ctx.miss_d].append(line)
     return entry
 
 
-def json_detailed_miss_add(json_lns, l_miss, json_miss_keys, json_det_mref):
+def json_detailed_miss_add(json_lns, ctx):
     """Add lines to the missing section.
 
     Related to `-o json` option.
@@ -3048,12 +3046,20 @@ def json_detailed_miss_add(json_lns, l_miss, json_miss_keys, json_det_mref):
     result, entry = [], {}
     for line in json_lns:
         if line := line.strip():
-            entry = json_detailed_miss_process(
-                line, l_miss, json_miss_keys, json_det_mref, result, entry,
-            )
+            entry = json_detailed_miss_process(line, ctx, result, entry)
     if entry:
         result.append(entry)
     return result
+
+
+class JsonMissContext(NamedTuple):
+    """Loop-invariant context for the missing-headers JSON section."""
+
+    l_miss: list
+    miss_h: str
+    miss_d: str
+    miss_r: str
+    mref: str
 
 
 def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
@@ -3062,31 +3068,37 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
 
     Related to `-o json` option.
     """
-    json_det_mref = PDF_CONDITIONS[0]
-    json_miss_keys = (json_miss_h, json_miss_d, json_miss_r)
-    result = json_detailed_miss_add(
-        json_lns, l_miss, json_miss_keys, json_det_mref,
-    )
+    ctx = JsonMissContext(l_miss=l_miss, miss_h=json_miss_h,
+                          miss_d=json_miss_d, miss_r=json_miss_r,
+                          mref=PDF_CONDITIONS[0])
+    result = json_detailed_miss_add(json_lns, ctx)
     for e in result:
         if len(e[json_miss_d]) == 1:
             e[json_miss_d] = e[json_miss_d][0]
     return result
 
 
-def json_detailed_fng_process(line, fingerprint_set, entry, current_header,
-                              fng_header, fng_val):
+def json_detailed_fng_process(line, ctx, entry, current_header):
     """Format the lines to include in the fingerprint section.
 
     Related to `-o json` option.
     """
     line_s = line.strip()
-    for f in fingerprint_set:
+    for f in ctx.fingerprint_set:
         if line_s.startswith(f):
-            return {fng_header: f}, f
-    if current_header and line_s.startswith(fng_val):
-        entry[fng_val] = line_s.split(": ", 1)[1].strip("'\" ")
+            return {ctx.fng_header: f}, f
+    if current_header and line_s.startswith(ctx.fng_val):
+        entry[ctx.fng_val] = line_s.split(": ", 1)[1].strip("'\" ")
         return entry, current_header
     return entry, current_header
+
+
+class JsonFngContext(NamedTuple):
+    """Loop-invariant context for the fingerprint JSON section."""
+
+    fingerprint_set: set
+    fng_header: str
+    fng_val: str
 
 
 def json_detailed_fng(json_lns, fingerprint_set):
@@ -3095,11 +3107,14 @@ def json_detailed_fng(json_lns, fingerprint_set):
     Related to `-o json` option.
     """
     result, entry, current_header = [], {}, None
-    fng_header = get_detail("[json_det_fngheader]", replace=True)
-    fng_val = get_detail(JSON_L10N[2], replace=True)
+    ctx = JsonFngContext(
+        fingerprint_set=fingerprint_set,
+        fng_header=get_detail("[json_det_fngheader]", replace=True),
+        fng_val=get_detail(JSON_L10N[2], replace=True),
+    )
     for line in json_lns:
         new_entry, current_header = json_detailed_fng_process(
-            line, fingerprint_set, entry, current_header, fng_header, fng_val)
+            line, ctx, entry, current_header)
         if new_entry != entry:
             if entry:
                 result.append(entry)
@@ -3265,17 +3280,6 @@ def initialize_pdf(pdf, tmp_filename, ypos, *, export_all=False):
     pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
                  REF_LINKS[4])
     pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
-    generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos,
-                 export_all=export_all)
-
-
-def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos, *,
-                 export_all=False):
-    """Generate the required file structure, including metadata.
-
-    Related to `-o pdf` option.
-    """
-    set_pdf_file(pdf)
     ctx = PdfContext(
         ok_string=get_detail(DIR_MSG[2]).rstrip(),
         no_headers=[get_detail(f"[{i}]").strip() for i in ("no_sec_headers",
@@ -3286,8 +3290,17 @@ def generate_pdf(pdf, tmp_filename, pdf_links, pdf_prefixes, ypos, *,
         pdf_prefixes=pdf_prefixes,
         ypos=ypos,
     )
+    generate_pdf(tmp_filename, ctx, export_all=export_all)
+
+
+def generate_pdf(tmp_filename, ctx, *, export_all=False):
+    """Generate the required file structure, including metadata.
+
+    Related to `-o pdf` option.
+    """
+    set_pdf_file(ctx.pdf)
     set_pdf_content(tmp_filename, ctx)
-    pdf.output(final_filename)
+    ctx.pdf.output(final_filename)
     finalize_export(final_filename, tmp_filename, "pdf", export_all)
 
 
@@ -3461,12 +3474,10 @@ def format_pdf_lines(line, pdf, ypos):
         pdf.ln(h=2)
         return
     if re.search(RE_PATTERN[10], line):
-        color_pdf_line(line[19:], PDF_COLORS[0], PDF_COLORS[1], None, None,
-                       pdf)
+        color_pdf_line(line[19:], PDF_COLORS[0], None, None, pdf)
         return
     if re.search(RE_PATTERN[7], line):
-        color_pdf_line(line[19:], PDF_COLORS[2], PDF_COLORS[1], None, None,
-                       pdf)
+        color_pdf_line(line[19:], PDF_COLORS[2], None, None, pdf)
         return
     pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(197, 6, text=line, align="L", new_y=ypos.LAST)
@@ -3480,11 +3491,11 @@ def set_pdf_chunks(chunks, pdf):
     chunk_c = None
     for i, chunk in enumerate(chunks):
         if re.search(RE_PATTERN[10], chunk):
-            chunk_c = color_pdf_line(chunk[19:], PDF_COLORS[0], PDF_COLORS[1],
-                                     chunks, i, pdf)
+            chunk_c = color_pdf_line(chunk[19:], PDF_COLORS[0], chunks, i,
+                                     pdf)
         elif re.search(RE_PATTERN[7], chunk):
-            chunk_c = color_pdf_line(chunk[19:], PDF_COLORS[2], PDF_COLORS[1],
-                                     chunks, i, pdf)
+            chunk_c = color_pdf_line(chunk[19:], PDF_COLORS[2], chunks, i,
+                                     pdf)
         else:
             pdf.set_text_color(0, 0, 0)
             formatted_chunk = format_pdf_chunks(chunk, chunk_c, i, pdf)
@@ -3506,19 +3517,19 @@ def format_pdf_chunks(chunk, chunk_c, i, pdf):
     return chunk
 
 
-def color_pdf_line(line, hcolor, vcolor, chunks, i, pdf):
+def color_pdf_line(line, hcolor, chunks, i, pdf):
     """Locate lines to which a specific color should be applied.
 
     Relate to `-o pdf` option.
     """
     colon_idx = line.find(": ")
-    ln_final = apply_pdf_color(colon_idx, hcolor, line, vcolor)
+    ln_final = apply_pdf_color(colon_idx, hcolor, line)
     pdf.write_html(ln_final)
     condition = chunks and len(chunks) == LENGTH_BOUNDS[5] and i == 0
     return hcolor if condition else None
 
 
-def apply_pdf_color(colon_idx, hcolor, line, vcolor):
+def apply_pdf_color(colon_idx, hcolor, line):
     """Add the specific HTML tag to indicate the corresponding color.
 
     Sanitizes header values using HTML escaping to ensure that special
@@ -3533,7 +3544,7 @@ def apply_pdf_color(colon_idx, hcolor, line, vcolor):
     value_part = escape(line[colon_idx + 2:])
     return (
         f'{HTML_TAGS[16]}{hcolor}">{header_part}{HTML_TAGS[18]}'
-        f'{HTML_TAGS[19]}{vcolor}">{value_part}{HTML_TAGS[17]}'
+        f'{HTML_TAGS[19]}{PDF_COLORS[1]}">{value_part}{HTML_TAGS[17]}'
     )
 
 
@@ -3612,11 +3623,12 @@ def build_html_writers():
         partial(format_html_references, lang_slice=lang_slice),
         format_html_compatibility,
     )
-    html_rest = partial(format_html_rest, l_empty=l_empty,
-                        l_total=sorted(set(l_miss + l_ins)),
-                        fng_sorted=sorted(l_fng),
-                        header_prefixes=tuple((header, f"{header}: ") for
-                                              header in headers))
+    html_rest = partial(format_html_rest, ctx=HtmlRestContext(
+        l_empty=l_empty,
+        l_total=sorted(set(l_miss + l_ins)),
+        fng_sorted=sorted(l_fng),
+        header_prefixes=tuple((header, f"{header}: ") for header in headers),
+    ))
     return html_writers, html_rest
 
 
@@ -3802,8 +3814,16 @@ def format_html_empty(ln, ln_rstrip, l_empty):
     return ln
 
 
-def format_html_rest(html_final, ln, *, l_empty, l_total, fng_sorted,
-                     header_prefixes):
+class HtmlRestContext(NamedTuple):
+    """Loop-invariant context for the catch-all HTML line formatting."""
+
+    l_empty: list
+    l_total: list
+    fng_sorted: list
+    header_prefixes: tuple
+
+
+def format_html_rest(html_final, ln, *, ctx):
     """Write formatted lines for the rest of the sections.
 
     E.g. highlighting in red the insecure headers; related to `-o html` option.
@@ -3811,10 +3831,10 @@ def format_html_rest(html_final, ln, *, l_empty, l_total, fng_sorted,
     ln, ln_enabled = format_html_enabled(ln, html_final)
     ln_rstrip = ln.rstrip("\n")
     if ln and not ln_enabled:
-        ln = format_html_headers(ln, header_prefixes)
-        ln = format_html_fingerprint(args, ln, fng_sorted)
-        ln = format_html_totals(ln, l_total)
-        ln = format_html_empty(ln, ln_rstrip, l_empty)
+        ln = format_html_headers(ln, ctx.header_prefixes)
+        ln = format_html_fingerprint(args, ln, ctx.fng_sorted)
+        ln = format_html_totals(ln, ctx.l_total)
+        ln = format_html_empty(ln, ln_rstrip, ctx.l_empty)
         html_final.write(escape_html_value(ln))
 
 

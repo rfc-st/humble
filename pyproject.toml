@@ -26,7 +26,6 @@ ignore = [
     ]
 
 [tool.ruff.lint.pylint]
-max-args = 6
 max-returns = 10
 
 [tool.vulture]
