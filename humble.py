@@ -3873,8 +3873,8 @@ def generate_xml(final_filename, temp_filename, *, export_all=False,
         content = Path(temp_filename).read_text(encoding="utf8")
     root = ET.Element("analysis", {"version": BANNER_VERSION,
                                    "generated": current_time})
-    with Path(temp_filename).open(encoding="utf8") as txt_source:
-        parse_xml(root, None, (line.strip() for line in txt_source))
+    parse_xml(root, None,
+              (line.strip() for line in content.splitlines()))
     xml_decl = b'<?xml version="1.0" encoding="utf-8"?>\n'
     xml_content = ET.tostring(root, encoding="utf-8", xml_declaration=False)
     xml_dtd = f"<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n".encode()
