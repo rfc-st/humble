@@ -79,7 +79,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-07-31")
+local_version = date.fromisoformat("2026-08-01")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1961,15 +1961,18 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
         indicated in the MDN [list](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers){:target="_blank"}
         of HTTP headers.
     """
+    if xfo_skipped:
+        return m_cnt
     for header, detail in zip(l_miss, l_detail, strict=False):
         lower_header = header.lower()
-        if lower_header not in merged_set and not xfo_skipped:
-            print_header(
-                f"{get_detail('[exp_header]', replace=True)}{header}"
-                if lower_header in EXP_HEADERS else header)
-            if not args.brief:
-                print_detail(detail, 2)
-            m_cnt += 1
+        if lower_header in merged_set:
+            continue
+        print_header(
+            f"{get_detail('[exp_header]', replace=True)}{header}"
+            if lower_header in EXP_HEADERS else header)
+        if not args.brief:
+            print_detail(detail, 2)
+        m_cnt += 1
     return m_cnt
 
 
@@ -2867,15 +2870,15 @@ def format_json(json_data, json_lns):
     Related to `-o json -b` options.
     """
     for line in json_lns:
-        if ":" in line:
-            key, value = (part.strip() for part in line.split(":", 1))
-            if key in json_data:
-                if isinstance(json_data[key], list):
-                    json_data[key].append(value)
-                else:
-                    json_data[key] = [json_data[key], value]
-            else:
-                json_data[key] = value
+        if ":" not in line:
+            continue
+        key, value = (part.strip() for part in line.split(":", 1))
+        if key not in json_data:
+            json_data[key] = value
+        elif isinstance(json_data[key], list):
+            json_data[key].append(value)
+        else:
+            json_data[key] = [json_data[key], value]
     return json_data
 
 
@@ -3291,7 +3294,8 @@ def initialize_pdf(pdf, tmp_filename, ypos, *, export_all=False):
         ok_string=get_detail(DIR_MSG[2]).rstrip(),
         no_headers=[get_detail(f"[{i}]").strip() for i in ("no_sec_headers",
                                                            "no_enb_headers")],
-        combined_h=(*l_miss, *l_ins, *l_fng, *titled_fng, XFRAME_CHECK),
+        combined_h=tuple(dict.fromkeys(
+            (*l_miss, *l_ins, *l_fng, *titled_fng, XFRAME_CHECK))),
         pdf=pdf,
         pdf_links=pdf_links,
         pdf_prefixes=pdf_prefixes,
@@ -3633,7 +3637,8 @@ def build_html_writers():
     html_rest = partial(format_html_rest, ctx=HtmlRestContext(
         l_empty=l_empty,
         l_total=sorted(set(l_miss + l_ins)),
-        fng_sorted=sorted(l_fng),
+        fng_sorted=sorted(
+            i.casefold() for i in l_fng) if args.brief else sorted(l_fng),
         header_prefixes=tuple((header, f"{header}: ") for header in headers),
     ))
     return html_writers, html_rest
@@ -3782,12 +3787,11 @@ def format_html_fingerprint(args, ln, l_fng):
 
     Related to `-o html` option.
     """
+    if ":" in ln or HTML_TAGS[9] in ln or HTML_TAGS[10] in ln:
+        return ln
     ln_cf = ln.casefold() if args.brief else ln
-    for i in l_fng:
-        i_match = i.casefold() if args.brief else i
-        if i_match in ln_cf and ":" not in ln and HTML_TAGS[9] not in ln and \
-           HTML_TAGS[10] not in ln:
-            return f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
+    if any(i in ln_cf for i in l_fng):
+        return f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
     return ln
 
 
