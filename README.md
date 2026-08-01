@@ -577,6 +577,8 @@ And is regularly audited manually using the following tools (for each of them, I
 - <a href="https://github.com/koalaman/shellcheck" target="_blank">ShellCheck</a>: `shellcheck internal/releases.sh internal/security.sh`
 - <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a>: `vulture --min-confidence 60 humble.py`
 
+Example of one of these audits:
+
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_secqa.PNG" alt="Security and QA checks">
 
 ## Checks: enabled headers

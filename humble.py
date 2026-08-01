@@ -31,7 +31,6 @@
 import binascii
 import operator
 import re
-import ssl
 import sys
 import xml.etree.ElementTree as ET  # nosemgrep: use-defused-xml
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -55,12 +54,8 @@ from typing import NamedTuple, NoReturn
 from urllib.parse import urlparse
 
 # Third-Party imports
-import requests
 from colorama import Fore, Style, init
 from defusedcsv import csv as defusedcsv_logic
-from requests.adapters import HTTPAdapter
-from requests.structures import CaseInsensitiveDict
-from urllib3 import disable_warnings
 
 # Core globals, metadata and versioning
 BANNER = """  _                     _     _
@@ -239,36 +234,6 @@ RE_PATTERN = (
 )
 
 
-class SSLContextAdapter(requests.adapters.HTTPAdapter):
-    """Custom SSL adapter.
-
-    Disables SSL validation for unrestricted URL analysis.
-
-    ??? note
-        The following checks are disabled to allow the analysis of URLs
-        in environments with self-signed certificates, outdated software,
-        or development configurations:
-
-        - Certificate Verification
-        - Hostname Verification
-        - Certificate Requirement
-    """
-
-    def init_poolmanager(self, *args, **kwargs):
-        """Initialize the pool manager.
-
-        With an unverified SSL context and restricted ciphers.
-
-        """
-        # nosemgrep: unverified-ssl-context
-        context = ssl._create_unverified_context()
-        context.check_hostname = False
-        context.verify_mode = ssl.CERT_NONE
-        context.set_ciphers(FORCED_CIPHERS) # nosemgrep: no-set-ciphers
-        kwargs["ssl_context"] = context
-        return super().init_poolmanager(*args, **kwargs)
-
-
 def check_python_version():
     """Verify that the host's Python version meets the minimum requirements.
 
@@ -313,19 +278,32 @@ def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
         failed_proxy.set()
 
 
+def get_github_version():
+    """Fetch the date of the latest `humble` version from GitHub.
+
+    ??? tip
+        `requests` is lazy-loaded to avoid unnecessary overhead.
+    """
+    import requests
+    github_response = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT)
+    github_response.raise_for_status()
+    github_repo = github_response.text
+    if (github_match := re.search(RE_PATTERN[4], github_repo)) is None:
+        print_error_detail("[update_error]")
+    return date.fromisoformat(github_match.group())
+
+
 def check_updates(local_version):
     """Check for updated versions of `humble` on GitHub.
 
     After that exit; related to `-v` option.
+
+    ??? tip
+        `requests` is lazy-loaded to avoid unnecessary overhead.
     """
+    import requests
     try:
-        github_response = requests.get(URL_LIST[3], timeout=REQ_TIMEOUT)
-        github_response.raise_for_status()
-        github_repo = github_response.text
-        if (github_match := re.search(RE_PATTERN[4], github_repo)) is None:
-            print_error_detail("[update_error]")
-        github_date = github_match.group()
-        github_version = date.fromisoformat(github_date)
+        github_version = get_github_version()
         days_diff = (github_version - local_version).days
         check_updates_diff(days_diff, github_version, local_version)
     except (requests.exceptions.RequestException, ValueError):
@@ -4258,27 +4236,69 @@ def process_server_error(http_status_code, l10n_id):
     sys.exit(1)
 
 
-def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
-    """Make the request to the provided URL, disabling certain checks.
+def build_http_session():
+    """Build the session for the analysis, with a custom SSL adapter.
 
     ??? note
-        I have disabled the following checks to allow the analysis of URLs in
-        certain cases (e.g., development environments, hosts with outdated
-        servers/software or self-signed certificates) and because they exceed
-        the scope of this tool:
+        The following checks are disabled to allow the analysis of URLs
+        in environments with self-signed certificates, outdated software,
+        or development configurations:
 
         - Certificate Verification
         - Hostname Verification
         - Certificate Requirement
 
-        If `-df` option is provided (`args.redirects`) the exact URL will
-        be analyzed; otherwise the last redirected URL will be analyzed.
+    ??? tip
+        `ssl`, `requests` and `HTTPAdapter` are lazy-loaded to avoid unnecessary
+        overhead.
     """
+    import ssl
+
+    import requests
+    from requests.adapters import HTTPAdapter
+
+    class SSLContextAdapter(HTTPAdapter):
+        """Custom SSL adapter.
+
+        Disables SSL validation for unrestricted URL analysis.
+        """
+
+        def init_poolmanager(self, *args, **kwargs):
+            """Initialize the pool manager.
+
+            With an unverified SSL context and restricted ciphers.
+
+            """
+            # nosemgrep: unverified-ssl-context
+            context = ssl._create_unverified_context()
+            context.check_hostname = False
+            context.verify_mode = ssl.CERT_NONE
+            context.set_ciphers(FORCED_CIPHERS) # nosemgrep: no-set-ciphers
+            kwargs["ssl_context"] = context
+            return super().init_poolmanager(*args, **kwargs)
+
+    session = requests.Session()
+    session.mount("https://", SSLContextAdapter())
+    session.mount("http://", HTTPAdapter())
+    return session
+
+
+def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
+    """Make the request to the provided URL, disabling certain checks.
+
+    ??? note
+        If `-df` option is provided (`args.redirects`) the exact URL will be
+        analyzed; otherwise the last redirected URL will be analyzed.
+
+    ??? tip
+        `requests` and `urllib3` are lazy-loaded to avoid unnecessary overhead.
+    """
+    import requests
+    from urllib3 import disable_warnings
+
+    disable_warnings()
     try:
-        session = requests.Session()
-        session.mount("https://", SSLContextAdapter())
-        session.mount("http://", HTTPAdapter())
-        r = session.get(
+        r = build_http_session().get(
             URL,
             allow_redirects=not args.redirects,
             verify=False,
@@ -4299,7 +4319,23 @@ def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
 
 
 def process_requests_exception(exception):
-    """Print error messages for request timeout and unhandled exceptions."""
+    """Print error messages for request timeout and unhandled exceptions.
+
+    ??? tip
+        `requests` is lazy-loaded to avoid unnecessary overhead.
+    """
+    import requests
+    exception_d = {
+        requests.exceptions.ChunkedEncodingError: "[e_chunk]",
+        requests.exceptions.ConnectionError: "[e_connection]",
+        requests.exceptions.ContentDecodingError: "[e_decoding]",
+        requests.exceptions.InvalidSchema: "[e_ischema]",
+        requests.exceptions.InvalidURL: "[e_url]",
+        requests.exceptions.MissingSchema: "[e_mschema]",
+        requests.exceptions.SSLError: None,
+        requests.exceptions.Timeout: "[e_timeout]",
+        requests.exceptions.TooManyRedirects: "[e_redirect]",
+    }
     if isinstance(exception, requests.exceptions.Timeout):
         delete_lines()
         delete_lines()
@@ -4314,7 +4350,13 @@ def process_requests_exception(exception):
 
 
 def process_http_error(r):
-    """Print error messages based on HTTP response code during analysis."""
+    """Print error messages based on HTTP response code during analysis.
+
+    ??? tip
+        `requests` is lazy-loaded to avoid unnecessary overhead.
+    """
+    import requests
+
     try:
         r.raise_for_status()
     except requests.exceptions.HTTPError:
@@ -4403,6 +4445,18 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
     return process_http_response(r, exception, status_code, reliable, body)
 
 
+def strip_response_headers(r):
+    """Return response headers cleaned of extraneous whitespace.
+
+    ??? tip
+        `CaseInsensitiveDict` is lazy-loaded to avoid unnecessary overhead.
+    """
+    from requests.structures import CaseInsensitiveDict
+    return CaseInsensitiveDict({
+        k: re.sub(RE_PATTERN[20], " ", v).strip()
+        for k, v in r.headers.items()})
+
+
 def process_http_response(r, exception, status_code, reliable, body):
     """Process an HTTP response and its exceptions.
 
@@ -4419,17 +4473,13 @@ def process_http_response(r, exception, status_code, reliable, body):
     """
     if exception:
         process_requests_exception(exception)
-        return {}, status_code, reliable, body, False, None
-    if r is None:
+    if exception or r is None:
         return {}, status_code, reliable, body, False, None
     process_http_error(r)
-    status_code = r.status_code
-    headers = CaseInsensitiveDict({
-        k: re.sub(RE_PATTERN[20], " ", v).strip()
-        for k, v in r.headers.items()})
-    body = r.text
+    headers = strip_response_headers(r)
     is_html = headers.get("content-type", "").lower().startswith("text/html")
-    return headers, status_code, reliable, body, is_html, r.url, len(r.history)
+    return (headers, r.status_code, reliable, r.text, is_html, r.url,
+            len(r.history))
 
 
 class HumbleHelpFormatter(RawDescriptionHelpFormatter):
@@ -4636,19 +4686,6 @@ if not args.URL_A and not args.cicd:
         detail = "[compliance_output]"
     print()
     print_detail(detail)
-
-exception_d = {
-    requests.exceptions.ChunkedEncodingError: "[e_chunk]",
-    requests.exceptions.ConnectionError: "[e_connection]",
-    requests.exceptions.ContentDecodingError: "[e_decoding]",
-    requests.exceptions.InvalidSchema: "[e_ischema]",
-    requests.exceptions.InvalidURL: "[e_url]",
-    requests.exceptions.MissingSchema: "[e_mschema]",
-    requests.exceptions.SSLError: None,
-    requests.exceptions.Timeout: "[e_timeout]",
-    requests.exceptions.TooManyRedirects: "[e_redirect]",
-}
-disable_warnings() # via urllib3 import
 
 final_url, redirect_count = None, 0
 if "-if" not in sys.argv:
