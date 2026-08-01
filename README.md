@@ -75,7 +75,7 @@
 :heavy_check_mark: Can check for compliance with the OWASP <a href="https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/03_best_practices.md" target="_blank">Secure Headers Project</a> Best Practices.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
 :heavy_check_mark: Can analyze <a href="https://curl.se/docs/manpage.html#-D" target="_blank">raw response</a> and <a href="https://w3c.github.io/web-performance/specs/HAR/Overview.html" target="_blank">HAR</a> files.<br />
-:heavy_check_mark: Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.<br />
+:heavy_check_mark: Can export analysis to CSV, CSS3/HTML5, JSON, PDF, TXT, XLSX, XML and with a custom filename/path.<br />
 :heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** <a href="https://testssl.sh/" target="_blank">testssl.sh</a>.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
 :heavy_check_mark: Can use proxies for the analysis.<br />
