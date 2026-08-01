@@ -40,6 +40,7 @@ from contextlib import suppress
 from datetime import date, datetime
 from functools import partial
 from html import escape
+from io import StringIO
 from ipaddress import ip_address
 from itertools import chain, islice, takewhile
 from json import dump, dumps, load
@@ -2223,47 +2224,41 @@ def check_export_scope():
         export_selected_formats(final_filename, tmp_filename)
 
 
-def build_export_actions(final_filename, tmp_filename):
+def build_export_actions(final_filename, tmp_filename, content):
     """Map each export format to its generation function.
 
-    The mapping is consumed by `export_selected_formats`, which iterates
-    it in `EXPORT_ORDER`; related to `-o` option.
+    Related to `-o` option.
     """
     return {
-        "txt": lambda: normalize_txt_all_export(tmp_filename),
+        "txt": lambda: normalize_txt_all_export(tmp_filename, content),
         "csv": lambda: generate_csv(final_filename, tmp_filename,
-                                    export_all=True),
+                                    export_all=True, content=content),
         "json": lambda: (generate_json if args.brief else
                          generate_json_detailed)(final_filename,
                                                  tmp_filename,
-                                                 export_all=True),
+                                                 export_all=True,
+                                                 content=content),
         "xlsx": lambda: generate_csv(final_filename, tmp_filename,
-                                     to_xlsx=True, export_all=True),
+                                     to_xlsx=True, export_all=True,
+                                     content=content),
         "xml": lambda: generate_xml(final_filename, tmp_filename,
-                                    export_all=True),
+                                    export_all=True, content=content),
         "html": lambda: normalize_htmlpdf_all_export("html", tmp_filename,
-                                                     final_filename),
-        "pdf": lambda: normalize_htmlpdf_all_export("pdf", tmp_filename),
+                                                     content, final_filename),
+        "pdf": lambda: normalize_htmlpdf_all_export("pdf", tmp_filename,
+                                                    content),
     }
 
 
 def export_selected_formats(final_filename, tmp_filename):
     """Export the analysis to every requested format, in canonical order.
 
-    Iterates the formats requested via the `-o` option following
-    `EXPORT_ORDER`, restores the temporary file to its pristine content
-    after the HTML and PDF passes (which mutate it), and terminates
-    execution after displaying the final export path.
-
-    Related to `-o` option; `all` is equivalent to requesting every
-    format.
+    Related to `-o` option; `all` is equivalent to requesting every format.
     """
-    pristine = Path(tmp_filename).read_text(encoding="utf-8")
-    actions = build_export_actions(final_filename, tmp_filename)
+    content = Path(tmp_filename).read_text(encoding="utf-8")
+    actions = build_export_actions(final_filename, tmp_filename, content)
     for fmt in args.output:
         actions[fmt]()
-        if fmt in ("html", "pdf"):
-            Path(tmp_filename).write_text(pristine, encoding="utf-8")
     Path(tmp_filename).unlink()
     print_export_path(final_filename, reliable, export_all=True)
     sys.exit(0)
@@ -2292,30 +2287,29 @@ def process_htmlpdf_all_export(lines, start_index, is_html):
     return content
 
 
-def normalize_htmlpdf_all_export(export_format, tmp_filename,
+def normalize_htmlpdf_all_export(export_format, tmp_filename, content,
                                  final_filename=None):
     """Normalize section and line formatting for HTML and PDF exports.
 
-    Processes the analysis output and delegates to the appropriate export
-    function; related to `-o all` option.
+    Related to `-o all` option.
     """
     is_html = (export_format == "html")
-    path = Path(tmp_filename)
-    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    lines = content.splitlines(keepends=True)
     idx = next((i for i, ln in enumerate(lines) if INFO_SECTION in ln), None)
-    processed = process_htmlpdf_all_export(lines, idx, is_html)
-    path.write_text("".join(processed), encoding="utf-8")
+    processed = "".join(process_htmlpdf_all_export(lines, idx, is_html))
     if is_html:
-        export_html_file(final_filename, tmp_filename, export_all=True)
+        export_html_file(final_filename, tmp_filename, export_all=True,
+                         content=processed)
     else:
-        export_pdf_file(fix_pdf_all_export(tmp_filename), export_all=True)
+        processed = fix_pdf_all_content(processed,
+                                        Path(tmp_filename).stem[:-1])
+        export_pdf_file(tmp_filename, export_all=True, content=processed)
 
 
 def sections_htmlpdf_all_export(line, states):
     """Identify lines requiring specific formatting for HTML and PDF exports.
 
-    Matches each line against known section prefixes and returns the appropriate
-    formatting state; related to `-o all` option.
+    Related to `-o all` option.
     """
     for prefix, new_states in SECTIONS_EXPORT_STATES.items():
         if line.startswith(prefix):
@@ -2339,40 +2333,30 @@ def format_htmlpdf_all_export(line, is_html, states):
     return f" {STYLE[6]}{line[1:]}" if states.response and not is_html else line
 
 
-def fix_pdf_all_export(tmp_filename):
-    """Format and applies the correct extension to the PDF file.
+def fix_pdf_all_content(content, base_pdffilename):
+    """Drop the banner and apply the PDF extension to the analysis content.
 
     Related to `-o all` option.
     """
-    base_pdffilename = Path(tmp_filename).stem[:-1]
-    with (
-        Path(tmp_filename).open("r+", encoding="utf8")
-    ) as temp_pdffilename:
-        lines = temp_pdffilename.readlines()
-        first = next((i for i, ln in enumerate(lines) if ln.strip()), 0)
-        idx = next((i for i, ln in enumerate(lines) if INFO_SECTION in ln),
-                   first)
-        content = "".join(lines[:first] + lines[idx:])
-        new_content = content.replace(f"{base_pdffilename}.all",
-                                      f"{base_pdffilename}.pdf")
-        temp_pdffilename.seek(0)
-        temp_pdffilename.write(new_content)
-        temp_pdffilename.truncate()
-    return tmp_filename
+    lines = content.splitlines(keepends=True)
+    first = next((i for i, ln in enumerate(lines) if ln.strip()), 0)
+    idx = next((i for i, ln in enumerate(lines) if INFO_SECTION in ln),
+               first)
+    return "".join(lines[:first] + lines[idx:]).replace(
+        f"{base_pdffilename}.all", f"{base_pdffilename}.pdf")
 
 
-def normalize_txt_all_export(tmp_filename):
+def normalize_txt_all_export(tmp_filename, content):
     """Apply format to section and lines to the TXT file.
 
-    Writes the normalized content to the final TXT file, leaving the
-    temporary file intact for later formats; related to `-o` option.
+    Writes the normalized content to the final TXT file from the in-memory
+    analysis content; related to `-o` option.
     """
     txt_path = Path(tmp_filename)
     identity = txt_path.stem[:-1]
-    txt_content = txt_path.read_text(encoding="utf-8").replace(
-        f"{identity}.all", f"{identity}.txt")
-    txt_path.with_name(f"{identity}.txt").write_text(txt_content,
-                                                     encoding="utf-8")
+    txt_path.with_name(f"{identity}.txt").write_text(
+        content.replace(f"{identity}.all", f"{identity}.txt"),
+        encoding="utf-8")
 
 
 def finalize_export(final_filename, temp_filename, file_extension, export_all):
@@ -2644,18 +2628,17 @@ def write_csv_content(csv_file, txt_source):
 
 
 def generate_csv(final_filename, temp_filename, *, to_xlsx=False,
-                 export_all=False):
+                 export_all=False, content=None):
     """Export to CSV and XSLX and exit.
 
     Related to `-o csv` option.
     """
-    with (
-        Path(temp_filename).open(encoding="utf8") as txt_source,
-        Path(final_filename).open(
-            "w", newline="", encoding="utf8",
-        ) as csv_final,
-    ):
-        write_csv_content(csv_final, txt_source)
+    if content is None:
+        content = Path(temp_filename).read_text(encoding="utf8")
+    with Path(final_filename).open(
+        "w", newline="", encoding="utf8",
+    ) as csv_final:
+        write_csv_content(csv_final, StringIO(content))
     if to_xlsx:
         fix_xlsx_all_export(final_filename, export_all)
         generate_xlsx(final_filename, temp_filename, export_all=export_all)
@@ -2800,17 +2783,17 @@ def set_xlsx_width(col_wd, worksheet):
         worksheet.set_column(col_idx, col_idx, actual_width)
 
 
-def generate_json(final_filename, temp_filename, *, export_all=False):
+def generate_json(final_filename, temp_filename, *, export_all=False,
+                  content=None):
     """JSON export of a brief analysis and exit.
 
     Related to `-o json -b` options.
     """
+    if content is None:
+        content = Path(temp_filename).read_text(encoding="utf8")
     sections = tuple(get_detail(f"[{i}]", replace=True) for i in JSON_SECTION)
-    with (
-        Path(temp_filename).open(encoding="utf8") as txt_file,
-        Path(final_filename).open("w", encoding="utf8") as json_file,
-    ):
-        txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
+    with Path(final_filename).open("w", encoding="utf8") as json_file:
+        txt_sections = re.split(RE_PATTERN[5], content)[1:]
         dump(parse_json(sections, txt_sections), json_file,
              indent=4, ensure_ascii=False)
     finalize_export(final_filename, temp_filename, "json", export_all)
@@ -2872,16 +2855,16 @@ def json_detailed_sources(file_idx, slice_idx):
                                                 None) if line.strip()}
 
 
-def generate_json_detailed(final_filename, temp_filename, *, export_all=False):
+def generate_json_detailed(final_filename, temp_filename, *,
+                           export_all=False, content=None):
     """JSON export of a detailed analysis and exit.
 
     Related to `-o json` option.
     """
-    with (
-        Path(temp_filename).open(encoding="utf8") as txt_file,
-        Path(final_filename).open("w", encoding="utf8") as json_file,
-    ):
-        txt_sections = re.split(RE_PATTERN[5], txt_file.read())[1:]
+    if content is None:
+        content = Path(temp_filename).read_text(encoding="utf8")
+    with Path(final_filename).open("w", encoding="utf8") as json_file:
+        txt_sections = re.split(RE_PATTERN[5], content)[1:]
         data = {}
         json_detailed_parse(data, txt_sections)
         dump(data, json_file, indent=4, ensure_ascii=False)
@@ -3228,12 +3211,12 @@ class PdfContext(NamedTuple):
     ypos: object
 
 
-def export_pdf_file(tmp_filename, *, export_all=False):
+def export_pdf_file(tmp_filename, *, export_all=False,
+                    content=None):
     """PDF export of the analysis, related to `-o pdf` option.
 
     ??? tip
-        `fpdf2` is lazy-loaded to avoid unnecessary overhead when PDF export is
-        not used.
+        `fpdf` is lazy-loaded to avoid unnecessary overhead.
     """
     from fpdf import FPDF, YPos
 
@@ -3257,10 +3240,14 @@ def export_pdf_file(tmp_filename, *, export_all=False):
 {self.page_no()}{get_detail('[pdf_footer2]')} {{nb}}", align="C")
 
     pdf = PDF()
-    initialize_pdf(pdf, tmp_filename, YPos, export_all=export_all)
+    if content is None:
+        content = Path(tmp_filename).read_text(encoding="utf8")
+    initialize_pdf(pdf, tmp_filename, content, YPos,
+                   export_all=export_all)
 
 
-def initialize_pdf(pdf, tmp_filename, ypos, *, export_all=False):
+def initialize_pdf(pdf, tmp_filename, content, ypos, *,
+                   export_all=False):
     """Retrieve literals to apply the appropriate formatting.
 
     Related to `-o pdf` option.
@@ -3279,16 +3266,16 @@ def initialize_pdf(pdf, tmp_filename, ypos, *, export_all=False):
         pdf_prefixes=pdf_prefixes,
         ypos=ypos,
     )
-    generate_pdf(tmp_filename, ctx, export_all=export_all)
+    generate_pdf(tmp_filename, content, ctx, export_all=export_all)
 
 
-def generate_pdf(tmp_filename, ctx, *, export_all=False):
+def generate_pdf(tmp_filename, content, ctx, *, export_all=False):
     """Generate the required file structure, including metadata.
 
     Related to `-o pdf` option.
     """
     set_pdf_file(ctx.pdf)
-    set_pdf_content(tmp_filename, ctx)
+    set_pdf_content(content, ctx)
     ctx.pdf.output(final_filename)
     finalize_export(final_filename, tmp_filename, "pdf", export_all)
 
@@ -3324,21 +3311,20 @@ def set_pdf_metadata(pdf):
     pdf.set_producer(git_urlc)
 
 
-def set_pdf_content(tmp_filename, ctx):
+def set_pdf_content(content, ctx):
     """Set the format and sections.
 
     Related to `-o pdf` option.
     """
-    with Path(tmp_filename).open(encoding="utf8") as txt_source:
-        for line in txt_source:
-            if any(no_header in line for no_header in ctx.no_headers):
-                set_pdf_warnings(line.replace(STYLE[8], "", 1), ctx.pdf,
-                                 ctx.ypos)
-                continue
-            if "[" in line:
-                set_pdf_sections(line, ctx.pdf)
-            if set_pdf_format(line, ctx):
-                continue
+    for line in content.splitlines(keepends=True):
+        if any(no_header in line for no_header in ctx.no_headers):
+            set_pdf_warnings(line.replace(STYLE[8], "", 1), ctx.pdf,
+                             ctx.ypos)
+            continue
+        if "[" in line:
+            set_pdf_sections(line, ctx.pdf)
+        if set_pdf_format(line, ctx):
+            continue
 
 
 def set_pdf_format(line, ctx):
@@ -3521,10 +3507,6 @@ def color_pdf_line(line, hcolor, chunks, i, pdf):
 def apply_pdf_color(colon_idx, hcolor, line):
     """Add the specific HTML tag to indicate the corresponding color.
 
-    Sanitizes header values using HTML escaping to ensure that special
-    characters (e.g., `<` or `>` in headers) are rendered correctly and do not
-    interfere with the PDF structure.
-
     Related to `-o pdf` option.
     """
     if colon_idx == -1:
@@ -3537,17 +3519,17 @@ def apply_pdf_color(colon_idx, hcolor, line):
     )
 
 
-def export_html_file(final_filename, tmp_filename, *, export_all=False):
+def export_html_file(final_filename, tmp_filename, *, export_all=False,
+                     content=None):
     """HTML export of the analysis, related to `-o html` option."""
+    if content is None:
+        content = Path(tmp_filename).read_text(encoding="utf8")
     generate_html()
-    decrease_html_spacing(tmp_filename)
+    content = decrease_html_spacing(content)
     html_writers, html_rest = build_html_writers()
     inside_section = False
-    with (
-        Path(tmp_filename).open(encoding="utf8") as html_source,
-        Path(final_filename).open("a", encoding="utf8") as html_final,
-    ):
-        for ln in html_source:
+    with Path(final_filename).open("a", encoding="utf8") as html_final:
+        for ln in content.splitlines(keepends=True):
             inside_section = write_html_line(html_final, ln, html_writers,
                                              html_rest, inside_section)
         if inside_section:
@@ -3574,23 +3556,21 @@ def generate_html():
     Path(final_filename).write_text(replaced_html, encoding="utf8")
 
 
-def decrease_html_spacing(tmp_filename):
+def decrease_html_spacing(content):
     """Decrease the spacing between sections.
 
     Related to `-o html` option.
     """
     initial_ln, prev_blank_ln = False, False
     cleaned_ln = []
-    with Path(tmp_filename).open(encoding="utf8") as html_source:
-        for line in html_source:
-            if not initial_ln and INFO_SECTION in line:
-                initial_ln = True
-            if initial_ln and not line.strip() and prev_blank_ln:
-                continue
-            prev_blank_ln = initial_ln and not line.strip()
-            cleaned_ln.append(line)
-    with Path(tmp_filename).open("w", encoding="utf8") as html_output:
-        html_output.writelines(cleaned_ln)
+    for line in content.splitlines(keepends=True):
+        if not initial_ln and INFO_SECTION in line:
+            initial_ln = True
+        if initial_ln and not line.strip() and prev_blank_ln:
+            continue
+        prev_blank_ln = initial_ln and not line.strip()
+        cleaned_ln.append(line)
+    return "".join(cleaned_ln)
 
 
 def build_html_writers():
@@ -3875,7 +3855,8 @@ def clean_html_final(final_filename):
     html_path.write_text(html_content, encoding="utf8")
 
 
-def generate_xml(final_filename, temp_filename, *, export_all=False):
+def generate_xml(final_filename, temp_filename, *, export_all=False,
+                 content=None):
     """XML export of the analysis, related to `-o xml` option.
 
     ??? note
@@ -3888,6 +3869,8 @@ def generate_xml(final_filename, temp_filename, *, export_all=False):
         Additionally, the DTD used to generate the XML is defined in the
         constant `DTD_CONTENT`.
     """
+    if content is None:
+        content = Path(temp_filename).read_text(encoding="utf8")
     root = ET.Element("analysis", {"version": BANNER_VERSION,
                                    "generated": current_time})
     with Path(temp_filename).open(encoding="utf8") as txt_source:
