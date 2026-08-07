@@ -232,6 +232,7 @@ RE_PATTERN = (
     r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
     r"<pre(?:\s[^>]*)?>\s*</pre>",
     r"(?<!')nonce-",
+    r"(^[^\S\n]*\n)(?:[^\S\n]*(?:\n|$))+",
 )
 
 
@@ -3309,8 +3310,7 @@ def set_pdf_content(content, ctx):
             continue
         if "[" in line:
             set_pdf_sections(line, ctx.pdf)
-        if set_pdf_format(line, ctx):
-            continue
+        set_pdf_format(line, ctx)
 
 
 def apply_pdf_links(line, ctx):
@@ -3333,15 +3333,14 @@ def set_pdf_format(line, ctx):
         style="B" if any(bold in line for bold in STRINGS_BOLD) else "")
     apply_pdf_links(line, ctx)
     if set_pdf_conditions(line, ctx.combined_h, ctx.pdf, ctx.ypos):
-        return True
+        return
     if ctx.ok_string in line:
         set_pdf_nowarnings(line, ctx.pdf, ctx.ypos)
-        return True
+        return
     ctx.pdf.set_text_color(255, 0, 0)
     if set_pdf_empty(l_empty, line, ctx.pdf, ctx.ypos):
-        return True
+        return
     format_pdf_lines(line, ctx.pdf, ctx.ypos)
-    return False
 
 
 def set_pdf_sections(line, pdf):
@@ -3557,16 +3556,12 @@ def decrease_html_spacing(content):
 
     Related to `-o html` option.
     """
-    initial_ln, prev_blank_ln = False, False
-    cleaned_ln = []
-    for line in content.splitlines(keepends=True):
-        if not initial_ln and INFO_SECTION in line:
-            initial_ln = True
-        if initial_ln and not line.strip() and prev_blank_ln:
-            continue
-        prev_blank_ln = initial_ln and not line.strip()
-        cleaned_ln.append(line)
-    return "".join(cleaned_ln)
+    idx = content.find(INFO_SECTION)
+    if idx == -1:
+        return content
+    start = content.rfind("\n", 0, idx) + 1
+    return content[:start] + re.sub(RE_PATTERN[24], r"\1", content[start:],
+                                    flags=re.MULTILINE)
 
 
 def build_html_writers():
