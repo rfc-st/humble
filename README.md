@@ -99,7 +99,7 @@
 :heavy_check_mark: <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost</a> all the <a href="https://github.com/rfc-st/humble/blob/master/additional/owasp_best_practices.txt" target="_blank">code</a> available under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT</a>.<br />
 :heavy_check_mark: Regularly <a href="https://github.com/rfc-st/humble/commits/master" target="_blank">updated</a>.<br />
 :heavy_check_mark: Minimal <a href="https://github.com/rfc-st/humble/blob/master/requirements.txt" target="_blank">dependencies</a> required.<br />
-:heavy_check_mark: Developed in my spare time over the last six years; feel free to integrate it into your projects. <b>No strings attached!</b>.
+:heavy_check_mark: Developed in my spare time over the last six years; feel free to integrate it into your projects. <b>No strings attached!</b>.<br />
 :heavy_check_mark: And <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_6.jpg">with</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA.PNG">the</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_4.JPG">approval</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_2.JPG">of</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_3.JPG">several</a> <a href="https://github.com/rfc-st/humble/blob/master/screenshots/humble_IA_5.JPG">AI</a> :smile:!.<br />
 
 ## Screenshots
