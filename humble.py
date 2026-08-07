@@ -1155,13 +1155,7 @@ def csp_check_ignored(csp_header):
     hash_p = bool(re.search(RE_PATTERN[17], csp_header))
     nonce_p = bool(re.search(RE_PATTERN[6], csp_header))
     if not (hash_p or nonce_p):
-        i_cnt[0] += 1
-        if args.brief:
-            print_detail_r("[icsig_d]", is_red=True)
-        else:
-            print_detail_r("[icsig_d]", is_red=True)
-            print_detail("[icsig]", num_lines=2)
-    return False
+        print_details("[icsig_d]", "[icsig]", "d", i_cnt)
 
 
 def csp_check_missing(csp_dirs):
@@ -1419,13 +1413,12 @@ def csp_print_details(csp_values, csp_title, csp_desc, csp_refs):
 
 def csp_check_unknown(csp_h):
     """`Content-Security-Policy` header check related to unknown directives."""
-    unknown_dir = []
-    csp_dirs = [d.strip() for d in csp_h.split(";") if d.strip()]
-    for directive in csp_dirs:
-        if match := re.match(RE_PATTERN[19], directive):
-            dir_name = match[1]
-            if dir_name not in t_csp_dirs + t_csp_dep:
-                unknown_dir.append(dir_name)
+    known_dirs = set(t_csp_dirs) | set(t_csp_dep)
+    unknown_dir = [
+        match[1] for directive in csp_h.split(";")
+        if (match := re.match(RE_PATTERN[19], directive.strip()))
+        and match[1] not in known_dirs
+    ]
     if unknown_dir:
         csp_print_unknown(unknown_dir)
 
@@ -1592,7 +1585,7 @@ def print_general_info(reliable, export_filename, headers_skipped, skip_set):
         humble_desc = get_detail("[humble_desc]", replace=True)
         print(f"\n\n{humble_desc}\n{BANNER_VERSION}\n")
     print_basic_info(export_filename)
-    print_extended_info(args, reliable, status_code, headers_skipped, skip_set)
+    print_extended_info(args, reliable, headers_skipped, skip_set)
 
 
 def print_redirect_info():
@@ -1650,7 +1643,7 @@ def print_basic_info(export_filename):
     validate_file_access(VALIDATE_FILE, context="basic")
 
 
-def print_extended_info(args, reliable, status_code, headers_skipped, skip_set):
+def print_extended_info(args, reliable, headers_skipped, skip_set):
     """Print extended analysis details.
 
     Request (`-H` option) and skipped (`-s` option) headers, proxy usage
@@ -1663,12 +1656,7 @@ def print_extended_info(args, reliable, status_code, headers_skipped, skip_set):
     if args.proxy:
         print_detail_l("[proxy_analysis_note]")
         print(f" {args.proxy}")
-    if (
-        (status_code is not None and
-         ERROR_CODES_MIXED[0] <= status_code <= ERROR_CODES_MIXED[1]) or
-        reliable or args.redirects or args.skip_headers
-    ):
-        print_extra_info(reliable)
+    print_extra_info(reliable)
 
 
 def print_extra_info(reliable):
@@ -1869,13 +1857,13 @@ def get_enabled_headers(args, headers_l, t_enabled):
     t_enabled = sorted({header.title() for header in t_enabled})
     enabled_headers = [header for header in t_enabled if header in headers_d]
     for header in enabled_headers:
-        exp_s = get_detail("[exp_header]", replace=True) if header.lower() in\
-          EXP_HEADERS else ""
+        exp_s = (get_detail("[exp_header]", replace=True)
+                 if header.lower() in EXP_HEADERS else "")
         print_enabled_headers(args, exp_s, header, headers_d)
-    None if enabled_headers else print_nosec_headers()
-    en_cnt = len(enabled_headers)
+    if not enabled_headers:
+        print_nosec_headers()
     print("\n")
-    return en_cnt
+    return len(enabled_headers)
 
 
 def print_enabled_headers(args, exp_s, header, headers_d):
@@ -3100,7 +3088,7 @@ def json_detailed_ins_append(line, ctx, entry, header, result):
 
     Related to `-o json` option.
     """
-    if json_detailed_ins_headers(line, line, ctx.checks_list, ctx.ref_t):
+    if json_detailed_ins_headers(line, ctx.checks_list, ctx.ref_t):
         if entry:
             result.append(entry)
         header = line
@@ -3123,7 +3111,7 @@ class JsonInsContext(NamedTuple):
     checks_list: list
 
 
-def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
+def json_detailed_ins_headers(line, checks_list, ref_t):
     """Determine if a line represents a deprecated/insecure header.
 
     Related to `-o json` option.
@@ -3132,7 +3120,7 @@ def json_detailed_ins_headers(line, line_s, checks_list, ref_t):
     header_cond2 = not line.startswith(ref_t)
     header_cond3 = any(
         (val and key in line and val in line)
-        or (not val and line_s.startswith(key))
+        or (not val and line.startswith(key))
         for key, val in checks_list
     )
     return header_cond or (header_cond2 and header_cond3)
@@ -3327,6 +3315,17 @@ def set_pdf_content(content, ctx):
             continue
 
 
+def apply_pdf_links(line, ctx):
+    """Format the first link-bearing string found in a line, if any.
+
+    Related to `-o pdf` option.
+    """
+    for string in ctx.pdf_links:
+        if string in line:
+            format_pdf_links(line, string, ctx.pdf, ctx.pdf_prefixes)
+            return
+
+
 def set_pdf_format(line, ctx):
     """Apply specific format to lines based on its content.
 
@@ -3334,8 +3333,7 @@ def set_pdf_format(line, ctx):
     """
     ctx.pdf.set_font(
         style="B" if any(bold in line for bold in STRINGS_BOLD) else "")
-    next((format_pdf_links(line, string, ctx.pdf, ctx.pdf_prefixes)
-          for string in ctx.pdf_links if string in line), None)
+    apply_pdf_links(line, ctx)
     if set_pdf_conditions(line, ctx.combined_h, ctx.pdf, ctx.ypos):
         return True
     if ctx.ok_string in line:
