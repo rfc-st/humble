@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-08-01")
+local_version = date.fromisoformat("2026-08-07")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -4266,7 +4266,7 @@ def build_http_session():
     return session
 
 
-def make_http_request(custom_headers, proxy):  # sourcery skip: extract-method
+def make_http_request(custom_headers, proxy):
     """Make the request to the provided URL, disabling certain checks.
 
     ??? note
