@@ -2639,13 +2639,11 @@ def parse_csv(csv_section, csv_source, csv_writer):
 
     Related to `-o csv` option.
     """
-    for i in (item for item in csv_section if item in csv_source):
+    for i in filter(csv_source.__contains__, csv_section):
         csv_content = csv_source.split(i)[1].split("[")[0]
-        info_list = [line.strip() for line in csv_content.split("\n") if
-                     line.strip()]
+        info_list = filter(None, map(str.strip, csv_content.split("\n")))
         for csv_ln in info_list:
-            clean_ln = ": ".join([part.strip() for part in csv_ln.split(":",
-                                                                        1)])
+            clean_ln = ": ".join(map(str.strip, csv_ln.split(":", 1)))
             csv_writer.writerow([i, clean_ln])
 
 

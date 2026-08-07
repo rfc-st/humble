@@ -25,13 +25,13 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 ## Features
 - Covers 63 <a href="https://github.com/rfc-st/humble/#checks-enabled-headers" target="_blank">enabled</a> security-related HTTP response headers.
 - 15 <a href="https://github.com/rfc-st/humble/#checks-missing-headers" target="_blank">checks</a> for missing security-related HTTP response headers.
-- 1287 <a href="https://github.com/rfc-st/humble/#checks-fingerprint-headers" target="_blank">checks</a> for fingerprinting through HTTP response headers.
+- 1288 <a href="https://github.com/rfc-st/humble/#checks-fingerprint-headers" target="_blank">checks</a> for fingerprinting through HTTP response headers.
 - 159 <a href="https://github.com/rfc-st/humble/#checks-deprecated-headersprotocols-and-insecure-values" target="_blank">checks</a> for deprecated HTTP response headers/protocols or with insecure/wrong values.
-- 28 <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L46-L73" target="_blank">checks</a> related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
+- 28 <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L48-L75" target="_blank">checks</a> related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
 - Can check for compliance with the OWASP <a href="https://github.com/OWASP/www-project-secure-headers/blob/68ad3d2690ab7c5f3c3377bf5b6a3a9d0e0f1d67/mainsite/03_best_practices.md" target="_blank">Secure Headers Project</a> Best Practices.
 - Can exclude specific HTTP response headers from the analysis.
-- Can analyze raw response files: text files with HTTP response headers and values.
-- Can export each analysis to CSV, CSS3 & HTML5, JSON, PDF, TXT, XLSX (Excel 2007 onwards) and XML; and in a filename and path of your choice.
+- Can analyze <a href="https://curl.se/docs/manpage.html#-D" target="_blank">raw response</a> and <a href="https://w3c.github.io/web-performance/specs/HAR/Overview.html" target="_blank">HAR</a> files.
+- Can export analysis to CSV, CSS3/HTML5, JSON, PDF, TXT, XLSX, XML and with a custom filename/path.
 - Can check for outdated SSL/TLS protocols and vulnerabilities: requires <a href="https://testssl.sh/" target="_blank">testssl.sh</a>.
 - Can provide brief and detailed analysis along with HTTP response headers.
 - Can use proxies for the analysis.
@@ -51,7 +51,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Tested, one by one, on thousands of URLs.
 - Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.
 - <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost</a> all the <a href="https://github.com/rfc-st/humble/blob/master/additional/owasp_best_practices.txt" target="_blank">code</a> available under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT</a>.
-- And more!.
+- And <a href="https://github.com/rfc-st/humble#features" target="_blank">more</a>!.
 
 ## How can I test it?
 - Start by taking a look at its <a href="https://github.com/rfc-st/humble/" target="_blank">repository</a>.
