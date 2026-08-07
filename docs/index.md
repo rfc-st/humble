@@ -51,6 +51,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Tested, one by one, on thousands of URLs.
 - Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.
 - <a href="https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt" target="_blank">Almost</a> all the <a href="https://github.com/rfc-st/humble/blob/master/additional/owasp_best_practices.txt" target="_blank">code</a> available under one of the most permissive licenses: <a href="https://github.com/rfc-st/humble/blob/master/LICENSE" target="_blank">MIT</a>.
+- Developed in my spare time over the last six years; feel free to integrate it into your projects. <b>No strings attached!</b>.
 - And <a href="https://github.com/rfc-st/humble#features" target="_blank">more</a>!.
 
 ## How can I test it?
