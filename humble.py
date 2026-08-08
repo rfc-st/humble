@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-08-07")
+local_version = date.fromisoformat("2026-08-08")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -729,7 +729,7 @@ def get_analysis_metrics(all_analysis):
         get_analytics_length(SECTION_V[5:12]),
         total_a,
         get_first_metrics(adj_url_ln),
-        [get_second_metrics(adj_url_ln, i, total_a) for i in range(2, 7)],
+        get_second_metrics(adj_url_ln, total_a),
         get_third_metrics(adj_url_ln),
         get_additional_metrics(adj_url_ln),
         get_highlights(adj_url_ln),
@@ -751,16 +751,19 @@ def get_first_metrics(adj_url_ln):
     return (first_a, latest_a, best_d, best_w, worst_d, worst_w)
 
 
-def get_second_metrics(adj_url_ln, index, total_a):
-    """Compute the total of analyses performed on a URL that meet a key metric.
+def get_second_metrics(adj_url_ln, total_a):
+    """Compute the totals of analyses performed on a URL that meet key metrics.
 
     Related to `-a` option.
     """
-    metric_c = len([line for line in adj_url_ln if int(line.split(" ; ")
-                                                       [index])
-                    == 0])
-    return f"{metric_c / total_a:.0%} ({metric_c}\
-{get_detail('[pdf_footer2]', replace=True)} {total_a})"
+    zero_c = dict.fromkeys(range(2, 7), 0)
+    for line in adj_url_ln:
+        parts = line.split(" ; ")
+        for index in zero_c:
+            zero_c[index] += int(parts[index]) == 0
+    footer = get_detail("[pdf_footer2]", replace=True)
+    return [f"{count / total_a:.0%} ({count}{footer} {total_a})"
+            for count in zero_c.values()]
 
 
 def get_third_metrics(adj_url_ln):
@@ -1012,8 +1015,7 @@ def extract_global_metrics(all_analysis):
     adj_url_ln = adjust_old_analysis(url_ln)
     total_a = len(adj_url_ln)
     first_m = get_global_first_metrics(adj_url_ln)
-    second_m = [get_second_metrics(adj_url_ln, i, total_a) for i
-                in range(2, 7)]
+    second_m = get_second_metrics(adj_url_ln, total_a)
     third_m = get_third_metrics(adj_url_ln)
     additional_m = get_additional_metrics(adj_url_ln)
     analytics_l = get_analytics_length(SECTION_V[12:26])
@@ -1299,19 +1301,20 @@ def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
     i_cnt[0] += 1
 
 
+def csp_valid_hash(algo, b64hash):
+    """Check that a CSP hash decodes and matches its algorithm's length."""
+    try:
+        return len(b64decode(b64hash, validate=True)) == \
+            HASH_CHARS[algo]  # nosec
+    except binascii.Error:
+        return False
+
+
 def csp_check_hashes(csp_h):
     """`Content-Security-Policy` header checks related to hashes."""
     csp_unquoted_hashes(csp_h)
-    invalid_algos = set()
-    csp_hashes = re.findall(RE_PATTERN[17], csp_h)
-    for algo, b64hash in csp_hashes:
-        try:
-            decoded = b64decode(b64hash, validate=True) # nosec
-            if len(decoded) != HASH_CHARS[algo]:
-                invalid_algos.add(algo)
-        except binascii.Error:
-            invalid_algos.add(algo)
-    if invalid_algos:
+    if any(not csp_valid_hash(algo, b64hash)
+           for algo, b64hash in re.findall(RE_PATTERN[17], csp_h)):
         print_detail_r("[icshash_h]", is_red=True)
         i_cnt[0] += 1
         if not args.brief:
@@ -2820,7 +2823,7 @@ def format_json(json_data, json_lns):
     for line in json_lns:
         if ":" not in line:
             continue
-        key, value = (part.strip() for part in line.split(":", 1))
+        key, value = map(str.strip, line.split(":", 1))
         if key not in json_data:
             json_data[key] = value
         elif isinstance(json_data[key], list):
@@ -3749,12 +3752,11 @@ def format_html_totals(ln, l_total):
 
     Related to `-o html` option.
     """
-    for i in l_total:
-        if (not re.search(RE_PATTERN[11], ln)) and (
-             ((i in ln) and ('"' not in ln)) or ("HTTP (" in ln) or
-             (XFRAME_CHECK in ln)):
-            ln = f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
-            break
+    if not l_total or re.search(RE_PATTERN[11], ln):
+        return ln
+    unquoted_hit = '"' not in ln and any(i in ln for i in l_total)
+    if unquoted_hit or "HTTP (" in ln or XFRAME_CHECK in ln:
+        return f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
     return ln
 
 
@@ -4361,14 +4363,14 @@ def process_request_headers(request_headers):
     Exit if empty entries are found, while returning a list of any malformed
     headers.
     """
+    if not all(request_headers):
+        delete_lines()
+        print()
+        print(get_detail("[e_custom_eheaders]", replace=True))
+        sys.exit(1)
     headers = {}
     malformed_headers = []
     for header in request_headers:
-        if not header:
-            delete_lines()
-            print()
-            print(get_detail("[e_custom_eheaders]", replace=True))
-            sys.exit(1)
         if ":" not in header:
             malformed_headers.append(header)
             continue
