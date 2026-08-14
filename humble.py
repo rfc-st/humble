@@ -1259,10 +1259,10 @@ def csp_unsafe_directives(csp_dirs_vals, present, absent=None):
     A directive matches when `present` appears in its values and, if given,
     `absent` does not; related to `Content-Security-Policy` header checks.
     """
-    return [dir_vals.split()[0] if " " in dir_vals else dir_vals
+    return {dir_vals.split()[0] if " " in dir_vals else dir_vals
             for dir_vals in csp_dirs_vals
             if present in dir_vals
-            and (absent is None or absent not in dir_vals)]
+            and (absent is None or absent not in dir_vals)}
 
 
 def csp_check_eval(csp_dirs_vals):
@@ -1272,7 +1272,8 @@ def csp_check_eval(csp_dirs_vals):
     """
     if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals, "unsafe-eval",
                                                 absent="wasm-unsafe-eval"):
-        csp_print_unsafe(csp_unsafe_dirs, "[icspe_h]", "[icspev]", 5, i_cnt)
+        csp_print_unknown_unsafe(csp_unsafe_dirs, "[icspe_h]", "[icspev]", 5,
+                                 i_cnt)
 
 
 def csp_check_inline(csp_dirs_vals):
@@ -1282,19 +1283,21 @@ def csp_check_inline(csp_dirs_vals):
     """
     if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals,
                                                 "unsafe-inline"):
-        csp_print_unsafe(csp_unsafe_dirs, "[icsp_h]", "[icsp]", 5, i_cnt)
+        csp_print_unknown_unsafe(csp_unsafe_dirs, "[icsp_h]", "[icsp]", 5,
+                                 i_cnt)
 
 
-def csp_print_unsafe(csp_unsafe_dirs, detail_t, detail_d, lines_n, i_cnt):
+def csp_print_unknown_unsafe(csp_dirs, detail_t, detail_d, lines_n, i_cnt):
     """`Content-Security-Policy` header check.
 
-    Print the occurrences of `unsafe-eval` and `unsafe-inline` keywords.
+    Print the occurrences of `unsafe-eval` and `unsafe-inline` keywords among
+    unknown directives.
     """
     print_detail_r(detail_t, is_red=True)
     if not args.brief:
-        print_detail_l(DIR_MSG[0] if len(csp_unsafe_dirs) > 1 else DIR_MSG[1])
+        print_detail_l(DIR_MSG[0] if len(csp_dirs) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{directive}'" for directive in
-                              sorted(set(csp_unsafe_dirs))) + ".")
+                              sorted(csp_dirs)) + ".")
         print_detail(detail_d, num_lines=lines_n)
     i_cnt[0] += 1
 
@@ -1422,19 +1425,9 @@ def csp_check_unknown(csp_h):
         and match[1] not in known_dirs
     ]
     if unknown_dir:
-        csp_print_unknown(unknown_dir)
+        csp_print_unknown_unsafe(unknown_dir, "[icspiu_h]", "[icspiu]", 3,
+                                 i_cnt)
 
-
-def csp_print_unknown(unknown_dir):
-    """Print unknown directives in the `Content-Security-Policy` header."""
-    # sourcery skip: use-fstring-for-concatenation
-    print_detail_r("[icspiu_h]", is_red=True)
-    if not args.brief:
-        print_detail_l(DIR_MSG[0] if len(unknown_dir) > 1 else DIR_MSG[1])
-        print(" " + ", ".join(f"'{directive}'" for directive in
-                              sorted(unknown_dir)) + ".")
-        print_detail("[icspiu]", num_lines=3)
-    i_cnt[0] += 1
 
 def parse_cookie_attributes(stc_header):
     """Split the folded `Set-Cookie` header into names and attribute sets.
@@ -2827,7 +2820,6 @@ def format_json(json_data, json_lns):
             json_data[key].append(value)
         else:
             json_data[key] = [json_data[key], value]
-    return json_data
 
 
 def json_detailed_sources(file_idx, slice_idx):
@@ -3863,8 +3855,7 @@ def generate_xml(final_filename, temp_filename, *, export_all=False,
         content = Path(temp_filename).read_text(encoding="utf8")
     root = ET.Element("analysis", {"version": BANNER_VERSION,
                                    "generated": current_time})
-    parse_xml(root, None,
-              (line.strip() for line in content.splitlines()))
+    parse_xml(root, (line.strip() for line in content.splitlines()))
     xml_decl = b'<?xml version="1.0" encoding="utf-8"?>\n'
     xml_content = ET.tostring(root, encoding="utf-8", xml_declaration=False)
     xml_dtd = f"<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n".encode()
@@ -3873,8 +3864,9 @@ def generate_xml(final_filename, temp_filename, *, export_all=False,
     finalize_export(final_filename, temp_filename, "xml", export_all)
 
 
-def parse_xml(root, section, stripped_txt):
+def parse_xml(root, stripped_txt):
     """Parse sections of an XML export; related to `-o xml` option."""
+    section = None
     for line in stripped_txt:
         if not line:
             continue
@@ -3884,7 +3876,6 @@ def parse_xml(root, section, stripped_txt):
         if section is None:
             continue
         add_xml_item(line, section)
-    return section
 
 
 def add_xml_item(line, section):
