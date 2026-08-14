@@ -380,7 +380,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd [GRADE]] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {all,csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-07-24
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-08-14
 
 options:
   -h, --help                               show this help message and exit
@@ -408,26 +408,26 @@ options:
   -v, --version                            Checks for updates at https://github.com/rfc-st/humble
 
 examples:
-  -u URL -a                            Print statistics of the analysis performed against the URL
-  -u URL -b                            Analyzes the URL and prints overall findings
-  -u URL -b -o csv                     Analyzes the URL and exports overall findings to CSV format
-  -u URL -cicd A                       Analyzes the URL and prints CI/CD results, warning if they do not reach an 'A' grade
-  -u URL -l es                         Analyzes the URL and prints (in Spanish) detailed findings
-  -u URL -o pdf                        Analyzes the URL and exports detailed findings to PDF format
-  -u URL -o html -of test              Analyzes the URL and exports detailed findings to HTML format and 'test' filename
-  -u URL -o html json                  Analyzes the URL and exports detailed findings to HTML and JSON formats
-  -u URL -o pdf -op D:/Tests           Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
-  -u URL -p http://127.0.0.1:8080      Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
-  -u URL -r                            Analyzes the URL and prints detailed findings along with HTTP response headers
-  -u URL -s ETag NEL                   Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
-  -u URL -ua 4                         Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
-  -a -l es                             Print statistics (in Spanish) of the analysis performed against all URLs
-  -f Google                            Print HTTP fingerprint headers related to the term 'Google'
+  -u URL -a                                Print statistics of the analysis performed against the URL
+  -u URL -b                                Analyzes the URL and prints overall findings
+  -u URL -b -o csv                         Analyzes the URL and exports overall findings to CSV format
+  -u URL -cicd A                           Analyzes the URL and prints CI/CD results, warning if they do not reach an 'A' grade
+  -u URL -l es                             Analyzes the URL and prints (in Spanish) detailed findings
+  -u URL -o pdf                            Analyzes the URL and exports detailed findings to PDF format
+  -u URL -o html -of test                  Analyzes the URL and exports detailed findings to HTML format and 'test' filename
+  -u URL -o html json                      Analyzes the URL and exports detailed findings to HTML and JSON formats
+  -u URL -o pdf -op D:/Tests               Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
+  -u URL -p http://127.0.0.1:8080          Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
+  -u URL -r                                Analyzes the URL and prints detailed findings along with HTTP response headers
+  -u URL -s ETag NEL                       Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
+  -u URL -ua 4                             Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
+  -a -l es                                 Print statistics (in Spanish) of the analysis performed against all URLs
+  -f Google                                Print HTTP fingerprint headers related to the term 'Google'
 
 want to contribute?:
-  How to                               https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
-  Acknowledgements                     https://github.com/rfc-st/humble/#acknowledgements
-  References and unit tests            https://humble.readthedocs.io
+  How to                                   https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
+  Acknowledgements                         https://github.com/rfc-st/humble/#acknowledgements
+  References and unit tests                https://humble.readthedocs.io
 ```
 
 ## Advanced usage (Linux)
