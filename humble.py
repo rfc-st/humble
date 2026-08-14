@@ -200,6 +200,7 @@ DELETED_LINES = "\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K"
 HASH_CHARS = {"sha256": 32, "sha384": 48, "sha512": 64}
 HTTP_SCHEMES = ("http:", "https:")
 HTTP_SCHEMES_S = ("http", "https")
+LATIN1_MAX = 0xFF
 LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2)
 SECONDS_BOUNDS = (86400, 31536000)
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 21)
@@ -4408,6 +4409,17 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
     return process_http_response(r, exception, status_code, reliable, body)
 
 
+def sanitize_header_value(value):
+    """Neutralize control and format characters in server-supplied values."""
+    if value.isprintable():
+        return value
+    return "".join(
+        ch if ch.isprintable() or ch == " " else
+        (f"\\x{ord(ch):02x}" if ord(ch) <= LATIN1_MAX
+         else f"\\u{ord(ch):04x}")
+        for ch in value)
+
+
 def strip_response_headers(r):
     """Return response headers cleaned of extraneous whitespace.
 
@@ -4416,7 +4428,8 @@ def strip_response_headers(r):
     """
     from requests.structures import CaseInsensitiveDict
     return CaseInsensitiveDict({
-        k: re.sub(RE_PATTERN[20], " ", v).strip()
+        sanitize_header_value(k):
+        sanitize_header_value(re.sub(RE_PATTERN[20], " ", v).strip())
         for k, v in r.headers.items()})
 
 
