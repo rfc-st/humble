@@ -2525,3 +2525,6 @@ KO: El análisis no alcanza la nota requerida
 
 [cicd_no_grade]
 Error: no se pudo determinar la nota del análisis; puede que el análisis no esté bien formado o esté incompleto.
+
+[args_useragent_single]
+Error: El parámetro '-ua' solo acepta un valor.

@@ -451,8 +451,11 @@ def validate_testssl_uri(uri):
     """Check that the URI is well-formed before analyzing it.
 
     Exit with a specific message if the URI has no scheme, an unsupported
-    one, or no host; related to `-e` option.
+    one, no host, or embedded whitespace that could smuggle extra arguments
+    into the `testssl.sh` command; related to `-e` option.
     """
+    if any(char.isspace() for char in uri):
+        print_error_detail("[e_url]")
     parsed_uri = urlparse(uri)
     if not parsed_uri.scheme:
         print_error_detail("[e_mschema]")
@@ -2061,7 +2064,7 @@ def parse_user_agent(*, user_agent=False):
     """Select and validate the provided user agent, related to `-ua` option."""
     if not user_agent:
         return get_user_agent("1")
-    user_agent_id = sys.argv[sys.argv.index("-ua") + 1].removeprefix("-ua")
+    user_agent_id = args.user_agent
     if not URL:
         return nourl_user_agent(user_agent_id)
     return get_user_agent(user_agent_id)
@@ -4587,6 +4590,8 @@ if "-H" in sys.argv and not URL:
     print_error_detail("[e_custom_uheaders]")
 
 if "-ua" in sys.argv:
+    if sys.argv.count("-ua") > 1:
+        print_error_detail("[args_useragent_single]")
     ua_header = parse_user_agent(user_agent=True)
 elif URL:
     ua_header = parse_user_agent()

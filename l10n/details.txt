@@ -2544,3 +2544,6 @@ KO: The analysis does not meet the required grade
 
 [cicd_no_grade]
 Error: the analysis grade could not be determined; the analysis output may be malformed or incomplete.
+
+[args_useragent_single]
+Error: The '-ua' parameter only accepts one value.
