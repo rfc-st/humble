@@ -1027,9 +1027,6 @@ Cabeceras de respuesta HTTP
 [unreliable_analysis_note]
  Nota : El análisis puede no ser fiable por el tiempo que tardó en responder la URL.
 
-[limited_analysis_note]
- Nota: Exportar a JSON limita actualmente a un análisis breve
-
 [analysis_redirects_note]
  Nota : Se analizó la última redirección; usa el parámetro '-df' para cambiar este comportamiento.
 
@@ -2501,9 +2498,6 @@ Resultado
 
 [json_det_empty_h]
 Cabeceras
-
-[json_det_compat]
-Referencia
 
 [e_custom_headers]
 Error: Estas cabeceras de respuesta no están bien formadas

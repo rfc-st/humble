@@ -1026,9 +1026,6 @@ HTTP Response Headers
 [unreliable_analysis_note]
  Note : The analysis may not be reliable because of the time it took for the URL to respond.
 
-[limited_analysis_note]
- Note : Exporting to JSON is currently limited to a brief analysis
-
 [analysis_redirects_note]
  Note : The final URL redirect was analyzed; use the '-df' parameter to change this behavior.
 
@@ -2520,9 +2517,6 @@ Result
 
 [json_det_empty_h]
 Headers
-
-[json_det_compat]
-Reference
 
 [e_custom_headers]
 Error: The following request headers are malformed

@@ -250,7 +250,7 @@ def check_python_version():
         sys.exit(1)
 
 
-def process_proxy_url(proxy_url, timeout):
+def process_proxy_url(proxy_url, timeout=3.0):
     """Parse and validate proxy URL accessibility, related to `-p` option."""
     parsed_proxy_url = urlparse(proxy_url)
     proxy_host = parsed_proxy_url.hostname
@@ -1775,12 +1775,12 @@ def print_error_detail(id_mode, *, clean_lines=False) -> NoReturn:
     sys.exit(1)
 
 
-def get_epilog_content(id_mode):
+def get_epilog_content():
     """Return examples of use and contribution guidelines for `humble.py`.
 
     Related to `-h` option.
     """
-    target = id_mode + "\n"
+    target = "[epilog_content]\n"
     lines = PATHS["help_epilog"].read_text(encoding="utf8").splitlines(
         keepends=True,
     )
@@ -4477,11 +4477,9 @@ def output_extension():
 
 # Main functionality for argparse
 init(autoreset=True)
-epilog_content = get_epilog_content("[epilog_content]")
-
 parser = ArgumentParser(formatter_class=custom_help_formatter,
                         description=f"{HUMBLE_DESC} | {URL_LIST[4]} | \
-v.{local_version}", epilog=epilog_content)
+v.{local_version}", epilog=get_epilog_content())
 
 parser.add_argument("-a", dest="URL_A", action="store_true", help="Print \
 statistics of the performed analysis; if the '-u' parameter is omitted they \
@@ -4660,7 +4658,7 @@ else:
 
 if "-if" not in sys.argv:
     proxy = None
-    if args.proxy and process_proxy_url(args.proxy, 3.0):
+    if args.proxy and process_proxy_url(args.proxy):
         proxy = {"http": args.proxy, "https": args.proxy}
     custom_headers = REQ_HEADERS.copy()
     if "-H" in sys.argv:
