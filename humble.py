@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-08-08")
+local_version = date.fromisoformat("2026-08-14")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -603,19 +603,10 @@ def get_analysis_totals(url_ln):
         Therefore, analyses performed before that date are assumed to have no
         security headers enabled.
     """
-    updated_lines = []
-    for line in url_ln:
-        fields = line.strip().split(" ; ")
-        if len(fields) == LENGTH_BOUNDS[1]:
-            fields.insert(2, "0")
-        updated_lines.append(" ; ".join(fields))
-    url_ln = updated_lines
-    analysis_date = max(line[:SLICE_INT[9]] for line in url_ln)
-    for line in url_ln:
-        if analysis_date in line:
-            *totals, = line.strip().split(" ; ")
-            break
-    return tuple(totals[2:])
+    adj_url_ln = adjust_old_analysis(url_ln)
+    latest = max(adj_url_ln,
+                 key=operator.itemgetter(slice(None, SLICE_INT[9])))
+    return tuple(latest.strip().split(" ; ")[2:])
 
 
 def compare_analysis_results(analysis_totals, current_counts):
@@ -1262,16 +1253,25 @@ def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
     i_cnt[0] += 1
 
 
+def csp_unsafe_directives(csp_dirs_vals, present, absent=None):
+    """Return directive names whose values contain an unsafe keyword.
+
+    A directive matches when `present` appears in its values and, if given,
+    `absent` does not; related to `Content-Security-Policy` header checks.
+    """
+    return [dir_vals.split()[0] if " " in dir_vals else dir_vals
+            for dir_vals in csp_dirs_vals
+            if present in dir_vals
+            and (absent is None or absent not in dir_vals)]
+
+
 def csp_check_eval(csp_dirs_vals):
     """`Content-Security-Policy` header check.
 
     Related to `unsafe-eval` and `wasm-unsafe-eval` keywords.
     """
-    csp_unsafe_dirs = [
-        dir_vals.split()[0] if " " in dir_vals else dir_vals
-        for dir_vals in csp_dirs_vals
-        if "unsafe-eval" in dir_vals and "wasm-unsafe-eval" not in dir_vals]
-    if csp_unsafe_dirs:
+    if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals, "unsafe-eval",
+                                                absent="wasm-unsafe-eval"):
         csp_print_unsafe(csp_unsafe_dirs, "[icspe_h]", "[icspev]", 5, i_cnt)
 
 
@@ -1280,10 +1280,8 @@ def csp_check_inline(csp_dirs_vals):
 
     Related to `unsafe-inline` keyword.
     """
-    csp_unsafe_dirs = [
-        dir_vals.split()[0] if " " in dir_vals else dir_vals
-        for dir_vals in csp_dirs_vals if "unsafe-inline" in dir_vals]
-    if csp_unsafe_dirs:
+    if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals,
+                                                "unsafe-inline"):
         csp_print_unsafe(csp_unsafe_dirs, "[icsp_h]", "[icsp]", 5, i_cnt)
 
 
@@ -1725,7 +1723,6 @@ def print_details(short_d, long_d, id_mode, i_cnt):
     if not args.brief:
         print_detail(long_d, 2) if id_mode == "d" else print_detail(long_d, 3)
     i_cnt[0] += 1
-    return i_cnt
 
 
 def print_detail(id_mode, num_lines=1):
