@@ -461,7 +461,6 @@ $ datasets=('https://facebook.com' 'https://github.com' 'https://www.spacex.com'
 > - https://en.wikipedia.org
 > - https://github.com
 > - https://google.com
-> - https://httpbin.org
 > - https://microsoft.com
 
 .: (Linux) - All tests passed successfully (showing all messages in English).<br />
