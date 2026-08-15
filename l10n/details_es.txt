@@ -1451,7 +1451,7 @@ Cabeceras de respuesta HTTP
 
 [ists]
  Habilite 'includeSubDomains' y 'max-age' (con 31536000 -un año- como mínimo).
- Ref: https://https.cio.gov/hsts/
+ Ref: https://www.getpagespeed.com/server-setup/security/nginx-hsts
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [istsr]

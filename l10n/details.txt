@@ -1450,7 +1450,7 @@ HTTP Response Headers
 
 [ists]
  Add 'includeSubDomains' and 'max-age' (with 31536000 -one year- as minimum).
- Ref: https://https.cio.gov/hsts/
+ Ref: https://www.getpagespeed.com/server-setup/security/nginx-hsts
  Ref: https://mdn.io/Strict-Transport-Security
 
 [istsr]
