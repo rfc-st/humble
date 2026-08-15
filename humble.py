@@ -1491,10 +1491,17 @@ def permissions_broad_features(perm_header):
     for directive in perm_header.split(","):
         if "=" not in directive:
             continue
-        feature, value = directive.split("=")
+        feature, value = directive.split("=", 1)
         if any(broad in value.strip() for broad in t_per_broad):
             result.append(feature.strip())
     return result
+
+
+def permissions_malformed(perm_header):
+    """Determine if `Permissions-Policy` directives are wrongly separated."""
+    return any(
+        "".join(directive.split('"')[::2]).count("=") > 1
+        for directive in perm_header.split(","))
 
 
 def permissions_check_broad(perm_header):
@@ -1503,11 +1510,10 @@ def permissions_check_broad(perm_header):
         directive in perm_header for directive in t_per_ft
     ) < HEADERS_CHECKS:
         return None
-    try:
-        return permissions_broad_features(perm_header) or None
-    except (IndexError, ValueError):
+    if permissions_malformed(perm_header):
         print_details("[ifpolf_h]", "[ifpolf]", "d", i_cnt)
         return None
+    return permissions_broad_features(perm_header) or None
 
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
@@ -1872,7 +1878,7 @@ def print_enabled_headers(args, exp_s, header, headers_d):
     prefix = STYLE[8] if single_export() in ("html", "pdf") else ""
     header_display = f"{prefix}{exp_s}{header}"
     if not args.output:
-        header_display = f"{STYLE[7]}{header_display}{STYLE[5]}"[18:]
+        header_display = f"{STYLE[10]}{header_display}{STYLE[5]}"
     output_str = f" {header_display}" if args.brief else f" {header_display}: \
 {headers_d[header]}"
     print(output_str)
@@ -2956,7 +2962,7 @@ def json_detailed_format_add(json_lns, header_t, value_t):
     for line in map(str.strip, json_lns):
         if not line:
             continue
-        if line.startswith("(*)") or ":" in line:
+        if ":" in line:
             key, value = line.split(":", 1)
             result.append({header_t: key.strip(), value_t: value.strip()})
         else:
