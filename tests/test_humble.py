@@ -35,9 +35,12 @@ import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from contextlib import suppress
 from datetime import date, datetime
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from os import fsync
 from pathlib import Path
 from platform import system
+from threading import Thread
+from time import sleep
 from typing import NamedTuple
 from unittest.mock import MagicMock, patch
 
@@ -56,8 +59,11 @@ if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
 ASSERT_STR = ["error", "Error"]
 EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_print_detail_s]", "[test_skip_file]",
-                 "[test_response_headers_none]", "[test_testssl_command]",
-                 "[test_testssl_analysis]"]
+                 "[test_response_headers_none]",
+                 "[test_unreliable_analysis]",
+                 "[test_sanitize_header_value]",
+                 "[test_strip_response_headers_sanitized]",
+                 "[test_testssl_command]", "[test_testssl_analysis]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -103,6 +109,30 @@ PYTEST_CACHE_DIRS = [
     HUMBLE_PROJECT_ROOT / ".pytest_cache",
     HUMBLE_PROJECT_ROOT / "__pycache__",
 ]
+
+class _LocalStatusHandler(BaseHTTPRequestHandler):
+    """Serve '/status/<code>' paths returning that HTTP status code."""
+
+    def do_GET(self):
+        """Reply with the status code encoded in the request path."""
+        status_code = int(self.path.rsplit("/", 1)[-1])
+        self.send_response(status_code)
+        self.send_header("Content-Type", "text/html")
+        self.end_headers()
+
+    def do_HEAD(self):
+        """Reply to HEAD requests exactly as GET ones."""
+        self.do_GET()
+
+    def log_message(self, *_):
+        """Silence request logging during test runs."""
+
+
+# For external URLs in server-error unit tests
+LOCAL_SERVER = ThreadingHTTPServer(("127.0.0.1", 0), _LocalStatusHandler)
+LOCAL_SERVER_URL = f"http://127.0.0.1:{LOCAL_SERVER.server_address[1]}"
+Thread(target=LOCAL_SERVER.serve_forever, daemon=True).start()
+
 
 # URLs to use in unit tests
 TEST_URLS = ("https://github.com/rfc-st/humble",
@@ -269,16 +299,18 @@ TEST_CFGS = {
     "test_russian_block": (["-u", TEST_URLS[8]], "withdraws"),
     "test_russian_block_unicode": (["-u", TEST_URLS[14]], "withdraws"),
     "test_security_guidelines": (["-g"], "headers-in-wordpress"),
-    "test_server_error_response": (["-u", TEST_URLS[11]], "Server"),
-    "test_server_error_unusual": (["-u", TEST_URLS[15]], "Server"),
-    "test_server_error_cdn": (["-u", TEST_URLS[16]], "Server"),
+    "test_server_error_response": (["-u", f"{LOCAL_SERVER_URL}/status/502"],
+                                   "Server"),
+    "test_server_error_unusual": (["-u", f"{LOCAL_SERVER_URL}/status/529"],
+                                  "Server"),
+    "test_server_error_cdn": (["-u", f"{LOCAL_SERVER_URL}/status/520"],
+                              "Server"),
     "test_skipped_headers": (["-u", TEST_URLS[9], "-s", "ETAG", "NEL"],
                              "expressly excluded"),
     "test_testssl_error": ([], "Error"),
     "test_testssl_nopath": (["-u", TEST_URLS[9], "-e"], "requires"),
     "test_unicode_error": (["-u", TEST_URLS[9], "-if", PATHS["UNICODE"]],
                            "unicode"),
-    "test_unreliable_analysis": (["-u", TEST_URLS[10]], "Not"),
     "test_unsupported_header": (["-u", TEST_URLS[9], "-s", "testhumbleheader"],
                                 "testhumbleheader"),
     "test_unsupported_python_version": ([], "humble"),
@@ -312,6 +344,25 @@ TEST_CFGS = {
 
 TESTSSL_CMD = ["/non_existant_home_for_humble_test/testssl.sh", "-f", "-g",
                "-p", "-U", "-s", "--hints", "https://google.com"]
+
+SANITIZE_CASES = {
+    "PHP\x1b[2K\x1b[32m[OK]\x1b[0m": "PHP\\x1b[2K\\x1b[32m[OK]\\x1b[0m",
+    "nginx\x9b31m": "nginx\\x9b31m",
+    "abc\u202edef": "abc\\u202edef",
+    "max-age=31536000; includeSubDomains":
+        "max-age=31536000; includeSubDomains",
+    "café 日本語": "café 日本語",
+}
+HOSTILE_HEADERS = {
+    "X-Powered-By": "PHP\x1b[2K\x1b[1A[OK] Nothing to report!\x1b[0m",
+    "Server\x9b31m": "nginx",
+    "Content-Type": "text/html; charset=utf-8",
+}
+SANITIZED_HEADERS = {
+    "X-Powered-By": "PHP\\x1b[2K\\x1b[1A[OK] Nothing to report!\\x1b[0m",
+    "Server\\x9b31m": "nginx",
+    "Content-Type": "text/html; charset=utf-8",
+}
 
 # Required to access and mock internal functions in 'humble.py'
 _spec = importlib.util.spec_from_file_location("humble", HUMBLE_MAIN_FILE)
@@ -714,6 +765,49 @@ def test_response_headers_none(capsys):
     assert expected in capsys.readouterr().out
 
 
+def test_unreliable_analysis(capsys):
+    """Verify the warning shown when a URL responds slowly."""
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main, humble_module.args = l10n_main, args
+    humble_module.l10n_map = l10n_map
+
+    def slow_request(*_):
+        sleep(0.6)
+        return (MagicMock(), None, None)
+    with patch.object(humble_module, "REQ_TIMEOUT", 2.0), \
+            patch.object(humble_module, "REQ_WARNING", 1.7), \
+            patch.object(humble_module, "make_http_request",
+                         side_effect=slow_request), \
+            patch.object(humble_module,
+                         "process_http_response") as mock_process:
+        humble_module.process_http_request(None, None, None, None, {})
+    expected = get_detail("[unreliable_analysis]", replace=True).strip()
+    assert expected in capsys.readouterr().out
+    assert mock_process.call_args[0][3] is True
+
+
+def test_sanitize_header_value():
+    """Verify control and format characters are neutralized."""
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    sanitize = humble_module.sanitize_header_value
+    for raw_value, sanitized_value in SANITIZE_CASES.items():
+        assert sanitize(raw_value) == sanitized_value
+
+
+def test_strip_response_headers_sanitized():
+    """Verify hostile response headers are neutralized at ingestion."""
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    mock_response = MagicMock()
+    mock_response.headers = HOSTILE_HEADERS
+    stripped = humble_module.strip_response_headers(mock_response)
+    assert dict(stripped) == SANITIZED_HEADERS
+    assert all(k.isprintable() and v.isprintable()
+               for k, v in stripped.items())
+
+
 def delete_export_files(extension, ko_msg):
     """Remove temporary files from export unit tests."""
     msgs = []
@@ -800,7 +894,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-08-14")
+local_version = date.fromisoformat("2026-08-15")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,
@@ -825,6 +919,7 @@ def delete_temp_coverage():
     l10n_main[:] = get_l10n_content()
     l10n_map.update(get_l10n_map(l10n_main))
     yield
+    LOCAL_SERVER.shutdown()
     cleanup_analysis_history()
     delete_temp_content()
 

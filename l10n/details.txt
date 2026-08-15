@@ -2443,6 +2443,12 @@ Generator
 [test_response_headers_none]
  verify an error is displayed when an analysis receives no HTTP response headers.
 
+[test_sanitize_header_value]
+ verify control and format characters in server-supplied values are neutralized.
+
+[test_strip_response_headers_sanitized]
+ verify hostile HTTP response headers are sanitized at ingestion.
+
 [test_tests]
 Tests run at
 

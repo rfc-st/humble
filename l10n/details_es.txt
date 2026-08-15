@@ -2421,6 +2421,12 @@ Generador
 [test_response_headers_none]
  verifica que se muestra un error cuando no se reciben cabeceras de respuesta HTTP.
 
+[test_sanitize_header_value]
+ verifica que se neutralizan caracteres de control en las cabeceras de respuesta HTTP.
+
+[test_strip_response_headers_sanitized]
+ verifica que las cabeceras de respuesta HTTP hostiles se sanitizan.
+
 [test_tests]
 Pruebas realizadas el
 
