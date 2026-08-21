@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-08-15")
+local_version = date.fromisoformat("2026-08-21")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1439,12 +1439,9 @@ def parse_cookie_attributes(stc_header):
     Attributes exclude the `name=value` segment, so cookie values cannot
     mimic attribute keywords.
     """
-    cookies = []
-    for ck in re.split(RE_PATTERN[14], stc_header):
-        name = ck.split("=", 1)[0].strip()
-        attrs = {attr.strip().lower() for attr in ck.split(";")[1:]}
-        cookies.append((name, attrs))
-    return cookies
+    return [(ck.split("=", 1)[0].strip(),
+             {attr.strip().lower() for attr in ck.split(";")[1:]})
+            for ck in re.split(RE_PATTERN[14], stc_header)]
 
 
 def check_unsafe_cookies(stc_cookies):
@@ -1876,12 +1873,10 @@ def print_enabled_headers(args, exp_s, header, headers_d):
     Source: `additional/security.txt`.
     """
     prefix = STYLE[8] if single_export() in ("html", "pdf") else ""
-    header_display = f"{prefix}{exp_s}{header}"
-    if not args.output:
-        header_display = f"{STYLE[10]}{header_display}{STYLE[5]}"
-    output_str = f" {header_display}" if args.brief else f" {header_display}: \
-{headers_d[header]}"
-    print(output_str)
+    body = f"{prefix}{exp_s}{header}"
+    header_display = body if args.output else f"{STYLE[10]}{body}{STYLE[5]}"
+    suffix = "" if args.brief else f": {headers_d[header]}"
+    print(f" {header_display}{suffix}")
 
 
 def print_nosec_headers(*, enabled=True):
@@ -2938,19 +2933,9 @@ def json_detailed_response(json_lns):
 
     Related to `-o json` option.
     """
-    header_key = get_detail(JSON_L10N[0], replace=True)
-    value_key = get_detail(JSON_L10N[2], replace=True)
-    result = []
-    for line in json_lns:
-        line_strip = line.strip()
-        if not line_strip or ":" not in line_strip:
-            continue
-        header, value = line_strip.split(":", 1)
-        result.append({
-            header_key: header.strip(),
-            value_key: value.strip(),
-        })
-    return result
+    return json_detailed_format_add(json_lns,
+                                    get_detail(JSON_L10N[0], replace=True),
+                                    get_detail(JSON_L10N[2], replace=True))
 
 
 def json_detailed_format_add(json_lns, header_t, value_t):
