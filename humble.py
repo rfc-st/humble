@@ -1542,7 +1542,7 @@ def print_export_path(filename, reliable, *, export_all=False):
     for bulk exports (e.g. 'all'); related to `-o` option.
     """
     delete_lines(reliable=False) if reliable else delete_lines()
-    if "-c" in sys.argv:
+    if args.compliance:
         return
     export_path = Path(filename).resolve()
     if export_all:
@@ -1828,8 +1828,8 @@ def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
     """
     if not args.brief:
         print_fng_header(l_fng_ex[idx_fng])
-        header_value = headers_l.get(header.lower()) if "-if" in sys.argv else\
-            headers[header]
+        header_value = (headers_l.get(header.lower())
+                        if args.input_file is not None else headers[header])
         if header_value:
             print(f" {get_detail('[fng_value]', replace=True)} \
 '{header_value}'")
@@ -2381,7 +2381,7 @@ def generate_txt(reliable, tmp_filename):
         threshold = args.cicd if isinstance(args.cicd, str) else None
         print_cicd_totals(tmp_filename, threshold)
     print_export_path(tmp_filename, reliable)
-    if "-c" in sys.argv:
+    if args.compliance:
         check_owasp_compliance(tmp_filename)
 
 
@@ -4556,9 +4556,12 @@ l10n_map = get_l10n_map(l10n_main)
 check_python_version()
 
 # Functionality for argparse parameters/values
-check_updates(local_version) if "-v" in sys.argv else None
-print_l10n_file(args, "grades", slice_ln=True) if "-grd" in sys.argv else None
-print_l10n_file(args, "license") if "-lic" in sys.argv else None
+if args.version:
+    check_updates(local_version)
+if args.grades:
+    print_l10n_file(args, "grades", slice_ln=True)
+if args.license:
+    print_l10n_file(args, "license")
 
 if "-f" in sys.argv:
     fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \
@@ -4570,15 +4573,15 @@ if URL is not None:
     validate_url(URL)
     check_russian_scope()
 
-if "-cicd" in sys.argv:
+if args.cicd is not None:
     args.output = ["txt"]
 
-if "-c" in sys.argv:
+if args.compliance:
     args.brief = False
     args.output = ["txt"]
     args.user_agent = "1"
 
-if "-if" in sys.argv:
+if args.input_file is not None:
     if any([args.redirects, args.ret]):
         print_error_detail("[args_inputfile]")
     elif not args.URL:
@@ -4586,7 +4589,7 @@ if "-if" in sys.argv:
     else:
         headers, reliable, status_code = analyze_input_file(args.input_file)
 
-if "-H" in sys.argv and not URL:
+if args.request_header and not URL:
     print_error_detail("[e_custom_uheaders]")
 
 if "-ua" in sys.argv:
@@ -4623,8 +4626,8 @@ skip_list, unsupported_headers, skip_set = [], [], set()
 humble_skip_file = check_skip_file()
 headers_skipped = args.skip_headers or humble_skip_file
 
-if "-s" in sys.argv and len(args.skip_headers) == 0:
-    print_error_detail("[args_skipped]")
+if args.skip_headers == []:
+     print_error_detail("[args_skipped]")
 elif headers_skipped:
     insecure_headers = get_insecure_checks()
     unsupported_headers, skip_list = \
@@ -5622,7 +5625,7 @@ print_browser_compatibility(compat_headers) if compat_headers else \
 print(end="\n\n")
 end = time()
 print_detail_r("[7result]")
-if "-c" not in sys.argv:
+if not args.compliance:
     get_analysis_results()
 
 # Export analysis according to the scope (single format or all of them)
