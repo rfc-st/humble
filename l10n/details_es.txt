@@ -557,6 +557,9 @@
 [icspmcn_h]
  Content-Security-Policy (Directiva 'connect-src' ausente)
 
+[icspmd_h]
+ Content-Security-Policy (Directiva 'default-src' ausente)
+
 [icspmfo_h]
  Content-Security-Policy (Directiva 'font-src' ausente)
 
@@ -1169,6 +1172,10 @@ Cabeceras de respuesta HTTP
 [icspmc]
  Evita ejecutar código malicioso vía workers/frames; intenta habilitarla con 'self'.
  Ref: https://centralcsp.com/docs/child-src
+
+[icspmd]
+ Evita cargar por defecto recursos sin restricciones; intenta habilitarla con 'self' o 'none'.
+ Ref: https://centralcsp.com/docs/default-src
 
 [icspmcn]
  Protege contra la exfiltración no autorizada de datos; intenta habilitarla con 'self'.

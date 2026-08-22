@@ -556,6 +556,9 @@
 [icspmcn_h]
  Content-Security-Policy ('connect-src' Directive Missing)
 
+[icspmd_h]
+ Content-Security-Policy ('default-src' Directive Missing)
+
 [icspmfo_h]
  Content-Security-Policy ('font-src' Directive Missing)
 
@@ -1168,6 +1171,10 @@ HTTP Response Headers
 [icspmc]
  Prevents malicious code execution through workers/frames; try to set it to 'self'.
  Ref: https://centralcsp.com/docs/child-src
+
+[icspmd]
+ Prevents unrestricted loading of resources by default; try to set it to 'self' or 'none'.
+ Ref: https://centralcsp.com/docs/default-src
 
 [icspmcn]
  Protects against unauthorized data exfiltration; try to set it to 'self'.

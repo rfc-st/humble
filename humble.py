@@ -1151,12 +1151,12 @@ def csp_check_missing(csp_dirs):
     Related to missing directives.
     """
     csp_refs = [("[icspmb_h]", "[icspmb]"), ("[icspmc_h]", "[icspmc]"),
-                ("[icspmcn_h]", "[icspmcn]"), ("[icspmfo_h]", "[icspmfo]"),
-                ("[icspmf_h]", "[icspmf]"), ("[icspmfa_h]", "[icspmfa]"),
-                ("[icspmi_h]", "[icspmi]"), ("[icspmo_h]", "[icspmo]"),
-                ("[icspmr_h]", "[icspmr]"), ("[icspms_h]", "[icspms]"),
-                ("[icspmst_h]", "[icspmst]"), ("[icspmstt_h]", "[icspmstt]"),
-                ("[icspmsw_h]", "[icspmsw]")]
+                ("[icspmcn_h]", "[icspmcn]"), ("[icspmd_h]", "[icspmd]"),
+                ("[icspmfo_h]", "[icspmfo]"), ("[icspmf_h]", "[icspmf]"),
+                ("[icspmfa_h]", "[icspmfa]"), ("[icspmi_h]", "[icspmi]"),
+                ("[icspmo_h]", "[icspmo]"), ("[icspmr_h]", "[icspmr]"),
+                ("[icspms_h]", "[icspms]"), ("[icspmst_h]", "[icspmst]"),
+                ("[icspmstt_h]", "[icspmstt]"), ("[icspmsw_h]", "[icspmsw]")]
     for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs,
                                                    strict=True):
         if directive not in csp_dirs:
@@ -4823,10 +4823,10 @@ t_csp_dirs = ("base-uri", "child-src", "connect-src", "default-src",
 RE_CSP_DIRS = re.compile(
     RE_PATTERN[16].format(dir="|".join(map(re.escape, t_csp_dirs))))
 t_csp_insecs = ("http:", "ws:")
-t_csp_miss = ("base-uri", "child-src", "connect-src", "font-src",
-              "form-action", "frame-ancestors", "img-src", "object-src",
-              "require-trusted-types-for", "script-src", "style-src",
-              "trusted-types", "worker-src")
+t_csp_miss = ("base-uri", "child-src", "connect-src", "default-src",
+              "font-src", "form-action", "frame-ancestors", "img-src",
+              "object-src", "require-trusted-types-for", "script-src",
+              "style-src", "trusted-types", "worker-src")
 t_csp_checks = ("upgrade-insecure-requests", "strict-transport-security",
                 "unsafe-hashes", "nonce-", "127.0.0.1")
 

@@ -48,6 +48,7 @@ Content-Encoding: No Valid Directives
 Content-Security-Policy: 'base-uri' Directive Missing
 Content-Security-Policy: 'child-src' Directive Missing
 Content-Security-Policy: 'connect-src' Directive Missing
+Content-Security-Policy: 'default-src' Directive Missing
 Content-Security-Policy: 'font-src' Directive Missing
 Content-Security-Policy: 'form-action' Directive Missing
 Content-Security-Policy: 'frame-ancestors' Directive Missing
