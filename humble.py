@@ -767,13 +767,9 @@ def get_third_metrics(adj_url_ln):
     Related to `-a` option.
     """
     fields = [line.strip().split(";") for line in adj_url_ln]
-    total_enb, total_miss, total_fng, total_dep, total_ety = \
-        [sum(int(f[i]) for f in fields) for i in range(2, 7)]
     num_a = len(adj_url_ln)
-    avg_enb, avg_miss, avg_fng, avg_dep, avg_ety = \
-        [t // num_a for t in (total_enb, total_miss, total_fng, total_dep,
-                              total_ety)]
-    return (avg_enb, avg_miss, avg_fng, avg_dep, avg_ety)
+    return tuple(sum(int(f[i]) for f in fields) // num_a
+                 for i in range(2, 7))
 
 
 def get_additional_metrics(adj_url_ln):
@@ -857,11 +853,8 @@ def calculate_highlights(url_ln, field_index, func):
 
     Based on the required highlight metric; related to `-a` option.
     """
-    values = [int(line.split(";")[field_index].strip()) for line in url_ln]
-    target_value = func(values)
-    target_line = next(line for line in url_ln
-                       if int(line.split(";")[field_index].strip()) ==
-                       target_value)
+    target_line = func(
+        url_ln, key=lambda line: int(line.split(";")[field_index].strip()))
     return target_line.split(";")[0].strip()
 
 
@@ -1029,11 +1022,7 @@ def get_global_first_metrics(adj_url_ln):
 
     Related to `-a` option.
     """
-    split_lines = [line.split(" ; ") for line in adj_url_ln]
-    url_lines = {}
-    for entry in split_lines:
-        url = entry[1]
-        url_lines[url] = url_lines.get(url, 0) + 1
+    url_lines = Counter(line.split(" ; ")[1] for line in adj_url_ln)
     return get_global_metrics(adj_url_ln, url_lines)
 
 
@@ -1044,7 +1033,7 @@ def get_global_metrics(url_ln, url_lines):
     """
     first_a = min(line[:SLICE_INT[9]] for line in url_ln)
     latest_a = max(line[:SLICE_INT[9]] for line in url_ln)
-    unique_u = len({line.split(" ; ")[1] for line in url_ln})
+    unique_u = len(url_lines)
     most_analyzed_u = max(url_lines, key=url_lines.get)
     most_analyzed_c = url_lines[most_analyzed_u]
     most_analyzed_cu = f"({most_analyzed_c}) {most_analyzed_u}"
@@ -1065,10 +1054,10 @@ def get_global_totals(url_ln, field):
     most_totals = max(url_ln, key=lambda line: int(line.split(" ; ")[field]))
     least_totals = min(url_ln, key=lambda line: int(line.split(" ; ")[field]))
     most_totals_c, most_totals_cu = most_totals.split(" ; ")[1], \
-        str(most_totals.split(" ; ")[field]).strip()
+        most_totals.split(" ; ")[field].strip()
     most_totals_p = f"({most_totals_cu}) {most_totals_c}"
     least_totals_c, least_totals_cu = least_totals.split(" ; ")[1], \
-        str(least_totals.split(" ; ")[field]).strip()
+        least_totals.split(" ; ")[field].strip()
     least_totals_p = f"({least_totals_cu}) {least_totals_c}"
     return (most_totals_p, least_totals_p)
 
