@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-08-21")
+local_version = date.fromisoformat("2026-08-22")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1541,7 +1541,7 @@ def print_export_path(filename, reliable, *, export_all=False):
     Displays the file path for single reports (e.g. 'html') or the directory
     for bulk exports (e.g. 'all'); related to `-o` option.
     """
-    delete_lines(reliable=False) if reliable else delete_lines()
+    delete_lines(reliable=not reliable)
     if args.compliance:
         return
     export_path = Path(filename).resolve()
@@ -1581,7 +1581,7 @@ def print_fng_header(header):
 def print_general_info(reliable, export_filename, headers_skipped, skip_set):
     """Print the content in the section with basic information."""
     if not args.output:
-        delete_lines(reliable=False) if reliable else delete_lines()
+        delete_lines(reliable=not reliable)
         print(f"\n{BANNER}\n ({BANNER_VERSION})")
     elif single_export() != "pdf":
         humble_desc = get_detail("[humble_desc]", replace=True)
@@ -1698,23 +1698,13 @@ def print_response_headers():
 
 def get_max_lnlength(section):
     """Return the length of the longest item in a section."""
-    sec_val = []
-    max_secl = 0
-    for i in section:
-        sec_txt = get_detail(i)
-        sec_val.append(sec_txt)
-        max_secl = max(max_secl, len(sec_txt)+1)
-    return max_secl
+    return max(len(get_detail(i)) + 1 for i in section)
 
 
 def get_analytics_length(section):
     """Return the alignment padding for each item in a section."""
     basic_l = get_max_lnlength(section) - 1
-    section_l = []
-    for i in section:
-        section_l_item = " " * (basic_l - len(get_detail(i)))
-        section_l.append(section_l_item)
-    return section_l
+    return [" " * (basic_l - len(get_detail(i))) for i in section]
 
 
 def print_details(short_d, long_d, id_mode, i_cnt):
@@ -2364,12 +2354,11 @@ def finalize_export(final_filename, temp_filename, file_extension, export_all):
     Path(final_filename).rename(new_filename)
     dotted_ext = f".{file_extension}"
     if dotted_ext not in (EXPORT_EXTENSIONS[3], EXPORT_EXTENSIONS[5]):
-        with Path(new_filename).open("r+", encoding="utf8") as processed_file:
-            content = processed_file.read().replace(final_filename,
-                                                    new_filename)
-            processed_file.seek(0)
-            processed_file.write(content)
-            processed_file.truncate()
+        processed_path = Path(new_filename)
+        content = processed_path.read_text(encoding="utf8")
+        processed_path.write_text(content.replace(final_filename,
+                                                  new_filename),
+                                  encoding="utf8")
 
 
 def generate_txt(reliable, tmp_filename):
@@ -2653,14 +2642,11 @@ def fix_xlsx_all_export(csv_filename, export_all):
     """
     if export_all:
         identity = csv_filename.rsplit(".", 1)[0]
-        with (
-            Path(csv_filename).open("r+", encoding="utf8")
-        ) as fixed_xlsxfilename:
-            content = fixed_xlsxfilename.read()
-            fixed_xlsxfilename.seek(0)
-            fixed_xlsxfilename.write(content.replace(f"{identity}.all",
-                                                     f"{identity}.xlsx"))
-            fixed_xlsxfilename.truncate()
+        csv_path = Path(csv_filename)
+        content = csv_path.read_text(encoding="utf8")
+        csv_path.write_text(content.replace(f"{identity}.all",
+                                            f"{identity}.xlsx"),
+                                            encoding="utf8")
 
 
 def generate_xlsx(final_filename, temp_filename, *, export_all=False):
@@ -3854,8 +3840,7 @@ def generate_xml(final_filename, temp_filename, *, export_all=False,
     xml_decl = b'<?xml version="1.0" encoding="utf-8"?>\n'
     xml_content = ET.tostring(root, encoding="utf-8", xml_declaration=False)
     xml_dtd = f"<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n".encode()
-    with Path(final_filename).open("wb") as xml_final:
-        xml_final.write(xml_decl + xml_dtd + xml_content)
+    Path(final_filename).write_bytes(xml_decl + xml_dtd + xml_content)
     finalize_export(final_filename, temp_filename, "xml", export_all)
 
 
@@ -4645,7 +4630,7 @@ if args.testssl_path:
 
 if args.URL_A:
     check_analysis(HUMBLE_FILES[0])
-    url_analytics() if URL else url_analytics(is_global=True)
+    url_analytics(is_global=not URL)
 
 start = time()
 
