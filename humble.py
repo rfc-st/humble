@@ -1478,7 +1478,7 @@ def permissions_broad_features(perm_header):
         if "=" not in directive:
             continue
         feature, value = directive.split("=", 1)
-        if any(broad in value.strip() for broad in t_per_broad):
+        if "*" in value:
             result.append(feature.strip())
     return result
 
@@ -4909,7 +4909,6 @@ l_origcluster = ["?1"]
 # https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
-t_per_broad = ("*", " * ")
 t_per_dep = ("attribution-reporting", "browsing-topics", "document-domain",
              "window-placement")
 t_per_ft = ("accelerometer", "all-screens-capture", "ambient-light-sensor",
