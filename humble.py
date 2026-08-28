@@ -5083,7 +5083,7 @@ if header_eligible("attribution-reporting-register-trigger"):
     print_details("[iarrt_h]", "[iarrt]", "m", i_cnt)
 
 if header_eligible("cache-control"):
-    cache_header = headers_l.get("cache-control", "")
+    cache_header = headers_l.get("cache-control", "").casefold()
     if not any(elem in cache_header for elem in t_cachev):
         print_details("[icachev_h]", "[icachev]", "d", i_cnt)
     if not all(elem in cache_header for elem in t_cache):
@@ -5214,7 +5214,8 @@ if header_eligible("etag"):
 if header_eligible("expect-ct"):
     print_details("[iexct_h]", "[iexct]", "m", i_cnt)
 
-if header_eligible("expires") and any(elem in headers_l.get("cache-control", "")
+if header_eligible("expires") and any(elem in headers_l.get("cache-control",
+                                                            "").casefold()
                                    for elem in t_excc):
     print_details("[iexpi_h]", "[iexpi]", "d", i_cnt)
 
@@ -5382,12 +5383,13 @@ if header_eligible("strict-transport-security"):
         if unsafe_scheme:
             print_details("[ihsts_h]", "[ihsts]", "d", i_cnt)
         if (
-            not all(elem in sts_header for elem in t_sts_dir) or
-            age < SECONDS_BOUNDS[1]
+            not all(elem.casefold() in sts_header.casefold() for elem in
+                    t_sts_dir) or age < SECONDS_BOUNDS[1]
         ):
             print_details("[ists_h]", "[ists]", "m", i_cnt)
-        if "preload" in sts_header and (
-            t_sts_dir[0] not in sts_header or age < SECONDS_BOUNDS[1]
+        if "preload" in sts_header.casefold() and (
+            t_sts_dir[0].casefold() not in sts_header.casefold()
+            or age < SECONDS_BOUNDS[1]
         ):
             print_details("[istsr_h]", "[istsr]", "d", i_cnt)
         if "," in sts_header:
@@ -5486,9 +5488,9 @@ if header_eligible("x-frame-options"):
     xfo_header = headers_l.get("x-frame-options", "")
     if "," in xfo_header:
         print_details("[ixfo_h]", "[ixfo]", "m", i_cnt)
-    if "allow-from" in xfo_header:
+    if "allow-from" in xfo_header.casefold():
         print_details("[ixfod_h]", "[ixfod]", "m", i_cnt)
-    if xfo_header not in t_xfo_dir:
+    if xfo_header.upper() not in t_xfo_dir:
         print_details("[ixfoi_h]", "[ixfodi]", "m", i_cnt)
 
 if header_eligible("x-pad"):
