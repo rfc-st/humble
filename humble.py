@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-08-22")
+local_version = date.fromisoformat("2026-08-28")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1184,8 +1184,8 @@ def csp_check_additional(csp_dirs_vals):
     checks = [(t_csp_broad, csp_check_broad),
               (t_csp_insecs, csp_check_insecure)]
     for match, csp_func in checks:
-        if any(val in directive for directive in csp_dirs_vals for val in
-               match):
+        if any(val in f" {directive} " for directive in csp_dirs_vals
+               for val in match):
             csp_func(csp_dirs_vals)
     csp_check_eval(csp_dirs_vals)
     csp_check_inline(csp_dirs_vals)
