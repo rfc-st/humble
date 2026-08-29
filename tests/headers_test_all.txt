@@ -24,7 +24,7 @@ clear-site-data: testdirective
 content-digest: md5=2ab39636ed14de9189751a912273995f
 content-disposition: filename="humble_test.jpg"
 content-dpr: 2.0
-content-enconding: testencoding
+content-encoding: testencoding
 critical-ch: Sec-CH-Prefers-Reduced-Motion
 cross-origin-embedder-policy: testdirective
 cross-origin-embedder-policy-report-only: testdirective

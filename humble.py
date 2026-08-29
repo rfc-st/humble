@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-08-28")
+local_version = date.fromisoformat("2026-08-29")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -5051,7 +5051,7 @@ if accesso_skip and accesso_header in t_accecao \
     print_details("[iaccess_h]", "[iaccess]", "d", i_cnt)
 
 accesma_header = headers_l.get("access-control-max-age", "")
-if header_eligible("access-control-max-age") \
+if header_eligible("access-control-max-age") and accesma_header.isdigit() \
         and int(accesma_header) > SECONDS_BOUNDS[0]:
     print_details("[iacessma_h]", "[iaccessma]", "d", i_cnt)
 
@@ -5110,9 +5110,9 @@ if header_eligible("content-disposition") \
         and any(elem in cdis_header for elem in t_contdisp):
     print_details("[ixcdisp_h]", "[ixcdisp]", "m", i_cnt)
 
-cencod_header = headers_l.get("content-enconding", "")
-if header_eligible("content-enconding") \
-    and not any(elem in cencod_header for elem in t_cencoding):
+cencod_header = headers_l.get("content-encoding", "")
+if header_eligible("content-encoding") \
+        and not any(elem in cencod_header for elem in t_cencoding):
     print_details("[icencod_h]", "[icencod]", "d", i_cnt)
 
 if header_eligible("content-security-policy"):
