@@ -4998,7 +4998,7 @@ t_robots = ("all", "archive", "follow", "index", "indexifembedded",
             "noindex", "none", "nopagereadaloud", "nositelinkssearchbox",
             "nosnippet", "notranslate", "noydir", "unavailable_after")
 
-unsafe_scheme = bool(URL.startswith(HTTP_SCHEMES[0]))
+unsafe_scheme = URL.startswith(HTTP_SCHEMES[0])
 
 if header_eligible("accept-ch"):
     acceptch_header = headers_l["accept-ch"]
@@ -5020,9 +5020,8 @@ if header_eligible("accept-ch-lifetime"):
 if header_eligible("accept-patch"):
     print_details("[ixacp_h]", "[ixacp]", "m", i_cnt)
 
-accescred_header = headers_l.get("access-control-allow-credentials", "")
-accescred_skip = header_eligible("access-control-allow-credentials")
-if accescred_skip and accescred_header != "true":
+if header_eligible("access-control-allow-credentials") \
+        and headers_l["access-control-allow-credentials"] != "true":
     print_details("[icred_h]", "[icred]", "d", i_cnt)
 
 if header_eligible("access-control-allow-methods"):
@@ -5039,8 +5038,8 @@ if header_eligible("access-control-allow-methods"):
         i_cnt[0] += 1
 
 accesso_header = headers_l.get("access-control-allow-origin", "")
-accesso_skip = header_eligible("access-control-allow-origin")
-if accesso_skip and accesso_header in t_accecao \
+if header_eligible("access-control-allow-origin") \
+        and accesso_header in t_accecao \
         and not any(val in accesso_header for val in t_accecaov):
     print_details("[iaccess_h]", "[iaccess]", "d", i_cnt)
 
