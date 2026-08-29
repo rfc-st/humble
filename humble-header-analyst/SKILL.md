@@ -8,7 +8,7 @@ metadata:
   author-github: rfc-st
   author-email: rafael.fcucalon@gmail.com
   homepage: https://github.com/rfc-st/humble
-  version: "1.64"
+  version: "1.65"
 ---
 
 # SKILL.MD: The 'humble' Cybersecurity Analyst Knowledge Base
