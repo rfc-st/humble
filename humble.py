@@ -5122,7 +5122,7 @@ if header_eligible("content-security-policy"):
     if ("=" in csp_h) and not (any(elem in csp_h for elem in t_csp_equal)):
         print_details("[icsn_h]", "[icsn]", "d", i_cnt)
     csp_analyze_content(csp_h)
-    if t_csp_checks[0] in csp_h and t_csp_checks[1] not in headers:
+    if t_csp_checks[0] in csp_h and t_csp_checks[1] not in headers_l:
         print_details("[icspi_h]", "[icspi]", "m", i_cnt)
     csp_check_unknown(csp_h)
     if t_csp_checks[2] in csp_h:
@@ -5236,7 +5236,7 @@ if header_eligible("integrity-policy-report-only"):
 
 if header_eligible("keep-alive") and (headers_l["keep-alive"] and
         ("connection" not in headers_l or
-         headers_l["connection"] != "keep-alive")):
+         headers_l["connection"].casefold() != "keep-alive")):
     print_details("[ickeep_h]", "[ickeep]", "d", i_cnt)
 
 if header_eligible("large-allocation"):
@@ -5292,10 +5292,10 @@ if header_eligible("pragma"):
     print_details("[iprag_h]", "[iprag]", "d", i_cnt)
 
 if header_eligible("proxy-authenticate"):
-    prxyauth_h = headers_l["proxy-authenticate"]
+    prxyauth_h = headers_l["proxy-authenticate"].casefold()
     if "basic" in prxyauth_h and unsafe_scheme:
         print_details("[iprxauth_h]", "[ihbas]", "d", i_cnt)
-    if not any(elem in prxyauth_h for elem in t_proxy_auth):
+    if not any(elem.casefold() in prxyauth_h for elem in t_proxy_auth):
         print_details("[iprxauthn_h]", "[iprxauthn]", "d", i_cnt)
 
 if header_eligible("public-key-pins"):
@@ -5454,7 +5454,7 @@ if header_eligible("want-repr-digest"):
 if header_eligible("warning"):
     print_details("[ixwar_h]", "[ixward]", "d", i_cnt)
 
-wwwa_header = headers_l.get("www-authenticate", "")
+wwwa_header = headers_l.get("www-authenticate", "").casefold()
 if header_eligible("www-authenticate") \
         and unsafe_scheme and "basic" in wwwa_header:
     print_details("[ihbas_h]", "[ihbas]", "d", i_cnt)
@@ -5591,7 +5591,8 @@ t_sec = ("Access-Control-Allow-Credentials", "Access-Control-Allow-Headers",
          "WWW-Authenticate", "X-Content-Type-Options",
          "X-DNS-Prefetch-Control", "X-Frame-Options", "X-XSS-Protection")
 
-compat_headers = sorted(header for header in t_sec if header in headers)
+compat_headers = sorted(header for header in t_sec
+                        if header.lower() in headers_l)
 
 print_browser_compatibility(compat_headers) if compat_headers else \
     print_nosec_headers()
