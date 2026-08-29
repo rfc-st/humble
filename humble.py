@@ -4795,9 +4795,6 @@ t_csdata = ("cache", "clientHints", "cookies", "executionContexts",
 t_digest_sec = ("sha-256", "sha-512")
 t_digest_ins = ("adler", "crc32c", "md5", "sha-1", "unixsum", "unixcksum")
 
-# https://mdn.io/Content-Disposition
-t_contdisp = ("filename", "filename*")
-
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Encoding
 t_cencoding = ("br", "compress", "dcb", "dcz", "deflate", "gzip", "x-gzip",
                "zstd")
@@ -4899,9 +4896,6 @@ t_nel_req = ("report_to", "max_age")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
 t_nvarysearch = ("except", "key-order", "params")
-
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Origin-Agent-Cluster
-l_origcluster = ["?1"]
 
 # https://developer.chrome.com/origintrials/
 # https://privacysandbox.google.com/overview/status
@@ -5105,9 +5099,9 @@ if header_eligible("content-digest"):
 if header_eligible("content-dpr"):
     print_details("[ixcdpr_h]", "[ixcdprd]", "d", i_cnt)
 
-cdis_header = headers_l.get("content-disposition", "")
+# https://mdn.io/Content-Disposition
 if header_eligible("content-disposition") \
-        and any(elem in cdis_header for elem in t_contdisp):
+        and "filename" in headers_l["content-disposition"]:
     print_details("[ixcdisp_h]", "[ixcdisp]", "m", i_cnt)
 
 cencod_header = headers_l.get("content-encoding", "")
@@ -5263,10 +5257,10 @@ if header_eligible("observe-browsing-topics"):
 if header_eligible("onion-location"):
     print_details("[ionloc_h]", "[ionloc]", "m", i_cnt)
 
-if header_eligible("origin-agent-cluster"):
-    origin_cluster_h = headers_l["origin-agent-cluster"]
-    if not any(elem in origin_cluster_h for elem in l_origcluster):
-        print_details("[iorigcluster_h]", "[iorigcluster]", "d", i_cnt)
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Origin-Agent-Cluster
+if header_eligible("origin-agent-cluster") \
+        and "?1" not in headers_l["origin-agent-cluster"]:
+    print_details("[iorigcluster_h]", "[iorigcluster]", "d", i_cnt)
 
 if header_eligible("p3p"):
     print_details("[ip3p_h]", "[ip3p]", "d", i_cnt)
@@ -5376,18 +5370,16 @@ if header_eligible("strict-dynamic") \
     print_details("[isdyn_h]", "[isdyn]", "d", i_cnt)
 
 if header_eligible("strict-transport-security"):
-    sts_header = headers_l.get("strict-transport-security", "")
+    sts_header = headers_l["strict-transport-security"].casefold()
     try:
         age = int("".join(filter(str.isdigit, sts_header)))
         if unsafe_scheme:
             print_details("[ihsts_h]", "[ihsts]", "d", i_cnt)
-        if (
-            not all(elem.casefold() in sts_header.casefold() for elem in
-                    t_sts_dir) or age < SECONDS_BOUNDS[1]
-        ):
+        if not all(elem.casefold() in sts_header for elem in t_sts_dir) \
+                or age < SECONDS_BOUNDS[1]:
             print_details("[ists_h]", "[ists]", "m", i_cnt)
-        if "preload" in sts_header.casefold() and (
-            t_sts_dir[0].casefold() not in sts_header.casefold()
+        if "preload" in sts_header and (
+            t_sts_dir[0].casefold() not in sts_header
             or age < SECONDS_BOUNDS[1]
         ):
             print_details("[istsr_h]", "[istsr]", "d", i_cnt)
