@@ -30,11 +30,10 @@ ENV PIP_NO_CACHE_DIR=1 \
 
 WORKDIR /app
 
-# Install deps from pre-built wheels, then drop the wheel cache in the same layer
-COPY --from=builder /wheels /wheels
+# Install deps from pre-built wheels, bind-mounted so they are never committed to a layer
 COPY requirements.txt .
-RUN pip install --no-index --find-links /wheels -r requirements.txt && \
-    rm -rf /wheels
+RUN --mount=type=bind,from=builder,source=/wheels,target=/wheels \
+    pip install --no-index --find-links /wheels -r requirements.txt
 
 # Copy only required runtime files
 COPY humble.py .
