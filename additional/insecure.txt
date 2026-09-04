@@ -72,7 +72,7 @@ Content-Security-Policy: Unknown Directive
 Content-Security-Policy: Unsafe Directive
 Content-Security-Policy: Unsafe Eval
 Content-Security-Policy: Unsafe Inline
-Content-Security-Policy: Unsafe Funcionality
+Content-Security-Policy: Unsafe Functionality
 Content-Security-Policy: Unsafe Nonce
 Content-Security-Policy-Report-Only: Ignored Directives
 Content-Security-Policy-Report-Only: Ignored Header
@@ -136,7 +136,7 @@ Set-Cookie: Insecure Attributes
 Set-Cookie: Insecure Schemes
 Set-Cookie: Missing Attribute
 Set-Login: No Valid Directives
-SourceMap: Unsafe Funcionality
+SourceMap: Unsafe Functionality
 Speculation-Rules: Potentially Unsafe Header
 Strict-Dynamic: Incorrect Header
 Strict-Transport-Security: Duplicated Values
