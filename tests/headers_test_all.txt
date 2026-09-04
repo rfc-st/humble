@@ -9,6 +9,12 @@ x-content-type-options: test, test
 x-xss-protection: 1, 1
 referrer-policy: testvalue, testvalue
 content-security-policy: default-src 'none'; block-all-mixed-content; script-src 'strict-dynamic' 'unsafe-inline' 'unsafe-eval' 'sha256-YTVkYWQ3OWVmZTY1ODkzNzhhM2Y4M2Q2MDU5MTQyMTkxZmM2ZDRmZjdkMzc5MjRlOGVhMWU5MzU2OGFjNGRiOA=' sha256-YTVkYWQ3OWVmZTY1ODkzNzhhM2Y4M2Q2MDU5MTQyMTkxZmM2ZDRmZjdkMzc5MjRlOGVhMWU5MzU2OGFjNGRiOA== 'nonce-VEVTVA==' 192.168.1.1; unknown_directive; style-src http://insecuretestdomain.net; font-src *
+content-security-policy-report-only: default-src https:; report-uri /csp
+etag: "abc123"
+expires: Wed, 21 Oct 2026 07:28:00 GMT
+p3p: CP="NOI"
+report-to: {"group":"default","max_age":3600,"endpoints":[{"url":"https://example.com/r"}]}
+vary: Accept-Encoding
 permissions-policy: window-placement, geolocation=*, camera none
 accept-ranges: bytes
 accept-ch: content-dpr, viewport-width

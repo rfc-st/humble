@@ -2482,9 +2482,6 @@ no encontrado
 [test_elang]
 Error: el parámetro '-l' requiere también el parámetro '-u'.
 
-[args_json_lang]
-Error: El análisis detallado en JSON solo está disponible actualmente en inglés.
-
 [json_det_fngheader]
 Cabecera
 
