@@ -293,7 +293,7 @@
 
 [idig]
  This header is deprecated.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Digest
+ Ref: https://http.dev/digest
 
 [idocp_h]
  Document-Policy (No Valid Directives)
@@ -331,7 +331,7 @@
 
 [ixacld]
  This header is deprecated.
- Ref: https://mdn2.netlify.app/en-us/docs/web/http/headers/accept-ch-lifetime/
+ Ref: https://web.dev/articles/performance-optimizing-content-efficiency-client-hints
 
 [ixacp_h]
  Accept-Patch (Potentially Unsafe Header)
@@ -1482,7 +1482,7 @@ HTTP Response Headers
 
 [iorigcluster]
  The only valid value is '?1'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Origin-Agent-Cluster
+ Ref: https://mdn.io/Origin-Agent-Cluster
 
 [ihsts]
  This header is ignored by the browser when accessing via HTTP.

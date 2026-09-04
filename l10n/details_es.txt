@@ -184,7 +184,7 @@
 
 [ixcspr]
  Esta cabecera está obsoleta; utilice la cabecera "Content-Security-Policy-Report-Only".
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
+ Ref: https://mdn.io/Content-Security-Policy-Report-Only
 
 [ionloc_h]
  Onion-Location (Cabecera potencialmente insegura)
@@ -233,29 +233,29 @@
 
 [icsd]
  Al acceder mediante HTTP los navegadores ignoran esta cabecera.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data
 
 [icsdn]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data
 
 [icontdig_h]
  Content-Digest (Sin algoritmos seguros)
 
 [icontdig]
  Incluya un algoritmo seguro.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Digest
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Digest
 
 [icontdigi_h]
  Content-Digest (Algoritmos inseguros)
 
 [icontdigi]
  No use algoritmos inseguros, ya que se pueden forzar colisiones.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Digest
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Digest
 
 [icencod]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Encoding
 
 [icencod_h]
  Content-Encoding (Sin directivas adecuadas)
@@ -287,14 +287,14 @@
 
 [icrch]
  Al acceder mediante HTTP los navegadores ignoran esta cabecera.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Critical-CH
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Critical-CH
 
 [idig_h]
  Digest (Cabecera obsoleta)
 
 [idig]
  Esta cabecera está obsoleta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest
+ Ref: https://http.dev/digest
 
 [idocp_h]
  Document-Policy (Sin directivas adecuadas)
@@ -319,20 +319,20 @@
 
 [ixach]
  Al acceder mediante HTTP los navegadores ignoran esta cabecera.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-CH
 
 [ixachd_s]
  Estos valores están obsoletos: 
 
 [ixachd]
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-CH
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Accept-CH
 
 [ixacl_h]
  Accept-CH-Lifetime (Cabecera obsoleta)
 
 [ixacld]
  Esta cabecera está obsoleta.
- Ref: https://http.dev/content-negotiation#accept-ch-lifetime
+ Ref: https://web.dev/articles/performance-optimizing-content-efficiency-client-hints
 
 [ixacp_h]
  Accept-Patch (Cabecera potencialmente insegura)
@@ -347,22 +347,22 @@
 
 [icred]
  El único valor válido para esta cabecera es 'true'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials
+ Ref: https://mdn.io/Access-Control-Allow-Credentials
 
 [ixcdpr_h]
  Content-DPR (Cabecera obsoleta)
 
 [ixcdprd]
  Esta cabecera está obsoleta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-DPR
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-DPR
 
 [ixcdisp_h]
  Content-Disposition (Cabecera potencialmente insegura)
 
 [ixcdisp]
  Codifica las URL de los archivos y sanitiza los caracteres '"', '/', '\r' y '\n'.
+ Ref: https://mdn.io/Content-Disposition
  Ref: https://gist.github.com/motoyasu-saburi/1b19ef18e96776fe90ba1b9f910fa714
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
 
 [ipol_h]
  Integrity-Policy (Sin claves adecuadas)
@@ -383,7 +383,7 @@
 
 [ickeep]
  Esta cabecera se ignora si el valor de la cabecera "Connection" no es 'keep-alive'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Keep-Alive
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Keep-Alive
 
 [ixlalloc_h]
  Large-Allocation (Cabecera obsoleta)
@@ -418,29 +418,29 @@
 
 [ixtkd]
  Esta cabecera está obsoleta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Tk
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Tk
 
 [ixwandig_h]
  Want-Digest (Cabecera obsoleta)
 
 [ixwandig]
  Esta cabecera está obsoleta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Digest
+ Ref: https://mdn.io/Want-Content-Digest
 
 [ixwar_h]
  Warning (Cabecera obsoleta)
 
 [ixward]
  Esta cabecera está obsoleta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Warning
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Warning
 
 [ixvary_h]
  Vary (Cabecera potencialmente insegura)
 
 [ixvary]
  Los valores de esta cabecera pueden exponer otras, facilitando ataques si aceptan input de usuario.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary
  Ref: https://www.yeswehack.com/fr/learn-bug-bounty/http-header-exploitation
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary
 
 [no_sec_headers]
  No hay cabeceras de seguridad HTTP habilitadas.
@@ -454,7 +454,7 @@
  Ref: https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 
 [itrailer_d_r]
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Trailer
 
 [icsiro_d]
  Content-Security-Policy-Report-Only (Directivas ignoradas)
@@ -473,7 +473,7 @@
 
 [icsiroi]
  Utilice la directiva 'report-to' o esta cabecera no tendrá efecto.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
+ Ref: https://mdn.io/Content-Security-Policy-Report-Only
 
 [itrailer_d_s]
  Evite directivas no permitidas: 
@@ -514,7 +514,7 @@
 
 [icoep]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
+ Ref: https://mdn.io/Cross-Origin-Embedder-Policy
 
 [icoepr]
  Incluya, al menos, una directiva correcta.
@@ -525,14 +525,14 @@
 
 [icoop]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+ Ref: https://mdn.io/Cross-Origin-Opener-Policy
 
 [icoopi_h]
  Cross-Origin-Opener-Policy (Valor inseguro)
 
 [icoopi]
  El valor 'unsafe-none' se considera inseguro.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+ Ref: https://mdn.io/Cross-Origin-Opener-Policy
 
 [icoopr_h]
  Cross-Origin-Opener-Policy-Report-Only (Sin directivas adecuadas)
@@ -546,7 +546,7 @@
 
 [icorp]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
+ Ref: https://mdn.io/Cross-Origin-Resource-Policy
 
 [icspmb_h]
  Content-Security-Policy (Directiva 'base-uri' ausente)
@@ -1081,7 +1081,7 @@ Cabeceras de respuesta HTTP
 [python_required_version]
 
  'humble' requiere, al menos, Python 3.11.
- Ref: https://github.com/rfc-st/humble#installation--update
+ Ref: https://github.com/rfc-st/humble?tab=readme-ov-file#installation--update-source-code
 
 [python_host_version]
  Tu versión de Python es
@@ -1091,23 +1091,23 @@ Cabeceras de respuesta HTTP
 
 [mcache]
  Directivas para el cacheo de peticiones y respuestas.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
 
 [mcsd]
  Elimina datos asociados a cookies, cache, etc. del sito web.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data
 
 [mctype]
  Indica el tipo de medio original del recurso.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
 
 [mcoe]
  Evita que un documento cargue recursos de origen cruzado sin permiso previo.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
+ Ref: https://mdn.io/Cross-Origin-Embedder-Policy
 
 [mcop]
  Evita que otros sitios web obtengan referencias de ventanas arbitrarias.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+ Ref: https://mdn.io/Cross-Origin-Opener-Policy
 
 [mcor]
  Evita la carga de ciertos recursos por otras fuentes.
@@ -1115,7 +1115,7 @@ Cabeceras de respuesta HTTP
 
 [mcsp]
  Detecta y mitiga, entre otros, ataques Cross-site scripting.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 
 [mcipol]
  Bloquea ciertos recursos sin Subresource Integrity asociada.
@@ -1135,15 +1135,15 @@ Cabeceras de respuesta HTTP
 
 [msts]
  Indica a los navegadores que accedan al sitio web exclusivamente por HTTPS.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+ Ref: https://mdn.io/Strict-Transport-Security
 
 [mxcto]
  Indica que se sigan los tipos MIME indicados en la cabecera "Content-Type".
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+ Ref: https://mdn.io/X-Content-Type-Options
 
 [mxfo]
  Evita los ataques de clickjacking, limitando las fuentes de contenido embebido.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options
 
 [mxpcd]
  Limita el acceso a datos por recursos externos (ej. documentos Adobe Flash/PDF) en el dominio.
@@ -1151,19 +1151,19 @@ Cabeceras de respuesta HTTP
 
 [iaccess]
  Revise los valores '*' o 'null', y sus requisitos de intercambio de recursos de origen cruzado.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+ Ref: https://mdn.io/Access-Control-Allow-Origin
 
 [iaccessma]
  El valor de esta cabecera supera el máximo permitido (86400) en los navegadores más utilizados.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Max-Age
 
 [icache]
  Habilite 'no-cache' y 'no-store' si hay datos sensibles en la URL analizada.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
 
 [icachev]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
 
 [icspmb]
  Evita redirecciones maliciosas desde la URL base; intenta habilitarla con 'self'.
@@ -1245,11 +1245,11 @@ Cabeceras de respuesta HTTP
 [icspi]
  'upgrade-insecure-requests' sin la cabecera 'HSTS' podría facilitar ataques SSL Stripping.
  Ref: https://robotecture.com/http-topics/http-headers/upgrade-insecure-requests/
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 
 [icsi]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 
 [icsig]
  'strict-dynamic' requiere un hash/nonce; sin ellos los navegadores ignoran esta keyword.
@@ -1257,7 +1257,7 @@ Cabeceras de respuesta HTTP
 
 [icsn]
  '=', en el contexto de esta cabecera, puede ser un valor incorrecto.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 
 [icsh]
  Y no permita esquemas inseguros, sin encriptar: 
@@ -1298,7 +1298,7 @@ Cabeceras de respuesta HTTP
 
 [ictp]
  El único valor permitido es 'nosniff'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+ Ref: https://mdn.io/X-Content-Type-Options
 
 [ictpd]
  Valores distintos, o varias cabeceras con ellos, podrían hacer que los navegadores las ignoren.
@@ -1311,11 +1311,11 @@ Cabeceras de respuesta HTTP
 
 [iffea]
  "Feature-Policy" ha pasado a llamarse "Permissions-Policy".
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
 
 [ifnvarys]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/No-Vary-Search
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
 
 [ifpoln]
  Incluya, al menos, una directiva correcta.
@@ -1352,7 +1352,7 @@ Cabeceras de respuesta HTTP
 
 [iprag]
  Esta cabecera está obsoleta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Pragma
 
 [ipkp]
  Esta cabecera está obsoleta.
@@ -1365,15 +1365,15 @@ Cabeceras de respuesta HTTP
 
 [iprxauthn]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Proxy-Authenticate
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Proxy-Authenticate
 
 [itrf]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Transfer-Encoding
 
 [irefd]
  Esta cabecera, o sus valores, pueden estar duplicados.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referrer-Policy
 
 [iref]
  Utiliza un valor restrictivo si hay recursos sensibles en la URL.
@@ -1381,15 +1381,15 @@ Cabeceras de respuesta HTTP
 
 [islogin]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Login
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Login
 
 [irefi]
  'unsafe-url' filtra datos potencialmente privados de las URLs HTTPS a fuentes inseguras.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referrer-Policy
 
 [irefn]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referrer-Policy
 
 [irefr]
  Correos electrónicos en esta cabecera HTTP podrían facilitar ataques de phishing.
@@ -1397,60 +1397,60 @@ Cabeceras de respuesta HTTP
 
 [irept]
  Esta cabecera está obsoleta; utilice en vez de ella "Reporting-Endpoints".
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Report-To
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Report-To
 
 [irepe]
  Los endpoints inseguros ('http:') se ignoran.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Reporting-Endpoints
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints
 
 [irepdig]
  Incluya un algoritmo seguro.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Repr-Digest
 
 [irepdigi]
  No use algoritmos inseguros, ya que se pueden forzar colisiones.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Repr-Digest
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Repr-Digest
 
 [iwcondig]
  Incluya un algoritmo seguro.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Content-Digest
+ Ref: https://mdn.io/Want-Content-Digest
 
 [iwcondigi]
  No use algoritmos inseguros, ya que se pueden forzar colisiones.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Content-Digest
+ Ref: https://mdn.io/Want-Content-Digest
 
 [iwreprdig]
  Incluya un algoritmo seguro.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Want-Repr-Digest
 
 [iwreprdigi]
  No use algoritmos inseguros, ya que se pueden forzar colisiones.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Want-Repr-Digest
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Want-Repr-Digest
 
 [iset]
  Cualquier cookie asociada a datos sensibles debe incluir 'Secure' y 'HttpOnly'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 [iseti]
  Las cookies con atributos 'Secure' deben enviarse vía HTTPS (excepto en localhost).
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 [isetm]
  Las cookies 'SameSite=None' también deben establecerse con el atributo 'Secure'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 [ispref]
  Las cookies '__Host-' y '__Secure-' deben servirse desde HTTPS y tener el flag 'secure'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 [ismap]
  Esta cabecera puede exponer información sensible sobre el código fuente original.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/SourceMap
 
 [ispec]
  Asegúrese que esta cabecera no permita condiciones de carga especulativa inseguras.
  Ref: https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Speculation-Rules
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Speculation-Rules
 
 [isdyn]
  Revise el contexto en el cual se permite 'strict-dynamic'.
@@ -1459,23 +1459,23 @@ Cabeceras de respuesta HTTP
 [ists]
  Habilite 'includeSubDomains' y 'max-age' (con 31536000 -un año- como mínimo).
  Ref: https://www.getpagespeed.com/server-setup/security/nginx-hsts
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+ Ref: https://mdn.io/Strict-Transport-Security
 
 [istsr]
  'preload' requiere 'includeSubDomains' y 'max-age' (con 31536000 -un año- como mínimo).
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+ Ref: https://mdn.io/Strict-Transport-Security
 
 [istsd]
  Esta cabecera, o sus valores, pueden estar duplicados.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+ Ref: https://mdn.io/Strict-Transport-Security
 
 [islmodei]
  Al acceder mediante HTTP los navegadores ignoran esta cabecera.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
+ Ref: https://mdn.io/Supports-Loading-Mode
 
 [islmode]
  Incluya, al menos, una directiva correcta.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Supports-Loading-Mode
+ Ref: https://mdn.io/Supports-Loading-Mode
 
 [isurrmode]
  Incluya, al menos, una directiva correcta.
@@ -1483,11 +1483,11 @@ Cabeceras de respuesta HTTP
 
 [iorigcluster]
  EL único valor permitido es '?1'.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin-Agent-Cluster
+ Ref: https://mdn.io/Origin-Agent-Cluster
 
 [ihsts]
  Al acceder mediante HTTP los navegadores ignoran esta cabecera.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+ Ref: https://mdn.io/Strict-Transport-Security
 
 [ihbas]
  La autenticación HTTP 'Basic' transmite credenciales codificados en base64, sin cifrarlos.
@@ -1496,15 +1496,15 @@ Cabeceras de respuesta HTTP
 [iexct]
  Esta cabecera está obsoleta.
  Ref: https://chromestatus.com/feature/6244547273687040
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Expect-CT
 
 [iexpi]
  Cabecera ignorada por las directivas 'max-age' o 's-maxage' en la cabecera que controla la caché.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Expires
 
 [itao]
  El valor '*' permite a cualquier origen ver recursos pontencialmente sensibles.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Timing-Allow-Origin
 
 [iseclft]
  Se ignora cualquier valor que no sea numérico en esta cabecera.
@@ -1512,12 +1512,12 @@ Cabeceras de respuesta HTTP
 
 [itim]
  Esta cabecera no debe exponer datos sensibles o de infraestructura.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Server-Timing
 
 [itwall]
  El ámbito '/' es muy permisivo; evalúa el acotarlo.
+ Ref: https://mdn.io/Service-Worker-Allowed
  Ref: https://www.zeepalm.com/blog/service-worker-security-best-practices-2024-guide
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Service-Worker-Allowed
 
 [ixpermcrossu]
  El valor 'all' permite peticiones de documentos Flash y PDF entre dominios.
@@ -1543,17 +1543,17 @@ Cabeceras de respuesta HTTP
 [ixfo]
  Esta cabecera, o sus valores, pueden estar duplicados.
  Consejo: sustituya esta cabecera por la directiva 'frame-ancestors' de CSP.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options
 
 [ixfod]
  'ALLOW-FROM' no está soportado en los navegadores actuales.
  Consejo: sustituya esta cabecera por la directiva 'frame-ancestors' de CSP.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options
 
 [ixfodi]
  Los únicos valores permitidos en esta cabeceras son 'DENY' o 'SAMEORIGIN'.
  Consejo: sustituya esta cabecera por la directiva 'frame-ancestors' de CSP.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options
 
 [ixpad]
  Esta cabecera está obsoleta desde 2008.
@@ -1574,14 +1574,14 @@ Cabeceras de respuesta HTTP
 
 [ixsrc]
  Esta cabecera está obsoleta; utilice la indicada en la siguiente referencia.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/SourceMap
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/SourceMap
 
 [ixxp]
  En algunos casos, valores distintos de "0" pueden crear vulnerabilidades XSS.
  En su lugar habilite una cabecera "Content-Security-Policy" estricta.
  Ref: https://web.dev/articles/strict-csp
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection
  Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
 
 [ixxpdp]
@@ -1589,12 +1589,12 @@ Cabeceras de respuesta HTTP
  En su lugar habilite una cabecera "Content-Security-Policy" estricta.
  Ref: https://web.dev/articles/strict-csp
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP#strict_csp
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection
  Ref: https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/CSP
 
 [ixxpd]
  Esta cabecera, o sus valores, pueden estar duplicados.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-XSS-Protection
 
 [aemp]
  Cabeceras HTTP vacías (y por ello se consideran deshabilitadas):
