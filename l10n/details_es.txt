@@ -273,7 +273,7 @@
 
 [ictlhtml]
  La URL no es un documento HTML. Este análisis puede que no aplique en su totalidad.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+ Ref: https://mdn.io/Common_types
 
 [ictlchar_h]
  Content-Type (Valor inseguro)
@@ -379,7 +379,7 @@
 
 [ipolr]
  Incluya, al menos, una clave válida.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy-Report-Only
+ Ref: https://mdn.io/Integrity-Policy-Report-Only
 
 [ickeep]
  Esta cabecera se ignora si el valor de la cabecera "Connection" no es 'keep-alive'.
@@ -632,7 +632,7 @@
 
 [iactr]
  'retry' requiere también 'allowed-origin'.
- Ref: https://developers.google.com/privacy-sandbox/blog/storage-access-api-headers-logic
+ Ref: https://privacysandbox.google.com/blog/storage-access-api-headers-logic
 
 [imethods_hh]
  Allow (Valores inseguros)
@@ -897,7 +897,7 @@
 
 [ictlmeta]
  Los únicos valores permtidos son 'text/html; charset=utf-8' o 'text/html; charset=UTF-8'
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#charset
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta#charset
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv
 
 [ixuameta_h]
@@ -905,7 +905,7 @@
 
 [ixuameta]
  El único valor permitido es 'IE=edge'
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta
 
 [humble_desc]
 'humble' (Analizador de cabeceras HTTP)
@@ -1491,7 +1491,7 @@ Cabeceras de respuesta HTTP
 
 [ihbas]
  La autenticación HTTP 'Basic' transmite credenciales codificados en base64, sin cifrarlos.
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Authentication
 
 [iexct]
  Esta cabecera está obsoleta.
