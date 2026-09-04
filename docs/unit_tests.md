@@ -30,6 +30,6 @@ Unit test descriptions are retrieved via `print_results` and `get_detail` functi
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>August 29, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>September 04, 2026</em></span>
 </span>
 </aside>
