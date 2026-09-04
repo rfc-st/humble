@@ -266,7 +266,7 @@
 [ictlg]
  El contenido JavaScript debe servirse siempre utilizando el tipo MIME 'text/javascript'.
  Ref: https://www.rfc-editor.org/rfc/rfc9239.html
- Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/MIME_types
 
 [ictlhtml_h]
  Content-Type (Tipo MIME distinto de HTML)
