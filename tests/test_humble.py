@@ -164,7 +164,7 @@ TEST_CFGS = {
     "test_all_headers": (["-u", TEST_URLS[2], "-if", PATHS["ALL_HEADERS"]],
                          "Input:"),
     "test_unsafe_all_headers": (["-u", TEST_URLS[3], "-if",
-                                 PATHS["ALL_HEADERS"]], "Input:"),
+                                 PATHS["ALL_HEADERS"]], "Ignored Header"),
     "test_grade_perfect_headers": (["-u", TEST_URLS[4], "-if",
                                     PATHS["PERFECT_GRADE"]], "A+ ("),
     "test_grade_a_headers": (["-u", TEST_URLS[4], "-if", PATHS["GRADE_A"]],

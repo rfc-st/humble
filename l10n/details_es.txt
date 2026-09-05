@@ -527,6 +527,13 @@
  Incluya, al menos, una directiva correcta.
  Ref: https://mdn.io/Cross-Origin-Opener-Policy
 
+[ihcoop_h]
+ Cross-Origin-Opener-Policy (Cabecera ignorada)
+
+[ihcoop]
+ Al acceder mediante HTTP los navegadores ignoran esta cabecera.
+ Ref: https://html.spec.whatwg.org/multipage/browsers.html#obtain-coop
+
 [icoopi_h]
  Cross-Origin-Opener-Policy (Valor inseguro)
 

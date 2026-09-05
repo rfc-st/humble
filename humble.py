@@ -5222,6 +5222,8 @@ if header_eligible("cross-origin-embedder-policy-report-only"):
 
 if header_eligible("cross-origin-opener-policy"):
     coop_h = headers_l["cross-origin-opener-policy"]
+    if unsafe_scheme:
+        print_details("[ihcoop_h]", "[ihcoop]", "d", i_cnt)
     if not any(elem in coop_h for elem in t_coop):
         print_details("[icoop_h]", "[icoop]", "d", i_cnt)
     if "unsafe-none" in coop_h:

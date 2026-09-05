@@ -526,6 +526,13 @@
  Include at least one valid directive.
  Ref: https://mdn.io/Cross-Origin-Opener-Policy
 
+[ihcoop_h]
+ Cross-Origin-Opener-Policy (Ignored Header)
+
+[ihcoop]
+ This header is ignored by the browser when accessing via HTTP.
+ Ref: https://html.spec.whatwg.org/multipage/browsers.html#obtain-coop
+
 [icoopi_h]
  Cross-Origin-Opener-Policy (Unsafe value)
 
