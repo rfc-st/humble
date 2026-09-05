@@ -5092,7 +5092,6 @@ if header_eligible("allow"):
             print_detail("[imethods]")
         i_cnt[0] += 1
 
-
 if header_eligible("attribution-reporting-register-source"):
     print_details("[iarrs_h]", "[iarrs]", "m", i_cnt)
 
@@ -5397,7 +5396,9 @@ if header_eligible("strict-transport-security"):
         age = int("".join(filter(str.isdigit, sts_header)))
         if unsafe_scheme:
             print_details("[ihsts_h]", "[ihsts]", "d", i_cnt)
-        if not all(elem.casefold() in sts_header for elem in t_sts_dir) \
+        if age == 0:
+            print_details("[istsz_h]", "[istsz]", "m", i_cnt)
+        elif not all(elem.casefold() in sts_header for elem in t_sts_dir) \
                 or age < SECONDS_BOUNDS[1]:
             print_details("[ists_h]", "[ists]", "m", i_cnt)
         if "preload" in sts_header and (

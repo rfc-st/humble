@@ -1469,6 +1469,14 @@ HTTP Response Headers
  This header, or its values, may be duplicated.
  Ref: https://mdn.io/Strict-Transport-Security
 
+[istsz_h]
+ Strict-Transport-Security (Disabled Header)
+
+[istsz]
+ 'max-age=0' makes browsers delete the HSTS policy stored for this host.
+ Set 'max-age' to at least 31536000 (one year) and add 'includeSubDomains'.
+ Ref: https://datatracker.ietf.org/doc/html/rfc6797#section-6.1.1
+
 [islmodei]
  This header is ignored by the browser when accessing via HTTP.
  Ref: https://mdn.io/Supports-Loading-Mode

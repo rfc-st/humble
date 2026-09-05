@@ -139,6 +139,7 @@ Set-Login: No Valid Directives
 SourceMap: Unsafe Functionality
 Speculation-Rules: Potentially Unsafe Header
 Strict-Dynamic: Incorrect Header
+Strict-Transport-Security: Disabled Header
 Strict-Transport-Security: Duplicated Values
 Strict-Transport-Security: Ignored Header via Unsafe Scheme
 Strict-Transport-Security: Recommended Values

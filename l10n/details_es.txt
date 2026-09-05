@@ -1470,6 +1470,14 @@ Cabeceras de respuesta HTTP
  Esta cabecera, o sus valores, pueden estar duplicados.
  Ref: https://mdn.io/Strict-Transport-Security
 
+[istsz_h]
+ Strict-Transport-Security (Cabecera deshabilitada)
+
+[istsz]
+ 'max-age=0' hace que los navegadores borren la política HSTS almacenada para este host.
+ Establezca 'max-age' en 31536000 (un año) como mínimo y añada 'includeSubDomains'.
+ Ref: https://datatracker.ietf.org/doc/html/rfc6797#section-6.1.1
+
 [islmodei]
  Al acceder mediante HTTP los navegadores ignoran esta cabecera.
  Ref: https://mdn.io/Supports-Loading-Mode
