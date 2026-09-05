@@ -131,7 +131,7 @@ Repr-Digest: Unsafe Algorithms
 Sec-Private-State-Token-Lifetime: Incorrect Value
 Server-Timing: Potentially Unsafe Header
 Service-Worker-Allowed: Unsafe Value
-Set-Cookie: Cookie Prefixes
+Set-Cookie: Invalid Prefixes
 Set-Cookie: Insecure Attributes
 Set-Cookie: Insecure Schemes
 Set-Cookie: Missing Attribute

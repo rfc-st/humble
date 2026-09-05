@@ -791,7 +791,7 @@
  Set-Cookie (Atributo ausente)
 
 [ispref_m]
- Set-Cookie (Prefijos de cookies)
+ Set-Cookie (Prefijos inválidos)
 
 [ismap_m]
  SourceMap (Funcionalidad insegura)
@@ -1440,7 +1440,8 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 [ispref]
- Las cookies '__Host-' y '__Secure-' deben servirse desde HTTPS y tener el flag 'secure'.
+ Las cookies con prefijo requieren HTTPS y 'Secure'; las '__Http-' también 'HttpOnly'.
+ Las '__Host-' también requieren 'Path=/' y ningún 'Domain'. Si no, los navegadores las rechazan.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 [ismap]

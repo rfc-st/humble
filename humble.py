@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-09-04")
+local_version = date.fromisoformat("2026-09-05")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1443,11 +1443,35 @@ def check_unsafe_cookies(stc_cookies):
         i_cnt[0] += 1
 
 
-def print_unsafe_cookies(unsafe_cks):
+def print_unsafe_cookies(unsafe_cks, detail_id="[iset]", num_lines=2):
     """Print unsafe cookies in the `Set-Cookie` header."""
     print_detail_l("[icooks_s]" if len(unsafe_cks) > 1 else "[icook_s]")
     print(", ".join(f"'{ck}'" for ck in sorted(unsafe_cks)) + ".")
-    print_detail("[iset]", num_lines=2)
+    print_detail(detail_id, num_lines)
+
+
+def check_cookie_prefixes(stc_cookies, unsafe_scheme):
+    """Check prefixed cookies that supporting browsers silently reject."""
+    if invalid_cks := [name for name, attrs in stc_cookies
+                       if invalid_cookie_prefix(name, attrs, unsafe_scheme)]:
+        print_detail_r("[ispref_m]", is_red=True)
+        if not args.brief:
+            print_unsafe_cookies(invalid_cks, "[ispref]", num_lines=3)
+        i_cnt[0] += 1
+
+
+def invalid_cookie_prefix(name, attrs, unsafe_scheme):
+    """Check if a prefixed cookie violates its prefix requirements."""
+    cookie_name = name.casefold()
+    if not cookie_name.startswith(t_cookie_prf):
+        return False
+    if unsafe_scheme or "secure" not in attrs:
+        return True
+    if cookie_name.startswith(t_cookie_prf[1:3]) and "httponly" not in attrs:
+        return True
+    return cookie_name.startswith(t_cookie_prf[0]) and (
+        "path=/" not in attrs
+        or any(attr.startswith("domain=") for attr in attrs))
 
 
 def permissions_analyze_content(perm_header, i_cnt):
@@ -4957,7 +4981,7 @@ t_ref_values = ("no-referrer", "no-referrer-when-downgrade", "origin",
 t_refresh = ("QA==", "@")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
-t_cookie_prf = ("__Host-", "__Secure-")
+t_cookie_prf = ("__host-", "__host-http-", "__http-", "__secure-")
 t_cookie_sec = ("httponly", "secure")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Login
@@ -5345,11 +5369,9 @@ if header_eligible("set-cookie"):
     stc_cookies = parse_cookie_attributes(stc_header)
     if not unsafe_scheme:
         check_unsafe_cookies(stc_cookies)
-    else:
-        if any("secure" in attrs for _, attrs in stc_cookies):
-            print_details("[iseti_h]", "[iseti]", "d", i_cnt)
-        if any(name.startswith(t_cookie_prf) for name, _ in stc_cookies):
-            print_details("[ispref_m]", "[ispref]", "d", i_cnt)
+    elif any("secure" in attrs for _, attrs in stc_cookies):
+        print_details("[iseti_h]", "[iseti]", "d", i_cnt)
+    check_cookie_prefixes(stc_cookies, unsafe_scheme)
     if any("samesite=none" in attrs and "secure" not in attrs
            for _, attrs in stc_cookies):
         print_details("[iseti_m]", "[isetm]", "d", i_cnt)
