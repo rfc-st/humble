@@ -84,6 +84,14 @@ HUMBLE_TEST_FILES = {
     "PERFECT_OWASP": "headers_test_perfect_owasp.txt",
     "UNICODE": "headers_test_unicode.txt",
 }
+IGNORED_SCENARIOS = {
+    "test_cicd_error",
+    "test_file_access_errors",
+    "test_testssl_error",
+    "test_updates_error",
+    "test_outdated_humble",
+    "test_unsupported_python_version",
+}
 PATHS = {
     k: (HUMBLE_TESTS_DIR / v).resolve() for k, v in HUMBLE_TEST_FILES.items()
 }
@@ -109,6 +117,9 @@ PYTEST_CACHE_DIRS = [
     HUMBLE_PROJECT_ROOT / ".pytest_cache",
     HUMBLE_PROJECT_ROOT / "__pycache__",
 ]
+TESTSSL_SKIP = pytest.mark.skipif(
+    system().lower() == "windows",
+    reason="testssl.sh requires a Unix environment (Cygwin, MSYS2 or WSL)")
 
 class _LocalStatusHandler(BaseHTTPRequestHandler):
     """Serve '/status/<code>' paths returning that HTTP status code."""
@@ -465,43 +476,26 @@ def parse_expected_text(output, expected_text):
         pytest.fail(f"{exp_msg} '{expected_text}' {not_found_msg}")
 
 
-def test_humble_scenarios(cfg_key):
-    """Execute dynamic validation tests managed via TEST_CFGS.
+def make_scenario_test(cfg_key):
+    """Build a standalone test function for a `TEST_CFGS` scenario.
 
-    Skips testssl-related scenarios on Windows due to the Unix-environment
-    requirement (Cygwin, MSYS2, or Windows Subsystem for Linux) for testssl.sh
+    Each scenario becomes a real test named after its key, so pytest reports
+    `test_humble.py::test_x` instead of `test_humble_scenarios[test_x]`.
+    Scenarios with dedicated functions (`IGNORED_SCENARIOS`) are excluded to
+    avoid duplicate runs; testssl-related ones are skipped on Windows.
     """
-    if system().lower() == "windows" and cfg_key.startswith("test_testssl"):
-        pytest.skip(f"'{cfg_key}' skipped on Windows")
-    run_test(*TEST_CFGS[cfg_key])
+    def scenario_test():
+        run_test(*TEST_CFGS[cfg_key])
+    scenario_test.__name__ = cfg_key
+    scenario_test.__doc__ = f"Execute the '{cfg_key}' scenario of TEST_CFGS."
+    if cfg_key.startswith("test_testssl"):
+        return TESTSSL_SKIP(scenario_test)
+    return scenario_test
 
 
-def pytest_generate_tests(metafunc):
-    """Hooks into pytest configuration to generate standalone test entries.
-
-    Tests in `TEST_CFGS` that have dedicated functions are ignored to avoid
-    duplicate runs.
-    """
-    if "cfg_key" in metafunc.fixturenames:
-        ignored_scenarios = {
-            "test_cicd_error",
-            "test_file_access_errors",
-            "test_testssl_error",
-            "test_updates_error",
-            "test_outdated_humble",
-            "test_unsupported_python_version",
-        }
-        target_keys = [k for k in TEST_CFGS if k not in ignored_scenarios]
-        metafunc.parametrize("cfg_key", target_keys)
-
-
-def pytest_runtest_logreport(report):
-    """Clean up the displayed test node identity in console reports."""
-    if "test_humble_scenarios[" in report.nodeid:
-        start = report.nodeid.find("[") + 1
-        end = report.nodeid.find("]")
-        cfg_key = report.nodeid[start:end]
-        report.nodeid = report.nodeid.split("::")[0] + f"::{cfg_key}"
+for scenario_key in TEST_CFGS:
+    if scenario_key not in IGNORED_SCENARIOS:
+        globals()[scenario_key] = make_scenario_test(scenario_key)
 
 
 def test_cicd_error(capsys):
@@ -653,11 +647,9 @@ def test_python_version():
     Test whether the current Python version does not meet the minimum
     requirement.
     """
-    if sys.version_info[:2] < REQUIRED_PYTHON_VERSION:
-        pytest.fail(
-            f"{get_detail('[test_pythonm]', replace=True)} "
-            f"{sys.version_info.major}.{sys.version_info.minor}",
-        )
+    assert sys.version_info[:2] >= REQUIRED_PYTHON_VERSION, (
+        f"{get_detail('[test_pythonm]', replace=True)} "
+        f"{sys.version_info.major}.{sys.version_info.minor}")
 
 
 def test_unsupported_python_version(capsys):
@@ -788,13 +780,20 @@ def test_unreliable_analysis(capsys):
     assert mock_process.call_args[0][3] is True
 
 
+@pytest.fixture(scope="module")
+def sanitize():
+    """Load `sanitize_header_value` from the humble module once."""
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    return humble_module.sanitize_header_value
+
+
 def test_sanitize_header_value():
     """Verify control and format characters are neutralized."""
     with suppress(SystemExit):
         _spec.loader.exec_module(humble_module)
     sanitize = humble_module.sanitize_header_value
-    for raw_value, sanitized_value in SANITIZE_CASES.items():
-        assert sanitize(raw_value) == sanitized_value
+    assert {raw: sanitize(raw) for raw in SANITIZE_CASES} == SANITIZE_CASES
 
 
 def test_strip_response_headers_sanitized():
