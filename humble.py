@@ -1474,6 +1474,32 @@ def invalid_cookie_prefix(name, attrs, unsafe_scheme):
         or any(attr.startswith("domain=") for attr in attrs))
 
 
+def sts_max_age(sts_header):
+    """Return the 'max-age' value of the `Strict-Transport-Security` header.
+
+    Raises `ValueError` if the header carries no digits.
+    """
+    return int("".join(filter(str.isdigit, sts_header)))
+
+
+def sts_check_values(sts_header, sts_age, unsafe_scheme):
+    """Check the values of the `Strict-Transport-Security` header."""
+    if unsafe_scheme:
+        print_details("[ihsts_h]", "[ihsts]", "d", i_cnt)
+    if sts_age == 0:
+        print_details("[istsz_h]", "[istsz]", "m", i_cnt)
+    elif any(elem.casefold() not in sts_header for elem in t_sts_dir) \
+            or sts_age < SECONDS_BOUNDS[1]:
+        print_details("[ists_h]", "[ists]", "m", i_cnt)
+    if "preload" in sts_header and (
+        t_sts_dir[0].casefold() not in sts_header
+        or sts_age < SECONDS_BOUNDS[1]
+    ):
+        print_details("[istsr_h]", "[istsr]", "d", i_cnt)
+    if "," in sts_header:
+        print_details("[istsd_h]", "[istsd]", "d", i_cnt)
+
+
 def permissions_analyze_content(perm_header, i_cnt):
     """`Permissions-Policy` header analysis."""
     if any(value in perm_header for value in t_per_dep):
@@ -5393,23 +5419,11 @@ if header_eligible("strict-dynamic") \
 if header_eligible("strict-transport-security"):
     sts_header = headers_l["strict-transport-security"].casefold()
     try:
-        age = int("".join(filter(str.isdigit, sts_header)))
-        if unsafe_scheme:
-            print_details("[ihsts_h]", "[ihsts]", "d", i_cnt)
-        if age == 0:
-            print_details("[istsz_h]", "[istsz]", "m", i_cnt)
-        elif not all(elem.casefold() in sts_header for elem in t_sts_dir) \
-                or age < SECONDS_BOUNDS[1]:
-            print_details("[ists_h]", "[ists]", "m", i_cnt)
-        if "preload" in sts_header and (
-            t_sts_dir[0].casefold() not in sts_header
-            or age < SECONDS_BOUNDS[1]
-        ):
-            print_details("[istsr_h]", "[istsr]", "d", i_cnt)
-        if "," in sts_header:
-            print_details("[istsd_h]", "[istsd]", "d", i_cnt)
+        sts_age = sts_max_age(sts_header)
     except ValueError:
         print_details("[ists_h]", "[ists]", "m", i_cnt)
+    else:
+        sts_check_values(sts_header, sts_age, unsafe_scheme)
 
 if header_eligible("supports-loading-mode"):
     support_mode_h = headers_l["supports-loading-mode"]
