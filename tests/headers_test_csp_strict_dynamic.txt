@@ -1,0 +1,4 @@
+HTTP/2 200
+date: Fri, 11 Sep 2026 19:00:00 GMT
+content-type: text/html; charset=utf-8
+content-security-policy: default-src 'self'; script-src 'nonce-rAnd0m1234567890abcdefgh' 'strict-dynamic' https: 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'

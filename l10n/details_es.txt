@@ -2197,6 +2197,9 @@ Generador
 [test_csp_hex_nonce]
  verifica que se comprueben nonces en hexadecimal inválidos, en la cabecera 'Content-Security-Policy'.
 
+[test_csp_strict_dynamic]
+ verifica que no se informen hosts o esquemas en directivas de 'Content-Security-Policy' con 'strict-dynamic'.
+
 [test_csp_unsafe_inline]
  verifica que 'unsafe-inline' se informe solo si la cabecera 'Content-Security-Policy' no incluye nonces ni hashes.
 
