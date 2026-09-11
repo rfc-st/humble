@@ -1252,16 +1252,12 @@ def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
     i_cnt[0] += 1
 
 
-def csp_unsafe_directives(csp_dirs_vals, present, absent=None):
-    """Return directive names whose values contain an unsafe keyword.
-
-    A directive matches when `present` appears in its values and, if given,
-    `absent` does not; related to `Content-Security-Policy` header checks.
-    """
+def csp_unsafe_directives(csp_dirs_vals, present, absent=()):
+    """Return directive names whose values contain an unsafe keyword."""
     return {dir_vals.split()[0] if " " in dir_vals else dir_vals
             for dir_vals in csp_dirs_vals
             if present in dir_vals
-            and (absent is None or absent not in dir_vals)}
+            and all(keyword not in dir_vals for keyword in absent)}
 
 
 def csp_check_eval(csp_dirs_vals):
@@ -1270,7 +1266,7 @@ def csp_check_eval(csp_dirs_vals):
     Related to `unsafe-eval` and `wasm-unsafe-eval` keywords.
     """
     if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals, "unsafe-eval",
-                                                absent="wasm-unsafe-eval"):
+                                                absent=("wasm-unsafe-eval",)):
         csp_print_unknown_unsafe(csp_unsafe_dirs, "[icspe_h]", "[icspev]", 5,
                                  i_cnt)
 
@@ -1280,8 +1276,8 @@ def csp_check_inline(csp_dirs_vals):
 
     Related to `unsafe-inline` keyword.
     """
-    if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals,
-                                                "unsafe-inline"):
+    if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals, "unsafe-inline",
+                                                absent=("'nonce-", "'sha")):
         csp_print_unknown_unsafe(csp_unsafe_dirs, "[icsp_h]", "[icsp]", 5,
                                  i_cnt)
 

@@ -2159,7 +2159,7 @@ Generador
  verifica que 'no-store' por sí solo se acepta como valor recomendado de la cabecera 'Cache-Control'.
 
 [test_cache_values]
- verifica que se informe la cabecera 'Cache-Control' cuando no incluya 'no-store'
+ verifica que se informe la cabecera 'Cache-Control' cuando no incluya 'no-store'.
 
 [test_cicd_error]
  verifica que un análisis CI/CD muestra un error ante excepciones.
@@ -2196,6 +2196,9 @@ Generador
 
 [test_csp_hex_nonce]
  verifica que se comprueben nonces en hexadecimal inválidos, en la cabecera 'Content-Security-Policy'.
+
+[test_csp_unsafe_inline]
+ verifica que 'unsafe-inline' se informe solo si la cabecera 'Content-Security-Policy' no incluye nonces ni hashes.
 
 [test_detailed_analysis]
  verifica que un análisis detallado finalice correctamente.
