@@ -60,6 +60,7 @@ ASSERT_STR = ["error", "Error"]
 EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_print_detail_s]", "[test_skip_file]",
                  "[test_response_headers_none]",
+                 "[test_csp_fallback_present]",
                  "[test_unreliable_analysis]",
                  "[test_sanitize_header_value]",
                  "[test_strip_response_headers_sanitized]",
@@ -84,6 +85,8 @@ HUMBLE_TEST_FILES = {
     "PERFECT_OWASP": "headers_test_perfect_owasp.txt",
     "UNICODE": "headers_test_unicode.txt",
 }
+CSP_FALLBACK_MISSING = ("child-src", "connect-src", "img-src", "object-src",
+                        "worker-src")
 IGNORED_SCENARIOS = {
     "test_cicd_error",
     "test_file_access_errors",
@@ -205,6 +208,9 @@ TEST_CFGS = {
                                  PATHS["GRADE_D"], "-b"], "Analysis Grade"),
     "test_csp_base64_nonce": (["-u", TEST_URLS[2], "-if",
                                PATHS["CSP_BASE64_NONCE"]], "Analysis Grade"),
+    "test_csp_fallback_missing": (["-u", TEST_URLS[2], "-if",
+                                   PATHS["CSP_HEX_NONCE"]],
+                                  "found as fallback"),
     "test_csp_hex_nonce": (["-u", TEST_URLS[2], "-if", PATHS["CSP_HEX_NONCE"]],
                            "Analysis Grade"),
     "test_detailed_analysis": (["-u", TEST_URLS[9]], "Analysis Grade:"),
@@ -780,6 +786,25 @@ def test_unreliable_analysis(capsys):
     assert mock_process.call_args[0][3] is True
 
 
+def test_csp_fallback_present():
+    """Verify fallback directives are not reported if 'default-src' exists."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["ALL_HEADERS"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "('base-uri' Directive Missing)" in output
+    assert "found as fallback" not in output
+    assert all(f"('{directive}' Directive Missing)" not in output
+               for directive in CSP_FALLBACK_MISSING)
+
+
 @pytest.fixture(scope="module")
 def sanitize():
     """Load `sanitize_header_value` from the humble module once."""
@@ -894,7 +919,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-09-05")
+local_version = date.fromisoformat("2026-09-11")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

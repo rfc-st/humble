@@ -1177,6 +1177,7 @@ HTTP Response Headers
 
 [icspmc]
  Prevents malicious code execution through workers/frames; try to set it to 'self'.
+ No 'default-src' directive found as fallback.
  Ref: https://centralcsp.com/docs/child-src
 
 [icspmd]
@@ -1185,10 +1186,12 @@ HTTP Response Headers
 
 [icspmcn]
  Protects against unauthorized data exfiltration; try to set it to 'self'.
+ No 'default-src' directive found as fallback.
  Ref: https://centralcsp.com/docs/connect-src
 
 [icspmfo]
  Prevents loading malicious web fonts; try to set it to 'self'.
+ No 'default-src' directive found as fallback.
  Ref: https://centralcsp.com/docs/font-src
 
 [icspmf]
@@ -1203,10 +1206,12 @@ HTTP Response Headers
 
 [icspmi]
  Prevents image-based attacks; try to set it to 'self'.
+ No 'default-src' directive found as fallback.
  Ref: https://centralcsp.com/docs/img-src
 
 [icspmo]
  Prevents plugin injection; try to set it to 'none'.
+ No 'default-src' directive found as fallback.
  Ref: https://mdn.io/object-src
 
 [icspmr]
@@ -1215,10 +1220,12 @@ HTTP Response Headers
 
 [icspms]
  If enabled securely prevents XSS attacks by restricting script sources.
+ No 'default-src' directive found as fallback.
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [icspmst]
  Prevents CSS-based attacks; try to set it to 'self'.
+ No 'default-src' directive found as fallback.
  Ref: https://centralcsp.com/docs/style-src
 
 [icspmstt]
@@ -1227,6 +1234,7 @@ HTTP Response Headers
 
 [icspmsw]
  Prevents unauthorized worker scripts from being loaded; try to set it to 'self'.
+ No 'default-src' directive found as fallback.
  Ref: https://centralcsp.com/docs/worker-src
 
 [icspev]
@@ -2195,6 +2203,12 @@ Generator
 
 [test_csp_base64_nonce]
  verify invalid base64 nonces are checked in the ‘Content-Security-Policy’ header.
+
+[test_csp_fallback_missing]
+ verify the 'default-src' fallback note is shown for missing directives in the 'Content-Security-Policy' header.
+
+[test_csp_fallback_present]
+ verify missing fetch directives are not reported when 'default-src' exists in the 'Content-Security-Policy' header.
 
 [test_csp_hex_nonce]
  verify invalid hexadecimal nonces are checked in the ‘Content-Security-Policy’ header.

@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-09-05")
+local_version = date.fromisoformat("2026-09-11")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1159,11 +1159,17 @@ def csp_check_missing(csp_dirs):
                 ("[icspmstt_h]", "[icspmstt]"), ("[icspmsw_h]", "[icspmsw]")]
     for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs,
                                                    strict=True):
-        if directive not in csp_dirs:
-            csp_print_missing(csp_ref, csp_ref_brief)
+        if directive in csp_dirs:
+            continue
+        if directive in t_csp_fallback:
+            if "default-src" in csp_dirs:
+                continue
+            csp_print_missing(csp_ref, csp_ref_brief, "m")
+        else:
+            csp_print_missing(csp_ref, csp_ref_brief, "d")
 
 
-def csp_print_missing(csp_ref, csp_ref_brief):
+def csp_print_missing(csp_ref, csp_ref_brief, id_mode):
     """Print the missing directive in the `Content-Security-Policy` header."""
     if args.brief:
         i_cnt[0] += 1
@@ -1173,7 +1179,7 @@ def csp_print_missing(csp_ref, csp_ref_brief):
         print_detail_r(csp_ref_brief, is_red=True)
         print_detail(csp_ref, num_lines=4)
     else:
-        print_details(csp_ref_brief, csp_ref, "d", i_cnt)
+        print_details(csp_ref_brief, csp_ref, id_mode, i_cnt)
 
 
 def csp_check_additional(csp_dirs_vals):
@@ -4874,7 +4880,10 @@ t_csp_insecs = ("http:", "ws:")
 t_csp_miss = ("base-uri", "child-src", "connect-src", "default-src",
               "font-src", "form-action", "frame-ancestors", "img-src",
               "object-src", "require-trusted-types-for", "script-src",
+# https://www.w3.org/TR/CSP3/#directive-default-src
               "style-src", "trusted-types", "worker-src")
+t_csp_fallback = ("child-src", "connect-src", "font-src", "img-src",
+                  "object-src", "script-src", "style-src", "worker-src")
 t_csp_checks = ("upgrade-insecure-requests", "strict-transport-security",
                 "unsafe-hashes", "nonce-", "127.0.0.1")
 

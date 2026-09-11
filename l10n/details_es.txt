@@ -1178,6 +1178,7 @@ Cabeceras de respuesta HTTP
 
 [icspmc]
  Evita ejecutar código malicioso vía workers/frames; intenta habilitarla con 'self'.
+ No se ha encontrado la directiva 'default-src' como respaldo.
  Ref: https://centralcsp.com/docs/child-src
 
 [icspmd]
@@ -1186,10 +1187,12 @@ Cabeceras de respuesta HTTP
 
 [icspmcn]
  Protege contra la exfiltración no autorizada de datos; intenta habilitarla con 'self'.
+ No se ha encontrado la directiva 'default-src' como respaldo.
  Ref: https://centralcsp.com/docs/connect-src
 
 [icspmfo]
  Evita cargar fuentes web maliciosas; intenta habilitarla con 'self'.
+ No se ha encontrado la directiva 'default-src' como respaldo.
  Ref: https://centralcsp.com/docs/font-src
 
 [icspmf]
@@ -1204,10 +1207,12 @@ Cabeceras de respuesta HTTP
 
 [icspmi]
  Evita ataques vía imágenes; intenta habilitarla con 'self'.
+ No se ha encontrado la directiva 'default-src' como respaldo.
  Ref: https://centralcsp.com/docs/img-src
 
 [icspmo]
  Evita inyección de plugins; intenta habilitarla con 'none'.
+ No se ha encontrado la directiva 'default-src' como respaldo.
  Ref: https://mdn.io/object-src
 
 [icspmr]
@@ -1216,10 +1221,12 @@ Cabeceras de respuesta HTTP
 
 [icspms]
  Habilitada de forma segura evita ataques XSS.
+ No se ha encontrado la directiva 'default-src' como respaldo.
  Ref: https://auth0.com/blog/defending-against-xss-with-csp/
 
 [icspmst]
  Evita ataques vía hojas de estilo; intenta habilitarla con 'self'.
+ No se ha encontrado la directiva 'default-src' como respaldo.
  Ref: https://centralcsp.com/docs/style-src
 
 [icspmstt]
@@ -1228,6 +1235,7 @@ Cabeceras de respuesta HTTP
 
 [icspmsw]
  Evita ejecutar worker scripts no autorizados; intenta habilitarla con 'self'.
+ No se ha encontrado la directiva 'default-src' como respaldo.
  Ref: https://centralcsp.com/docs/worker-src
 
 [icspev]
@@ -2173,6 +2181,12 @@ Generador
 
 [test_csp_base64_nonce]
  verifica que se comprueben nonces en base64 inválidos, en la cabecera 'Content-Security-Policy'.
+
+[test_csp_fallback_missing]
+ verifica la ausencia de 'default-src' al informar de directivas ausentes en la cabecera 'Content-Security-Policy'.
+
+[test_csp_fallback_present]
+ verifica que no se reporten directivas ausentes si se informa 'default-src' en la cabecera 'Content-Security-Policy'.
 
 [test_csp_hex_nonce]
  verifica que se comprueben nonces en hexadecimal inválidos, en la cabecera 'Content-Security-Policy'.
