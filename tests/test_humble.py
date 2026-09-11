@@ -60,6 +60,7 @@ ASSERT_STR = ["error", "Error"]
 EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_print_detail_s]", "[test_skip_file]",
                  "[test_response_headers_none]",
+                 "[test_cache_no_store]",
                  "[test_csp_fallback_present]",
                  "[test_unreliable_analysis]",
                  "[test_sanitize_header_value]",
@@ -193,6 +194,8 @@ TEST_CFGS = {
                               PATHS["NO_SEC_HEADERS"]], "E ("),
     "test_brief_analysis": (["-u", TEST_URLS[9], "-b"], "Analysis Grade:"),
     "test_cicd_analysis": (["-u", TEST_URLS[9], "-cicd"], "Analysis Grade"),
+    "test_cache_values": (["-u", TEST_URLS[2], "-if", PATHS["ALL_HEADERS"]],
+                          "Cache-Control (Recommended Values)"),
     "test_cicd_error": (["-u", TEST_URLS[9], "cicd"], "Error"),
     "test_cicd_grade_error": (["-u", TEST_URLS[9], "-cicd", "g"], "Error"),
     "test_cicd_grade_pass": (["-u", TEST_URLS[9], "-cicd", "E"], "meets"),
@@ -784,6 +787,23 @@ def test_unreliable_analysis(capsys):
     expected = get_detail("[unreliable_analysis]", replace=True).strip()
     assert expected in capsys.readouterr().out
     assert mock_process.call_args[0][3] is True
+
+
+def test_cache_no_store():
+    """Verify 'no-store' alone satisfies the 'Cache-Control' values check."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["PERFECT_OWASP"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Analysis Grade" in output
+    assert "Cache-Control (Recommended Values)" not in output
 
 
 def test_csp_fallback_present():

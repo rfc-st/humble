@@ -4835,6 +4835,7 @@ t_accecaov = (".*", "*.")
 t_act = ("allowed-origin", "load", "retry")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
+# https://www.rfc-editor.org/info/rfc9111/#section-5.2.2.5
 t_cache = ("no-cache", "no-store")
 t_cachev = ("immutable", "max-age", "must-revalidate", "must-understand",
             "no-cache", "no-store", "no-transform", "private",
@@ -5137,7 +5138,7 @@ if header_eligible("cache-control"):
     cache_header = headers_l.get("cache-control", "").casefold()
     if not any(elem in cache_header for elem in t_cachev):
         print_details("[icachev_h]", "[icachev]", "d", i_cnt)
-    if not all(elem in cache_header for elem in t_cache):
+    if t_cache[1] not in cache_header:
         print_details("[icache_h]", "[icache]", "d", i_cnt)
 
 if header_eligible("clear-site-data"):

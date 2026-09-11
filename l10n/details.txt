@@ -1164,7 +1164,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Max-Age
 
 [icache]
- Enable 'no-cache' and 'no-store' if there are sensitive data in the URL analyzed.
+ Enable 'no-store' if there are sensitive data in the URL analyzed.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
 
 [icachev]
@@ -2176,6 +2176,12 @@ Generator
 
 [test_cicd_analysis]
  verify the completion of a CI/CD analysis.
+
+[test_cache_no_store]
+ verify 'no-store' alone is accepted as a recommended value of the 'Cache-Control' header.
+
+[test_cache_values]
+ verify the 'Cache-Control' header is reported when 'no-store' is missing.
 
 [test_cicd_error]
  verify an error is displayed in case of an Exception in the CI/CD results summary.
