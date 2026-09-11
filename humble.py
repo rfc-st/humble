@@ -1207,6 +1207,8 @@ def csp_check_broad(csp_dirs_vals):
     """`Content-Security-Policy` header check related to broad values."""
     csp_broad_v, csp_broad_dirs = set(), set()
     for dir_vals in filter(str.strip, csp_dirs_vals):
+        if dir_vals.startswith("script-src") and "'strict-dynamic'" in dir_vals:
+            continue
         if broad := csp_broad_values(dir_vals):
             csp_broad_v |= broad
             csp_broad_dirs.add(dir_vals.split()[0])
