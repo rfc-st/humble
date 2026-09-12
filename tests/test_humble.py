@@ -61,6 +61,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_print_detail_s]", "[test_skip_file]",
                  "[test_response_headers_none]",
                  "[test_cache_no_store]",
+                 "[test_case_insensitive_values]",
                  "[test_csp_fallback_present]",
                  "[test_unreliable_analysis]",
                  "[test_sanitize_header_value]",
@@ -72,6 +73,7 @@ HUMBLE_TEMP_PREFIX = "humble_"
 HUMBLE_TEST_FILES = {
     "CORNER_CASES": "headers_test_corner_cases.txt",
     "ALL_HEADERS": "headers_test_all.txt",
+    "PERFECT_CASE": "headers_test_perfect_case.txt",
     "PERFECT_GRADE": "headers_test_grade_perfect.txt",
     "GRADE_A": "headers_test_grade_a.txt",
     "GRADE_B": "headers_test_grade_b.txt",
@@ -812,6 +814,23 @@ def test_cache_no_store():
     output = result.stdout + result.stderr
     assert "Analysis Grade" in output
     assert "Cache-Control (Recommended Values)" not in output
+
+
+def test_case_insensitive_values():
+    """Verify legal but capitalized header values raise no findings."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["PERFECT_CASE"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "A+ (" in output
+    assert "Deprecated/Insecure headers:   0" in output
 
 
 def test_csp_fallback_present():

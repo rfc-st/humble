@@ -2161,6 +2161,9 @@ Generador
 [test_cache_values]
  verifica que se informe la cabecera 'Cache-Control' cuando no incluya 'no-store'.
 
+[test_case_insensitive_values]
+ verifica que valores de cabecera correctos pero en mayúsculas no generen advertencias.
+
 [test_cicd_error]
  verifica que un análisis CI/CD muestra un error ante excepciones.
 

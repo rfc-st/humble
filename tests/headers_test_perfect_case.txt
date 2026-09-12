@@ -1,0 +1,28 @@
+HTTP/2 200
+Date: Sat, 12 Sep 2026 17:00:00 GMT
+Content-Type: text/HTML; Charset=UTF-8
+Content-Language: en-US
+Content-Encoding: GZIP
+Transfer-Encoding: Chunked
+Trailer: Content-MD5
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive, Upgrade
+Accept-CH: Sec-CH-UA, Sec-CH-UA-Mobile, Sec-CH-UA-Platform
+Cache-Control: No-Cache, No-Store, Must-Revalidate
+Strict-Transport-Security: Max-Age=31536000; IncludeSubDomains; Preload
+X-Frame-Options: Deny
+X-Content-Type-Options: NOSNIFF
+X-Robots-Tag: NOINDEX, NOFOLLOW
+Timing-Allow-Origin: https://github.com
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Security-Policy: default-src 'none'; font-src 'self'; object-src 'self'; require-trusted-types-for 'script'; trusted-types 'none'; base-uri 'self'; child-src github.githubassets.com; connect-src 'self' uploads.github.com; form-action 'self' github.com; frame-ancestors 'none'; frame-src viewscreen.githubusercontent.com; img-src 'self' github.githubassets.com; manifest-src 'self'; media-src github.com user-images.githubusercontent.com/; script-src github.githubassets.com; style-src github.githubassets.com; worker-src github.githubassets.com
+Accept-Ranges: bytes
+Set-Cookie: __Host-session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax
+Clear-Site-Data: "cache"
+Cross-Origin-Embedder-Policy: require-corp
+Cross-Origin-Opener-Policy: same-origin-allow-popups
+Cross-Origin-Resource-Policy: same-site
+Integrity-Policy: blocked-destinations=(test)
+NEL: { "report_to": "test", "max_age": 12345, "include_subdomains": false, "success_fraction": 0.0, "failure_fraction": 1.0 }
+Permissions-Policy: geolocation=()
+X-Permitted-Cross-Domain-Policies: none

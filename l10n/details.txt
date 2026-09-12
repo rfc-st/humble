@@ -2183,6 +2183,9 @@ Generator
 [test_cache_values]
  verify the 'Cache-Control' header is reported when 'no-store' is missing.
 
+[test_case_insensitive_values]
+ verify that legal but capitalized header values do not produce any findings.
+
 [test_cicd_error]
  verify an error is displayed in case of an Exception in the CI/CD results summary.
 

@@ -5060,13 +5060,13 @@ t_robots = ("all", "archive", "follow", "index", "indexifembedded",
 unsafe_scheme = URL.startswith(HTTP_SCHEMES[0])
 
 if header_eligible("accept-ch"):
-    acceptch_header = headers_l["accept-ch"]
+    acceptch_header = {hint.strip().casefold()
+                       for hint in headers_l["accept-ch"].split(",")}
     if unsafe_scheme:
         print_details("[ixach_h]", "[ixach]", "d", i_cnt)
-    if any(value in acceptch_header for value in t_acceptch_dep):
+    if match_value := [x for x in t_acceptch_dep if x in acceptch_header]:
         print_detail_r("[ixachd_h]", is_red=True)
         if not args.brief:
-            match_value = [x for x in t_acceptch_dep if x in acceptch_header]
             match_value_str = ", ".join(f"'{x}'" for x in match_value)
             print_detail_l("[ixachd_s]")
             print(match_value_str)
@@ -5158,10 +5158,10 @@ if header_eligible("content-dpr"):
 
 # https://mdn.io/Content-Disposition
 if header_eligible("content-disposition") \
-        and "filename" in headers_l["content-disposition"]:
+        and "filename" in headers_l["content-disposition"].casefold():
     print_details("[ixcdisp_h]", "[ixcdisp]", "m", i_cnt)
 
-cencod_header = headers_l.get("content-encoding", "")
+cencod_header = headers_l.get("content-encoding", "").casefold()
 if header_eligible("content-encoding") \
         and not any(elem in cencod_header for elem in t_cencoding):
     print_details("[icencod_h]", "[icencod]", "d", i_cnt)
@@ -5198,7 +5198,7 @@ if header_eligible("content-security-policy-report-only"):
         print_details("[icsiroi_d]", "[icsiroi]", "d", i_cnt)
 
 if header_eligible("content-type"):
-    ctype_header = headers_l.get("content-type", "")
+    ctype_header = headers_l.get("content-type", "").casefold()
     if any(elem in ctype_header for elem in t_legacy):
         print_details("[ictlg_h]", "[ictlg]", "m", i_cnt)
     if "html" not in ctype_header:
@@ -5288,9 +5288,9 @@ if header_eligible("integrity-policy-report-only"):
     if not any(elem in ipol_header for elem in t_ipol):
         print_details("[ipolr_h]", "[ipolr]", "d", i_cnt)
 
-if header_eligible("keep-alive") and (headers_l["keep-alive"] and
-        ("connection" not in headers_l or
-         headers_l["connection"].casefold() != "keep-alive")):
+connection_h = headers_l.get("connection", "").casefold().split(",")
+if header_eligible("keep-alive") and headers_l["keep-alive"] \
+        and "keep-alive" not in map(str.strip, connection_h):
     print_details("[ickeep_h]", "[ickeep]", "d", i_cnt)
 
 if header_eligible("large-allocation"):
@@ -5468,7 +5468,7 @@ if header_eligible("trailer"):
         i_cnt[0] += 1
 
 if header_eligible("transfer-encoding"):
-    transfer_h = headers_l["transfer-encoding"]
+    transfer_h = headers_l["transfer-encoding"].casefold()
     if not any(elem in transfer_h for elem in t_transfer):
         print_details("[ictrf_h]", "[itrf]", "d", i_cnt)
 
