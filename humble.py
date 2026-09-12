@@ -2000,15 +2000,13 @@ def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
     return m_cnt
 
 
-def print_empty_headers(headers, l_empty):
-    """Print the contents of the section with empty HTTP response headers."""
-    e_cnt = 0
-    for key in sorted(headers):
-        if not headers[key]:
-            l_empty.append(key)
-            print_header(key.title())
-            e_cnt += 1
-    return e_cnt
+def print_empty_headers(headers):
+    """Print and return the names of the empty HTTP response headers."""
+    l_empty = [key for key in sorted(headers, key=str.casefold)
+               if not headers[key]]
+    for key in l_empty:
+        print_header(key.title())
+    return l_empty
 
 
 def print_browser_compatibility(compat_headers):
@@ -5601,12 +5599,12 @@ print()
 
 # Section '5. Empty HTTP Response Headers Values'
 print_detail_r("[5empty]")
-l_empty = []
 
 if not args.brief:
     print_detail("[aemp]")
 
-e_cnt = print_empty_headers(headers, l_empty)
+l_empty = print_empty_headers(headers)
+e_cnt = len(l_empty)
 
 print() if e_cnt != 0 else print_nowarnings()
 print()
