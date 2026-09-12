@@ -5208,9 +5208,10 @@ if header_eligible("content-type"):
         print_details("[ictlchar_h]", "[ictlchar]", "d", i_cnt)
 
 if http_equiv:
-    ctype_meta = any("content-type" in name for name, _ in http_equiv)
-    if ctype_meta and not any(val in content for val in t_ct_equiv for _,
-                              content in http_equiv):
+    ctype_meta = [content.casefold() for name, content in http_equiv
+                  if "content-type" in name.casefold()]
+    if ctype_meta and not any(" ".join(val.replace(";", "; ").split())
+                              in t_ct_equiv for val in ctype_meta):
         print_details("[ictlmeta_h]", "[ictlmeta]", "m", i_cnt)
 
 if header_eligible("critical-ch") and unsafe_scheme:
@@ -5447,19 +5448,20 @@ if header_eligible("surrogate-control"):
     if not any(elem in surrogate_mode_h for elem in t_surrogate):
         print_details("[isurrmode_h]", "[isurrmode]", "d", i_cnt)
 
+tao_header = headers_l.get("timing-allow-origin", "")
 if header_eligible("timing-allow-origin") \
-        and headers_l.get("timing-allow-origin") == "*":
+        and "*" in map(str.strip, tao_header.split(",")):
     print_details("[itao_h]", "[itao]", "d", i_cnt)
 
 if header_eligible("tk"):
     print_details("[ixtk_h]", "[ixtkd]", "d", i_cnt)
 
 if header_eligible("trailer"):
-    trailer_h = headers_l["trailer"]
-    if any(elem in trailer_h for elem in t_trailer):
+    trailer_h = {name.strip().casefold()
+                 for name in headers_l["trailer"].split(",")}
+    if matches_trailer := [x for x in t_trailer if x in trailer_h]:
         print_detail_r("[itrailer_h]", is_red=True)
         if not args.brief:
-            matches_trailer = [x for x in t_trailer if x in trailer_h]
             print_detail_l("[itrailer_d_s]")
             print(", ".join(matches_trailer))
             print_detail("[itrailer_d_r]")
@@ -5508,9 +5510,10 @@ if header_eligible("x-content-security-policy-report-only"):
     print_details("[ixcspr_h]", "[ixcspr]", "d", i_cnt)
 
 if header_eligible("x-content-type-options"):
-    if "," in headers_l["x-content-type-options"]:
+    xcto_header = headers_l["x-content-type-options"].casefold()
+    if "," in xcto_header:
         print_details("[ictpd_h]", "[ictpd]", "m", i_cnt)
-    if "nosniff" not in headers_l["x-content-type-options"]:
+    if "nosniff" not in xcto_header:
         print_details("[ictp_h]", "[ictp]", "d", i_cnt)
 
 # The short link for this header (https://tinyurl.com/dns-prefetch) resolves to
@@ -5548,7 +5551,7 @@ if header_eligible("x-pingback") \
     print_details("[ixpb_h]", "[ixpb]", "d", i_cnt)
 
 if header_eligible("x-robots-tag"):
-    robots_header = headers_l.get("x-robots-tag", "")
+    robots_header = headers_l.get("x-robots-tag", "").casefold()
     if not any(elem in robots_header for elem in t_robots):
         print_details("[ixrobv_h]", "[ixrobv]", "m", i_cnt)
     if "all" in robots_header:
@@ -5564,9 +5567,9 @@ if header_eligible("x-ua-compatible"):
     print_details("[ixuacom_h]", "[ixuacom]", "m", i_cnt)
 
 if http_equiv:
-    x_ua_meta = any("x-ua-compatible" in item for item in http_equiv)
-    if x_ua_meta and not any("IE=edge" in item for entry in http_equiv for item
-                             in entry):
+    x_ua_meta = [content.casefold() for name, content in http_equiv
+                 if "x-ua-compatible" in name.casefold()]
+    if x_ua_meta and "ie=edge" not in x_ua_meta:
         print_details("[ixuameta_h]", "[ixuameta]", "d", i_cnt)
 
 if header_eligible("x-webkit-csp"):
@@ -5579,16 +5582,17 @@ if header_eligible("x-webkit-csp-report-only"):
     print_details("[ixwcspr_h]", "[ixcspr]", "d", i_cnt)
 
 if header_eligible("x-xss-protection"):
+    xxss_header = headers_l["x-xss-protection"]
     print_detail_r("[ixxpdp_h]", is_red=True)
     i_cnt[0] += 1
     if not args.brief:
         print_detail("[ixxpdp]", num_lines=6)
-    if "0" not in headers_l["x-xss-protection"]:
+    if xxss_header.replace(",", ";").partition(";")[0].strip() != "0":
         print_detail_r("[ixxp_h]", is_red=True)
         i_cnt[0] += 1
         if not args.brief:
             print_detail("[ixxp]", num_lines=6)
-    if "," in headers_l["x-xss-protection"]:
+    if "," in xxss_header:
         print_details("[ixxpd_h]", "[ixxpd]", "d", i_cnt)
 
 if args.brief and i_cnt[0] != 0:
