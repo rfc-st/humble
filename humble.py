@@ -1157,16 +1157,13 @@ def csp_check_missing(csp_dirs):
                 ("[icspmo_h]", "[icspmo]"), ("[icspmr_h]", "[icspmr]"),
                 ("[icspms_h]", "[icspms]"), ("[icspmst_h]", "[icspmst]"),
                 ("[icspmstt_h]", "[icspmstt]"), ("[icspmsw_h]", "[icspmsw]")]
+    has_default = "default-src" in csp_dirs
     for directive, (csp_ref_brief, csp_ref) in zip(t_csp_miss, csp_refs,
                                                    strict=True):
-        if directive in csp_dirs:
+        is_fallback = directive in t_csp_fallback
+        if directive in csp_dirs or (is_fallback and has_default):
             continue
-        if directive in t_csp_fallback:
-            if "default-src" in csp_dirs:
-                continue
-            csp_print_missing(csp_ref, csp_ref_brief, "m")
-        else:
-            csp_print_missing(csp_ref, csp_ref_brief, "d")
+        csp_print_missing(csp_ref, csp_ref_brief, "m" if is_fallback else "d")
 
 
 def csp_print_missing(csp_ref, csp_ref_brief, id_mode):
@@ -1493,17 +1490,15 @@ def sts_max_age(sts_header):
 
 def sts_check_values(sts_header, sts_age, unsafe_scheme):
     """Check the values of the `Strict-Transport-Security` header."""
+    weak_policy = t_sts_dir[0].casefold() not in sts_header \
+        or sts_age < SECONDS_BOUNDS[1]
     if unsafe_scheme:
         print_details("[ihsts_h]", "[ihsts]", "d", i_cnt)
     if sts_age == 0:
         print_details("[istsz_h]", "[istsz]", "m", i_cnt)
-    elif any(elem.casefold() not in sts_header for elem in t_sts_dir) \
-            or sts_age < SECONDS_BOUNDS[1]:
+    elif weak_policy:
         print_details("[ists_h]", "[ists]", "m", i_cnt)
-    if "preload" in sts_header and (
-        t_sts_dir[0].casefold() not in sts_header
-        or sts_age < SECONDS_BOUNDS[1]
-    ):
+    if "preload" in sts_header and weak_policy:
         print_details("[istsr_h]", "[istsr]", "d", i_cnt)
     if "," in sts_header:
         print_details("[istsd_h]", "[istsd]", "d", i_cnt)
