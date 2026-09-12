@@ -1481,9 +1481,14 @@ def invalid_cookie_prefix(name, attrs, unsafe_scheme):
 def sts_max_age(sts_header):
     """Return the 'max-age' value of the `Strict-Transport-Security` header.
 
-    Raises `ValueError` if the header carries no digits.
+    ??? note
+            Only the first 'max-age' directive [counts](https://www.rfc-editor.org/info/rfc6797/#section-8.1){:target="_blank"}.
     """
-    return int("".join(filter(str.isdigit, sts_header)))
+    directives = (directive.partition("=") for directive in
+                  sts_header.replace(",", ";").split(";"))
+    max_age = next((value for name, _, value in directives
+                    if name.strip() == "max-age"), "")
+    return int(max_age.strip().strip('"'))
 
 
 def sts_check_values(sts_header, sts_age, unsafe_scheme):
