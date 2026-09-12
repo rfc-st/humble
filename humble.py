@@ -4826,7 +4826,6 @@ t_acceptch_dep = ("content-dpr", "dpr", "sec-ch-ua-full-version",
 
 # https://mdn.io/Access-Control-Allow-Origin
 t_accecao = ("*", "null")
-t_accecaov = (".*", "*.")
 
 # https://privacycg.github.io/storage-access-headers/#activate-storage-access-header
 # https://developers.google.com/privacy-sandbox/blog/storage-access-api-headers-logic
@@ -5098,8 +5097,7 @@ if header_eligible("access-control-allow-methods"):
 
 accesso_header = headers_l.get("access-control-allow-origin", "")
 if header_eligible("access-control-allow-origin") \
-        and accesso_header in t_accecao \
-        and not any(val in accesso_header for val in t_accecaov):
+        and accesso_header in t_accecao:
     print_details("[iaccess_h]", "[iaccess]", "d", i_cnt)
 
 accesma_header = headers_l.get("access-control-max-age", "")
