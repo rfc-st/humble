@@ -5583,11 +5583,11 @@ if header_eligible("x-webkit-csp-report-only"):
 
 if header_eligible("x-xss-protection"):
     xxss_header = headers_l["x-xss-protection"]
-    print_detail_r("[ixxpdp_h]", is_red=True)
-    i_cnt[0] += 1
-    if not args.brief:
-        print_detail("[ixxpdp]", num_lines=6)
     if xxss_header.replace(",", ";").partition(";")[0].strip() != "0":
+        print_detail_r("[ixxpdp_h]", is_red=True)
+        i_cnt[0] += 1
+        if not args.brief:
+            print_detail("[ixxpdp]", num_lines=6)
         print_detail_r("[ixxp_h]", is_red=True)
         i_cnt[0] += 1
         if not args.brief:

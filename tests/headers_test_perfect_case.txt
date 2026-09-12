@@ -26,3 +26,4 @@ Integrity-Policy: blocked-destinations=(test)
 NEL: { "report_to": "test", "max_age": 12345, "include_subdomains": false, "success_fraction": 0.0, "failure_fraction": 1.0 }
 Permissions-Policy: geolocation=()
 X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 0
