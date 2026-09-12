@@ -1479,7 +1479,7 @@ def sts_max_age(sts_header):
     """Return the 'max-age' value of the `Strict-Transport-Security` header.
 
     ??? note
-            Only the first 'max-age' directive [counts](https://www.rfc-editor.org/info/rfc6797/#section-8.1){:target="_blank"}.
+        Only the first 'max-age' directive [counts](https://www.rfc-editor.org/info/rfc6797/#section-8.1){:target="_blank"}.
     """
     directives = (directive.partition("=") for directive in
                   sts_header.replace(",", ";").split(";"))
