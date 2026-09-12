@@ -1153,7 +1153,7 @@ HTTP Response Headers
 
 [mxpcd]
  Limit which data external resources (e.g. Adobe Flash/PDF documents), can access on the domain.
- Ref: https://github.com/OWASP/www-project-secure-headers/blob/master/mainsite/01_headers.md
+ Ref: https://owasp.github.io/www-project-secure-headers/response-headers/
 
 [iaccess]
  Review the values '*' or 'null' regarding your Cross-origin resource sharing requirements.
@@ -2095,7 +2095,7 @@ Unhandled exception type:
  [Overview of OWASP Secure Headers Best Practices]
 
 [comp_ref]
-  Ref  : https://github.com/OWASP/www-project-secure-headers/blob/master/mainsite/03_best_practices.md
+  Ref  : https://owasp.github.io/www-project-secure-headers/best-practices/#configuration-proposal
   Note : Use this analysis as a baseline for securing HTTP headers and values.
 
 [comp_experimental]
