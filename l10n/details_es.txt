@@ -472,7 +472,7 @@
  Content-Security-Policy-Report-Only (Cabecera ignorada)
 
 [icsiroi]
- Utilice la directiva 'report-to' o esta cabecera no tendrá efecto.
+ Define 'report-to' para informar de incumplimientos de la política.
  Ref: https://mdn.io/Content-Security-Policy-Report-Only
 
 [itrailer_d_s]

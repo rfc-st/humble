@@ -471,7 +471,7 @@
  Content-Security-Policy-Report-Only (Ignored Header)
 
 [icsiroi]
- Use the 'report-to' directive or this header has no effect.
+ Use 'report-to' exclusively to report policy violations.
  Ref: https://mdn.io/Content-Security-Policy-Report-Only
 
 [itrailer_d_s]
