@@ -1621,7 +1621,7 @@ def print_fng_header(header):
         print(f"{STYLE[1]} {header}")
 
 
-def print_general_info(reliable, export_filename, headers_skipped, skip_set):
+def print_general_info(reliable, export_filename):
     """Print the content in the section with basic information."""
     if not args.output:
         delete_lines(reliable=not reliable)
@@ -1630,7 +1630,7 @@ def print_general_info(reliable, export_filename, headers_skipped, skip_set):
         humble_desc = get_detail("[humble_desc]", replace=True)
         print(f"\n\n{humble_desc}\n{BANNER_VERSION}\n")
     print_basic_info(export_filename)
-    print_extended_info(args, reliable, headers_skipped, skip_set)
+    print_extended_info(reliable)
 
 
 def print_redirect_info():
@@ -1680,15 +1680,15 @@ def print_basic_info(export_filename):
         print(f"{get_detail('[ua_custom]', replace=True)} '{args.user_agent}'"
               f"{get_detail('[ua_custom2]', replace=True)}")
     if args.input_file:
-        print(f"{get_detail('[input_filename]', replace=True)} \
-{args.input_file}")
+        print(f"{get_detail('[input_filename]', replace=True)} "
+              f"{args.input_file}")
     if export_filename:
-        print(f"{get_detail('[export_filename]', replace=True)} \
-{export_filename}")
+        print(f"{get_detail('[export_filename]', replace=True)} "
+              f"{export_filename}")
     validate_file_access(VALIDATE_FILE, context="basic")
 
 
-def print_extended_info(args, reliable, headers_skipped, skip_set):
+def print_extended_info(reliable):
     """Print extended analysis details.
 
     Request (`-H` option) and skipped (`-s` option) headers, proxy usage
@@ -1696,7 +1696,7 @@ def print_extended_info(args, reliable, headers_skipped, skip_set):
     """
     if args.request_header:
         print_request_headers(added_request_headers)
-    if headers_skipped:
+    if skip_set:
         print_skipped_headers(skip_set)
     if args.proxy:
         print_detail_l("[proxy_analysis_note]")
@@ -1726,16 +1726,15 @@ def print_extra_info(reliable):
 
 def print_response_headers():
     """Print response headers, related to `-r` option."""
-    print(end="\n\n")
     print_detail_r("[0headers]")
     if not headers:
         print_nosec_headers(enabled=False)
         print("\n")
         return
-    pdf_style = STYLE[6] if single_export() == "pdf" else ""
-    for key, value in sorted(headers.items()):
-        print(f" {pdf_style}{key}:", value) if args.output else \
-            print(f" {STYLE[2]}{key}:", value)
+    key_style = (STYLE[6] if single_export() == "pdf" else "") if args.output \
+        else STYLE[2]
+    for key in sorted(headers, key=str.casefold):
+        print(f" {key_style}{key}:", headers[key])
     print("\n")
 
 
@@ -4703,8 +4702,10 @@ if args.output:
     export_filename = f"{str(tmp_filename)[:export_slice]}.{output_extension()}"
 
 # Section '0. Info & HTTP Response Headers'
-print_general_info(reliable, export_filename, headers_skipped, skip_set)
-print_response_headers() if args.ret else print(end="\n\n")
+print_general_info(reliable, export_filename)
+print(end="\n\n")
+if args.ret:
+    print_response_headers()
 
 # Section '1. Enabled HTTP Security Headers'
 print_detail_r("[1enabled]")
