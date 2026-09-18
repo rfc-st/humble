@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-09-12")
+local_version = date.fromisoformat("2026-09-18")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1830,7 +1830,7 @@ def get_epilog_content():
 
 
 def get_fingerprint_headers():
-    """Print the content in the section with fingerprint headers.
+    """Return the fingerprint headers, their names and their titled names.
 
     ??? note
         The file associated with this check is [fingerprint.txt](https://github.com/rfc-st/humble/blob/master/additional/fingerprint.txt){:target="_blank"}.
@@ -1844,33 +1844,27 @@ def get_fingerprint_headers():
 
 def print_fingerprint_headers(headers_l, l_fng_ex, titled_fng):
     """Identify and print fingerprint headers."""
-    f_cnt = 0
-    sorted_headers = sorted({header.title() for header in headers_l})
-    for header in sorted_headers:
-        if header in titled_fng:
-            idx_fng = titled_fng.index(header)
-            get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args)
-            f_cnt += 1
-    return f_cnt
+    fng_lines = dict(zip(titled_fng, l_fng_ex, strict=True))
+    fng_headers = sorted(fng_lines.keys() & {h.title() for h in headers_l})
+    for header in fng_headers:
+        get_fingerprint_detail(header, fng_lines[header])
+    return len(fng_headers)
 
 
-def get_fingerprint_detail(header, headers, idx_fng, l_fng_ex, args):
+def get_fingerprint_detail(header, fng_line):
     """Print the name, service and value of the fingerprint header.
 
     Source: `/additional/fingerprint.txt`.
     """
-    if not args.brief:
-        print_fng_header(l_fng_ex[idx_fng])
-        header_value = (headers_l.get(header.lower())
-                        if args.input_file is not None else headers[header])
-        if header_value:
-            print(f" {get_detail('[fng_value]', replace=True)} \
-'{header_value}'")
-        else:
-            print(get_detail("[empty_fng]", replace=True))
-        print()
-    else:
+    if args.brief:
         print_header(header)
+        return
+    print_fng_header(fng_line)
+    if header_value := headers_l[header.lower()]:
+        print(f" {get_detail('[fng_value]', replace=True)} '{header_value}'")
+    else:
+        print(get_detail("[empty_fng]", replace=True))
+    print()
 
 
 def get_enabled_headers(args, headers_l, t_enabled):
