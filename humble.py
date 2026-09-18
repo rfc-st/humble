@@ -1867,7 +1867,7 @@ def get_fingerprint_detail(header, fng_line):
     print()
 
 
-def get_enabled_headers(args, headers_l, t_enabled):
+def get_enabled_headers(t_enabled):
     """Print the contents of the section with enabled security headers.
 
     Highlighting the experimental ones.
@@ -1881,20 +1881,19 @@ def get_enabled_headers(args, headers_l, t_enabled):
         indicated in the MDN [list](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers){:target="_blank"}
         of HTTP headers.
     """
-    headers_d = {key.title(): value for key, value in headers_l.items()}
-    t_enabled = sorted({header.title() for header in t_enabled})
-    enabled_headers = [header for header in t_enabled if header in headers_d]
+    enabled_headers = sorted(header.title() for header in t_enabled
+                             if header.lower() in headers_l)
     for header in enabled_headers:
         exp_s = (get_detail("[exp_header]", replace=True)
                  if header.lower() in EXP_HEADERS else "")
-        print_enabled_headers(args, exp_s, header, headers_d)
+        print_enabled_headers(exp_s, header)
     if not enabled_headers:
         print_nosec_headers()
     print("\n")
     return len(enabled_headers)
 
 
-def print_enabled_headers(args, exp_s, header, headers_d):
+def print_enabled_headers(exp_s, header):
     """Print enabled HTTP response headers.
 
     Source: `additional/security.txt`.
@@ -1902,7 +1901,7 @@ def print_enabled_headers(args, exp_s, header, headers_d):
     prefix = STYLE[8] if single_export() in ("html", "pdf") else ""
     body = f"{prefix}{exp_s}{header}"
     header_display = body if args.output else f"{STYLE[10]}{body}{STYLE[5]}"
-    suffix = "" if args.brief else f": {headers_d[header]}"
+    suffix = "" if args.brief else f": {headers_l[header.lower()]}"
     print(f" {header_display}{suffix}")
 
 
@@ -4711,7 +4710,7 @@ print_response_headers() if args.ret else print(end="\n\n")
 print_detail_r("[1enabled]")
 sec_headers = PATHS["security_headers"].read_text(encoding="utf8").splitlines()
 t_ena = tuple(sec_headers[SLICE_INT[2]:])
-en_cnt = get_enabled_headers(args, headers_l, t_ena)
+en_cnt = get_enabled_headers(t_ena)
 
 # Section '2. Missing HTTP Security Headers'
 print_detail_r("[2missing]")
