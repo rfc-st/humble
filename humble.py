@@ -1918,34 +1918,24 @@ def print_nosec_headers(*, enabled=True):
         print_detail_r(id_mode, is_red=True)
 
 
-def print_missing_headers(args, headers_l, l_detail, l_miss):
+def print_missing_headers(l_miss, l_detail):
     """Print the contents of the section with missing HTTP Security Headers.
+
+    Headers excluded via the `-s` option or the `humble.skip` file are never
+    reported as missing.
 
     ??? note
         The file associated with this check is [missing.txt](https://github.com/rfc-st/humble/blob/master/additional/missing.txt){:target="_blank"}.
     """
-    m_cnt = 0
-    headers_set = set(headers_l)
-    l_miss_set = {header.lower() for header in l_miss}
-    skip_headers = [h.lower() for h in (args.skip_headers or [])]
-    skip_missing = {header for header in skip_headers if header in l_miss_set}
-    merged_set = headers_set | skip_missing
-    xfo_skipped = "x-frame-options" in skip_missing
-    m_cnt = check_missing_headers(m_cnt, l_miss, l_detail, merged_set,
-                                  xfo_skipped)
-    m_cnt = check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers)
-    return m_cnt, skip_missing
+    present = set(headers_l) | skip_set
+    m_cnt = check_missing_headers(l_miss, l_detail, present)
+    return m_cnt + check_frame_options(l_miss, present)
 
 
-def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
+def check_missing_headers(l_miss, l_detail, present):
     """Print the missing security-related HTTP response headers.
 
     Based on those I consider essential.
-
-    ??? note
-        `strict=False` is used because `l_detail` contains `[mxfo]` but `l_miss`
-        does not yet contain `X-Frame-Options`: this header is checked for in
-        `check_frame_options` function.
 
     ??? note
         The highlighted [headers](https://developer.mozilla.org/en-US/docs/
@@ -1954,11 +1944,10 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
         indicated in the MDN [list](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers){:target="_blank"}
         of HTTP headers.
     """
-    if xfo_skipped:
-        return m_cnt
-    for header, detail in zip(l_miss, l_detail, strict=False):
+    m_cnt = 0
+    for header, detail in zip(l_miss, l_detail, strict=True):
         lower_header = header.lower()
-        if lower_header in merged_set:
+        if lower_header in present:
             continue
         print_header(
             f"{get_detail('[exp_header]', replace=True)}{header}"
@@ -1969,7 +1958,7 @@ def check_missing_headers(m_cnt, l_miss, l_detail, merged_set, xfo_skipped):
     return m_cnt
 
 
-def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
+def check_frame_options(l_miss, present):
     """Determine whether to report a missing `X-Frame-Options` header.
 
     ??? info
@@ -1981,17 +1970,14 @@ def check_frame_options(args, headers_l, l_miss, m_cnt, skip_headers):
         docs/Web/HTTP/Reference/Headers/Content-Security-Policy/
         frame-ancestors){:target="_blank"}, and preferred way.
     """
-    xfo_needed = ("x-frame-options" not in skip_headers) and \
-        ("x-frame-options" not in headers_l)
-    fa_needed = "frame-ancestors" not in \
-        headers_l.get("content-security-policy", "")
-    if xfo_needed and fa_needed:
-        l_miss.append("X-Frame-Options")
-        m_cnt += 1
-        print_header("X-Frame-Options")
-        if not args.brief:
-            print_detail("[mxfo]", 2)
-    return m_cnt
+    if "x-frame-options" in present or "frame-ancestors" in \
+            headers_l.get("content-security-policy", ""):
+        return 0
+    l_miss.append("X-Frame-Options")
+    print_header("X-Frame-Options")
+    if not args.brief:
+        print_detail("[mxfo]", 2)
+    return 1
 
 
 def print_empty_headers(headers):
@@ -4739,9 +4725,9 @@ l_miss = ["Cache-Control", "Clear-Site-Data", "Content-Type",
 
 l_detail = ["[mcache]", "[mcsd]", "[mctype]", "[mcoe]", "[mcop]", "[mcor]",
             "[mcsp]", "[mcipol]", "[mnel]", "[mpermission]", "[mreferrer]",
-            "[msts]", "[mxcto]", "[mxpcd]", "[mxfo]"]
+            "[msts]", "[mxcto]", "[mxpcd]"]
 
-m_cnt, skip_missing = print_missing_headers(args, headers_l, l_detail, l_miss)
+m_cnt = print_missing_headers(l_miss, l_detail)
 
 if args.brief and m_cnt != 0:
     print()
