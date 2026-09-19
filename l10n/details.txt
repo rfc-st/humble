@@ -2222,6 +2222,9 @@ Generator
 [test_csp_hex_nonce]
  verify invalid hexadecimal nonces are checked in the ‘Content-Security-Policy’ header.
 
+[test_csp_tokens]
+ verify 'Content-Security-Policy' checks match whole values instead of substrings of hosts.
+
 [test_csp_strict_dynamic]
  verify host and scheme are not reported in 'Content-Security-Policy' directives with 'strict-dynamic'.
 

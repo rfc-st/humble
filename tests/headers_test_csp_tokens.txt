@@ -1,0 +1,4 @@
+HTTP/2 200
+date: Sat, 19 Sep 2026 17:00:00 GMT
+content-type: text/html; charset=utf-8
+content-security-policy: default-src 'self'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval'; connect-src https://api.plugin-types.io https://cdn.example.com/referrer https://unsafe-eval.example.com wss://news:8443; frame-src https://upgrade-insecure-requests.example.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'

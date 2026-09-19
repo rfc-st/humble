@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-09-18")
+local_version = date.fromisoformat("2026-09-19")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1115,23 +1115,17 @@ def print_global_metrics(ctx):
             totals_m.items()}
 
 
-def csp_deprecated_values(csp_dirs_vals):
-    """Return deprecated values present in `Content-Security-Policy`."""
-    return {value for csp_dir in csp_dirs_vals
-            for value in t_csp_dep if value in csp_dir}
-
-
-def csp_analyze_content(csp_header):
+def csp_analyze_content(csp_header, csp_dirs_vals, csp_dirs):
     """`Content-Security-Policy` header analysis."""
-    csp_dirs_vals = [directive.strip() for directive in csp_header.split(";") if
-                     directive.strip()]
-    csp_dirs = {directive.split()[0] for directive in csp_dirs_vals}
-    if csp_deprecated := csp_deprecated_values(csp_dirs_vals):
+    if csp_deprecated := csp_dirs.intersection(t_csp_dep):
         csp_print_deprecated(csp_deprecated)
     if "'strict-dynamic'" in csp_header:
         csp_check_ignored(csp_header)
     csp_check_missing(csp_dirs)
-    csp_check_additional(csp_dirs_vals)
+    csp_check_broad(csp_dirs_vals)
+    csp_check_insecure(csp_dirs_vals)
+    csp_check_eval(csp_dirs_vals)
+    csp_check_inline(csp_dirs_vals)
 
 
 def csp_check_ignored(csp_header):
@@ -1179,36 +1173,20 @@ def csp_print_missing(csp_ref, csp_ref_brief, id_mode):
         print_details(csp_ref_brief, csp_ref, id_mode, i_cnt)
 
 
-def csp_check_additional(csp_dirs_vals):
-    """`Content-Security-Policy` header check.
-
-    Related to broad and insecure values.
-    """
-    checks = [(t_csp_broad, csp_check_broad),
-              (t_csp_insecs, csp_check_insecure)]
-    for match, csp_func in checks:
-        if any(val in f" {directive} " for directive in csp_dirs_vals
-               for val in match):
-            csp_func(csp_dirs_vals)
-    csp_check_eval(csp_dirs_vals)
-    csp_check_inline(csp_dirs_vals)
-
-
-def csp_broad_values(dir_vals):
+def csp_broad_values(values):
     """Return broad values in a `Content-Security-Policy` directive."""
-    return {value for value in dir_vals.split()[1:]
-            if f" {value} " in t_csp_broad}
+    return {value for value in values if f" {value} " in t_csp_broad}
 
 
 def csp_check_broad(csp_dirs_vals):
     """`Content-Security-Policy` header check related to broad values."""
     csp_broad_v, csp_broad_dirs = set(), set()
-    for dir_vals in filter(str.strip, csp_dirs_vals):
-        if dir_vals.startswith("script-src") and "'strict-dynamic'" in dir_vals:
+    for name, *values in csp_dirs_vals:
+        if name.startswith("script-src") and "'strict-dynamic'" in values:
             continue
-        if broad := csp_broad_values(dir_vals):
+        if broad := csp_broad_values(values):
             csp_broad_v |= broad
-            csp_broad_dirs.add(dir_vals.split()[0])
+            csp_broad_dirs.add(name)
     if csp_broad_v:
         csp_print_broad(csp_broad_dirs, sorted(csp_broad_v), i_cnt)
 
@@ -1228,13 +1206,14 @@ def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
 
 def csp_check_insecure(csp_dirs_vals):
     """`Content-Security-Policy` header check related to insecure values."""
-    csp_insec_v = sorted({value for value in t_csp_insecs if
-                          any(value in directive for directive in
-                              csp_dirs_vals)})
-    csp_insec_dirs = {dir_vals.split()[0] for dir_vals in csp_dirs_vals
-                      if any(unsafe_val in dir_vals for unsafe_val in
-                             t_csp_insecs)}
-    csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt)
+    csp_insec_v, csp_insec_dirs = set(), set()
+    for name, *values in csp_dirs_vals:
+        if insecure := {scheme for scheme in t_csp_insecs if
+                        any(value.startswith(scheme) for value in values)}:
+            csp_insec_v |= insecure
+            csp_insec_dirs.add(name)
+    if csp_insec_v:
+        csp_print_insecure(sorted(csp_insec_v), csp_insec_dirs, i_cnt)
 
 
 def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
@@ -1253,10 +1232,9 @@ def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
 
 def csp_unsafe_directives(csp_dirs_vals, present, absent=()):
     """Return directive names whose values contain an unsafe keyword."""
-    return {dir_vals.split()[0] if " " in dir_vals else dir_vals
-            for dir_vals in csp_dirs_vals
-            if present in dir_vals
-            and all(keyword not in dir_vals for keyword in absent)}
+    return {name for name, *values in csp_dirs_vals
+            if present in values
+            and not any(value.startswith(absent) for value in values)}
 
 
 def csp_check_eval(csp_dirs_vals):
@@ -1264,8 +1242,8 @@ def csp_check_eval(csp_dirs_vals):
 
     Related to `unsafe-eval` and `wasm-unsafe-eval` keywords.
     """
-    if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals, "unsafe-eval",
-                                                absent=("wasm-unsafe-eval",)):
+    if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals,
+                                                "'unsafe-eval'"):
         csp_print_unknown_unsafe(csp_unsafe_dirs, "[icspe_h]", "[icspev]", 5,
                                  i_cnt)
 
@@ -1275,7 +1253,8 @@ def csp_check_inline(csp_dirs_vals):
 
     Related to `unsafe-inline` keyword.
     """
-    if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals, "unsafe-inline",
+    if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals,
+                                                "'unsafe-inline'",
                                                 absent=("'nonce-", "'sha")):
         csp_print_unknown_unsafe(csp_unsafe_dirs, "[icsp_h]", "[icsp]", 5,
                                  i_cnt)
@@ -5144,15 +5123,19 @@ if header_eligible("content-encoding") \
 
 if header_eligible("content-security-policy"):
     csp_h = headers_l["content-security-policy"]
-    if not any(elem in csp_h for elem in t_csp_dirs):
+    csp_dirs_vals = [directive.split() for directive in csp_h.split(";")
+                     if directive.strip()]
+    csp_dirs = {name for name, *_ in csp_dirs_vals}
+    csp_values = {value for _, *values in csp_dirs_vals for value in values}
+    if csp_dirs.isdisjoint(t_csp_dirs):
         print_details("[icsi_h]", "[icsi]", "d", i_cnt)
     if ("=" in csp_h) and not (any(elem in csp_h for elem in t_csp_equal)):
         print_details("[icsn_h]", "[icsn]", "d", i_cnt)
-    csp_analyze_content(csp_h)
-    if t_csp_checks[0] in csp_h and t_csp_checks[1] not in headers_l:
+    csp_analyze_content(csp_h, csp_dirs_vals, csp_dirs)
+    if t_csp_checks[0] in csp_dirs and t_csp_checks[1] not in headers_l:
         print_details("[icspi_h]", "[icspi]", "m", i_cnt)
     csp_check_unknown(csp_h)
-    if t_csp_checks[2] in csp_h:
+    if f"'{t_csp_checks[2]}'" in csp_values:
         print_details("[icsu_h]", "[icsu]", "d", i_cnt)
     csp_check_hashes(csp_h)
     if t_csp_checks[3] in csp_h:

@@ -2200,6 +2200,9 @@ Generador
 [test_csp_hex_nonce]
  verifica que se comprueben nonces en hexadecimal inválidos, en la cabecera 'Content-Security-Policy'.
 
+[test_csp_tokens]
+ verifica que los checks de 'Content-Security-Policy' comparen valores completos y no subcadenas de hosts.
+
 [test_csp_strict_dynamic]
  verifica que no se informen hosts o esquemas en directivas de 'Content-Security-Policy' con 'strict-dynamic'.
 

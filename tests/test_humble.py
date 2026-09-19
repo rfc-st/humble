@@ -63,6 +63,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_cache_no_store]",
                  "[test_case_insensitive_values]",
                  "[test_csp_fallback_present]",
+                 "[test_csp_tokens]",
                  "[test_unreliable_analysis]",
                  "[test_sanitize_header_value]",
                  "[test_strip_response_headers_sanitized]",
@@ -83,6 +84,7 @@ HUMBLE_TEST_FILES = {
     "CSP_BASE64_NONCE": "headers_test_csp_base64_nonce.txt",
     "CSP_HEX_NONCE": "headers_test_csp_hex_nonce.txt",
     "CSP_STRICT_DYNAMIC": "headers_test_csp_strict_dynamic.txt",
+    "CSP_TOKENS": "headers_test_csp_tokens.txt",
     "CSP_UNSAFE_INLINE": "headers_test_csp_unsafe_inline.txt",
     "NO_HEADERS": "headers_test_none.txt",
     "NO_SEC_HEADERS": "headers_test_nonesecurity.txt",
@@ -852,6 +854,26 @@ def test_csp_fallback_present():
                for directive in CSP_FALLBACK_MISSING)
 
 
+def test_csp_tokens():
+    """Verify CSP checks match whole values, not substrings of hosts."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["CSP_TOKENS"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "(Unsafe Eval)" in output
+    assert "Review the directive 'script-src'." in output
+    assert "(Deprecated Directives)" not in output
+    assert "(Insecure Schemes)" not in output
+    assert "(Unsafe Directive)" not in output
+
+
 @pytest.fixture(scope="module")
 def sanitize():
     """Load `sanitize_header_value` from the humble module once."""
@@ -966,7 +988,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-09-18")
+local_version = date.fromisoformat("2026-09-19")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,
