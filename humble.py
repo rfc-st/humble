@@ -1458,6 +1458,18 @@ def check_cookie_prefixes(stc_cookies, unsafe_scheme):
         i_cnt[0] += 1
 
 
+def check_cookie_values(stc_cookies, unsafe_scheme):
+    """Check the attributes of the cookies in the `Set-Cookie` header."""
+    if not unsafe_scheme:
+        check_unsafe_cookies(stc_cookies)
+    elif any("secure" in attrs for _, attrs in stc_cookies):
+        print_details("[iseti_h]", "[iseti]", "d", i_cnt)
+    check_cookie_prefixes(stc_cookies, unsafe_scheme)
+    if any("samesite=none" in attrs and "secure" not in attrs
+           for _, attrs in stc_cookies):
+        print_details("[iseti_m]", "[isetm]", "d", i_cnt)
+
+
 def invalid_cookie_prefix(name, attrs, unsafe_scheme):
     """Check if a prefixed cookie violates its prefix requirements."""
     cookie_name = name.casefold()
@@ -1499,6 +1511,31 @@ def sts_check_values(sts_header, sts_age, unsafe_scheme):
         print_details("[istsr_h]", "[istsr]", "d", i_cnt)
     if "," in sts_header:
         print_details("[istsd_h]", "[istsd]", "d", i_cnt)
+
+
+def referrer_check_values(referrer_header):
+    """Check the values of the `Referrer-Policy` header."""
+    if "," in referrer_header:
+        print_details("[irefd_h]", "[irefd]", "d", i_cnt)
+    if all(elem not in referrer_header for elem in t_ref_secure):
+        print_details("[iref_h]", "[iref]", "d", i_cnt)
+    if "unsafe-url" in referrer_header:
+        print_details("[irefi_h]", "[irefi]", "d", i_cnt)
+    if all(elem not in referrer_header for elem in t_ref_values):
+        print_details("[irefn_h]", "[irefn]", "d", i_cnt)
+
+
+def xxss_check_values(xxss_header):
+    """Check the values of the `X-XSS-Protection` header."""
+    if xxss_header.replace(",", ";").partition(";")[0].strip() != "0":
+        for short_d, long_d in (("[ixxpdp_h]", "[ixxpdp]"), ("[ixxp_h]",
+                                                             "[ixxp]")):
+            print_detail_r(short_d, is_red=True)
+            i_cnt[0] += 1
+            if not args.brief:
+                print_detail(long_d, num_lines=6)
+    if "," in xxss_header:
+        print_details("[ixxpd_h]", "[ixxpd]", "d", i_cnt)
 
 
 def permissions_analyze_content(perm_header, i_cnt):
@@ -5324,14 +5361,7 @@ if header_eligible("public-key-pins-report-only"):
 
 if header_eligible("referrer-policy"):
     referrer_header = headers_l.get("referrer-policy", "")
-    if "," in referrer_header:
-        print_details("[irefd_h]", "[irefd]", "d", i_cnt)
-    if not any(elem in referrer_header for elem in t_ref_secure):
-        print_details("[iref_h]", "[iref]", "d", i_cnt)
-    if "unsafe-url" in referrer_header:
-        print_details("[irefi_h]", "[irefi]", "d", i_cnt)
-    if not any(elem in referrer_header for elem in t_ref_values):
-        print_details("[irefn_h]", "[irefn]", "d", i_cnt)
+    referrer_check_values(referrer_header)
 
 refresh_header = headers_l.get("refresh", "")
 if header_eligible("refresh") \
@@ -5367,14 +5397,7 @@ if header_eligible("service-worker-allowed") and servwall_header == "/":
 if header_eligible("set-cookie"):
     stc_header = headers_l.get("set-cookie", "")
     stc_cookies = parse_cookie_attributes(stc_header)
-    if not unsafe_scheme:
-        check_unsafe_cookies(stc_cookies)
-    elif any("secure" in attrs for _, attrs in stc_cookies):
-        print_details("[iseti_h]", "[iseti]", "d", i_cnt)
-    check_cookie_prefixes(stc_cookies, unsafe_scheme)
-    if any("samesite=none" in attrs and "secure" not in attrs
-           for _, attrs in stc_cookies):
-        print_details("[iseti_m]", "[isetm]", "d", i_cnt)
+    check_cookie_values(stc_cookies, unsafe_scheme)
 
 setlogin_header = headers_l.get("set-login", "")
 if header_eligible("set-login") \
@@ -5547,17 +5570,7 @@ if header_eligible("x-webkit-csp-report-only"):
 
 if header_eligible("x-xss-protection"):
     xxss_header = headers_l["x-xss-protection"]
-    if xxss_header.replace(",", ";").partition(";")[0].strip() != "0":
-        print_detail_r("[ixxpdp_h]", is_red=True)
-        i_cnt[0] += 1
-        if not args.brief:
-            print_detail("[ixxpdp]", num_lines=6)
-        print_detail_r("[ixxp_h]", is_red=True)
-        i_cnt[0] += 1
-        if not args.brief:
-            print_detail("[ixxp]", num_lines=6)
-    if "," in xxss_header:
-        print_details("[ixxpd_h]", "[ixxpd]", "d", i_cnt)
+    xxss_check_values(xxss_header)
 
 if args.brief and i_cnt[0] != 0:
     print()
