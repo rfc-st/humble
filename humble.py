@@ -2213,7 +2213,7 @@ def header_eligible(header):
 
     Returns `True` if the header is present in `headers_l` (a dictionary
     storing the lowercased HTTP response headers of the analyzed URL)
-    **and not** in the list of headers skipped via the `-s` option;
+    **and not** skipped via the `-s` option or the `humble.skip` file;
     `False` otherwise.
     """
     return header in headers_l and header not in skip_set
