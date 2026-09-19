@@ -308,10 +308,10 @@ https://github.com/rfc-st/humble/releases
 $ git clone https://github.com/rfc-st/humble.git
 https://github.com/rfc-st/humble/releases
 
-# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.65)
+# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.66)
 # https://github.com/rfc-st/humble/releases (On Windows, this may require running the terminal with admin privileges)
 $ cd humble
-$ docker build -t humble:1.65 .
+$ docker build -t humble:1.66 .
 
 # Run the analysis specifying the above TAG, along with the specific options for 'humble':
 # '-it' allocates a pseudo-TTY to keep text output clean and formatted.
@@ -319,13 +319,13 @@ $ docker build -t humble:1.65 .
 
 # (Linux / macOS / Windows)
 # E.g. Brief analysis of a URL
-$ docker run -it --rm humble:1.65 -u https://google.com -b
+$ docker run -it --rm humble:1.66 -u https://google.com -b
 
 # E.g. Detailed analysis of a URL
-$ docker run -it --rm humble:1.65 -u https://google.com
+$ docker run -it --rm humble:1.66 -u https://google.com
 
 # (Optional) Clean up and remove the old image when upgrading:
-$ docker rmi humble:1.65
+$ docker rmi humble:1.66
 ```
 Or if you'd prefer a faster way:
 
@@ -380,7 +380,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd [GRADE]] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {all,csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-09-18
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-09-19
 
 options:
   -h, --help                               show this help message and exit

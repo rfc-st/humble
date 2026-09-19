@@ -1115,17 +1115,35 @@ def print_global_metrics(ctx):
             totals_m.items()}
 
 
-def csp_analyze_content(csp_header, csp_dirs_vals, csp_dirs):
+def csp_analyze_content(csp_h, csp_dirs_vals, csp_dirs):
     """`Content-Security-Policy` header analysis."""
+    if csp_dirs.isdisjoint(t_csp_dirs):
+        print_details("[icsi_h]", "[icsi]", "d", i_cnt)
+    if "=" in csp_h and all(elem not in csp_h for elem in t_csp_equal):
+        print_details("[icsn_h]", "[icsn]", "d", i_cnt)
     if csp_deprecated := csp_dirs.intersection(t_csp_dep):
         csp_print_deprecated(csp_deprecated)
-    if "'strict-dynamic'" in csp_header:
-        csp_check_ignored(csp_header)
+    if "'strict-dynamic'" in csp_h:
+        csp_check_ignored(csp_h)
     csp_check_missing(csp_dirs)
     csp_check_broad(csp_dirs_vals)
     csp_check_insecure(csp_dirs_vals)
     csp_check_eval(csp_dirs_vals)
     csp_check_inline(csp_dirs_vals)
+
+
+def csp_check_values(csp_h, csp_dirs, csp_values):
+    """`Content-Security-Policy` header checks related to its values."""
+    if t_csp_checks[0] in csp_dirs and t_csp_checks[1] not in headers_l:
+        print_details("[icspi_h]", "[icspi]", "m", i_cnt)
+    csp_check_unknown(csp_h)
+    if f"'{t_csp_checks[2]}'" in csp_values:
+        print_details("[icsu_h]", "[icsu]", "d", i_cnt)
+    csp_check_hashes(csp_h)
+    if t_csp_checks[3] in csp_h:
+        csp_check_nonces(csp_h)
+    if re.search(RE_PATTERN[1], csp_h):
+        csp_check_ip(csp_h)
 
 
 def csp_check_ignored(csp_header):
@@ -5127,21 +5145,8 @@ if header_eligible("content-security-policy"):
                      if directive.strip()]
     csp_dirs = {name for name, *_ in csp_dirs_vals}
     csp_values = {value for _, *values in csp_dirs_vals for value in values}
-    if csp_dirs.isdisjoint(t_csp_dirs):
-        print_details("[icsi_h]", "[icsi]", "d", i_cnt)
-    if ("=" in csp_h) and not (any(elem in csp_h for elem in t_csp_equal)):
-        print_details("[icsn_h]", "[icsn]", "d", i_cnt)
     csp_analyze_content(csp_h, csp_dirs_vals, csp_dirs)
-    if t_csp_checks[0] in csp_dirs and t_csp_checks[1] not in headers_l:
-        print_details("[icspi_h]", "[icspi]", "m", i_cnt)
-    csp_check_unknown(csp_h)
-    if f"'{t_csp_checks[2]}'" in csp_values:
-        print_details("[icsu_h]", "[icsu]", "d", i_cnt)
-    csp_check_hashes(csp_h)
-    if t_csp_checks[3] in csp_h:
-        csp_check_nonces(csp_h)
-    if re.search(RE_PATTERN[1], csp_h):
-        csp_check_ip(csp_h)
+    csp_check_values(csp_h, csp_dirs, csp_values)
 
 if header_eligible("content-security-policy-report-only"):
     csp_ro_header = headers_l["content-security-policy-report-only"]
