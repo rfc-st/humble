@@ -23,8 +23,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Accept-CH: Deprecated Value
-Accept-CH: Ignored Header via Unsafe Scheme
+Accept-CH: Deprecated Values
+Accept-CH: Ignored Header
 Accept-CH-Lifetime: Deprecated Header
 Accept-Patch: Potentially Unsafe Header
 Access-Control-Allow-Credentials: Incorrect Values
@@ -38,7 +38,7 @@ Attribution-Reporting-Register-Source: Deprecated Header
 Attribution-Reporting-Register-Trigger: Deprecated Header
 Cache-Control: No Valid Directives
 Cache-Control: Recommended Values
-Clear-Site-Data: Ignored Header via Unsafe Scheme
+Clear-Site-Data: Ignored Header
 Clear-Site-Data: No Valid Directives
 Content-Digest: No Secure Algorithms
 Content-Digest: Unsafe Algorithms
@@ -80,11 +80,11 @@ Content-Type: Deprecated Values
 Content-Type: Incorrect Value - Response body
 Content-Type: Non-HTML MIME type
 Content-Type: Unsafe Value
-Critical-CH: Ignored Header via Unsafe Scheme
+Critical-CH: Ignored Header
 Cross-Origin-Embedder-Policy: No Valid Directives
 Cross-Origin-Embedder-Policy: Potentially Unsafe Value
 Cross-Origin-Embedder-Policy-Report-Only: No Valid Directives
-Cross-Origin-Opener-Policy: Ignored Header via Unsafe Scheme
+Cross-Origin-Opener-Policy: Ignored Header
 Cross-Origin-Opener-Policy: No Valid Directives
 Cross-Origin-Opener-Policy: Unsafe value
 Cross-Origin-Opener-Policy-Report-Only: No Valid Directives
@@ -105,12 +105,12 @@ Mcp-Session-Id: Potentially Unsafe Value
 NEL: Missing Directives
 NEL: No Valid Directives
 No-Vary-Search: No Valid Directives
-Observe-Browsing-Topics: No Valid Directives
+Observe-Browsing-Topics: Deprecated Header
 Onion-Location: Potentially Unsafe Header
 Origin-Agent-Cluster: No Valid Directives
 P3P: Deprecated Header
 Permissions-Policy: Deprecated Features
-Permissions-Policy: Incorrect Values
+Permissions-Policy: Incorrect Value
 Permissions-Policy: Incorrect Format
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value
@@ -131,10 +131,10 @@ Repr-Digest: No Secure Algorithms
 Repr-Digest: Unsafe Algorithms
 Sec-Private-State-Token-Lifetime: Incorrect Value
 Server-Timing: Potentially Unsafe Header
-Service-Worker-Allowed: Unsafe Value
+Service-Worker-Allowed: Too Permissive Value
 Set-Cookie: Invalid Prefixes
 Set-Cookie: Insecure Attributes
-Set-Cookie: Insecure Schemes
+Set-Cookie: Insecure Scheme
 Set-Cookie: Missing Attribute
 Set-Login: No Valid Directives
 SourceMap: Unsafe Functionality
@@ -142,10 +142,10 @@ Speculation-Rules: Potentially Unsafe Header
 Strict-Dynamic: Incorrect Header
 Strict-Transport-Security: Disabled Header
 Strict-Transport-Security: Duplicated Values
-Strict-Transport-Security: Ignored Header via Unsafe Scheme
+Strict-Transport-Security: Ignored Header
 Strict-Transport-Security: Recommended Values
 Strict-Transport-Security: Required Values
-Supports-Loading-Mode: Ignored Header via Unsafe Scheme
+Supports-Loading-Mode: Ignored Header
 Supports-Loading-Mode: No Valid Directives
 Surrogate-Control: No Valid Directives
 Timing-Allow-Origin: Potentially Unsafe Header

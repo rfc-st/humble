@@ -794,7 +794,7 @@
  Set-Cookie (Insecure Scheme)
 
 [iseti_m]
- Set-Cookie (Missing attribute)
+ Set-Cookie (Missing Attribute)
 
 [ispref_m]
  Set-Cookie (Invalid Prefixes)
