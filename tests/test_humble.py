@@ -59,15 +59,13 @@ if system().lower() == "windows" and any("--cov" in arg for arg in sys.argv):
 ASSERT_STR = ["error", "Error"]
 EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_print_detail_s]", "[test_skip_file]",
-                 "[test_response_headers_none]",
-                 "[test_cache_no_store]",
-                 "[test_case_insensitive_values]",
-                 "[test_csp_fallback_present]",
-                 "[test_csp_tokens]",
-                 "[test_unreliable_analysis]",
-                 "[test_sanitize_header_value]",
+                 "[test_proxy_wrong]", "[test_response_headers_none]",
+                 "[test_cache_no_store]", "[test_case_insensitive_values]",
+                 "[test_csp_fallback_present]", "[test_csp_tokens]",
+                 "[test_unreliable_analysis]", "[test_sanitize_header_value]",
                  "[test_strip_response_headers_sanitized]",
-                 "[test_testssl_command]", "[test_testssl_analysis]"]
+                 "[test_testssl_command]", "[test_testssl_command_declined]",
+                 "[test_testssl_analysis]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"

@@ -2426,6 +2426,9 @@ Generator
 [test_testssl_command]
  verify the confirmation prompt and command build for testssl.sh
 
+[test_testssl_command_declined]
+ verify declining the testssl.sh confirmation prompt exits without running the analysis.
+
 [test_testssl_analysis]
  verify the output of a mocked up testssl.sh test stops upon completion.
 

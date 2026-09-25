@@ -2404,6 +2404,9 @@ Generador
 [test_testssl_command]
  verifica el prompt de confirmación y el comando construido para testssl.sh.
 
+[test_testssl_command_declined]
+ verifica que rechazar el prompt de confirmación de testssl.sh finalice sin ejecutar el análisis.
+
 [test_testssl_analysis]
  verifica que se muestre la finalización de un análisis simulado con testssl.sh.
 
@@ -2423,7 +2426,7 @@ Generador
  verifica que la lógica para comprobar actualizaciones funcione correctamente.
 
 [test_updates_error]
- Verifica que se muestre un error cuando falle la comprobación de actualizaciones.
+ verifica que se muestre un error cuando falle la comprobación de actualizaciones.
 
 [test_url_malformed]
  verifica que se muestre mensaje de error al analizar una URL mal formada.
