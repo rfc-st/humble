@@ -28,3 +28,7 @@ ignore = [
 [tool.vulture]
 # https://github.com/jendrikseipp/vulture#handling-false-positives
 ignore_names = ["cert_reqs", "footer"]
+
+[tool.refurb]
+python_version = "3.11"
+mypy_args = ["--follow-imports=skip", "--ignore-missing-imports"]
