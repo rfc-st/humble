@@ -2339,9 +2339,6 @@ Generator
 [test_input_traversal]
  verify checks are performed to prevent input traversal.
 
-[test_invalid_file_path]
- verify an error is displayed for incorrect file when exporting an analysis.
-
 [test_invalid_output_path]
  verify an error is displayed for incorrect path when exporting an analysis.
 
@@ -2507,9 +2504,6 @@ Generator
 [test_tests]
 Tests run at
 
-[test_ftemp]
-Failed to delete temp analysis file
-
 [test_ftxt]
 Failed to delete final TXT file
 
@@ -2548,9 +2542,6 @@ Text
 
 [test_notfound]
 not found
-
-[test_elang]
-Error: The '-l' parameter requires the parameter '-u'.
 
 [json_det_fngheader]
 Header

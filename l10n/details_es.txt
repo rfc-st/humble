@@ -2317,9 +2317,6 @@ Generador
 [test_input_traversal]
  verifica que se realicen comprobaciones básicas sobre 'input traversal'.
 
-[test_invalid_file_path]
- verifica que se muestre un error por fichero incorrecto al exportar un análisis.
-
 [test_invalid_output_path]
  verifica que se muestre un error por ruta incorrecta al exportar un análisis.
 
@@ -2485,9 +2482,6 @@ Generador
 [test_tests]
 Pruebas realizadas el
 
-[test_ftemp]
-No se pudo eliminar el fichero temporal de análisis
-
 [test_ftxt]
 No se pudo eliminar el fichero TXT final
 
@@ -2526,9 +2520,6 @@ Texto
 
 [test_notfound]
 no encontrado
-
-[test_elang]
-Error: el parámetro '-l' requiere también el parámetro '-u'.
 
 [json_det_fngheader]
 Cabecera

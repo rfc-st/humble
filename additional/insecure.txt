@@ -96,7 +96,7 @@ Etag: Potentially Unsafe Header
 Expect-CT: Deprecated Header
 Expires: Ignored Header
 Feature-Policy: Deprecated Header
-HTTP: Domain Via Unsafe Scheme
+HTTP: URL Via Unsafe Scheme
 Integrity-Policy: No Valid Keys
 Integrity-Policy-Report-Only: No Valid Keys
 Keep-Alive: Ignored Header
