@@ -1341,7 +1341,7 @@ HTTP Response Headers
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpolf]
- The directives must be separated by a comma only.
+ Invalid syntax; browsers ignore the whole header.
  https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
 
 [ifpoli]
@@ -2221,6 +2221,9 @@ Generator
 
 [test_csp_hex_nonce]
  verify invalid hexadecimal nonces are checked in the ‘Content-Security-Policy’ header.
+
+[test_permissions_format]
+ verify a 'Permissions-Policy' header with invalid syntax is reported and not analyzed.
 
 [test_csp_tokens]
  verify 'Content-Security-Policy' checks match whole values instead of substrings of hosts.

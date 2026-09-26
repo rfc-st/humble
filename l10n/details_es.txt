@@ -1342,7 +1342,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpolf]
- Las directivas deben separarse ùnicamente con una coma.
+ Sintaxis inválida; los navegadores ignoran la cabecera.
  https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
 
 [ifpoli]
@@ -2199,6 +2199,9 @@ Generador
 
 [test_csp_hex_nonce]
  verifica que se comprueben nonces en hexadecimal inválidos, en la cabecera 'Content-Security-Policy'.
+
+[test_permissions_format]
+ verifica que la cabecera 'Permissions-Policy' con sintaxis inválida se informe y no se analice.
 
 [test_csp_tokens]
  verifica que los checks de 'Content-Security-Policy' comparen valores completos y no subcadenas de hosts.

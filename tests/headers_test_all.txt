@@ -15,7 +15,7 @@ expires: Wed, 21 Oct 2026 07:28:00 GMT
 p3p: CP="NOI"
 report-to: {"group":"default","max_age":3600,"endpoints":[{"url":"https://example.com/r"}]}
 vary: Accept-Encoding
-permissions-policy: window-placement, geolocation=*, camera none
+permissions-policy: window-placement=(), geolocation=*, camera=(none)
 accept-ranges: bytes
 accept-ch: content-dpr, viewport-width
 accept-ch-lifetime: 86400

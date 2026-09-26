@@ -62,7 +62,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_proxy_wrong]", "[test_response_headers_none]",
                  "[test_cache_no_store]", "[test_case_insensitive_values]",
                  "[test_csp_fallback_present]", "[test_csp_tokens]",
-                 "[test_unreliable_analysis]", "[test_sanitize_header_value]",
+                 "[test_permissions_format]", "[test_unreliable_analysis]",
+                 "[test_sanitize_header_value]",
                  "[test_strip_response_headers_sanitized]",
                  "[test_testssl_command]", "[test_testssl_command_declined]",
                  "[test_testssl_analysis]"]
@@ -84,6 +85,7 @@ HUMBLE_TEST_FILES = {
     "CSP_STRICT_DYNAMIC": "headers_test_csp_strict_dynamic.txt",
     "CSP_TOKENS": "headers_test_csp_tokens.txt",
     "CSP_UNSAFE_INLINE": "headers_test_csp_unsafe_inline.txt",
+    "PERMISSIONS_FORMAT": "headers_test_permissions_format.txt",
     "NO_HEADERS": "headers_test_none.txt",
     "NO_SEC_HEADERS": "headers_test_nonesecurity.txt",
     "NONEXISTENT": "headers_test_nonexistent.txt",
@@ -872,6 +874,23 @@ def test_csp_tokens():
     assert "(Unsafe Directive)" not in output
 
 
+def test_permissions_format():
+    """Verify an invalid 'Permissions-Policy' is reported and not analyzed."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["PERMISSIONS_FORMAT"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Permissions-Policy (Incorrect Format)" in output
+    assert "(Too Permissive Value)" not in output
+
+
 @pytest.fixture(scope="module")
 def sanitize():
     """Load `sanitize_header_value` from the humble module once."""
@@ -986,7 +1005,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-09-25")
+local_version = date.fromisoformat("2026-09-26")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

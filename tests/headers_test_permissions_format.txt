@@ -1,0 +1,4 @@
+HTTP/2 200
+date: Fri, 25 Sep 2026 17:00:00 GMT
+content-type: text/html; charset=utf-8
+permissions-policy: camera=*, microphone=('self'), geolocation=()

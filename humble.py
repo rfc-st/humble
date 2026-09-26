@@ -47,7 +47,7 @@ from json import dump, dumps, load
 from pathlib import Path
 from shutil import which
 from socket import create_connection, getaddrinfo
-from string import Template
+from string import Template, ascii_letters, ascii_lowercase, digits
 from subprocess import PIPE, STDOUT, Popen
 from threading import Event, Thread
 from time import time
@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-09-25")
+local_version = date.fromisoformat("2026-09-26")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -116,7 +116,6 @@ EXP_HEADERS = (
     "supports-loading-mode",
 )
 FORCED_CIPHERS = "HIGH:!DH:!aNULL"
-HEADERS_CHECKS = 2
 REQ_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Encoding": "gzip, deflate, br, zstd",
@@ -1538,56 +1537,71 @@ def xxss_check_values(xxss_header):
         print_details("[ixxpd_h]", "[ixxpd]", "d", i_cnt)
 
 
-def permissions_analyze_content(perm_header, i_cnt):
-    """`Permissions-Policy` header analysis."""
-    if any(value in perm_header for value in t_per_dep):
-        permissions_print_deprecated(perm_header)
-    if "none" in perm_header:
+def permissions_members(perm_header):
+    """Split the `Permissions-Policy` header on the commas outside quotes."""
+    members, pending = [], ""
+    for piece in perm_header.split(","):
+        pending = f"{pending},{piece}" if pending else piece
+        if pending.count('"') % 2 == 0:
+            members.append(pending)
+            pending = ""
+    if pending:
+        raise ValueError(perm_header)
+    return members
+
+
+def permissions_allowlist(value):
+    """Return the entries of a `Permissions-Policy` allowlist."""
+    if value[:1] != "(":
+        return [value]
+    if value[-1:] != ")":
+        raise ValueError(value)
+    return value[1:-1].split()
+
+
+def permissions_valid_item(item):
+    """Check a `Permissions-Policy` allowlist entry: a token or an origin."""
+    if item.startswith('"'):
+        return len(item) > 1 and item.endswith('"') and '"' not in item[1:-1]
+    return (item[:1].isalpha() or item[:1] == "*") and \
+        PERM_TOKEN_CHARS.issuperset(item)
+
+
+def permissions_parse(perm_header):
+    """Parse the `Permissions-Policy` header into `{feature: allowlist}`."""
+    policy = {}
+    for member in permissions_members(perm_header):
+        feature, has_value, value = \
+            member.strip().partition(";")[0].partition("=")
+        items = permissions_allowlist(value) if has_value else []
+        if feature[:1] not in PERM_KEY_FIRST or \
+                not PERM_KEY_CHARS.issuperset(feature) or \
+                not all(map(permissions_valid_item, items)):
+            raise ValueError(perm_header)
+        policy[feature] = items
+    return policy
+
+
+def permissions_analyze_content(policy, i_cnt):
+    """`Permissions-Policy` analysis of the parsed `{feature: allowlist}`."""
+    if policy.keys().isdisjoint(t_per_ft):
+        print_details("[ifpoln_h]", "[ifpoln]", "m", i_cnt)
+    if deprecated := sorted(policy.keys() & t_per_dep):
+        permissions_print_deprecated(deprecated)
+    if any("none" in items for items in policy.values()):
         print_details("[ifpoli_h]", "[ifpoli]", "d", i_cnt)
-    if perm_broad_dirs := permissions_check_broad(perm_header):
-        permissions_print_broad(perm_broad_dirs, i_cnt)
+    if broad := [x for x, items in policy.items() if "*" in items]:
+        permissions_print_broad(broad, i_cnt)
 
 
-def permissions_print_deprecated(perm_header):
+def permissions_print_deprecated(deprecated):
     """Print deprecated directives in the `Permissions-Policy` header."""
     print_detail_r("[ifpold_h]", is_red=True)
     if not args.brief:
-        matches_perm = [x for x in t_per_dep if x in perm_header]
         print_detail_l("[ifpold_h_s]")
-        print(", ".join(f"'{x}'" for x in matches_perm))
+        print(", ".join(f"'{x}'" for x in deprecated))
         print_detail("[ifpold]")
     i_cnt[0] += 1
-
-
-def permissions_broad_features(perm_header):
-    """Return `Permissions-Policy` features with broad values."""
-    result = []
-    for directive in perm_header.split(","):
-        if "=" not in directive:
-            continue
-        feature, value = directive.split("=", 1)
-        if "*" in value:
-            result.append(feature.strip())
-    return result
-
-
-def permissions_malformed(perm_header):
-    """Determine if `Permissions-Policy` directives are wrongly separated."""
-    return any(
-        "".join(directive.split('"')[::2]).count("=") > 1
-        for directive in perm_header.split(","))
-
-
-def permissions_check_broad(perm_header):
-    """`Permissions-Policy` header check related to broad values."""
-    if sum(
-        directive in perm_header for directive in t_per_ft
-    ) < HEADERS_CHECKS:
-        return None
-    if permissions_malformed(perm_header):
-        print_details("[ifpolf_h]", "[ifpolf]", "d", i_cnt)
-        return None
-    return permissions_broad_features(perm_header) or None
 
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
@@ -4973,6 +4987,9 @@ t_nvarysearch = ("except", "key-order", "params")
 # https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
+PERM_KEY_CHARS = frozenset(ascii_lowercase + digits + "_-.*")
+PERM_KEY_FIRST = frozenset(ascii_lowercase + "*")
+PERM_TOKEN_CHARS = frozenset("!#$%&'*+-.^_`|~:/" + ascii_letters + digits)
 t_per_dep = ("attribution-reporting", "browsing-topics", "document-domain",
              "window-placement")
 t_per_ft = ("accelerometer", "all-screens-capture", "ambient-light-sensor",
@@ -5328,9 +5345,12 @@ if header_eligible("p3p"):
 
 if header_eligible("permissions-policy"):
     perm_header = headers_l["permissions-policy"]
-    if not any(elem in perm_header for elem in t_per_ft):
-        print_details("[ifpoln_h]", "[ifpoln]", "m", i_cnt)
-    permissions_analyze_content(perm_header, i_cnt)
+    try:
+        perm_policy = permissions_parse(perm_header)
+    except ValueError:
+        print_details("[ifpolf_h]", "[ifpolf]", "d", i_cnt)
+    else:
+        permissions_analyze_content(perm_policy, i_cnt)
 
 if header_eligible("permissions-policy-report-only"):
     perm_ro_header = headers_l["permissions-policy-report-only"]
