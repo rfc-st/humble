@@ -788,7 +788,7 @@ def test_unreliable_analysis(capsys):
 
     def slow_request(*_):
         sleep(0.6)
-        return (MagicMock(), None, None)
+        return (MagicMock(), None)
     with patch.object(humble_module, "REQ_TIMEOUT", 2.0), \
             patch.object(humble_module, "REQ_WARNING", 1.7), \
             patch.object(humble_module, "make_http_request",
