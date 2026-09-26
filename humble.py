@@ -197,8 +197,7 @@ XML_STRING = ("Ref: ", "Value: ", "Valor: ")
 # Terminal ui, raw internals and styling
 DELETED_LINES = "\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K"
 HASH_CHARS = {"sha256": 32, "sha384": 48, "sha512": 64}
-HTTP_SCHEMES = ("http:", "https:")
-HTTP_SCHEMES_S = ("http", "https")
+HTTP_SCHEMES = {"http", "https"}
 LATIN1_MAX = 0xFF
 LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2)
 SECONDS_BOUNDS = (86400, 31536000)
@@ -459,7 +458,7 @@ def validate_testssl_uri(uri):
     parsed_uri = urlparse(uri)
     if not parsed_uri.scheme:
         print_error_detail("[e_mschema]")
-    if parsed_uri.scheme not in HTTP_SCHEMES_S:
+    if parsed_uri.scheme not in HTTP_SCHEMES:
         print_error_detail("[e_ischema]")
     if not parsed_uri.netloc:
         print_error_detail("[e_url]")
@@ -4314,15 +4313,15 @@ def make_http_request(custom_headers, proxy):
             proxies=proxy,
         )
     except requests.exceptions.Timeout as timeout_err:
-        return None, None, timeout_err
+        return None, timeout_err
     except requests.exceptions.SSLError:
-        return None, None, None
+        return None, None
     except requests.exceptions.RequestException as request_err:
-        return None, None, request_err
+        return None, request_err
     except Exception as unexpected_err: # noqa: BLE001
-        return None, None, unexpected_err
+        return None, unexpected_err
     else:
-        return r, None, None
+        return r, None
 
 
 def process_requests_exception(exception):
@@ -4429,7 +4428,7 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
 
     def worker():
         try:
-            r, _, exception = make_http_request(custom_headers, proxy)
+            r, exception = make_http_request(custom_headers, proxy)
             result["r"] = r
             result["exception"] = exception
         except Exception as thread_err: # noqa: BLE001
@@ -5085,7 +5084,7 @@ t_robots = ("all", "archive", "follow", "index", "indexifembedded",
             "noindex", "none", "nopagereadaloud", "nositelinkssearchbox",
             "nosnippet", "notranslate", "noydir", "unavailable_after")
 
-unsafe_scheme = URL.startswith(HTTP_SCHEMES[0])
+unsafe_scheme = URL.startswith("http:")
 
 if header_eligible("accept-ch"):
     acceptch_header = {hint.strip().casefold()
@@ -5392,7 +5391,7 @@ if header_eligible("report-to"):
     print_details("[irept_h]", "[irept]", "d", i_cnt)
 
 report_h = headers_l.get("reporting-endpoints", "")
-if header_eligible("reporting-endpoints") and HTTP_SCHEMES[0] in report_h:
+if header_eligible("reporting-endpoints") and "http:" in report_h:
     print_details("[irepe_h]", "[irepe]", "d", i_cnt)
 
 if header_eligible("repr-digest"):
