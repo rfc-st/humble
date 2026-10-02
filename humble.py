@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-09-26")
+local_version = date.fromisoformat("2026-10-02")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -267,7 +267,6 @@ def process_proxy_url(proxy_url, timeout=3.0):
     proxy_thread.join(timeout)
     if proxy_thread.is_alive() or failed_proxy.is_set():
         print_error_detail("[proxy_url]", clean_lines=True)
-    return True
 
 
 def check_proxy_url(proxy_host, proxy_port, timeout, failed_proxy):
@@ -1497,7 +1496,7 @@ def sts_max_age(sts_header):
 
 def sts_check_values(sts_header, sts_age, unsafe_scheme):
     """Check the values of the `Strict-Transport-Security` header."""
-    weak_policy = t_sts_dir[0].casefold() not in sts_header \
+    weak_policy = "includesubdomains" not in sts_header \
         or sts_age < SECONDS_BOUNDS[1]
     if unsafe_scheme:
         print_details("[ihsts_h]", "[ihsts]", "d", i_cnt)
@@ -4717,7 +4716,8 @@ else:
 
 if "-if" not in sys.argv:
     proxy = None
-    if args.proxy and process_proxy_url(args.proxy):
+    if args.proxy:
+        process_proxy_url(args.proxy)
         proxy = {"http": args.proxy, "https": args.proxy}
     custom_headers = REQ_HEADERS.copy()
     if "-H" in sys.argv:
@@ -4858,7 +4858,6 @@ t_act = ("allowed-origin", "load", "retry")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
 # https://www.rfc-editor.org/info/rfc9111/#section-5.2.2.5
-t_cache = ("no-cache", "no-store")
 t_cachev = ("immutable", "max-age", "must-revalidate", "must-understand",
             "no-cache", "no-store", "no-transform", "private",
             "proxy-revalidate", "public", "s-maxage", "stale-if-error",
@@ -5048,9 +5047,6 @@ t_cookie_sec = ("httponly", "secure")
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Login
 t_setlogin = ("logged-in", "logged-out")
 
-# https://mdn.io/Strict-Transport-Security
-t_sts_dir = ("includeSubDomains", "max-age")
-
 # https://mdn.io/Supports-Loading-Mode
 t_support_mode = ("credentialed-prerender", "fenced-frame")
 
@@ -5162,7 +5158,7 @@ if header_eligible("cache-control"):
     cache_header = headers_l.get("cache-control", "").casefold()
     if not any(elem in cache_header for elem in t_cachev):
         print_details("[icachev_h]", "[icachev]", "d", i_cnt)
-    if t_cache[1] not in cache_header:
+    if "no-store" not in cache_header:
         print_details("[icache_h]", "[icache]", "d", i_cnt)
 
 if header_eligible("clear-site-data"):
