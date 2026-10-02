@@ -2206,7 +2206,7 @@ def get_skipped_unsupported_headers(cli_headers, insecure_headers,
     insecure_set = {header.strip().lower() for header in combined_headers}
     skip_list = [header for header in insecure_set
                  if header in insecure_headers]
-    unsupported_headers = list(insecure_set - insecure_headers)
+    unsupported_headers = sorted(insecure_set - insecure_headers)
     return unsupported_headers, skip_list
 
 def print_skipped_headers(skip_set):
