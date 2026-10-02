@@ -3936,11 +3936,11 @@ def add_xml_item(line, section):
 
 
 def print_http_exception(exception_id, exception_v):
-    """Print the exception received during analysis."""
+    """Print the exception received during analysis and exit with an error."""
     delete_lines()
     print()
     print_detail(exception_id)
-    raise SystemExit from exception_v
+    raise SystemExit(1) from exception_v
 
 
 def get_analysis_ip(final_url):
