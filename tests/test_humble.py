@@ -335,6 +335,8 @@ TEST_CFGS = {
                                   "Server"),
     "test_server_error_cdn": (["-u", f"{LOCAL_SERVER_URL}/status/520"],
                               "Server"),
+    "test_tls_handshake": (["-u", LOCAL_SERVER_URL.replace("http:", "https:")],
+                           "handshake"),
     "test_skipped_headers": (["-u", TEST_URLS[9], "-s", "ETAG", "NEL"],
                              "expressly excluded"),
     "test_testssl_error": ([], "Error"),

@@ -983,6 +983,9 @@ Cabeceras de respuesta HTTP
 [e_connection]
  Error: La petición ha expirado al intentar conectarse al servidor; revisa la URL y prueba de nuevo.
 
+[e_ssl]
+ Error: La negociación TLS/SSL con la URL ha fallado; no se recibió respuesta; revisa la URL y prueba de nuevo.
+
 [e_redirect]
  Error: Demasiadas redirecciones.
 
@@ -2394,6 +2397,9 @@ Generador
 
 [test_server_error_cdn]
  verifica que se muestre mensaje de error ante códigos de estado HTTP 5xx asociados con un CDN.
+
+[test_tls_handshake]
+ verifica que se muestre mensaje de error cuando falla la negociación TLS/SSL.
 
 [test_skipped_headers]
  verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.

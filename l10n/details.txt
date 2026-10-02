@@ -982,6 +982,9 @@ HTTP Response Headers
 [e_connection]
  Error: The request timed out while trying to connect to the remote server. Check URL and try again.
 
+[e_ssl]
+ Error: The TLS/SSL handshake with the URL failed; no response was received. Check URL and try again.
+
 [e_redirect]
  Error: Too many redirects.
 
@@ -2416,6 +2419,9 @@ Generator
 
 [test_server_error_cdn]
  verify an error message is displayed for CDN-related HTTP 5xx status codes.
+
+[test_tls_handshake]
+ verify an error message is displayed when the TLS/SSL handshake fails.
 
 [test_skipped_headers]
  verify the specified headers are excluded from the detailed analysis.

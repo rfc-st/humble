@@ -4311,8 +4311,6 @@ def make_http_request(custom_headers, proxy):
         )
     except requests.exceptions.Timeout as timeout_err:
         return None, timeout_err
-    except requests.exceptions.SSLError:
-        return None, None
     except requests.exceptions.RequestException as request_err:
         return None, request_err
     except Exception as unexpected_err: # noqa: BLE001
@@ -4335,7 +4333,7 @@ def process_requests_exception(exception):
         requests.exceptions.InvalidSchema: "[e_ischema]",
         requests.exceptions.InvalidURL: "[e_url]",
         requests.exceptions.MissingSchema: "[e_mschema]",
-        requests.exceptions.SSLError: None,
+        requests.exceptions.SSLError: "[e_ssl]",
         requests.exceptions.Timeout: "[e_timeout]",
         requests.exceptions.TooManyRedirects: "[e_redirect]",
     }
@@ -4489,7 +4487,7 @@ def process_http_response(r, exception, status_code, reliable, body):
     if exception:
         process_requests_exception(exception)
     if exception or r is None:
-        return {}, status_code, reliable, body, False, None
+        return {}, status_code, reliable, body, False, None, 0
     process_http_error(r)
     headers = strip_response_headers(r)
     is_html = headers.get("content-type", "").lower().startswith("text/html")
