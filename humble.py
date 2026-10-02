@@ -4673,7 +4673,7 @@ humble_skip_file = check_skip_file()
 headers_skipped = args.skip_headers or humble_skip_file
 
 if args.skip_headers == []:
-     print_error_detail("[args_skipped]")
+    print_error_detail("[args_skipped]")
 elif headers_skipped:
     insecure_headers = get_insecure_checks()
     unsupported_headers, skip_list = \
