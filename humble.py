@@ -82,24 +82,22 @@ BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 HUMBLE_DIRS = ("additional", "l10n")
 HUMBLE_FILES = (
     "analysis_h.txt", "check_path_permissions", "fingerprint.txt",
-    "guides.txt", "details_es.txt", "details.txt",
-    "user_agents.txt", "insecure.txt", "html_template.html",
-    "analysis_grades.txt", "analysis_grades_es.txt", "license.txt",
-    "license_es.txt", "testssl_windows.txt",
+    "details_es.txt", "details.txt", "user_agents.txt", "insecure.txt",
+    "html_template.html", "analysis_grades.txt", "analysis_grades_es.txt",
+    "license.txt", "license_es.txt", "testssl_windows.txt",
     "testssl_windows_es.txt", "security_guides.txt",
-    "security_guides_es.txt", "security.txt",
-    "owasp_best_practices.txt",
+    "security_guides_es.txt", "security.txt", "owasp_best_practices.txt",
 )
 PATHS = {
-    "help_epilog": OS_PATH / HUMBLE_DIRS[1] / HUMBLE_FILES[5],
+    "help_epilog": OS_PATH / HUMBLE_DIRS[1] / HUMBLE_FILES[4],
     "fingerprint_header": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
     "fingerprint_term": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
     "fingerprint_top": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
-    "html_source": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[8],
-    "insecure_header": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[7],
-    "owasp_compliance": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[18],
-    "security_headers": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[17],
-    "user_agents": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6],
+    "html_source": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[7],
+    "insecure_header": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6],
+    "owasp_compliance": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[17],
+    "security_headers": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[16],
+    "user_agents": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[5],
 }
 TESTSSL_FILE = ("testssl", "testssl.sh")
 VALIDATE_FILE = OS_PATH / HUMBLE_FILES[0]
@@ -133,8 +131,8 @@ DIR_MSG = ("[icsp_s]", "[icsp_si]", "[no_warnings]")
 INFO_SECTION = ("[0. Info")
 JSON_L10N = ("[json_det_fngheader]", "[json_det_refs]", "[json_det_fngval]")
 L10N_IDXS = {
-    "grades": (9, 10), "license": (11, 12), "testssl": (13, 14),
-    "security_guides": (15, 16),
+    "grades": (8, 9), "license": (10, 11), "testssl": (12, 13),
+    "security_guides": (14, 15),
 }
 RESP_SECTION = ("[HTTP R", "[Cabeceras d")
 SECTION_S = ("[enabled_cnt]", "[missing_cnt]", "[fng_cnt]", "[insecure_cnt]",
@@ -528,7 +526,7 @@ def testssl_analysis(testssl_cmd):
 def get_l10n_content():
     """Load the localization file for the specified language."""
     l10n_path = (OS_PATH / HUMBLE_DIRS[1] /
-                 (HUMBLE_FILES[4] if args.lang == "es" else HUMBLE_FILES[5]))
+                 (HUMBLE_FILES[3] if args.lang == "es" else HUMBLE_FILES[4]))
     with l10n_path.open(encoding="utf8") as l10n_content:
         return l10n_content.readlines()
 
@@ -2931,7 +2929,7 @@ def json_detailed_actions(json_lns, json_miss):
         "[1.": lambda: json_detailed_format(json_lns),
         "[2.": lambda: json_detailed_miss(json_lns, l_miss, *json_miss),
         "[3.": lambda: json_detailed_fng(json_lns, json_detailed_sources(2, 0)),
-        "[4.": lambda: json_detailed_ins(json_lns, json_detailed_sources(7, 2)),
+        "[4.": lambda: json_detailed_ins(json_lns, json_detailed_sources(6, 2)),
         "[5.": lambda: json_detailed_empty(json_lns),
         "[6.": lambda: json_detailed_format(json_lns, is_compat=True,
                                             is_l10n=True),

@@ -38,21 +38,28 @@ riesgo reportado es inexistente, potencial o real en base a la URL analizada
 
 [Notas y comprobaciones asociadas]
 
-Ordenadas de la peor a la mejor:
+Ordenadas de la peor a la mejor; la primera condición que se cumpla, empezando
+por arriba, determina la nota:
 
 E:  Sin 'Cabeceras habilitadas' en el análisis.
-D:  'Protocolos/Cabeceras obsoletas o inseguras' en el análisis.
-C:  'Cabeceras no habilitadas' en el análisis.
-B:  'Huella digital por cabeceras' en el análisis.
-A:  Sin advertencias en las secciones anteriores.
-A+: Sin 'Cabeceras sin valor' en el análisis.
+D:  Uno o más 'Protocolos/Cabeceras obsoletas o inseguras' en el análisis.
+C:  Una o más 'Cabeceras no habilitadas' en el análisis.
+B:  Una o más 'Huella digital por cabeceras' en el análisis.
+A:  Ninguna de las anteriores, pero una o más 'Cabeceras sin valor' en el análisis.
+A+: Ninguna de las anteriores, y tampoco 'Cabeceras sin valor'.
+
+Un único hallazgo en una comprobación basta para fijar su nota, con
+independencia del resultado de las comprobaciones inferiores.
 
 Ficheros fuente de las comprobaciones:
 
 /additional/security.txt    ('Cabeceras habilitadas')
 /additional/insecure.txt    ('Protocolos/Cabeceras obsoletas o inseguras')
-/additional/missing.txt     ('Cabeceras no habilitadas')
+/additional/missing.txt     ('Cabeceras no habilitadas'; lista de referencia)
 /additional/fingerprint.txt ('Huella digital por cabeceras')
+
+'Cabeceras sin valor' no tiene fichero fuente: abarca cualquier cabecera de
+respuesta HTTP cuyo valor esté vacío.
 
 
 [Mejorando la nota]
@@ -62,11 +69,11 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers y https://www.w3.org/.
 Algunas cabeceras HTTP, y sus valores requeridos, distinguen entre mayúsculas y
 minúsculas y este puede ser motivo por el cual se muestren advertencias tras el análisis.
 
-* Evalúa las advertencias en relación a la exposición de la URL, su criticidad
+* Evalúa las notas en relación a la exposición de la URL, su criticidad
 y la naturaleza de la cabecera HTTP: https://mdn.io/Experimental_deprecated_obsolete.
 
-* Usa el parámetro '-s' para excluir cabeceras HTTP del análisis (las exclusiones
-se mostrarán en los resultados).
+* Usa el parámetro '-s', o el fichero 'humble.skip', para excluir cabeceras HTTP
+del análisis (las cabeceras excluidas se mostrarán en los resultados).
 
-* No te obsesiones :): mantén una postura de seguridad constante, lo más segura
-posible, documentándola y actualizándola constantemente.
+* No te obsesiones :). Mantén una postura de seguridad tan sólida como la URL lo
+requiera, y mantenla documentada y al día.

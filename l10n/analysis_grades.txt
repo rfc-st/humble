@@ -36,35 +36,42 @@ potential or real depending on the analyzed URL (its exposure, environment, etc)
 
 [Grades and Associated Checks]
 
-Ranked from worst to best:
+Ranked from worst to best; the first condition that applies, from the top,
+sets the grade:
 
-E:  No 'Enabled headers' in the analysis
-D:  'Deprecated/Insecure headers' in the analysis.
-C:  'Missing headers' in the analysis.
-B:  'Fingerprint headers' in the analysis.
-A:  No warnings in the previous checks.
-A+: No 'Empty headers' in the analysis.
+E:  No 'Enabled headers' in the analysis.
+D:  One or more 'Deprecated/Insecure headers' in the analysis.
+C:  One or more 'Missing headers' in the analysis.
+B:  One or more 'Fingerprint headers' in the analysis.
+A:  None of the above, but one or more 'Empty headers' in the analysis.
+A+: None of the above, and no 'Empty headers' either.
+
+A single finding in a check is enough to set its grade, regardless of the
+results of the checks below it.
 
 Source files of the checks:
 
 /additional/security.txt    ('Enabled headers')
 /additional/insecure.txt    ('Deprecated/Insecure headers')
-/additional/missing.txt     ('Missing headers')
+/additional/missing.txt     ('Missing headers'; reference list)
 /additional/fingerprint.txt ('Fingerprint headers')
+
+'Empty headers' has no source file: it covers any HTTP response header whose
+value is empty.
 
 
 [Improving Grades]
 
 * 'humble' strictly follows the documentation and specifications of
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers and https://www.w3.org/.
-Some HTTP headers, and their required values, are case sensitive and this may be the
-reason for which warnings are displayed after analysis.
+Some HTTP headers, and their required values, are case sensitive and this may be
+the reason for which warnings are displayed after analysis.
 
-* Evaluate the grades in relation to the exposure of the URL, its criticality and
-the nature of the HTTP header: https://mdn.io/Experimental_deprecated_obsolete.
+* Evaluate the grades in relation to the exposure of the URL, its criticality
+and the nature of the HTTP header: https://mdn.io/Experimental_deprecated_obsolete.
 
-* Use the '-s' parameter to exclude HTTP headers from the analysis (the
-exclusions will be indicated in the results).
+* Use the '-s' parameter, or the 'humble.skip' file, to exclude HTTP headers from
+the analysis (the excluded headers are listed in the results).
 
-* Don't get obsessed :). Maintain a constant security posture, as secure as
-possible, documenting and updating it constantly.
+* Don't get obsessed :). Keep a security posture as strong as the URL requires,
+and keep it documented and up to date.
