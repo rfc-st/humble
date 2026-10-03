@@ -100,7 +100,7 @@ PATHS = {
     "user_agents": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[5],
 }
 TESTSSL_FILE = ("testssl", "testssl.sh")
-VALIDATE_FILE = OS_PATH / HUMBLE_FILES[0]
+HISTORY_FILE = Path(HUMBLE_FILES[0])
 
 # HTTP status codes, network analysis and timeouts
 CDN_HTTP_CODES = {*range(500, 512), *range(520, 528), 530}
@@ -579,10 +579,10 @@ def save_analysis_results(t_cnt):
         - Total number of empty headers
         - Total number of warnings (the four previous totals)
     """
-    ok, fallback = validate_file_access(VALIDATE_FILE, context="history")
+    ok, fallback = validate_file_access(HISTORY_FILE, context="history")
     if not ok:
         return fallback
-    with Path(HUMBLE_FILES[0]).open("a+", encoding="utf8") as all_analysis:
+    with HISTORY_FILE.open("a+", encoding="utf8") as all_analysis:
         all_analysis.seek(0)
         url_ln = match_url_lines(all_analysis)
         analysis_totals = [current_time, URL, en_cnt, m_cnt, f_cnt, i_cnt[0],
@@ -692,7 +692,7 @@ def url_analytics(*, is_global=False):
     Related to the `-a` option.
     """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
-    with Path(HUMBLE_FILES[0]).open(encoding="utf8") as all_analysis:
+    with HISTORY_FILE.open(encoding="utf8") as all_analysis:
         analysis_metrics = url_scope(all_analysis)
     l10n_det = "[global_stats_analysis]" if is_global else "[stats_analysis]"
     url_string = "" if is_global else URL
@@ -1729,7 +1729,7 @@ def print_basic_info(export_filename):
     if export_filename:
         print(f"{get_detail('[export_filename]', replace=True)} "
               f"{export_filename}")
-    validate_file_access(VALIDATE_FILE, context="basic")
+    validate_file_access(HISTORY_FILE, context="basic")
 
 
 def print_extended_info(reliable):
@@ -4690,7 +4690,7 @@ if args.testssl_path:
     testssl_command(args.testssl_path, URL)
 
 if args.URL_A:
-    check_analysis(HUMBLE_FILES[0])
+    check_analysis(HISTORY_FILE)
     url_analytics(is_global=not URL)
 
 start = time()
