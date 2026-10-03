@@ -4151,8 +4151,8 @@ def parse_input_file(input_headers, input_source, status_code):
     Related to `-if` option.
     """
     parts = input_source.readline().strip().split()
-    if len(parts) == LENGTH_BOUNDS[5] and parts[-1].isdigit():
-        status_code = int(parts[-1])
+    if len(parts) >= LENGTH_BOUNDS[5] and parts[1].isdecimal():
+        status_code = int(parts[1])
     for line in input_source:
         line_strip = line.strip()
         if ":" in line:
