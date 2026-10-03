@@ -1298,20 +1298,14 @@ def csp_valid_hash(algo, b64hash):
 
 
 def csp_check_hashes(csp_h):
-    """`Content-Security-Policy` header checks related to hashes."""
-    csp_unquoted_hashes(csp_h)
-    if any(not csp_valid_hash(algo, b64hash)
-           for algo, b64hash in re.findall(RE_PATTERN[17], csp_h)):
-        print_detail_r("[icshash_h]", is_red=True)
-        i_cnt[0] += 1
-        if not args.brief:
-            print(get_detail("[icshash_f]", replace=True))
-            print_detail("[icshashr_f]", num_lines=2)
+    """`Content-Security-Policy` header check related to hashes.
 
-
-def csp_unquoted_hashes(csp_h):
-    """`Content-Security-Policy` header check related to unquoted hashes."""
-    if re.search(RE_PATTERN[18], csp_h):
+    Unquoted hashes and quoted ones whose length does not match their
+    algorithm are reported as a single finding.
+    """
+    if re.search(RE_PATTERN[18], csp_h) or any(
+            not csp_valid_hash(algo, b64hash)
+            for algo, b64hash in re.findall(RE_PATTERN[17], csp_h)):
         print_detail_r("[icshash_h]", is_red=True)
         i_cnt[0] += 1
         if not args.brief:
