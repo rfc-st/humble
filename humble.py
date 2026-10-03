@@ -3676,12 +3676,12 @@ def format_html_warnings(html_final, ln_rstrip, *, ko_strings, ok_string):
     Related to `-o html` option.
     """
     if ok_string in ln_rstrip:
-        html_final.write(f"{HTML_TAGS[6]}{ln_rstrip}{HTML_TAGS[5]}\
-{HTML_TAGS[11]}")
+        html_final.write(
+            f"{HTML_TAGS[6]}{ln_rstrip}{HTML_TAGS[5]}{HTML_TAGS[11]}")
         return True
     if any(ko in ln_rstrip for ko in ko_strings):
-        html_final.write(f"{HTML_TAGS[3]}{ln_rstrip}{HTML_TAGS[5]}\
-                         {HTML_TAGS[11]}")
+        html_final.write(
+            f"{HTML_TAGS[3]}{ln_rstrip}{HTML_TAGS[5]}{HTML_TAGS[11]}")
         return True
     return False
 
