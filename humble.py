@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-10-02")
+local_version = date.fromisoformat("2026-10-03")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -5059,10 +5059,9 @@ t_trailer = ("authorization", "cache-control", "content-encoding",
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Transfer-Encoding
 t_transfer = ("chunked", "compress", "deflate", "gzip", "x-gzip")
 
-# https://getbutterfly.com/security-headers-a-concise-guide/
-# https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
-t_permcross = ("all", "by-content-only", "by-ftp-only", "master-only", "none",
-               "none-this-response")
+# https://mdn.io/X-Permitted-Cross-Domain-Policies
+t_permcross = ("all", "by-content-type", "by-ftp-filename", "master-only",
+               "none", "none-this-response")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options
 t_xfo_dir = ("DENY", "SAMEORIGIN")
