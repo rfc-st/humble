@@ -4653,7 +4653,6 @@ if args.lang and not URL and not args.URL_A and not args.guides:
     print_error_detail("[args_lang]")
 
 if args.output_file and args.output and URL:
-    output_file = args.output_file
     check_input_traversal(args.output_file)
 elif args.output_file and (not args.output or not URL):
     print_error_detail("[args_customfile]")
