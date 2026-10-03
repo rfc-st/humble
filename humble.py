@@ -1610,7 +1610,11 @@ def delete_lines(*, reliable=True):
 
     Removes previously printed lines to ensure that final messages (success
     or error) are consistently padded with a blank line before and after.
+    Nothing is removed with the `-cicd` option: no line is printed before
+    the analysis in that mode.
     """
+    if args.cicd:
+        return
     if not reliable:
         sys.stdout.write(DELETED_LINES)
     sys.stdout.write(DELETED_LINES)
@@ -5608,8 +5612,8 @@ t_sec = ("Access-Control-Allow-Credentials", "Access-Control-Allow-Headers",
          "Integrity-Policy-Report-Only", "NEL", "Origin-Agent-Cluster",
          "Permissions-Policy", "Pragma", "Proxy-Authenticate",
          "Referrer-Policy", "Refresh", "Report-To", "Reporting-Endpoints",
-         "Sec-Private-State-Token-Lifetime",
-         "Server-Timing", "Service-Worker-Allowed", "Set-Cookie", "Set-Login",
+         "Sec-Private-State-Token-Lifetime", "Server-Timing",
+         "Service-Worker-Allowed", "Set-Cookie", "Set-Login",
          "Speculation-Rules", "Strict-Transport-Security",
          "Supports-Loading-Mode", "Timing-Allow-Origin", "Trailer", "Vary",
          "WWW-Authenticate", "X-Content-Type-Options",
