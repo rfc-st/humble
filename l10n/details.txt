@@ -213,16 +213,14 @@
 
 [ixpermcross]
  Include at least one valid directive.
- Ref: https://getbutterfly.com/security-headers-a-concise-guide/
- Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
+ Ref: https://mdn.io/X-Permitted-Cross-Domain-Policies
 
 [ixpermcrossd_h]
  X-Permitted-Cross-Domain-Policies (Duplicated Values)
 
 [ixpermcrossd]
  This header, or its values, may be duplicated.
- Ref: https://getbutterfly.com/security-headers-a-concise-guide/
- Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
+ Ref: https://mdn.io/X-Permitted-Cross-Domain-Policies
 
 [icsd_h]
  Clear-Site-Data (Ignored Header)
@@ -1547,8 +1545,7 @@ HTTP Response Headers
 
 [ixpermcrossu]
  The value 'all' could permit any cross-domain requests from Flash and PDF documents.
- Ref: https://getbutterfly.com/security-headers-a-concise-guide/
- Ref: https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
+ Ref: https://mdn.io/X-Permitted-Cross-Domain-Policies
 
 [ixcsp]
  This header is deprecated; instead, enforce a strict "Content-Security-Policy" header.

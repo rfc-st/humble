@@ -5537,11 +5537,11 @@ if header_eligible("x-pad"):
 if header_eligible("x-permitted-cross-domain-policies"):
     permcross_header = headers_l.get("x-permitted-cross-domain-policies", "")
     if not any(elem in permcross_header for elem in t_permcross):
-        print_details("[ixpermcross_h]", "[ixpermcross]", "m", i_cnt)
+        print_details("[ixpermcross_h]", "[ixpermcross]", "d", i_cnt)
     if "all" in permcross_header:
-        print_details("[ixpermcrossu_h]", "[ixpermcrossu]", "m", i_cnt)
+        print_details("[ixpermcrossu_h]", "[ixpermcrossu]", "d", i_cnt)
     if "," in permcross_header:
-        print_details("[ixpermcrossd_h]", "[ixpermcrossd]", "m", i_cnt)
+        print_details("[ixpermcrossd_h]", "[ixpermcrossd]", "d", i_cnt)
 
 if header_eligible("x-pingback") \
         and headers_l.get("x-pingback", "").endswith("xmlrpc.php"):
