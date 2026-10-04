@@ -539,7 +539,7 @@ def get_l10n_map(l10n_lines):
 
 def get_analysis_results():
     """Print analysis results and summary."""
-    analysis_t = str(round(end - start, 2)).rstrip()
+    analysis_t = str(round(end - start, 2))
     print(f"{get_detail('[analysis_time]', replace=True)} {analysis_t}\
 {get_detail('[analysis_time_sec]', replace=True)}")
     t_cnt = sum([m_cnt, f_cnt, i_cnt[0], e_cnt])
@@ -627,7 +627,7 @@ def format_analysis_results(*diff, en_cnt_w, t_cnt):
     Between the last and the current one for the same URL.
     """
     results = [en_cnt, m_cnt, f_cnt, i_cnt[0], e_cnt, t_cnt]
-    new_ln = ["\n" if int(en_cnt) > 0 else "", "", "", "", "", "\n\n"]
+    new_ln = ["\n" if en_cnt > 0 else "", "", "", "", "", "\n\n"]
     totals = [f"{val:>2} ({diff[i]}){new_ln[i]}" for i, val in
               enumerate(results)]
     max_secl = get_max_lnlength(SECTION_S)
@@ -649,7 +649,7 @@ def grade_analysis(en_cnt, m_cnt, f_cnt, i_cnt, e_cnt):
     """Grade the analysis based on its results."""
     if en_cnt == 0:
         return "[e_grade]"
-    if i_cnt and sum(i_cnt) > 0:
+    if i_cnt[0] > 0:
         return "[d_grade]"
     if m_cnt > 0:
         return "[c_grade]"
@@ -1129,13 +1129,14 @@ def csp_analyze_content(csp_h, csp_dirs_vals, csp_dirs):
 
 def csp_check_values(csp_h, csp_dirs, csp_values):
     """`Content-Security-Policy` header checks related to its values."""
-    if t_csp_checks[0] in csp_dirs and t_csp_checks[1] not in headers_l:
+    if "upgrade-insecure-requests" in csp_dirs \
+            and "strict-transport-security" not in headers_l:
         print_details("[icspi_h]", "[icspi]", "m", i_cnt)
     csp_check_unknown(csp_h)
-    if f"'{t_csp_checks[2]}'" in csp_values:
+    if "'unsafe-hashes'" in csp_values:
         print_details("[icsu_h]", "[icsu]", "d", i_cnt)
     csp_check_hashes(csp_h)
-    if t_csp_checks[3] in csp_h:
+    if "nonce-" in csp_h:
         csp_check_nonces(csp_h)
     if re.search(RE_PATTERN[1], csp_h):
         csp_check_ip(csp_h)
@@ -1188,7 +1189,7 @@ def csp_print_missing(csp_ref, csp_ref_brief, id_mode):
 
 def csp_broad_values(values):
     """Return broad values in a `Content-Security-Policy` directive."""
-    return {value for value in values if f" {value} " in t_csp_broad}
+    return set(values).intersection(t_csp_broad)
 
 
 def csp_check_broad(csp_dirs_vals):
@@ -1363,7 +1364,7 @@ def csp_print_nonce(nonce, nonce_refs, i_cnt):
 
 def csp_check_ip(csp_h):
     """`Content-Security-Policy` header check related to IP address values."""
-    localhost_ip = ip_address(t_csp_checks[4])
+    localhost_ip = ip_address("127.0.0.1")
     ip_matches = re.findall(RE_PATTERN[1], csp_h)
     for match in ip_matches:
         with suppress(ValueError):
@@ -1655,14 +1656,6 @@ def print_header(header):
     print(f" {header}" if args.output else f"{STYLE[1]} {header}")
 
 
-def print_fng_header(header):
-    """Print the header name in the section with fingerprint headers."""
-    if args.output:
-        print(f" {header}")
-    else:
-        print(f"{STYLE[1]} {header}")
-
-
 def print_general_info(reliable, export_filename):
     """Print the content in the section with basic information."""
     if not args.output:
@@ -1900,7 +1893,7 @@ def get_fingerprint_detail(header, fng_line):
     if args.brief:
         print_header(header)
         return
-    print_fng_header(fng_line)
+    print_header(fng_line)
     if header_value := headers_l[header.lower()]:
         print(f" {get_detail('[fng_value]', replace=True)} '{header_value}'")
     else:
@@ -2953,10 +2946,9 @@ def json_detailed_empty(json_lns):
     desc_key = get_detail("[json_det_empty]", replace=True)
     status_key = get_detail("[json_det_empty_s]", replace=True)
     empty_key = get_detail("[json_det_empty_h]", replace=True)
-    lines = [line.strip() for line in json_lns if line.strip()]
-    result = {desc_key: lines[0][:-1]}
+    result = {desc_key: json_lns[0][:-1]}
     if e_cnt == 0:
-        result[status_key] = lines[1]
+        result[status_key] = json_lns[1]
     else:
         result[empty_key] = l_empty
     return result
@@ -2991,9 +2983,7 @@ def json_detailed_format_add(json_lns, header_t, value_t):
     Related to `-o json` option.
     """
     result = []
-    for line in map(str.strip, json_lns):
-        if not line:
-            continue
+    for line in json_lns:
         if ":" in line:
             key, value = line.split(":", 1)
             result.append({header_t: key.strip(), value_t: value.strip()})
@@ -3037,8 +3027,7 @@ def json_detailed_miss_add(json_lns, ctx):
     """
     result, entry = [], {}
     for line in json_lns:
-        if line := line.strip():
-            entry = json_detailed_miss_process(line, ctx, result, entry)
+        entry = json_detailed_miss_process(line, ctx, result, entry)
     if entry:
         result.append(entry)
     return result
@@ -3075,13 +3064,11 @@ def json_detailed_fng_process(line, ctx, entry, current_header):
 
     Related to `-o json` option.
     """
-    line_s = line.strip()
-    for f in ctx.fingerprint_set:
-        if line_s.startswith(f):
-            return {ctx.fng_header: f}, f
-    if current_header and line_s.startswith(ctx.fng_val):
-        entry[ctx.fng_val] = line_s.split(": ", 1)[1].strip("'\" ")
-        return entry, current_header
+    for fng in ctx.fingerprint_set:
+        if line.startswith(fng):
+            return {ctx.fng_header: fng}, fng
+    if current_header and line.startswith(ctx.fng_val):
+        entry[ctx.fng_val] = line.split(": ", 1)[1].strip("'\" ")
     return entry, current_header
 
 
@@ -3166,9 +3153,8 @@ def json_detailed_ins_process(json_lns, ctx):
     """
     result, entry, header = [], {}, None
     for line in json_lns:
-        if line := line.strip():
-            entry, header = json_detailed_ins_append(line, ctx, entry, header,
-                                                     result)
+        entry, header = json_detailed_ins_append(line, ctx, entry, header,
+                                                 result)
     if entry:
         result.append(entry)
     return result
@@ -3622,7 +3608,7 @@ def build_html_writers():
         l_total=sorted(set(l_miss + l_ins)),
         fng_sorted=sorted(
             i.casefold() for i in l_fng) if args.brief else sorted(l_fng),
-        header_prefixes=tuple((header, f"{header}: ") for header in headers),
+        header_prefixes=tuple(f"{header}: " for header in headers),
     ))
     return html_writers, html_rest
 
@@ -3743,7 +3729,7 @@ def format_html_headers(ln, header_prefixes):
     characters (e.g., `<` or `>` in headers) are rendered correctly and do not
     interfere with the HTML structure; related to the `-o html` option.
     """
-    for _header, header_prefix in header_prefixes:
+    for header_prefix in header_prefixes:
         if header_prefix in ln:
             header_name, _, header_value = ln.partition(":")
             safe_value = escape(header_value.strip())
@@ -3765,7 +3751,7 @@ def format_html_csp(ln):
 {m.group(3)}", ln)
 
 
-def format_html_fingerprint(args, ln, l_fng):
+def format_html_fingerprint(ln, l_fng):
     """Write formatted lines for fingerprint headers.
 
     Related to `-o html` option.
@@ -3825,7 +3811,7 @@ def format_html_rest(html_final, ln, *, ctx):
     ln_rstrip = ln.rstrip("\n")
     if ln and not ln_enabled:
         ln = format_html_headers(ln, ctx.header_prefixes)
-        ln = format_html_fingerprint(args, ln, ctx.fng_sorted)
+        ln = format_html_fingerprint(ln, ctx.fng_sorted)
         ln = format_html_totals(ln, ctx.l_total)
         ln = format_html_empty(ln, ln_rstrip, ctx.l_empty)
         html_final.write(escape_html_value(ln))
@@ -4088,7 +4074,7 @@ def parse_har_file(file_path):
     try:
         with file_path.open(encoding="utf8") as har_file:
             har_data = load(har_file)
-    except (ValueError, KeyError, AttributeError, TypeError):
+    except (ValueError, RecursionError):
         print_error_detail("[args_malformedhar]")
     return extract_har_content(har_data)
 
@@ -4292,9 +4278,8 @@ def make_http_request(custom_headers, proxy):
         analyzed; otherwise the last redirected URL will be analyzed.
 
     ??? tip
-        `requests` and `urllib3` are lazy-loaded to avoid unnecessary overhead.
+        `urllib3` is lazy-loaded to avoid unnecessary overhead.
     """
-    import requests
     from urllib3 import disable_warnings
 
     disable_warnings()
@@ -4307,12 +4292,8 @@ def make_http_request(custom_headers, proxy):
             timeout=REQ_TIMEOUT,
             proxies=proxy,
         )
-    except requests.exceptions.Timeout as timeout_err:
-        return None, timeout_err
-    except requests.exceptions.RequestException as request_err:
+    except Exception as request_err: # noqa: BLE001
         return None, request_err
-    except Exception as unexpected_err: # noqa: BLE001
-        return None, unexpected_err
     else:
         return r, None
 
@@ -4332,7 +4313,6 @@ def process_requests_exception(exception):
         requests.exceptions.InvalidURL: "[e_url]",
         requests.exceptions.MissingSchema: "[e_mschema]",
         requests.exceptions.SSLError: "[e_ssl]",
-        requests.exceptions.Timeout: "[e_timeout]",
         requests.exceptions.TooManyRedirects: "[e_redirect]",
     }
     if isinstance(exception, requests.exceptions.Timeout):
@@ -4878,10 +4858,9 @@ t_cencoding = ("br", "compress", "dcb", "dcz", "deflate", "gzip", "x-gzip",
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 # https://www.w3.org/TR/CSP2/
 # https://www.w3.org/TR/CSP3/
-t_csp_broad = (" *", "* ", " * ",  " blob: ", " data: ", " ftp: ",
-               " filesystem: ", " https: ", " https://* ", " https://*.* ",
-               " mailto: ", " mediastream: ", " schemes: ", " tel: ", " wss: ",
-               "wss://")
+t_csp_broad = ("*", "blob:", "data:", "ftp:", "filesystem:", "https:",
+               "https://*", "https://*.*", "mailto:", "mediastream:",
+               "schemes:", "tel:", "wss:")
 t_csp_equal = ("nonce", "sha", "style-src-elem", "report-to", "report-uri")
 t_csp_dep = ("block-all-mixed-content", "disown-opener", "navigate-to",
              "plugin-types", "prefetch-src", "referrer", "report-uri",
@@ -4903,8 +4882,6 @@ t_csp_miss = ("base-uri", "child-src", "connect-src", "default-src",
               "style-src", "trusted-types", "worker-src")
 t_csp_fallback = ("child-src", "connect-src", "font-src", "img-src",
                   "object-src", "script-src", "style-src", "worker-src")
-t_csp_checks = ("upgrade-insecure-requests", "strict-transport-security",
-                "unsafe-hashes", "nonce-", "127.0.0.1")
 
 # https://mdn.io/Content-Security-Policy-Report-Only
 t_csp_ro_dep = (*t_csp_dep, "sandbox")
@@ -4912,10 +4889,6 @@ t_csp_ro_dep = (*t_csp_dep, "sandbox")
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
 # https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
 t_ct_mime = ("application/xhtml+xml", "text/html")
-
-# https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta#charset
-# https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type
-t_ct_equiv = ("text/html; charset=utf-8", "text/html; charset=UTF-8")
 
 # https://mdn.io/Cross-Origin-Embedder-Policy
 t_coep = ("credentialless", "require-corp", "unsafe-none")
@@ -5216,11 +5189,13 @@ if header_eligible("content-type"):
                                                             ctype_header):
         print_details("[ictlchar_h]", "[ictlchar]", "d", i_cnt)
 
+# https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta#charset
+# https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type
 if http_equiv:
     ctype_meta = [content.casefold() for name, content in http_equiv
                   if "content-type" in name.casefold()]
-    if ctype_meta and not any(" ".join(val.replace(";", "; ").split())
-                              in t_ct_equiv for val in ctype_meta):
+    if ctype_meta and all(" ".join(val.replace(";", "; ").split())
+                          != "text/html; charset=utf-8" for val in ctype_meta):
         print_details("[ictlmeta_h]", "[ictlmeta]", "m", i_cnt)
 
 if header_eligible("critical-ch") and unsafe_scheme:
