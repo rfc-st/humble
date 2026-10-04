@@ -75,7 +75,7 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-10-03")
+local_version = date.fromisoformat("2026-10-04")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1736,7 +1736,7 @@ def print_extended_info(reliable):
     Request (`-H` option) and skipped (`-s` option) headers, proxy usage
     (`-p` option) and specific HTTP 4xx errors.
     """
-    if args.request_header:
+    if added_request_headers:
         print_request_headers(added_request_headers)
     if skip_set:
         print_skipped_headers(skip_set)
@@ -4122,7 +4122,7 @@ def analyze_input_file(input_file):
     Related to `-if` option.
     """
     file_path = Path(input_file)
-    if not file_path.exists():
+    if not file_path.is_file():
         print_error_detail("[args_inputnotfound]")
     input_headers = {}
     status_code = 0
@@ -4541,11 +4541,13 @@ metavar="GRADE", help="Print analysis for CI/CD processing; optionally, set the\
  minimum required GRADE (E, D, C, B, A, A+)")
 parser.add_argument("-df", dest="redirects", action="store_true", help="Do not\
  follow redirects; if omitted the last redirection will be the one analyzed")
-parser.add_argument("-e", nargs="?", type=str, dest="testssl_path", help="Prin\
-t only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)")
-parser.add_argument("-f", nargs="?", type=str, dest="fingerprint_term", help="\
-Print fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is \
-omitted the top 20 results will be printed")
+parser.add_argument("-e", nargs="?", const="", type=str, dest="testssl_path",
+                    help="Print only TLS/SSL checks; requires the PATH of \
+testssl (https://testssl.sh/)")
+parser.add_argument("-f", nargs="?", const="", type=str,
+                    dest="fingerprint_term", help="Print fingerprint \
+statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 \
+results will be printed")
 parser.add_argument("-g", dest="guides", action="store_true", help="Print \
 guidelines for enabling security HTTP response headers on popular frameworks, \
 servers and services")
@@ -4607,7 +4609,7 @@ if args.grades:
 if args.license:
     print_l10n_file(args, "license")
 
-if "-f" in sys.argv:
+if args.fingerprint_term is not None:
     fng_statistics_term(args.fingerprint_term) if args.fingerprint_term else \
         fng_statistics_top()
 
@@ -4623,7 +4625,7 @@ if args.cicd is not None:
 if args.compliance:
     args.brief = False
     args.output = ["txt"]
-    args.user_agent = "1"
+    args.user_agent = None
 
 if args.input_file is not None:
     if any([args.redirects, args.ret]):
@@ -4636,17 +4638,17 @@ if args.input_file is not None:
 if args.request_header and not URL:
     print_error_detail("[e_custom_uheaders]")
 
-if "-ua" in sys.argv:
+if args.user_agent is not None:
     if sys.argv.count("-ua") > 1:
         print_error_detail("[args_useragent_single]")
     ua_header = parse_user_agent(user_agent=True)
 elif URL:
     ua_header = parse_user_agent()
 
-if "-e" in sys.argv:
+if args.testssl_path is not None:
     if sys.platform.startswith("win"):
         print_l10n_file(args, "testssl", slice_ln=True)
-    if (args.testssl_path is None or URL is None):
+    if not args.testssl_path or URL is None:
         print_error_detail("[args_notestssl]")
 
 if args.lang and not URL and not args.URL_A and not args.guides:
@@ -4660,9 +4662,10 @@ elif args.output_file and (not args.output or not URL):
 if args.output_path is not None:
     check_output_path(args)
 
-if any([args.brief, args.output, args.ret, args.redirects,
-        args.skip_headers]) and (URL is None or args.guides is None or
-                                 args.URL_A is None):
+if any([args.brief, args.output, args.proxy is not None, args.ret,
+        args.redirects, args.skip_headers]) and (URL is None or
+                                                 args.guides is None or
+                                                 args.URL_A is None):
     print_error_detail("[args_several]")
 
 skip_list, unsupported_headers, skip_set = [], [], set()
@@ -4701,19 +4704,20 @@ if not args.URL_A and not args.cicd:
     print_detail(detail)
 
 final_url, redirect_count = None, 0
-if "-if" not in sys.argv:
+added_request_headers = {}
+if args.input_file is None:
     headers_l, http_equiv = {}, None
     status_code, reliable, body = None, None, None
 else:
     http_equiv = None
 
-if "-if" not in sys.argv:
+if args.input_file is None:
     proxy = None
     if args.proxy:
         process_proxy_url(args.proxy)
         proxy = {"http": args.proxy, "https": args.proxy}
     custom_headers = REQ_HEADERS.copy()
-    if "-H" in sys.argv:
+    if args.request_header:
         added_request_headers = parse_request_headers(args.request_header)
         custom_headers.update(added_request_headers)
     custom_headers["User-Agent"] = ua_header
@@ -4903,9 +4907,7 @@ t_csp_checks = ("upgrade-insecure-requests", "strict-transport-security",
                 "unsafe-hashes", "nonce-", "127.0.0.1")
 
 # https://mdn.io/Content-Security-Policy-Report-Only
-l_csp_ro_dep = ["block-all-mixed-content", "disown-opener", "plugin-types",
-                "prefetch-src", "referrer", "report-uri", "require-sri-for",
-                "sandbox", "violated-directive"]
+t_csp_ro_dep = (*t_csp_dep, "sandbox")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
 # https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
@@ -5116,9 +5118,10 @@ if header_eligible("access-control-allow-origin") \
         and accesso_header in t_accecao:
     print_details("[iaccess_h]", "[iaccess]", "d", i_cnt)
 
-accesma_header = headers_l.get("access-control-max-age", "")
-if header_eligible("access-control-max-age") and accesma_header.isdigit() \
-        and int(accesma_header) > SECONDS_BOUNDS[0]:
+accesma_header = headers_l.get("access-control-max-age", "").lstrip("0")
+if header_eligible("access-control-max-age") and accesma_header.isascii() \
+        and accesma_header.isdigit() \
+        and int(accesma_header[:6]) > SECONDS_BOUNDS[0]:
     print_details("[iacessma_h]", "[iaccessma]", "d", i_cnt)
 
 if header_eligible("activate-storage-access"):
@@ -5191,15 +5194,16 @@ if header_eligible("content-security-policy"):
 
 if header_eligible("content-security-policy-report-only"):
     csp_ro_header = headers_l["content-security-policy-report-only"]
-    if any(elem in csp_ro_header for elem in l_csp_ro_dep):
+    csp_ro_dirs = {directive.split()[0] for directive in
+                   csp_ro_header.split(";") if directive.strip()}
+    if matches_csp_ro := sorted(csp_ro_dirs.intersection(t_csp_ro_dep)):
         print_detail_r("[icsiro_d]", is_red=True)
         if not args.brief:
-            matches_csp_ro = [x for x in l_csp_ro_dep if x in csp_ro_header]
             print_detail_l("[icsi_d_s]")
             print(", ".join(f"'{x}'" for x in matches_csp_ro))
             print_detail("[icsiro_d_r]")
         i_cnt[0] += 1
-    if "report-to" not in csp_ro_header:
+    if "report-to" not in csp_ro_dirs:
         print_details("[icsiroi_d]", "[icsiroi]", "d", i_cnt)
 
 if header_eligible("content-type"):

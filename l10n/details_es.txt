@@ -135,6 +135,9 @@
 [server_508]
  Error en servidor (Código HTTP 508, 'Loop Detected')
 
+[server_509]
+ Error en servidor (Código HTTP 509, 'Bandwidth Limit Exceeded')
+
 [server_510]
  Error en servidor (Código HTTP 510, 'Not Extended')
 
@@ -1951,7 +1954,7 @@ Error: Los parámetros '-c' y '-l' requieren de los parámetros '-u' o '-a'. El 
 Error: El parámetro '-ua' requiere el parámetro '-u'.
 
 [args_several]
-Error: Los parámetros '-b', '-c', '-cicd', '-df', -'o', '-r' y '-s' requieren el parámetro '-u'.
+Error: Los parámetros '-b', '-c', '-cicd', '-df', '-o', '-p', '-r' y '-s' requieren el parámetro '-u'.
 
 [args_customfile]
 Error: El parámetro -of' requiere los parámetros '-u' y '-o'.
