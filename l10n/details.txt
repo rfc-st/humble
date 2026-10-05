@@ -2207,6 +2207,9 @@ Generator
 [test_cicd_grade_fail]
  verify the completion of a CI/CD analysis with a failing security gate.
 
+[test_cicd_grade_e]
+ verify the grade of a CI/CD analysis without enabled security headers.
+
 [test_client_error_response]
  verify the analysis shows the HTTP 4xx error code response.
 

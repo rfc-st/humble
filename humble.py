@@ -2540,18 +2540,16 @@ def validate_cicd_grade(threshold_norm, threshold_grade, totals):
     Ensures both grades exist within `GRADE_ORDER`: exits in case of an invalid
     threshold or an undeterminable analysis grade.
     """
-    analysis_grade = fetch_cicd_grade(totals)
-    if threshold_norm in GRADE_ORDER and analysis_grade in GRADE_ORDER:
+    if threshold_norm in GRADE_ORDER:
+        analysis_grade = fetch_cicd_grade(totals)
+        if analysis_grade not in GRADE_ORDER:
+            print_error_detail("[cicd_no_grade]")
         return analysis_grade
-    bad_thold = threshold_norm not in GRADE_ORDER
-    msg = (
-        f"'{threshold_grade}' {get_detail('[cicd_invalid]', replace=True)}; "
-        f"{get_detail('[cicd_valid]', replace=True)} "
-        + ", ".join(f"'{g}'" for g in GRADE_ORDER) + "."
-        if bad_thold else get_detail("[cicd_no_grade]", replace=True)
-    )
-    print(f"\n{get_detail('[cicd_error]', replace=True)}: {msg}")
-    sys.exit(2 if bad_thold else 1)
+    print(f"\n{get_detail('[cicd_error]', replace=True)}: '{threshold_grade}' "
+          f"{get_detail('[cicd_invalid]', replace=True)}; "
+          f"{get_detail('[cicd_valid]', replace=True)} "
+          f"{', '.join(map(repr, GRADE_ORDER))}.")
+    sys.exit(2)
 
 
 def threshold_cicd(threshold_grade, totals):
@@ -2610,7 +2608,7 @@ def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
     cicd_totals_start = lines.index(next(line for line in lines if
                                          STRINGS_BOLD[8] in line))
     cicd_totals_lines = lines[cicd_totals_start + 2:-3]
-    cicdi_grade_lines = lines[cicd_totals_start + 8]
+    cicdi_grade_lines = cicd_totals_lines[-1]
     line_pattern = re.compile(RE_PATTERN[21])
     cicd_totals_result = parse_cicd_totals(cicd_totals_lines, cicd_total_t,
                                            cicd_diff_t, line_pattern)
@@ -3242,6 +3240,27 @@ class PdfContext(NamedTuple):
     ypos: object
 
 
+def set_pdf_header(pdf):
+    """Set the header of each page; related to `-o pdf` option."""
+    pdf.set_font("Courier", "B", 9)
+    pdf.set_y(10)
+    pdf.set_text_color(0, 0, 0)
+    pdf.cell(0, 5, get_detail("[humble_desc]"), new_x="CENTER",
+             new_y="NEXT", align="C")
+    pdf.ln(1)
+    pdf.cell(0, 5, BANNER_VERSION, align="C")
+    pdf.ln(9 if pdf.page_no() == 1 else 13)
+
+
+def set_pdf_footer(pdf):
+    """Set the footer of each page; related to `-o pdf` option."""
+    pdf.set_y(-15)
+    pdf.set_font("Helvetica", "I", 8)
+    pdf.set_text_color(0, 0, 0)
+    pdf.cell(0, 10, f"{print_detail_s('[pdf_footer]')} \
+{pdf.page_no()}{get_detail('[pdf_footer2]')} {{nb}}", align="C")
+
+
 def export_pdf_file(tmp_filename, *, export_all=False,
                     content=None):
     """PDF export of the analysis, related to `-o pdf` option.
@@ -3252,54 +3271,33 @@ def export_pdf_file(tmp_filename, *, export_all=False,
     from fpdf import FPDF, YPos
 
     class PDF(FPDF):
+        header = set_pdf_header
+        footer = set_pdf_footer
 
-        def header(self):
-            self.set_font("Courier", "B", 9)
-            self.set_y(10)
-            self.set_text_color(0, 0, 0)
-            self.cell(0, 5, get_detail("[humble_desc]"), new_x="CENTER",
-                      new_y="NEXT", align="C")
-            self.ln(1)
-            self.cell(0, 5, BANNER_VERSION, align="C")
-            self.ln(9 if self.page_no() == 1 else 13)
-
-        def footer(self):
-            self.set_y(-15)
-            self.set_font("Helvetica", "I", 8)
-            self.set_text_color(0, 0, 0)
-            self.cell(0, 10, f"{print_detail_s('[pdf_footer]')} \
-{self.page_no()}{get_detail('[pdf_footer2]')} {{nb}}", align="C")
-
-    pdf = PDF()
     if content is None:
         content = Path(tmp_filename).read_text(encoding="utf8")
     content = content.encode("latin-1", "backslashreplace").decode("latin-1")
-    initialize_pdf(pdf, tmp_filename, content, YPos,
-                   export_all=export_all)
+    ctx = initialize_pdf(PDF(), YPos)
+    generate_pdf(tmp_filename, content, ctx, export_all=export_all)
 
 
-def initialize_pdf(pdf, tmp_filename, content, ypos, *,
-                   export_all=False):
+def initialize_pdf(pdf, ypos):
     """Retrieve literals to apply the appropriate formatting.
 
     Related to `-o pdf` option.
     """
-    pdf_links = (URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
-                 REF_LINKS[4])
-    pdf_prefixes = {REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]}
-    ctx = PdfContext(
+    return PdfContext(
         ok_string=get_detail(DIR_MSG[2]).rstrip(),
         no_headers=[get_detail(f"[{i}]").strip() for i in ("no_sec_headers",
                                                            "no_enb_headers")],
         combined_h=tuple(dict.fromkeys(
             (*l_miss, *l_ins, *l_fng, *titled_fng, XFRAME_CHECK))),
         pdf=pdf,
-        pdf_links=pdf_links,
-        pdf_prefixes=pdf_prefixes,
+        pdf_links=(URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
+                   REF_LINKS[4]),
+        pdf_prefixes={REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]},
         ypos=ypos,
     )
-    generate_pdf(tmp_filename, content, ctx, export_all=export_all)
-
 
 def generate_pdf(tmp_filename, content, ctx, *, export_all=False):
     """Generate the required file structure, including metadata.
@@ -3868,13 +3866,10 @@ def format_html_enabled(ln, html_final):
     """
     if STYLE[8] not in ln:
         return ln, False
-    ln = f" {ln[19:].rstrip()}"
-    if ":" in ln:
-        header, value = map(str.strip, ln.split(":", 1))
-        ln = (f"{HTML_TAGS[6]} {header}{HTML_TAGS[5]}: "
-              f"{escape(value, quote=False)}")
-    else:
-        ln = f"{HTML_TAGS[6]} {ln.strip()}{HTML_TAGS[5]}"
+    header, sep, value = map(str.strip, ln[19:].partition(":"))
+    ln = f"{HTML_TAGS[6]} {header}{HTML_TAGS[5]}"
+    if sep:
+        ln += f": {escape(value, quote=False)}"
     html_final.write(f"{format_html_csp(ln)}{HTML_TAGS[11]}")
     return ln, True
 
@@ -4162,13 +4157,12 @@ def parse_input_file(input_headers, input_source, status_code):
 
     Related to `-if` option.
     """
-    parts = input_source.readline().strip().split()
-    if len(parts) >= LENGTH_BOUNDS[5] and parts[1].isdecimal():
+    parts = input_source.readline().split()
+    if len(parts) > 1 and parts[1].isdecimal():
         status_code = int(parts[1][:3])
     for line in input_source:
-        line_strip = line.strip()
         if ":" in line:
-            input_header, input_value = line_strip.split(":", 1)
+            input_header, input_value = line.strip().split(":", 1)
             input_headers[sanitize_header_value(input_header.title())] = (
                 sanitize_header_value(input_value.strip()))
     if not input_headers:

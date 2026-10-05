@@ -204,6 +204,8 @@ TEST_CFGS = {
     "test_cicd_grade_pass": (["-u", TEST_URLS[9], "-cicd", "E"], "meets"),
     "test_cicd_grade_fail": (["-u", TEST_URLS[9], "-cicd", "A+"],
                              "does not meet"),
+    "test_cicd_grade_e": (["-u", TEST_URLS[4], "-if",
+                           PATHS["NO_SEC_HEADERS"], "-cicd", "E"], "meets"),
     "test_client_error_response": (["-u", TEST_URLS[1], "-if",
                                     PATHS["CLIENT_ERROR"]], "HTTP code"),
     "test_client_unsupported_error": (["-u", f"{LOCAL_SERVER_URL}/status/432"],

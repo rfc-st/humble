@@ -2185,6 +2185,9 @@ Generador
 [test_cicd_grade_fail]
  verifica que un análisis CI/CD finalice correctamente con un umbral de seguridad fallido.
 
+[test_cicd_grade_e]
+ verifica la nota de un análisis CI/CD sin cabeceras de seguridad habilitadas.
+
 [test_client_error_response]
  verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
 
