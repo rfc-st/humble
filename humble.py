@@ -50,7 +50,7 @@ from socket import create_connection, getaddrinfo
 from string import Template, ascii_letters, ascii_lowercase, digits
 from subprocess import PIPE, STDOUT, Popen
 from threading import Event, Thread
-from time import time
+from time import strftime, strptime, time
 from typing import NamedTuple, NoReturn
 from urllib.parse import urlparse
 
@@ -74,8 +74,9 @@ cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 /", " Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
-current_time = datetime.now().astimezone().strftime("%Y/%m/%d - %H:%M:%S")
-local_version = date.fromisoformat("2026-10-04")
+DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
+current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
+local_version = date.fromisoformat("2026-10-05")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -197,7 +198,7 @@ DELETED_LINES = "\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K"
 HASH_CHARS = {"sha256": 32, "sha384": 48, "sha512": 64}
 HTTP_SCHEMES = {"http", "https"}
 LATIN1_MAX = 0xFF
-LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2)
+LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2, 8)
 SECONDS_BOUNDS = (86400, 31536000)
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 21)
 STYLE = (
@@ -558,10 +559,11 @@ def match_url_lines(all_analysis):
 
     Splitting on `" ; "` and comparing the URL field (index 1) avoids
     substring collisions (e.g. `example.com` vs `example.com.evil.com`);
-    related to `-a` option and to the analysis history file.
+    damaged lines are ignored. Related to `-a` option and to the analysis
+    history file.
     """
     return [line for line in all_analysis
-            if line.split(" ; ")[1:2] == [URL]]
+            if line.split(" ; ")[1:2] == [URL] and valid_analysis_line(line)]
 
 
 def save_analysis_results(t_cnt):
@@ -582,7 +584,8 @@ def save_analysis_results(t_cnt):
     ok, fallback = validate_file_access(HISTORY_FILE, context="history")
     if not ok:
         return fallback
-    with HISTORY_FILE.open("a+", encoding="utf8") as all_analysis:
+    with HISTORY_FILE.open("a+", encoding="utf8",
+                           errors="replace") as all_analysis:
         all_analysis.seek(0)
         url_ln = match_url_lines(all_analysis)
         analysis_totals = [current_time, URL, en_cnt, m_cnt, f_cnt, i_cnt[0],
@@ -686,13 +689,34 @@ def adjust_old_analysis(url_ln):
     return updated_lines
 
 
+def valid_analysis_line(line):
+    """Check if a line of the analysis history file is well-formed.
+
+    Once adjusted to the current format it must have a date as `humble`
+    writes it, a printable URL and six totals; blank, truncated or manually
+    altered lines are ignored instead of ending the analysis, or the
+    statistics (`-a` option), with an exception.
+    """
+    fields = adjust_old_analysis([line])[0].strip().split(" ; ")
+    if len(fields) != LENGTH_BOUNDS[6]:
+        return False
+    try:
+        analysis_date = strftime(DATE_FORMAT, strptime(fields[0], DATE_FORMAT))
+        totals = [int(total) for total in fields[2:]]
+    except ValueError:
+        return False
+    return (analysis_date == fields[0] and fields[1].isprintable()
+            and min(totals) >= 0)
+
+
 def url_analytics(*, is_global=False):
     """Print analysis statistics for all analyses performed on a URL and exit.
 
     Related to the `-a` option.
     """
     url_scope = extract_global_metrics if is_global else get_analysis_metrics
-    with HISTORY_FILE.open(encoding="utf8") as all_analysis:
+    with HISTORY_FILE.open(encoding="utf8",
+                           errors="replace") as all_analysis:
         analysis_metrics = url_scope(all_analysis)
     l10n_det = "[global_stats_analysis]" if is_global else "[stats_analysis]"
     url_string = "" if is_global else URL
@@ -761,7 +785,7 @@ def get_third_metrics(adj_url_ln):
 
     Related to `-a` option.
     """
-    fields = [line.strip().split(";") for line in adj_url_ln]
+    fields = [line.strip().split(" ; ") for line in adj_url_ln]
     num_a = len(adj_url_ln)
     return tuple(sum(int(f[i]) for f in fields) // num_a
                  for i in range(2, 7))
@@ -849,8 +873,8 @@ def calculate_highlights(url_ln, field_index, func):
     Based on the required highlight metric; related to `-a` option.
     """
     target_line = func(
-        url_ln, key=lambda line: int(line.split(";")[field_index].strip()))
-    return target_line.split(";")[0].strip()
+        url_ln, key=lambda line: int(line.split(" ; ")[field_index].strip()))
+    return target_line.split(" ; ")[0].strip()
 
 
 def get_trends(adj_url_ln):
@@ -861,7 +885,7 @@ def get_trends(adj_url_ln):
     trends = []
     for section, field_idx in zip(sections_t, fields_t, strict=True):
         values = [int(parts[field_idx].strip()) for line in adj_url_ln
-                  if len(parts := line.strip().split(";")) > field_idx]
+                  if len(parts := line.strip().split(" ; ")) > field_idx]
         trends.append(f"{(get_detail(section, replace=True).ljust(max_secl))}\
  {calculate_trends(values)}")
     return trends
@@ -992,7 +1016,7 @@ def extract_global_metrics(all_analysis):
 
     Related to `-a` option.
     """
-    url_ln = list(all_analysis)
+    url_ln = list(filter(valid_analysis_line, all_analysis))
     if not url_ln:
         print_error_detail("[no_global_analysis]")
     adj_url_ln = adjust_old_analysis(url_ln)
@@ -2039,7 +2063,7 @@ def print_browser_compatibility(compat_headers):
 def check_input_traversal(user_input):
     """Check user input for path traversal patterns.
 
-    Exit is one is found; related to `-of` and `-op` options.
+    Exit if one is found; related to `-of` and `-op` options.
     """
     input_traversal_ptrn = re.compile(RE_PATTERN[2])
     if input_traversal_ptrn.search(user_input):
@@ -3249,6 +3273,7 @@ def export_pdf_file(tmp_filename, *, export_all=False,
     pdf = PDF()
     if content is None:
         content = Path(tmp_filename).read_text(encoding="utf8")
+    content = content.encode("latin-1", "backslashreplace").decode("latin-1")
     initialize_pdf(pdf, tmp_filename, content, YPos,
                    export_all=export_all)
 
@@ -4089,11 +4114,12 @@ def extract_har_content(har_data):
     try:
         response = har_data["log"]["entries"][0]["response"]
         status_code = int(response.get("status", 0))
-        input_headers = {header["name"].title():
-                         (header.get("value") or "").strip()
-                         for header in response["headers"]
-                         if header.get("name")}
-    except (AttributeError, IndexError, KeyError, TypeError, ValueError):
+        input_headers = {
+            sanitize_header_value(header["name"].title()):
+            sanitize_header_value((header.get("value") or "").strip())
+            for header in response["headers"] if header.get("name")}
+    except (AttributeError, IndexError, KeyError, OverflowError, TypeError,
+            ValueError):
         return {}, 0
     return input_headers, status_code
 
@@ -4108,11 +4134,11 @@ def analyze_input_file(input_file):
     Related to `-if` option.
     """
     file_path = Path(input_file)
-    if not file_path.is_file():
-        print_error_detail("[args_inputnotfound]")
     input_headers = {}
     status_code = 0
     try:
+        if not file_path.is_file():
+            print_error_detail("[args_inputnotfound]")
         with file_path.open(encoding="utf8") as f:
             first_char = f.read(1).strip()
         if first_char == "{":
@@ -4126,6 +4152,8 @@ def analyze_input_file(input_file):
             )
     except UnicodeDecodeError:
         print_error_detail("[args_inputunicode]")
+    except OSError:
+        print_error_detail("[args_inputaccess]")
     return input_headers, False, status_code
 
 
@@ -4136,12 +4164,13 @@ def parse_input_file(input_headers, input_source, status_code):
     """
     parts = input_source.readline().strip().split()
     if len(parts) >= LENGTH_BOUNDS[5] and parts[1].isdecimal():
-        status_code = int(parts[1])
+        status_code = int(parts[1][:3])
     for line in input_source:
         line_strip = line.strip()
         if ":" in line:
             input_header, input_value = line_strip.split(":", 1)
-            input_headers[input_header.title()] = input_value.strip()
+            input_headers[sanitize_header_value(input_header.title())] = (
+                sanitize_header_value(input_value.strip()))
     if not input_headers:
         print_error_detail("[args_inputlines]")
     return input_headers, status_code
@@ -4312,6 +4341,7 @@ def process_requests_exception(exception):
         requests.exceptions.InvalidSchema: "[e_ischema]",
         requests.exceptions.InvalidURL: "[e_url]",
         requests.exceptions.MissingSchema: "[e_mschema]",
+        requests.exceptions.ProxyError: "[e_proxy]",
         requests.exceptions.SSLError: "[e_ssl]",
         requests.exceptions.TooManyRedirects: "[e_redirect]",
     }

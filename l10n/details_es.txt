@@ -975,6 +975,9 @@ Cabeceras de respuesta HTTP
 [e_mschema]
  Error: Incluye un esquema válido ('http://' o 'https://') en la URL.
 
+[e_proxy]
+ Error: El proxy ha rechazado o no ha podido reenviar la petición; revísalo y prueba de nuevo.
+
 [e_url]
  Error: La URL no resuelve; revísala y prueba de nuevo.
 
@@ -1935,6 +1938,9 @@ Error: El parámetro '-if' requiere el parámetro '-u'.
 [args_inputnotfound]
 Error: No se encuentra el fichero en la ruta indicada.
 
+[args_inputaccess]
+Error: No se pudo leer el fichero; revisa su ruta y sus permisos.
+
 [args_inputunicode]
 Error: El fichero no contiene texto unicode válido en formato UTF-8 o es un binario.
 
@@ -1945,7 +1951,7 @@ Error: El fichero no contiene líneas con el formato 'cabecera http: valor'. Ej.
 Error: El fichero HAR no contiene cabeceras de respuesta HTTP válidas.
 
 [args_malformedhar]
-Error: El fichero HAR contiene sintáxis JSON inválida.
+Error: El fichero HAR contiene sintaxis JSON inválida.
 
 [args_lang]
 Error: Los parámetros '-c' y '-l' requieren de los parámetros '-u' o '-a'. El parámetro '-cicd' requiere el parámetro '-u'.
@@ -1957,7 +1963,7 @@ Error: El parámetro '-ua' requiere el parámetro '-u'.
 Error: Los parámetros '-b', '-c', '-cicd', '-df', '-o', '-p', '-r' y '-s' requieren el parámetro '-u'.
 
 [args_customfile]
-Error: El parámetro -of' requiere los parámetros '-u' y '-o'.
+Error: El parámetro '-of' requiere los parámetros '-u' y '-o'.
 
 [notestssl_fileexec]
 Error: 'testssl' no se encuentra en el PATH o no es un fichero ejecutable.
@@ -2309,7 +2315,7 @@ Generador
  verifica que se muestre un error al analizar un fichero HAR vacío.
 
 [test_har_malformed_file]
- verifica que se muestre un error al analizar un fichero HAR con sintáxis JSON inválida.
+ verifica que se muestre un error al analizar un fichero HAR con sintaxis JSON inválida.
 
 [test_http_exception]
  verifica que se muestre un error por excepción HTTP durante el análisis.
