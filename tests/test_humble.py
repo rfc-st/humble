@@ -103,6 +103,7 @@ IGNORED_SCENARIOS = {
     "test_testssl_error",
     "test_updates_error",
     "test_outdated_humble",
+    "test_newer_humble",
     "test_unsupported_python_version",
 }
 PATHS = {
@@ -312,6 +313,7 @@ TEST_CFGS = {
     "test_license": (["-lic"], "copyright"),
     "test_missing_output_format": (["-u", TEST_URLS[9], "-op",
                                     HUMBLE_OUTPUT_PATHS[0]], "Error:"),
+    "test_newer_humble": ([], "humble"),
     "test_no_headers": (["-u", TEST_URLS[4], "-if", PATHS["NO_HEADERS"]],
                         "contain"),
     "test_no_security_headers": (["-u", TEST_URLS[4], "-if",
@@ -369,7 +371,8 @@ TEST_CFGS = {
     "test_unsupported_header": (["-u", TEST_URLS[9], "-s", "testhumbleheader"],
                                 "testhumbleheader"),
     "test_unsupported_python_version": ([], "humble"),
-    "test_updates": (["-v"], "Keeping your security tools"),
+    "test_updates": (["-v"], ("Keeping your security tools",
+                             "Check for updates at")),
     "test_updates_error": (["-v"], "error"),
     "test_url_malformed": (["-u", TEST_URLS[16]], "Error"),
     "test_url_statistics": (["-u", TEST_URLS[5], "-if", PATHS["ALL_HEADERS"],
@@ -682,6 +685,26 @@ def test_outdated_humble(capsys):
                                      mock_local_version)
     captured = capsys.readouterr()
     assert mock_github_version.isoformat() in captured.out
+
+
+def test_newer_humble(capsys):
+    """Verify a notice is displayed related to newer versions.
+
+    Test whether the local version of `humble.py` is up to 30 days older than
+    the GitHub version.
+    """
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main = l10n_main
+    humble_module.l10n_map = l10n_map
+    humble_module.args = args
+    mock_github_version = date(2026, 1, 11)
+    mock_local_version = date(2026, 1, 1)
+    mock_days_diff = (mock_github_version - mock_local_version).days
+    humble_module.check_updates_diff(mock_days_diff, mock_github_version,
+                                     mock_local_version)
+    captured = capsys.readouterr()
+    assert "a newer one is available" in captured.out
 
 
 def test_python_version():

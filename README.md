@@ -241,7 +241,7 @@
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_global_analytics.jpg" alt="(Linux) - Statistics of the analysis performed against all URLs in Spanish">
 </p>
 <br />
-.: (Windows) - Checking for updates<br />
+.: (Linux) - All possible messages when checking for updates.<br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_update.PNG" alt="(Windows) - Checking for updates">

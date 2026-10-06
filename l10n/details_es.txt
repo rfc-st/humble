@@ -1876,9 +1876,12 @@ Tu versión     :
 [humble_not_recent]
  Tu versión de 'humble' no es reciente.
 
+[humble_newer]
+ Tu versión de 'humble' es reciente, pero hay una más nueva disponible.
+
 [humble_recent]
 
- Utilizas una versión reciente de 'humble' - ¡genial! :)
+ Tienes la última versión de 'humble' - ¡genial! :)
 
  Mantener tus herramientas de seguridad (como ésta) actualizadas te permite:
 
@@ -2357,6 +2360,9 @@ Generador
 
 [test_missing_output_format]
  verifica que se muestre un error al definir la ruta de exportación y omitir el formato de exportación.
+
+[test_newer_humble]
+ verifica que se muestre un aviso si la versión local de humble.py es reciente pero no la última.
 
 [test_no_headers]
  verifica que se muestre un error ante la ausencia de cabeceras de respuesta en el análisis.

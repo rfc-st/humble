@@ -1875,9 +1875,12 @@ Your version   :
 [humble_not_recent]
  Your version of 'humble' is not recent.
 
+[humble_newer]
+ Your version of 'humble' is recent, but a newer one is available.
+
 [humble_recent]
 
- You're using a recent version of 'humble' - cool! :)
+ You have the latest version of 'humble' - cool! :)
 
  Keeping your security tools (such as this one) updated allows you to:
 
@@ -2379,6 +2382,9 @@ Generator
 
 [test_missing_output_format]
  verify an error message is displayed when defining the export path and omitting the export format.
+
+[test_newer_humble]
+ verify a notice is displayed when the local version of humble.py is recent but not the latest.
 
 [test_no_headers]
  verify the absence of response headers is indicated in an analysis.
