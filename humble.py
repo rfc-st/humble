@@ -113,8 +113,7 @@ ERROR_CODES_CLIENT = {*range(400, 408), *range(409, 418), *range(421, 427),
                       428, 429, 431, 451}
 ERROR_CODES_MIXED = (400, 451, 500, 511, 599)
 EXP_HEADERS = (
-    "activate-storage-access", "critical-ch", "document-policy",
-    "nel", "no-vary-search", "permissions-policy",
+    "critical-ch", "document-policy", "nel", "permissions-policy",
     "sec-private-state-token-lifetime", "speculation-rules",
     "supports-loading-mode",
 )
@@ -4873,8 +4872,7 @@ t_acceptch_dep = ("content-dpr", "dpr", "sec-ch-ua-full-version",
 # https://mdn.io/Access-Control-Allow-Origin
 t_accecao = ("*", "null")
 
-# https://privacycg.github.io/storage-access-headers/#activate-storage-access-header
-# https://developers.google.com/privacy-sandbox/blog/storage-access-api-headers-logic
+# https://mdn.io/Activate-Storage-Access
 t_act = ("allowed-origin", "load", "retry")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
@@ -5144,7 +5142,7 @@ if header_eligible("access-control-max-age") and accesma_header.isascii() \
 if header_eligible("activate-storage-access"):
     act_h = headers_l["activate-storage-access"]
     if not any(elem in act_h for elem in t_act):
-        print_details("[iact_h]", "[iact]", "m", i_cnt)
+        print_details("[iact_h]", "[iact]", "d", i_cnt)
     if ("retry" in act_h) and ("allowed-origin" not in act_h):
         print_details("[iactr_h]", "[iactr]", "d", i_cnt)
 

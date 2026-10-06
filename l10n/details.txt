@@ -623,8 +623,7 @@
 
 [iact]
  Include at least one valid directive.
- Ref: https://privacysandbox.google.com/blog/storage-access-api-headers-logic
- Ref: https://privacycg.github.io/storage-access-headers/#activate-storage-access-header
+ Ref: https://mdn.io/Activate-Storage-Access
 
 [iactr_h]
  Activate-Storage-Access (Incorrect Values)
@@ -639,7 +638,7 @@
 
 [iactr]
  'retry' also requires 'allowed-origin'.
- Ref: https://privacysandbox.google.com/blog/storage-access-api-headers-logic
+ Ref: https://mdn.io/Activate-Storage-Access
 
 [imethods_hh]
  Allow (Insecure Methods)
@@ -705,7 +704,7 @@
  (*) Permissions-Policy-Report-Only (Ignored Directives)
 
 [ifnvarys_h]
- (*) No-Vary-Search (No Valid Directives)
+ No-Vary-Search (No Valid Directives)
 
 [ifpol_h]
  (*) Permissions-Policy (Too Permissive Value)
