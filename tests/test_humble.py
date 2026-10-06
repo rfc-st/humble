@@ -142,8 +142,9 @@ class _LocalStatusHandler(BaseHTTPRequestHandler):
         status_code = int(self.path.rsplit("/", 1)[-1])
         self.send_response(status_code)
         self.send_header("Content-Type", "text/html")
-        self.send_header("X-Request-User-Agent",
-                         self.headers.get("User-Agent", ""))
+        user_agent = self.headers.get("User-Agent", "")
+        user_agent = user_agent.replace("\r", "").replace("\n", "")
+        self.send_header("X-Request-User-Agent", user_agent)
         self.end_headers()
 
     def do_HEAD(self):
