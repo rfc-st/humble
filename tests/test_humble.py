@@ -79,6 +79,8 @@ HUMBLE_TEST_FILES = {
     "GRADE_B": "headers_test_grade_b.txt",
     "GRADE_C": "headers_test_grade_c.txt",
     "GRADE_D": "headers_test_grade_d.txt",
+    "HAR_ENTRIES": "headers_test_entries.har",
+    "CHALLENGE": "headers_test_challenge.txt",
     "CLIENT_ERROR": "client_error_test.txt",
     "CSP_BASE64_NONCE": "headers_test_csp_base64_nonce.txt",
     "CSP_HEX_NONCE": "headers_test_csp_hex_nonce.txt",
@@ -90,6 +92,7 @@ HUMBLE_TEST_FILES = {
     "NO_SEC_HEADERS": "headers_test_nonesecurity.txt",
     "NONEXISTENT": "headers_test_nonexistent.txt",
     "PERFECT_OWASP": "headers_test_perfect_owasp.txt",
+    "REDIRECTS": "headers_test_redirects.txt",
     "UNICODE": "headers_test_unicode.txt",
 }
 CSP_FALLBACK_MISSING = ("child-src", "connect-src", "img-src", "object-src",
@@ -139,6 +142,8 @@ class _LocalStatusHandler(BaseHTTPRequestHandler):
         status_code = int(self.path.rsplit("/", 1)[-1])
         self.send_response(status_code)
         self.send_header("Content-Type", "text/html")
+        self.send_header("X-Request-User-Agent",
+                         self.headers.get("User-Agent", ""))
         self.end_headers()
 
     def do_HEAD(self):
@@ -206,6 +211,8 @@ TEST_CFGS = {
                              "does not meet"),
     "test_cicd_grade_e": (["-u", TEST_URLS[4], "-if",
                            PATHS["NO_SEC_HEADERS"], "-cicd", "E"], "meets"),
+    "test_challenge_response": (["-u", TEST_URLS[2], "-if",
+                                 PATHS["CHALLENGE"]], "challenge page"),
     "test_client_error_response": (["-u", TEST_URLS[1], "-if",
                                     PATHS["CLIENT_ERROR"]], "HTTP code"),
     "test_client_unsupported_error": (["-u", f"{LOCAL_SERVER_URL}/status/432"],
@@ -281,6 +288,8 @@ TEST_CFGS = {
     "test_global_statistics": (["-a"], "Empty headers"),
     "test_har_file": (["-u", TEST_URLS[2], "-if", HUMBLE_HAR_FILE],
                         "Input:"),
+    "test_har_entry": (["-u", TEST_URLS[2], "-if", PATHS["HAR_ENTRIES"]],
+                       "Code  : 200"),
     "test_har_empty_file": (["-u", TEST_URLS[2], "-if", HUMBLE_HAR_EMPTY_FILE],
                         "Error:"),
     "test_har_malformed_file": (["-u", TEST_URLS[2], "-if",
@@ -288,6 +297,8 @@ TEST_CFGS = {
     "test_http_exception": (["-u", TEST_URLS[11]], "scheme"),
     "test_input_file": (["-u", TEST_URLS[2], "-if", HUMBLE_INPUT_FILE],
                         "Input:"),
+    "test_input_file_redirects": (["-u", TEST_URLS[2], "-if",
+                                   PATHS["REDIRECTS"]], "Code  : 200"),
     "test_input_file_nonexistent": (["-u", TEST_URLS[2], "-if",
                                      PATHS["NONEXISTENT"]], "found"),
     "test_input_traversal": (["-u", TEST_URLS[9], "-op",
@@ -323,6 +334,15 @@ TEST_CFGS = {
         ["-u", TEST_URLS[9], "-H", "Cache-Control: no-cache", "-H",
          "If-Modified-Since: Wed, 21 Oct 2020 00:00:00 GMT"],
         "Analysis Grade:",
+    ),
+    "test_request_useragent": (
+        ["-u", f"{LOCAL_SERVER_URL}/status/200", "-H",
+         "User-Agent: humble-test", "-r"],
+        "X-Request-User-Agent: humble-test",
+    ),
+    "test_request_useragent_error": (
+        ["-u", TEST_URLS[9], "-ua", "2", "-H", "User-Agent: humble-test"],
+        "not both",
     ),
     "test_request_invalid_header": (
         ["-u", TEST_URLS[9], "-H", ""], "least"),
@@ -1006,7 +1026,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-10-05")
+local_version = date.fromisoformat("2026-10-06")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

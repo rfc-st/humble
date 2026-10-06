@@ -46,7 +46,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Can display fingerprint statistics for a specific term or the Top 20.
 - Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.
 - <a href="https://github.com/rfc-st/humble/#AI" target="_blank">AI</a>-driven security triage and remediation guidance.
-- Provides dozens of <a href="https://github.com/rfc-st/humble/#unit-tests" target="_blank">unit tests</a> to verify compatibility with your environment; requires <a href="https://pypi.org/project/pytest/"  target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/" target="_blank">pytest-cov</a>.
+- Provides over 130 <a href="https://github.com/rfc-st/humble/#unit-tests" target="_blank">unit tests</a> to help verify it works correctly in your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.
 - Code regularly audited with several quality, style and security <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#quality-style-and-security-tools" target="_blank">tools</a>.<br />
 - Tested, one by one, on thousands of URLs.
 - Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.
@@ -82,6 +82,6 @@ And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>October 05, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>October 06, 2026</em></span>
 </span>
 </aside>

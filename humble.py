@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-10-05")
+local_version = date.fromisoformat("2026-10-06")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -105,6 +105,10 @@ HISTORY_FILE = Path(HUMBLE_FILES[0])
 
 # HTTP status codes, network analysis and timeouts
 CDN_HTTP_CODES = {*range(500, 512), *range(520, 528), 530}
+# https://developers.cloudflare.com/cloudflare-challenges/challenge-types/challenge-pages/detect-response/
+# https://docs.aws.amazon.com/waf/latest/developerguide/waf-captcha-and-challenge-actions.html
+# https://community.vercel.com/t/production-api-and-vercel-dev-blocked-by-x-vercel-mitigated-challenge-403-false-cors/41873
+CHALLENGE_HEADERS = {"cf-mitigated", "x-amzn-waf-action", "x-vercel-mitigated"}
 ERROR_CODES_CLIENT = {*range(400, 408), *range(409, 418), *range(421, 427),
                       428, 429, 431, 451}
 ERROR_CODES_MIXED = (400, 451, 500, 511, 599)
@@ -1750,8 +1754,8 @@ def print_basic_info(export_filename):
 def print_extended_info(reliable):
     """Print extended analysis details.
 
-    Request (`-H` option) and skipped (`-s` option) headers, proxy usage
-    (`-p` option) and specific HTTP 4xx errors.
+    Include the request and skipped headers, proxy usage, specific HTTP 4xx
+    errors and challenge pages of a WAF or bot protection.
     """
     if added_request_headers:
         print_request_headers(added_request_headers)
@@ -1761,6 +1765,8 @@ def print_extended_info(reliable):
         print_detail_l("[proxy_analysis_note]")
         print(f" {args.proxy}")
     print_extra_info(reliable)
+    if CHALLENGE_HEADERS & headers_l.keys():
+        print(get_detail("[analysis_challenge_note]", replace=True))
 
 
 def print_extra_info(reliable):
@@ -3299,6 +3305,7 @@ def initialize_pdf(pdf, ypos):
         ypos=ypos,
     )
 
+
 def generate_pdf(tmp_filename, content, ctx, *, export_all=False):
     """Generate the required file structure, including metadata.
 
@@ -4102,12 +4109,19 @@ def parse_har_file(file_path):
 def extract_har_content(har_data):
     """Extract response headers and status code from a HAR file.
 
+    The entry analyzed is the one requested with the `-u` option or, if none
+    matches, the first one.
+
     A HAR file may be valid JSON yet not follow the expected structure, so
     any unexpected type yields empty headers, reported by the caller via
     `[args_harlines]`.
     """
     try:
-        response = har_data["log"]["entries"][0]["response"]
+        entries = har_data["log"]["entries"]
+        response = next(
+            (entry for entry in entries if entry.get("request", {}).get(
+                "url", "").rstrip("/") == URL.rstrip("/")),
+            entries[0])["response"]
         status_code = int(response.get("status", 0))
         input_headers = {
             sanitize_header_value(header["name"].title()):
@@ -4153,14 +4167,19 @@ def analyze_input_file(input_file):
 
 
 def parse_input_file(input_headers, input_source, status_code):
-    """Parse the headers and values.
+    """Parse the headers and values of the last response in the file.
+
+    A file can hold several responses, one per redirect (e.g. curl with
+    `--location`); as in a live analysis, the last one is analyzed.
 
     Related to `-if` option.
     """
-    parts = input_source.readline().split()
+    content = input_source.read()
+    status_line, *lines = content[content.rfind("\nHTTP/") + 1:].split("\n")
+    parts = status_line.split()
     if len(parts) > 1 and parts[1].isdecimal():
         status_code = int(parts[1][:3])
-    for line in input_source:
+    for line in lines:
         if ":" in line:
             input_header, input_value = line.strip().split(":", 1)
             input_headers[sanitize_header_value(input_header.title())] = (
@@ -4381,6 +4400,8 @@ def parse_request_headers(request_headers):
         quoted = ", ".join(f'"{h}"' for h in malformed_headers)
         print(f"{get_detail('[e_custom_headers]', replace=True)}: {quoted}")
         sys.exit(1)
+    if args.user_agent and "user-agent" in map(str.lower, headers):
+        print_error_detail("[args_useragent_header]", clean_lines=True)
     return headers
 
 
@@ -4720,11 +4741,10 @@ if args.input_file is None:
     if args.proxy:
         process_proxy_url(args.proxy)
         proxy = {"http": args.proxy, "https": args.proxy}
-    custom_headers = REQ_HEADERS.copy()
+    custom_headers = REQ_HEADERS | {"User-Agent": ua_header}
     if args.request_header:
         added_request_headers = parse_request_headers(args.request_header)
         custom_headers.update(added_request_headers)
-    custom_headers["User-Agent"] = ua_header
     (headers, status_code, reliable, body, is_html, final_url,
      redirect_count) = (
         process_http_request(status_code, reliable, body, proxy,

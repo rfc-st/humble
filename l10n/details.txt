@@ -1055,6 +1055,9 @@ HTTP Response Headers
 [analysis_noredirects_note]
  Note : Redirects were not followed due to the '-df' parameter.
 
+[analysis_challenge_note]
+ Note : The response is a challenge page of a WAF or bot protection.
+
 [analysis_request_note]
  Note : The HTTP request headers expressly included for this analysis are
 
@@ -2210,6 +2213,9 @@ Generator
 [test_cicd_grade_e]
  verify the grade of a CI/CD analysis without enabled security headers.
 
+[test_challenge_response]
+ verify a note is displayed when the response is a challenge page.
+
 [test_client_error_response]
  verify the analysis shows the HTTP 4xx error code response.
 
@@ -2336,6 +2342,9 @@ Generator
 [test_har_file]
  verify HAR files are analyzed.
 
+[test_har_entry]
+ verify the entry of a HAR file that matches the URL is the one analyzed.
+
 [test_har_empty_file]
  verify an error is displayed when analyzing an empty HAR file.
 
@@ -2347,6 +2356,9 @@ Generator
 
 [test_input_file]
  verify raw response files are analyzed.
+
+[test_input_file_redirects]
+ verify the last response of a raw response file with redirects is the one analyzed.
 
 [test_input_file_nonexistent]
  verify an error message is displayed for non-existent raw response file.
@@ -2404,6 +2416,12 @@ Generator
 
 [test_request_headers]
  verify the completion of an analysis after specifying headers in the request.
+
+[test_request_useragent]
+ verify the 'User-Agent' specified in the request headers is the one sent.
+
+[test_request_useragent_error]
+ verify an error is displayed when the 'User-Agent' is specified twice.
 
 [test_request_invalid_header]
  verify an error is displayed for invalid request headers.
@@ -2617,6 +2635,9 @@ KO: The analysis does not meet the required grade
 
 [cicd_no_grade]
 Error: the analysis grade could not be determined; the analysis output may be malformed or incomplete.
+
+[args_useragent_header]
+Error: Choose either the '-ua' parameter or a 'User-Agent' header in '-H', not both.
 
 [args_useragent_single]
 Error: The '-ua' parameter only accepts one value.

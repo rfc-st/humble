@@ -904,7 +904,7 @@
  Content-Type (Valor incorrecto - Cuerpo de la respuesta)
 
 [ictlmeta]
- Los únicos valores permtidos son 'text/html; charset=utf-8' o 'text/html; charset=UTF-8'
+ Los únicos valores permitidos son 'text/html; charset=utf-8' o 'text/html; charset=UTF-8'
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta#charset
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv
 
@@ -1055,6 +1055,9 @@ Cabeceras de respuesta HTTP
 
 [analysis_noredirects_note]
  Nota : No se siguieron redirecciones debido al parámetro '-df'.
+
+[analysis_challenge_note]
+ Nota : La respuesta es una página de desafío de un WAF o protección anti-bots.
 
 [analysis_request_note]
  Nota : Las cabeceras HTTP de petición incluídas expresamente en este análisis son
@@ -2188,6 +2191,9 @@ Generador
 [test_cicd_grade_e]
  verifica la nota de un análisis CI/CD sin cabeceras de seguridad habilitadas.
 
+[test_challenge_response]
+ verifica que se muestre una nota cuando la respuesta es una página de desafío.
+
 [test_client_error_response]
  verifica que el análisis muestre la respuesta del código de error HTTP 4xx.
 
@@ -2314,6 +2320,9 @@ Generador
 [test_har_file]
  verifica que se analice correctamente un fichero HAR.
 
+[test_har_entry]
+ verifica que se analice la entrada del fichero HAR que corresponde a la URL.
+
 [test_har_empty_file]
  verifica que se muestre un error al analizar un fichero HAR vacío.
 
@@ -2325,6 +2334,9 @@ Generador
 
 [test_input_file]
  verifica que se analice correctamente un fichero con cabeceras de respuesta.
+
+[test_input_file_redirects]
+ verifica que se analice la última respuesta de un fichero con redirecciones.
 
 [test_input_file_nonexistent]
  verifica que se muestre mensaje de error con un fichero de input inexistente.
@@ -2382,6 +2394,12 @@ Generador
 
 [test_request_headers]
  verifica que un análisis finaliza correctamente tras añadir en la petición cabeceras HTTP.
+
+[test_request_useragent]
+ verifica que se envíe el 'User-Agent' indicado en las cabeceras de la petición.
+
+[test_request_useragent_error]
+ verifica que se muestre un error cuando el 'User-Agent' se indica dos veces.
 
 [test_request_invalid_header]
  verifica que se muestre un error para las cabeceras de petición HTTP incorrectas.
@@ -2595,6 +2613,9 @@ KO: El análisis no alcanza la nota requerida
 
 [cicd_no_grade]
 Error: no se pudo determinar la nota del análisis; puede que el análisis no esté bien formado o esté incompleto.
+
+[args_useragent_header]
+Error: Elige entre el parámetro '-ua' o una cabecera 'User-Agent' en '-H', no ambos.
 
 [args_useragent_single]
 Error: El parámetro '-ua' solo acepta un valor.
