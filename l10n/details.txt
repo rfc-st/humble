@@ -1876,11 +1876,11 @@ Your version   :
  Your version of 'humble' is not recent.
 
 [humble_newer]
- Your version of 'humble' is recent, but a newer one is available.
+ Your version of 'humble' is recent, but there are updates available.
 
 [humble_recent]
 
- You have the latest version of 'humble' - cool! :)
+ You have a recent version of 'humble', cool! :)
 
  Keeping your security tools (such as this one) updated allows you to:
 

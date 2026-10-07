@@ -1877,11 +1877,11 @@ Tu versión     :
  Tu versión de 'humble' no es reciente.
 
 [humble_newer]
- Tu versión de 'humble' es reciente, pero hay una más nueva disponible.
+ Tu versión de 'humble' es reciente, pero hay actualizaciones disponibles.
 
 [humble_recent]
 
- Tienes la última versión de 'humble' - ¡genial! :)
+ Tienes una versión reciente de 'humble', ¡genial! :)
 
  Mantener tus herramientas de seguridad (como ésta) actualizadas te permite:
 

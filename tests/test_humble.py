@@ -704,7 +704,7 @@ def test_newer_humble(capsys):
     humble_module.check_updates_diff(mock_days_diff, mock_github_version,
                                      mock_local_version)
     captured = capsys.readouterr()
-    assert "a newer one is available" in captured.out
+    assert "there are updates available" in captured.out
 
 
 def test_python_version():
@@ -1050,7 +1050,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-10-06")
+local_version = date.fromisoformat("2026-10-07")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,
