@@ -1058,6 +1058,9 @@ Cabeceras de respuesta HTTP
 [analysis_challenge_note]
  Nota : La respuesta es una página de desafío de un WAF o protección anti-bots.
 
+[analysis_cloudflare_note]
+ Nota : La respuesta llegó a través de Cloudflare, que puede añadir, modificar o eliminar cabeceras.
+
 [analysis_request_note]
  Nota : Las cabeceras HTTP de petición incluídas expresamente en este análisis son
 
@@ -2193,6 +2196,9 @@ Generador
 [test_cicd_grade_e]
  verifica la nota de un análisis CI/CD sin cabeceras de seguridad habilitadas.
 
+[test_cicd_notes]
+ verifica que se conserven todas las notas de un análisis en un análisis CI/CD.
+
 [test_challenge_response]
  verifica que se muestre una nota cuando la respuesta es una página de desafío.
 
@@ -2201,6 +2207,9 @@ Generador
 
 [test_client_unsupported_error]
  verifica que el análisis muestre un mensaje para los códigos de error HTTP 4xx no soportados.
+
+[test_cloudflare_response]
+ verifica que se muestre una nota cuando la respuesta se entrega a través de Cloudflare.
 
 [test_corner_cases]
  verifica que se comprueben casos específicos en varias cabeceras.

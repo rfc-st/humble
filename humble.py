@@ -1756,7 +1756,8 @@ def print_extended_info(reliable):
     """Print extended analysis details.
 
     Include the request and skipped headers, proxy usage, specific HTTP 4xx
-    errors and challenge pages of a WAF or bot protection.
+    errors, challenge pages of a WAF or bot protection and responses delivered
+    through Cloudflare.
     """
     if added_request_headers:
         print_request_headers(added_request_headers)
@@ -1768,6 +1769,8 @@ def print_extended_info(reliable):
     print_extra_info(reliable)
     if CHALLENGE_HEADERS & headers_l.keys():
         print(get_detail("[analysis_challenge_note]", replace=True))
+    elif "cf-ray" in headers_l:
+        print(get_detail("[analysis_cloudflare_note]", replace=True))
 
 
 def print_extra_info(reliable):
@@ -2494,16 +2497,13 @@ def check_cicd(analysis_grade, threshold_grade):
 def build_cicd_info(info_lines):
     """Build the CI/CD info dict from analysis metadata lines.
 
-    Related to `-cicd` option.
+    Duplicate keys, such as several notes, are grouped; related to `-cicd`
+    option.
     """
-    file_label = get_detail("[cicd_file]", replace=True)
-    return {
-        key.strip(): value.strip()
-        for line in info_lines
-        if ":" in line
-        for key, value in [line.split(":", 1)]
-        if key.strip() != file_label
-    }
+    info = {}
+    format_json(info, info_lines)
+    info.pop(get_detail("[cicd_file]", replace=True), None)
+    return info
 
 
 def build_cicd_totals(tmp_filename, info_lines, totals, labels, threshold=None):
@@ -2882,7 +2882,7 @@ def write_json(json_lns, json_section, sections):
 def format_json(json_data, json_lns):
     """Format content, grouping duplicate keys, for a JSON export.
 
-    Related to `-o json -b` options.
+    Related to `-o json` and `-cicd` options.
     """
     for line in json_lns:
         if ":" not in line:
@@ -2984,15 +2984,12 @@ def json_detailed_empty(json_lns):
 
 
 def json_detailed_info(json_lns):
-    """Print the contents of basic info.
+    """Print the contents of basic info, grouping duplicate keys.
 
     Related to `-o json` option.
     """
     info = {get_detail("[json_gen]", replace=True): BANNER_VERSION}
-    for line in json_lns:
-        key, value = line.split(":", 1)
-        key = key.strip()
-        info[key] = value.strip()
+    format_json(info, json_lns)
     return info
 
 

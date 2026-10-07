@@ -1,0 +1,10 @@
+HTTP/2 200
+server: cloudflare
+cf-ray: 8f1a2b3c4d5e6f70-MAD
+cf-cache-status: DYNAMIC
+content-type: text/html; charset=UTF-8
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-frame-options: SAMEORIGIN
+referrer-policy: same-origin
+expect-ct: max-age=86400, enforce

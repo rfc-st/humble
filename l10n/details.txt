@@ -1057,6 +1057,9 @@ HTTP Response Headers
 [analysis_challenge_note]
  Note : The response is a challenge page of a WAF or bot protection.
 
+[analysis_cloudflare_note]
+ Note : The response came through Cloudflare, which may add, modify or remove headers.
+
 [analysis_request_note]
  Note : The HTTP request headers expressly included for this analysis are
 
@@ -2215,6 +2218,9 @@ Generator
 [test_cicd_grade_e]
  verify the grade of a CI/CD analysis without enabled security headers.
 
+[test_cicd_notes]
+ verify all the notes of an analysis are kept in a CI/CD analysis.
+
 [test_challenge_response]
  verify a note is displayed when the response is a challenge page.
 
@@ -2223,6 +2229,9 @@ Generator
 
 [test_client_unsupported_error]
  verify the analysis shows a message for unsupported HTTP 4xx error codes.
+
+[test_cloudflare_response]
+ verify a note is displayed when the response is delivered through Cloudflare.
 
 [test_corner_cases]
  verify corner cases of headers are analyzed.
