@@ -157,10 +157,12 @@ CSV_SECTION = ("0section", "0headers", "1enabled", "2missing", "3fingerprint",
 DTD_CONTENT = """<!ELEMENT analysis (section+)>
 <!ATTLIST analysis version CDATA #REQUIRED>
 <!ATTLIST analysis generated CDATA #REQUIRED>
-<!ELEMENT section (item*)>
+<!ELEMENT section (entry | item)*>
 <!ATTLIST section name CDATA #REQUIRED>
-<!ELEMENT item (#PCDATA)>
+<!ELEMENT entry (item+)>
+<!ELEMENT item (#PCDATA | value)*>
 <!ATTLIST item name CDATA #IMPLIED>
+<!ELEMENT value (#PCDATA)>
 """
 EXPORT_EXTENSIONS = (".csv", ".html", ".json", ".pdf", ".txt", ".xlsx", ".xml")
 EXPORT_ORDER = ("txt", "csv", "json", "xlsx", "xml", "html", "pdf")
@@ -194,7 +196,6 @@ STRINGS_BOLD = tuple(PDF_SECTION.keys())
 SECTIONS_EXPORT_PREFIXES = STRINGS_BOLD + RESP_SECTION
 URL_STRING = ("rfc-st", " URL   : ", "https://caniuse.com/?")
 VALUE_LABELS = ("Value: ", "Valor: ")
-XML_STRING = ("Ref: ", "Value: ", "Valor: ")
 
 # Terminal ui, raw internals and styling
 DELETED_LINES = "\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K"
@@ -2787,6 +2788,15 @@ def set_xlsx_width(col_wd, worksheet):
         worksheet.set_column(col_idx, col_idx, actual_width)
 
 
+def parse_analysis(content):
+    """Parse the sections of a brief or detailed analysis.
+
+    Related to `-o json` and `-o xml` options.
+    """
+    parser = parse_json if args.brief else json_detailed_parse
+    return parser(re.split(RE_PATTERN[5], content)[1:])
+
+
 def generate_json(final_filename, temp_filename, *, export_all=False,
                   content=None):
     """JSON export of a brief or detailed analysis and exit.
@@ -2795,10 +2805,8 @@ def generate_json(final_filename, temp_filename, *, export_all=False,
     """
     if content is None:
         content = Path(temp_filename).read_text(encoding="utf8")
-    parser = parse_json if args.brief else json_detailed_parse
     with Path(final_filename).open("w", encoding="utf8") as json_file:
-        txt_sections = re.split(RE_PATTERN[5], content)[1:]
-        dump(parser(txt_sections), json_file, indent=4, ensure_ascii=False)
+        dump(parse_analysis(content), json_file, indent=4, ensure_ascii=False)
     finalize_export(final_filename, temp_filename, "json", export_all)
 
 
@@ -3754,7 +3762,9 @@ def clean_html_final(final_filename):
 
 def generate_xml(final_filename, temp_filename, *, export_all=False,
                  content=None):
-    """XML export of the analysis, related to `-o xml` option.
+    """XML export of a brief or detailed analysis, related to `-o xml` option.
+
+    Sections, entries and values follow the structure of the JSON export.
 
     ??? note
         According to [here](https://docs.python.org/3.11/library/xml.html){:target="_blank"}
@@ -3770,7 +3780,9 @@ def generate_xml(final_filename, temp_filename, *, export_all=False,
         content = Path(temp_filename).read_text(encoding="utf8")
     root = ET.Element("analysis", {"version": BANNER_VERSION,
                                    "generated": current_time})
-    parse_xml(root, (line.strip() for line in content.splitlines()))
+    for name, data in parse_analysis(content).items():
+        add_xml_section(ET.SubElement(root, "section", {"name": name}), data)
+    ET.indent(root)
     xml_decl = b'<?xml version="1.0" encoding="utf-8"?>\n'
     xml_content = ET.tostring(root, encoding="utf-8", xml_declaration=False)
     xml_dtd = f"<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n".encode()
@@ -3778,28 +3790,33 @@ def generate_xml(final_filename, temp_filename, *, export_all=False,
     finalize_export(final_filename, temp_filename, "xml", export_all)
 
 
-def parse_xml(root, stripped_txt):
-    """Parse sections of an XML export; related to `-o xml` option."""
-    section = None
-    for line in stripped_txt:
-        if line.startswith("["):
-            section = ET.SubElement(root, "section", {"name": line})
-        elif line and section is not None:
-            add_xml_item(line, section)
-
-
-def add_xml_item(line, section):
-    """Add a new item to the section.
+def add_xml_section(section, data):
+    """Add the content of a section to an XML export.
 
     Related to `-o xml` option.
     """
-    item = ET.SubElement(section, "item")
-    if ": " in line and all(sub not in line for sub in XML_STRING):
-        key, value = line.split(": ", 1)
-        item.set("name", key.strip())
-        item.text = value.strip()
-    else:
-        item.text = line
+    if isinstance(data, dict):
+        add_xml_items(section, data)
+        return
+    for value in data:
+        if isinstance(value, dict):
+            add_xml_items(ET.SubElement(section, "entry"), value)
+        else:
+            ET.SubElement(section, "item").text = value
+
+
+def add_xml_items(parent, data):
+    """Add named items to a section or to an entry of an XML export.
+
+    Related to `-o xml` option.
+    """
+    for name, value in data.items():
+        item = ET.SubElement(parent, "item", {"name": name})
+        if isinstance(value, str):
+            item.text = value
+            continue
+        for text in value:
+            ET.SubElement(item, "value").text = text
 
 
 def print_http_exception(exception_id, exception_v):
@@ -4995,10 +5012,10 @@ if header_eligible("allow"):
                               ", ".join(match_method), "[imethods]")
 
 if header_eligible("attribution-reporting-register-source"):
-    print_details("[iarrs_h]", "[iarrs]", "m", i_cnt)
+    print_details("[iarrs_h]", "[iarrs]", "d", i_cnt)
 
 if header_eligible("attribution-reporting-register-trigger"):
-    print_details("[iarrt_h]", "[iarrt]", "m", i_cnt)
+    print_details("[iarrt_h]", "[iarrt]", "d", i_cnt)
 
 if header_eligible("cache-control"):
     cache_header = headers_l.get("cache-control", "").casefold()

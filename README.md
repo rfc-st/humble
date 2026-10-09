@@ -217,7 +217,7 @@
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_xlsx_s.PNG" alt="(Linux) - Brief analysis saved as XSLX">
 </p>
 <br />
-.: (Linux) - Brief analysis saved as XML. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_en.wikipedia.org_20260613_184523_en.xml">Example.</a><br />
+.: (Linux) - Detailed analysis saved as XML. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_en.wikipedia.org_20261009_190901_en.xml">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_xml_s.PNG" alt="(Linux) - Brief analysis saved as XML">

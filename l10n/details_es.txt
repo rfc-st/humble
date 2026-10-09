@@ -2313,6 +2313,9 @@ Generador
 [test_export_xml]
  verifica que se exporte a XML un análisis detallado.
 
+[test_export_xml_brief]
+ verifica que se exporte a XML un análisis breve.
+
 [test_fingerprint_groups]
  verifica que las estadísticas del Top 20 de grupos, por huella digital, se muestre correctamente.
 

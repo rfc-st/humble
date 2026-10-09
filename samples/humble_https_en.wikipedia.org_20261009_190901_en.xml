@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE analysis [
+<!ELEMENT analysis (section+)>
+<!ATTLIST analysis version CDATA #REQUIRED>
+<!ATTLIST analysis generated CDATA #REQUIRED>
+<!ELEMENT section (entry | item)*>
+<!ATTLIST section name CDATA #REQUIRED>
+<!ELEMENT entry (item+)>
+<!ELEMENT item (#PCDATA | value)*>
+<!ATTLIST item name CDATA #IMPLIED>
+<!ELEMENT value (#PCDATA)>
+]
+>
+<analysis version="https://github.com/rfc-st/humble | v.2026-10-09" generated="2026/10/09 - 19:09:01">
+  <section name="[0. Info]">
+    <item name="Generator">https://github.com/rfc-st/humble | v.2026-10-09</item>
+    <item name="Date">2026/10/09 - 19:09:01</item>
+    <item name="URL">https://en.wikipedia.org</item>
+    <item name="Final URL">https://en.wikipedia.org/wiki/Main_Page (1 redirect)</item>
+    <item name="Final IP">185.15.58.224</item>
+    <item name="Final Code">200</item>
+    <item name="Note">The final URL redirect was analyzed; use the '-df' parameter to change this behavior.</item>
+    <item name="File">humble_https_en.wikipedia.org_20261009_190901_en.xml</item>
+  </section>
+  <section name="[1. Enabled HTTP Security Headers]">
+    <entry>
+      <item name="Header">Cache-Control</item>
+      <item name="Value">private, s-maxage=0, max-age=0, must-revalidate, no-transform</item>
+    </entry>
+    <entry>
+      <item name="Header">Content-Security-Policy</item>
+      <item name="Value">script-src 'unsafe-eval' blob: 'self' meta.wikimedia.org *.wikimedia.org *.wikipedia.org *.wikinews.org *.wiktionary.org *.wikibooks.org *.wikiversity.org *.wikisource.org wikisource.org *.wikiquote.org *.wikidata.org *.wikifunctions.org *.wikivoyage.org *.mediawiki.org mediawiki.org wikimedia.org *.wmflabs.org *.wmcloud.org *.toolforge.org wss://*.toolforge.org *.jsdelivr.net unpkg.com cdnjs.cloudflare.com raw.githubusercontent.com *.github.com code.jquery.com cdn.mathjax.org use.typekit.net fonts.cdnfonts.com use.fontawesome.com i.ytimg.com rsms.me doi.org localhost https://localhost:* http://localhost:* wss://localhost:* ws://localhost:* *.google.com *.gstatic.com *.googleapis.com *.translate.yandex.net yastatic.net ya.ru radically.github.io cdn.sammdot.ca cdn.fontshare.com viaf.org publicai-proxy.alaexis.workers.dev iiif.archive.org api.flickr.com live.staticflickr.com api.anthropic.com api.openai.com api.publicai.co catalogo.pusc.it parsifal.urbe.it opac.sbn.it overpass-api.de api.openrouteservice.org archive.org *.openstreetmap.org *.waymarkedtrails.org *.thunderforest.com registry.ipe.wiki analytics.ipe.wiki qlever.dev app.goacoustic.com wikipedia-archive.ourworldindata.org api.inaturalist.org inaturalist-open-data.s3.amazonaws.com validator.w3.org db.onlinewebfonts.com fontlibrary.org 'unsafe-inline' auth.wikimedia.org; default-src 'self' data: blob: upload.wikimedia.org thumb.wikimedia.org https://commons.wikimedia.org meta.wikimedia.org *.wikimedia.org *.wikipedia.org *.wikinews.org *.wiktionary.org *.wikibooks.org *.wikiversity.org *.wikisource.org wikisource.org *.wikiquote.org *.wikidata.org *.wikifunctions.org *.wikivoyage.org *.mediawiki.org mediawiki.org wikimedia.org *.wmflabs.org *.wmcloud.org *.toolforge.org wss://*.toolforge.org *.jsdelivr.net unpkg.com cdnjs.cloudflare.com raw.githubusercontent.com *.github.com code.jquery.com cdn.mathjax.org use.typekit.net fonts.cdnfonts.com use.fontawesome.com i.ytimg.com rsms.me doi.org localhost https://localhost:* http://localhost:* wss://localhost:* ws://localhost:* *.google.com *.gstatic.com *.googleapis.com *.translate.yandex.net yastatic.net ya.ru radically.github.io cdn.sammdot.ca cdn.fontshare.com viaf.org publicai-proxy.alaexis.workers.dev iiif.archive.org api.flickr.com live.staticflickr.com api.anthropic.com api.openai.com api.publicai.co catalogo.pusc.it parsifal.urbe.it opac.sbn.it overpass-api.de api.openrouteservice.org archive.org *.openstreetmap.org *.waymarkedtrails.org *.thunderforest.com registry.ipe.wiki analytics.ipe.wiki qlever.dev app.goacoustic.com wikipedia-archive.ourworldindata.org api.inaturalist.org inaturalist-open-data.s3.amazonaws.com validator.w3.org db.onlinewebfonts.com fontlibrary.org en.wikibooks.org en.wikinews.org en.wikiquote.org en.wikisource.org en.wikiversity.org en.wikivoyage.org en.wiktionary.org www.mediawiki.org commons.wikimedia.org foundation.wikimedia.org incubator.wikimedia.org species.wikimedia.org wikimania.wikimedia.org www.wikidata.org www.wikifunctions.org auth.wikimedia.org; style-src 'self' data: blob: upload.wikimedia.org thumb.wikimedia.org https://commons.wikimedia.org meta.wikimedia.org *.wikimedia.org *.wikipedia.org *.wikinews.org *.wiktionary.org *.wikibooks.org *.wikiversity.org *.wikisource.org wikisource.org *.wikiquote.org *.wikidata.org *.wikifunctions.org *.wikivoyage.org *.mediawiki.org mediawiki.org wikimedia.org *.wmflabs.org *.wmcloud.org *.toolforge.org wss://*.toolforge.org *.jsdelivr.net unpkg.com cdnjs.cloudflare.com raw.githubusercontent.com *.github.com code.jquery.com cdn.mathjax.org use.typekit.net fonts.cdnfonts.com use.fontawesome.com i.ytimg.com rsms.me doi.org localhost https://localhost:* http://localhost:* wss://localhost:* ws://localhost:* *.google.com *.gstatic.com *.googleapis.com *.translate.yandex.net yastatic.net ya.ru radically.github.io cdn.sammdot.ca cdn.fontshare.com viaf.org publicai-proxy.alaexis.workers.dev iiif.archive.org api.flickr.com live.staticflickr.com api.anthropic.com api.openai.com api.publicai.co catalogo.pusc.it parsifal.urbe.it opac.sbn.it overpass-api.de api.openrouteservice.org archive.org *.openstreetmap.org *.waymarkedtrails.org *.thunderforest.com registry.ipe.wiki analytics.ipe.wiki qlever.dev app.goacoustic.com wikipedia-archive.ourworldindata.org api.inaturalist.org inaturalist-open-data.s3.amazonaws.com validator.w3.org db.onlinewebfonts.com fontlibrary.org 'unsafe-inline'; object-src 'none'; report-uri /w/api.php?action=cspreport&amp;format=json; report-to csp-report-to-endpoint</item>
+    </entry>
+    <entry>
+      <item name="Header">Content-Type</item>
+      <item name="Value">text/html; charset=UTF-8</item>
+    </entry>
+    <entry>
+      <item name="Header">(*) Nel</item>
+      <item name="Value">{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}</item>
+    </entry>
+    <entry>
+      <item name="Header">Report-To</item>
+      <item name="Value">{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&amp;schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }</item>
+    </entry>
+    <entry>
+      <item name="Header">Reporting-Endpoints</item>
+      <item name="Value">csp-report-to-endpoint='/w/api.php?action=cspreport&amp;format=json';</item>
+    </entry>
+    <entry>
+      <item name="Header">Server-Timing</item>
+      <item name="Value">cache;desc="hit-front", host;desc="cp6015",co_id;desc="2756001767"</item>
+    </entry>
+    <entry>
+      <item name="Header">Set-Cookie</item>
+      <item name="Value">WMF-DP=082;Path=/;HttpOnly;secure;Expires=Sat, 10 Oct 2026 00:00:00 GMT, WMF-Uniq=Ok44taJjp1cbjlcJgfi3gQP0AAEBAFvdGkGfico9dX-_f1uv7Vm2MxRBltJvXEKK;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat, 09 Oct 2027 00:00:00 GMT</item>
+    </entry>
+    <entry>
+      <item name="Header">Strict-Transport-Security</item>
+      <item name="Value">max-age=106384710; includeSubDomains; preload</item>
+    </entry>
+    <entry>
+      <item name="Header">X-Content-Type-Options</item>
+      <item name="Value">nosniff</item>
+    </entry>
+  </section>
+  <section name="[2. Missing HTTP Security Headers]">
+    <entry>
+      <item name="Header">Clear-Site-Data</item>
+      <item name="Details">Clears browsing data (cookies, storage, cache) associated with the requesting website.</item>
+      <item name="References">
+        <value>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Header">Cross-Origin-Embedder-Policy</item>
+      <item name="Details">Prevents documents and workers from loading non-same-origin requests unless allowed.</item>
+      <item name="References">
+        <value>https://mdn.io/Cross-Origin-Embedder-Policy</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Header">Cross-Origin-Opener-Policy</item>
+      <item name="Details">Prevent other websites from gaining arbitrary window references to a page.</item>
+      <item name="References">
+        <value>https://mdn.io/Cross-Origin-Opener-Policy</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Header">Cross-Origin-Resource-Policy</item>
+      <item name="Details">Protect servers against certain cross-origin or cross-site embedding of the returned source.</item>
+      <item name="References">
+        <value>https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Header">Integrity-Policy</item>
+      <item name="Details">Blocks certain resource types without Subresource Integrity metadata.</item>
+      <item name="References">
+        <value>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Header">(*) Permissions-Policy</item>
+      <item name="Details">Previously called "Feature-Policy", allow and deny the use of browser features.</item>
+      <item name="References">
+        <value>https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Header">Referrer-Policy</item>
+      <item name="Details">Controls how much referrer information should be included with requests.</item>
+      <item name="References">
+        <value>https://scotthelme.co.uk/a-new-security-header-referrer-policy/</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Header">X-Permitted-Cross-Domain-Policies</item>
+      <item name="Details">Limit which data external resources (e.g. Adobe Flash/PDF documents), can access on the domain.</item>
+      <item name="References">
+        <value>https://owasp.github.io/www-project-secure-headers/response-headers/</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Header">X-Frame-Options</item>
+      <item name="Details">Prevents clickjacking attacks, limiting sources of embedded content.</item>
+      <item name="References">
+        <value>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options</value>
+      </item>
+    </entry>
+  </section>
+  <section name="[3. Fingerprint HTTP Response Headers]">
+    <entry>
+      <item name="Header">Server (Generic HTTP Server/Content Delivery Network)</item>
+      <item name="Value">mw-web.eqiad.main-84d5946f78-dsrxb</item>
+    </entry>
+  </section>
+  <section name="[4. Deprecated HTTP Response Headers/Protocols and Insecure Values]">
+    <entry>
+      <item name="Issue">Cache-Control (Recommended Values)</item>
+      <item name="Details">
+        <value>Enable 'no-store' if there are sensitive data in the URL analyzed.</value>
+      </item>
+      <item name="References">
+        <value>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Content-Security-Policy (Deprecated Directives)</item>
+      <item name="Details">
+        <value>Avoid deprecated or ignored directives: 'report-uri'</value>
+      </item>
+      <item name="References">
+        <value>https://content-security-policy.com/</value>
+        <value>https://centralcsp.com/docs/csp-directives</value>
+        <value>https://developer.mozilla.org/es/docs/Web/HTTP/Reference/Headers/Content-Security-Policy</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Content-Security-Policy ('base-uri' Directive Missing)</item>
+      <item name="Details">
+        <value>Prevents base URL tampering and redirects to harmful endpoints; try to set it to 'self'.</value>
+      </item>
+      <item name="References">
+        <value>https://centralcsp.com/docs/base-uri</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Content-Security-Policy ('form-action' Directive Missing)</item>
+      <item name="Details">
+        <value>Prevents Cross-Site Request Forgery attacks; try to set it to 'self'.</value>
+      </item>
+      <item name="References">
+        <value>https://centralcsp.com/docs/form-action</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Content-Security-Policy ('frame-ancestors' Directive Missing)</item>
+      <item name="Details">
+        <value>Prevents clickjacking attacks; try to set it to 'none'.</value>
+        <value>You can ignore this warning if the 'X-Frame-Options' HTTP header is enabled.</value>
+      </item>
+      <item name="References">
+        <value>https://centralcsp.com/docs/frame-ancestors</value>
+        <value>https://www.w3.org/TR/CSP3/#frame-ancestors-and-frame-options</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">(*) Content-Security-Policy ('require-trusted-types-for' Directive Missing)</item>
+      <item name="Details">
+        <value>Prevents DOM XSS injection in scripts; try to set it to 'script'.</value>
+      </item>
+      <item name="References">
+        <value>https://content-security-policy.com/require-trusted-types-for/</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">(*) Content-Security-Policy ('trusted-types' Directive Missing)</item>
+      <item name="Details">
+        <value>Prevents XSS attacks; try to set it to 'none' or a secure policy.</value>
+      </item>
+      <item name="References">
+        <value>https://centralcsp.com/docs/trusted-types</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Content-Security-Policy (Too Permissive Sources)</item>
+      <item name="Details">
+        <value>Review the directives 'default-src', 'script-src', 'style-src'.</value>
+        <value>And limit permissive sources: 'blob:', 'data:'</value>
+      </item>
+      <item name="References">
+        <value>https://content-security-policy.com/</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Content-Security-Policy (Insecure Schemes)</item>
+      <item name="Details">
+        <value>Review the directives 'default-src', 'script-src', 'style-src'.</value>
+        <value>And do not allow insecure, unencrypted schemes: 'http:', 'ws:'</value>
+      </item>
+      <item name="References">
+        <value>https://http.dev/wss</value>
+        <value>https://www.cloudflare.com/learning/ssl/why-is-http-not-secure/</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Content-Security-Policy (Unsafe Eval)</item>
+      <item name="Details">
+        <value>Review the directive 'script-src'.</value>
+        <value>The value 'unsafe-eval' increases the risk of Cross-site Scripting (XSS).</value>
+        <value>Use the value 'wasm-unsafe-eval' instead if you only need WebAssembly,</value>
+        <value>or remove functions that evaluate code from strings, such as eval().</value>
+      </item>
+      <item name="References">
+        <value>https://mdn.io/eval</value>
+        <value>https://mdn.io/script-src</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Content-Security-Policy (Unsafe Inline)</item>
+      <item name="Details">
+        <value>Review the directives 'script-src', 'style-src'.</value>
+        <value>The value 'unsafe-inline' increases the risk of Cross-site scripting (XSS).</value>
+        <value>Remove it, and use hashes or nonces instead.</value>
+      </item>
+      <item name="References">
+        <value>https://content-security-policy.com/hash/</value>
+        <value>https://content-security-policy.com/nonce/</value>
+        <value>https://csper.io/blog/no-more-unsafe-inline</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Report-To (Deprecated Header)</item>
+      <item name="Details">
+        <value>This header is deprecated. Use instead "Reporting-Endpoints".</value>
+      </item>
+      <item name="References">
+        <value>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Report-To</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Server-Timing (Potentially Unsafe Header)</item>
+      <item name="Details">
+        <value>This header should not expose sensitive application or infrastructure information.</value>
+      </item>
+      <item name="References">
+        <value>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Server-Timing</value>
+      </item>
+    </entry>
+    <entry>
+      <item name="Issue">Vary (Potentially Unsafe Header)</item>
+      <item name="Details">
+        <value>The values of this header may expose others, facilitating attacks if user input is accepted.</value>
+      </item>
+      <item name="References">
+        <value>https://www.yeswehack.com/fr/learn-bug-bounty/http-header-exploitation</value>
+        <value>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary</value>
+      </item>
+    </entry>
+  </section>
+  <section name="[5. Empty HTTP Response Headers Values]">
+    <item name="Description">Empty HTTP headers (and are therefore considered disabled)</item>
+    <item name="Headers">
+      <value>accept-ch</value>
+      <value>x-analytics</value>
+    </item>
+  </section>
+  <section name="[6. Browser Compatibility for Enabled HTTP Security Headers]">
+    <entry>
+      <item name="Header">Cache-Control</item>
+      <item name="Reference">https://caniuse.com/?search=Cache-Control</item>
+    </entry>
+    <entry>
+      <item name="Header">Content-Security-Policy</item>
+      <item name="Reference">https://caniuse.com/?search=contentsecuritypolicy2</item>
+    </entry>
+    <entry>
+      <item name="Header">Content-Type</item>
+      <item name="Reference">https://caniuse.com/?search=Content-Type</item>
+    </entry>
+    <entry>
+      <item name="Header">NEL</item>
+      <item name="Reference">https://caniuse.com/?search=NEL</item>
+    </entry>
+    <entry>
+      <item name="Header">Report-To</item>
+      <item name="Reference">https://caniuse.com/?search=Report-To</item>
+    </entry>
+    <entry>
+      <item name="Header">Reporting-Endpoints</item>
+      <item name="Reference">https://caniuse.com/?search=Reporting-Endpoints</item>
+    </entry>
+    <entry>
+      <item name="Header">Server-Timing</item>
+      <item name="Reference">https://caniuse.com/?search=Server-Timing</item>
+    </entry>
+    <entry>
+      <item name="Header">Set-Cookie</item>
+      <item name="Reference">https://caniuse.com/?search=Set-Cookie</item>
+    </entry>
+    <entry>
+      <item name="Header">Strict-Transport-Security</item>
+      <item name="Reference">https://caniuse.com/?search=Strict-Transport-Security</item>
+    </entry>
+    <entry>
+      <item name="Header">Vary</item>
+      <item name="Reference">https://caniuse.com/?search=Vary</item>
+    </entry>
+    <entry>
+      <item name="Header">X-Content-Type-Options</item>
+      <item name="Reference">https://caniuse.com/?search=X-Content-Type-Options</item>
+    </entry>
+  </section>
+  <section name="[7. Analysis Results]">
+    <item name="Duration">Done in 0.2 seconds! (changes with respect to the last analysis in parentheses)</item>
+    <item name="Enabled headers">10 (No changes)</item>
+    <item name="Missing headers">9 (No changes)</item>
+    <item name="Fingerprint headers">1 (No changes)</item>
+    <item name="Deprecated/Insecure headers">14 (No changes)</item>
+    <item name="Empty headers">2 (No changes)</item>
+    <item name="Findings to review">26 (No changes)</item>
+    <item name="Analysis Grade">D (Review 'Deprecated/Insecure headers')</item>
+    <item name="'(*)' meaning">Experimental HTTP response directive or header</item>
+    <item name="'(*)' ref">https://mdn.io/Experimental_deprecated_obsolete</item>
+    <item name="'(Not available)' meaning">The history file, analysis_h.txt, could not be accessed</item>
+  </section>
+</analysis>
