@@ -34,6 +34,8 @@ Activate-Storage-Access
 Allow
 Cache-Control
 Clear-Site-Data
+Connection-Allowlist
+Connection-Allowlist-Report-Only
 Content-Digest
 Content-Disposition
 Content-DPR

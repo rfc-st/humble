@@ -239,6 +239,59 @@
  Include at least one valid directive.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data
 
+[icall_h]
+ (*) Connection-Allowlist (Incorrect Format)
+
+[icalls_h]
+ (*) Connection-Allowlist (Insecure Schemes)
+
+[icallrd_h]
+ (*) Connection-Allowlist (Potentially Unsafe Redirects)
+
+[icallw_h]
+ (*) Connection-Allowlist (Potentially Unsafe WebRTC)
+
+[icallb_h]
+ (*) Connection-Allowlist (Too Permissive Value)
+
+[icallr_h]
+ (*) Connection-Allowlist-Report-Only (Incorrect Format)
+
+[icallri_h]
+ (*) Connection-Allowlist-Report-Only (Ignored Header)
+
+[icall]
+ The value must be a list in parentheses; otherwise browsers ignore the header.
+ Ref: https://wicg.github.io/connection-allowlists/#headers
+
+[icalls_s]
+ Avoid patterns with insecure, unencrypted schemes: 
+
+[icalls]
+ Ref: https://wicg.github.io/connection-allowlists/#security-dns
+
+[icallrd]
+ With 'redirects' allowed, an allowed destination can redirect anywhere.
+ Ref: https://wicg.github.io/connection-allowlists/#redirects
+
+[icallw]
+ With 'webrtc' allowed, WebRTC connections are not restricted by the list.
+ Ref: https://wicg.github.io/connection-allowlists/#webrtc
+
+[icallb_s]
+ Avoid patterns that match any host: 
+
+[icallb]
+ Ref: https://centralcsp.com/en/docs/web-security/policies/connection-allowlist
+
+[icallr]
+ The value must be a list in parentheses; otherwise browsers ignore the header.
+ Ref: https://wicg.github.io/connection-allowlists/#headers
+
+[icallri]
+ Without the 'report-to' parameter no violation is reported.
+ Ref: https://wicg.github.io/connection-allowlists/#reporting
+
 [icontdig_h]
  Content-Digest (No Secure Algorithms)
 
@@ -1354,7 +1407,7 @@ HTTP Response Headers
 
 [ifpolf]
  Invalid syntax; browsers ignore the whole header.
- https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
 
 [ifpoli]
  Use '=()' instead of 'none'.
@@ -2232,6 +2285,15 @@ Generator
 
 [test_cloudflare_response]
  verify a note is displayed when the response is delivered through Cloudflare.
+
+[test_connection_allowlist]
+ verify a 'Connection-Allowlist' header that is not a list in parentheses is reported.
+
+[test_connection_allowlist_report]
+ verify a 'Connection-Allowlist-Report-Only' header without 'report-to' is reported.
+
+[test_connection_allowlist_values]
+ verify unsafe parameters and patterns of the 'Connection-Allowlist' header are reported.
 
 [test_corner_cases]
  verify corner cases of headers are analyzed.

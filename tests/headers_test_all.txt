@@ -27,6 +27,8 @@ access-control-max-age: 86401
 activate-storage-access: testvalue
 allow: TRACE, TRACK
 clear-site-data: testdirective
+connection-allowlist: response-origin "https://cdn.example"
+connection-allowlist-report-only: (response-origin "https://cdn.example")
 content-digest: md5=2ab39636ed14de9189751a912273995f
 content-disposition: filename="humble_test.jpg"
 content-dpr: 2.0

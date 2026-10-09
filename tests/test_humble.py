@@ -224,6 +224,15 @@ TEST_CFGS = {
                                       "HTTP code"),
     "test_cloudflare_response": (["-u", TEST_URLS[2], "-if",
                                   PATHS["CLOUDFLARE"]], "through Cloudflare"),
+    "test_connection_allowlist": (
+        ["-u", TEST_URLS[2], "-if", PATHS["ALL_HEADERS"]],
+        "Connection-Allowlist (Incorrect Format)"),
+    "test_connection_allowlist_report": (
+        ["-u", TEST_URLS[2], "-if", PATHS["ALL_HEADERS"]],
+        "Connection-Allowlist-Report-Only (Ignored Header)"),
+    "test_connection_allowlist_values": (
+        ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
+        "Connection-Allowlist (Too Permissive Value)"),
     "test_corner_cases": (["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
                           "Analysis Grade"),
     "test_corner_cases_brief": (["-u", TEST_URLS[2], "-if",

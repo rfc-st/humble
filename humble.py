@@ -113,7 +113,8 @@ ERROR_CODES_CLIENT = {*range(400, 408), *range(409, 418), *range(421, 427),
                       428, 429, 431, 451}
 ERROR_CODES_MIXED = (400, 451, 500, 511, 599)
 EXP_HEADERS = (
-    "critical-ch", "document-policy", "nel", "permissions-policy",
+    "connection-allowlist", "connection-allowlist-report-only", "critical-ch",
+    "document-policy", "nel", "permissions-policy",
     "sec-private-state-token-lifetime", "speculation-rules",
     "supports-loading-mode",
 )
@@ -1388,6 +1389,45 @@ def csp_check_unknown(csp_h):
     if unknown_dir:
         csp_print_unknown_unsafe(unknown_dir, "[icspiu_h]", "[icspiu]", 3,
                                  i_cnt)
+
+
+def conall_parse(conall_h):
+    """Return the URL patterns and the parameters of `Connection-Allowlist`.
+
+    Browsers only use its first list, which a comma outside quotes ends.
+    """
+    parts = conall_h.split('"')
+    for idx in range(0, len(parts), 2):
+        if "," in parts[idx]:
+            parts[idx:] = [parts[idx].partition(",")[0]]
+            break
+    params = "".join(parts[::2]).partition(")")[2].replace(" ", "")
+    return ([pattern for pattern in parts[1::2] if "://" in pattern],
+            dict(param.partition("=")[::2] for param in params.split(";")))
+
+
+def conall_check_params(params):
+    """Check the parameters of the `Connection-Allowlist` header."""
+    for param, short_d, long_d in (("redirects", "[icallrd_h]", "[icallrd]"),
+                                   ("webrtc", "[icallw_h]", "[icallw]")):
+        value = params.get(param, "block")
+        if value != "block" and (value[:1].isalpha() or value[:1] == "*"):
+            print_details(short_d, long_d, "d", i_cnt)
+
+
+def conall_check_patterns(patterns):
+    """Check the URL patterns of the `Connection-Allowlist` header."""
+    hosts = {pattern: pattern.partition("://")[2].partition("/")[0]
+             .partition(":")[0] for pattern in patterns}
+    if broad := [f"'{pattern}'" for pattern, host in hosts.items()
+                 if host in t_conall_unsafe]:
+        print_matched_details("[icallb_h]", "[icallb_s]", ", ".join(broad),
+                              "[icallb]")
+    if insecure := [f"'{pattern}'" for pattern in hosts
+                    if pattern.casefold().partition("://")[0]
+                    in t_conall_unsafe]:
+        print_matched_details("[icalls_h]", "[icalls_s]", ", ".join(insecure),
+                              "[icalls]")
 
 
 def parse_cookie_attributes(stc_header):
@@ -4713,7 +4753,8 @@ l_ins = ["Accept-CH", "Accept-CH-Lifetime", "Accept-Patch",
          "Access-Control-Allow-Origin", "Access-Control-Max-Age",
          "Activate-Storage-Access", "Allow",
          "Attribution-Reporting-Register-Source",
-         "Attribution-Reporting-Register-Trigger", "Content-Digest",
+         "Attribution-Reporting-Register-Trigger", "Connection-Allowlist",
+         "Connection-Allowlist-Report-Only", "Content-Digest",
          "Content-Disposition", "Content-DPR", "Content-Encoding",
          "Content-Security-Policy-Report-Only", "Content-Type", "Critical-CH",
          "Digest", "Document-Isolation-Policy", "Document-Policy", "Etag",
@@ -4766,6 +4807,10 @@ t_digest_ins = ("adler", "crc32c", "md5", "sha-1", "unixsum", "unixcksum")
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Encoding
 t_cencoding = ("br", "compress", "dcb", "dcz", "deflate", "gzip", "x-gzip",
                "zstd")
+
+# https://wicg.github.io/connection-allowlists/#security
+# https://centralcsp.com/en/docs/web-security/policies/connection-allowlist
+t_conall_unsafe = ("*", "*.*", "http")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 # https://www.w3.org/TR/CSP2/
@@ -5030,6 +5075,24 @@ if header_eligible("clear-site-data"):
         print_details("[icsd_h]", "[icsd]", "d", i_cnt)
     if not any(elem in clsdata_header for elem in t_csdata):
         print_details("[icsdn_h]", "[icsdn]", "d", i_cnt)
+
+# https://wicg.github.io/connection-allowlists/#headers
+# https://centralcsp.com/en/docs/web-security/policies/connection-allowlist
+if header_eligible("connection-allowlist"):
+    conall_h = headers_l["connection-allowlist"]
+    if conall_h.startswith("(") and ")" in conall_h:
+        conall_patterns, conall_params = conall_parse(conall_h)
+        conall_check_params(conall_params)
+        conall_check_patterns(conall_patterns)
+    else:
+        print_details("[icall_h]", "[icall]", "d", i_cnt)
+
+if header_eligible("connection-allowlist-report-only"):
+    conallr_h = headers_l["connection-allowlist-report-only"]
+    if not (conallr_h.startswith("(") and ")" in conallr_h):
+        print_details("[icallr_h]", "[icallr]", "d", i_cnt)
+    elif "report-to=" not in conallr_h:
+        print_details("[icallri_h]", "[icallri]", "d", i_cnt)
 
 if header_eligible("content-digest"):
     contdig_header = headers_l.get("content-digest", "")

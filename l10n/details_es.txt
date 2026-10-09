@@ -240,6 +240,59 @@
  Incluya, al menos, una directiva correcta.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data
 
+[icall_h]
+ (*) Connection-Allowlist (Formato incorrecto)
+
+[icalls_h]
+ (*) Connection-Allowlist (Esquemas inseguros)
+
+[icallrd_h]
+ (*) Connection-Allowlist (Redirecciones potencialmente inseguras)
+
+[icallw_h]
+ (*) Connection-Allowlist (WebRTC potencialmente inseguro)
+
+[icallb_h]
+ (*) Connection-Allowlist (Valores muy permisivos)
+
+[icallr_h]
+ (*) Connection-Allowlist-Report-Only (Formato incorrecto)
+
+[icallri_h]
+ (*) Connection-Allowlist-Report-Only (Cabecera ignorada)
+
+[icall]
+ El valor debe ser una lista entre paréntesis; si no, los navegadores ignoran la cabecera.
+ Ref: https://wicg.github.io/connection-allowlists/#headers
+
+[icalls_s]
+ Evita patrones con esquemas inseguros, sin encriptar: 
+
+[icalls]
+ Ref: https://wicg.github.io/connection-allowlists/#security-dns
+
+[icallrd]
+ Con 'redirects' permitido, un destino permitido puede redirigir a cualquier sitio.
+ Ref: https://wicg.github.io/connection-allowlists/#redirects
+
+[icallw]
+ Con 'webrtc' permitido, la lista no restringe las conexiones WebRTC.
+ Ref: https://wicg.github.io/connection-allowlists/#webrtc
+
+[icallb_s]
+ Evita patrones que coincidan con cualquier host: 
+
+[icallb]
+ Ref: https://centralcsp.com/en/docs/web-security/policies/connection-allowlist
+
+[icallr]
+ El valor debe ser una lista entre paréntesis; si no, los navegadores ignoran la cabecera.
+ Ref: https://wicg.github.io/connection-allowlists/#headers
+
+[icallri]
+ Sin el parámetro 'report-to' no se informa de ningún incumplimiento.
+ Ref: https://wicg.github.io/connection-allowlists/#reporting
+
 [icontdig_h]
  Content-Digest (Sin algoritmos seguros)
 
@@ -1355,7 +1408,7 @@ Cabeceras de respuesta HTTP
 
 [ifpolf]
  Sintaxis inválida; los navegadores ignoran la cabecera.
- https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
 
 [ifpoli]
  Utilice '=()' en vez de 'none'.
@@ -2210,6 +2263,15 @@ Generador
 
 [test_cloudflare_response]
  verifica que se muestre una nota cuando la respuesta se entrega a través de Cloudflare.
+
+[test_connection_allowlist]
+ verifica que se informe de una cabecera 'Connection-Allowlist' que no es una lista entre paréntesis.
+
+[test_connection_allowlist_report]
+ verifica que se informe de una cabecera 'Connection-Allowlist-Report-Only' sin 'report-to'.
+
+[test_connection_allowlist_values]
+ verifica que se informe de parámetros y patrones inseguros de la cabecera 'Connection-Allowlist'.
 
 [test_corner_cases]
  verifica que se comprueben casos específicos en varias cabeceras.
