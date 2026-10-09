@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-10-07")
+local_version = date.fromisoformat("2026-10-09")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1017,7 +1017,7 @@ def get_date_metrics(additional_m):
 
 
 def extract_global_metrics(all_analysis):
-    """Compute metrics to print statistics across all URL analyses.
+    """Build the metrics to print statistics across all URL analyses.
 
     Related to `-a` option.
     """
@@ -1026,47 +1026,36 @@ def extract_global_metrics(all_analysis):
         print_error_detail("[no_global_analysis]")
     adj_url_ln = adjust_old_analysis(url_ln)
     total_a = len(adj_url_ln)
-    first_m = get_global_first_metrics(adj_url_ln)
-    second_m = get_second_metrics(adj_url_ln, total_a)
-    third_m = get_third_metrics(adj_url_ln)
     additional_m = get_additional_metrics(adj_url_ln)
-    analytics_l = get_analytics_length(SECTION_V[12:26])
-    analytics_s = get_analytics_length(SECTION_V[:5])
     analytics_w = get_analytics_length(SECTION_V[5:12])
-    ctx = GlobalMetricsContext(
-        analytics_l=analytics_l, analytics_s=analytics_s,
-        analytics_w=analytics_w, total_a=total_a, first_m=first_m,
-        second_m=second_m, third_m=third_m, additional_m=additional_m,
-    )
-    return print_global_metrics(ctx)
+    totals_m = {
+        **get_basic_global_metrics(get_analytics_length(SECTION_V[12:26]),
+                                   total_a, get_global_metrics(adj_url_ln)),
+        **get_security_metrics(get_analytics_length(SECTION_V[:5]),
+                               get_second_metrics(adj_url_ln, total_a)),
+        **get_warnings_metrics(additional_m, analytics_w),
+        **get_averages_metrics(analytics_w, get_third_metrics(adj_url_ln)),
+        **get_date_metrics(additional_m),
+    }
+    return {get_detail(key, replace=True): value for key, value in
+            totals_m.items()}
 
 
-def get_global_first_metrics(adj_url_ln):
+def get_global_metrics(url_ln):
     """Compute key analytics metrics across all URL analyses.
 
     Related to `-a` option.
     """
-    url_lines = Counter(line.split(" ; ")[1] for line in adj_url_ln)
-    return get_global_metrics(adj_url_ln, url_lines)
-
-
-def get_global_metrics(url_ln, url_lines):
-    """Compute key analytics metrics across all URL analyses.
-
-    Related to `-a` option.
-    """
+    url_lines = Counter(line.split(" ; ")[1] for line in url_ln)
     first_a = min(line[:SLICE_INT[9]] for line in url_ln)
     latest_a = max(line[:SLICE_INT[9]] for line in url_ln)
-    unique_u = len(url_lines)
-    most_analyzed_u = max(url_lines, key=url_lines.get)
-    most_analyzed_c = url_lines[most_analyzed_u]
-    most_analyzed_cu = f"({most_analyzed_c}) {most_analyzed_u}"
-    least_analyzed_u = min(url_lines, key=url_lines.get)
-    least_analyzed_c = url_lines[least_analyzed_u]
-    least_analyzed_cu = f"({least_analyzed_c}) {least_analyzed_u}"
-    fields = [-1, 2, 3, 4, 5, 6]
-    totals = [get_global_totals(url_ln, field) for field in fields]
-    return (first_a, latest_a, unique_u, most_analyzed_cu, least_analyzed_cu,
+    most_u = max(url_lines, key=url_lines.get)
+    least_u = min(url_lines, key=url_lines.get)
+    totals = [get_global_totals(url_ln, field)
+              for field in (-1, 2, 3, 4, 5, 6)]
+    return (first_a, latest_a, len(url_lines),
+            f"({url_lines[most_u]}) {most_u}",
+            f"({url_lines[least_u]}) {least_u}",
             *chain.from_iterable(totals))
 
 
@@ -1110,33 +1099,6 @@ def get_basic_global_metrics(analytics_l, total_a, first_m):
             "[least_empty]": f"{analytics_l[13]}{first_m[16]}\n",
             "[most_warnings]": f"{analytics_l[2]}{first_m[5]}",
             "[least_warnings]": f"{analytics_l[3]}{first_m[6]}\n"}
-
-
-class GlobalMetricsContext(NamedTuple):
-    """Aggregated values and labels for global metrics (`-a` option)."""
-
-    analytics_l: list
-    analytics_s: list
-    analytics_w: list
-    total_a: int
-    first_m: tuple
-    second_m: list
-    third_m: tuple
-    additional_m: tuple
-
-
-def print_global_metrics(ctx):
-    """Print metrics across all URL analyses, related to `-a` option."""
-    basic_m = get_basic_global_metrics(ctx.analytics_l, ctx.total_a,
-                                       ctx.first_m)
-    error_m = get_security_metrics(ctx.analytics_s, ctx.second_m)
-    warning_m = get_warnings_metrics(ctx.additional_m, ctx.analytics_w)
-    averages_m = get_averages_metrics(ctx.analytics_w, ctx.third_m)
-    analysis_year_m = get_date_metrics(ctx.additional_m)
-    totals_m = {**basic_m, **error_m, **warning_m, **averages_m,
-                **analysis_year_m}
-    return {get_detail(key, replace=True): value for key, value in
-            totals_m.items()}
 
 
 def csp_analyze_content(csp_h, csp_dirs_vals, csp_dirs):
@@ -1205,10 +1167,7 @@ def csp_check_missing(csp_dirs):
 
 def csp_print_missing(csp_ref, csp_ref_brief, id_mode):
     """Print the missing directive in the `Content-Security-Policy` header."""
-    if args.brief:
-        i_cnt[0] += 1
-        print_detail_r(csp_ref_brief, is_red=True)
-    elif csp_ref == "[icspmfa]":
+    if csp_ref == "[icspmfa]" and not args.brief:
         i_cnt[0] += 1
         print_detail_r(csp_ref_brief, is_red=True)
         print_detail(csp_ref, num_lines=4)
@@ -1231,20 +1190,8 @@ def csp_check_broad(csp_dirs_vals):
             csp_broad_v |= broad
             csp_broad_dirs.add(name)
     if csp_broad_v:
-        csp_print_broad(csp_broad_dirs, sorted(csp_broad_v), i_cnt)
-
-
-def csp_print_broad(csp_broad_dirs, csp_broad_v, i_cnt):
-    """Print the broad value in the `Content-Security-Policy` header."""
-    print_detail_r("[icsw_h]", is_red=True)
-    if not args.brief:
-        print_detail_l(DIR_MSG[0] if len(csp_broad_dirs) > 1 else DIR_MSG[1])
-        print(" " + ", ".join(f"'{directive}'" for directive in
-                              sorted(csp_broad_dirs)) + ".")
-        print_detail_l("[icsw]")
-        print(", ".join(f"'{value}'" for value in csp_broad_v))
-        print_detail("[icsw_b]", num_lines=1)
-    i_cnt[0] += 1
+        csp_print_values(csp_broad_dirs, sorted(csp_broad_v),
+                         ("[icsw_h]", "[icsw]", "[icsw_b]"), 1)
 
 
 def csp_check_insecure(csp_dirs_vals):
@@ -1256,20 +1203,23 @@ def csp_check_insecure(csp_dirs_vals):
             csp_insec_v |= insecure
             csp_insec_dirs.add(name)
     if csp_insec_v:
-        csp_print_insecure(sorted(csp_insec_v), csp_insec_dirs, i_cnt)
+        csp_print_values(csp_insec_dirs, sorted(csp_insec_v),
+                         ("[icsh_h]", "[icsh]", "[icsh_b]"), 2)
 
 
-def csp_print_insecure(csp_insec_v, csp_insec_dirs, i_cnt):
-    """Print the insecure value in the `Content-Security-Policy` header."""
-    print_detail_r("[icsh_h]", is_red=True)
+def csp_print_values(csp_dirs, csp_values, csp_refs, lines_n):
+    """Print broad or insecure values in the `Content-Security-Policy` header.
+
+    Along with the directives that contain them.
+    """
+    print_detail_r(csp_refs[0], is_red=True)
     if not args.brief:
-        csp_values = ", ".join(f"'{value}'" for value in csp_insec_v)
-        print_detail_l(DIR_MSG[0] if len(csp_insec_dirs) > 1 else DIR_MSG[1])
+        print_detail_l(DIR_MSG[0] if len(csp_dirs) > 1 else DIR_MSG[1])
         print(" " + ", ".join(f"'{directive}'" for directive in
-                              sorted(csp_insec_dirs)) + ".")
-        print_detail_l("[icsh]")
-        print(csp_values)
-        print_detail("[icsh_b]", num_lines=2)
+                              sorted(csp_dirs)) + ".")
+        print_detail_l(csp_refs[1])
+        print(", ".join(f"'{value}'" for value in csp_values))
+        print_detail(csp_refs[2], num_lines=lines_n)
     i_cnt[0] += 1
 
 
@@ -1616,12 +1566,8 @@ def permissions_analyze_content(policy, i_cnt):
 
 def permissions_print_deprecated(deprecated):
     """Print deprecated directives in the `Permissions-Policy` header."""
-    print_detail_r("[ifpold_h]", is_red=True)
-    if not args.brief:
-        print_detail_l("[ifpold_h_s]")
-        print(", ".join(f"'{x}'" for x in deprecated))
-        print_detail("[ifpold]")
-    i_cnt[0] += 1
+    print_matched_details("[ifpold_h]", "[ifpold_h_s]", ", ".join(
+        f"'{x}'" for x in deprecated), "[ifpold]")
 
 
 def permissions_print_broad(perm_broad_dirs, i_cnt):
@@ -1823,6 +1769,16 @@ def print_details(short_d, long_d, id_mode, i_cnt):
     print_detail_r(short_d, is_red=True)
     if not args.brief:
         print_detail(long_d, 2) if id_mode == "d" else print_detail(long_d, 3)
+    i_cnt[0] += 1
+
+
+def print_matched_details(short_d, match_d, matches, long_d):
+    """Print a finding along with the values that caused it."""
+    print_detail_r(short_d, is_red=True)
+    if not args.brief:
+        print_detail_l(match_d)
+        print(matches)
+        print_detail(long_d)
     i_cnt[0] += 1
 
 
@@ -2195,14 +2151,12 @@ def check_skip_file():
     Returns a list of clean header name strings.
     """
     file_skipped = []
-    skip_file = Path("humble.skip")
-    if skip_file.exists():
-        with suppress(FileNotFoundError, PermissionError), \
-             skip_file.open("r", encoding="utf-8") as humble_skip_file:
-            file_skipped = [
-                line.strip() for line in humble_skip_file
-                if line.strip() and not line.strip().startswith("#")
-            ]
+    with suppress(FileNotFoundError, PermissionError), \
+         Path("humble.skip").open("r", encoding="utf-8") as humble_skip_file:
+        file_skipped = [
+            line.strip() for line in humble_skip_file
+            if line.strip() and not line.strip().startswith("#")
+        ]
     return file_skipped
 
 
@@ -2298,11 +2252,8 @@ def build_export_actions(final_filename, tmp_filename, content):
         "txt": lambda: normalize_txt_all_export(tmp_filename, content),
         "csv": lambda: generate_csv(final_filename, tmp_filename,
                                     export_all=True, content=content),
-        "json": lambda: (generate_json if args.brief else
-                         generate_json_detailed)(final_filename,
-                                                 tmp_filename,
-                                                 export_all=True,
-                                                 content=content),
+        "json": lambda: generate_json(final_filename, tmp_filename,
+                                      export_all=True, content=content),
         "xlsx": lambda: generate_csv(final_filename, tmp_filename,
                                      to_xlsx=True, export_all=True,
                                      content=content),
@@ -2473,8 +2424,7 @@ def check_output_format(final_filename, reliable, tmp_filename):
     exporters = {
         "txt": lambda: generate_txt(reliable, tmp_filename),
         "csv": lambda: generate_csv(final_filename, tmp_filename),
-        "json": lambda: (generate_json if args.brief else
-                         generate_json_detailed)(final_filename, tmp_filename),
+        "json": lambda: generate_json(final_filename, tmp_filename),
         "xlsx": lambda: generate_csv(final_filename, tmp_filename,
                                      to_xlsx=True),
         "xml": lambda: generate_xml(final_filename, tmp_filename),
@@ -2839,22 +2789,22 @@ def set_xlsx_width(col_wd, worksheet):
 
 def generate_json(final_filename, temp_filename, *, export_all=False,
                   content=None):
-    """JSON export of a brief analysis and exit.
+    """JSON export of a brief or detailed analysis and exit.
 
-    Related to `-o json -b` options.
+    Related to `-o json` option.
     """
     if content is None:
         content = Path(temp_filename).read_text(encoding="utf8")
-    sections = tuple(get_detail(f"[{i}]", replace=True) for i in JSON_SECTION)
+    parser = parse_json if args.brief else json_detailed_parse
     with Path(final_filename).open("w", encoding="utf8") as json_file:
         txt_sections = re.split(RE_PATTERN[5], content)[1:]
-        dump(parse_json(sections, txt_sections), json_file,
-             indent=4, ensure_ascii=False)
+        dump(parser(txt_sections), json_file, indent=4, ensure_ascii=False)
     finalize_export(final_filename, temp_filename, "json", export_all)
 
 
-def parse_json(sections, txt_sections):
+def parse_json(txt_sections):
     """Parse sections for a JSON export; related to `-o json -b` options."""
+    sections = tuple(get_detail(f"[{i}]", replace=True) for i in JSON_SECTION)
     data = {}
     for i in range(0, len(txt_sections), 2):
         json_section = f"[{txt_sections[i]}]"
@@ -2908,33 +2858,17 @@ def json_detailed_sources(file_idx, slice_idx):
                                                 None) if line.strip()}
 
 
-def generate_json_detailed(final_filename, temp_filename, *,
-                           export_all=False, content=None):
-    """JSON export of a detailed analysis and exit.
-
-    Related to `-o json` option.
-    """
-    if content is None:
-        content = Path(temp_filename).read_text(encoding="utf8")
-    with Path(final_filename).open("w", encoding="utf8") as json_file:
-        txt_sections = re.split(RE_PATTERN[5], content)[1:]
-        data = {}
-        json_detailed_parse(data, txt_sections)
-        dump(data, json_file, indent=4, ensure_ascii=False)
-    finalize_export(final_filename, temp_filename, "json", export_all)
-
-
-def json_detailed_parse(data, txt_sections):
+def json_detailed_parse(txt_sections):
     """Parse sections for a JSON export, related to `-o json` option."""
     params = [JSON_L10N[0], "[json_det_details]", JSON_L10N[1]]
     details = [get_detail(p, replace=True) for p in params]
+    data = {}
     for i in range(0, len(txt_sections), 2):
         section = f"[{txt_sections[i]}]"
         lines = [line.strip() for line in txt_sections[i + 1].split("\n")
                  if line.strip()]
-        data[section] = json_detailed_write(
-            lines, section, *details,
-        )
+        data[section] = json_detailed_write(lines, section, *details)
+    return data
 
 
 def json_detailed_actions(json_lns, json_miss):
@@ -3031,42 +2965,23 @@ def json_detailed_format(json_lns, *, is_compat=False, is_l10n=False):
     return json_detailed_format_add(json_lns, header_t, value_t)
 
 
-def json_detailed_miss_process(line, ctx, result, entry):
-    """Format lines in the missing section.
+def json_detailed_group(json_lns, is_header, keys):
+    """Group the lines of a section under each of its headers.
 
-    Related to `-o json` option.
+    Every header opens an entry that collects its details and references;
+    related to `-o json` option.
     """
-    if line in ctx.l_miss or line.startswith("(*)"):
-        result.extend(filter(None, (entry,)))
-        return {ctx.miss_h: line, ctx.miss_d: [], ctx.miss_r: []}
-    if entry and line.startswith(ctx.mref):
-        entry[ctx.miss_r].append(line.removeprefix(ctx.mref).strip())
-    elif entry:
-        entry[ctx.miss_d].append(line)
-    return entry
-
-
-def json_detailed_miss_add(json_lns, ctx):
-    """Add lines to the missing section.
-
-    Related to `-o json` option.
-    """
-    result, entry = [], {}
+    header_t, detail_t, ref_t = keys
+    result = []
     for line in json_lns:
-        entry = json_detailed_miss_process(line, ctx, result, entry)
-    if entry:
-        result.append(entry)
+        if is_header(line):
+            result.append({header_t: line, detail_t: [], ref_t: []})
+        elif result and line.startswith(PDF_CONDITIONS[0]):
+            result[-1][ref_t].append(
+                line.removeprefix(PDF_CONDITIONS[0]).strip())
+        elif result:
+            result[-1][detail_t].append(line)
     return result
-
-
-class JsonMissContext(NamedTuple):
-    """Loop-invariant context for the missing-headers JSON section."""
-
-    l_miss: list
-    miss_h: str
-    miss_d: str
-    miss_r: str
-    mref: str
 
 
 def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
@@ -3075,10 +2990,9 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
 
     Related to `-o json` option.
     """
-    ctx = JsonMissContext(l_miss=l_miss, miss_h=json_miss_h,
-                          miss_d=json_miss_d, miss_r=json_miss_r,
-                          mref=PDF_CONDITIONS[0])
-    result = json_detailed_miss_add(json_lns, ctx)
+    result = json_detailed_group(
+        json_lns, lambda line: line in l_miss or line.startswith("(*)"),
+        (json_miss_h, json_miss_d, json_miss_r))
     for e in result:
         if len(e[json_miss_d]) == 1:
             e[json_miss_d] = e[json_miss_d][0]
@@ -3129,34 +3043,6 @@ def json_detailed_fng(json_lns, fingerprint_set):
     return result
 
 
-def json_detailed_ins_append(line, ctx, entry, header, result):
-    """Add lines to the deprecated/insecure headers section.
-
-    Related to `-o json` option.
-    """
-    if json_detailed_ins_headers(line, ctx.checks_list, ctx.ref_t):
-        if entry:
-            result.append(entry)
-        header = line
-        entry = {ctx.header_t: header, ctx.detail_t: [], ctx.ref_t: []}
-    elif header:
-        if line.startswith(ctx.ref_o):
-            entry[ctx.ref_t].append(line[len(ctx.ref_o):].strip())
-        else:
-            entry[ctx.detail_t].append(line)
-    return entry, header
-
-
-class JsonInsContext(NamedTuple):
-    """Loop-invariant context for the deprecated/insecure JSON section."""
-
-    header_t: str
-    detail_t: str
-    ref_t: str
-    ref_o: str
-    checks_list: list
-
-
 def json_detailed_ins_headers(line, checks_list, ref_t):
     """Determine if a line represents a deprecated/insecure header.
 
@@ -3172,20 +3058,6 @@ def json_detailed_ins_headers(line, checks_list, ref_t):
     return header_cond or (header_cond2 and header_cond3)
 
 
-def json_detailed_ins_process(json_lns, ctx):
-    """Format the lines to include in the deprecated/insecure section.
-
-    Related to `-o json` option.
-    """
-    result, entry, header = [], {}, None
-    for line in json_lns:
-        entry, header = json_detailed_ins_append(line, ctx, entry, header,
-                                                 result)
-    if entry:
-        result.append(entry)
-    return result
-
-
 def json_detailed_ins(json_lns, insecure_checks):
     """Select the lines to include in the deprecated/insecure section.
 
@@ -3197,22 +3069,12 @@ def json_detailed_ins(json_lns, insecure_checks):
     if args.lang:
         insecure_checks = {check.split(": ")[0] + ":"
                            for check in insecure_checks}
-    checks_list = []
-    json_detailed_ins_checks(checks_list, insecure_checks)
-    ctx = JsonInsContext(header_t=header_t, detail_t=detail_t, ref_t=ref_t,
-                         ref_o=PDF_CONDITIONS[0], checks_list=checks_list)
-    return json_detailed_ins_process(json_lns, ctx)
-
-
-def json_detailed_ins_checks(checks_list, insecure_checks):
-    """Select the content to include in the deprecated/insecure section.
-
-    Related to `-o json` option.
-    """
-    for check in insecure_checks:
-        check_s = check.strip()
-        key, val = check_s.split(":", 1)
-        checks_list.append((key.strip(), val.strip()))
+    checks_list = [tuple(map(str.strip, check.split(":", 1)))
+                   for check in insecure_checks]
+    return json_detailed_group(
+        json_lns,
+        lambda line: json_detailed_ins_headers(line, checks_list, ref_t),
+        (header_t, detail_t, ref_t))
 
 
 def json_detailed_results(json_lns):
@@ -3920,14 +3782,10 @@ def parse_xml(root, stripped_txt):
     """Parse sections of an XML export; related to `-o xml` option."""
     section = None
     for line in stripped_txt:
-        if not line:
-            continue
         if line.startswith("["):
             section = ET.SubElement(root, "section", {"name": line})
-            continue
-        if section is None:
-            continue
-        add_xml_item(line, section)
+        elif line and section is not None:
+            add_xml_item(line, section)
 
 
 def add_xml_item(line, section):
@@ -4358,9 +4216,7 @@ def process_requests_exception(exception):
     }
     if isinstance(exception, requests.exceptions.Timeout):
         delete_lines()
-        delete_lines()
-        print(f"\n{get_detail('[e_timeout]', replace=True)}")
-        sys.exit(1)
+        print_error_detail("[e_timeout]", clean_lines=True)
     if exception_id := exception_d.get(type(exception)):
         print_http_exception(exception_id, exception)
     else:
@@ -4459,9 +4315,7 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
         reliable = True
     if not done.wait(timeout=REQ_TIMEOUT):
         delete_lines()
-        delete_lines()
-        print(f"\n{get_detail('[e_timeout]', replace=True)}")
-        sys.exit(1)
+        print_error_detail("[e_timeout]", clean_lines=True)
     r = result.get("r")
     exception = result.get("exception")
     return process_http_response(r, exception, status_code, reliable, body)
@@ -5096,13 +4950,8 @@ if header_eligible("accept-ch"):
     if unsafe_scheme:
         print_details("[ixach_h]", "[ixach]", "d", i_cnt)
     if match_value := [x for x in t_acceptch_dep if x in acceptch_header]:
-        print_detail_r("[ixachd_h]", is_red=True)
-        if not args.brief:
-            match_value_str = ", ".join(f"'{x}'" for x in match_value)
-            print_detail_l("[ixachd_s]")
-            print(match_value_str)
-            print_detail("[ixachd]")
-        i_cnt[0] += 1
+        print_matched_details("[ixachd_h]", "[ixachd_s]", ", ".join(
+            f"'{x}'" for x in match_value), "[ixachd]")
 
 if header_eligible("accept-ch-lifetime"):
     print_details("[ixacl_h]", "[ixacld]", "d", i_cnt)
@@ -5116,16 +4965,10 @@ if header_eligible("access-control-allow-credentials") \
 
 if header_eligible("access-control-allow-methods"):
     methods = headers_l["access-control-allow-methods"]
-    if any(method in methods for method in t_methods):
-        print_detail_r("[imethods_h]", is_red=True)
-        if not args.brief:
-            match_method = [x for x in t_methods if x in methods]
-            quoted_methods = ", ".join(f"'{m}'" for m in match_method)
-            match_method_str = f"{quoted_methods}."
-            print_detail_l("[imethods_s]")
-            print(match_method_str)
-            print_detail("[imethods]")
-        i_cnt[0] += 1
+    if match_method := [x for x in t_methods if x in methods]:
+        quoted_methods = ", ".join(f"'{m}'" for m in match_method)
+        print_matched_details("[imethods_h]", "[imethods_s]",
+                              f"{quoted_methods}.", "[imethods]")
 
 accesso_header = headers_l.get("access-control-allow-origin", "")
 if header_eligible("access-control-allow-origin") \
@@ -5147,15 +4990,9 @@ if header_eligible("activate-storage-access"):
 
 if header_eligible("allow"):
     methods = headers_l["allow"]
-    if any(method in methods for method in t_methods):
-        print_detail_r("[imethods_hh]", is_red=True)
-        if not args.brief:
-            match_method = [x for x in t_methods if x in methods]
-            match_method_str = ", ".join(match_method)
-            print_detail_l("[imethods_s]")
-            print(match_method_str)
-            print_detail("[imethods]")
-        i_cnt[0] += 1
+    if match_method := [x for x in t_methods if x in methods]:
+        print_matched_details("[imethods_hh]", "[imethods_s]",
+                              ", ".join(match_method), "[imethods]")
 
 if header_eligible("attribution-reporting-register-source"):
     print_details("[iarrs_h]", "[iarrs]", "m", i_cnt)
@@ -5211,12 +5048,8 @@ if header_eligible("content-security-policy-report-only"):
     csp_ro_dirs = {directive.split()[0] for directive in
                    csp_ro_header.split(";") if directive.strip()}
     if matches_csp_ro := sorted(csp_ro_dirs.intersection(t_csp_ro_dep)):
-        print_detail_r("[icsiro_d]", is_red=True)
-        if not args.brief:
-            print_detail_l("[icsi_d_s]")
-            print(", ".join(f"'{x}'" for x in matches_csp_ro))
-            print_detail("[icsiro_d_r]")
-        i_cnt[0] += 1
+        print_matched_details("[icsiro_d]", "[icsi_d_s]", ", ".join(
+            f"'{x}'" for x in matches_csp_ro), "[icsiro_d_r]")
     if "report-to" not in csp_ro_dirs:
         print_details("[icsiroi_d]", "[icsiroi]", "d", i_cnt)
 
@@ -5361,14 +5194,9 @@ if header_eligible("permissions-policy"):
 
 if header_eligible("permissions-policy-report-only"):
     perm_ro_header = headers_l["permissions-policy-report-only"]
-    if any(elem in perm_ro_header for elem in t_per_dep):
-        print_detail_r("[ifpolnd_h]", is_red=True)
-        if not args.brief:
-            matches_perm_ro = [x for x in t_per_dep if x in perm_ro_header]
-            print_detail_l("[icsi_d_s]")
-            print(", ".join(f"'{x}'" for x in matches_perm_ro))
-            print_detail("[ipermro_d_r]")
-        i_cnt[0] += 1
+    if matches_perm_ro := [x for x in t_per_dep if x in perm_ro_header]:
+        print_matched_details("[ifpolnd_h]", "[icsi_d_s]", ", ".join(
+            f"'{x}'" for x in matches_perm_ro), "[ipermro_d_r]")
 
 if header_eligible("pragma"):
     print_details("[iprag_h]", "[iprag]", "d", i_cnt)
@@ -5474,12 +5302,8 @@ if header_eligible("trailer"):
     trailer_h = {name.strip().casefold()
                  for name in headers_l["trailer"].split(",")}
     if matches_trailer := [x for x in t_trailer if x in trailer_h]:
-        print_detail_r("[itrailer_h]", is_red=True)
-        if not args.brief:
-            print_detail_l("[itrailer_d_s]")
-            print(", ".join(matches_trailer))
-            print_detail("[itrailer_d_r]")
-        i_cnt[0] += 1
+        print_matched_details("[itrailer_h]", "[itrailer_d_s]",
+                              ", ".join(matches_trailer), "[itrailer_d_r]")
 
 if header_eligible("transfer-encoding"):
     transfer_h = headers_l["transfer-encoding"].casefold()
