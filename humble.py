@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-10-09")
+local_version = date.fromisoformat("2026-10-11")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -196,7 +196,6 @@ SECTIONS_EXPORT_STATES = {RESP_SECTION: (True, False, False),
 STRINGS_BOLD = tuple(PDF_SECTION.keys())
 SECTIONS_EXPORT_PREFIXES = STRINGS_BOLD + RESP_SECTION
 URL_STRING = ("rfc-st", " URL   : ", "https://caniuse.com/?")
-VALUE_LABELS = ("Value: ", "Valor: ")
 
 # Terminal ui, raw internals and styling
 DELETED_LINES = "\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K"
@@ -3558,8 +3557,11 @@ def write_html_line(html_final, ln, html_writers, html_rest,
     Section names are handled apart, being the only stateful case; lines
     matching no rule fall through to `format_html_rest()`.
 
-    Related to `-o html` option.
+    The line is escaped here, once and before any rule, so that no value
+    supplied by the server can be written as markup; related to `-o html`
+    option.
     """
+    ln = escape(ln, quote=False)
     ln_rstrip = ln.rstrip("\n")
     if format_html_info(html_final, ln_rstrip):
         return inside_section
@@ -3579,14 +3581,14 @@ def format_html_info(html_final, ln_rstrip):
 
     Related to `-o html` option.
     """
-    if URL_STRING[0] in ln_rstrip:
+    if ln_rstrip.startswith(URL_LIST[4]):
         html_final.write(
             f"{HTML_TAGS[1]}{ln_rstrip[:32]}{HTML_TAGS[2]}"
             f"{ln_rstrip[:32]}{HTML_TAGS[0]}{ln_rstrip[32:]}",
         )
         return True
-    if URL_STRING[1] in ln_rstrip:
-        safe_url = escape(ln_rstrip[8:])
+    if ln_rstrip.startswith(URL_STRING[1]):
+        safe_url = ln_rstrip[8:].replace('"', "&quot;")
         html_final.write(
             f"{ln_rstrip[:8]}{HTML_TAGS[1]}{safe_url}"
             f"{HTML_TAGS[2]}{safe_url}{HTML_TAGS[0]}{HTML_TAGS[11]}",
@@ -3621,8 +3623,8 @@ def format_html_references(html_final, ln_rstrip, *, lang_slice):
     """
     for ref, off in ((REF_LINKS[1], 6), (REF_LINKS[0], 8), (REF_LINKS[4],
                                                             lang_slice)):
-        if ref in ln_rstrip:
-            content = ln_rstrip[off:].strip()
+        content = ln_rstrip[off:].strip().replace('"', "&quot;")
+        if ref in ln_rstrip and content.startswith("http"):
             html_final.write(
                 f"{ln_rstrip[:off]}{HTML_TAGS[1]}{content}"
                 f"{HTML_TAGS[2]}{content}{HTML_TAGS[0]}{HTML_TAGS[11]}",
@@ -3636,9 +3638,9 @@ def format_html_compatibility(html_final, ln_rstrip):
 
     Related to `-o html` option.
     """
-    if URL_STRING[2] not in ln_rstrip:
+    prefix, _, link = ln_rstrip.replace('"', "&quot;").partition(": ")
+    if not link.startswith(URL_STRING[2]):
         return False
-    prefix, _, link = ln_rstrip.partition(": ")
     html_final.write(
         f"{HTML_TAGS[4]}{prefix[1:]}: {HTML_TAGS[5]}"
         f"{HTML_TAGS[1]}{link}{HTML_TAGS[2]}{link}{HTML_TAGS[0]}\
@@ -3651,7 +3653,7 @@ def format_html_bold(html_final, ln_rstrip, inside_section):
 
     Related to `-o html` option.
     """
-    if any(s in ln_rstrip for s in STRINGS_BOLD):
+    if ln_rstrip.startswith(STRINGS_BOLD):
         if inside_section:
             html_final.write(HTML_TAGS[12])
         html_final.write(f"{HTML_TAGS[7]}{ln_rstrip}{HTML_TAGS[8]}")
@@ -3663,15 +3665,15 @@ def format_html_bold(html_final, ln_rstrip, inside_section):
 def format_html_headers(ln, header_prefixes):
     """Format HTTP response header lines for an HTML export.
 
-    Sanitizes header values using HTML escaping to ensure that special
+    The line arrives already escaped from `write_html_line()`, so special
     characters (e.g., `<` or `>` in headers) are rendered correctly and do not
     interfere with the HTML structure; related to the `-o html` option.
     """
     for header_prefix in header_prefixes:
         if header_prefix in ln:
             header_name, _, header_value = ln.partition(":")
-            safe_value = escape(header_value.strip())
-            ln = f"{HTML_TAGS[4]}{header_name}{HTML_TAGS[5]}: {safe_value}\n"
+            ln = (f"{HTML_TAGS[4]}{header_name}{HTML_TAGS[5]}: "
+                  f"{header_value.strip()}\n")
             ln = format_html_csp(ln)
             break
     return ln
@@ -3752,26 +3754,7 @@ def format_html_rest(html_final, ln, *, ctx):
         ln = format_html_fingerprint(ln, ctx.fng_sorted)
         ln = format_html_totals(ln, ctx.l_total)
         ln = format_html_empty(ln, ln_rstrip, ctx.l_empty)
-        html_final.write(escape_html_value(ln))
-
-
-def escape_html_value(ln):
-    """Escape a label-delimited value while preserving humble's own tags.
-
-    Only the content inside the single quotes following a localized value
-    label (`Value:`/`Valor:`) is escaped, with `quote=False` so benign
-    output is unchanged; lines without such a label are returned unaltered.
-    Related to `-o html` option.
-    """
-    for label in VALUE_LABELS:
-        head, sep, tail = ln.partition(f"{label}'")
-        if sep and tail.endswith("'\n"):
-            value = escape(tail[:-2], quote=False)
-            return f"{head}{sep}{value}'\n"
-        if sep and tail.endswith("'"):
-            value = escape(tail[:-1], quote=False)
-            return f"{head}{sep}{value}'"
-    return ln
+        html_final.write(ln)
 
 
 def format_html_enabled(ln, html_final):
@@ -3784,7 +3767,7 @@ def format_html_enabled(ln, html_final):
     header, sep, value = map(str.strip, ln[19:].partition(":"))
     ln = f"{HTML_TAGS[6]} {header}{HTML_TAGS[5]}"
     if sep:
-        ln += f": {escape(value, quote=False)}"
+        ln += f": {value}"
     html_final.write(f"{format_html_csp(ln)}{HTML_TAGS[11]}")
     return ln, True
 
