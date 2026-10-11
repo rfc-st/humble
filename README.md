@@ -25,6 +25,7 @@
 <a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="Status of documentation in 'Read The Docs'"><img src="https://img.shields.io/badge/documentation-passing-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="Code coverage with pytest-cov"><img src="https://img.shields.io/badge/code%20coverage-98%25-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/vulture.yml" title="Dead Code analysis with vulture"><img src="https://img.shields.io/badge/vulture-passing-32bd50?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#ai-assisted-review" title="How AI is used to review this tool"><img src="https://img.shields.io/badge/AI--assisted%20review-Claude%20Fable%205.1-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="Analysis of OpenSSF best practices"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
 <a target="_blank" href="https://cybertoolchain.io/tools/humble/" title="Tracked by Cyber Toolchain"><img src="https://img.shields.io/badge/tracked%20by-Cyber%20Toolchain-blue?labelColor=343b41"></a>
 <br />
@@ -53,6 +54,7 @@
 [Advanced Usage (Linux)](#advanced-usage-linux)<br />
 [Unit tests](#unit-tests)<br />
 [Quality, style and security tools](#quality-style-and-security-tools)<br />
+[AI-assisted review](#ai-assisted-review)<br />
 [Checks: Missing Headers](#checks-missing-headers)<br />
 [Checks: Fingerprint Headers](#checks-fingerprint-headers)<br />
 [Checks: Deprecated Headers and Insecure Values](#checks-deprecated-headersprotocols-and-insecure-values)<br />
@@ -580,6 +582,31 @@ And is regularly audited manually using the following tools (for each of them, I
 Example of one of these audits:
 
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_secqa.PNG" alt="Security and QA checks">
+
+## AI-assisted review
+
+I have maintained *humble* on my own for nearly seven years. A few months ago (summer of 2026) I started reviewing it in working sessions with an AI model, <a href="https://www.anthropic.com/claude" target="_blank">Claude</a> (Fable 5.1), because I wanted a second reviewer that would question my code as hard as I do.
+
+**What I asked it for:** to find errors in the logic, the functions and the code, and to find security bugs, both in *humble* itself and in the files it exports.
+
+**What I challenged it on:** everything. We held very demanding sessions, during which I would ask for and insist on the reasons and rationale behind every suggestion. I would only approve a change, including the code it wrote, once the figures, results, tests and underlying reasoning convinced me. It has been wrong more than once and I caught it; other times I rejected an idea, went to read the specification, and had to admit it was right. Some proposals I turned down for good because they go against what *humble* is: for example, it will never get a mode that makes mass scanning easier.
+
+I have held sessions dedicated exclusively to questioning and testing the complexity, ease of understanding, and quality of the functions—as well as the associated code.
+
+**What I learned from it:** that my exports were rebuilt from printed text and could be fooled by what a server sends; that hostile input should be rejected, not cleaned up; and that a claim about the code is worth nothing until it has been measured.
+
+And that it has been a valuable ally, and that my ignorance (or the flame that ignites my curiosity) must keep asking questions, just as it does :).
+
+**What we achieved together:**
+
+Some examples:
+
+- Security fixes: <a href="https://github.com/rfc-st/humble/commit/a933d84" target="_blank">a933d84</a> (the HTML export wrote server-supplied header values as markup) and <a href="https://github.com/rfc-st/humble/commit/a7b2741" target="_blank">a7b2741</a> (only web addresses become links in the PDF and HTML exports).
+- More honest results: <a href="https://github.com/rfc-st/humble/commit/cc2a2da" target="_blank">cc2a2da</a> (empty headers were reported as enabled) and several checks that reported things that were not true.
+- Exports that no longer lose data: <a href="https://github.com/rfc-st/humble/commit/332faa9" target="_blank">332faa9</a>.
+- Less code, more unit tests, and new checks, without adding a single dependency.
+
+**What this is not:** there is not a single commit or pull request in this repository that was generated or approved solely by an AI. This is also not a certificate: a review like this means fewer bugs, not zero, and the responsibility for *humble* is mine.
 
 ## Checks: enabled headers
 
