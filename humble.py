@@ -3326,9 +3326,13 @@ def set_pdf_conditions(line, combined_h, pdf, ypos):
 def format_pdf_links(i, pdf_string, pdf, pdf_prefixes):
     """Apply a specific format to lines containing links.
 
-    Related to `-o pdf` option.
+    Only web addresses become links, so a header value that imitates a
+    reference cannot add any other kind of target; related to `-o pdf`
+    option.
     """
     pdf_link = set_pdf_links(i, pdf_string)
+    if not pdf_link.casefold().startswith(("http://", "https://")):
+        return
     if pdf_string in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
         pdf_prefix = pdf_prefixes.get(pdf_string, pdf_string)
         pdf.write(h=6, text=pdf_prefix)
@@ -3619,7 +3623,7 @@ def format_html_references(html_final, ln_rstrip, *, lang_slice):
     for ref, off in ((REF_LINKS[1], 6), (REF_LINKS[0], 8), (REF_LINKS[4],
                                                             lang_slice)):
         content = ln_rstrip[off:].strip().replace('"', "&quot;")
-        if ref in ln_rstrip and content.startswith("http"):
+        if ref in ln_rstrip and content.startswith(("http://", "https://")):
             html_final.write(
                 f"{ln_rstrip[:off]}{HTML_TAGS[1]}{content}"
                 f"{HTML_TAGS[2]}{content}{HTML_TAGS[0]}{HTML_TAGS[11]}",
