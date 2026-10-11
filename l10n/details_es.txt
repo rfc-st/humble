@@ -1863,9 +1863,6 @@ Promedios
 [main]
 Principales
 
-[empty_fng]
- (Sin valor)
-
 [highlights]
 A destacar
 
@@ -2302,6 +2299,12 @@ Generador
 
 [test_export_json_brackets]
  verifica que al exportar a JSON un valor terminado en ']' siga dentro de su sección.
+
+[test_empty_headers]
+ verifica que las cabeceras vacías se traten como no enviadas y solo consten como vacías.
+
+[test_export_json_no_security_headers]
+ verifica que al exportar a JSON el aviso de 'sin cabeceras de seguridad' sea texto simple.
 
 [test_csp_strict_dynamic]
  verifica que no se informen hosts o esquemas en directivas de 'Content-Security-Policy' con 'strict-dynamic'.

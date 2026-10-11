@@ -1862,9 +1862,6 @@ Averages
 [main]
 Main
 
-[empty_fng]
- (No value)
-
 [highlights]
 Highlights
 
@@ -2324,6 +2321,12 @@ Generator
 
 [test_export_json_brackets]
  verify a JSON export keeps a header value ending in ']' inside its section.
+
+[test_empty_headers]
+ verify empty headers are treated as not sent and only reported as empty.
+
+[test_export_json_no_security_headers]
+ verify a JSON export keeps the 'no security headers' message as plain text.
 
 [test_csp_strict_dynamic]
  verify host and scheme are not reported in 'Content-Security-Policy' directives with 'strict-dynamic'.

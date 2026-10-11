@@ -64,6 +64,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_csp_fallback_present]", "[test_csp_tokens]",
                  "[test_permissions_format]", "[test_unreliable_analysis]",
                  "[test_export_csv_brackets]", "[test_export_json_brackets]",
+                 "[test_empty_headers]",
+                 "[test_export_json_no_security_headers]",
                  "[test_sanitize_header_value]",
                  "[test_strip_response_headers_sanitized]",
                  "[test_testssl_command]", "[test_testssl_command_declined]",
@@ -90,6 +92,7 @@ HUMBLE_TEST_FILES = {
     "CSP_STRICT_DYNAMIC": "headers_test_csp_strict_dynamic.txt",
     "CSP_TOKENS": "headers_test_csp_tokens.txt",
     "CSP_UNSAFE_INLINE": "headers_test_csp_unsafe_inline.txt",
+    "EMPTY": "headers_test_empty.txt",
     "PERMISSIONS_FORMAT": "headers_test_permissions_format.txt",
     "NO_HEADERS": "headers_test_none.txt",
     "NO_SEC_HEADERS": "headers_test_nonesecurity.txt",
@@ -970,6 +973,34 @@ def test_export_json_brackets(tmp_path):
     content = (tmp_path / "humble_brackets.json").read_text(encoding="utf-8")
     assert '"Value": "prefs=[1,2]"' in content
     assert '"[1,2]": [' not in content
+
+
+def test_empty_headers():
+    """Verify empty headers are treated as not sent, except in section 5."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["EMPTY"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Enabled headers:               3" in output
+    assert "Fingerprint headers:           0" in output
+    assert "Empty headers:                 2" in output
+    assert "Strict-Transport-Security (" not in output
+
+
+def test_export_json_no_security_headers(tmp_path):
+    """Verify a JSON export keeps the 'no headers' message as plain text."""
+    run_test(["-u", TEST_URLS[2], "-if", PATHS["NO_SEC_HEADERS"], "-o", "json",
+              "-op", tmp_path, "-of", "humble_nosec"], "saved")
+    content = (tmp_path / "humble_nosec.json").read_text(encoding="utf-8")
+    assert '"No HTTP security headers are present."' in content
+    assert '"Header": "No HTTP security headers' not in content
 
 
 @pytest.fixture(scope="module")

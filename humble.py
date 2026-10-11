@@ -1924,10 +1924,8 @@ def get_fingerprint_detail(header, fng_line):
         print_header(header)
         return
     print_header(fng_line)
-    if header_value := headers_l[header.lower()]:
-        print(f" {get_detail('[fng_value]', replace=True)} '{header_value}'")
-    else:
-        print(get_detail("[empty_fng]", replace=True))
+    header_value = headers_l[header.lower()]
+    print(f" {get_detail('[fng_value]', replace=True)} '{header_value}'")
     print()
 
 
@@ -2995,7 +2993,7 @@ def json_detailed_format_add(json_lns, header_t, value_t):
             key, value = line.split(":", 1)
             result.append({header_t: key.strip(), value_t: value.strip()})
         else:
-            result.append({header_t: line, value_t: ""})
+            result.append(line)
     return result
 
 
@@ -4642,7 +4640,9 @@ if args.input_file is None:
     if body and is_html:
         http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)
 
-headers_l = {header.lower(): value for header, value in headers.items()}
+# An empty header is treated as not sent: it is only reported in section 5.
+headers_l = {header.lower(): value for header, value in headers.items()
+             if value}
 
 # Export filename generation
 export_filename = None
