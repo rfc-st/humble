@@ -221,7 +221,7 @@ RE_PATTERN = (
      r"%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|"
      r"%uff0e%uff0e%u2215|%uff0e%uff0e%u2216"),
     r"\(([^)]+)\)",
-    r"\d{4}-\d{2}-\d{2}", r"\[(.*?)\]\n", r"'nonce-([^']+)'",
+    r"\d{4}-\d{2}-\d{2}", r"(?m)^\[(.*?)\]\n", r"'nonce-([^']+)'",
     r"\(humble_pdf_style\)([^:]+):",
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r"\(humble_sec_style\)([^:]+)", r"\(humble_sec_style\)",
@@ -2701,7 +2701,7 @@ def parse_csv(csv_section, csv_source, csv_writer):
     Related to `-o csv` option.
     """
     for i in filter(csv_source.__contains__, csv_section):
-        csv_content = csv_source.split(i)[1].split("[")[0]
+        csv_content = csv_source.split(i)[1].split("\n[")[0]
         info_list = filter(None, map(str.strip, csv_content.split("\n")))
         for csv_ln in info_list:
             clean_ln = ": ".join(map(str.strip, csv_ln.split(":", 1)))
@@ -3099,7 +3099,7 @@ def json_detailed_ins_headers(line, checks_list, ref_t):
     header_cond2 = not line.startswith(ref_t)
     header_cond3 = any(
         (val and key in line and val in line)
-        or (not val and line.startswith(key))
+        or (not val and line.startswith(f"{key} ("))
         for key, val in checks_list
     )
     return header_cond or (header_cond2 and header_cond3)
@@ -3364,12 +3364,7 @@ def set_pdf_empty(l_empty, line, pdf, ypos):
 
     Related to `-o pdf` option.
     """
-    ln_strip = line.lstrip().lower()
-    if (
-        any(i.lower() in ln_strip for i in l_empty)
-        and "[" not in ln_strip
-        and ":" not in ln_strip
-    ):
+    if line.strip().lower() in map(str.lower, l_empty):
         pdf.set_text_color(255, 0, 0)
         pdf.multi_cell(197, 6, text=line, align="L", new_y=ypos.LAST)
         return True
@@ -3724,12 +3719,9 @@ def format_html_empty(ln, ln_rstrip, l_empty):
 
     Related to `-o html` option.
     """
-    ln_strip = ln_rstrip.lstrip().lower()
-    for i in l_empty:
-        if (i.lower() in ln_strip and "[" not in ln_strip and ":" not in
-           ln_strip and HTML_TAGS[3] not in ln):
-            ln = f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
-            break
+    if (ln_rstrip.strip().lower() in map(str.lower, l_empty)
+            and HTML_TAGS[3] not in ln):
+        ln = f"{HTML_TAGS[3]}{ln}{HTML_TAGS[5]}"
     return ln
 
 

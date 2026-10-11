@@ -1266,7 +1266,7 @@ Cabeceras de respuesta HTTP
 
 [icspmfa]
  Evita ataques de clickjacking; intenta habilitarla con 'none'.
- Puedes ignorar este aviso si está habilitada la cabecera HTTP 'X-Frame-Options'.
+ Puedes ignorar este aviso si está habilitada la cabecera HTTP "X-Frame-Options".
  Ref: https://centralcsp.com/docs/frame-ancestors
  Ref: https://www.w3.org/TR/CSP3/#frame-ancestors-and-frame-options
 
@@ -2296,6 +2296,12 @@ Generador
 
 [test_csp_tokens]
  verifica que los checks de 'Content-Security-Policy' comparen valores completos y no subcadenas de hosts.
+
+[test_export_csv_brackets]
+ verifica que al exportar a CSV se conserven las cabeceras tras un valor con '['.
+
+[test_export_json_brackets]
+ verifica que al exportar a JSON un valor terminado en ']' siga dentro de su sección.
 
 [test_csp_strict_dynamic]
  verifica que no se informen hosts o esquemas en directivas de 'Content-Security-Policy' con 'strict-dynamic'.

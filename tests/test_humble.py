@@ -63,6 +63,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_cache_no_store]", "[test_case_insensitive_values]",
                  "[test_csp_fallback_present]", "[test_csp_tokens]",
                  "[test_permissions_format]", "[test_unreliable_analysis]",
+                 "[test_export_csv_brackets]", "[test_export_json_brackets]",
                  "[test_sanitize_header_value]",
                  "[test_strip_response_headers_sanitized]",
                  "[test_testssl_command]", "[test_testssl_command_declined]",
@@ -73,6 +74,7 @@ HUMBLE_TEMP_PREFIX = "humble_"
 HUMBLE_TEST_FILES = {
     "CORNER_CASES": "headers_test_corner_cases.txt",
     "ALL_HEADERS": "headers_test_all.txt",
+    "BRACKETS": "headers_test_brackets.txt",
     "PERFECT_CASE": "headers_test_perfect_case.txt",
     "PERFECT_GRADE": "headers_test_grade_perfect.txt",
     "GRADE_A": "headers_test_grade_a.txt",
@@ -950,6 +952,24 @@ def test_permissions_format():
     output = result.stdout + result.stderr
     assert "Permissions-Policy (Incorrect Format)" in output
     assert "(Too Permissive Value)" not in output
+
+
+def test_export_csv_brackets(tmp_path):
+    """Verify a CSV export keeps the headers after a value containing '['."""
+    run_test(["-u", TEST_URLS[2], "-if", PATHS["BRACKETS"], "-o", "csv",
+              "-op", tmp_path, "-of", "humble_brackets"], "saved")
+    content = (tmp_path / "humble_brackets.csv").read_text(encoding="utf-8")
+    assert '[{""url"":""https://example.com/r""}]}' in content
+    assert "X-Content-Type-Options: nosniff" in content
+
+
+def test_export_json_brackets(tmp_path):
+    """Verify a JSON export keeps a value ending in ']' inside its section."""
+    run_test(["-u", TEST_URLS[2], "-if", PATHS["BRACKETS"], "-o", "json",
+              "-op", tmp_path, "-of", "humble_brackets"], "saved")
+    content = (tmp_path / "humble_brackets.json").read_text(encoding="utf-8")
+    assert '"Value": "prefs=[1,2]"' in content
+    assert '"[1,2]": [' not in content
 
 
 @pytest.fixture(scope="module")

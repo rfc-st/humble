@@ -1265,7 +1265,7 @@ HTTP Response Headers
 
 [icspmfa]
  Prevents clickjacking attacks; try to set it to 'none'.
- You can ignore this warning if the 'X-Frame-Options' HTTP header is enabled.
+ You can ignore this warning if the "X-Frame-Options" HTTP header is enabled.
  Ref: https://centralcsp.com/docs/frame-ancestors
  Ref: https://www.w3.org/TR/CSP3/#frame-ancestors-and-frame-options
 
@@ -2318,6 +2318,12 @@ Generator
 
 [test_csp_tokens]
  verify 'Content-Security-Policy' checks match whole values instead of substrings of hosts.
+
+[test_export_csv_brackets]
+ verify a CSV export keeps the headers listed after a value containing '['.
+
+[test_export_json_brackets]
+ verify a JSON export keeps a header value ending in ']' inside its section.
 
 [test_csp_strict_dynamic]
  verify host and scheme are not reported in 'Content-Security-Policy' directives with 'strict-dynamic'.
