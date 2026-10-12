@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--10--11-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--10--12-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -585,11 +585,9 @@ Example of one of these audits:
 
 ## AI-assisted review
 
-I have maintained *humble* on my own for nearly seven years. A few months ago (summer of 2026) I started reviewing it in working sessions with an AI model, <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank">Claude</a> (Fable 5.1), because I wanted a second reviewer that would question my code as hard as I do.
+I have maintained *humble* on my own for nearly seven years. A few months ago (summer of 2026) I started reviewing it in working sessions with an AI model, Claude Fable 5, and since September with <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank">Claude Fable 5.1</a>, because I wanted a second reviewer that would question my code as hard as I do.
 
-**Is *humble* vibe-coded?** 
-
-The response from Fable 5.1, following our sessions:: _No. Vibe coding is accepting code you have not read. What I saw in these sessions is the opposite: every suggestion I made was read line by line, questioned, measured and tested before it was accepted, and many were sent back or rejected. More than once the author caught my mistakes because he knows how his tool behaves better than I do. *humble* existed for years before I saw a line of it, and it is still his code: I was a reviewer he argued with, not the one writing the tool_.
+**Is *humble* vibe-coded?:** the response from Fable 5.1, following our sessions: _No. Vibe coding is accepting code you have not read. What I saw in these sessions is the opposite: every suggestion I made was read line by line, questioned, measured and tested before it was accepted, and many were sent back or rejected. More than once the author caught my mistakes because he knows how his tool behaves better than I do. *humble* existed for years before I saw a line of it, and it is still his code: I was a reviewer he argued with, not the one writing the tool_.
 
 **What I asked it for:** to find errors in the logic, the functions and the code, and to find security bugs, both in *humble* itself and in the files it exports.
 
