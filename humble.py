@@ -2050,15 +2050,30 @@ def print_empty_headers(headers):
     return l_empty
 
 
+def get_browser_compatibility(t_sec, t_sec_mdn, t_sec_rem):
+    """Return the 'Can I Use' link of each header listed in section 1.
+
+    The link is the search or page that returns a single result for the
+    header.
+    """
+    compat_links = (
+        {header: f"?search={header}" for header in t_sec}
+        | {header: f"mdn-http_headers_{header.lower()}" for header in t_sec_mdn}
+        | t_sec_rem)
+    enabled_headers = {header.lower() for header in t_ena} & headers_l.keys()
+    return {header: compat_links[header] for header in sorted(compat_links)
+            if header.lower() in enabled_headers}
+
+
 def print_browser_compatibility(compat_headers):
     """Print links for browser compatibility of enabled HTTP headers.
-
-    Each header comes with the 'Can I Use' search or page that returns a
-    single result for it.
 
     ??? note
         References provided by [Can I use](https://caniuse.com/){:target="_blank"}.
     """
+    if not compat_headers:
+        print_nosec_headers()
+        return
     style_blanks = "  " if single_export() == "html" else " "
     for key, link in compat_headers.items():
         styled_header = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
@@ -5535,23 +5550,13 @@ t_sec_mdn = ("Access-Control-Allow-Headers", "Access-Control-Allow-Methods",
              "Supports-Loading-Mode", "WWW-Authenticate", "X-Frame-Options")
 
 # Remaining Section 1 headers.
-d_sec = {"Clear-Site-Data": "wf-clear-site-data",
-         "Content-Security-Policy": "?search=contentsecuritypolicy2",
-         "Document-Policy": "document-policy",
-         "Referrer-Policy": "referrer-policy"}
+t_sec_rem = {"Clear-Site-Data": "wf-clear-site-data",
+             "Content-Security-Policy": "?search=contentsecuritypolicy2",
+             "Document-Policy": "document-policy",
+             "Referrer-Policy": "referrer-policy"}
 
-compat_links = (
-    {header: f"?search={header}" for header in t_sec}
-    | {header: f"mdn-http_headers_{header.lower()}" for header in t_sec_mdn}
-    | d_sec)
-
-enabled_headers = {header.lower() for header in t_ena} & headers_l.keys()
-compat_headers = {header: compat_links[header]
-                  for header in sorted(compat_links)
-                  if header.lower() in enabled_headers}
-
-print_browser_compatibility(compat_headers) if compat_headers else \
-    print_nosec_headers()
+print_browser_compatibility(
+    get_browser_compatibility(t_sec, t_sec_mdn, t_sec_rem))
 
 # Summary of the analysis and changes compared to the previous one
 print(end="\n\n")
