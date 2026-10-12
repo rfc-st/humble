@@ -69,7 +69,7 @@ DAYS_DIFF = 30
 HUMBLE_DESC = "'humble' (HTTP Headers Analyzer)"
 PYTHON_REQUIRED_VERSION = (3, 11)
 OS_PATH = Path(__file__).resolve().parent
-URL_LIST = (": https://caniuse.com/?search=", " Ref  : https://developers.\
+URL_LIST = (": https://caniuse.com/", " Ref  : https://developers.\
 cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors\
 /", " Ref  : https://developer.mozilla.org/en-US/docs/Web/HTTP/\
 Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
@@ -195,7 +195,7 @@ SECTIONS_EXPORT_STATES = {RESP_SECTION: (True, False, False),
                           "[7.": (False, False, False)}
 STRINGS_BOLD = tuple(PDF_SECTION.keys())
 SECTIONS_EXPORT_PREFIXES = STRINGS_BOLD + RESP_SECTION
-URL_STRING = ("rfc-st", " URL   : ", "https://caniuse.com/?")
+URL_STRING = ("rfc-st", " URL   : ", "https://caniuse.com/")
 
 # Terminal ui, raw internals and styling
 DELETED_LINES = "\x1b[1A\x1b[2K\x1b[1A\x1b[2K\x1b[1A\x1b[2K"
@@ -2053,15 +2053,16 @@ def print_empty_headers(headers):
 def print_browser_compatibility(compat_headers):
     """Print links for browser compatibility of enabled HTTP headers.
 
+    Each header comes with the 'Can I Use' search or page that returns a
+    single result for it.
+
     ??? note
         References provided by [Can I use](https://caniuse.com/){:target="_blank"}.
     """
     style_blanks = "  " if single_export() == "html" else " "
-    for key in compat_headers:
+    for key, link in compat_headers.items():
         styled_header = key if args.output else f"{STYLE[2]}{key}{STYLE[5]}"
-        csp_key = "contentsecuritypolicy2" if key == "Content-Security-Policy"\
-            else key
-        print(f"{style_blanks}{styled_header}{URL_LIST[0]}{csp_key}")
+        print(f"{style_blanks}{styled_header}{URL_LIST[0]}{link}")
 
 
 def check_input_traversal(user_input):
@@ -2930,7 +2931,7 @@ def json_detailed_actions(json_lns, json_miss):
         "[3.": lambda: json_detailed_fng(json_lns, json_detailed_sources(2, 0)),
         "[4.": lambda: json_detailed_ins(json_lns, json_detailed_sources(6, 2)),
         "[5.": lambda: json_detailed_empty(json_lns),
-        "[6.": lambda: json_detailed_format(json_lns, is_compat=True,
+        "[6.": lambda: json_detailed_format(json_lns[1:], is_compat=True,
                                             is_l10n=True),
         "[7.": lambda: json_detailed_results(json_lns),
     }
@@ -2938,12 +2939,18 @@ def json_detailed_actions(json_lns, json_miss):
 
 def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
                         json_miss_r):
-    """Write sections for a JSON export, related to `-o json` option."""
+    """Write sections for a JSON export, related to `-o json` option.
+
+    A section without entries keeps its "nothing to report" message, if the
+    analysis printed it.
+    """
     actions = json_detailed_actions(json_lns, (json_miss_h, json_miss_d,
                                                json_miss_r))
     action = next((act for prefix, act in actions.items()
                    if json_section.startswith(prefix)), None)
-    return action() if action else list(json_lns)
+    result = action() if action else list(json_lns)
+    ok_line = get_detail(DIR_MSG[2], replace=True).strip()
+    return result or [line for line in json_lns if line == ok_line]
 
 
 def json_detailed_empty(json_lns):
@@ -5501,28 +5508,47 @@ print() if e_cnt != 0 else print_nowarnings()
 print()
 
 # Section '6. Browser Compatibility for Enabled HTTP Security Headers'
+# Deprecated headers and those without an entry in 'Can I Use' are excluded.
 print_detail_r("[6compat]")
 
-t_sec = ("Access-Control-Allow-Credentials", "Access-Control-Allow-Headers",
-         "Access-Control-Allow-Methods", "Access-Control-Expose-Headers",
-         "Access-Control-Max-Age", "Cache-Control", "Clear-Site-Data",
-         "Content-Disposition", "Content-Security-Policy",
-         "Content-Security-Policy-Report-Only", "Content-Type", "Critical-CH",
-         "Cross-Origin-Embedder-Policy", "Cross-Origin-Opener-Policy",
-         "Cross-Origin-Resource-Policy", "Document-Policy", "ETag",
-         "Expect-CT", "Feature-Policy", "Integrity-Policy",
-         "Integrity-Policy-Report-Only", "NEL", "Origin-Agent-Cluster",
-         "Permissions-Policy", "Pragma", "Proxy-Authenticate",
-         "Referrer-Policy", "Refresh", "Report-To", "Reporting-Endpoints",
-         "Sec-Private-State-Token-Lifetime", "Server-Timing",
-         "Service-Worker-Allowed", "Set-Cookie", "Set-Login",
-         "Speculation-Rules", "Strict-Transport-Security",
-         "Supports-Loading-Mode", "Timing-Allow-Origin", "Trailer", "Vary",
-         "WWW-Authenticate", "X-Content-Type-Options",
-         "X-DNS-Prefetch-Control", "X-Frame-Options", "X-XSS-Protection")
+if not args.brief:
+    print_detail("[acmp]")
 
-compat_headers = sorted(header for header in t_sec
-                        if header.lower() in headers_l)
+# Section 1 headers that return a single result; obsolete ones are excluded.
+t_sec = ("Access-Control-Allow-Credentials", "Access-Control-Max-Age",
+         "Activate-Storage-Access", "Connection-Allowlist-Report-Only",
+         "Content-Disposition", "Content-Security-Policy-Report-Only",
+         "Cross-Origin-Resource-Policy", "Proxy-Authenticate",
+         "Sec-Private-State-Token-Lifetime", "Strict-Transport-Security",
+         "X-Content-Type-Options")
+
+# Section 1 headers that return a single result with the format
+# 'mdn-http_headers_<header>'
+t_sec_mdn = ("Access-Control-Allow-Headers", "Access-Control-Allow-Methods",
+             "Access-Control-Expose-Headers", "Cache-Control",
+             "Connection-Allowlist", "Content-Type",
+             "Cross-Origin-Embedder-Policy", "Cross-Origin-Opener-Policy",
+             "Integrity-Policy", "Integrity-Policy-Report-Only", "NEL",
+             "Origin-Agent-Cluster", "Permissions-Policy",
+             "Permissions-Policy-Report-Only", "Refresh",
+             "Reporting-Endpoints", "Server-Timing", "Set-Cookie", "Set-Login",
+             "Supports-Loading-Mode", "WWW-Authenticate", "X-Frame-Options")
+
+# Remaining Section 1 headers.
+d_sec = {"Clear-Site-Data": "wf-clear-site-data",
+         "Content-Security-Policy": "?search=contentsecuritypolicy2",
+         "Document-Policy": "document-policy",
+         "Referrer-Policy": "referrer-policy"}
+
+compat_links = (
+    {header: f"?search={header}" for header in t_sec}
+    | {header: f"mdn-http_headers_{header.lower()}" for header in t_sec_mdn}
+    | d_sec)
+
+enabled_headers = {header.lower() for header in t_ena} & headers_l.keys()
+compat_headers = {header: compat_links[header]
+                  for header in sorted(compat_links)
+                  if header.lower() in enabled_headers}
 
 print_browser_compatibility(compat_headers) if compat_headers else \
     print_nosec_headers()

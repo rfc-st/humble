@@ -1686,6 +1686,9 @@ HTTP Response Headers
 [aemp]
  Empty HTTP headers (and are therefore considered disabled):
 
+[acmp]
+ Only for the headers in section 1; deprecated ones and those not in 'Can I Use' are excluded.
+
 [afgp]
  These headers can expose IPs, hostnames, software or their versions:
 
@@ -2241,6 +2244,12 @@ Generator
 [test_brief_analysis]
  verify the completion of a brief analysis.
 
+[test_browser_compatibility]
+ verify the 'Can I Use' link of a header points to its exact page.
+
+[test_browser_compatibility_excluded]
+ verify deprecated or not enabled headers are excluded from the browser compatibility section.
+
 [test_cicd_analysis]
  verify the completion of a CI/CD analysis.
 
@@ -2289,6 +2298,9 @@ Generator
 [test_connection_allowlist_report]
  verify a 'Connection-Allowlist-Report-Only' header without 'report-to' is reported.
 
+[test_connection_allowlist_report_format]
+ verify a 'Connection-Allowlist-Report-Only' header that is not a list in parentheses is reported.
+
 [test_connection_allowlist_values]
  verify unsafe parameters and patterns of the 'Connection-Allowlist' header are reported.
 
@@ -2327,6 +2339,9 @@ Generator
 
 [test_export_json_no_security_headers]
  verify a JSON export keeps the 'no security headers' message as plain text.
+
+[test_export_json_no_findings]
+ verify a JSON export keeps the 'nothing to report' message in sections without findings.
 
 [test_csp_strict_dynamic]
  verify host and scheme are not reported in 'Content-Security-Policy' directives with 'strict-dynamic'.

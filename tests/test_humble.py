@@ -66,6 +66,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_export_csv_brackets]", "[test_export_json_brackets]",
                  "[test_empty_headers]",
                  "[test_export_json_no_security_headers]",
+                 "[test_export_json_no_findings]",
+                 "[test_browser_compatibility_excluded]",
                  "[test_sanitize_header_value]",
                  "[test_strip_response_headers_sanitized]",
                  "[test_testssl_command]", "[test_testssl_command_declined]",
@@ -209,6 +211,9 @@ TEST_CFGS = {
     "test_grade_e_headers": (["-u", TEST_URLS[4], "-if",
                               PATHS["NO_SEC_HEADERS"]], "E ("),
     "test_brief_analysis": (["-u", TEST_URLS[9], "-b"], "Analysis Grade:"),
+    "test_browser_compatibility": (
+        ["-u", TEST_URLS[2], "-if", PATHS["ALL_HEADERS"]],
+        "Set-Cookie: https://caniuse.com/mdn-http_headers_set-cookie"),
     "test_cicd_analysis": (["-u", TEST_URLS[9], "-cicd"], "Analysis Grade"),
     "test_cache_values": (["-u", TEST_URLS[2], "-if", PATHS["ALL_HEADERS"]],
                           "Cache-Control (Recommended Values)"),
@@ -235,6 +240,9 @@ TEST_CFGS = {
     "test_connection_allowlist_report": (
         ["-u", TEST_URLS[2], "-if", PATHS["ALL_HEADERS"]],
         "Connection-Allowlist-Report-Only (Ignored Header)"),
+    "test_connection_allowlist_report_format": (
+        ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
+        "Connection-Allowlist-Report-Only (Incorrect Format)"),
     "test_connection_allowlist_values": (
         ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
         "Connection-Allowlist (Too Permissive Value)"),
@@ -1001,6 +1009,35 @@ def test_export_json_no_security_headers(tmp_path):
     content = (tmp_path / "humble_nosec.json").read_text(encoding="utf-8")
     assert '"No HTTP security headers are present."' in content
     assert '"Header": "No HTTP security headers' not in content
+
+
+def test_export_json_no_findings(tmp_path):
+    """Verify a JSON export keeps the message of sections without findings."""
+    run_test(["-u", TEST_URLS[2], "-if", PATHS["PERFECT_GRADE"], "-o", "json",
+              "-op", tmp_path, "-of", "humble_perfect"], "saved")
+    content = (tmp_path / "humble_perfect.json").read_text(encoding="utf-8")
+    assert '"Nothing to report, all seems OK!"' in content
+    assert '": []' not in content
+
+
+def test_browser_compatibility_excluded():
+    """Verify deprecated or not enabled headers get no 'Can I Use' link."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["ALL_HEADERS"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Only for the headers in section 1;" in output
+    assert "X-Frame-Options: https://caniuse.com/" in output
+    assert "X-XSS-Protection: https://caniuse.com/" not in output
+    assert "Expect-CT: https://caniuse.com/" not in output
+    assert "Expires: https://caniuse.com/" not in output
 
 
 @pytest.fixture(scope="module")

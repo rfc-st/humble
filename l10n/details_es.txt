@@ -1687,6 +1687,9 @@ Cabeceras de respuesta HTTP
 [aemp]
  Cabeceras HTTP vacías (y por ello se consideran deshabilitadas):
 
+[acmp]
+ Solo cabeceras de la sección 1; se excluyen las obsoletas y las que no están en 'Can I Use'.
+
 [afgp]
  Estas cabeceras pueden exponer IPs, hostnames, software o sus versiones:
 
@@ -2219,6 +2222,12 @@ Generador
 [test_brief_analysis]
  verifica que un análisis breve finalice correctamente.
 
+[test_browser_compatibility]
+ verifica que el enlace 'Can I Use' de una cabecera apunte a su página exacta.
+
+[test_browser_compatibility_excluded]
+ verifica que las cabeceras obsoletas o no habilitadas se excluyan de la compatibilidad de navegadores.
+
 [test_cicd_analysis]
  verifica que un análisis CI/CD finalice correctamente.
 
@@ -2267,6 +2276,9 @@ Generador
 [test_connection_allowlist_report]
  verifica que se informe de una cabecera 'Connection-Allowlist-Report-Only' sin 'report-to'.
 
+[test_connection_allowlist_report_format]
+ verifica que se informe de una cabecera 'Connection-Allowlist-Report-Only' que no es una lista entre paréntesis.
+
 [test_connection_allowlist_values]
  verifica que se informe de parámetros y patrones inseguros de la cabecera 'Connection-Allowlist'.
 
@@ -2305,6 +2317,9 @@ Generador
 
 [test_export_json_no_security_headers]
  verifica que al exportar a JSON el aviso de 'sin cabeceras de seguridad' sea texto simple.
+
+[test_export_json_no_findings]
+ verifica que al exportar a JSON se conserve el aviso de 'todo bien' en secciones sin hallazgos.
 
 [test_csp_strict_dynamic]
  verifica que no se informen hosts o esquemas en directivas de 'Content-Security-Policy' con 'strict-dynamic'.
