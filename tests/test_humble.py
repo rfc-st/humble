@@ -71,7 +71,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_sanitize_header_value]",
                  "[test_strip_response_headers_sanitized]",
                  "[test_testssl_command]", "[test_testssl_command_declined]",
-                 "[test_testssl_analysis]"]
+                 "[test_testssl_analysis]", "[test_helper_functions]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -354,6 +354,8 @@ TEST_CFGS = {
                               "non-recommended values"),
     "test_owasp_perfect_compliance": (["-u", TEST_URLS[9], "-c", "-if",
                                        PATHS["PERFECT_OWASP"]], "Nothing"),
+    "test_proxy_analysis": (["-u", f"{LOCAL_SERVER_URL}/status/200", "-p",
+                             LOCAL_SERVER_URL], "proxy specified"),
     "test_proxy_unreachable": (["-u", TEST_URLS[9], "-p", TEST_URLS[7]],
                                "reachable"),
     "test_redirects": (["-u", TEST_URLS[9], "-df"], "Analysis Grade:"),
@@ -378,6 +380,8 @@ TEST_CFGS = {
     ),
     "test_request_invalid_header": (
         ["-u", TEST_URLS[9], "-H", ""], "least"),
+    "test_request_unhandled_exception": (
+        ["-u", TEST_URLS[9], "-H", "humble: a\rb"], "Unhandled exception"),
     "test_response_headers": (["-u", TEST_URLS[9], "-r"],
                               "HTTP Response Headers"),
     "test_russian_block": (["-u", TEST_URLS[8]], "withdraws"),
@@ -450,6 +454,24 @@ SANITIZED_HEADERS = {
     "Server\\x9b31m": "nginx",
     "Content-Type": "text/html; charset=utf-8",
 }
+
+# Function, arguments and expected result for `test_helper_functions`
+HELPER_CASES = (
+    ("build_cicd_info", (["humble", "Note: a", "Note: b", "Note: c"],),
+     {"Note": ["a", "b", "c"]}),
+    ("calculate_trends", ([3, 3, 3, 3, 3],), "Stable"),
+    ("calculate_trends", ([1, 2, 3, 4, 5],), "Worsening"),
+    ("conall_parse", ('("https://a.com"), ("https://b.com")',),
+     (["https://a.com"], {"": ""})),
+    ("csp_valid_hash", ("sha256", "humble"), False),
+    ("decrease_html_spacing", ("humble",), "humble"),
+    ("permissions_valid_item", ('"https://a.com"',), True),
+    ("process_http_response", (None, None, None, False, None),
+     ({}, None, False, None, False, None, 0)),
+    ("valid_analysis_line", ("humble",), False),
+    ("valid_analysis_line", ("humble ; humble ; 1 ; 2 ; 3 ; 4 ; 5 ; 6",),
+     False),
+)
 
 # Required to access and mock internal functions in 'humble.py'
 _spec = importlib.util.spec_from_file_location("humble", HUMBLE_MAIN_FILE)
@@ -814,10 +836,10 @@ def test_print_detail_s():
 
 
 def test_proxy_wrong():
-    """Consolidate missing argument checks across proxy-related features."""
-    expected = ["Error:", "error:"]
-    run_test(["-p", "https://"], expected)
-    run_test(["-p", "http://127.0.0.1:test"], expected)
+    """Consolidate invalid host and port checks of the `-p` option."""
+    run_test(["-u", TEST_URLS[9], "-p", "https://"], "Invalid proxy format")
+    run_test(["-u", TEST_URLS[9], "-p", "http://127.0.0.1:test"],
+             "Invalid proxy port")
 
 
 def test_skip_file(tmp_path, monkeypatch):
@@ -1066,6 +1088,17 @@ def test_strip_response_headers_sanitized():
     assert dict(stripped) == SANITIZED_HEADERS
     assert all(k.isprintable() and v.isprintable()
                for k, v in stripped.items())
+
+
+def test_helper_functions():
+    """Verify helper functions handle unusual or malformed values."""
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main, humble_module.args = l10n_main, args
+    humble_module.l10n_map = l10n_map
+    results = tuple((name, values, getattr(humble_module, name)(*values))
+                    for name, values, _ in HELPER_CASES)
+    assert results == HELPER_CASES
 
 
 def delete_export_files(extension, ko_msg):

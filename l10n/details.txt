@@ -2502,6 +2502,9 @@ Generator
 [test_owasp_perfect_compliance]
  verify the results of a perfect OWASP 'Secure Headers Project' compliance check are displayed.
 
+[test_proxy_analysis]
+ verify an analysis through a reachable proxy displays the proxy used.
+
 [test_proxy_unreachable]
  verify an error is displayed when the proxy is unreachable.
 
@@ -2528,6 +2531,9 @@ Generator
 
 [test_request_invalid_header]
  verify an error is displayed for invalid request headers.
+
+[test_request_unhandled_exception]
+ verify the type of an unhandled request exception is displayed.
 
 [test_response_headers]
  verify response headers are displayed.
@@ -2642,6 +2648,9 @@ Generator
 
 [test_strip_response_headers_sanitized]
  verify hostile HTTP response headers are sanitized at ingestion.
+
+[test_helper_functions]
+ verify helper functions handle unusual or malformed values.
 
 [test_tests]
 Tests run at

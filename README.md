@@ -23,7 +23,7 @@
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml" title="Vulnerability analysis with Bandit"><img src="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml/badge.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="Vulnerability analysis with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="Status of documentation in 'Read The Docs'"><img src="https://img.shields.io/badge/documentation-passing-32bd50?labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="Code coverage with pytest-cov"><img src="https://img.shields.io/badge/code%20coverage-98%25-32bd50?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="Code coverage with pytest-cov"><img src="https://img.shields.io/badge/code%20coverage-99%25-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/vulture.yml" title="Dead Code analysis with vulture"><img src="https://img.shields.io/badge/vulture-passing-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#ai-assisted-review" title="How AI is used to review this tool"><img src="https://img.shields.io/badge/AI--assisted%20review-Claude%20Fable%205.1-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="Analysis of OpenSSF best practices"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
@@ -94,7 +94,7 @@
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
 :heavy_check_mark: Can exclude HTTP response headers across all analyses via [humble.skip](#global-humbleskip) file.<br />
 :heavy_check_mark: [AI](#AI)-driven security triage and remediation guidance.<br />
-:heavy_check_mark: Includes over 140 [unit tests](#unit-tests) to help verify it works correctly in your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
+:heavy_check_mark: Includes nearly 150 [unit tests](#unit-tests) to help verify it works correctly in your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
 :heavy_check_mark: Classes and functions documented at <a href="https://humble.readthedocs.io/en/latest/" target="_blank">Read the Docs</a>.<br />
 :heavy_check_mark: Code regularly audited with several quality, style and security [tools](#quality-style-and-security-tools).<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
