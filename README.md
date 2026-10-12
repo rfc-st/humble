@@ -593,15 +593,13 @@ I have maintained *humble* on my own for nearly seven years. A few months ago (s
 
 **What I challenged it on:** everything. We held very demanding sessions, during which I would ask for and insist on the reasons and rationale behind every suggestion. I would only approve a change, including the code it wrote, once the figures, results, tests and underlying reasoning convinced me. It has been wrong more than once and I caught it; other times I rejected an idea, went to read the specification, and had to admit it was right. Some proposals I turned down for good because they go against what *humble* is: for example, it will never get a mode that makes mass scanning easier.
 
-I have held sessions dedicated exclusively to questioning and testing the complexity, ease of understanding, and quality of the functions—as well as the associated code.
+I have held sessions dedicated exclusively to questioning and testing the complexity, ease of understanding, and quality of the functions as well as the associated code.
 
 **What I learned from it:** that my exports were rebuilt from printed text and could be fooled by what a server sends; that hostile input should be rejected, not cleaned up; and that a claim about the code is worth nothing until it has been measured.
 
 And that it has been a valuable ally, and that my ignorance (or the flame that ignites my curiosity) must keep asking questions, just as it does :).
 
-**What we achieved together:**
-
-Some examples:
+**Some examples of what we have achieved together:**
 
 - Security fixes: <a href="https://github.com/rfc-st/humble/commit/a933d84" target="_blank">a933d84</a> (the HTML export wrote server-supplied header values as markup) and <a href="https://github.com/rfc-st/humble/commit/a7b2741" target="_blank">a7b2741</a> (only web addresses become links in the PDF and HTML exports).
 - More honest results: <a href="https://github.com/rfc-st/humble/commit/cc2a2da" target="_blank">cc2a2da</a> (empty headers were reported as enabled) and several checks that reported things that were not true.
