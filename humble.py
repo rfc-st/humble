@@ -1516,7 +1516,9 @@ def sts_max_age(sts_header):
 
 def sts_check_values(sts_header, sts_age, unsafe_scheme):
     """Check the values of the `Strict-Transport-Security` header."""
-    weak_policy = "includesubdomains" not in sts_header \
+    sts_tokens = sts_header.translate(
+        str.maketrans(",=", ";;", " \t")).split(";")
+    weak_policy = "includesubdomains" not in sts_tokens \
         or sts_age < SECONDS_BOUNDS[1]
     if unsafe_scheme:
         print_details("[ihsts_h]", "[ihsts]", "d", i_cnt)
@@ -1524,7 +1526,7 @@ def sts_check_values(sts_header, sts_age, unsafe_scheme):
         print_details("[istsz_h]", "[istsz]", "m", i_cnt)
     elif weak_policy:
         print_details("[ists_h]", "[ists]", "m", i_cnt)
-    if "preload" in sts_header and weak_policy:
+    if "preload" in sts_tokens and weak_policy:
         print_details("[istsr_h]", "[istsr]", "d", i_cnt)
     if "," in sts_header:
         print_details("[istsd_h]", "[istsd]", "d", i_cnt)
@@ -4315,7 +4317,8 @@ def parse_request_headers(request_headers):
     if malformed_headers:
         delete_lines()
         print()
-        quoted = ", ".join(f'"{h}"' for h in malformed_headers)
+        quoted = ", ".join(f'"{sanitize_header_value(h)}"'
+                           for h in malformed_headers)
         print(f"{get_detail('[e_custom_headers]', replace=True)}: {quoted}")
         sys.exit(1)
     if args.user_agent and "user-agent" in map(str.lower, headers):
@@ -4327,7 +4330,8 @@ def process_request_headers(request_headers):
     """Verify that the request headers provided are well-formed.
 
     Exit if empty entries are found, while returning a list of any malformed
-    headers.
+    headers: those without a name, a value or a ':' separator, or containing
+    control characters.
     """
     if not all(request_headers):
         delete_lines()
@@ -4342,7 +4346,7 @@ def process_request_headers(request_headers):
             continue
         key, value = header.split(":", 1)
         key, value = key.strip(), value.strip()
-        if not key or not value:
+        if not key or not value or not header.isprintable():
             malformed_headers.append(header)
             continue
         headers[key] = value

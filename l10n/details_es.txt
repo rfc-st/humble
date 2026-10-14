@@ -2516,6 +2516,9 @@ Generador
 [test_request_invalid_header]
  verifica que se muestre un error para las cabeceras de petición HTTP incorrectas.
 
+[test_request_control_chars]
+ verifica que se rechacen como mal formadas las cabeceras de petición con caracteres de control.
+
 [test_request_unhandled_exception]
  verifica que se muestre el tipo de una excepción de petición no controlada.
 

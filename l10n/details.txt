@@ -2538,6 +2538,9 @@ Generator
 [test_request_invalid_header]
  verify an error is displayed for invalid request headers.
 
+[test_request_control_chars]
+ verify request headers with control characters are rejected as malformed.
+
 [test_request_unhandled_exception]
  verify the type of an unhandled request exception is displayed.
 
