@@ -2322,6 +2322,12 @@ Generator
 [test_csp_hex_nonce]
  verify invalid hexadecimal nonces are checked in the ‘Content-Security-Policy’ header.
 
+[test_csp_report_only]
+ verify 'Content-Security-Policy-Report-Only' directives are checked as whole tokens.
+
+[test_permissions_report_only]
+ verify 'Permissions-Policy-Report-Only' features are checked as whole tokens.
+
 [test_permissions_format]
  verify a 'Permissions-Policy' header with invalid syntax is reported and not analyzed.
 

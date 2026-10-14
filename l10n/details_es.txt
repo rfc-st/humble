@@ -2300,6 +2300,12 @@ Generador
 [test_csp_hex_nonce]
  verifica que se comprueben nonces en hexadecimal inválidos, en la cabecera 'Content-Security-Policy'.
 
+[test_csp_report_only]
+ verifica que las directivas de 'Content-Security-Policy-Report-Only' se comprueben como tokens completos.
+
+[test_permissions_report_only]
+ verifica que las características de 'Permissions-Policy-Report-Only' se comprueben como tokens completos.
+
 [test_permissions_format]
  verifica que la cabecera 'Permissions-Policy' con sintaxis inválida se informe y no se analice.
 

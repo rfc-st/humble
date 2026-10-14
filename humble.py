@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-10-12")
+local_version = date.fromisoformat("2026-10-14")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -227,8 +227,8 @@ RE_PATTERN = (
     r"\(humble_sec_style\)([^:]+)", r"\(humble_sec_style\)",
     r"(?: Nota : | Note : )", r"^[0-9a-fA-F]+$", r"^[A-Za-z0-9+/=]+$",
     r", (?=[^;,]+?=)", r"'nonce-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
-    r"'(sha256|sha384|sha512)-([A-Za-z0-9+/=]+)'",
-    r"(?<!')\b(sha256|sha384|sha512)-[A-Za-z0-9+/=]+(?!')",
+    r"'(?i:(sha256|sha384|sha512))-([A-Za-z0-9+/=_-]+)'",
+    r"(?<!')\b(?i:sha256|sha384|sha512)-[A-Za-z0-9+/=_-]+(?!')",
     r"^([a-zA-Z0-9\-]+)",
     r"\s{2,},",
     r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
@@ -1270,7 +1270,15 @@ def csp_print_unknown_unsafe(csp_dirs, detail_t, detail_d, lines_n, i_cnt):
 
 
 def csp_valid_hash(algo, b64hash):
-    """Check that a CSP hash decodes and matches its algorithm's length."""
+    """Check that a CSP hash decodes and matches its algorithm's length.
+
+    CSP3 treats base64 and base64url as equivalent, makes the '=' padding
+    optional and ignores the case of the algorithm name, so all three are
+    normalized before decoding.
+    """
+    b64hash = b64hash.replace("-", "+").replace("_", "/")
+    algo = algo.lower()
+    b64hash += "=" * (-len(b64hash) % 4)
     try:
         return len(b64decode(b64hash, validate=True)) == \
             HASH_CHARS[algo]  # nosec
@@ -5275,7 +5283,9 @@ if header_eligible("permissions-policy"):
 
 if header_eligible("permissions-policy-report-only"):
     perm_ro_header = headers_l["permissions-policy-report-only"]
-    if matches_perm_ro := [x for x in t_per_dep if x in perm_ro_header]:
+    perm_ro_fts = {member.partition("=")[0].strip() for member in
+                   perm_ro_header.split(",") if member.strip()}
+    if matches_perm_ro := sorted(perm_ro_fts.intersection(t_per_dep)):
         print_matched_details("[ifpolnd_h]", "[icsi_d_s]", ", ".join(
             f"'{x}'" for x in matches_perm_ro), "[ipermro_d_r]")
 

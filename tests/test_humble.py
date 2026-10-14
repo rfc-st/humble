@@ -71,7 +71,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_sanitize_header_value]",
                  "[test_strip_response_headers_sanitized]",
                  "[test_testssl_command]", "[test_testssl_command_declined]",
-                 "[test_testssl_analysis]", "[test_helper_functions]"]
+                 "[test_testssl_analysis]", "[test_helper_functions]",
+                 "[test_csp_report_only]", "[test_permissions_report_only]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -101,6 +102,7 @@ HUMBLE_TEST_FILES = {
     "NONEXISTENT": "headers_test_nonexistent.txt",
     "PERFECT_OWASP": "headers_test_perfect_owasp.txt",
     "REDIRECTS": "headers_test_redirects.txt",
+    "REPORT_ONLY": "headers_test_report_only.txt",
     "UNICODE": "headers_test_unicode.txt",
 }
 CSP_FALLBACK_MISSING = ("child-src", "connect-src", "img-src", "object-src",
@@ -464,6 +466,8 @@ HELPER_CASES = (
     ("conall_parse", ('("https://a.com"), ("https://b.com")',),
      (["https://a.com"], {"": ""})),
     ("csp_valid_hash", ("sha256", "humble"), False),
+    ("csp_valid_hash",
+     ("SHA256", "LXEWQrcmsEQBYnyp-6wy9chTD7GQPMTbAiWHF5IaSIE"), True),
     ("decrease_html_spacing", ("humble",), "humble"),
     ("permissions_valid_item", ('"https://a.com"',), True),
     ("process_http_response", (None, None, None, False, None),
@@ -970,6 +974,44 @@ def test_csp_tokens():
     assert "(Unsafe Directive)" not in output
 
 
+def test_csp_report_only():
+    """Verify 'Content-Security-Policy-Report-Only' directives are tokens."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["REPORT_ONLY"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Content-Security-Policy-Report-Only (Ignored Header)" in output
+    assert "'report-uri'" in output
+    assert "'plugin-types'" not in output
+    assert "'sandbox'" not in output
+
+
+def test_permissions_report_only():
+    """Verify 'Permissions-Policy-Report-Only' features are tokens."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["REPORT_ONLY"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Permissions-Policy-Report-Only (Ignored Directives)" in output
+    assert "'browsing-topics'" in output
+    assert "'attribution-reporting'" not in output
+    assert "'document-domain'" not in output
+
+
 def test_permissions_format():
     """Verify an invalid 'Permissions-Policy' is reported and not analyzed."""
     result = subprocess.run(
@@ -1187,7 +1229,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-10-12")
+local_version = date.fromisoformat("2026-10-14")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,
