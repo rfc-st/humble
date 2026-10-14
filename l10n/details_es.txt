@@ -529,6 +529,19 @@
  Define 'report-to' para informar de incumplimientos de la política.
  Ref: https://mdn.io/Content-Security-Policy-Report-Only
 
+[icspmeta_d]
+ Content-Security-Policy (Directivas ignoradas - Cuerpo de la respuesta)
+
+[icspmeta_d_r]
+ Ref: https://www.w3.org/TR/CSP3/#meta-element
+
+[icsirometa_d]
+ Content-Security-Policy-Report-Only (Cabecera ignorada - Cuerpo de la respuesta)
+
+[icsirometa]
+ No se admite en el cuerpo de la respuesta; envíala como cabecera de respuesta HTTP.
+ Ref: https://www.w3.org/TR/CSP3/#meta-element
+
 [itrailer_d_s]
  Evite directivas no permitidas: 
 
@@ -2299,6 +2312,9 @@ Generador
 
 [test_csp_hex_nonce]
  verifica que se comprueben nonces en hexadecimal inválidos, en la cabecera 'Content-Security-Policy'.
+
+[test_csp_meta]
+ verifica las comprobaciones de 'Content-Security-Policy' relacionadas con el cuerpo de la respuesta.
 
 [test_csp_report_only]
  verifica que las directivas de 'Content-Security-Policy-Report-Only' se comprueben como tokens completos.

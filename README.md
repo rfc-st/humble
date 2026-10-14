@@ -72,8 +72,8 @@
 :heavy_check_mark: Covers 65 [enabled](#checks-enabled-headers) security-related HTTP response headers.<br />
 :heavy_check_mark: 15 [checks](#checks-missing-headers) for missing security-related HTTP response headers (the ones I consider essential).<br />
 :heavy_check_mark: 1289 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 169 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
-:heavy_check_mark: 29 [checks](https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L55-L83) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
+:heavy_check_mark: 171 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
+:heavy_check_mark: 30 [checks](https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L55-L84) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
 :heavy_check_mark: Can check for compliance with the OWASP <a href="https://owasp.github.io/www-project-secure-headers/best-practices/#configuration-proposal" target="_blank">Secure Headers Project</a> Best Practices.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
 :heavy_check_mark: Can analyze <a href="https://curl.se/docs/manpage.html#-D" target="_blank">raw response</a> and <a href="https://w3c.github.io/web-performance/specs/HAR/Overview.html" target="_blank">HAR</a> files.<br />
@@ -93,7 +93,7 @@
 :heavy_check_mark: Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.<br />
 :heavy_check_mark: Can exclude HTTP response headers across all analyses via [humble.skip](#global-humbleskip) file.<br />
 :heavy_check_mark: [AI](#AI)-driven security triage and remediation guidance.<br />
-:heavy_check_mark: Includes nearly 150 [unit tests](#unit-tests) to help verify it works correctly in your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
+:heavy_check_mark: Includes over 150 [unit tests](#unit-tests) to help verify it works correctly in your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.<br />
 :heavy_check_mark: Classes and functions documented at <a href="https://humble.readthedocs.io/en/latest/" target="_blank">Read the Docs</a>.<br />
 :heavy_check_mark: Code regularly audited with several quality, style and security [tools](#quality-style-and-security-tools).<br />
 :heavy_check_mark: Tested, one by one, on thousands of URLs.<br />
@@ -382,7 +382,7 @@ $ sudo apt install --only-upgrade humble
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd [GRADE]] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {all,csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-09-19
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-10-14
 
 options:
   -h, --help                               show this help message and exit

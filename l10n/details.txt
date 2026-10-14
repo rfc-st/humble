@@ -528,6 +528,19 @@
  Use 'report-to' exclusively to report policy violations.
  Ref: https://mdn.io/Content-Security-Policy-Report-Only
 
+[icspmeta_d]
+ Content-Security-Policy (Ignored Directives - Response body)
+
+[icspmeta_d_r]
+ Ref: https://www.w3.org/TR/CSP3/#meta-element
+
+[icsirometa_d]
+ Content-Security-Policy-Report-Only (Ignored Header - Response body)
+
+[icsirometa]
+ Not supported in the response body; send it as an HTTP response header.
+ Ref: https://www.w3.org/TR/CSP3/#meta-element
+
 [itrailer_d_s]
  Avoid disallowed directives: 
 
@@ -2321,6 +2334,9 @@ Generator
 
 [test_csp_hex_nonce]
  verify invalid hexadecimal nonces are checked in the ‘Content-Security-Policy’ header.
+
+[test_csp_meta]
+ verify the 'Content-Security-Policy' checks related to the response body.
 
 [test_csp_report_only]
  verify 'Content-Security-Policy-Report-Only' directives are checked as whole tokens.

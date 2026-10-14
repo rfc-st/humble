@@ -26,8 +26,8 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Covers 65 <a href="https://github.com/rfc-st/humble/#checks-enabled-headers" target="_blank">enabled</a> security-related HTTP response headers.
 - 15 <a href="https://github.com/rfc-st/humble/#checks-missing-headers" target="_blank">checks</a> for missing security-related HTTP response headers.
 - 1289 <a href="https://github.com/rfc-st/humble/#checks-fingerprint-headers" target="_blank">checks</a> for fingerprinting through HTTP response headers.
-- 169 <a href="https://github.com/rfc-st/humble/#checks-deprecated-headersprotocols-and-insecure-values" target="_blank">checks</a> for deprecated HTTP response headers/protocols or with insecure/wrong values.
-- 29 <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L55-L83" target="_blank">checks</a> related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
+- 171 <a href="https://github.com/rfc-st/humble/#checks-deprecated-headersprotocols-and-insecure-values" target="_blank">checks</a> for deprecated HTTP response headers/protocols or with insecure/wrong values.
+- 30 <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L55-L84" target="_blank">checks</a> related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
 - Can check for compliance with the OWASP <a href="https://owasp.github.io/www-project-secure-headers/best-practices/#configuration-proposal" target="_blank">Secure Headers Project</a> Best Practices.
 - Can exclude specific HTTP response headers from the analysis.
 - Can analyze <a href="https://curl.se/docs/manpage.html#-D" target="_blank">raw response</a> and <a href="https://w3c.github.io/web-performance/specs/HAR/Overview.html" target="_blank">HAR</a> files.
@@ -46,7 +46,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Can display fingerprint statistics for a specific term or the Top 20.
 - Can display guidelines for enabling security HTTP response headers on popular frameworks, servers, and services.
 - <a href="https://github.com/rfc-st/humble/#AI" target="_blank">AI</a>-driven security triage and remediation guidance.
-- Provides nearly 150 <a href="https://github.com/rfc-st/humble/#unit-tests" target="_blank">unit tests</a> to help verify it works correctly in your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.
+- Includes over 150 <a href="https://github.com/rfc-st/humble/#unit-tests" target="_blank">unit tests</a> to help verify it works correctly in your environment; requires <a href="https://pypi.org/project/pytest/" target="_blank">pytest</a> and <a href="https://pypi.org/project/pytest-cov/">pytest-cov</a>.
 - Code regularly audited with several quality, style and security <a href="https://github.com/rfc-st/humble/?tab=readme-ov-file#quality-style-and-security-tools" target="_blank">tools</a>.<br />
 - Tested, one by one, on thousands of URLs.
 - Tested on Docker 26.1, Kali Linux 2021.1, macOS 14.2.1 and Windows 10 20H2.

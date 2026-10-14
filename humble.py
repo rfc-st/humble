@@ -4856,6 +4856,9 @@ t_csp_fallback = ("child-src", "connect-src", "font-src", "img-src",
 # https://mdn.io/Content-Security-Policy-Report-Only
 t_csp_ro_dep = (*t_csp_dep, "sandbox")
 
+# https://www.w3.org/TR/CSP3/#meta-element
+t_csp_meta = ("frame-ancestors", "report-uri", "sandbox")
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
 # https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html
 t_ct_mime = ("application/xhtml+xml", "text/html")
@@ -5136,6 +5139,16 @@ if header_eligible("content-security-policy"):
     csp_analyze_content(csp_h, csp_dirs_vals, csp_dirs)
     csp_check_values(csp_h, csp_dirs, csp_values)
 
+# https://www.w3.org/TR/CSP3/#meta-element
+if http_equiv:
+    csp_meta = [content for name, content in http_equiv
+                if name.casefold() == "content-security-policy"]
+    csp_meta_dirs = {directive.split()[0].casefold() for content in csp_meta
+                     for directive in content.split(";") if directive.strip()}
+    if matches_csp_meta := sorted(csp_meta_dirs.intersection(t_csp_meta)):
+        print_matched_details("[icspmeta_d]", "[icsi_d_s]", ", ".join(
+            f"'{x}'" for x in matches_csp_meta), "[icspmeta_d_r]")
+
 if header_eligible("content-security-policy-report-only"):
     csp_ro_header = headers_l["content-security-policy-report-only"]
     csp_ro_dirs = {directive.split()[0] for directive in
@@ -5145,6 +5158,10 @@ if header_eligible("content-security-policy-report-only"):
             f"'{x}'" for x in matches_csp_ro), "[icsiro_d_r]")
     if "report-to" not in csp_ro_dirs:
         print_details("[icsiroi_d]", "[icsiroi]", "d", i_cnt)
+
+if http_equiv and any(name.casefold() == "content-security-policy-report-only"
+                      for name, _ in http_equiv):
+    print_details("[icsirometa_d]", "[icsirometa]", "d", i_cnt)
 
 if header_eligible("content-type"):
     ctype_header = headers_l.get("content-type", "").casefold()

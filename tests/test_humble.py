@@ -73,7 +73,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_testssl_command]", "[test_testssl_command_declined]",
                  "[test_testssl_analysis]", "[test_helper_functions]",
                  "[test_csp_report_only]", "[test_permissions_report_only]",
-                 "[test_request_unhandled_exception]"]
+                 "[test_request_unhandled_exception]", "[test_csp_meta]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -146,8 +146,21 @@ TESTSSL_SKIP = pytest.mark.skipif(
     system().lower() == "windows",
     reason="testssl.sh requires a Unix environment (Cygwin, MSYS2 or WSL)")
 
+META_BODY = (
+    b'<html><head><meta http-equiv="Content-Security-Policy" content="'
+    b"default-src 'self' https://sandbox.example.com; frame-ancestors 'none'; "
+    b'report-uri /csp">'
+    b'<meta http-equiv="Content-Security-Policy-Report-Only" '
+    b'content="default-src *"></head></html>'
+)
+
+
 class _LocalStatusHandler(BaseHTTPRequestHandler):
-    """Serve '/status/<code>' paths returning that HTTP status code."""
+    """Serve '/status/<code>' paths returning that HTTP status code.
+
+    '/meta/<code>' paths also return an HTML body with '<meta http-equiv>'
+    tags.
+    """
 
     def do_GET(self):
         """Reply with the status code encoded in the request path."""
@@ -158,6 +171,8 @@ class _LocalStatusHandler(BaseHTTPRequestHandler):
         user_agent = user_agent.replace("\r", "").replace("\n", "")
         self.send_header("X-Request-User-Agent", user_agent)
         self.end_headers()
+        if self.command == "GET" and self.path.startswith("/meta/"):
+            self.wfile.write(META_BODY)
 
     def do_HEAD(self):
         """Reply to HEAD requests exactly as GET ones."""
@@ -986,6 +1001,25 @@ def test_csp_tokens():
     assert "(Deprecated Directives)" not in output
     assert "(Insecure Schemes)" not in output
     assert "(Unsafe Directive)" not in output
+
+
+def test_csp_meta():
+    """Verify the 'Content-Security-Policy' checks of the response body."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u",
+         f"{LOCAL_SERVER_URL}/meta/200"],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Content-Security-Policy (Ignored Directives" in output
+    assert "'frame-ancestors', 'report-uri'" in output
+    assert "'sandbox'" not in output
+    assert "Content-Security-Policy-Report-Only (Ignored Header" in output
 
 
 def test_csp_report_only():
