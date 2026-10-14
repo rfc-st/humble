@@ -1943,10 +1943,16 @@ Tendencias
 Tu versión     :
 
 [humble_not_recent]
- Tu versión de 'humble' no es reciente.
+ Tu versión de 'humble' no es reciente:
 
 [humble_newer]
- Tu versión de 'humble' es reciente, pero hay actualizaciones disponibles.
+ Tu versión de 'humble' es reciente, pero
+
+[update_day_single]
+ día más antigua que la última.
+
+[update_day_plural]
+ días más antigua que la última.
 
 [humble_recent]
 

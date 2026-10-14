@@ -770,6 +770,7 @@ def test_outdated_humble(capsys):
                                      mock_local_version)
     captured = capsys.readouterr()
     assert mock_github_version.isoformat() in captured.out
+    assert "not recent: 64 days older" in captured.out
 
 
 def test_newer_humble(capsys):
@@ -789,7 +790,10 @@ def test_newer_humble(capsys):
     humble_module.check_updates_diff(mock_days_diff, mock_github_version,
                                      mock_local_version)
     captured = capsys.readouterr()
-    assert "there are updates available" in captured.out
+    assert "recent, but 10 days older" in captured.out
+    humble_module.check_updates_diff(1, mock_github_version,
+                                     mock_local_version)
+    assert "recent, but 1 day older" in capsys.readouterr().out
 
 
 def test_python_version():

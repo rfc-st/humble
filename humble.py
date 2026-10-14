@@ -318,7 +318,8 @@ def check_updates_diff(days_diff, github_version, local_version):
     """`humble` update logic.
 
     Check whether the local version is the latest on GitHub, up to a month
-    older or more than a month older; related to `-v` option.
+    older or more than a month older, showing the gap in days; related to
+    `-v` option.
     """
     print(f" \n{STYLE[0]}{get_detail('[humble_latest]', replace=True)} \
 {github_version} \n {get_detail('[humble_local]', replace=True)} \
@@ -328,8 +329,10 @@ def check_updates_diff(days_diff, github_version, local_version):
     else:
         detail = ("[humble_not_recent]" if days_diff > DAYS_DIFF
                   else "[humble_newer]")
-        print(f"\n{get_detail(detail)}\n\
-{get_detail('[github_humble]', replace=True)}\n")
+        days_id = ("[update_day_single]" if days_diff == 1
+                   else "[update_day_plural]")
+        print(f"\n{get_detail(detail, replace=True)} {days_diff}\
+{get_detail(days_id)}\n{get_detail('[github_humble]', replace=True)}\n")
 
 
 def fng_statistics_top():

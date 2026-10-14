@@ -1942,10 +1942,16 @@ Trends
 Your version   :
 
 [humble_not_recent]
- Your version of 'humble' is not recent.
+ Your version of 'humble' is not recent:
 
 [humble_newer]
- Your version of 'humble' is recent, but there are updates available.
+ Your version of 'humble' is recent, but
+
+[update_day_single]
+ day older than the latest one.
+
+[update_day_plural]
+ days older than the latest one.
 
 [humble_recent]
 
