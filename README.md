@@ -445,7 +445,7 @@ $ python3 humble.py -u https://en.wikipedia.org/ | sed -n '/\[4/,/^\[5/ { /^\[5/
 .: Check for HTTP client errors (4XX).<br />
 
 ```
-$ python3 humble.py -u https://my.prelude.software/demo/index.pl | grep -A1 -B5 'Note : \|Nota : ' --color=never
+$ python3 humble.py -u https://www.google.com/404 | grep -A1 -B5 'Note : \|Nota : ' --color=never
 ```
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_adv_linux_4.jpg" alt="Check for HTTP client errors (4XX) (Linux)">
 
