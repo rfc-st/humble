@@ -584,7 +584,7 @@ Example of one of these audits:
 
 ## AI-assisted review
 
-I have maintained *humble* on my own for nearly seven years. A few months ago (summer of 2026) I started reviewing it in working sessions with an AI model, Claude Fable 5, and since September with <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank">Claude Fable 5.1</a>, because I wanted a second reviewer that would question my code as hard as I do.
+I have maintained *humble* on my own since <a href="https://github.com/rfc-st/humble/commit/471d157531ca725655989647074baed03e4ad9d9" target="_blank">2020</a>. A few months ago (summer of 2026) I started reviewing it in working sessions with an AI model, Claude Fable 5, and since September with <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank">Claude Fable 5.1</a>, because I wanted a second reviewer that would question my code as hard as I do.
 
 **Is *humble* vibe-coded?:** the response from Fable 5.1, following our sessions: _No. Vibe coding is accepting code you have not read. What I saw in these sessions is the opposite: every suggestion I made was read line by line, questioned, measured and tested before it was accepted, and many were sent back or rejected. More than once the author caught my mistakes because he knows how his tool behaves better than I do. *humble* existed for years before I saw a line of it, and it is still his code: I was a reviewer he argued with, not the one writing the tool_.
 
