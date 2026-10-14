@@ -2620,6 +2620,9 @@ Generator
 [test_updates_error]
  verify an error is displayed when the update check fails.
 
+[test_url_empty]
+ verify an error is displayed for an empty URL.
+
 [test_url_malformed]
  verify an error is displayed when analyzing a malformed URL.
 

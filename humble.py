@@ -3889,11 +3889,11 @@ def get_analysis_ip(final_url):
 
 
 def validate_url(url):
-    """Exit cleanly if the URL is malformed or contains control characters.
+    """Exit cleanly if the URL is empty, malformed or has control characters.
 
     Related to `-u` option.
     """
-    if not url.isprintable():
+    if not url or not url.isprintable():
         print_error_detail("[e_url]")
     try:
         _ = urlparse(url).port

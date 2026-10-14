@@ -2598,6 +2598,9 @@ Generador
 [test_updates_error]
  verifica que se muestre un error cuando falle la comprobación de actualizaciones.
 
+[test_url_empty]
+ verifica que se muestre un error para una URL vacía.
+
 [test_url_malformed]
  verifica que se muestre mensaje de error al analizar una URL mal formada.
 
