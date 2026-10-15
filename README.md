@@ -552,7 +552,7 @@ Once you've completed the steps above, *humble*'s raw analysis:
 
 <img src="https://raw.githubusercontent.com/rfc-st/humble/master/screenshots/ai_1.PNG" alt="Full analysis of https://google.com, including HTTP response headers">
 
-becomes a structured security debrief (tested on Claude Opus 4.8):
+becomes a structured security debrief (tested on Claude Fable 5.1):
 
 <img src="https://raw.githubusercontent.com/rfc-st/humble/master/screenshots/ai_2.PNG" alt="AI-debrief (Claude Opus 4.8)">
 
