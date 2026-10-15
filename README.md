@@ -224,7 +224,7 @@
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_xml_s.PNG" alt="(Linux) - Brief analysis saved as XML">
 </p>
 <br />
-.: (Linux) - Detailed analysis saved as Markdown. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_google.com_20261015_214202_en.md">Example.</a><br />
+.: (Linux) - Detailed analysis saved as Markdown. <a href="https://github.com/rfc-st/humble/blob/master/samples/humble_https_google.com_20261015_214202_en.md">Example.</a><br />
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_md_s.PNG" alt="(Linux) - Brief analysis saved as Markdown">
@@ -517,7 +517,7 @@ If you need to persistently exclude certain HTTP response headers from being ana
 
 ## AI
 
-**Skill:** [`humble-header-analyst`](https://raw.githubusercontent.com/rfc-st/humble/master/humble-header-analyst/SKILL.md)
+**Skill:** [`humble-header-analyst`](https://github.com/rfc-st/humble/blob/master/humble-header-analyst/SKILL.md)
 
 **Purpose:** Expert-level parsing and remediation of *humble* HTTP security-header reports - triaging and fixing missing, deprecated, insecure, duplicated, empty, or fingerprinting headers, and explaining security-header grades.
 
