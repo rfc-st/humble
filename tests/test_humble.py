@@ -29,6 +29,7 @@
 
 # Standard Library imports
 import importlib.util
+import re
 import shutil
 import subprocess
 import sys
@@ -74,7 +75,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_testssl_analysis]", "[test_helper_functions]",
                  "[test_csp_report_only]", "[test_permissions_report_only]",
                  "[test_request_unhandled_exception]", "[test_csp_meta]",
-                 "[test_downgrade_note]"]
+                 "[test_downgrade_note]", "[test_export_md_hostile]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -82,6 +83,7 @@ HUMBLE_TEST_FILES = {
     "CORNER_CASES": "headers_test_corner_cases.txt",
     "ALL_HEADERS": "headers_test_all.txt",
     "BRACKETS": "headers_test_brackets.txt",
+    "MARKDOWN": "headers_test_markdown.txt",
     "PERFECT_CASE": "headers_test_perfect_case.txt",
     "PERFECT_GRADE": "headers_test_grade_perfect.txt",
     "GRADE_A": "headers_test_grade_a.txt",
@@ -310,6 +312,9 @@ TEST_CFGS = {
                                        "Analysis"),
     "test_export_json_l10n": (["-u", TEST_URLS[9], "-o", "json", "-l", "es"],
                               "Análisis"),
+    "test_export_md": (["-u", TEST_URLS[9], "-o", "md", "-r"], "Analysis"),
+    "test_export_md_brief": (["-u", TEST_URLS[9], "-o", "md", "-b", "-l",
+                              "es"], "Análisis"),
     "test_export_multiple_formats": (["-u", TEST_URLS[9], "-o", "html", "json"],
                                      "requested"),
     "test_export_no_security_headers": (["-u", TEST_URLS[9], "-if",
@@ -1130,6 +1135,24 @@ def test_export_json_brackets(tmp_path):
     assert '"[1,2]": [' not in content
 
 
+def test_export_md_hostile(tmp_path):
+    """Verify a Markdown export keeps hostile header values inert."""
+    run_test(["-u", TEST_URLS[2], "-if", PATHS["MARKDOWN"], "-o", "md",
+              "-op", tmp_path, "-of", "humble_markdown"], "saved")
+    content = (tmp_path / "humble_markdown.md").read_text(encoding="utf-8")
+    prose = "\n".join(line for line in content.splitlines()
+                      if not line.startswith("    "))
+    prose = re.sub(r"`+[^`\n]+`+", "", prose)
+    links = re.findall(r"(?<!\\)\[[^\]]*\]\(([^)]*)\)", prose)
+    assert "<" not in prose
+    assert "Review the cookie '&lt;img src'" in prose
+    assert "'http&#58;'" in prose
+    assert links
+    assert all(link.startswith("https://") for link in links)
+    assert "evil" not in "".join(links)
+    assert "    Set-Cookie: <img src=x onerror=alert(1)>=1; path=/" in content
+
+
 def test_empty_headers():
     """Verify empty headers are treated as not sent, except in section 5."""
     result = subprocess.run(
@@ -1268,6 +1291,7 @@ def set_temp_content(current_time):
         (".pdf", "[test_fpdf]"),
         (".xlsx", "[test_fxlsx]"),
         (".xml", "[test_fxml]"),
+        (".md", "[test_fmd]"),
     ]
     for extension, ko_msg in delete_extensions:
         info_msgs.extend(delete_export_files(extension, ko_msg))

@@ -1,0 +1,12 @@
+HTTP/2 200
+content-type: text/html; charset=utf-8
+server: <img src=x onerror=alert(1)>
+x-powered-by: [click](javascript:alert(1)) ![i](http://evil.example/t.gif)
+x-generator: </pre><script>alert(1)</script> * bold * _it_ `code` ~~x~~ | cell |
+```: ````````
+permissions-policy: camera=(self "http://evil.example"), geolocation=*
+set-cookie: <img src=x onerror=alert(1)>=1; path=/
+accept-ch: sec-ch-ua-full-version, <b>x</b>
+content-security-policy: default-src 'none'; script-src 'unsafe-inline' http://evil.example www.evil.example
+cache-control: no-store, <!-- c -->
+x-sourcemap: http://evil.example/[x](y).map`

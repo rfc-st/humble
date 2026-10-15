@@ -165,8 +165,9 @@ DTD_CONTENT = """<!ELEMENT analysis (section+)>
 <!ATTLIST item name CDATA #IMPLIED>
 <!ELEMENT value (#PCDATA)>
 """
-EXPORT_EXTENSIONS = (".csv", ".html", ".json", ".pdf", ".txt", ".xlsx", ".xml")
-EXPORT_ORDER = ("txt", "csv", "json", "xlsx", "xml", "html", "pdf")
+EXPORT_EXTENSIONS = (".csv", ".html", ".json", ".pdf", ".txt", ".xlsx", ".xml",
+                     ".md")
+EXPORT_ORDER = ("txt", "csv", "json", "xlsx", "xml", "html", "pdf", "md")
 GRADE_ORDER = ["E", "D", "C", "B", "A", "A+"]
 HTML_PRE_ARTIFACT = "<pre>/pre>'"
 HTML_TAGS = (
@@ -177,7 +178,14 @@ HTML_TAGS = (
     "</pre><br></body></html>", "<strong>", "</strong>",
     '&nbsp;<font color="', "</font><br><br>", "</font>", '<font color="',
 )
+HTTP_SCHEMES_URL = ("http://", "https://")
 JSON_SECTION = ("0section", "0headers")
+MD_BACKTICKS = r"`+"
+MD_BLANKS = r"\n{3,}"
+MD_ESCAPES = "\\`*_[]{}"
+MD_EXPERIMENTAL = "(*) "
+MD_LINK_BREAKERS = " ()<>"
+MD_SCHEMES = r"(?i)\b(https?|ftp|mailto|www):"
 METADATA_S = ("[pdf_meta_keywords]", "[pdf_meta_subject]")
 PDF_COLORS = ("#008000", "#000000", "#660033")
 PDF_CONDITIONS = ("Ref:", ":", '"', "(*) ")
@@ -187,7 +195,10 @@ PDF_SECTION = {
     "[5.": "[5empty_s]", "[6.": "[6compat_s]", "[7.": "[7result_s]",
     "[Cabeceras": "[0headers_s]",
 }
+MD_BLOCKS = (PDF_SECTION["[HTTP R"], PDF_SECTION["[1."])
+MD_FINDINGS = (PDF_SECTION["[2."], PDF_SECTION["[3."], PDF_SECTION["[4."])
 REF_LINKS = (" Ref  : ", " Ref: ", "Ref  :", "Ref: ", " ref:")
+MD_REFS = tuple(ref.strip() for ref in REF_LINKS)
 SECTIONS_EXPORT_STATES = {RESP_SECTION: (True, False, False),
                           "[1.": (False, True, False),
                           "[2.": (False, False, False),
@@ -2343,6 +2354,8 @@ def build_export_actions(final_filename, tmp_filename, content):
                                                      content, final_filename),
         "pdf": lambda: normalize_htmlpdf_all_export("pdf", tmp_filename,
                                                     content),
+        "md": lambda: generate_md(final_filename, tmp_filename,
+                                  export_all=True, content=content),
     }
 
 
@@ -2496,8 +2509,8 @@ def generate_txt(reliable, tmp_filename):
 def check_output_format(final_filename, reliable, tmp_filename):
     """Dispatch the export logic for the selected output format.
 
-    Maps each supported format (TXT, CSV, JSON, XLSX, XML, HTML and PDF) to
-    its corresponding function.
+    Maps each supported format (TXT, CSV, JSON, XLSX, XML, HTML, PDF and MD)
+    to its corresponding function.
 
     Related to `-o` option.
     """
@@ -2510,6 +2523,7 @@ def check_output_format(final_filename, reliable, tmp_filename):
         "xml": lambda: generate_xml(final_filename, tmp_filename),
         "html": lambda: export_html_file(final_filename, tmp_filename),
         "pdf": lambda: export_pdf_file(tmp_filename),
+        "md": lambda: generate_md(final_filename, tmp_filename),
     }
     exporters[single_export()]()
 
@@ -3825,6 +3839,218 @@ def clean_html_final(final_filename):
     html_path.write_text(html_content, encoding="utf8")
 
 
+def format_md_text(text):
+    """Escape text for Markdown; related to `-o md` option.
+
+    Server-supplied values may be mixed with the text, never at the start of
+    a line. The HTML characters are converted to entities (as in the HTML
+    export); the characters that open Markdown constructs in the middle of
+    a line (escapes, code spans, emphasis, links, images, references and
+    attribute lists) are backslash-escaped, using only escapes honored by
+    both CommonMark and the original Markdown; and URL schemes are broken
+    with an entity so no renderer turns them into links.
+    """
+    text = escape(text, quote=False)
+    text = "".join(f"\\{ch}" if ch in MD_ESCAPES else ch for ch in text)
+    return re.sub(MD_SCHEMES, r"\1&#58;", text)
+
+
+def format_md_code(text):
+    """Return text as a Markdown code span; related to `-o md` option.
+
+    Used for values entirely supplied by the server (never interpreted nor
+    autolinked by any renderer): the span is delimited by one backtick more
+    than the longest backtick run in the text.
+    """
+    longest = max((len(run) for run in re.findall(MD_BACKTICKS, text)),
+                  default=0)
+    ticks = "`" * (longest + 1)
+    pad = " " if text.startswith("`") or text.endswith("`") else ""
+    return f"{ticks}{pad}{text}{pad}{ticks}"
+
+
+def format_md_link(url, label=None):
+    """Return a Markdown link if the URL is safe; related to `-o md` option.
+
+    Only absolute HTTP(S) URLs without characters that could break the link
+    syntax are linked, otherwise the URL is kept as text. Without `label`
+    the URL itself, minus its scheme, is the link text.
+    """
+    label = format_md_text(label or url.partition("://")[2])
+    if url.startswith(HTTP_SCHEMES_URL) and all(ch not in url for ch in
+                                                 MD_LINK_BREAKERS):
+        return f"[{label}]({url})"
+    return f"{label}: {format_md_text(url)}"
+
+
+def format_md_name(line):
+    """Format a header name, with its optional check, as bold Markdown.
+
+    Related to `-o md` option.
+    """
+    experimental = line.startswith(MD_EXPERIMENTAL)
+    name, _, check = line.removeprefix(MD_EXPERIMENTAL).partition(" (")
+    marker = " (\\*)" if experimental else ""
+    check = f" ({format_md_text(check)}" if check else ""
+    return f"**{format_md_text(name)}**{marker}{check}"
+
+
+def format_md_entry(entry, section):
+    """Format a finding (sections 2, 3 and 4) as a Markdown list item.
+
+    The first line is the header name and check, the rest are details and
+    references; fingerprint values (section 3) are shown as code spans.
+    Single-line entries are sentences or names. Related to `-o md` option.
+    """
+    if len(entry) == 1:
+        return format_md_line(entry[0], section)
+    details = []
+    for line in entry[1:]:
+        if line.startswith(MD_REFS):
+            details.append(format_md_link(line.partition(":")[2].strip(),
+                                          "Ref"))
+        elif section == PDF_SECTION["[3."]:
+            details.append(format_md_code(line.partition(":")[2].strip()))
+        else:
+            details.append(format_md_text(line))
+    return f"- {format_md_name(entry[0])}: {' '.join(details)}"
+
+
+def format_md_line(line, section):
+    """Format a single line of the sections with findings or lists.
+
+    Header names become list items, references and browser compatibility
+    entries become links and sentences are kept as paragraphs. Related to
+    `-o md` option.
+    """
+    if section == PDF_SECTION["[6."] and ": http" in line:
+        name, _, url = line.partition(": ")
+        return f"- {format_md_link(url, name)}"
+    name, sep, check = line.removeprefix(MD_EXPERIMENTAL).partition(" (")
+    if " " not in name and (not sep or check.endswith(")")):
+        return f"- {format_md_name(line)}"
+    return f"\n{format_md_text(line)}\n"
+
+
+def format_md_info(line):
+    """Format a line of section 0: notes as quotes, the rest as a list.
+
+    Values are shown as code spans, since the final URL, the resolved IP or
+    the status code are supplied by the server. Related to `-o md` option.
+    """
+    if re.search(RE_PATTERN[11], f" {line}"):
+        return f"\n> {format_md_text(line)}\n"
+    key, sep, value = line.partition(":")
+    if line.startswith(MD_REFS):
+        return f"- {format_md_link(value.strip(), key.strip())}"
+    if not sep:
+        return f"\n{format_md_text(line)}\n"
+    return (f"- **{format_md_text(key.strip())}**: "
+            f"{format_md_code(value.strip())}")
+
+
+def format_md_result(line):
+    """Format a line of section 7: totals and grade in bold, legend as list.
+
+    Related to `-o md` option.
+    """
+    key, sep, value = line.partition(":")
+    value = value.strip()
+    if not sep:
+        return f"\n{format_md_text(line)}\n"
+    first = value.split()[0] if value else ""
+    if first.isdigit() or first in GRADE_ORDER:
+        rest = format_md_text(value.removeprefix(first).strip())
+        return f"- {format_md_text(key.strip())}: **{first}** {rest}"
+    if value.startswith(HTTP_SCHEMES_URL):
+        return f"- {format_md_text(key.strip())}: {format_md_link(value)}"
+    return f"- {format_md_text(key.strip())}: {format_md_text(value)}"
+
+
+def format_md_section(title, lines, section):
+    """Format a section of the analysis as Markdown; related to `-o md`.
+
+    Response and enabled headers are kept verbatim in an indented code block
+    (inert in every Markdown renderer), findings of a detailed analysis
+    become list items and the remaining sections are formatted line by line.
+    """
+    stripped = [line.strip() for line in lines]
+    filled = list(filter(None, stripped))
+    if section in MD_BLOCKS:
+        content = [f"    {line}" for line in filled]
+    elif section in MD_FINDINGS and not args.brief:
+        content = format_md_entries(stripped, section)
+    else:
+        line_formats = {PDF_SECTION["[0."]: format_md_info,
+                        PDF_SECTION["[7."]: format_md_result}
+        line_format = line_formats.get(section,
+                                       partial(format_md_line,
+                                               section=section))
+        content = list(map(line_format, filled))
+    return [f"## {format_md_text(title)}", "", *content, ""]
+
+
+def format_md_entries(lines, section):
+    """Format the entries of a section, separated by blank lines.
+
+    Related to `-o md` option.
+    """
+    entries, entry = [], []
+    for line in (*lines, ""):
+        if line:
+            entry.append(line)
+        elif entry:
+            entries.append(format_md_entry(entry, section))
+            entry = []
+    return entries
+
+
+def parse_md_sections(content):
+    """Split the analysis text into its header lines and sections.
+
+    Each section is identified by the same prefixes used by the PDF export;
+    related to `-o md` option.
+    """
+    header, sections, current = [], [], None
+    for line in content.splitlines():
+        if prefix := next((p for p in PDF_SECTION if line.startswith(p)),
+                          None):
+            current = (line.strip("[]"), [], PDF_SECTION[prefix])
+            sections.append(current)
+        elif current:
+            current[1].append(line)
+        elif line.strip():
+            header.append(line.strip())
+    return header, sections
+
+
+def parse_md(content):
+    """Convert the analysis text into Markdown; related to `-o md` option.
+
+    The header lines become the title and the link to the repository, and
+    each section is formatted by `format_md_section`.
+    """
+    header, sections = parse_md_sections(content)
+    repo, _, version = header[1].partition(" | ")
+    markdown = [f"# {format_md_text(header[0])}", "",
+                f"{format_md_link(repo)} | {format_md_text(version)}\n"]
+    for title, lines, section in sections:
+        markdown += format_md_section(title, lines, section)
+    return re.sub(MD_BLANKS, "\n\n", "\n".join(markdown)).rstrip() + "\n"
+
+
+def generate_md(final_filename, temp_filename, *, export_all=False,
+                content=None):
+    """Markdown export of a brief or detailed analysis and exit.
+
+    Related to `-o md` option.
+    """
+    if content is None:
+        content = Path(temp_filename).read_text(encoding="utf8")
+    Path(final_filename).write_text(parse_md(content), encoding="utf8")
+    finalize_export(final_filename, temp_filename, "md", export_all)
+
+
 def generate_xml(final_filename, temp_filename, *, export_all=False,
                  content=None):
     """XML export of a brief or detailed analysis, related to `-o xml` option.
@@ -4487,7 +4713,7 @@ class HumbleHelpFormatter(RawDescriptionHelpFormatter):
 
 def custom_help_formatter(prog):
     """Return the custom formatter for the argparse help."""
-    return HumbleHelpFormatter(prog, max_help_position=43)
+    return HumbleHelpFormatter(prog, max_help_position=46)
 
 
 def single_export():
@@ -4546,7 +4772,7 @@ printed in English")
 parser.add_argument("-lic", dest="license", action="store_true", help="Print \
 the license for 'humble', along with permissions, limitations and conditions")
 parser.add_argument("-o", dest="output", nargs="+",
-                    choices=["all", "csv", "html", "json", "pdf", "txt",
+                    choices=["all", "csv", "html", "json", "md", "pdf", "txt",
                              "xlsx", "xml"],
                     help="Export the analysis to the specified formats \
 (separated by spaces); 'all' will export to all formats")

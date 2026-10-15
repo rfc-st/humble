@@ -31,7 +31,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Can check for compliance with the OWASP <a href="https://owasp.github.io/www-project-secure-headers/best-practices/#configuration-proposal" target="_blank">Secure Headers Project</a> Best Practices.
 - Can exclude specific HTTP response headers from the analysis.
 - Can analyze <a href="https://curl.se/docs/manpage.html#-D" target="_blank">raw response</a> and <a href="https://w3c.github.io/web-performance/specs/HAR/Overview.html" target="_blank">HAR</a> files.
-- Can export analysis to CSV, CSS3/HTML5, JSON, PDF, TXT, XLSX, XML and with a custom filename/path.
+- Can export analysis to CSV, CSS3/HTML5, JSON, MD, PDF, TXT, XLSX, XML and with a custom filename/path.
 - Can check for outdated SSL/TLS protocols and vulnerabilities: requires <a href="https://testssl.sh/" target="_blank">testssl.sh</a>.
 - Can provide brief and detailed analysis along with HTTP response headers.
 - Can use proxies for the analysis.

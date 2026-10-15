@@ -77,7 +77,7 @@
 :heavy_check_mark: Can check for compliance with the OWASP <a href="https://owasp.github.io/www-project-secure-headers/best-practices/#configuration-proposal" target="_blank">Secure Headers Project</a> Best Practices.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
 :heavy_check_mark: Can analyze <a href="https://curl.se/docs/manpage.html#-D" target="_blank">raw response</a> and <a href="https://w3c.github.io/web-performance/specs/HAR/Overview.html" target="_blank">HAR</a> files.<br />
-:heavy_check_mark: Can export analysis to CSV, CSS3/HTML5, JSON, PDF, TXT, XLSX, XML and with a custom filename/path.<br />
+:heavy_check_mark: Can export analysis to CSV, CSS3/HTML5, JSON, MD, PDF, TXT, XLSX, XML and with a custom filename/path.<br />
 :heavy_check_mark: Can check for outdated SSL/TLS protocols and vulnerabilities: requires the **amazing** <a href="https://testssl.sh/" target="_blank">testssl.sh</a>.<br />
 :heavy_check_mark: Can provide brief and detailed analysis along with HTTP response headers.<br />
 :heavy_check_mark: Can use proxies for the analysis.<br />
@@ -222,6 +222,12 @@
 <p></p>
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_xml_s.PNG" alt="(Linux) - Brief analysis saved as XML">
+</p>
+<br />
+.: (Linux) - Detailed analysis saved as Markdown. <a href="https://github.com/rfc-st/humble/raw/master/samples/humble_https_google.com_20261015_214202_en.md">Example.</a><br />
+<p></p>
+<p align="center">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_md_s.PNG" alt="(Linux) - Brief analysis saved as Markdown">
 </p>
 <br />
 .: (Linux) - Analysis history file: Date, URL, Enabled, Missing, Fingerprint, Deprecated/Insecure, Empty headers & Total warnings (the four previous totals).<br />
@@ -380,56 +386,56 @@ $ sudo apt install --only-upgrade humble
 (macOS)   $ python3 humble.py
 
 usage: humble.py [-h] [-a] [-b] [-c] [-cicd [GRADE]] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
-                 [-o {all,csv,html,json,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
+                 [-o {all,csv,html,json,md,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-10-14
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-10-15
 
 options:
-  -h, --help                               show this help message and exit
-  -a                                       Print statistics of the performed analysis; if the '-u' parameter is omitted they will be global
-  -b                                       Print overall findings; if omitted detailed ones will be printed
-  -c                                       Checks URL response HTTP headers for compliance with OWASP 'Secure Headers Project' best practices
-  -cicd [GRADE]                            Print analysis for CI/CD processing; optionally, set the minimum required GRADE (E, D, C, B, A, A+)
-  -df                                      Do not follow redirects; if omitted the last redirection will be the one analyzed
-  -e [TESTSSL_PATH]                        Print only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
-  -f [FINGERPRINT_TERM]                    Print fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 results will be printed
-  -g                                       Print guidelines for enabling security HTTP response headers on popular frameworks, servers and services
-  -grd                                     Print the checks to grade an analysis, along with advice for improvement
-  -H REQUEST_HEADER                        Adds REQUEST_HEADER to the request; must be in double quotes and can be used multiple times, e.g. -H "Host: example.com"
-  -if INPUT_FILE                           Analyzes 'INPUT_FILE': curl's '--dump-header' file or HTTP Archive (HAR) file
-  -l {es}                                  Defines the language for displaying analysis, errors and messages; if omitted, will be printed in English
-  -lic                                     Print the license for 'humble', along with permissions, limitations and conditions
-  -o {all,csv,html,json,pdf,txt,xlsx,xml}  Export the analysis to the specified formats (separated by spaces); 'all' will export to all formats
-  -of OUTPUT_FILE                          Exports analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter '-o' will be used
-  -op OUTPUT_PATH                          Exports analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of 'humble.py' will be used
-  -p PROXY                                 Use a proxy for the analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will be used
-  -r                                       Print HTTP response headers and a detailed analysis; '-b' parameter will take priority
-  -s [SKIP_HEADERS ...]                    Skips 'deprecated/insecure' and 'missing' checks for the indicated 'SKIP_HEADERS' (separated by spaces)
-  -u URL                                   Scheme, host and port to analyze. E.g., https://google.com or https://google.com:443
-  -ua USER_AGENT                           User-Agent ID from 'additional/user_agents.txt' file to use. '0' will print all and '1' is the default
-  -v, --version                            Checks for updates at https://github.com/rfc-st/humble
+  -h, --help                                  show this help message and exit
+  -a                                          Print statistics of the performed analysis; if the '-u' parameter is omitted they will be global
+  -b                                          Print overall findings; if omitted detailed ones will be printed
+  -c                                          Checks URL response HTTP headers for compliance with OWASP 'Secure Headers Project' best practices
+  -cicd [GRADE]                               Print analysis for CI/CD processing; optionally, set the minimum required GRADE (E, D, C, B, A, A+)
+  -df                                         Do not follow redirects; if omitted the last redirection will be the one analyzed
+  -e [TESTSSL_PATH]                           Print only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
+  -f [FINGERPRINT_TERM]                       Print fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 results will be printed
+  -g                                          Print guidelines for enabling security HTTP response headers on popular frameworks, servers and services
+  -grd                                        Print the checks to grade an analysis, along with advice for improvement
+  -H REQUEST_HEADER                           Adds REQUEST_HEADER to the request; must be in double quotes and can be used multiple times, e.g. -H "Host: example.com"
+  -if INPUT_FILE                              Analyzes 'INPUT_FILE': curl's '--dump-header' file or HTTP Archive (HAR) file
+  -l {es}                                     Defines the language for displaying analysis, errors and messages; if omitted, will be printed in English
+  -lic                                        Print the license for 'humble', along with permissions, limitations and conditions
+  -o {all,csv,html,json,md,pdf,txt,xlsx,xml}  Export the analysis to the specified formats (separated by spaces); 'all' will export to all formats
+  -of OUTPUT_FILE                             Exports analysis to 'OUTPUT_FILE'; if omitted the default filename of the parameter '-o' will be used
+  -op OUTPUT_PATH                             Exports analysis to 'OUTPUT_PATH'; must be absolute. If omitted the PATH of 'humble.py' will be used
+  -p PROXY                                    Use a proxy for the analysis. E.g., 'http://127.0.0.1:8080'. If no port is specified '8080' will be used
+  -r                                          Print HTTP response headers and a detailed analysis; '-b' parameter will take priority
+  -s [SKIP_HEADERS ...]                       Skips 'deprecated/insecure' and 'missing' checks for the indicated 'SKIP_HEADERS' (separated by spaces)
+  -u URL                                      Scheme, host and port to analyze. E.g., https://google.com or https://google.com:443
+  -ua USER_AGENT                              User-Agent ID from 'additional/user_agents.txt' file to use. '0' will print all and '1' is the default
+  -v, --version                               Checks for updates at https://github.com/rfc-st/humble
 
 examples:
-  -u URL -a                                Print statistics of the analysis performed against the URL
-  -u URL -b                                Analyzes the URL and prints overall findings
-  -u URL -b -o csv                         Analyzes the URL and exports overall findings to CSV format
-  -u URL -cicd A                           Analyzes the URL and prints CI/CD results, warning if they do not reach an 'A' grade
-  -u URL -l es                             Analyzes the URL and prints (in Spanish) detailed findings
-  -u URL -o pdf                            Analyzes the URL and exports detailed findings to PDF format
-  -u URL -o html -of test                  Analyzes the URL and exports detailed findings to HTML format and 'test' filename
-  -u URL -o html json                      Analyzes the URL and exports detailed findings to HTML and JSON formats
-  -u URL -o pdf -op D:/Tests               Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
-  -u URL -p http://127.0.0.1:8080          Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
-  -u URL -r                                Analyzes the URL and prints detailed findings along with HTTP response headers
-  -u URL -s ETag NEL                       Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
-  -u URL -ua 4                             Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
-  -a -l es                                 Print statistics (in Spanish) of the analysis performed against all URLs
-  -f Google                                Print HTTP fingerprint headers related to the term 'Google'
+  -u URL -a                                   Print statistics of the analysis performed against the URL
+  -u URL -b                                   Analyzes the URL and prints overall findings
+  -u URL -b -o csv                            Analyzes the URL and exports overall findings to CSV format
+  -u URL -cicd A                              Analyzes the URL and prints CI/CD results, warning if they do not reach an 'A' grade
+  -u URL -l es                                Analyzes the URL and prints (in Spanish) detailed findings
+  -u URL -o pdf                               Analyzes the URL and exports detailed findings to PDF format
+  -u URL -o html -of test                     Analyzes the URL and exports detailed findings to HTML format and 'test' filename
+  -u URL -o html json                         Analyzes the URL and exports detailed findings to HTML and JSON formats
+  -u URL -o pdf -op D:/Tests                  Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
+  -u URL -p http://127.0.0.1:8080             Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
+  -u URL -r                                   Analyzes the URL and prints detailed findings along with HTTP response headers
+  -u URL -s ETag NEL                          Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
+  -u URL -ua 4                                Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
+  -a -l es                                    Print statistics (in Spanish) of the analysis performed against all URLs
+  -f Google                                   Print HTTP fingerprint headers related to the term 'Google'
 
 want to contribute?:
-  How to                                   https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
-  Acknowledgements                         https://github.com/rfc-st/humble/#acknowledgements
-  References and unit tests                https://humble.readthedocs.io
+  How to                                      https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
+  Acknowledgements                            https://github.com/rfc-st/humble/#acknowledgements
+  References and unit tests                   https://humble.readthedocs.io
 ```
 
 ## Advanced usage (Linux)

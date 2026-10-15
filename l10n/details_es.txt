@@ -2349,6 +2349,9 @@ Generador
 [test_export_json_brackets]
  verifica que al exportar a JSON un valor terminado en ']' siga dentro de su sección.
 
+[test_export_md_hostile]
+ verifica que al exportar a Markdown los valores hostiles de las cabeceras queden inertes.
+
 [test_downgrade_note]
  verifica la nota sobre degradaciones de HTTPS a HTTP en la cadena de redirecciones.
 
@@ -2411,6 +2414,12 @@ Generador
 
 [test_export_json_l10n]
  verifica que se exporte a JSON un análisis detallado en castellano.
+
+[test_export_md]
+ verifica que se exporte a Markdown un análisis detallado con las cabeceras de respuesta.
+
+[test_export_md_brief]
+ verifica que se exporte a Markdown un análisis breve en castellano.
 
 [test_export_multiple_formats]
  verifica que se exporte a los formatos solicitados un análisis detallado.
@@ -2702,6 +2711,9 @@ No se pudo eliminar el fichero XLSX final
 
 [test_fxml]
 No se pudo eliminar el fichero XLM final
+
+[test_fmd]
+No se pudo eliminar el fichero Markdown final
 
 [test_fcache]
 No se pudo eliminar el directorio de caché de pytest

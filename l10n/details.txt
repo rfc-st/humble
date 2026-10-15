@@ -2124,26 +2124,26 @@ Path
 
 [epilog_content]
 examples:
-  -u URL -a                                Print statistics of the analysis performed against the URL
-  -u URL -b                                Analyzes the URL and prints overall findings
-  -u URL -b -o csv                         Analyzes the URL and exports overall findings to CSV format
-  -u URL -cicd A                           Analyzes the URL and prints CI/CD results, warning if they do not reach an 'A' grade
-  -u URL -l es                             Analyzes the URL and prints (in Spanish) detailed findings
-  -u URL -o pdf                            Analyzes the URL and exports detailed findings to PDF format
-  -u URL -o html -of test                  Analyzes the URL and exports detailed findings to HTML format and 'test' filename
-  -u URL -o html json                      Analyzes the URL and exports detailed findings to HTML and JSON formats
-  -u URL -o pdf -op D:/Tests               Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
-  -u URL -p http://127.0.0.1:8080          Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
-  -u URL -r                                Analyzes the URL and prints detailed findings along with HTTP response headers
-  -u URL -s ETag NEL                       Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
-  -u URL -ua 4                             Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
-  -a -l es                                 Print statistics (in Spanish) of the analysis performed against all URLs
-  -f Google                                Print HTTP fingerprint headers related to the term 'Google'
+  -u URL -a                                   Print statistics of the analysis performed against the URL
+  -u URL -b                                   Analyzes the URL and prints overall findings
+  -u URL -b -o csv                            Analyzes the URL and exports overall findings to CSV format
+  -u URL -cicd A                              Analyzes the URL and prints CI/CD results, warning if they do not reach an 'A' grade
+  -u URL -l es                                Analyzes the URL and prints (in Spanish) detailed findings
+  -u URL -o pdf                               Analyzes the URL and exports detailed findings to PDF format
+  -u URL -o html -of test                     Analyzes the URL and exports detailed findings to HTML format and 'test' filename
+  -u URL -o html json                         Analyzes the URL and exports detailed findings to HTML and JSON formats
+  -u URL -o pdf -op D:/Tests                  Analyzes the URL and exports detailed findings to PDF format and 'D:/Tests' path
+  -u URL -p http://127.0.0.1:8080             Analyzes the URL using 'http://127.0.0.1:8080' as the proxy
+  -u URL -r                                   Analyzes the URL and prints detailed findings along with HTTP response headers
+  -u URL -s ETag NEL                          Analyzes the URL and skips 'deprecated/insecure' and 'missing' checks for 'ETag' and 'NEL' headers
+  -u URL -ua 4                                Analyzes the URL using the fourth User-Agent of 'additional/user_agents.txt' file
+  -a -l es                                    Print statistics (in Spanish) of the analysis performed against all URLs
+  -f Google                                   Print HTTP fingerprint headers related to the term 'Google'
 
 want to contribute?:
-  How to                                   https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
-  Acknowledgements                         https://github.com/rfc-st/humble/#acknowledgements
-  References and unit tests                https://humble.readthedocs.io
+  How to                                      https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md
+  Acknowledgements                            https://github.com/rfc-st/humble/#acknowledgements
+  References and unit tests                   https://humble.readthedocs.io
 
 [fng_value]
 Value:
@@ -2371,6 +2371,9 @@ Generator
 [test_export_json_brackets]
  verify a JSON export keeps a header value ending in ']' inside its section.
 
+[test_export_md_hostile]
+ verify a Markdown export keeps hostile header values inert.
+
 [test_downgrade_note]
  verify the note about HTTPS to HTTP downgrades in the redirect chain.
 
@@ -2433,6 +2436,12 @@ Generator
 
 [test_export_json_l10n]
  verify a brief analysis is exported to JSON in Spanish.
+
+[test_export_md]
+ verify a detailed analysis, with response headers, is exported to Markdown.
+
+[test_export_md_brief]
+ verify a brief analysis is exported to Markdown in Spanish.
 
 [test_export_multiple_formats]
  verifies an analysis is exported to the requested formats.
@@ -2724,6 +2733,9 @@ Failed to delete final XLSX file
 
 [test_fxml]
 Failed to delete final XLM file
+
+[test_fmd]
+Failed to delete final Markdown file
 
 [test_fcache]
 Failed to delete pytest cache folder
