@@ -1704,6 +1704,17 @@ def print_redirect_info():
 {final_url} ({redirect_count} {get_detail(redir_id, replace=True).strip()})")
 
 
+def print_downgrade_note():
+    """Print the note about HTTPS to HTTP downgrades in the redirect chain.
+
+    See `count_insecure_hops` for the hops that are counted.
+    """
+    hops_id = ("[analysis_downgrade_single]" if insecure_hops == 1
+               else "[analysis_downgrade_plural]")
+    print(f"{get_detail('[analysis_downgrade_note]', replace=True)} \
+{insecure_hops}{get_detail(hops_id, replace=True)}")
+
+
 def print_response_info():
     """Print details of the analyzed response.
 
@@ -1724,6 +1735,8 @@ def print_response_info():
         print(f"{get_detail(code_id, replace=True)} {status_code}")
     if redirected:
         print(get_detail("[analysis_redirects_note]", replace=True))
+    if insecure_hops:
+        print_downgrade_note()
 
 
 def print_basic_info(export_filename):
@@ -4416,10 +4429,30 @@ def strip_response_headers(r):
         for k, v in r.headers.items()})
 
 
+def count_insecure_hops(hop_urls):
+    """Count the hops of a redirect chain requested over HTTP after HTTPS.
+
+    `hop_urls` are the URLs requested, in order, from the one provided by the
+    user to the final one. Every hop is a full request, so each HTTP hop
+    after an HTTPS one sends the request (path, query, cookies, headers)
+    unencrypted, even if a later hop returns to HTTPS. An initial HTTP hop
+    upgraded to HTTPS is not counted: that hop is the one the user requested.
+    """
+    insecure, secure_seen = 0, False
+    for hop_url in hop_urls:
+        scheme = urlparse(hop_url).scheme
+        if scheme == "https":
+            secure_seen = True
+        elif scheme == "http" and secure_seen:
+            insecure += 1
+    return insecure
+
+
 def process_http_response(r, exception, status_code, reliable, body):
     """Process an HTTP response and its exceptions.
 
-    Storing headers, status code, body, final URL and redirect count, and
+    Storing headers, status code, body, final URL, redirect count and the
+    hops requested over HTTP after HTTPS (`count_insecure_hops`), and
     determining if the analyzed URL returns an HTML document.
 
     ??? note
@@ -4433,12 +4466,13 @@ def process_http_response(r, exception, status_code, reliable, body):
     if exception:
         process_requests_exception(exception)
     if exception or r is None:
-        return {}, status_code, reliable, body, False, None, 0
+        return {}, status_code, reliable, body, False, None, 0, 0
     process_http_error(r)
     headers = strip_response_headers(r)
     is_html = headers.get("content-type", "").lower().startswith("text/html")
+    hop_urls = [*(hop.url for hop in r.history), r.url]
     return (headers, r.status_code, reliable, r.text, is_html, r.url,
-            len(r.history))
+            len(r.history), count_insecure_hops(hop_urls))
 
 
 class HumbleHelpFormatter(RawDescriptionHelpFormatter):
@@ -4651,7 +4685,7 @@ if not args.URL_A and not args.cicd:
     print()
     print_detail(detail)
 
-final_url, redirect_count = None, 0
+final_url, redirect_count, insecure_hops = None, 0, 0
 added_request_headers = {}
 if args.input_file is None:
     headers_l, http_equiv = {}, None
@@ -4669,7 +4703,7 @@ if args.input_file is None:
         added_request_headers = parse_request_headers(args.request_header)
         custom_headers.update(added_request_headers)
     (headers, status_code, reliable, body, is_html, final_url,
-     redirect_count) = (
+     redirect_count, insecure_hops) = (
         process_http_request(status_code, reliable, body, proxy,
                              custom_headers,
                              )

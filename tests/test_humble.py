@@ -73,7 +73,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_testssl_command]", "[test_testssl_command_declined]",
                  "[test_testssl_analysis]", "[test_helper_functions]",
                  "[test_csp_report_only]", "[test_permissions_report_only]",
-                 "[test_request_unhandled_exception]", "[test_csp_meta]"]
+                 "[test_request_unhandled_exception]", "[test_csp_meta]",
+                 "[test_downgrade_note]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -495,13 +496,22 @@ HELPER_CASES = (
     ("calculate_trends", ([1, 2, 3, 4, 5],), "Worsening"),
     ("conall_parse", ('("https://a.com"), ("https://b.com")',),
      (["https://a.com"], {"": ""})),
+    ("count_insecure_hops", (["https://a.com", "https://www.a.com"],), 0),
+    ("count_insecure_hops", (["https://a.com", "http://a.com",
+                              "https://a.com"],), 1),
+    ("count_insecure_hops", (["https://a.com", "http://a.com"],), 1),
+    ("count_insecure_hops", (["https://a.com", "http://a.com", "http://b.com",
+                              "https://b.com"],), 2),
+    ("count_insecure_hops", (["http://a.com", "https://a.com"],), 0),
+    ("count_insecure_hops", (["http://a.com", "https://a.com",
+                              "http://a.com"],), 1),
     ("csp_valid_hash", ("sha256", "hum=ble"), False),
     ("csp_valid_hash",
      ("SHA256", "LXEWQrcmsEQBYnyp-6wy9chTD7GQPMTbAiWHF5IaSIE"), True),
     ("decrease_html_spacing", ("humble",), "humble"),
     ("permissions_valid_item", ('"https://a.com"',), True),
     ("process_http_response", (None, None, None, False, None),
-     ({}, None, False, None, False, None, 0)),
+     ({}, None, False, None, False, None, 0, 0)),
     ("valid_analysis_line", ("humble",), False),
     ("valid_analysis_line", ("humble ; humble ; 1 ; 2 ; 3 ; 4 ; 5 ; 6",),
      False),
@@ -1006,6 +1016,26 @@ def test_csp_tokens():
     assert "(Deprecated Directives)" not in output
     assert "(Insecure Schemes)" not in output
     assert "(Unsafe Directive)" not in output
+
+
+def get_response_info(insecure_hops, capsys):
+    """Print the response info with `insecure_hops` hops and return it."""
+    humble_module.insecure_hops = insecure_hops
+    humble_module.print_response_info()
+    return capsys.readouterr().out
+
+
+def test_downgrade_note(capsys):
+    """Verify the note about HTTPS to HTTP downgrades in the redirect chain."""
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    humble_module.l10n_main, humble_module.args = l10n_main, args
+    humble_module.l10n_map = l10n_map
+    humble_module.final_url = "http://127.0.0.1/"
+    humble_module.redirect_count, humble_module.status_code = 2, 200
+    assert "1 request was sent unencrypted" in get_response_info(1, capsys)
+    assert "2 requests were sent unencrypted" in get_response_info(2, capsys)
+    assert "sent unencrypted" not in get_response_info(0, capsys)
 
 
 def test_csp_meta():

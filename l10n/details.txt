@@ -1111,6 +1111,15 @@ HTTP Response Headers
 [analysis_redirects_note]
  Note : The final URL redirect was analyzed; use the '-df' parameter to change this behavior.
 
+[analysis_downgrade_note]
+ Note : HTTPS to HTTP downgrade in the redirect chain:
+
+[analysis_downgrade_single]
+ request was sent unencrypted.
+
+[analysis_downgrade_plural]
+ requests were sent unencrypted.
+
 [analysis_redirect_single]
  redirect
 
@@ -2361,6 +2370,9 @@ Generator
 
 [test_export_json_brackets]
  verify a JSON export keeps a header value ending in ']' inside its section.
+
+[test_downgrade_note]
+ verify the note about HTTPS to HTTP downgrades in the redirect chain.
 
 [test_empty_headers]
  verify empty headers are treated as not sent and only reported as empty.

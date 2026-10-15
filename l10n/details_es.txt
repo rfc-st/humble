@@ -1112,6 +1112,15 @@ Cabeceras de respuesta HTTP
 [analysis_redirects_note]
  Nota : Se analizó la última redirección; usa el parámetro '-df' para cambiar este comportamiento.
 
+[analysis_downgrade_note]
+ Nota : Degradación de HTTPS a HTTP en la cadena de redirecciones:
+
+[analysis_downgrade_single]
+ petición se envió sin cifrar.
+
+[analysis_downgrade_plural]
+ peticiones se enviaron sin cifrar.
+
 [analysis_redirect_single]
  redirección
 
@@ -2339,6 +2348,9 @@ Generador
 
 [test_export_json_brackets]
  verifica que al exportar a JSON un valor terminado en ']' siga dentro de su sección.
+
+[test_downgrade_note]
+ verifica la nota sobre degradaciones de HTTPS a HTTP en la cadena de redirecciones.
 
 [test_empty_headers]
  verifica que las cabeceras vacías se traten como no enviadas y solo consten como vacías.
