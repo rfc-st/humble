@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-10-15")
+local_version = date.fromisoformat("2026-10-16")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -214,6 +214,10 @@ HASH_CHARS = {"sha256": 32, "sha384": 48, "sha512": 64}
 HTTP_SCHEMES = {"http", "https"}
 LATIN1_MAX = 0xFF
 LENGTH_BOUNDS = (5, 7, 16, 32, 102, 2, 8)
+PERM_KEY_CHARS = frozenset(f"{ascii_lowercase}{digits}_-.*")
+PERM_KEY_FIRST = frozenset(f"{ascii_lowercase}*")
+PERM_STRING_CHARS = frozenset(map(chr, range(0x20, 0x7F))) - {'"', "\\"}
+PERM_TOKEN_CHARS = frozenset(f"!#$%&'*+-.^_`|~:/{ascii_letters}{digits}")
 SECONDS_BOUNDS = (86400, 31536000)
 SLICE_INT = (30, 43, 25, 24, -4, -5, 46, 31, 6, 21, 10, 4, 21)
 STYLE = (
@@ -1571,78 +1575,100 @@ def xxss_check_values(xxss_header):
         print_details("[ixxpd_h]", "[ixxpd]", "d", i_cnt)
 
 
-def permissions_members(perm_header):
-    """Split the `Permissions-Policy` header on the commas outside quotes."""
-    members, pending = [], ""
-    for piece in perm_header.split(","):
-        pending = f"{pending},{piece}" if pending else piece
-        if pending.count('"') % 2 == 0:
-            members.append(pending)
-            pending = ""
-    if pending:
-        raise ValueError(perm_header)
-    return members
+def permissions_split(text, sep):
+    """Split `text` on `sep` outside quoted strings and inner lists."""
+    parts, start, depth, quoted = [], 0, 0, False
+    for pos, char in enumerate(text.replace("\\\\", "__").replace('\\"', "__")):
+        if char == '"':
+            quoted = not quoted
+        elif char == sep and depth == 0 and not quoted:
+            parts.append(text[start:pos])
+            start = pos + 1
+        elif not quoted:
+            depth += (char == "(") - (char == ")")
+    if quoted:
+        raise ValueError(text)
+    return [*parts, text[start:]]
 
 
 def permissions_allowlist(value):
-    """Return the entries of a `Permissions-Policy` allowlist."""
-    if value[:1] != "(":
+    """Return the items of an allowlist: an Inner List or a single item."""
+    if value[:1] != "(" or value[-1:] != ")":
         return [value]
-    if value[-1:] != ")":
-        raise ValueError(value)
-    return value[1:-1].split()
+    return [permissions_split(item, ";")[0] for item in
+            permissions_split(value[1:-1], " ") if item]
 
 
 def permissions_valid_item(item):
-    """Check a `Permissions-Policy` allowlist entry: a token or an origin."""
-    if item.startswith('"'):
-        return len(item) > 1 and item.endswith('"') and '"' not in item[1:-1]
+    """Check an item is a Structured Fields token, string, number or boolean."""
+    if item[:1] == '"':
+        body = item[1:-1].replace("\\\\", "").replace('\\"', "")
+        return item[1:].endswith('"') and PERM_STRING_CHARS.issuperset(body)
+    if item in ("?0", "?1") or \
+            item.removeprefix("-").replace(".", "", 1).isdigit():
+        return True
     return (item[:1].isalpha() or item[:1] == "*") and \
         PERM_TOKEN_CHARS.issuperset(item)
 
 
 def permissions_parse(perm_header):
-    """Parse the `Permissions-Policy` header into `{feature: allowlist}`."""
-    policy = {}
-    for member in permissions_members(perm_header):
+    """Parse a `Permissions-Policy` header into `[(feature, items)]`.
+
+    `ValueError` means the header is not a valid Structured Fields
+    dictionary, which browsers ignore whole.
+    """
+    pairs = []
+    for member in permissions_split(perm_header, ","):
         feature, has_value, value = \
-            member.strip().partition(";")[0].partition("=")
-        items = permissions_allowlist(value) if has_value else []
+            permissions_split(member.strip(), ";")[0].partition("=")
+        items = permissions_allowlist(value) if has_value else ["?1"]
         if feature[:1] not in PERM_KEY_FIRST or \
                 not PERM_KEY_CHARS.issuperset(feature) or \
                 not all(map(permissions_valid_item, items)):
             raise ValueError(perm_header)
-        policy[feature] = items
-    return policy
+        pairs.append((feature, items))
+    return pairs
 
 
-def permissions_analyze_content(policy, i_cnt):
-    """`Permissions-Policy` analysis of the parsed `{feature: allowlist}`."""
+def permissions_allowed(item):
+    """Check an allowlist item browsers honour: `*`, `self` or an origin."""
+    if item[:1] != '"':
+        return item in ("*", "self")
+    try:
+        url = urlparse(item[1:-1])
+    except ValueError:
+        return False
+    return url.scheme in HTTP_SCHEMES and bool(url.netloc)
+
+
+def permissions_analyze_content(pairs, i_cnt):
+    """`Permissions-Policy` analysis of the parsed `[(feature, items)]`.
+
+    Subtracting the counters keeps the features declared more than once.
+    """
+    policy = dict(pairs)
+    ignored = {f for f, items in policy.items()
+               if not all(map(permissions_allowed, items))}
+    broad = {f for f, items in policy.items() if "*" in items}
     if policy.keys().isdisjoint(t_per_ft):
         print_details("[ifpoln_h]", "[ifpoln]", "m", i_cnt)
-    if deprecated := sorted(policy.keys() & t_per_dep):
-        permissions_print_deprecated(deprecated)
-    if any("none" in items for items in policy.values()):
-        print_details("[ifpoli_h]", "[ifpoli]", "d", i_cnt)
-    if broad := [x for x, items in policy.items() if "*" in items]:
-        permissions_print_broad(broad, i_cnt)
+    permissions_print_matched((
+        ("[ifpolu_h]", "[ifpolu_s]",
+         set(policy).difference(t_per_ft, t_per_dep), "[ifpolu]"),
+        ("[ifpold_h]", "[ifpold_h_s]", policy.keys() & t_per_dep, "[ifpold]"),
+        ("[ifpoldu_h]", "[ifpoldu_s]",
+         Counter(f for f, _ in pairs) - Counter(policy.keys()), "[ifpoldu]"),
+        ("[ifpoli_h]", "[ifpoli_s]", ignored, "[ifpoli]"),
+        ("[ifpol_h]", "[ifpol_s]", broad, "[ifpol]"),
+    ))
 
 
-def permissions_print_deprecated(deprecated):
-    """Print deprecated directives in the `Permissions-Policy` header."""
-    print_matched_details("[ifpold_h]", "[ifpold_h_s]", ", ".join(
-        f"'{x}'" for x in deprecated), "[ifpold]")
-
-
-def permissions_print_broad(perm_broad_dirs, i_cnt):
-    """Print the broad values in the `Permissions-Policy` header."""
-    print_detail_r("[ifpol_h]", is_red=True)
-    if not args.brief:
-        print_detail_l(DIR_MSG[0] if len(perm_broad_dirs) > 1 else DIR_MSG[1])
-        print(" " + ", ".join(f"'{directive}'" for directive in
-                              sorted(perm_broad_dirs)) + ".")
-        print_detail("[ifpol]", num_lines=2)
-    i_cnt[0] += 1
+def permissions_print_matched(findings):
+    """Print the `Permissions-Policy` findings along with their features."""
+    for short_d, match_d, matches, long_d in findings:
+        if matches:
+            print_matched_details(short_d, match_d, ", ".join(
+                f"'{x}'" for x in sorted(matches)), long_d)
 
 
 def delete_lines(*, reliable=True):
@@ -5189,9 +5215,6 @@ t_nvarysearch = ("except", "key-order", "params")
 # https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
-PERM_KEY_CHARS = frozenset(ascii_lowercase + digits + "_-.*")
-PERM_KEY_FIRST = frozenset(ascii_lowercase + "*")
-PERM_TOKEN_CHARS = frozenset("!#$%&'*+-.^_`|~:/" + ascii_letters + digits)
 t_per_dep = ("attribution-reporting", "browsing-topics", "document-domain",
              "window-placement")
 t_per_ft = ("accelerometer", "all-screens-capture", "ambient-light-sensor",
@@ -5567,11 +5590,14 @@ if header_eligible("permissions-policy"):
 
 if header_eligible("permissions-policy-report-only"):
     perm_ro_header = headers_l["permissions-policy-report-only"]
-    perm_ro_fts = {member.partition("=")[0].strip() for member in
-                   perm_ro_header.split(",") if member.strip()}
-    if matches_perm_ro := sorted(perm_ro_fts.intersection(t_per_dep)):
-        print_matched_details("[ifpolnd_h]", "[icsi_d_s]", ", ".join(
-            f"'{x}'" for x in matches_perm_ro), "[ipermro_d_r]")
+    try:
+        perm_ro_fts = {f for f, _ in permissions_parse(perm_ro_header)}
+    except ValueError:
+        print_details("[ipermrof_h]", "[ipermrof]", "d", i_cnt)
+    else:
+        if matches_perm_ro := sorted(perm_ro_fts.intersection(t_per_dep)):
+            print_matched_details("[ifpolnd_h]", "[icsi_d_s]", ", ".join(
+                f"'{x}'" for x in matches_perm_ro), "[ipermro_d_r]")
 
 if header_eligible("pragma"):
     print_details("[iprag_h]", "[iprag]", "d", i_cnt)

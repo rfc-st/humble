@@ -63,9 +63,9 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_proxy_wrong]", "[test_response_headers_none]",
                  "[test_cache_no_store]", "[test_case_insensitive_values]",
                  "[test_csp_fallback_present]", "[test_csp_tokens]",
-                 "[test_permissions_format]", "[test_unreliable_analysis]",
-                 "[test_export_csv_brackets]", "[test_export_json_brackets]",
-                 "[test_empty_headers]",
+                 "[test_permissions_format]", "[test_permissions_values]",
+                 "[test_unreliable_analysis]", "[test_export_csv_brackets]",
+                 "[test_export_json_brackets]", "[test_empty_headers]",
                  "[test_export_json_no_security_headers]",
                  "[test_export_json_no_findings]",
                  "[test_browser_compatibility_excluded]",
@@ -101,6 +101,7 @@ HUMBLE_TEST_FILES = {
     "CSP_UNSAFE_INLINE": "headers_test_csp_unsafe_inline.txt",
     "EMPTY": "headers_test_empty.txt",
     "PERMISSIONS_FORMAT": "headers_test_permissions_format.txt",
+    "PERMISSIONS_VALUES": "headers_test_permissions_values.txt",
     "NO_HEADERS": "headers_test_none.txt",
     "NO_SEC_HEADERS": "headers_test_nonesecurity.txt",
     "NONEXISTENT": "headers_test_nonexistent.txt",
@@ -514,7 +515,10 @@ HELPER_CASES = (
     ("csp_valid_hash",
      ("SHA256", "LXEWQrcmsEQBYnyp-6wy9chTD7GQPMTbAiWHF5IaSIE"), True),
     ("decrease_html_spacing", ("humble",), "humble"),
+    ("permissions_allowed", ('"https://a.com"',), True),
+    ("permissions_allowed", ('"a.com"',), False),
     ("permissions_valid_item", ('"https://a.com"',), True),
+    ("permissions_valid_item", ("?1",), True),
     ("process_http_response", (None, None, None, False, None),
      ({}, None, False, None, False, None, 0, 0)),
     ("valid_analysis_line", ("humble",), False),
@@ -1117,6 +1121,29 @@ def test_permissions_format():
     assert "(Too Permissive Value)" not in output
 
 
+def test_permissions_values():
+    """Verify unknown, duplicated, ignored and broad 'Permissions-Policy'."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["PERMISSIONS_VALUES"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Permissions-Policy (Unknown Features)" in output
+    assert "ignored by browsers: 'camara'" in output
+    assert "only one declaration applies: 'geolocation'" in output
+    assert "other values are ignored in: 'camera', 'microphone'" in output
+    assert "including iframes: 'geolocation'" in output
+    assert "Permissions-Policy-Report-Only (Incorrect Format)" in output
+    assert "Permissions-Policy (Incorrect Format)" not in output
+    assert "(Deprecated Features)" not in output
+
+
 def test_export_csv_brackets(tmp_path):
     """Verify a CSV export keeps the headers after a value containing '['."""
     run_test(["-u", TEST_URLS[2], "-if", PATHS["BRACKETS"], "-o", "csv",
@@ -1336,7 +1363,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-10-15")
+local_version = date.fromisoformat("2026-10-16")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

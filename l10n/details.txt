@@ -518,6 +518,10 @@
 [ipermro_d_r]
  Ref: https://mdn.io/Permissions-Policy-Report-Only
 
+[ipermrof]
+ Invalid syntax; browsers ignore the whole header and send no reports.
+ Ref: https://mdn.io/Permissions-Policy-Report-Only
+
 [icsi_d_s]
  Avoid deprecated or ignored directives: 
 
@@ -769,6 +773,9 @@
 [ifpolnd_h]
  (*) Permissions-Policy-Report-Only (Ignored Directives)
 
+[ipermrof_h]
+ (*) Permissions-Policy-Report-Only (Incorrect Format)
+
 [ifnvarys_h]
  No-Vary-Search (No Valid Directives)
 
@@ -783,6 +790,12 @@
 
 [ifpold_h]
  (*) Permissions-Policy (Deprecated Features)
+
+[ifpoldu_h]
+ (*) Permissions-Policy (Duplicated Features)
+
+[ifpolu_h]
+ (*) Permissions-Policy (Unknown Features)
 
 [iprag_h]
  Pragma (Deprecated Header)
@@ -1423,22 +1436,38 @@ HTTP Response Headers
  Ref: https://csplite.com/fp/
  Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 
+[ifpol_s]
+ '*' allows these features in any origin, including iframes: 
+
 [ifpol]
- '*' allows a directive in any source, including iframe.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpolf]
  Invalid syntax; browsers ignore the whole header.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
 
+[ifpoli_s]
+ Only '*', 'self' and quoted origins are valid; other values are ignored in: 
+
 [ifpoli]
- Use '=()' instead of 'none'.
- Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
 
 [ifpold_h_s]
  Avoid deprecated features: 
 
 [ifpold]
+ Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+
+[ifpoldu_s]
+ Declared more than once; only one declaration applies: 
+
+[ifpoldu]
+ Ref: https://www.rfc-editor.org/rfc/rfc9651.html#section-4.2.2
+
+[ifpolu_s]
+ Unknown features, ignored by browsers: 
+
+[ifpolu]
  Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 
 [ihttp]
@@ -2358,6 +2387,9 @@ Generator
 
 [test_permissions_report_only]
  verify 'Permissions-Policy-Report-Only' features are checked as whole tokens.
+
+[test_permissions_values]
+ verify unknown, duplicated, ignored and too permissive 'Permissions-Policy' features are reported.
 
 [test_permissions_format]
  verify a 'Permissions-Policy' header with invalid syntax is reported and not analyzed.

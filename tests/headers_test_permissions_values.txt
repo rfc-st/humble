@@ -1,0 +1,5 @@
+HTTP/2 200
+date: Fri, 16 Oct 2026 17:00:00 GMT
+content-type: text/html; charset=utf-8
+permissions-policy: camera=(self https://a.example), camara=(), geolocation=(), geolocation=*, microphone=("https://[")
+permissions-policy-report-only: camera=(self "https://a.example

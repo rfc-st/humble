@@ -519,6 +519,10 @@
 [ipermro_d_r]
  Ref: https://mdn.io/Permissions-Policy-Report-Only
 
+[ipermrof]
+ Sintaxis inválida; los navegadores ignoran la cabecera y no envían informes.
+ Ref: https://mdn.io/Permissions-Policy-Report-Only
+
 [icsi_d_s]
  Evite directivas ignoradas u obsoletas: 
 
@@ -770,6 +774,9 @@
 [ifpolnd_h]
  (*) Permissions-Policy-Report-Only (Directivas ignoradas)
 
+[ipermrof_h]
+ (*) Permissions-Policy-Report-Only (Formato incorrecto)
+
 [ifnvarys_h]
  No-Vary-Search (Sin directivas adecuadas)
 
@@ -784,6 +791,12 @@
 
 [ifpold_h]
  (*) Permissions-Policy (Valores obsoletos)
+
+[ifpoldu_h]
+ (*) Permissions-Policy (Directivas duplicadas)
+
+[ifpolu_h]
+ (*) Permissions-Policy (Directivas desconocidas)
 
 [iprag_h]
  Pragma (Cabecera obsoleta)
@@ -1424,22 +1437,38 @@ Cabeceras de respuesta HTTP
  Ref: https://csplite.com/fp/
  Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 
+[ifpol_s]
+ '*' permite estas directivas en cualquier origen, incluso en iframes: 
+
 [ifpol]
- '*' permite una directiva en cualquier origen, incluso en iframe.
  Ref: https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy/
 
 [ifpolf]
  Sintaxis inválida; los navegadores ignoran la cabecera.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
 
+[ifpoli_s]
+ Solo son válidos '*', 'self' y orígenes entrecomillados; se ignora el resto en: 
+
 [ifpoli]
- Utilice '=()' en vez de 'none'.
- Ref: https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
 
 [ifpold_h_s]
  Evite valores obsoletos: 
 
 [ifpold]
+ Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+
+[ifpoldu_s]
+ Declaradas más de una vez; solo una declaración se aplica: 
+
+[ifpoldu]
+ Ref: https://www.rfc-editor.org/rfc/rfc9651.html#section-4.2.2
+
+[ifpolu_s]
+ Directivas desconocidas, ignoradas por los navegadores: 
+
+[ifpolu]
  Ref: https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 
 [ihttp]
@@ -2336,6 +2365,9 @@ Generador
 
 [test_permissions_report_only]
  verifica que las características de 'Permissions-Policy-Report-Only' se comprueben como tokens completos.
+
+[test_permissions_values]
+ verifica que se informe de características desconocidas, duplicadas, ignoradas y muy permisivas en 'Permissions-Policy'.
 
 [test_permissions_format]
  verifica que la cabecera 'Permissions-Policy' con sintaxis inválida se informe y no se analice.

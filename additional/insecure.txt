@@ -119,11 +119,14 @@ Onion-Location: Potentially Unsafe Header
 Origin-Agent-Cluster: No Valid Directives
 P3P: Deprecated Header
 Permissions-Policy: Deprecated Features
+Permissions-Policy: Duplicated Features
 Permissions-Policy: Incorrect Value
 Permissions-Policy: Incorrect Format
 Permissions-Policy: No Valid Features
 Permissions-Policy: Too Permissive Value
+Permissions-Policy: Unknown Features
 Permissions-Policy-Report-Only: Ignored Directives
+Permissions-Policy-Report-Only: Incorrect Format
 Pragma: Deprecated Header
 Proxy-Authenticate: No Valid Directives
 Proxy-Authenticate: Unsafe Value
