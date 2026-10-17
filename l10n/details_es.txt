@@ -1448,7 +1448,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
 
 [ifpoli_s]
- Solo son válidos '*', 'self' y orígenes entrecomillados; se ignora el resto en: 
+ Solo son válidos '*', (), 'self' y orígenes entrecomillados; se ignora el resto en: 
 
 [ifpoli]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy

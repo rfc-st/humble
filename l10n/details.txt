@@ -1447,7 +1447,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
 
 [ifpoli_s]
- Only '*', 'self' and quoted origins are valid; other values are ignored in: 
+ Only '*', (), 'self' and quoted origins are valid; other values are ignored in: 
 
 [ifpoli]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
