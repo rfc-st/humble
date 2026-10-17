@@ -4658,7 +4658,7 @@ def process_request_headers(request_headers):
     return headers, malformed_headers
 
 
-def process_http_request(status_code, reliable, body, proxy, custom_headers):
+def process_http_request(reliable, proxy, custom_headers):
     """Perform an HTTP request using a background thread.
 
     It manages response processing and ensure the target URL is reachable within
@@ -4691,7 +4691,7 @@ def process_http_request(status_code, reliable, body, proxy, custom_headers):
         print_error_detail("[e_timeout]", clean_lines=True)
     r = result.get("r")
     exception = result.get("exception")
-    return process_http_response(r, exception, status_code, reliable, body)
+    return process_http_response(r, exception, reliable)
 
 
 def sanitize_header_value(value):
@@ -4737,8 +4737,8 @@ def count_insecure_hops(hop_urls):
     return insecure
 
 
-def process_http_response(r, exception, status_code, reliable, body):
-    """Process an HTTP response and its exceptions.
+def process_http_response(r, exception, reliable):
+    """Process an HTTP response and its exceptions, which halt the analysis.
 
     Storing headers, status code, body, final URL, redirect count and the
     hops requested over HTTP after HTTPS (`count_insecure_hops`), and
@@ -4754,8 +4754,6 @@ def process_http_response(r, exception, status_code, reliable, body):
     """
     if exception:
         process_requests_exception(exception)
-    if exception or r is None:
-        return {}, status_code, reliable, body, False, None, 0, 0
     process_http_error(r)
     headers = strip_response_headers(r)
     is_html = headers.get("content-type", "").lower().startswith("text/html")
@@ -4978,7 +4976,7 @@ final_url, redirect_count, insecure_hops = None, 0, 0
 added_request_headers = {}
 if args.input_file is None:
     headers_l, http_equiv = {}, None
-    status_code, reliable, body = None, None, None
+    reliable = None
 else:
     http_equiv = None
 
@@ -4993,9 +4991,7 @@ if args.input_file is None:
         custom_headers.update(added_request_headers)
     (headers, status_code, reliable, body, is_html, final_url,
      redirect_count, insecure_hops) = (
-        process_http_request(status_code, reliable, body, proxy,
-                             custom_headers,
-                             )
+        process_http_request(reliable, proxy, custom_headers)
     )
     if body and is_html:
         http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)

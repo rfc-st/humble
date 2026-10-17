@@ -522,8 +522,6 @@ HELPER_CASES = (
     ("permissions_strip_params", ("self; report-to=endpoint",), "self"),
     ("permissions_valid_item", ('"https://a.com"',), True),
     ("permissions_valid_item", ("?1",), True),
-    ("process_http_response", (None, None, None, False, None),
-     ({}, None, False, None, False, None, 0, 0)),
     ("valid_analysis_line", ("humble",), False),
     ("valid_analysis_line", ("humble ; humble ; 1 ; 2 ; 3 ; 4 ; 5 ; 6",),
      False),
@@ -951,10 +949,10 @@ def test_unreliable_analysis(capsys):
                          side_effect=slow_request), \
             patch.object(humble_module,
                          "process_http_response") as mock_process:
-        humble_module.process_http_request(None, None, None, None, {})
+        humble_module.process_http_request(None, None, {})
     expected = get_detail("[unreliable_analysis]", replace=True).strip()
     assert expected in capsys.readouterr().out
-    assert mock_process.call_args[0][3] is True
+    assert mock_process.call_args[0][2] is True
 
 
 def test_cache_no_store():
