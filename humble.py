@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-10-16")
+local_version = date.fromisoformat("2026-10-17")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1867,11 +1867,14 @@ def get_analytics_length(section):
     return [" " * (basic_l - len(get_detail(i))) for i in section]
 
 
-def print_details(short_d, long_d, id_mode, i_cnt):
-    """Print detailed information about the finding."""
+def print_details(short_d, long_d, id_mode, i_cnt, num_lines=None):
+    """Print detailed information about the finding.
+
+    `num_lines` overrides the number of lines derived from `id_mode`.
+    """
     print_detail_r(short_d, is_red=True)
     if not args.brief:
-        print_detail(long_d, 2) if id_mode == "d" else print_detail(long_d, 3)
+        print_detail(long_d, num_lines or (2 if id_mode == "d" else 3))
     i_cnt[0] += 1
 
 
@@ -2006,8 +2009,8 @@ def get_enabled_headers(t_enabled):
         indicated in the MDN [list](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers){:target="_blank"}
         of HTTP headers.
     """
-    enabled_headers = sorted(header.title() for header in t_enabled
-                             if header.lower() in headers_l)
+    enabled_headers = sorted((header for header in t_enabled
+                              if header.lower() in headers_l), key=str.casefold)
     for header in enabled_headers:
         exp_s = (get_detail("[exp_header]", replace=True)
                  if header.lower() in EXP_HEADERS else "")
@@ -5740,10 +5743,7 @@ if header_eligible("www-authenticate") \
     print_details("[ihbas_h]", "[ihbas]", "d", i_cnt)
 
 if header_eligible("x-content-security-policy"):
-    print_detail_r("[ixcsp_h]", is_red=True)
-    i_cnt[0] += 1
-    if not args.brief:
-        print_detail("[ixcsp]", num_lines=5)
+    print_details("[ixcsp_h]", "[ixcsp]", "d", i_cnt, num_lines=5)
 
 if header_eligible("x-content-security-policy-report-only"):
     print_details("[ixcspr_h]", "[ixcspr]", "d", i_cnt)
@@ -5812,10 +5812,7 @@ if http_equiv:
         print_details("[ixuameta_h]", "[ixuameta]", "d", i_cnt)
 
 if header_eligible("x-webkit-csp"):
-    print_detail_r("[ixwcsp_h]", is_red=True)
-    i_cnt[0] += 1
-    if not args.brief:
-        print_detail("[ixcsp]", num_lines=5)
+    print_details("[ixwcsp_h]", "[ixcsp]", "d", i_cnt, num_lines=5)
 
 if header_eligible("x-webkit-csp-report-only"):
     print_details("[ixwcspr_h]", "[ixcspr]", "d", i_cnt)
