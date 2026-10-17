@@ -29,6 +29,7 @@ Accept-CH-Lifetime: Deprecated Header
 Accept-Patch: Potentially Unsafe Header
 Access-Control-Allow-Credentials: Incorrect Values
 Access-Control-Allow-Methods: Insecure Methods
+Access-Control-Allow-Origin: Invalid Value
 Access-Control-Allow-Origin: Unsafe Values
 Access-Control-Max-Age: Excessive Value
 Activate-Storage-Access: Incorrect Values

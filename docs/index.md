@@ -26,8 +26,8 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Covers 65 <a href="https://github.com/rfc-st/humble/#checks-enabled-headers" target="_blank">enabled</a> security-related HTTP response headers.
 - 15 <a href="https://github.com/rfc-st/humble/#checks-missing-headers" target="_blank">checks</a> for missing security-related HTTP response headers.
 - 1289 <a href="https://github.com/rfc-st/humble/#checks-fingerprint-headers" target="_blank">checks</a> for fingerprinting through HTTP response headers.
-- 174 <a href="https://github.com/rfc-st/humble/#checks-deprecated-headersprotocols-and-insecure-values" target="_blank">checks</a> for deprecated HTTP response headers/protocols or with insecure/wrong values.
-- 30 <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L55-L84" target="_blank">checks</a> related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
+- 175 <a href="https://github.com/rfc-st/humble/#checks-deprecated-headersprotocols-and-insecure-values" target="_blank">checks</a> for deprecated HTTP response headers/protocols or with insecure/wrong values.
+- 30 <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L56-L85" target="_blank">checks</a> related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
 - Can check for compliance with the OWASP <a href="https://owasp.github.io/www-project-secure-headers/best-practices/#configuration-proposal" target="_blank">Secure Headers Project</a> Best Practices.
 - Can exclude specific HTTP response headers from the analysis.
 - Can analyze <a href="https://curl.se/docs/manpage.html#-D" target="_blank">raw response</a> and <a href="https://w3c.github.io/web-performance/specs/HAR/Overview.html" target="_blank">HAR</a> files.

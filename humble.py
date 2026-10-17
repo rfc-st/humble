@@ -4716,6 +4716,28 @@ def strip_response_headers(r):
         for k, v in r.headers.items()})
 
 
+def cors_valid_origin(value):
+    """Check an `Access-Control-Allow-Origin` value is a single origin.
+
+    Browsers compare the value byte by byte with the serialized origin of the
+    request (`scheme://host[:port]`): anything else, like a path, a partial
+    wildcard or several origins, never matches and the header has no effect.
+
+    ??? quote "References"
+        - [Fetch Standard: CORS check](https://fetch.spec.whatwg.org/#cors-check){:target="_blank"}
+        - [Fetch Standard: byte-serializing a request origin](https://fetch.spec.whatwg.org/#byte-serializing-a-request-origin){:target="_blank"}
+        - [HTML Standard: ASCII serialization of an origin](https://html.spec.whatwg.org/multipage/browsers.html#ascii-serialisation-of-an-origin){:target="_blank"}
+        - [MDN: CORS error 'Allow-Origin does not match origin'](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS/Errors/CORSAllowOriginNotMatchingOrigin){:target="_blank"}
+    """
+    try:
+        origin = urlparse(value)
+    except ValueError:
+        return False
+    return bool(origin.netloc) and \
+        all(char not in value for char in "*@ \t") and \
+        value.lower() == f"{origin.scheme}://{origin.netloc.lower()}"
+
+
 def count_insecure_hops(hop_urls):
     """Count the hops of a redirect chain requested over HTTP after HTTPS.
 
@@ -4742,9 +4764,7 @@ def process_http_response(r, exception, reliable):
     hops requested over HTTP after HTTPS (`count_insecure_hops`), and
     determining if the analyzed URL returns an HTML document.
 
-    ??? note
-        References:<br>
-
+    ??? quote "References"
         - [Exceptions in the HTTP library 'requests'](https://requests.readthedocs.io/en/latest/_modules/requests/exceptions/){:target="_blank"}
         - [Generic HTTP 5xx errors](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_server_errors){:target="_blank"}
         - [Cloudflare 5xx HTTP errors](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/){:target="_blank"}
@@ -5366,9 +5386,11 @@ if header_eligible("access-control-allow-methods"):
                               f"{quoted_methods}.", "[imethods]")
 
 accesso_header = headers_l.get("access-control-allow-origin", "")
-if header_eligible("access-control-allow-origin") \
-        and accesso_header in t_accecao:
-    print_details("[iaccess_h]", "[iaccess]", "d", i_cnt)
+if header_eligible("access-control-allow-origin"):
+    if accesso_header in t_accecao:
+        print_details("[iaccess_h]", "[iaccess]", "d", i_cnt)
+    elif "," not in accesso_header and not cors_valid_origin(accesso_header):
+        print_details("[iaccessi_h]", "[iaccessi]", "d", i_cnt)
 
 accesma_header = headers_l.get("access-control-max-age", "").lstrip("0")
 if header_eligible("access-control-max-age") and accesma_header.isascii() \

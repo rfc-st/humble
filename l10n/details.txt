@@ -685,6 +685,9 @@
 [iaccess_h]
  Access-Control-Allow-Origin (Unsafe Values)
 
+[iaccessi_h]
+ Access-Control-Allow-Origin (Invalid Value)
+
 [iacessma_h]
  Access-Control-Max-Age (Excessive Value)
 
@@ -1257,6 +1260,10 @@ HTTP Response Headers
 
 [iaccess]
  Review the values '*' or 'null' regarding your Cross-origin resource sharing requirements.
+ Ref: https://mdn.io/Access-Control-Allow-Origin
+
+[iaccessi]
+ Browsers only accept '*', 'null' or a single origin ('scheme://host[:port]').
  Ref: https://mdn.io/Access-Control-Allow-Origin
 
 [iaccessma]
@@ -2366,6 +2373,9 @@ Generator
 
 [test_corner_cases_brief]
  verify corner cases of headers are analyzed in a brief analysis.
+
+[test_cors_origin]
+ verify an invalid 'Access-Control-Allow-Origin' value is reported.
 
 [test_csp_base64_nonce]
  verify invalid base64 nonces are checked in the ‘Content-Security-Policy’ header.

@@ -686,6 +686,9 @@
 [iaccess_h]
  Access-Control-Allow-Origin (Valores inseguros)
 
+[iaccessi_h]
+ Access-Control-Allow-Origin (Valor incorrecto)
+
 [iacessma_h]
  Access-Control-Max-Age (Valor excesivo)
 
@@ -1258,6 +1261,10 @@ Cabeceras de respuesta HTTP
 
 [iaccess]
  Revise los valores '*' o 'null', y sus requisitos de intercambio de recursos de origen cruzado.
+ Ref: https://mdn.io/Access-Control-Allow-Origin
+
+[iaccessi]
+ Los navegadores solo admiten '*', 'null' o un único origen ('esquema://host[:puerto]').
  Ref: https://mdn.io/Access-Control-Allow-Origin
 
 [iaccessma]
@@ -2344,6 +2351,9 @@ Generador
 
 [test_corner_cases_brief]
  verifica que se comprueben casos específicos en varias cabeceras en un análisis breve.
+
+[test_cors_origin]
+ verifica que se informe de un valor incorrecto en 'Access-Control-Allow-Origin'
 
 [test_csp_base64_nonce]
  verifica que se comprueben nonces en base64 inválidos, en la cabecera 'Content-Security-Policy'.

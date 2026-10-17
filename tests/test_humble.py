@@ -64,8 +64,9 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_cache_no_store]", "[test_case_insensitive_values]",
                  "[test_csp_fallback_present]", "[test_csp_tokens]",
                  "[test_permissions_format]", "[test_permissions_values]",
-                 "[test_unreliable_analysis]", "[test_export_csv_brackets]",
-                 "[test_export_json_brackets]", "[test_empty_headers]",
+                 "[test_cors_origin]", "[test_unreliable_analysis]",
+                 "[test_export_csv_brackets]", "[test_export_json_brackets]",
+                 "[test_empty_headers]",
                  "[test_export_json_no_security_headers]",
                  "[test_export_json_no_findings]",
                  "[test_browser_compatibility_excluded]",
@@ -98,6 +99,7 @@ HUMBLE_TEST_FILES = {
     "CSP_HEX_NONCE": "headers_test_csp_hex_nonce.txt",
     "CSP_STRICT_DYNAMIC": "headers_test_csp_strict_dynamic.txt",
     "CSP_TOKENS": "headers_test_csp_tokens.txt",
+    "CORS_ORIGIN": "headers_test_cors_origin.txt",
     "CSP_UNSAFE_INLINE": "headers_test_csp_unsafe_inline.txt",
     "EMPTY": "headers_test_empty.txt",
     "PERMISSIONS_FORMAT": "headers_test_permissions_format.txt",
@@ -502,6 +504,9 @@ HELPER_CASES = (
     ("calculate_trends", ([1, 2, 3, 4, 5],), "Worsening"),
     ("conall_parse", ('("https://a.com"), ("https://b.com")',),
      (["https://a.com"], {"": ""})),
+    ("cors_valid_origin", ("https://a.com:8443",), True),
+    ("cors_valid_origin", ("https://a.com/",), False),
+    ("cors_valid_origin", ("https://*.a.com",), False),
     ("count_insecure_hops", (["https://a.com", "https://www.a.com"],), 0),
     ("count_insecure_hops", (["https://a.com", "http://a.com",
                               "https://a.com"],), 1),
@@ -1104,6 +1109,23 @@ def test_permissions_report_only():
     assert "'browsing-topics'" in output
     assert "'attribution-reporting'" not in output
     assert "'document-domain'" not in output
+
+
+def test_cors_origin():
+    """Verify an invalid 'Access-Control-Allow-Origin' value is reported."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["CORS_ORIGIN"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Access-Control-Allow-Origin (Invalid Value)" in output
+    assert "(Unsafe Values)" not in output
 
 
 def test_permissions_format():
