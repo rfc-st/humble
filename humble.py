@@ -1575,28 +1575,62 @@ def xxss_check_values(xxss_header):
         print_details("[ixxpd_h]", "[ixxpd]", "d", i_cnt)
 
 
-def permissions_split(text, sep):
-    """Split `text` on `sep` outside quoted strings and inner lists."""
-    parts, start, depth, quoted = [], 0, 0, False
-    for pos, char in enumerate(text.replace("\\\\", "__").replace('\\"', "__")):
+def permissions_mask(text):
+    """Blank out the quoted strings and inner lists of `text`.
+
+    The result keeps the length of `text`, so a separator found in it sits at
+    the same position in `text`. `ValueError` if a quoted string is not closed.
+    """
+    masked, depth, quoted = [], 0, False
+    for char in text.replace("\\\\", "__").replace('\\"', "__"):
         if char == '"':
             quoted = not quoted
-        elif char == sep and depth == 0 and not quoted:
-            parts.append(text[start:pos])
-            start = pos + 1
         elif not quoted:
             depth += (char == "(") - (char == ")")
+        masked.append("_" if quoted or depth else char)
     if quoted:
         raise ValueError(text)
+    return "".join(masked)
+
+
+def permissions_split(text, sep):
+    """Split `text` on `sep` outside quoted strings and inner lists."""
+    parts, start = [], 0
+    for pos, char in enumerate(permissions_mask(text)):
+        if char == sep:
+            parts.append(text[start:pos])
+            start = pos + 1
     return [*parts, text[start:]]
 
 
 def permissions_allowlist(value):
-    """Return the items of an allowlist: an Inner List or a single item."""
+    """Return the items of an allowlist: an Inner List or a single item.
+
+    Spaces after `;` belong to the parameter that follows them, so they are
+    removed before splitting the items of an Inner List.
+    """
     if value[:1] != "(" or value[-1:] != ")":
         return [value]
-    return [permissions_split(item, ";")[0] for item in
-            permissions_split(value[1:-1], " ") if item]
+    items = ";".join(part.lstrip(" ") for part in
+                     permissions_split(value[1:-1], ";"))
+    return [permissions_strip_params(item) for item in
+            permissions_split(items, " ") if item]
+
+
+def permissions_strip_params(text):
+    """Return `text` without its parameters, which must be valid.
+
+    Parameters follow the Structured Fields grammar: `;` and an optional
+    space before each key, whose value, if present, is a single item.
+    """
+    base, *params = permissions_split(text, ";")
+    for param in params:
+        key, has_value, value = param.lstrip(" ").partition("=")
+        if key[:1] not in PERM_KEY_FIRST or \
+                not PERM_KEY_CHARS.issuperset(key) or \
+                (has_value and not permissions_valid_item(value)):
+            raise ValueError(text)
+    return base
 
 
 def permissions_valid_item(item):
@@ -1620,7 +1654,7 @@ def permissions_parse(perm_header):
     pairs = []
     for member in permissions_split(perm_header, ","):
         feature, has_value, value = \
-            permissions_split(member.strip(), ";")[0].partition("=")
+            permissions_strip_params(member.strip()).partition("=")
         items = permissions_allowlist(value) if has_value else ["?1"]
         if feature[:1] not in PERM_KEY_FIRST or \
                 not PERM_KEY_CHARS.issuperset(feature) or \

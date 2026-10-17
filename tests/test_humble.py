@@ -517,6 +517,9 @@ HELPER_CASES = (
     ("decrease_html_spacing", ("humble",), "humble"),
     ("permissions_allowed", ('"https://a.com"',), True),
     ("permissions_allowed", ('"a.com"',), False),
+    ("permissions_allowlist", ("(self; p=1 *)",), ["self", "*"]),
+    ("permissions_mask", ('a=(b "c"), d="e;f"',), 'a=______), d=____"'),
+    ("permissions_strip_params", ("self; report-to=endpoint",), "self"),
     ("permissions_valid_item", ('"https://a.com"',), True),
     ("permissions_valid_item", ("?1",), True),
     ("process_http_response", (None, None, None, False, None),
@@ -1105,7 +1108,10 @@ def test_permissions_report_only():
 
 
 def test_permissions_format():
-    """Verify an invalid 'Permissions-Policy' is reported and not analyzed."""
+    """Verify an invalid 'Permissions-Policy' is reported and not analyzed.
+
+    Including a 'Permissions-Policy-Report-Only' with an invalid parameter.
+    """
     result = subprocess.run(
         [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
          PATHS["PERMISSIONS_FORMAT"]],
@@ -1118,6 +1124,7 @@ def test_permissions_format():
     )
     output = result.stdout + result.stderr
     assert "Permissions-Policy (Incorrect Format)" in output
+    assert "Permissions-Policy-Report-Only (Incorrect Format)" in output
     assert "(Too Permissive Value)" not in output
 
 
