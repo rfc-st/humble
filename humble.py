@@ -1634,15 +1634,13 @@ def permissions_strip_params(text):
 
 
 def permissions_valid_item(item):
-    """Check an item is a Structured Fields token, string, number or boolean."""
+    """Check an item is a Structured Fields token, string or boolean."""
     if item[:1] == '"':
         body = item[1:-1].replace("\\\\", "").replace('\\"', "")
         return item[1:].endswith('"') and PERM_STRING_CHARS.issuperset(body)
-    if item in ("?0", "?1") or \
-            item.removeprefix("-").replace(".", "", 1).isdigit():
-        return True
-    return (item[:1].isalpha() or item[:1] == "*") and \
-        PERM_TOKEN_CHARS.issuperset(item)
+    return item in ("?0", "?1") or \
+        ((item[:1].isalpha() or item[:1] == "*") and
+         PERM_TOKEN_CHARS.issuperset(item))
 
 
 def permissions_parse(perm_header):
