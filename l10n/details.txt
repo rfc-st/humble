@@ -2380,6 +2380,9 @@ Generator
 [test_csp_base64_nonce]
  verify invalid base64 nonces are checked in the ‘Content-Security-Policy’ header.
 
+[test_csp_base64url_nonce]
+ verify base64url nonces are checked against their minimum length in the ‘Content-Security-Policy’ header.
+
 [test_csp_fallback_missing]
  verify the 'default-src' fallback note is shown for missing directives in the 'Content-Security-Policy' header.
 
