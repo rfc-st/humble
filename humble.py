@@ -341,12 +341,12 @@ def check_updates_diff(days_diff, github_version, local_version):
 {local_version}{STYLE[4]}")
     if days_diff <= 0:
         print_detail("[humble_recent]", 8)
-    else:
-        detail = ("[humble_not_recent]" if days_diff > DAYS_DIFF
-                  else "[humble_newer]")
-        days_id = ("[update_day_single]" if days_diff == 1
-                   else "[update_day_plural]")
-        print(f"\n{get_detail(detail, replace=True)} {days_diff}\
+        return
+    detail = ("[humble_not_recent]" if days_diff > DAYS_DIFF
+              else "[humble_newer]")
+    days_id = ("[update_day_single]" if days_diff == 1
+               else "[update_day_plural]")
+    print(f"\n{get_detail(detail, replace=True)} {days_diff}\
 {get_detail(days_id)}\n{get_detail('[github_humble]', replace=True)}\n")
 
 
@@ -3760,15 +3760,16 @@ def format_html_references(html_final, ln_rstrip, *, lang_slice):
 
     Related to `-o html` option.
     """
-    for ref, off in ((REF_LINKS[1], 6), (REF_LINKS[0], 8), (REF_LINKS[4],
-                                                            lang_slice)):
+    for ref, off in ((REF_LINKS[1], 6), (REF_LINKS[0], 8),
+                     (REF_LINKS[4], lang_slice)):
         content = ln_rstrip[off:].strip().replace('"', "&quot;")
-        if ref in ln_rstrip and content.startswith(("http://", "https://")):
-            html_final.write(
-                f"{ln_rstrip[:off]}{HTML_TAGS[1]}{content}"
-                f"{HTML_TAGS[2]}{content}{HTML_TAGS[0]}{HTML_TAGS[11]}",
-            )
-            return True
+        if ref not in ln_rstrip or not content.startswith(HTTP_SCHEMES_URL):
+            continue
+        html_final.write(
+            f"{ln_rstrip[:off]}{HTML_TAGS[1]}{content}"
+            f"{HTML_TAGS[2]}{content}{HTML_TAGS[0]}{HTML_TAGS[11]}",
+        )
+        return True
     return False
 
 
@@ -3986,11 +3987,11 @@ def format_md_entry(entry, section):
         return format_md_line(entry[0], section)
     details = []
     for line in entry[1:]:
+        value = line.partition(":")[2].strip()
         if line.startswith(MD_REFS):
-            details.append(format_md_link(line.partition(":")[2].strip(),
-                                          "Ref"))
+            details.append(format_md_link(value, "Ref"))
         elif section == PDF_SECTION["[3."]:
-            details.append(format_md_code(line.partition(":")[2].strip()))
+            details.append(format_md_code(value))
         else:
             details.append(format_md_text(line))
     return f"- {format_md_name(entry[0])}: {' '.join(details)}"
@@ -4035,16 +4036,17 @@ def format_md_result(line):
     Related to `-o md` option.
     """
     key, sep, value = line.partition(":")
-    value = value.strip()
     if not sep:
         return f"\n{format_md_text(line)}\n"
+    name = format_md_text(key.strip())
+    value = value.strip()
     first = value.split()[0] if value else ""
     if first.isdigit() or first in GRADE_ORDER:
-        rest = format_md_text(value.removeprefix(first).strip())
-        return f"- {format_md_text(key.strip())}: **{first}** {rest}"
+        value = format_md_text(value.removeprefix(first).strip())
+        return f"- {name}: **{first}** {value}"
     if value.startswith(HTTP_SCHEMES_URL):
-        return f"- {format_md_text(key.strip())}: {format_md_link(value)}"
-    return f"- {format_md_text(key.strip())}: {format_md_text(value)}"
+        return f"- {name}: {format_md_link(value)}"
+    return f"- {name}: {format_md_text(value)}"
 
 
 def format_md_section(title, lines, section):
@@ -4056,18 +4058,16 @@ def format_md_section(title, lines, section):
     """
     stripped = [line.strip() for line in lines]
     filled = list(filter(None, stripped))
+    heading = [f"## {format_md_text(title)}", ""]
     if section in MD_BLOCKS:
-        content = [f"    {line}" for line in filled]
-    elif section in MD_FINDINGS and not args.brief:
-        content = format_md_entries(stripped, section)
-    else:
-        line_formats = {PDF_SECTION["[0."]: format_md_info,
-                        PDF_SECTION["[7."]: format_md_result}
-        line_format = line_formats.get(section,
-                                       partial(format_md_line,
-                                               section=section))
-        content = list(map(line_format, filled))
-    return [f"## {format_md_text(title)}", "", *content, ""]
+        return [*heading, *(f"    {line}" for line in filled), ""]
+    if section in MD_FINDINGS and not args.brief:
+        return [*heading, *format_md_entries(stripped, section), ""]
+    line_formats = {PDF_SECTION["[0."]: format_md_info,
+                    PDF_SECTION["[7."]: format_md_result}
+    line_format = line_formats.get(section,
+                                   partial(format_md_line, section=section))
+    return [*heading, *map(line_format, filled), ""]
 
 
 def format_md_entries(lines, section):
@@ -4312,18 +4312,15 @@ def print_owasp_wrong(header_dict):
 
     Related to `-c` option.
     """
-    wrong_owasp = [
+    wrong_owasp = sorted(
         (header.title(), value)
         for header, value in headers_l.items()
-        if (owasp_value := header_dict.get(header.title())) and value !=
-        owasp_value
-    ]
+        if value != header_dict.get(header.title(), value))
     print(f"\n\n{STYLE[0]}{get_detail('[comp_val]')}{STYLE[5]}")
     if not wrong_owasp:
         print(f"{STYLE[10]} {get_detail(DIR_MSG[2])}{STYLE[5]}", end="")
-        return []
-    for header, value in sorted(wrong_owasp):
-        prefix = "(*) " if header == "Permissions-Policy" else ""
+    for header, value in wrong_owasp:
+        prefix = "(*) " * (header == "Permissions-Policy")
         print(f"{STYLE[1]}  {prefix}{header}{STYLE[4]}: {value}")
     return wrong_owasp
 
