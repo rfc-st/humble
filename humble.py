@@ -249,7 +249,7 @@ RE_PATTERN = (
     r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
     r"<pre(?:\s[^>]*)?>\s*</pre>",
     r"(?<!')nonce-",
-    r"(^[^\S\n]*\n)(?:[^\S\n]*(?:\n|$))+",
+    r"(^[^\S\n]*\n)(?:[^\S\n]*(?:\n|$))+", r'^[^",]*(?:"[^"]*"[^",]*)*',
 )
 
 
@@ -1424,18 +1424,30 @@ def csp_check_unknown(csp_h):
 
 
 def conall_parse(conall_h):
-    """Return the URL patterns and the parameters of `Connection-Allowlist`.
+    """Return the patterns, parameters and ignored values of the allowlist.
 
     Browsers only use its first list, which a comma outside quotes ends.
     """
-    parts = conall_h.split('"')
-    for idx in range(0, len(parts), 2):
-        if "," in parts[idx]:
-            parts[idx:] = [parts[idx].partition(",")[0]]
-            break
-    params = "".join(parts[::2]).partition(")")[2].replace(" ", "")
+    first = re.match(RE_PATTERN[25], conall_h)[0]
+    parts = first.split('"')
+    inner, _, params = "".join(parts[::2]).partition(")")
     return ([pattern for pattern in parts[1::2] if "://" in pattern],
-            dict(param.partition("=")[::2] for param in params.split(";")))
+            dict(param.partition("=")[::2]
+                 for param in params.replace(" ", "").split(";")),
+            conall_ignored(parts[1::2], inner, conall_h[len(first):]))
+
+
+def conall_ignored(strings, inner, rest):
+    """Return the values of `Connection-Allowlist` that browsers ignore.
+
+    Unquoted values (except the `response-origin` token), quoted ones that
+    are not URL patterns and anything after the first list are ignored.
+    """
+    tokens = f" {inner.replace('(', ' ')} ".replace(" response-origin ", " ")
+    ignored = [f'"{s}"' for s in strings if "://" not in s] + tokens.split()
+    if rest := rest.strip(", "):
+        ignored.append(rest)
+    return ignored
 
 
 def conall_check_params(params):
@@ -5443,9 +5455,13 @@ if header_eligible("clear-site-data"):
 if header_eligible("connection-allowlist"):
     conall_h = headers_l["connection-allowlist"]
     if conall_h.startswith("(") and ")" in conall_h:
-        conall_patterns, conall_params = conall_parse(conall_h)
+        conall_patterns, conall_params, conall_ignored = \
+            conall_parse(conall_h)
         conall_check_params(conall_params)
         conall_check_patterns(conall_patterns)
+        if conall_ignored:
+            print_matched_details("[icalli_h]", "[icalli_s]", ", ".join(
+                f"'{value}'" for value in conall_ignored), "[icalli]")
     else:
         print_details("[icall_h]", "[icall]", "d", i_cnt)
 

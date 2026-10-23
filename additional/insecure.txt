@@ -41,6 +41,7 @@ Cache-Control: No Valid Directives
 Cache-Control: Recommended Values
 Clear-Site-Data: Ignored Header
 Clear-Site-Data: No Valid Directives
+Connection-Allowlist: Ignored Values
 Connection-Allowlist: Incorrect Format
 Connection-Allowlist: Insecure Schemes
 Connection-Allowlist: Potentially Unsafe Redirects

@@ -254,6 +254,9 @@
 [icallb_h]
  (*) Connection-Allowlist (Too Permissive Value)
 
+[icalli_h]
+ (*) Connection-Allowlist (Ignored Values)
+
 [icallr_h]
  (*) Connection-Allowlist-Report-Only (Incorrect Format)
 
@@ -283,6 +286,12 @@
 
 [icallb]
  Ref: https://centralcsp.com/en/docs/web-security/policies/connection-allowlist
+
+[icalli_s]
+ Browsers ignore values outside the first list, unquoted or without a scheme: 
+
+[icalli]
+ Ref: https://wicg.github.io/connection-allowlists/#headers
 
 [icallr]
  The value must be a list in parentheses; otherwise browsers ignore the header.
@@ -2364,6 +2373,9 @@ Generator
 
 [test_connection_allowlist_report_format]
  verify a 'Connection-Allowlist-Report-Only' header that is not a list in parentheses is reported.
+
+[test_connection_allowlist_ignored]
+ verify values browsers ignore in the 'Connection-Allowlist' header are reported.
 
 [test_connection_allowlist_values]
  verify unsafe parameters and patterns of the 'Connection-Allowlist' header are reported.

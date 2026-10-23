@@ -269,6 +269,9 @@ TEST_CFGS = {
     "test_connection_allowlist_report_format": (
         ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
         "Connection-Allowlist-Report-Only (Incorrect Format)"),
+    "test_connection_allowlist_ignored": (
+        ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
+        "Connection-Allowlist (Ignored Values)"),
     "test_connection_allowlist_values": (
         ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
         "Connection-Allowlist (Too Permissive Value)"),
@@ -505,7 +508,7 @@ HELPER_CASES = (
     ("calculate_trends", ([3, 3, 3, 3, 3],), "Stable"),
     ("calculate_trends", ([1, 2, 3, 4, 5],), "Worsening"),
     ("conall_parse", ('("https://a.com"), ("https://b.com")',),
-     (["https://a.com"], {"": ""})),
+     (["https://a.com"], {"": ""}, ['("https://b.com")'])),
     ("cors_valid_origin", ("https://a.com:8443",), True),
     ("cors_valid_origin", ("https://a.com/",), False),
     ("cors_valid_origin", ("https://*.a.com",), False),
