@@ -1,3 +1,4 @@
 .vscode/
 internal/
 humble.code-workspace
+sourcery-*.yaml
