@@ -63,6 +63,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_proxy_wrong]", "[test_response_headers_none]",
                  "[test_cache_no_store]", "[test_case_insensitive_values]",
                  "[test_csp_fallback_present]", "[test_csp_tokens]",
+                 "[test_csp_base64url_nonce]",
                  "[test_permissions_format]", "[test_permissions_values]",
                  "[test_cors_origin]", "[test_unreliable_analysis]",
                  "[test_export_csv_brackets]", "[test_export_json_brackets]",
@@ -96,6 +97,7 @@ HUMBLE_TEST_FILES = {
     "CLIENT_ERROR": "client_error_test.txt",
     "CLOUDFLARE": "headers_test_cloudflare.txt",
     "CSP_BASE64_NONCE": "headers_test_csp_base64_nonce.txt",
+    "CSP_BASE64URL_NONCE": "headers_test_csp_base64url_nonce.txt",
     "CSP_HEX_NONCE": "headers_test_csp_hex_nonce.txt",
     "CSP_STRICT_DYNAMIC": "headers_test_csp_strict_dynamic.txt",
     "CSP_TOKENS": "headers_test_csp_tokens.txt",
@@ -1032,6 +1034,46 @@ def test_csp_tokens():
     assert "(Deprecated Directives)" not in output
     assert "(Insecure Schemes)" not in output
     assert "(Unsafe Directive)" not in output
+
+
+def test_csp_base64url_nonce(tmp_path):
+    """Verify base64url nonces are checked against their minimum length.
+
+    CSP3 accepts the base64url alphabet for nonces, so those shorter than 128
+    bits must be reported as unsafe and those long enough must not.
+    """
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["CSP_BASE64URL_NONCE"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "(Unsafe Nonce)" in output
+    assert "'rDZYa_FJZkZITL-0'" in output
+    long_nonce = "f_NFD3FHL4xcol-s11ViqzDJTSIjTTOt"
+    long_input = tmp_path / "headers_test_csp_base64url_nonce_long.txt"
+    long_input.write_text(
+        "HTTP/2 200\ncontent-security-policy: script-src "
+        f"'nonce-{long_nonce}'\n",
+        encoding="utf-8",
+    )
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         str(long_input)],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "(Unsafe Nonce)" not in output
 
 
 def get_response_info(insecure_hops, capsys):

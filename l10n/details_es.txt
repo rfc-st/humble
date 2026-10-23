@@ -2358,6 +2358,9 @@ Generador
 [test_csp_base64_nonce]
  verifica que se comprueben nonces en base64 inválidos, en la cabecera 'Content-Security-Policy'.
 
+[test_csp_base64url_nonce]
+ verifica que se comprueben los nonces en base64url con su longitud mínima, en la cabecera 'Content-Security-Policy'.
+
 [test_csp_fallback_missing]
  verifica la ausencia de 'default-src' al informar de directivas ausentes en la cabecera 'Content-Security-Policy'.
 

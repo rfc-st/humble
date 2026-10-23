@@ -240,7 +240,7 @@ RE_PATTERN = (
     r"\(humble_pdf_style\)([^:]+):",
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r"\(humble_sec_style\)([^:]+)", r"\(humble_sec_style\)",
-    r"(?: Nota : | Note : )", r"^[0-9a-fA-F]+$", r"^[A-Za-z0-9+/=]+$",
+    r"(?: Nota : | Note : )", r"^[0-9a-fA-F]+$", r"^[A-Za-z0-9+/=_-]+$",
     r", (?=[^;,]+?=)", r"'nonce-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
     r"'(?i:(sha256|sha384|sha512))-([A-Za-z0-9+/=_-]+)'",
     r"(?<!')\b(?i:sha256|sha384|sha512)-[A-Za-z0-9+/=_-]+(?!')",
@@ -1346,12 +1346,19 @@ def csp_hex_nonce(nonce, nonce_refs, i_cnt):
 
 
 def csp_base64_nonce(nonce, nonce_refs, i_cnt):
-    """`Content-Security-Policy` header checks related to Base64 nonces."""
+    """`Content-Security-Policy` header checks related to Base64 nonces.
+
+    CSP3 accepts the base64 and base64url alphabets and makes the '=' padding
+    optional, so the value is normalized before decoding it.
+    """
+    b64nonce = nonce.replace("-", "+").replace("_", "/")
+    b64nonce += "=" * (-len(b64nonce) % 4)
     try:
-        return csp_print_nonce(nonce, nonce_refs, i_cnt) if \
-            len(b64decode(nonce, validate=True)) < LENGTH_BOUNDS[2] else False # nosec
+        nonce_len = len(b64decode(b64nonce, validate=True)) # nosec
     except binascii.Error:
         return csp_print_nonce(nonce, nonce_refs, i_cnt)
+    return csp_print_nonce(nonce, nonce_refs, i_cnt) if \
+        nonce_len < LENGTH_BOUNDS[2] else False
 
 
 def csp_print_nonce(nonce, nonce_refs, i_cnt):
