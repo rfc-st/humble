@@ -15,7 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v7
 
-    - uses: PyCQA/bandit-action@v1
+    - uses: PyCQA/bandit-action@044eb14cd9d9e339d23c8f6511f217824a10a256 # main 2026-10, adds 'python-version' input
       with:
+        python-version: '3.11'
         targets: humble.py
         severity: high
