@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--10--17-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--10--23-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -703,6 +703,7 @@ Thanks for downloading _humble_, for trying it and for your time!.
 * İDRİS BUDAK for reporting the need to <a href="https://github.com/rfc-st/humble/commit/f85dd7811859fd2e403a0ecd848b21db20949841">this</a> check.
 * <a href="https://github.com/ilLuSion-007">ilLuSion-007</a> for <a href="https://github.com/rfc-st/humble/pull/32">this</a>.
 * <a href="https://github.com/javelinsoft">javelinsoft</a> for <a href="https://github.com/rfc-st/humble/commit/1f50e7109411b5b15c9a75ccb7760a8f16db7c65">this</a>.
+* <a href="https://github.com/JingHao-Leon">JingHao-Leon</a> for <a href="https://github.com/rfc-st/humble/issues/66">this</a>.
 * <a href="https://www.linkedin.com/in/jdelamo/">Julio</a> for testing on macOS and for <a href="https://github.com/rfc-st/humble/commit/e5f16f51dbb8b8e7d5d4b41797055899f399a69b">this</a> suggestion.
 * <a href="https://github.com/kazet">kazet</a> for <a href="https://github.com/rfc-st/humble/pull/18">this</a> suggestion.
 * <a href="https://github.com/manuel-sommer">manuel-sommer</a> for <a href="https://github.com/rfc-st/humble/issues/8">this</a>, <a href="https://github.com/rfc-st/humble/issues/10">this</a> and <a href="https://github.com/rfc-st/humble/issues/13">this</a>!.
