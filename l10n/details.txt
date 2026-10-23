@@ -1405,7 +1405,7 @@ HTTP Response Headers
  Ref: https://content-security-policy.com/hash/
 
 [icsnces]
- All should be at least 128 bits long (32 hex characters / 24 base64 characters).
+ All should be at least 128 bits long (32 hex / 22 unpadded base64 characters)
  Ref: https://www.w3.org/TR/CSP3/#security-nonces
 
 [icsncei]

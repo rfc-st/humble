@@ -1406,7 +1406,7 @@ Cabeceras de respuesta HTTP
  Ref: https://content-security-policy.com/hash/
 
 [icsnces]
- Todos deben tener un tamaño de al menos 128 bits (32 caracteres hexadecimales / 24 en base64).
+ Todos deben tener al menos 128 bits (32 caracteres hexadecimales / 22 en base64 sin relleno)
  Ref: https://www.w3.org/TR/CSP3/#security-nonces
 
 [icsncei]
