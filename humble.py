@@ -165,6 +165,8 @@ DTD_CONTENT = """<!ELEMENT analysis (section+)>
 <!ATTLIST item name CDATA #IMPLIED>
 <!ELEMENT value (#PCDATA)>
 """
+XML_PROLOGUE = (f'<?xml version="1.0" encoding="utf-8"?>\n'
+                f"<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n").encode()
 EXPORT_EXTENSIONS = (".csv", ".html", ".json", ".pdf", ".txt", ".xlsx", ".xml",
                      ".md")
 EXPORT_ORDER = ("txt", "csv", "json", "xlsx", "xml", "html", "pdf", "md")
@@ -1212,8 +1214,8 @@ def csp_check_broad(csp_dirs_vals):
             csp_broad_v |= broad
             csp_broad_dirs.add(name)
     if csp_broad_v:
-        csp_print_values(csp_broad_dirs, sorted(csp_broad_v),
-                         ("[icsw_h]", "[icsw]", "[icsw_b]"), 1)
+        csp_print_values(csp_broad_dirs, ("[icsw_h]", "[icsw]", "[icsw_b]"),
+                         1, sorted(csp_broad_v))
 
 
 def csp_check_insecure(csp_dirs_vals):
@@ -1225,24 +1227,27 @@ def csp_check_insecure(csp_dirs_vals):
             csp_insec_v |= insecure
             csp_insec_dirs.add(name)
     if csp_insec_v:
-        csp_print_values(csp_insec_dirs, sorted(csp_insec_v),
-                         ("[icsh_h]", "[icsh]", "[icsh_b]"), 2)
+        csp_print_values(csp_insec_dirs, ("[icsh_h]", "[icsh]", "[icsh_b]"),
+                         2, sorted(csp_insec_v))
 
 
-def csp_print_values(csp_dirs, csp_values, csp_refs, lines_n):
-    """Print broad or insecure values in the `Content-Security-Policy` header.
+def csp_print_values(csp_dirs, csp_refs, lines_n, csp_values=()):
+    """Print a `Content-Security-Policy` finding and its directives.
 
-    Along with the directives that contain them.
+    `csp_refs` holds the title and detail ids; with `csp_values`, its middle
+    id labels the broad or insecure values printed between them.
     """
     print_detail_r(csp_refs[0], is_red=True)
-    if not args.brief:
-        print_detail_l(DIR_MSG[0] if len(csp_dirs) > 1 else DIR_MSG[1])
-        print(" " + ", ".join(f"'{directive}'" for directive in
-                              sorted(csp_dirs)) + ".")
+    i_cnt[0] += 1
+    if args.brief:
+        return
+    print_detail_l(DIR_MSG[0] if len(csp_dirs) > 1 else DIR_MSG[1])
+    print(" " + ", ".join(f"'{directive}'" for directive in
+                          sorted(csp_dirs)) + ".")
+    if csp_values:
         print_detail_l(csp_refs[1])
         print(", ".join(f"'{value}'" for value in csp_values))
-        print_detail(csp_refs[2], num_lines=lines_n)
-    i_cnt[0] += 1
+    print_detail(csp_refs[-1], num_lines=lines_n)
 
 
 def csp_unsafe_directives(csp_dirs_vals, present, absent=()):
@@ -1259,8 +1264,7 @@ def csp_check_eval(csp_dirs_vals):
     """
     if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals,
                                                 "'unsafe-eval'"):
-        csp_print_unknown_unsafe(csp_unsafe_dirs, "[icspe_h]", "[icspev]", 5,
-                                 i_cnt)
+        csp_print_values(csp_unsafe_dirs, ("[icspe_h]", "[icspev]"), 5)
 
 
 def csp_check_inline(csp_dirs_vals):
@@ -1271,23 +1275,7 @@ def csp_check_inline(csp_dirs_vals):
     if csp_unsafe_dirs := csp_unsafe_directives(csp_dirs_vals,
                                                 "'unsafe-inline'",
                                                 absent=("'nonce-", "'sha")):
-        csp_print_unknown_unsafe(csp_unsafe_dirs, "[icsp_h]", "[icsp]", 5,
-                                 i_cnt)
-
-
-def csp_print_unknown_unsafe(csp_dirs, detail_t, detail_d, lines_n, i_cnt):
-    """`Content-Security-Policy` header check.
-
-    Print the occurrences of `unsafe-eval` and `unsafe-inline` keywords among
-    unknown directives.
-    """
-    print_detail_r(detail_t, is_red=True)
-    if not args.brief:
-        print_detail_l(DIR_MSG[0] if len(csp_dirs) > 1 else DIR_MSG[1])
-        print(" " + ", ".join(f"'{directive}'" for directive in
-                              sorted(csp_dirs)) + ".")
-        print_detail(detail_d, num_lines=lines_n)
-    i_cnt[0] += 1
+        csp_print_values(csp_unsafe_dirs, ("[icsp_h]", "[icsp]"), 5)
 
 
 def csp_valid_hash(algo, b64hash):
@@ -1422,8 +1410,7 @@ def csp_check_unknown(csp_h):
         and match[1] not in known_dirs
     ]
     if unknown_dir:
-        csp_print_unknown_unsafe(unknown_dir, "[icspiu_h]", "[icspiu]", 3,
-                                 i_cnt)
+        csp_print_values(unknown_dir, ("[icspiu_h]", "[icspiu]"), 3)
 
 
 def conall_parse(conall_h):
@@ -1778,10 +1765,12 @@ def print_general_info(reliable, export_filename):
     """Print the content in the section with basic information."""
     if not args.output:
         delete_lines(reliable=not reliable)
-        print(f"\n{BANNER}\n ({BANNER_VERSION})")
+        print(f"\n{BANNER}\n ({BANNER_VERSION})\n\n")
     elif single_export() != "pdf":
         humble_desc = get_detail("[humble_desc]", replace=True)
         print(f"\n\n{humble_desc}\n{BANNER_VERSION}\n")
+    if single_export() in ("html", "pdf"):
+        print(end="\n\n")
     print_basic_info(export_filename)
     print_extended_info(reliable)
 
@@ -1835,14 +1824,12 @@ def print_basic_info(export_filename):
     Date, time, URL, response details, User-Agent (`-ua` option), input
     file (`-if` option) and exported filename (`-o` option).
     """
-    print(end="\n\n" if single_export() in ("html", "pdf")
-      or args.output is None else "")
     print_detail_r("[0section]")
     print_detail_l("[analysis_date]")
     print(f" {current_time}")
     print(f"{URL_STRING[1]}{URL}")
     print_response_info()
-    if args.user_agent not in (None, "", "0"):
+    if args.user_agent:
         print(f"{get_detail('[ua_custom]', replace=True)} '{args.user_agent}'"
               f"{get_detail('[ua_custom2]', replace=True)}")
     if args.input_file:
@@ -3291,7 +3278,6 @@ class PdfContext(NamedTuple):
     combined_h: tuple
     pdf: object
     pdf_links: tuple
-    pdf_prefixes: dict
     ypos: object
 
 
@@ -3350,7 +3336,6 @@ def initialize_pdf(pdf, ypos):
         pdf=pdf,
         pdf_links=(URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
                    REF_LINKS[4]),
-        pdf_prefixes={REF_LINKS[2]: REF_LINKS[0], REF_LINKS[3]: REF_LINKS[1]},
         ypos=ypos,
     )
 
@@ -3419,7 +3404,7 @@ def apply_pdf_links(line, ctx):
     """
     for string in ctx.pdf_links:
         if string in line:
-            format_pdf_links(line, string, ctx.pdf, ctx.pdf_prefixes)
+            format_pdf_links(line, string, ctx.pdf)
             return
 
 
@@ -3465,7 +3450,7 @@ def set_pdf_conditions(line, combined_h, pdf, ypos):
         and set_pdf_warnings(line, pdf, ypos))
 
 
-def format_pdf_links(i, pdf_string, pdf, pdf_prefixes):
+def format_pdf_links(i, pdf_string, pdf):
     """Apply a specific format to lines containing links.
 
     Only web addresses become links, so a header value that imitates a
@@ -3473,15 +3458,12 @@ def format_pdf_links(i, pdf_string, pdf, pdf_prefixes):
     option.
     """
     pdf_link = set_pdf_links(i, pdf_string)
-    if not pdf_link.casefold().startswith(("http://", "https://")):
+    if not pdf_link.casefold().startswith(HTTP_SCHEMES_URL):
         return
-    if pdf_string in (URL_STRING[1], REF_LINKS[2], REF_LINKS[3]):
-        pdf_prefix = pdf_prefixes.get(pdf_string, pdf_string)
-        pdf.write(h=6, text=pdf_prefix)
-    else:
-        pdf.write(h=6, text=i[:i.index(": ")+2])
+    prefix_end = i.index(": ") + 2
+    pdf.write(h=6, text=i[:prefix_end])
     pdf.set_text_color(0, 0, 255)
-    pdf.cell(w=2000, h=6, text=i[i.index(": ")+2:], align="L", link=pdf_link)
+    pdf.cell(w=2000, h=6, text=i[prefix_end:], align="L", link=pdf_link)
 
 
 def set_pdf_warnings(line, pdf, ypos):
@@ -3618,16 +3600,13 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False,
     if content is None:
         content = Path(tmp_filename).read_text(encoding="utf8")
     generate_html()
-    content = decrease_html_spacing(content)
-    html_writers, html_rest = build_html_writers()
+    html_writers = build_html_writers()
     inside_section = False
     with Path(final_filename).open("a", encoding="utf8") as html_final:
-        for ln in content.splitlines(keepends=True):
+        for ln in decrease_html_spacing(content).splitlines(keepends=True):
             inside_section = write_html_line(html_final, ln, html_writers,
-                                             html_rest, inside_section)
-        if inside_section:
-            html_final.write(HTML_TAGS[12])
-        html_final.write(HTML_TAGS[13])
+                                             inside_section)
+        html_final.write(HTML_TAGS[12] * inside_section + HTML_TAGS[13])
     clean_html_final(final_filename)
     finalize_export(final_filename, tmp_filename, "html", export_all)
 
@@ -3666,8 +3645,9 @@ def build_html_writers():
     """Build the ordered rules that format the main sections.
 
     Each writer takes `(html_final, ln_rstrip)`, writes the line if it
-    matches and returns whether it did; the values they depend on are
-    resolved once here, instead of once per line.
+    matches and returns whether it did; the last one is the catch-all for
+    the remaining lines. The values they depend on are resolved once here,
+    instead of once per line.
 
     Related to `-o html` option.
     """
@@ -3675,32 +3655,28 @@ def build_html_writers():
     ko_strings = [get_detail(f"[{i}]").rstrip() for i in ("no_sec_headers",
                                                           "no_enb_headers")]
     lang_slice = SLICE_INT[6] if args.lang else SLICE_INT[7]
-    html_writers = (
+    return (
         partial(format_html_warnings, ko_strings=ko_strings,
                 ok_string=ok_string),
         partial(format_html_references, lang_slice=lang_slice),
         format_html_compatibility,
+        partial(format_html_rest, ctx=HtmlRestContext(
+            l_empty=l_empty,
+            l_total=sorted(set(l_miss + l_ins)),
+            fng_sorted=sorted(
+                i.casefold() for i in l_fng) if args.brief else sorted(l_fng),
+            header_prefixes=tuple(f"{header}: " for header in headers),
+        )),
     )
-    html_rest = partial(format_html_rest, ctx=HtmlRestContext(
-        l_empty=l_empty,
-        l_total=sorted(set(l_miss + l_ins)),
-        fng_sorted=sorted(
-            i.casefold() for i in l_fng) if args.brief else sorted(l_fng),
-        header_prefixes=tuple(f"{header}: " for header in headers),
-    ))
-    return html_writers, html_rest
 
 
-def write_html_line(html_final, ln, html_writers, html_rest,
-                    inside_section):
+def write_html_line(html_final, ln, html_writers, inside_section):
     """Write a single line of the analysis, applying the first matching rule.
 
     Section names are handled apart, being the only stateful case; lines
-    matching no rule fall through to `format_html_rest()`.
+    matching no rule fall through to the last writer, `format_html_rest()`.
 
-    The line is escaped here, once and before any rule, so that no value
-    supplied by the server can be written as markup; related to `-o html`
-    option.
+    Related to `-o html` option.
     """
     ln = escape(ln, quote=False)
     ln_rstrip = ln.rstrip("\n")
@@ -3708,10 +3684,9 @@ def write_html_line(html_final, ln, html_writers, html_rest,
         return inside_section
     matched_bold, inside_section = format_html_bold(html_final, ln_rstrip,
                                                     inside_section)
-    if matched_bold or any(writer(html_final, ln_rstrip) for writer in
-                           html_writers):
-        return inside_section
-    html_rest(html_final, ln)
+    if not matched_bold and all(not writer(html_final, ln_rstrip)
+                                for writer in html_writers[:-1]):
+        html_writers[-1](html_final, ln)
     return inside_section
 
 
@@ -4156,10 +4131,8 @@ def generate_xml(final_filename, temp_filename, *, export_all=False,
     for name, data in parse_analysis(content).items():
         add_xml_section(ET.SubElement(root, "section", {"name": name}), data)
     ET.indent(root)
-    xml_decl = b'<?xml version="1.0" encoding="utf-8"?>\n'
-    xml_content = ET.tostring(root, encoding="utf-8", xml_declaration=False)
-    xml_dtd = f"<!DOCTYPE analysis [\n{DTD_CONTENT}]\n>\n".encode()
-    Path(final_filename).write_bytes(xml_decl + xml_dtd + xml_content)
+    Path(final_filename).write_bytes(XML_PROLOGUE
+                                     + ET.tostring(root, encoding="utf-8"))
     finalize_export(final_filename, temp_filename, "xml", export_all)
 
 
