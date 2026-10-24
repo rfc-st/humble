@@ -740,6 +740,9 @@
 [icsig_d]
  Content-Security-Policy (Ignored Keyword)
 
+[icskq_h]
+ Content-Security-Policy (Unquoted Keywords)
+
 [icsn_h]
  Content-Security-Policy (Incorrect Values)
 
@@ -1384,6 +1387,12 @@ HTTP Response Headers
 [icsig]
  'strict-dynamic' requires a hash/nonce; without them browsers ignore it.
  Ref: https://content-security-policy.com/strict-dynamic/
+
+[icskq_s]
+ Keywords without single quotes are treated as host names and ignored: 
+
+[icskq]
+ Ref: https://www.w3.org/TR/CSP3/#grammardef-keyword-source
 
 [icsn]
  '=' could be an incorrect value in the definition of this header.
@@ -2418,6 +2427,9 @@ Generator
 
 [test_permissions_format]
  verify a 'Permissions-Policy' header with invalid syntax is reported and not analyzed.
+
+[test_csp_keywords]
+ verify keywords of the 'Content-Security-Policy' header are matched case-insensitively and reported when unquoted.
 
 [test_csp_tokens]
  verify 'Content-Security-Policy' checks match whole values instead of substrings of hosts.

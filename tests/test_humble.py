@@ -63,7 +63,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_proxy_wrong]", "[test_response_headers_none]",
                  "[test_cache_no_store]", "[test_case_insensitive_values]",
                  "[test_csp_fallback_present]", "[test_csp_tokens]",
-                 "[test_csp_base64url_nonce]",
+                 "[test_csp_keywords]", "[test_csp_base64url_nonce]",
                  "[test_permissions_format]", "[test_permissions_values]",
                  "[test_cors_origin]", "[test_unreliable_analysis]",
                  "[test_export_csv_brackets]", "[test_export_json_brackets]",
@@ -100,6 +100,7 @@ HUMBLE_TEST_FILES = {
     "CSP_BASE64URL_NONCE": "headers_test_csp_base64url_nonce.txt",
     "CSP_HEX_NONCE": "headers_test_csp_hex_nonce.txt",
     "CSP_STRICT_DYNAMIC": "headers_test_csp_strict_dynamic.txt",
+    "CSP_KEYWORDS": "headers_test_csp_keywords.txt",
     "CSP_TOKENS": "headers_test_csp_tokens.txt",
     "CORS_ORIGIN": "headers_test_cors_origin.txt",
     "CSP_UNSAFE_INLINE": "headers_test_csp_unsafe_inline.txt",
@@ -1037,6 +1038,27 @@ def test_csp_tokens():
     assert "(Deprecated Directives)" not in output
     assert "(Insecure Schemes)" not in output
     assert "(Unsafe Directive)" not in output
+
+
+def test_csp_keywords():
+    """Verify CSP keywords are matched case-insensitively and quoted."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["CSP_KEYWORDS"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "(Unsafe Eval)" in output
+    assert "(Unsafe Nonce)" in output
+    assert "(Unquoted Keywords)" in output
+    assert "'self', 'strict-dynamic'" in output
+    assert "(Unknown Directive)" not in output
+    assert "('default-src' Directive Missing)" not in output
 
 
 def test_csp_base64url_nonce(tmp_path):

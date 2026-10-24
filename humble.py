@@ -235,20 +235,16 @@ RE_PATTERN = (
     (r"\.\./|/\.\.|\\\.\.|\\\.\\|"
      r"%2e%2e%2f|%252e%252e%252f|%c0%ae%c0%ae%c0%af|"
      r"%uff0e%uff0e%u2215|%uff0e%uff0e%u2216"),
-    r"\(([^)]+)\)",
-    r"\d{4}-\d{2}-\d{2}", r"(?m)^\[(.*?)\]\n", r"'nonce-([^']+)'",
-    r"\(humble_pdf_style\)([^:]+):",
+    r"\(([^)]+)\)", r"\d{4}-\d{2}-\d{2}", r"(?m)^\[(.*?)\]\n",
+    r"'(?i:nonce)-([^']+)'",  r"\(humble_pdf_style\)([^:]+):",
     r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
     r"\(humble_sec_style\)([^:]+)", r"\(humble_sec_style\)",
     r"(?: Nota : | Note : )", r"^[0-9a-fA-F]+$", r"^[A-Za-z0-9+/=_-]+$",
-    r", (?=[^;,]+?=)", r"'nonce-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
+    r", (?=[^;,]+?=)", r"'(?i:nonce)-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
     r"'(?i:(sha256|sha384|sha512))-([A-Za-z0-9+/=_-]+)'",
     r"(?<!')\b(?i:sha256|sha384|sha512)-[A-Za-z0-9+/=_-]+(?!')",
-    r"^([a-zA-Z0-9\-]+)",
-    r"\s{2,},",
-    r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
-    r"<pre(?:\s[^>]*)?>\s*</pre>",
-    r"(?<!')nonce-",
+    r"^([a-zA-Z0-9\-]+)", r"\s{2,},", r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
+    r"<pre(?:\s[^>]*)?>\s*</pre>", r"(?<!')(?i:nonce)-",
     r"(^[^\S\n]*\n)(?:[^\S\n]*(?:\n|$))+", r'^[^",]*(?:"[^"]*"[^",]*)*',
 )
 
@@ -1138,15 +1134,22 @@ def csp_analyze_content(csp_h, csp_dirs_vals, csp_dirs):
 
 
 def csp_check_values(csp_h, csp_dirs, csp_values):
-    """`Content-Security-Policy` header checks related to its values."""
+    """`Content-Security-Policy` header checks related to its values.
+
+    Directives and keywords are case-insensitive, so they are checked on the
+    lowercased header; nonces and hashes are Base64, so they keep their case.
+    """
     if "upgrade-insecure-requests" in csp_dirs \
             and "strict-transport-security" not in headers_l:
         print_details("[icspi_h]", "[icspi]", "m", i_cnt)
-    csp_check_unknown(csp_h)
+    csp_check_unknown(csp_h.lower())
     if "'unsafe-hashes'" in csp_values:
         print_details("[icsu_h]", "[icsu]", "d", i_cnt)
+    if unquoted := sorted(csp_values.intersection(t_csp_keywords)):
+        print_matched_details("[icskq_h]", "[icskq_s]", ", ".join(
+            f"'{keyword}'" for keyword in unquoted), "[icskq]")
     csp_check_hashes(csp_h)
-    if "nonce-" in csp_h:
+    if "nonce-" in csp_h.lower():
         csp_check_nonces(csp_h)
     if re.search(RE_PATTERN[1], csp_h):
         csp_check_ip(csp_h)
@@ -5201,6 +5204,12 @@ t_csp_dirs = ("base-uri", "child-src", "connect-src", "default-src",
 RE_CSP_DIRS = re.compile(
     RE_PATTERN[16].format(dir="|".join(map(re.escape, t_csp_dirs))))
 t_csp_insecs = ("http:", "ws:")
+# https://www.w3.org/TR/CSP3/#grammardef-keyword-source
+t_csp_keywords = ("none", "report-sample", "report-sha256", "report-sha384",
+                  "report-sha512", "self", "strict-dynamic",
+                  "trusted-types-eval", "unsafe-allow-redirects",
+                  "unsafe-eval", "unsafe-hashes", "unsafe-inline",
+                  "unsafe-webtransport-hashes", "wasm-unsafe-eval")
 t_csp_miss = ("base-uri", "child-src", "connect-src", "default-src",
               "font-src", "form-action", "frame-ancestors", "img-src",
               "object-src", "require-trusted-types-for", "script-src",
@@ -5491,11 +5500,11 @@ if header_eligible("content-encoding") \
 
 if header_eligible("content-security-policy"):
     csp_h = headers_l["content-security-policy"]
-    csp_dirs_vals = [directive.split() for directive in csp_h.split(";")
+    csp_dirs_vals = [directive.split() for directive in csp_h.lower().split(";")
                      if directive.strip()]
     csp_dirs = {name for name, *_ in csp_dirs_vals}
     csp_values = {value for _, *values in csp_dirs_vals for value in values}
-    csp_analyze_content(csp_h, csp_dirs_vals, csp_dirs)
+    csp_analyze_content(csp_h.lower(), csp_dirs_vals, csp_dirs)
     csp_check_values(csp_h, csp_dirs, csp_values)
 
 # https://www.w3.org/TR/CSP3/#meta-element

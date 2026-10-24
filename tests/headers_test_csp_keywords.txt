@@ -1,0 +1,4 @@
+HTTP/2 200
+date: Sat, 24 Oct 2026 17:00:00 GMT
+content-type: text/html; charset=utf-8
+content-security-policy: default-src self https://self.example; SCRIPT-SRC 'SELF' 'Unsafe-Eval' 'NONCE-rDZYa_FJZkZITL-0' strict-dynamic; object-src 'none'; base-uri 'none'

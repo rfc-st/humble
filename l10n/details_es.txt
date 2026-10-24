@@ -741,6 +741,9 @@
 [icsig_d]
  Content-Security-Policy (Keyword ignorada)
 
+[icskq_h]
+ Content-Security-Policy (Palabras clave sin comillas)
+
 [icsn_h]
  Content-Security-Policy (Valores incorrectos)
 
@@ -1385,6 +1388,12 @@ Cabeceras de respuesta HTTP
 [icsig]
  'strict-dynamic' requiere un hash/nonce; sin ellos los navegadores ignoran esta keyword.
  Ref: https://content-security-policy.com/strict-dynamic/
+
+[icskq_s]
+ Las palabras clave sin comillas simples se tratan como nombres de host y se ignoran: 
+
+[icskq]
+ Ref: https://www.w3.org/TR/CSP3/#grammardef-keyword-source
 
 [icsn]
  '=', en el contexto de esta cabecera, puede ser un valor incorrecto.
@@ -2396,6 +2405,9 @@ Generador
 
 [test_permissions_format]
  verifica que la cabecera 'Permissions-Policy' con sintaxis inválida se informe y no se analice.
+
+[test_csp_keywords]
+ verifica que las palabras clave de la cabecera 'Content-Security-Policy' se comparen sin distinguir mayúsculas y se informe de las que van sin comillas.
 
 [test_csp_tokens]
  verifica que los checks de 'Content-Security-Policy' comparen valores completos y no subcadenas de hosts.
