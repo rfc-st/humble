@@ -1471,8 +1471,7 @@ def conall_check_patterns(patterns):
         print_matched_details("[icallb_h]", "[icallb_s]", ", ".join(broad),
                               "[icallb]")
     if insecure := [f"'{pattern}'" for pattern in hosts
-                    if pattern.casefold().partition("://")[0]
-                    in t_conall_unsafe]:
+                    if pattern.casefold().partition("//")[0] in t_csp_insecs]:
         print_matched_details("[icalls_h]", "[icalls_s]", ", ".join(insecure),
                               "[icalls]")
 
@@ -5182,7 +5181,7 @@ t_cencoding = ("br", "compress", "dcb", "dcz", "deflate", "gzip", "x-gzip",
 
 # https://wicg.github.io/connection-allowlists/#security
 # https://centralcsp.com/en/docs/web-security/policies/connection-allowlist
-t_conall_unsafe = ("*", "*.*", "http")
+t_conall_unsafe = ("*", "*.*")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy
 # https://www.w3.org/TR/CSP2/
