@@ -60,7 +60,6 @@
 [Checks: Empty Values](#checks-empty-values)<br />
 [Global skip file](#global-humbleskip)<br />
 [Guidelines included](#guidelines-included-to-enable-security-http-headers)<br />
-[To-Do](#to-do)<br />
 [Further Reading](#further-reading)<br />
 [Contribute](#contribute)<br />
 [Acknowledgements](#acknowledgements)<br />
@@ -644,9 +643,6 @@ Any HTTP response header.
 * Node.js
 * Spring
 * WordPress
-
-## To-Do
-- [ ] Add more Header/Value checks (only security-oriented)
 
 ## Further reading
 * Web browsers' experimental features, roadmaps, technology previews and trials:<br />
