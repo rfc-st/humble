@@ -120,6 +120,8 @@ Large-Allocation: Deprecated Header
 Mcp-Session-Id: Potentially Unsafe Value
 NEL: Missing Directives
 NEL: No Valid Directives
+No-Vary-Search: Ignored Header
+No-Vary-Search: Incorrect Format
 No-Vary-Search: No Valid Directives
 Observe-Browsing-Topics: Deprecated Header
 Onion-Location: Potentially Unsafe Header

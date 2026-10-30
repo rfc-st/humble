@@ -1706,23 +1706,24 @@ def permissions_print_matched(findings):
                 f"'{x}'" for x in sorted(matches)), long_d)
 
 
-def ipol_check_values(ipol_header, prefix):
-    """Report an `Integrity-Policy` header browsers ignore, whole or in part.
+def sf_check_values(sf_header, prefix, valid_keys, find_invalid):
+    """Report a Structured Fields dictionary header browsers do not honour.
 
-    A header that is not a valid Structured Fields dictionary is ignored
-    whole. Also related to `Integrity-Policy-Report-Only`, whose l10n ids
-    share the same `prefix`.
+    A header that is not a valid dictionary is ignored whole; `find_invalid`
+    returns the keys or values browsers reject, if any. Related to
+    `Integrity-Policy` and `No-Vary-Search` (and the Report-Only variants),
+    whose l10n ids share the same `prefix`.
     """
     try:
-        policy = permissions_parse(ipol_header)
+        policy = permissions_parse(sf_header)
     except ValueError:
         print_details(f"[{prefix}f_h]", f"[{prefix}f]", "d", i_cnt)
         return
-    if {key for key, _ in policy}.isdisjoint(t_ipol):
+    if {key for key, _ in policy}.isdisjoint(valid_keys):
         print_details(f"[{prefix}_h]", f"[{prefix}]", "d", i_cnt)
-    elif ignored := ipol_ignored_values(policy):
+    elif invalid := find_invalid(policy):
         print_matched_details(f"[{prefix}i_h]", f"[{prefix}i_s]", ", ".join(
-            f"'{x}'" for x in ignored), f"[{prefix}i]")
+            f"'{x}'" for x in invalid), f"[{prefix}i]")
 
 
 def ipol_ignored_values(policy):
@@ -1736,6 +1737,24 @@ def ipol_ignored_values(policy):
     values = [item for key, items in policy if key in IPOL_VALUES
               for item in items if item not in IPOL_VALUES[key]]
     return list(dict.fromkeys(keys + values))
+
+
+def nvarys_invalid_keys(policy):
+    """Return the keys of a parsed `No-Vary-Search` browsers reject.
+
+    'key-order' must be a boolean, 'params' a boolean or a list of strings
+    and 'except' a list of strings allowed only when 'params' is true; one
+    of them wrong makes browsers ignore the whole header.
+    """
+    nvarys, booleans = dict(policy), (["?0"], ["?1"])
+    params = nvarys.get("params", ["?0"])
+    valid = {
+        "key-order": nvarys.get("key-order", ["?1"]) in booleans,
+        "params": params in booleans or all(i[:1] == '"' for i in params),
+        "except": "except" not in nvarys or (params == ["?1"] and all(
+            i[:1] == '"' for i in nvarys["except"])),
+    }
+    return [key for key, ok in valid.items() if not ok]
 
 
 def delete_lines(*, reliable=True):
@@ -5595,10 +5614,12 @@ if unsafe_scheme:
     print_details("[ihttp_h]", "[ihttp]", "d", i_cnt)
 
 if header_eligible("integrity-policy"):
-    ipol_check_values(headers_l["integrity-policy"], "ipol")
+    sf_check_values(headers_l["integrity-policy"], "ipol", t_ipol,
+                    ipol_ignored_values)
 
 if header_eligible("integrity-policy-report-only"):
-    ipol_check_values(headers_l["integrity-policy-report-only"], "ipolr")
+    sf_check_values(headers_l["integrity-policy-report-only"], "ipolr", t_ipol,
+                    ipol_ignored_values)
 
 connection_h = headers_l.get("connection", "").casefold().split(",")
 if header_eligible("keep-alive") and headers_l["keep-alive"] \
@@ -5619,10 +5640,8 @@ if header_eligible("nel"):
         print_details("[inelm_h]", "[inelm]", "d", i_cnt)
 
 if header_eligible("no-vary-search"):
-    nvarys_keys = {member.partition("=")[0].partition(";")[0].strip() for
-                   member in headers_l["no-vary-search"].split(",")}
-    if nvarys_keys.isdisjoint(t_nvarysearch):
-        print_details("[ifnvarys_h]", "[ifnvarys]", "d", i_cnt)
+    sf_check_values(headers_l["no-vary-search"], "ifnvarys", t_nvarysearch,
+                    nvarys_invalid_keys)
 
 if header_eligible("observe-browsing-topics"):
     print_details("[iobsb_h]", "[iobsb]", "d", i_cnt)

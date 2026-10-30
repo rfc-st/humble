@@ -109,6 +109,7 @@ HUMBLE_TEST_FILES = {
     "PERMISSIONS_FORMAT": "headers_test_permissions_format.txt",
     "PERMISSIONS_VALUES": "headers_test_permissions_values.txt",
     "NO_HEADERS": "headers_test_none.txt",
+    "NO_VARY_SEARCH": "headers_test_no_vary_search.txt",
     "NO_SEC_HEADERS": "headers_test_nonesecurity.txt",
     "NONEXISTENT": "headers_test_nonexistent.txt",
     "PERFECT_OWASP": "headers_test_perfect_owasp.txt",
@@ -368,7 +369,7 @@ TEST_CFGS = {
                                      PATHS["NONEXISTENT"]], "found"),
     "test_input_traversal": (["-u", TEST_URLS[9], "-op",
                               HUMBLE_INPUT_TRAVERSAL], "wrong:"),
-     "test_integrity_policy_ignored": (
+    "test_integrity_policy_ignored": (
         ["-u", TEST_URLS[2], "-if", PATHS["INTEGRITY_POLICY"]],
         "Integrity-Policy (Ignored Values)"),
     "test_integrity_policy_report_format": (
@@ -387,6 +388,12 @@ TEST_CFGS = {
                         "contain"),
     "test_no_security_headers": (["-u", TEST_URLS[4], "-if",
                                   PATHS["NO_SEC_HEADERS"]], "are present"),
+    "test_no_vary_search_format": (
+        ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
+        "No-Vary-Search (Incorrect Format)"),
+    "test_no_vary_search_ignored": (
+        ["-u", TEST_URLS[2], "-if", PATHS["NO_VARY_SEARCH"]],
+        "No-Vary-Search (Ignored Header)"),
     "test_non_existent_output_path": (["-u", TEST_URLS[9], "-o", "txt", "-op",
                                        HUMBLE_OUTPUT_PATHS[1]], "Error:"),
     "test_outdated_humble": ([], "humble"),

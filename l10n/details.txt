@@ -826,6 +826,12 @@
 [ifnvarys_h]
  No-Vary-Search (No Valid Directives)
 
+[ifnvarysf_h]
+ No-Vary-Search (Incorrect Format)
+
+[ifnvarysi_h]
+ No-Vary-Search (Ignored Header)
+
 [ifpol_h]
  (*) Permissions-Policy (Too Permissive Value)
 
@@ -1486,6 +1492,16 @@ HTTP Response Headers
 
 [ifnvarys]
  Include at least one valid directive.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
+
+[ifnvarysf]
+ Invalid syntax; browsers ignore the whole header.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
+
+[ifnvarysi_s]
+ Browsers ignore the whole header because of the values of: 
+
+[ifnvarysi]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
 
 [ifpoln]
@@ -2645,6 +2661,12 @@ Generator
 
 [test_no_security_headers]
  verify an error is displayed when response headers are missing in the analysis.
+
+[test_no_vary_search_format]
+ verify a 'No-Vary-Search' header with invalid syntax is reported.
+
+[test_no_vary_search_ignored]
+ verify a 'No-Vary-Search' header with values browsers reject is reported.
 
 [test_non_existent_output_path]
  verify an error message is displayed when defining a non-existent export path.

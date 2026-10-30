@@ -827,6 +827,12 @@
 [ifnvarys_h]
  No-Vary-Search (Sin directivas adecuadas)
 
+[ifnvarysf_h]
+ No-Vary-Search (Formato incorrecto)
+
+[ifnvarysi_h]
+ No-Vary-Search (Cabecera ignorada)
+
 [ifpol_h]
  (*) Permissions-Policy (Valores muy permisivos)
 
@@ -1487,6 +1493,16 @@ Cabeceras de respuesta HTTP
 
 [ifnvarys]
  Incluya, al menos, una directiva correcta.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
+
+[ifnvarysf]
+ Sintaxis inválida; los navegadores ignoran la cabecera.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
+
+[ifnvarysi_s]
+ Los navegadores ignoran toda la cabecera por los valores de: 
+
+[ifnvarysi]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
 
 [ifpoln]
@@ -2623,6 +2639,12 @@ Generador
 
 [test_no_security_headers]
  verifica que se muestre un error ante la ausencia de cabeceras de respuesta de seguridad en el análisis.
+
+[test_no_vary_search_format]
+ verifica que se informe de una cabecera 'No-Vary-Search' con sintaxis inválida.
+
+[test_no_vary_search_ignored]
+ verifica que se informe de una cabecera 'No-Vary-Search' con valores que los navegadores rechazan.
 
 [test_non_existent_output_path]
  verifica que se muestre un mensaje de error al definir una ruta de exportación inexistente.
