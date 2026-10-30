@@ -633,16 +633,7 @@ Check <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.
 Any HTTP response header.
 
 ## Guidelines included to enable security HTTP headers
-* Amazon Web Services
-* Angular
-* Apache HTTP Server
-* Cloudflare
-* LiteSpeed Web Server
-* Microsoft Internet Information Services
-* Nginx
-* Node.js
-* Spring
-* WordPress
+* Amazon Web Services, Angular, Apache HTTP Server, Cloudflare, LiteSpeed Web Server, Microsoft Internet Information Services, Nginx, Node.js, Spring and  WordPress.
 
 ## Further reading
 * Web browsers' experimental features, roadmaps, technology previews and trials:<br />
