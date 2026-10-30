@@ -109,7 +109,11 @@ Expect-CT: Deprecated Header
 Expires: Ignored Header
 Feature-Policy: Deprecated Header
 HTTP: URL Via Unsafe Scheme
+Integrity-Policy: Ignored Values
+Integrity-Policy: Incorrect Format
 Integrity-Policy: No Valid Keys
+Integrity-Policy-Report-Only: Ignored Values
+Integrity-Policy-Report-Only: Incorrect Format
 Integrity-Policy-Report-Only: No Valid Keys
 Keep-Alive: Ignored Header
 Large-Allocation: Deprecated Header

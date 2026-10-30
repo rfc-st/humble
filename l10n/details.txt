@@ -432,6 +432,18 @@
 [ipolr_h]
  Integrity-Policy-Report-Only (No Valid Keys)
 
+[ipolf_h]
+ Integrity-Policy (Incorrect Format)
+
+[ipolrf_h]
+ Integrity-Policy-Report-Only (Incorrect Format)
+
+[ipoli_h]
+ Integrity-Policy (Ignored Values)
+
+[ipolri_h]
+ Integrity-Policy-Report-Only (Ignored Values)
+
 [ickeep_h]
  Keep-Alive (Ignored Header)
 
@@ -441,6 +453,26 @@
 
 [ipolr]
  Include at least one valid key.
+ Ref: https://mdn.io/Integrity-Policy-Report-Only
+
+[ipolf]
+ Invalid syntax; browsers ignore the whole header.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
+
+[ipolrf]
+ Invalid syntax; browsers ignore the whole header.
+ Ref: https://mdn.io/Integrity-Policy-Report-Only
+
+[ipoli_s]
+ Browsers ignore unknown keys and values other than 'script', 'style' and 'inline': 
+
+[ipoli]
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
+
+[ipolri_s]
+ Browsers ignore unknown keys and values other than 'script', 'style' and 'inline': 
+
+[ipolri]
  Ref: https://mdn.io/Integrity-Policy-Report-Only
 
 [ickeep]
@@ -2583,6 +2615,12 @@ Generator
 
 [test_input_traversal]
  verify checks are performed to prevent input traversal.
+
+[test_integrity_policy_ignored]
+ verify ignored 'Integrity-Policy' keys and values are reported.
+
+[test_integrity_policy_report_format]
+ verify an 'Integrity-Policy-Report-Only' header with invalid syntax is reported.
 
 [test_invalid_output_path]
  verify an error is displayed for incorrect path when exporting an analysis.

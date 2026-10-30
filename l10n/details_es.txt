@@ -433,6 +433,18 @@
 [ipolr_h]
  Integrity-Policy-Report-Only (Sin claves adecuadas)
 
+[ipolf_h]
+ Integrity-Policy (Formato incorrecto)
+
+[ipolrf_h]
+ Integrity-Policy-Report-Only (Formato incorrecto)
+
+[ipoli_h]
+ Integrity-Policy (Valores ignorados)
+
+[ipolri_h]
+ Integrity-Policy-Report-Only (Valores ignorados)
+
 [ickeep_h]
  Keep-Alive (Cabecera ignorada)
 
@@ -442,6 +454,26 @@
 
 [ipolr]
  Incluya, al menos, una clave válida.
+ Ref: https://mdn.io/Integrity-Policy-Report-Only
+
+[ipolf]
+ Sintaxis inválida; los navegadores ignoran la cabecera.
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
+
+[ipolrf]
+ Sintaxis inválida; los navegadores ignoran la cabecera.
+ Ref: https://mdn.io/Integrity-Policy-Report-Only
+
+[ipoli_s]
+ Los navegadores ignoran claves desconocidas y valores distintos de 'script', 'style' e 'inline': 
+
+[ipoli]
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
+
+[ipolri_s]
+ Los navegadores ignoran claves desconocidas y valores distintos de 'script', 'style' e 'inline': 
+
+[ipolri]
  Ref: https://mdn.io/Integrity-Policy-Report-Only
 
 [ickeep]
@@ -2561,6 +2593,12 @@ Generador
 
 [test_input_traversal]
  verifica que se realicen comprobaciones básicas sobre 'input traversal'.
+
+[test_integrity_policy_ignored]
+ verifica que se informe de claves y valores ignorados en 'Integrity-Policy'.
+
+[test_integrity_policy_report_format]
+ verifica que se informe de una cabecera 'Integrity-Policy-Report-Only' con sintaxis inválida.
 
 [test_invalid_output_path]
  verifica que se muestre un error por ruta incorrecta al exportar un análisis.

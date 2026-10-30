@@ -17,7 +17,7 @@ Clear-Site-Data: "cache"
 Cross-Origin-Embedder-Policy: require-corp
 Cross-Origin-Opener-Policy: same-origin-allow-popups
 Cross-Origin-Resource-Policy: same-site
-Integrity-Policy: blocked-destinations=(test)
+Integrity-Policy: blocked-destinations=(script)
 NEL: { "report_to": "test", "max_age": 12345, "include_subdomains": false, "success_fraction": 0.0, "failure_fraction": 1.0 }
 Permissions-Policy: geolocation=()
 X-Permitted-Cross-Domain-Policies: none

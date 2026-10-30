@@ -105,6 +105,7 @@ HUMBLE_TEST_FILES = {
     "CORS_ORIGIN": "headers_test_cors_origin.txt",
     "CSP_UNSAFE_INLINE": "headers_test_csp_unsafe_inline.txt",
     "EMPTY": "headers_test_empty.txt",
+    "INTEGRITY_POLICY": "headers_test_integrity_policy.txt",
     "PERMISSIONS_FORMAT": "headers_test_permissions_format.txt",
     "PERMISSIONS_VALUES": "headers_test_permissions_values.txt",
     "NO_HEADERS": "headers_test_none.txt",
@@ -367,6 +368,12 @@ TEST_CFGS = {
                                      PATHS["NONEXISTENT"]], "found"),
     "test_input_traversal": (["-u", TEST_URLS[9], "-op",
                               HUMBLE_INPUT_TRAVERSAL], "wrong:"),
+     "test_integrity_policy_ignored": (
+        ["-u", TEST_URLS[2], "-if", PATHS["INTEGRITY_POLICY"]],
+        "Integrity-Policy (Ignored Values)"),
+    "test_integrity_policy_report_format": (
+        ["-u", TEST_URLS[2], "-if", PATHS["INTEGRITY_POLICY"]],
+        "Integrity-Policy-Report-Only (Incorrect Format)"),
     "test_invalid_output_path": (["-u", TEST_URLS[9], "-o", "csv", "-op",
                                   HUMBLE_MAIN_FILE], "Error:"),
     "test_l10n_analysis": (["-u", TEST_URLS[9], "-l", "es"],

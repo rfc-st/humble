@@ -1706,6 +1706,38 @@ def permissions_print_matched(findings):
                 f"'{x}'" for x in sorted(matches)), long_d)
 
 
+def ipol_check_values(ipol_header, prefix):
+    """Report an `Integrity-Policy` header browsers ignore, whole or in part.
+
+    A header that is not a valid Structured Fields dictionary is ignored
+    whole. Also related to `Integrity-Policy-Report-Only`, whose l10n ids
+    share the same `prefix`.
+    """
+    try:
+        policy = permissions_parse(ipol_header)
+    except ValueError:
+        print_details(f"[{prefix}f_h]", f"[{prefix}f]", "d", i_cnt)
+        return
+    if {key for key, _ in policy}.isdisjoint(t_ipol):
+        print_details(f"[{prefix}_h]", f"[{prefix}]", "d", i_cnt)
+    elif ignored := ipol_ignored_values(policy):
+        print_matched_details(f"[{prefix}i_h]", f"[{prefix}i_s]", ", ".join(
+            f"'{x}'" for x in ignored), f"[{prefix}i]")
+
+
+def ipol_ignored_values(policy):
+    """Return the keys and values of a parsed `Integrity-Policy` browsers skip.
+
+    Keys outside `t_ipol` and, for the keys of `IPOL_VALUES`, values other
+    than the listed ones; 'endpoints' names are not checked. Related to
+    `Integrity-Policy` and `Integrity-Policy-Report-Only`.
+    """
+    keys = [key for key, _ in policy if key not in t_ipol]
+    values = [item for key, items in policy if key in IPOL_VALUES
+              for item in items if item not in IPOL_VALUES[key]]
+    return list(dict.fromkeys(keys + values))
+
+
 def delete_lines(*, reliable=True):
     """Clear console lines to standardize the final analysis output format.
 
@@ -5209,6 +5241,8 @@ t_excc = ("max-age", "s-maxage")
 # https://mdn.io/Integrity-Policy-Report-Only
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Integrity-Policy
 t_ipol = ("blocked-destinations", "endpoints", "sources")
+IPOL_VALUES = {"blocked-destinations": ("script", "style"),
+               "sources": ("inline",)}
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods
 # https://cyberwhite.co.uk/http-verbs-and-their-security-risks/
@@ -5561,16 +5595,10 @@ if unsafe_scheme:
     print_details("[ihttp_h]", "[ihttp]", "d", i_cnt)
 
 if header_eligible("integrity-policy"):
-    ipol_keys = {member.partition("=")[0].partition(";")[0].strip() for
-                 member in headers_l["integrity-policy"].split(",")}
-    if ipol_keys.isdisjoint(t_ipol):
-        print_details("[ipol_h]", "[ipol]", "d", i_cnt)
+    ipol_check_values(headers_l["integrity-policy"], "ipol")
 
 if header_eligible("integrity-policy-report-only"):
-    ipol_keys = {member.partition("=")[0].partition(";")[0].strip() for
-                 member in headers_l["integrity-policy-report-only"].split(",")}
-    if ipol_keys.isdisjoint(t_ipol):
-        print_details("[ipolr_h]", "[ipolr]", "d", i_cnt)
+    ipol_check_values(headers_l["integrity-policy-report-only"], "ipolr")
 
 connection_h = headers_l.get("connection", "").casefold().split(",")
 if header_eligible("keep-alive") and headers_l["keep-alive"] \

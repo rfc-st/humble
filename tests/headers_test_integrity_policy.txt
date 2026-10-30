@@ -1,0 +1,5 @@
+HTTP/2 200
+date: Fri, 30 Oct 2026 19:00:00 GMT
+content-type: text/html; charset=utf-8
+integrity-policy: blocked-destinations=("script" style), sources=(inline), endpoints=(integrity-endpoint), foo=(bar)
+integrity-policy-report-only: blocked-destinations=(script), endpoints=(integrity-endpoint, backup-integrity-endpoint)
