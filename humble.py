@@ -2374,13 +2374,12 @@ def print_request_headers(added_request_headers):
 
 
 def print_unsupported_headers(unsupported_headers):
-    # sourcery skip: use-fstring-for-concatenation
     """Print unsupported HTTP response headers.
 
     For those which it has been expressly indicated to skip their security
     analysis and exit.
     """
-    quoted = ", ".join("'" + h + "'" for h in unsupported_headers)
+    quoted = ", ".join(f"'{h}'" for h in unsupported_headers)
     print(f"\n {get_detail('[args_skipped_unknown]', replace=True)} \
 ({quoted})")
     sys.exit(1)
