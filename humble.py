@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-10-24")
+local_version = date.fromisoformat("2026-10-30")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -513,15 +513,12 @@ def testssl_command(testssl_temp_path, uri):
          (args_path / filename).is_file()), None)
     if not testssl_path or not which(testssl_path):
         print_error_detail("[notestssl_fileexec]")
-    print()
-    print(f"{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
+    print(f"\n{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
     choice = input( # false-positive
         f"{get_detail('[testssl_choice]', replace=True)} ")[:1].strip().lower()
-    if choice != "y":
-        sys.exit(0)
-    delete_lines()
-    testssl_cmd = [testssl_path, *TESTSSL_OPTIONS, uri]
-    testssl_analysis(testssl_cmd)
+    if choice == "y":
+        delete_lines()
+        testssl_analysis([testssl_path, *TESTSSL_OPTIONS, uri])
     sys.exit(0)
 
 
@@ -875,28 +872,26 @@ def get_highlights(adj_url_ln):
 
     Related to `-a` option.
     """
-    sections_h = SECTION_S[:-1]
     best_lbl = print_detail_l("[best_analysis]", analytics=True)
     worst_lbl = print_detail_l("[worst_analysis]", analytics=True)
     results = []
-    for i, field in enumerate(range(2, 7)):
-        fns_cond = (min, max) if i else (max, min)
-        section_lbl = print_detail_l(sections_h[i], analytics=True)
-        best_val = calculate_highlights(adj_url_ln, field, fns_cond[0])
-        worst_val = calculate_highlights(adj_url_ln, field, fns_cond[1])
-        results.append(f" {section_lbl}\n  {best_lbl}: {best_val}\n"
-                       f"  {worst_lbl}: {worst_val}\n")
+    for i, section in enumerate(SECTION_S[:-1]):
+        low, high = calculate_highlights(adj_url_ln, i + 2)
+        best, worst = (low, high) if i else (high, low)
+        results.append(f" {print_detail_l(section, analytics=True)}\n"
+                       f"  {best_lbl}: {best}\n  {worst_lbl}: {worst}\n")
     return results
 
 
-def calculate_highlights(url_ln, field_index, func):
-    """Extract the specific date from an analysis.
+def calculate_highlights(url_ln, field_index):
+    """Return the dates of the analyses with the lowest and highest value.
 
-    Based on the required highlight metric; related to `-a` option.
+    Of the given total; related to `-a` option.
     """
-    target_line = func(
-        url_ln, key=lambda line: int(line.split(" ; ")[field_index].strip()))
-    return target_line.split(" ; ")[0].strip()
+    def total(line):
+        return int(line.split(" ; ")[field_index].strip())
+    return tuple(func(url_ln, key=total).split(" ; ")[0].strip()
+                 for func in (min, max))
 
 
 def get_trends(adj_url_ln):
@@ -2619,15 +2614,14 @@ def build_cicd_info(info_lines):
     return info
 
 
-def build_cicd_totals(tmp_filename, info_lines, totals, labels, threshold=None):
+def build_cicd_totals(tmp_filename, info_lines, totals, threshold=None):
     """Build the CI/CD totals from analysis metadata and section totals.
 
     If `threshold` is provided, appends a 'Security Gate' field with pass/fail
     status; related to `-cicd GRADE` option.
     """
-    _, _, info_label = labels
     return {
-        info_label: build_cicd_info(info_lines),
+        get_detail("[cicd_info]", replace=True): build_cicd_info(info_lines),
         **totals,
         get_detail("[cicd_detailed]", replace=True): {
             get_detail("[cicd_path]",
@@ -2695,26 +2689,22 @@ def print_cicd_totals(tmp_filename, threshold_grade=None):
     if the analysis grade does not reach that threshold; equal grades pass.
     """
     try:
-        cicd_labels = get_cicd_labels() # sourcery skip: extract-method
-        with Path(tmp_filename).open(encoding="utf8") as f:
-            lines = [ln.strip() for ln in f if ln.strip()]
-        info_lines, totals = parse_cicd_sections(cicd_labels[1], cicd_labels[0],
-                                                  lines)
-        threshold, failed = (
-            threshold_cicd(threshold_grade, totals)
-            if threshold_grade else (None, False)
-        )
-        cicd_output = build_cicd_totals(tmp_filename, info_lines, totals,
-                                        cicd_labels, threshold=threshold)
-        print(dumps(cicd_output, indent=2, ensure_ascii=False))
+        lines = [ln.strip() for ln in Path(tmp_filename).read_text(
+            encoding="utf8").splitlines() if ln.strip()]
+        info_lines, totals = parse_cicd_sections(lines)
+        threshold, failed = (threshold_cicd(threshold_grade, totals)
+                             if threshold_grade else (None, False))
+        print(dumps(build_cicd_totals(tmp_filename, info_lines, totals,
+                                      threshold=threshold),
+                    indent=2, ensure_ascii=False))
         sys.exit(int(failed))
     except Exception as exc:  # noqa: BLE001
-        err_key = get_detail("[cicd_error]", replace=True)
-        print(dumps({err_key: str(exc)}, ensure_ascii=False))
+        print(dumps({get_detail("[cicd_error]", replace=True): str(exc)},
+                    ensure_ascii=False))
         sys.exit(1)
 
 
-def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
+def parse_cicd_sections(lines):
     """Parse analysis output into CI/CD info and totals sections.
 
     Extracts metadata and scoring lines from the analysis, computes totals,
@@ -2729,9 +2719,9 @@ def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
                                          STRINGS_BOLD[8] in line))
     cicd_totals_lines = lines[cicd_totals_start + 2:-3]
     cicdi_grade_lines = cicd_totals_lines[-1]
-    line_pattern = re.compile(RE_PATTERN[21])
-    cicd_totals_result = parse_cicd_totals(cicd_totals_lines, cicd_total_t,
-                                           cicd_diff_t, line_pattern)
+    cicd_totals_result = parse_cicd_totals(
+        cicd_totals_lines, get_detail("[cicd_total]", replace=True),
+        get_detail("[cicd_diff]", replace=True), re.compile(RE_PATTERN[21]))
     cicd_totals_result[get_detail("[cicd_grade]", replace=True)] = (
         {get_detail("[cicd_grade_note]", replace=True):
          cicdi_grade_lines.split(":", 1)[1].strip()}
@@ -2742,7 +2732,7 @@ def parse_cicd_sections(cicd_diff_t, cicd_total_t, lines):
 def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
     """Print the total of findings per section.
 
-    Along with the differences between the current analysis and the last one
+    Along with the differences between the current analysis and the last ones
     performed against the URL; designed for CI/CD.
 
     Related to `-cicd` option.
@@ -2752,15 +2742,6 @@ def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
         if (processed := parse_cicd_lines(line, pattern, cicd_total_t,
                                           cicd_diff_t))
         for k, v in [processed]}
-
-
-def get_cicd_labels():
-    """Print literals related to the analysis designed for CI/CD.
-
-    Related to `-cicd` option.
-    """
-    cidcd_labels = ["[cicd_total]", "[cicd_diff]", "[cicd_info]"]
-    return tuple(get_detail(label, replace=True) for label in cidcd_labels)
 
 
 def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
@@ -4433,37 +4414,31 @@ def get_tmp_file(args, export_date):
     """
     file_ext = ".txt" if single_export() == "txt" else "t.txt"
     if args.output_file:
-        name_part = normalize_output_file(args.output_file)
-        tmp_file = f"{name_part}{file_ext}"
+        tmp_file = f"{normalize_output_file(args.output_file)}{file_ext}"
     else:
-        url = urlparse(URL)
-        humble_str = HUMBLE_DESC[1:7]
         lang = "_es" if args.lang else "_en"
-        tmp_file = build_tmp_file(export_date, file_ext, lang, humble_str, url)
+        tmp_file = build_tmp_file(f"{export_date}{lang}{file_ext}")
     if args.output_path:
         tmp_file = str((Path(args.output_path) / tmp_file).resolve())
     return tmp_file
 
 
-def build_tmp_file(export_date, file_ext, lang, humble_str, url):
+def build_tmp_file(suffix):
     """Build the default filename for the temporary export file.
 
-    Formats a unique name from the URL scheme, domain, port, and timestamp;
-    related to `-o` option.
+    Formats a unique name from the URL scheme, domain, port, timestamp,
+    language and extension (`suffix`); related to `-o` option.
 
     ??? tip
         `tldextract` is lazy-loaded to avoid unnecessary overhead when the
         analysis is not exported.
     """
     import tldextract
-    url_str = tldextract.extract(URL)
-    url_sub = f"_{url_str.subdomain}." if url_str.subdomain else "_"
-    url_prt = f"_{url.port}_" if url.port else "_"
-    return (
-        f"{humble_str}_{url.scheme}"
-        f"{url_sub}{url_str.domain}.{url_str.suffix}"
-        f"{url_prt}{export_date}{lang}{file_ext}"
-    )
+    url, url_str = urlparse(URL), tldextract.extract(URL)
+    host = f"{url_str.subdomain}.{url_str.domain}".lstrip(".")
+    port = f"_{url.port}" if url.port else ""
+    return (f"{HUMBLE_DESC[1:7]}_{url.scheme}_{host}.{url_str.suffix}{port}_"
+            f"{suffix}")
 
 
 def process_server_error(http_status_code, l10n_id):

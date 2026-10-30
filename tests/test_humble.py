@@ -669,7 +669,8 @@ def test_cicd_error(capsys):
     humble_module.l10n_map = l10n_map
     humble_module.args = args
     with (
-        patch.object(humble_module, "get_cicd_labels", side_effect=Exception),
+        patch.object(humble_module, "parse_cicd_sections",
+                     side_effect=Exception),
         patch.object(humble_module, "get_detail", return_value=ASSERT_STR[1]),
     ):
         with pytest.raises(SystemExit) as wrapped_exit:
@@ -1375,15 +1376,15 @@ def delete_export_files(extension, ko_msg):
     """Remove temporary files from export unit tests."""
     msgs = []
     for export_file in HUMBLE_TESTS_DIR.iterdir():
-        name_lower = export_file.name.lower()
-        if (name_lower.startswith(HUMBLE_TEMP_PREFIX) and
-                name_lower.endswith(extension)):
-            try:
-                export_file.unlink()
-            except OSError as cleanup_err:
-                error_detail = get_detail(ko_msg, replace=True)
-                msgs.append((error_detail,
-                             f"({type(cleanup_err).__name__}) {export_file}"))
+        name = export_file.name.lower()
+        if not (name.startswith(HUMBLE_TEMP_PREFIX)
+                and name.endswith(extension)):
+            continue
+        try:
+            export_file.unlink()
+        except OSError as cleanup_err:
+            msgs.append((get_detail(ko_msg, replace=True),
+                         f"({type(cleanup_err).__name__}) {export_file}"))
     return msgs
 
 
@@ -1458,7 +1459,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-10-24")
+local_version = date.fromisoformat("2026-10-30")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,
