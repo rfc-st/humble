@@ -967,6 +967,9 @@
 [islmode_h]
  (*) Supports-Loading-Mode (No Valid Directives)
 
+[islmodev_h]
+ (*) Supports-Loading-Mode (Ignored Values)
+
 [isurrmode_h]
  Surrogate-Control (No Valid Directives)
 
@@ -1687,6 +1690,12 @@ HTTP Response Headers
 
 [islmode]
  Include at least one valid directive.
+ Ref: https://mdn.io/Supports-Loading-Mode
+
+[islmodev_s]
+ Browsers ignore unknown directives: 
+
+[islmodev]
  Ref: https://mdn.io/Supports-Loading-Mode
 
 [isurrmode]
@@ -2742,6 +2751,9 @@ Generator
 
 [test_skipped_headers]
  verify the specified headers are excluded from the detailed analysis.
+
+[test_supports_loading_mode_ignored]
+ verify unknown 'Supports-Loading-Mode' directives are reported.
 
 [test_testssl_error]
  verify an error message is displayed for TLS/SSL check exceptions.

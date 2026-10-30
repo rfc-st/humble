@@ -444,6 +444,9 @@ TEST_CFGS = {
                            "handshake"),
     "test_skipped_headers": (["-u", TEST_URLS[9], "-s", "ETAG", "NEL"],
                              "expressly excluded"),
+    "test_supports_loading_mode_ignored": (
+        ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
+        "Supports-Loading-Mode (Ignored Values)"),
     "test_testssl_error": ([], "Error"),
     "test_testssl_nopath": (["-u", TEST_URLS[9], "-e"], "requires"),
     "test_unicode_error": (["-u", TEST_URLS[9], "-if", PATHS["UNICODE"]],

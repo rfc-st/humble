@@ -5350,7 +5350,10 @@ t_cookie_sec = ("httponly", "secure")
 t_setlogin = ("logged-in", "logged-out")
 
 # https://mdn.io/Supports-Loading-Mode
-t_support_mode = ("credentialed-prerender", "fenced-frame")
+# https://chromium.googlesource.com/chromium/src/+/main/services/network/public/mojom/supports_loading_mode.mojom
+t_support_mode = ("credentialed-prerender", "fenced-frame",
+                  "prerender-cross-origin-frames", "uncredentialed-prefetch",
+                  "uncredentialed-prerender")
 
 # https://www.w3.org/TR/edge-arch/
 t_surrogate = ("content", "extension-directive", "max-age", "no-store",
@@ -5759,11 +5762,14 @@ if header_eligible("strict-transport-security"):
 
 if header_eligible("supports-loading-mode"):
     support_modes = {mode.partition(";")[0].strip() for mode in
-                     headers_l["supports-loading-mode"].split(",")}
+                     headers_l["supports-loading-mode"].split(",")} - {""}
     if unsafe_scheme:
         print_details("[islmodei_h]", "[islmodei]", "d", i_cnt)
     if support_modes.isdisjoint(t_support_mode):
         print_details("[islmode_h]", "[islmode]", "d", i_cnt)
+    elif unknown_modes := sorted(support_modes.difference(t_support_mode)):
+        print_matched_details("[islmodev_h]", "[islmodev_s]", ", ".join(
+            f"'{x}'" for x in unknown_modes), "[islmodev]")
 
 if header_eligible("surrogate-control"):
     surrogate_mode_h = headers_l["surrogate-control"]

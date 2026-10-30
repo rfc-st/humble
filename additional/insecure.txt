@@ -167,6 +167,7 @@ Strict-Transport-Security: Ignored Header
 Strict-Transport-Security: Recommended Values
 Strict-Transport-Security: Required Values
 Supports-Loading-Mode: Ignored Header
+Supports-Loading-Mode: Ignored Values
 Supports-Loading-Mode: No Valid Directives
 Surrogate-Control: No Valid Directives
 Timing-Allow-Origin: Potentially Unsafe Header
