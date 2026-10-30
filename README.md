@@ -560,16 +560,11 @@ becomes a structured security debrief (tested on Claude Fable 5.1):
 
 *humble* has enabled the following workflows:
 
-- <a href="https://github.com/PyCQA/bandit-action" target="_blank">Bandit</a>
-- <a href="https://codeql.github.com/" target="_blank">CodeQl</a>
-- <a href="https://docs.github.com/en/code-security/tutorials/secure-your-dependencies/dependabot-quickstart-guide" target="_blank">Dependabot</a>
-- <a href="https://github.com/marketplace/actions/vulture-github-action" target="_blank">vulture</a>
+- <a href="https://github.com/PyCQA/bandit-action" target="_blank">Bandit</a>, <a href="https://codeql.github.com/" target="_blank">CodeQl</a>, <a href="https://docs.github.com/en/code-security/tutorials/secure-your-dependencies/dependabot-quickstart-guide" target="_blank">Dependabot</a> and <a href="https://github.com/marketplace/actions/vulture-github-action" target="_blank">vulture.</a>
 
 It is also reviewed with the following extensions in Visual Studio Code:
 
-- <a href="https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff" target="_blank">Ruff</a>
-- <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE</a>
-- <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery</a>
+- <a href="https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff" target="_blank">Ruff</a>, <a href="https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode" target="_blank">SonarQube for IDE</a> and <a href="https://marketplace.visualstudio.com/items?itemName=sourcery.sourcery" target="_blank">Sourcery.</a>
 
 And is regularly audited manually using the following tools (for each of them, I indicate how I use them):
 
@@ -655,27 +650,16 @@ Any HTTP response header.
 
 ## Further reading
 * Web browsers' experimental features, roadmaps, technology previews and trials:<br />
-<a href="https://chromestatus.com/roadmap">Google Chrome</a><br />
-<a href="https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials">Microsoft Edge</a><br />
-<a href="https://wiki.mozilla.org/Origin_Trials">Mozilla Firefox</a><br />
-<a href="https://blogs.opera.com/desktop/category/developer-2/">Opera</a><br />
-<a href="https://webkit.org/blog/">Safari</a><br />
+<a href="https://chromestatus.com/roadmap">Google Chrome</a>, <a href="https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials">Microsoft Edge</a>, <a href="https://wiki.mozilla.org/Origin_Trials">Mozilla Firefox</a>, <a href="https://blogs.opera.com/desktop/category/developer-2/">Opera</a> and <a href="https://webkit.org/blog/">Safari</a><br />
 
 * Similar tools on GitHub:<br />
-<a href="https://github.com/search?q=http+headers+analyze">'HTTP Headers Analyze'</a><br />
-<a href="https://github.com/search?q=http+headers+secure">'HTTP Headers Secure'</a><br />
-<a href="https://github.com/search?q=http+headers+security">'HTTP Headers Security'</a><br />
-<a href="https://secure-headers-project.owasp.org/technical-resources/#analysis-tools">OWASP Secure Headers Project</a><br />
+<a href="https://github.com/search?q=http+headers+analyze">'HTTP Headers Analyze'</a>, <a href="https://github.com/search?q=http+headers+secure">'HTTP Headers Secure'</a>, <a href="https://github.com/search?q=http+headers+security">'HTTP Headers Security'</a> and <a href="https://secure-headers-project.owasp.org/technical-resources/#analysis-tools">OWASP Secure Headers Project</a><br />
 
 * References and standards:<br />
-<a href="https://caniuse.com/">Can I use?</a><br />
-<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">Mozilla Developer Network</a><br />
-<a href="https://www.w3.org/TR/">World Wide Web Consortium</a><br />
+<a href="https://caniuse.com/">Can I use?</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">Mozilla Developer Network</a> and <a href="https://www.w3.org/TR/">World Wide Web Consortium</a><br />
 
 * Additional information:<br />
-<a href="https://webtechsurvey.com/common-response-headers">Common response headers</a><br />
-<a href="https://securityheaders.com/">Security Headers (HTTP response header analyzer)</a><br />
-<a href="https://scotthelme.co.uk/">Scott Helme (Security Researcher)</a><br />
+<a href="https://webtechsurvey.com/common-response-headers">Common response headers</a>, <a href="https://securityheaders.com/">Security Headers (HTTP response header analyzer)</a> and <a href="https://scotthelme.co.uk/">Scott Helme (Security Researcher)</a><br />
 
 ## Contribute
 * Read <a href="https://github.com/rfc-st/humble/blob/master/CONTRIBUTING.md">this</a> first!.
