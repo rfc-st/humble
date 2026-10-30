@@ -5561,13 +5561,15 @@ if unsafe_scheme:
     print_details("[ihttp_h]", "[ihttp]", "d", i_cnt)
 
 if header_eligible("integrity-policy"):
-    ipol_header = headers_l["integrity-policy"]
-    if not any(elem in ipol_header for elem in t_ipol):
+    ipol_keys = {member.partition("=")[0].partition(";")[0].strip() for
+                 member in headers_l["integrity-policy"].split(",")}
+    if ipol_keys.isdisjoint(t_ipol):
         print_details("[ipol_h]", "[ipol]", "d", i_cnt)
 
 if header_eligible("integrity-policy-report-only"):
-    ipol_header = headers_l["integrity-policy-report-only"]
-    if not any(elem in ipol_header for elem in t_ipol):
+    ipol_keys = {member.partition("=")[0].partition(";")[0].strip() for
+                 member in headers_l["integrity-policy-report-only"].split(",")}
+    if ipol_keys.isdisjoint(t_ipol):
         print_details("[ipolr_h]", "[ipolr]", "d", i_cnt)
 
 connection_h = headers_l.get("connection", "").casefold().split(",")
@@ -5589,8 +5591,9 @@ if header_eligible("nel"):
         print_details("[inelm_h]", "[inelm]", "d", i_cnt)
 
 if header_eligible("no-vary-search"):
-    nvarys_header = headers_l["no-vary-search"]
-    if not any(elem in nvarys_header for elem in t_nvarysearch):
+    nvarys_keys = {member.partition("=")[0].partition(";")[0].strip() for
+                   member in headers_l["no-vary-search"].split(",")}
+    if nvarys_keys.isdisjoint(t_nvarysearch):
         print_details("[ifnvarys_h]", "[ifnvarys]", "d", i_cnt)
 
 if header_eligible("observe-browsing-topics"):
@@ -5685,7 +5688,7 @@ if header_eligible("set-cookie"):
 
 setlogin_header = headers_l.get("set-login", "")
 if header_eligible("set-login") \
-        and not any(elem in setlogin_header for elem in t_setlogin):
+        and setlogin_header.partition(";")[0].strip() not in t_setlogin:
     print_details("[islogin_h]", "[islogin]", "d", i_cnt)
 
 if header_eligible("sourcemap"):
@@ -5708,10 +5711,11 @@ if header_eligible("strict-transport-security"):
         sts_check_values(sts_header, sts_age, unsafe_scheme)
 
 if header_eligible("supports-loading-mode"):
-    support_mode_h = headers_l["supports-loading-mode"]
+    support_modes = {mode.partition(";")[0].strip() for mode in
+                     headers_l["supports-loading-mode"].split(",")}
     if unsafe_scheme:
         print_details("[islmodei_h]", "[islmodei]", "d", i_cnt)
-    if not any(elem in support_mode_h for elem in t_support_mode):
+    if support_modes.isdisjoint(t_support_mode):
         print_details("[islmode_h]", "[islmode]", "d", i_cnt)
 
 if header_eligible("surrogate-control"):
