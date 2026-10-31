@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-10-30")
+local_version = date.fromisoformat("2026-10-31")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -5746,6 +5746,15 @@ if header_eligible("sourcemap"):
 
 if header_eligible("speculation-rules"):
     print_details("[ispec_m]", "[ispec]", "m", i_cnt)
+    try:
+        spec_items = [permissions_strip_params(item.strip()) for item in
+                      permissions_split(headers_l["speculation-rules"], ",")]
+    except ValueError:
+        spec_items = [headers_l["speculation-rules"]]
+    if spec_ignored := [item for item in spec_items if item and (
+            item[:1] != '"' or not permissions_valid_item(item))]:
+        print_matched_details("[ispeci_h]", "[ispeci_s]", ", ".join(
+            f"'{x}'" for x in spec_ignored), "[ispeci]")
 
 if header_eligible("strict-dynamic") \
         and "content-security-policy" not in headers_l:

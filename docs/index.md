@@ -26,7 +26,7 @@ Rafa *'Bluesman'* Faura Cucalón; you can read about me on <a href="https://www.
 - Covers 65 <a href="https://github.com/rfc-st/humble/#checks-enabled-headers" target="_blank">enabled</a> security-related HTTP response headers.
 - 15 <a href="https://github.com/rfc-st/humble/#checks-missing-headers" target="_blank">checks</a> for missing security-related HTTP response headers.
 - 1289 <a href="https://github.com/rfc-st/humble/#checks-fingerprint-headers" target="_blank">checks</a> for fingerprinting through HTTP response headers.
-- 184 <a href="https://github.com/rfc-st/humble/#checks-deprecated-headersprotocols-and-insecure-values" target="_blank">checks</a> for deprecated HTTP response headers/protocols or with insecure/wrong values.
+- 185 <a href="https://github.com/rfc-st/humble/#checks-deprecated-headersprotocols-and-insecure-values" target="_blank">checks</a> for deprecated HTTP response headers/protocols or with insecure/wrong values.
 - 31 <a href="https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L57-L87" target="_blank">checks</a> related to Content Security Policy <a href="https://www.w3.org/TR/CSP3/" target="_blank">Level 3</a>.
 - Can check for compliance with the OWASP <a href="https://secure-headers-project.owasp.org/best-practices/#configuration-proposal" target="_blank">Secure Headers Project</a> Best Practices.
 - Can exclude specific HTTP response headers from the analysis.
@@ -82,6 +82,6 @@ And a special greeting to Alba, Aleix, Alejandro (x3), Álvaro, Ana, Carlos (x3)
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 Last updated on
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>October 30, 2026</em></span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime"><em>October 31, 2026</em></span>
 </span>
 </aside>

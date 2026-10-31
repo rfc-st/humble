@@ -937,6 +937,9 @@
 [ispec_m]
  (*) Speculation-Rules (Potentially Unsafe Header)
 
+[ispeci_h]
+ (*) Speculation-Rules (Ignored Values)
+
 [isdyn_h]
  Strict-Dynamic (Incorrect Header)
 
@@ -1657,6 +1660,12 @@ HTTP Response Headers
 [ispec]
  Make sure this header do not allow unsafe speculative loading conditions.
  Ref: https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Speculation-Rules
+
+[ispeci_s]
+ Browsers only fetch rule sets from quoted URLs; other values are ignored: 
+
+[ispeci]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Speculation-Rules
 
 [isdyn]
@@ -2751,6 +2760,9 @@ Generator
 
 [test_skipped_headers]
  verify the specified headers are excluded from the detailed analysis.
+
+[test_speculation_rules_ignored]
+ verify unquoted 'Speculation-Rules' URLs are reported.
 
 [test_supports_loading_mode_ignored]
  verify unknown 'Supports-Loading-Mode' directives are reported.

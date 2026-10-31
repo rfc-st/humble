@@ -938,6 +938,9 @@
 [ispec_m]
  (*) Speculation-Rules (Cabecera potencialmente insegura)
 
+[ispeci_h]
+ (*) Speculation-Rules (Valores ignorados)
+
 [isdyn_h]
  Strict-Dynamic (Cabecera incorrecta)
 
@@ -1658,6 +1661,12 @@ Cabeceras de respuesta HTTP
 [ispec]
  Asegúrese que esta cabecera no permita condiciones de carga especulativa inseguras.
  Ref: https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
+ Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Speculation-Rules
+
+[ispeci_s]
+ Los navegadores solo cargan reglas desde URLs entrecomilladas; se ignora el resto: 
+
+[ispeci]
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Speculation-Rules
 
 [isdyn]
@@ -2729,6 +2738,9 @@ Generador
 
 [test_skipped_headers]
  verifica que la exclusión de cabeceras HTTP se aplique correctamente en un análisis detallado.
+
+[test_speculation_rules_ignored]
+ verifica que se informe de URLs sin comillas en 'Speculation-Rules'.
 
 [test_supports_loading_mode_ignored]
  verifica que se informe de directivas desconocidas en 'Supports-Loading-Mode'.

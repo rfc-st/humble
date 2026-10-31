@@ -444,6 +444,9 @@ TEST_CFGS = {
                            "handshake"),
     "test_skipped_headers": (["-u", TEST_URLS[9], "-s", "ETAG", "NEL"],
                              "expressly excluded"),
+    "test_speculation_rules_ignored": (
+        ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
+        "Speculation-Rules (Ignored Values)"),
     "test_supports_loading_mode_ignored": (
         ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
         "Supports-Loading-Mode (Ignored Values)"),
@@ -1476,7 +1479,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-10-30")
+local_version = date.fromisoformat("2026-10-31")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

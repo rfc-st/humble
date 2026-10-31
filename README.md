@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--10--30-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--10--31-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -71,7 +71,7 @@
 :heavy_check_mark: Covers 65 [enabled](#checks-enabled-headers) security-related HTTP response headers.<br />
 :heavy_check_mark: 15 [checks](#checks-missing-headers) for missing security-related HTTP response headers (the ones I consider essential).<br />
 :heavy_check_mark: 1289 [checks](#checks-fingerprint-headers) for fingerprinting through HTTP response headers.<br />
-:heavy_check_mark: 184 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
+:heavy_check_mark: 185 [checks](#checks-deprecated-headersprotocols-and-insecure-values) for deprecated HTTP response headers/protocols or with insecure/wrong values.<br />
 :heavy_check_mark: 31 [checks](https://github.com/rfc-st/humble/blob/master/additional/insecure.txt#L57-L87) related to Content Security Policy [Level 3](https://www.w3.org/TR/CSP3/).<br />
 :heavy_check_mark: Can check for compliance with the OWASP <a href="https://secure-headers-project.owasp.org/best-practices/#configuration-proposal" target="_blank">Secure Headers Project</a> Best Practices.<br />
 :heavy_check_mark: Can exclude specific HTTP response headers from the analysis.<br />
@@ -315,10 +315,10 @@ https://github.com/rfc-st/humble/releases
 $ git clone https://github.com/rfc-st/humble.git
 https://github.com/rfc-st/humble/releases
 
-# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.67)
+# Build the Docker image inside the 'humble' folder: providing the TAG as the latest Release of 'humble' (e.g. 1.68)
 # https://github.com/rfc-st/humble/releases (On Windows, this may require running the terminal with admin privileges)
 $ cd humble
-$ docker build -t humble:1.67 .
+$ docker build -t humble:1.68 .
 
 # Run the analysis specifying the above TAG, along with the specific options for 'humble':
 # '-it' allocates a pseudo-TTY to keep text output clean and formatted.
@@ -326,13 +326,13 @@ $ docker build -t humble:1.67 .
 
 # (Linux / macOS / Windows)
 # E.g. Brief analysis of a URL
-$ docker run -it --rm humble:1.67 -u https://google.com -b
+$ docker run -it --rm humble:1.68 -u https://google.com -b
 
 # E.g. Detailed analysis of a URL
-$ docker run -it --rm humble:1.67 -u https://google.com
+$ docker run -it --rm humble:1.68 -u https://google.com
 
 # (Optional) Clean up and remove the old image when upgrading:
-$ docker rmi humble:1.67
+$ docker rmi humble:1.68
 ```
 Or if you'd prefer a faster way:
 
