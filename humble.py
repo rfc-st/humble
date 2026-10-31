@@ -2408,13 +2408,15 @@ def check_skip_file():
 def get_insecure_checks():
     """Skips security checks for specified HTTP response headers.
 
-    Related to `-s` option.
+    Related to `-s` option. The 'HTTP' entry of the checks file is about the
+    URL scheme, not a response header, so it cannot be skipped.
     """
     lines = PATHS["insecure_header"].read_text(encoding="utf8").splitlines()
     headers_name = set()
     for line in lines[SLICE_INT[2]:]:
         insecure_header = line.split(":")[0]
         headers_name.add(insecure_header.lower())
+    headers_name.discard("http")
     return headers_name
 
 
@@ -5652,7 +5654,7 @@ if header_eligible("expires") and any(elem in headers_l.get("cache-control",
 if header_eligible("feature-policy"):
     print_details("[iffea_h]", "[iffea]", "d", i_cnt)
 
-if unsafe_scheme:
+if unsafe_scheme and "http" not in skip_set:
     print_details("[ihttp_h]", "[ihttp]", "d", i_cnt)
 
 if header_eligible("integrity-policy"):
