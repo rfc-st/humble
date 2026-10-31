@@ -1757,6 +1757,45 @@ def nvarys_invalid_keys(policy):
     return [key for key, ok in valid.items() if not ok]
 
 
+def permissions_ro_check_values(perm_ro_header):
+    """Check the values of the `Permissions-Policy-Report-Only` header."""
+    try:
+        perm_ro_fts = {f for f, _ in permissions_parse(perm_ro_header)}
+    except ValueError:
+        print_details("[ipermrof_h]", "[ipermrof]", "d", i_cnt)
+        return
+    if matches_perm_ro := sorted(perm_ro_fts.intersection(t_per_dep)):
+        print_matched_details("[ifpolnd_h]", "[icsi_d_s]", ", ".join(
+            f"'{x}'" for x in matches_perm_ro), "[ipermro_d_r]")
+
+
+def speculation_check_values(spec_header):
+    """Check the values of the `Speculation-Rules` header."""
+    print_details("[ispec_m]", "[ispec]", "m", i_cnt)
+    try:
+        spec_items = [permissions_strip_params(item.strip()) for item in
+                      permissions_split(spec_header, ",")]
+    except ValueError:
+        spec_items = [spec_header]
+    if spec_ignored := [item for item in spec_items if item and (
+            item[:1] != '"' or not permissions_valid_item(item))]:
+        print_matched_details("[ispeci_h]", "[ispeci_s]", ", ".join(
+            f"'{x}'" for x in spec_ignored), "[ispeci]")
+
+
+def support_mode_check_values(support_mode_h, unsafe_scheme):
+    """Check the values of the `Supports-Loading-Mode` header."""
+    support_modes = {mode.partition(";")[0].strip() for mode in
+                     support_mode_h.split(",")} - {""}
+    if unsafe_scheme:
+        print_details("[islmodei_h]", "[islmodei]", "d", i_cnt)
+    if support_modes.isdisjoint(t_support_mode):
+        print_details("[islmode_h]", "[islmode]", "d", i_cnt)
+    elif unknown_modes := sorted(support_modes.difference(t_support_mode)):
+        print_matched_details("[islmodev_h]", "[islmodev_s]", ", ".join(
+            f"'{x}'" for x in unknown_modes), "[islmodev]")
+
+
 def delete_lines(*, reliable=True):
     """Clear console lines to standardize the final analysis output format.
 
@@ -5670,15 +5709,7 @@ if header_eligible("permissions-policy"):
         permissions_analyze_content(perm_policy, i_cnt)
 
 if header_eligible("permissions-policy-report-only"):
-    perm_ro_header = headers_l["permissions-policy-report-only"]
-    try:
-        perm_ro_fts = {f for f, _ in permissions_parse(perm_ro_header)}
-    except ValueError:
-        print_details("[ipermrof_h]", "[ipermrof]", "d", i_cnt)
-    else:
-        if matches_perm_ro := sorted(perm_ro_fts.intersection(t_per_dep)):
-            print_matched_details("[ifpolnd_h]", "[icsi_d_s]", ", ".join(
-                f"'{x}'" for x in matches_perm_ro), "[ipermro_d_r]")
+    permissions_ro_check_values(headers_l["permissions-policy-report-only"])
 
 if header_eligible("pragma"):
     print_details("[iprag_h]", "[iprag]", "d", i_cnt)
@@ -5745,16 +5776,7 @@ if header_eligible("sourcemap"):
     print_details("[ismap_m]", "[ismap]", "d", i_cnt)
 
 if header_eligible("speculation-rules"):
-    print_details("[ispec_m]", "[ispec]", "m", i_cnt)
-    try:
-        spec_items = [permissions_strip_params(item.strip()) for item in
-                      permissions_split(headers_l["speculation-rules"], ",")]
-    except ValueError:
-        spec_items = [headers_l["speculation-rules"]]
-    if spec_ignored := [item for item in spec_items if item and (
-            item[:1] != '"' or not permissions_valid_item(item))]:
-        print_matched_details("[ispeci_h]", "[ispeci_s]", ", ".join(
-            f"'{x}'" for x in spec_ignored), "[ispeci]")
+    speculation_check_values(headers_l["speculation-rules"])
 
 if header_eligible("strict-dynamic") \
         and "content-security-policy" not in headers_l:
@@ -5770,15 +5792,8 @@ if header_eligible("strict-transport-security"):
         sts_check_values(sts_header, sts_age, unsafe_scheme)
 
 if header_eligible("supports-loading-mode"):
-    support_modes = {mode.partition(";")[0].strip() for mode in
-                     headers_l["supports-loading-mode"].split(",")} - {""}
-    if unsafe_scheme:
-        print_details("[islmodei_h]", "[islmodei]", "d", i_cnt)
-    if support_modes.isdisjoint(t_support_mode):
-        print_details("[islmode_h]", "[islmode]", "d", i_cnt)
-    elif unknown_modes := sorted(support_modes.difference(t_support_mode)):
-        print_matched_details("[islmodev_h]", "[islmodev_s]", ", ".join(
-            f"'{x}'" for x in unknown_modes), "[islmodev]")
+    support_mode_check_values(headers_l["supports-loading-mode"],
+                              unsafe_scheme)
 
 if header_eligible("surrogate-control"):
     surrogate_mode_h = headers_l["surrogate-control"]
