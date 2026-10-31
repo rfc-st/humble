@@ -27,7 +27,7 @@ Contributing
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_radon.PNG" alt="Radon analysis shows no objects with a rank worse than 'B'.">
 </p>
 
-* Also make sure that the functions you add or modify achieve at least a <b>65%</b> Quality Score in [Sourcery's](https://docs.sourcery.ai/Coding-Assistant/Reference/Metrics/#quality-score) analysis; otherwise review your changes and try to optimize and simplify them:
+* Also make sure that the functions you add or modify achieve at least a <b>65%</b> Quality Score in [Sourcery's](https://github.com/sourcery-ai/sourcery/wiki/Quality-Report) analysis; otherwise review your changes and try to optimize and simplify them:
 <p align="center">
 <img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_sourcery.PNG" alt="Sourcery analysis shows a Quality Score of 65%">
 </p>
