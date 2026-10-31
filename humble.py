@@ -1408,6 +1408,17 @@ def csp_check_unknown(csp_h):
         csp_print_values(unknown_dir, ("[icspiu_h]", "[icspiu]"), 3)
 
 
+def csp_ro_check_values(csp_ro_header):
+    """Check the values of the `Content-Security-Policy-Report-Only` header."""
+    csp_ro_dirs = {directive.split()[0] for directive in
+                   csp_ro_header.split(";") if directive.strip()}
+    if matches_csp_ro := sorted(csp_ro_dirs.intersection(t_csp_ro_dep)):
+        print_matched_details("[icsiro_d]", "[icsi_d_s]", ", ".join(
+            f"'{x}'" for x in matches_csp_ro), "[icsiro_d_r]")
+    if "report-to" not in csp_ro_dirs:
+        print_details("[icsiroi_d]", "[icsiroi]", "d", i_cnt)
+
+
 def conall_parse(conall_h):
     """Return the patterns, parameters and ignored values of the allowlist.
 
@@ -1456,6 +1467,20 @@ def conall_check_patterns(patterns):
                     if pattern.casefold().partition("//")[0] in t_csp_insecs]:
         print_matched_details("[icalls_h]", "[icalls_s]", ", ".join(insecure),
                               "[icalls]")
+
+
+def conall_check_values(conall_h):
+    """Check the values of the `Connection-Allowlist` header."""
+    if conall_h.startswith("(") and ")" in conall_h:
+        conall_patterns, conall_params, conall_ignored = \
+            conall_parse(conall_h)
+        conall_check_params(conall_params)
+        conall_check_patterns(conall_patterns)
+        if conall_ignored:
+            print_matched_details("[icalli_h]", "[icalli_s]", ", ".join(
+                f"'{value}'" for value in conall_ignored), "[icalli]")
+    else:
+        print_details("[icall_h]", "[icall]", "d", i_cnt)
 
 
 def parse_cookie_attributes(stc_header):
@@ -1576,6 +1601,17 @@ def xxss_check_values(xxss_header):
                 print_detail(long_d, num_lines=6)
     if "," in xxss_header:
         print_details("[ixxpd_h]", "[ixxpd]", "d", i_cnt)
+
+
+def ctype_check_values(ctype_header):
+    """Check the values of the `Content-Type` header."""
+    if any(elem in ctype_header for elem in t_legacy):
+        print_details("[ictlg_h]", "[ictlg]", "m", i_cnt)
+    if "html" not in ctype_header:
+        print_details("[ictlhtml_h]", "[ictlhtml]", "d", i_cnt)
+    if any(elem in ctype_header for elem in t_ct_mime) and ("charset" not in
+                                                            ctype_header):
+        print_details("[ictlchar_h]", "[ictlchar]", "d", i_cnt)
 
 
 def permissions_mask(text):
@@ -5502,17 +5538,7 @@ if header_eligible("clear-site-data"):
 # https://wicg.github.io/connection-allowlists/#headers
 # https://centralcsp.com/en/docs/web-security/policies/connection-allowlist
 if header_eligible("connection-allowlist"):
-    conall_h = headers_l["connection-allowlist"]
-    if conall_h.startswith("(") and ")" in conall_h:
-        conall_patterns, conall_params, conall_ignored = \
-            conall_parse(conall_h)
-        conall_check_params(conall_params)
-        conall_check_patterns(conall_patterns)
-        if conall_ignored:
-            print_matched_details("[icalli_h]", "[icalli_s]", ", ".join(
-                f"'{value}'" for value in conall_ignored), "[icalli]")
-    else:
-        print_details("[icall_h]", "[icall]", "d", i_cnt)
+    conall_check_values(headers_l["connection-allowlist"])
 
 if header_eligible("connection-allowlist-report-only"):
     conallr_h = headers_l["connection-allowlist-report-only"]
@@ -5561,28 +5587,14 @@ if http_equiv:
             f"'{x}'" for x in matches_csp_meta), "[icspmeta_d_r]")
 
 if header_eligible("content-security-policy-report-only"):
-    csp_ro_header = headers_l["content-security-policy-report-only"]
-    csp_ro_dirs = {directive.split()[0] for directive in
-                   csp_ro_header.split(";") if directive.strip()}
-    if matches_csp_ro := sorted(csp_ro_dirs.intersection(t_csp_ro_dep)):
-        print_matched_details("[icsiro_d]", "[icsi_d_s]", ", ".join(
-            f"'{x}'" for x in matches_csp_ro), "[icsiro_d_r]")
-    if "report-to" not in csp_ro_dirs:
-        print_details("[icsiroi_d]", "[icsiroi]", "d", i_cnt)
+    csp_ro_check_values(headers_l["content-security-policy-report-only"])
 
 if http_equiv and any(name.casefold() == "content-security-policy-report-only"
                       for name, _ in http_equiv):
     print_details("[icsirometa_d]", "[icsirometa]", "d", i_cnt)
 
 if header_eligible("content-type"):
-    ctype_header = headers_l.get("content-type", "").casefold()
-    if any(elem in ctype_header for elem in t_legacy):
-        print_details("[ictlg_h]", "[ictlg]", "m", i_cnt)
-    if "html" not in ctype_header:
-        print_details("[ictlhtml_h]", "[ictlhtml]", "d", i_cnt)
-    if any(elem in ctype_header for elem in t_ct_mime) and ("charset" not in
-                                                            ctype_header):
-        print_details("[ictlchar_h]", "[ictlchar]", "d", i_cnt)
+    ctype_check_values(headers_l["content-type"].casefold())
 
 # https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta#charset
 # https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv#content-type
