@@ -581,7 +581,7 @@ And is regularly audited manually using the following tools (for each of them, I
 
 Example of one of these audits:
 
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_secqa.jpg" alt="Security and QA checks">
+<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_secqa.jpg" alt="Security and QA checks" width="344">
 
 ## AI-assisted review
 
