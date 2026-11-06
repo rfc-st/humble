@@ -129,6 +129,7 @@ REQ_HEADERS = {
 }
 REQ_TIMEOUT = 15
 REQ_WARNING = 6
+BODY_LIMIT = 65536
 XFRAME_CHECK = "X-Frame-Options ("
 
 # Index matching, localization (l10n) and sections
@@ -4651,6 +4652,7 @@ def make_http_request(custom_headers, proxy):
             headers=custom_headers,
             timeout=REQ_TIMEOUT,
             proxies=proxy,
+            stream=True,
         )
     except Exception as request_err: # noqa: BLE001
         return None, request_err
@@ -4868,9 +4870,12 @@ def process_http_response(r, exception, unreliable):
     process_http_error(r)
     headers = strip_response_headers(r)
     is_html = headers.get("content-type", "").lower().startswith("text/html")
+    body = next(r.iter_content(BODY_LIMIT), b"")
+    r.close()
     hop_urls = [*(hop.url for hop in r.history), r.url]
-    return (headers, r.status_code, unreliable, r.text, is_html, r.url,
-            len(r.history), count_insecure_hops(hop_urls))
+    return (headers, r.status_code, unreliable,
+            body.decode(r.encoding or "utf-8", errors="replace"), is_html,
+            r.url, len(r.history), count_insecure_hops(hop_urls))
 
 
 class HumbleHelpFormatter(RawDescriptionHelpFormatter):
