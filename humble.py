@@ -1832,7 +1832,7 @@ def support_mode_check_values(support_mode_h, unsafe_scheme):
             f"'{x}'" for x in unknown_modes), "[islmodev]")
 
 
-def delete_lines(*, reliable=True):
+def delete_lines(*, unreliable=False):
     """Clear console lines to standardize the final analysis output format.
 
     Removes previously printed lines to ensure that final messages (success
@@ -1842,18 +1842,18 @@ def delete_lines(*, reliable=True):
     """
     if args.cicd:
         return
-    if not reliable:
+    if unreliable:
         sys.stdout.write(DELETED_LINES)
     sys.stdout.write(DELETED_LINES)
 
 
-def print_export_path(filename, reliable, *, export_all=False):
+def print_export_path(filename, unreliable, *, export_all=False):
     """Print the export path.
 
     Displays the file path for single reports (e.g. 'html') or the directory
     for bulk exports (e.g. 'all'); related to `-o` option.
     """
-    delete_lines(reliable=not reliable)
+    delete_lines(unreliable=unreliable)
     if args.compliance:
         return
     export_path = Path(filename).resolve()
@@ -1882,10 +1882,10 @@ def print_header(header):
     print(f" {header}" if args.output else f"{STYLE[1]} {header}")
 
 
-def print_general_info(reliable, export_filename):
+def print_general_info(unreliable, export_filename):
     """Print the content in the section with basic information."""
     if not args.output:
-        delete_lines(reliable=not reliable)
+        delete_lines(unreliable=unreliable)
         print(f"\n{BANNER}\n ({BANNER_VERSION})\n\n")
     elif single_export() != "pdf":
         humble_desc = get_detail("[humble_desc]", replace=True)
@@ -1893,7 +1893,7 @@ def print_general_info(reliable, export_filename):
     if single_export() in ("html", "pdf"):
         print(end="\n\n")
     print_basic_info(export_filename)
-    print_extended_info(reliable)
+    print_extended_info(unreliable)
 
 
 def print_redirect_info():
@@ -1962,7 +1962,7 @@ def print_basic_info(export_filename):
     validate_file_access(HISTORY_FILE, context="basic")
 
 
-def print_extended_info(reliable):
+def print_extended_info(unreliable):
     """Print extended analysis details.
 
     Include the request and skipped headers, proxy usage, specific HTTP 4xx
@@ -1976,14 +1976,14 @@ def print_extended_info(reliable):
     if args.proxy:
         print_detail_l("[proxy_analysis_note]")
         print(f" {args.proxy}")
-    print_extra_info(reliable)
+    print_extra_info(unreliable)
     if CHALLENGE_HEADERS & headers_l.keys():
         print(get_detail("[analysis_challenge_note]", replace=True))
     elif "cf-ray" in headers_l:
         print(get_detail("[analysis_cloudflare_note]", replace=True))
 
 
-def print_extra_info(reliable):
+def print_extra_info(unreliable):
     """Print supplementary analysis details.
 
     Specific 4xx errors, reliability warnings and redirects (`-df` option).
@@ -1997,7 +1997,7 @@ def print_extra_info(reliable):
         ERROR_CODES_MIXED[0] <= status_code <= ERROR_CODES_MIXED[1]
     ):
         print(f"{get_detail('[http_4xx]', replace=True)} {status_code})")
-    if reliable:
+    if unreliable:
         print(get_detail("[unreliable_analysis_note]", replace=True))
     if args.redirects:
         print(get_detail("[analysis_noredirects_note]", replace=True))
@@ -2520,7 +2520,7 @@ def check_export_scope():
     the batch pipeline, processed in `EXPORT_ORDER`.
     """
     if single_export():
-        check_output_format(final_filename, reliable, tmp_filename)
+        check_output_format(final_filename, unreliable, tmp_filename)
     else:
         export_selected_formats(final_filename, tmp_filename)
 
@@ -2560,7 +2560,7 @@ def export_selected_formats(final_filename, tmp_filename):
     for fmt in args.output:
         actions[fmt]()
     Path(tmp_filename).unlink()
-    print_export_path(final_filename, reliable, export_all=True)
+    print_export_path(final_filename, unreliable, export_all=True)
     sys.exit(0)
 
 
@@ -2670,7 +2670,7 @@ def finalize_export(final_filename, temp_filename, file_extension, export_all):
     Related to `-o` option.
     """
     if not export_all:
-        print_export_path(final_filename, reliable)
+        print_export_path(final_filename, unreliable)
         Path(temp_filename).unlink()
         sys.exit(0)
     new_filename = f"{final_filename[:-4]}.{file_extension}"
@@ -2684,7 +2684,7 @@ def finalize_export(final_filename, temp_filename, file_extension, export_all):
                                   encoding="utf8")
 
 
-def generate_txt(reliable, tmp_filename):
+def generate_txt(unreliable, tmp_filename):
     """Handle TXT export, including CI/CD totals and OWASP compliance.
 
     Related to `-o txt` option.
@@ -2692,12 +2692,12 @@ def generate_txt(reliable, tmp_filename):
     if args.cicd:
         threshold = args.cicd if isinstance(args.cicd, str) else None
         print_cicd_totals(tmp_filename, threshold)
-    print_export_path(tmp_filename, reliable)
+    print_export_path(tmp_filename, unreliable)
     if args.compliance:
         check_owasp_compliance(tmp_filename)
 
 
-def check_output_format(final_filename, reliable, tmp_filename):
+def check_output_format(final_filename, unreliable, tmp_filename):
     """Dispatch the export logic for the selected output format.
 
     Maps each supported format (TXT, CSV, JSON, XLSX, XML, HTML, PDF and MD)
@@ -2706,7 +2706,7 @@ def check_output_format(final_filename, reliable, tmp_filename):
     Related to `-o` option.
     """
     exporters = {
-        "txt": lambda: generate_txt(reliable, tmp_filename),
+        "txt": lambda: generate_txt(unreliable, tmp_filename),
         "csv": lambda: generate_csv(final_filename, tmp_filename),
         "json": lambda: generate_json(final_filename, tmp_filename),
         "xlsx": lambda: generate_csv(final_filename, tmp_filename,
@@ -4749,7 +4749,7 @@ def process_request_headers(request_headers):
     return headers, malformed_headers
 
 
-def process_http_request(reliable, proxy, custom_headers):
+def process_http_request(unreliable, proxy, custom_headers):
     """Perform an HTTP request using a background thread.
 
     It manages response processing and ensure the target URL is reachable within
@@ -4776,13 +4776,13 @@ def process_http_request(reliable, proxy, custom_headers):
     thread.start()
     if not done.wait(timeout=REQ_TIMEOUT - REQ_WARNING):
         print(get_detail("[unreliable_analysis]"))
-        reliable = True
+        unreliable = True
     if not done.wait(timeout=REQ_TIMEOUT):
         delete_lines()
         print_error_detail("[e_timeout]", clean_lines=True)
     r = result.get("r")
     exception = result.get("exception")
-    return process_http_response(r, exception, reliable)
+    return process_http_response(r, exception, unreliable)
 
 
 def sanitize_header_value(value):
@@ -4850,7 +4850,7 @@ def count_insecure_hops(hop_urls):
     return insecure
 
 
-def process_http_response(r, exception, reliable):
+def process_http_response(r, exception, unreliable):
     """Process an HTTP response and its exceptions, which halt the analysis.
 
     Storing headers, status code, body, final URL, redirect count and the
@@ -4869,7 +4869,7 @@ def process_http_response(r, exception, reliable):
     headers = strip_response_headers(r)
     is_html = headers.get("content-type", "").lower().startswith("text/html")
     hop_urls = [*(hop.url for hop in r.history), r.url]
-    return (headers, r.status_code, reliable, r.text, is_html, r.url,
+    return (headers, r.status_code, unreliable, r.text, is_html, r.url,
             len(r.history), count_insecure_hops(hop_urls))
 
 
@@ -5013,7 +5013,7 @@ if args.input_file is not None:
     elif not args.URL:
         print_error_detail("[args_urlinputfile]")
     else:
-        headers, reliable, status_code = analyze_input_file(args.input_file)
+        headers, unreliable, status_code = analyze_input_file(args.input_file)
 
 if args.request_header and not URL:
     print_error_detail("[e_custom_uheaders]")
@@ -5087,7 +5087,7 @@ final_url, redirect_count, insecure_hops = None, 0, 0
 added_request_headers = {}
 if args.input_file is None:
     headers_l, http_equiv = {}, None
-    reliable = None
+    unreliable = False
 else:
     http_equiv = None
 
@@ -5100,9 +5100,9 @@ if args.input_file is None:
     if args.request_header:
         added_request_headers = parse_request_headers(args.request_header)
         custom_headers.update(added_request_headers)
-    (headers, status_code, reliable, body, is_html, final_url,
+    (headers, status_code, unreliable, body, is_html, final_url,
      redirect_count, insecure_hops) = (
-        process_http_request(reliable, proxy, custom_headers)
+        process_http_request(unreliable, proxy, custom_headers)
     )
     if body and is_html:
         http_equiv = re.findall(RE_PATTERN[8], body, re.IGNORECASE)
@@ -5125,7 +5125,7 @@ if args.output:
     export_filename = f"{str(tmp_filename)[:export_slice]}.{output_extension()}"
 
 # Section '0. Info & HTTP Response Headers'
-print_general_info(reliable, export_filename)
+print_general_info(unreliable, export_filename)
 print(end="\n\n")
 if args.ret:
     print_response_headers()
