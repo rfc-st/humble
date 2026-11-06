@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-10-31")
+local_version = date.fromisoformat("2026-11-06")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -5666,7 +5666,7 @@ if header_eligible("expires") and any(elem in headers_l.get("cache-control",
 if header_eligible("feature-policy"):
     print_details("[iffea_h]", "[iffea]", "d", i_cnt)
 
-if unsafe_scheme and "http" not in skip_set:
+if unsafe_scheme:
     print_details("[ihttp_h]", "[ihttp]", "d", i_cnt)
 
 if header_eligible("integrity-policy"):
