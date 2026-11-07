@@ -241,7 +241,8 @@ RE_PATTERN = (
      r"%uff0e%uff0e%u2215|%uff0e%uff0e%u2216"),
     r"\(([^)]+)\)", r"\d{4}-\d{2}-\d{2}", r"(?m)^\[(.*?)\]\n",
     r"'(?i:nonce)-([^']+)'",  r"\(humble_pdf_style\)([^:]+):",
-    r'<meta\s+http-equiv=["\'](.*?)["\']\s+content=["\'](.*?)["\']\s*/?>',
+    (r'<meta\s+http-equiv=["\']((?:[^"\'<\n]|["\'](?!\s+content=))*+)["\']'
+     r'\s+content=["\']((?:[^"\'<\n]|["\'](?!\s*/?>))*+)["\']\s*/?>'),
     r"\(humble_sec_style\)([^:]+)", r"\(humble_sec_style\)",
     r"(?: Nota : | Note : )", r"^[0-9a-fA-F]+$", r"^[A-Za-z0-9+/=_-]+$",
     r", (?=[^;,]+?=)", r"'(?i:nonce)-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
