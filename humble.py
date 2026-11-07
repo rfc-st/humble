@@ -4809,6 +4809,9 @@ def process_http_request(unreliable, proxy, custom_headers):
             r, exception = make_http_request(custom_headers, proxy)
             result["r"] = r
             result["exception"] = exception
+            if r is not None:
+                result["body"] = next(r.iter_content(BODY_LIMIT), b"")
+                r.close()
         except Exception as thread_err: # noqa: BLE001
             result["exception"] = thread_err
         finally:
@@ -4824,7 +4827,8 @@ def process_http_request(unreliable, proxy, custom_headers):
         print_error_detail("[e_timeout]", clean_lines=True)
     r = result.get("r")
     exception = result.get("exception")
-    return process_http_response(r, exception, unreliable)
+    return process_http_response(r, exception, unreliable,
+                                 result.get("body", b""))
 
 
 def sanitize_header_value(value):
@@ -4892,7 +4896,7 @@ def count_insecure_hops(hop_urls):
     return insecure
 
 
-def process_http_response(r, exception, unreliable):
+def process_http_response(r, exception, unreliable, body):
     """Process an HTTP response and its exceptions, which halt the analysis.
 
     Storing headers, status code, body, final URL, redirect count and the
@@ -4910,8 +4914,6 @@ def process_http_response(r, exception, unreliable):
     process_http_error(r)
     headers = strip_response_headers(r)
     is_html = headers.get("content-type", "").lower().startswith("text/html")
-    body = next(r.iter_content(BODY_LIMIT), b"")
-    r.close()
     try:
         body_text = body.decode(r.encoding or "utf-8", errors="replace")
     except LookupError:
