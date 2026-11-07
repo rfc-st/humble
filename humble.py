@@ -4570,9 +4570,14 @@ def build_tmp_file(suffix):
     ??? tip
         `tldextract` is lazy-loaded to avoid unnecessary overhead when the
         analysis is not exported.
+
+    ??? note
+        The Public Suffix List bundled with `tldextract` is used as-is: no
+        updated copy is fetched from the Internet nor cached on disk.
     """
     import tldextract
-    url, url_str = urlparse(URL), tldextract.extract(URL)
+    extract = tldextract.TLDExtract(suffix_list_urls=(), cache_dir=None)
+    url, url_str = urlparse(URL), extract(URL)
     host = f"{url_str.subdomain}.{url_str.domain}".lstrip(".")
     port = f"_{url.port}" if url.port else ""
     return (f"{HUMBLE_DESC[1:7]}_{url.scheme}_{host}.{url_str.suffix}{port}_"
