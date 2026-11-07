@@ -1108,6 +1108,12 @@ HTTP Response Headers
 [e_decoding]
  Error: Failed to decode response content.
 
+[e_downgrade]
+ Error: Redirect to an HTTP URL refused; 'Authorization' or 'Cookie' request headers ('-H' option) must not be sent in cleartext.
+
+[e_credentials_http]
+ Error: 'Authorization' or 'Cookie' request headers ('-H' option) require an HTTPS URL; they must not be sent in cleartext.
+
 [e_mschema]
  Error: Include a valid scheme ('http://' or 'https://') in the URL.
 
@@ -2724,6 +2730,12 @@ Generator
 
 [test_request_useragent_error]
  verify an error is displayed when the 'User-Agent' is specified twice.
+
+[test_credentials_http]
+ verify an error is displayed when request credentials are provided for an HTTP URL.
+
+[test_credentials_downgrade]
+ verify that redirects to HTTP URLs are refused and TLS is verified when request credentials are provided.
 
 [test_request_invalid_header]
  verify an error is displayed for invalid request headers.

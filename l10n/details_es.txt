@@ -1109,6 +1109,12 @@ Cabeceras de respuesta HTTP
 [e_decoding]
  Error: Al descodificar el contenido de la respuesta.
 
+[e_downgrade]
+ Error: Redirección a una URL HTTP rechazada; las cabeceras de petición 'Authorization' o 'Cookie' (parámetro '-H') no deben enviarse en claro.
+
+[e_credentials_http]
+ Error: Las cabeceras de petición 'Authorization' o 'Cookie' (parámetro '-H') requieren una URL HTTPS; no deben enviarse en claro.
+
 [e_mschema]
  Error: Incluye un esquema válido ('http://' o 'https://') en la URL.
 
@@ -2702,6 +2708,12 @@ Generador
 
 [test_request_useragent_error]
  verifica que se muestre un error cuando el 'User-Agent' se indica dos veces.
+
+[test_credentials_http]
+ verifica que se muestre un error al indicar credenciales en la petición para una URL HTTP.
+
+[test_credentials_downgrade]
+ verifica que se rechacen las redirecciones a URLs HTTP y se verifique TLS al indicar credenciales en la petición.
 
 [test_request_invalid_header]
  verifica que se muestre un error para las cabeceras de petición HTTP incorrectas.

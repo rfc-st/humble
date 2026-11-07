@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-11-06")
+local_version = date.fromisoformat("2026-11-07")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -119,6 +119,7 @@ EXP_HEADERS = (
     "supports-loading-mode",
 )
 FORCED_CIPHERS = "HIGH:!DH:!aNULL"
+CREDENTIAL_HEADERS = frozenset({"authorization", "cookie"})
 REQ_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Encoding": "gzip, deflate, br, zstd",
@@ -4584,7 +4585,11 @@ def process_server_error(http_status_code, l10n_id):
     sys.exit(1)
 
 
-def build_http_session():
+class CredentialsDowngradeError(Exception):
+    """Raised when a redirect would send request credentials over HTTP."""
+
+
+def build_http_session(*, with_credentials=False):
     """Build the session for the analysis, with a custom SSL adapter.
 
     ??? note
@@ -4595,6 +4600,10 @@ def build_http_session():
         - Certificate Verification
         - Hostname Verification
         - Certificate Requirement
+
+        They are enforced, and redirects to HTTP URLs refused, when the
+        request headers (`-H` option) include credentials
+        (`CREDENTIAL_HEADERS`), which must never travel in cleartext.
 
     ??? tip
         `ssl`, `requests` and `HTTPAdapter` are lazy-loaded to avoid unnecessary
@@ -4625,8 +4634,18 @@ def build_http_session():
             kwargs["ssl_context"] = context
             return super().init_poolmanager(*args, **kwargs)
 
-    session = requests.Session()
-    session.mount("https://", SSLContextAdapter())
+    class CredentialsSession(requests.Session):
+        """Session that refuses to follow redirects to HTTP URLs."""
+
+        def rebuild_auth(self, prepared_request, response):
+            """Raise an exception before credentials are sent over HTTP."""
+            if prepared_request.url.startswith("http:"):
+                raise CredentialsDowngradeError
+            super().rebuild_auth(prepared_request, response)
+
+    session = CredentialsSession() if with_credentials else requests.Session()
+    session.mount("https://",
+                  HTTPAdapter() if with_credentials else SSLContextAdapter())
     session.mount("http://", HTTPAdapter())
     return session
 
@@ -4644,11 +4663,13 @@ def make_http_request(custom_headers, proxy):
     from urllib3 import disable_warnings
 
     disable_warnings()
+    with_credentials = not CREDENTIAL_HEADERS.isdisjoint(map(str.casefold,
+                                                             custom_headers))
     try:
-        r = build_http_session().get(
+        r = build_http_session(with_credentials=with_credentials).get(
             URL,
             allow_redirects=not args.redirects,
-            verify=False,
+            verify=with_credentials,
             headers=custom_headers,
             timeout=REQ_TIMEOUT,
             proxies=proxy,
@@ -4677,6 +4698,7 @@ def process_requests_exception(exception):
         requests.exceptions.ProxyError: "[e_proxy]",
         requests.exceptions.SSLError: "[e_ssl]",
         requests.exceptions.TooManyRedirects: "[e_redirect]",
+        CredentialsDowngradeError: "[e_downgrade]",
     }
     if isinstance(exception, requests.exceptions.Timeout):
         delete_lines()
@@ -4721,6 +4743,9 @@ def parse_request_headers(request_headers):
         sys.exit(1)
     if args.user_agent and "user-agent" in map(str.lower, headers):
         print_error_detail("[args_useragent_header]", clean_lines=True)
+    if URL.startswith("http:") and not CREDENTIAL_HEADERS.isdisjoint(
+            map(str.casefold, headers)):
+        print_error_detail("[e_credentials_http]", clean_lines=True)
     return headers
 
 

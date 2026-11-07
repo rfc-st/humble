@@ -47,6 +47,8 @@ from unittest.mock import MagicMock, patch
 
 # Third-Party imports
 import pytest
+from requests import Request
+from requests.adapters import HTTPAdapter
 from requests.exceptions import RequestException
 
 # To-Do: Enable code coverage in Windows
@@ -77,7 +79,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_testssl_analysis]", "[test_helper_functions]",
                  "[test_csp_report_only]", "[test_permissions_report_only]",
                  "[test_request_unhandled_exception]", "[test_csp_meta]",
-                 "[test_downgrade_note]", "[test_export_md_hostile]"]
+                 "[test_downgrade_note]", "[test_export_md_hostile]",
+                 "[test_credentials_downgrade]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -410,6 +413,9 @@ TEST_CFGS = {
         ["-u", TEST_URLS[9], "-H", "Cache-Control:"], "malformed"),
     "test_malformed_request_headers": (
         ["-u", TEST_URLS[9], "-H", "Cache-Control no-cache"], "malformed"),
+    "test_credentials_http": (
+        ["-u", f"{LOCAL_SERVER_URL}/status/200", "-H",
+         "Authorization: Bearer token"], "cleartext"),
     "test_request_exception": (["-u", TEST_URLS[10]], "Request", 25),
     "test_request_headers": (
         ["-u", TEST_URLS[9], "-H", "Cache-Control: no-cache", "-H",
@@ -1392,6 +1398,17 @@ def test_helper_functions():
     assert results == HELPER_CASES
 
 
+def test_credentials_downgrade():
+    """Verify TLS is verified and HTTP redirects refused with credentials."""
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    session = humble_module.build_http_session(with_credentials=True)
+    assert type(session.get_adapter("https://example.com/")) is HTTPAdapter
+    request = Request("GET", "http://example.com/").prepare()
+    with pytest.raises(humble_module.CredentialsDowngradeError):
+        session.rebuild_auth(request, MagicMock())
+
+
 def delete_export_files(extension, ko_msg):
     """Remove temporary files from export unit tests."""
     msgs = []
@@ -1479,7 +1496,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-11-06")
+local_version = date.fromisoformat("2026-11-07")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,
