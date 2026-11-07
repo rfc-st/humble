@@ -4912,10 +4912,13 @@ def process_http_response(r, exception, unreliable):
     is_html = headers.get("content-type", "").lower().startswith("text/html")
     body = next(r.iter_content(BODY_LIMIT), b"")
     r.close()
+    try:
+        body_text = body.decode(r.encoding or "utf-8", errors="replace")
+    except LookupError:
+        body_text = body.decode("utf-8", errors="replace")
     hop_urls = [*(hop.url for hop in r.history), r.url]
-    return (headers, r.status_code, unreliable,
-            body.decode(r.encoding or "utf-8", errors="replace"), is_html,
-            r.url, len(r.history), count_insecure_hops(hop_urls))
+    return (headers, r.status_code, unreliable, body_text, is_html, r.url,
+            len(r.history), count_insecure_hops(hop_urls))
 
 
 class HumbleHelpFormatter(RawDescriptionHelpFormatter):
