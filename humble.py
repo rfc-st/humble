@@ -267,6 +267,15 @@ def check_python_version():
         sys.exit(1)
 
 
+def mask_proxy_credentials(proxy_url):
+    """Replace the credentials of a proxy URL with asterisks, if any."""
+    userinfo = urlparse(proxy_url).netloc.rpartition("@")[0]
+    if not userinfo:
+        return proxy_url
+    mask = "****:****" if ":" in userinfo else "****"
+    return proxy_url.replace(f"{userinfo}@", f"{mask}@", 1)
+
+
 def process_proxy_url(proxy_url, timeout=3.0):
     """Parse and validate proxy URL accessibility, related to `-p` option."""
     parsed_proxy_url = urlparse(proxy_url)
@@ -1977,7 +1986,7 @@ def print_extended_info(unreliable):
         print_skipped_headers(skip_set)
     if args.proxy:
         print_detail_l("[proxy_analysis_note]")
-        print(f" {args.proxy}")
+        print(f" {mask_proxy_credentials(args.proxy)}")
     print_extra_info(unreliable)
     if CHALLENGE_HEADERS & headers_l.keys():
         print(get_detail("[analysis_challenge_note]", replace=True))

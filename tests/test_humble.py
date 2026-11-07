@@ -416,6 +416,10 @@ TEST_CFGS = {
     "test_credentials_http": (
         ["-u", f"{LOCAL_SERVER_URL}/status/200", "-H",
          "Authorization: Bearer token"], "cleartext"),
+    "test_proxy_credentials": (
+        ["-u", f"{LOCAL_SERVER_URL}/status/200", "-p",
+         f"http://user:pass@{LOCAL_SERVER_URL.removeprefix('http://')}"],
+        "****:****@"),
     "test_request_exception": (["-u", TEST_URLS[10]], "Request", 25),
     "test_request_headers": (
         ["-u", TEST_URLS[9], "-H", "Cache-Control: no-cache", "-H",
@@ -552,6 +556,11 @@ HELPER_CASES = (
     ("csp_valid_hash",
      ("SHA256", "LXEWQrcmsEQBYnyp-6wy9chTD7GQPMTbAiWHF5IaSIE"), True),
     ("decrease_html_spacing", ("humble",), "humble"),
+    ("mask_proxy_credentials", ("http://user:pass@a.com:8080",),
+     "http://****:****@a.com:8080"),
+    ("mask_proxy_credentials", ("http://user@a.com:8080",),
+     "http://****@a.com:8080"),
+    ("mask_proxy_credentials", ("http://a.com:8080",), "http://a.com:8080"),
     ("permissions_allowed", ('"https://a.com"',), True),
     ("permissions_allowed", ('"a.com"',), False),
     ("permissions_allowlist", ("(self; p=a *)",), ["self", "*"]),

@@ -2697,6 +2697,9 @@ Generador
 [test_malformed_request_headers]
  verifica que se muestre un error ante cabeceras de petición malformadas.
 
+[test_proxy_credentials]
+ verifica que las credenciales del proxy (parámetro '-p') se enmascaren en la salida.
+
 [test_request_exception]
  verifica que se muestre un error por tiempos de espera agotados o excepciones no controladas durante el análisis.
 
