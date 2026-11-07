@@ -2718,6 +2718,9 @@ Generador
 [test_credentials_downgrade]
  verifica que se rechacen las redirecciones a URLs HTTP y se verifique TLS al indicar credenciales en la petición.
 
+[test_credentials_cookie_redirect]
+ verifica que la cabecera de petición 'Cookie' se mantenga en las redirecciones al mismo host y se descarte al cambiar de host.
+
 [test_request_invalid_header]
  verifica que se muestre un error para las cabeceras de petición HTTP incorrectas.
 

@@ -4649,6 +4649,26 @@ def build_http_session(*, with_credentials=False):
             kwargs["ssl_context"] = context
             return super().init_poolmanager(*args, **kwargs)
 
+    session = (build_credentials_session() if with_credentials else
+               requests.Session())
+    session.mount("https://",
+                  HTTPAdapter() if with_credentials else SSLContextAdapter())
+    session.mount("http://", HTTPAdapter())
+    return session
+
+
+def build_credentials_session():
+    """Build the session used when the request headers include credentials.
+
+    It refuses redirects to HTTP URLs and keeps the `Cookie` request header
+    on redirects to the same host (`requests` drops it on every hop), with
+    the host rule applied to the `Authorization` header (`should_strip_auth`).
+
+    ??? tip
+        `requests` is lazy-loaded to avoid unnecessary overhead.
+    """
+    import requests
+
     class CredentialsSession(requests.Session):
         """Session that refuses to follow redirects to HTTP URLs."""
 
@@ -4657,12 +4677,12 @@ def build_http_session(*, with_credentials=False):
             if prepared_request.url.startswith("http:"):
                 raise CredentialsDowngradeError
             super().rebuild_auth(prepared_request, response)
+            cookie = response.request.headers.get("Cookie")
+            if cookie and not self.should_strip_auth(response.request.url,
+                                                     prepared_request.url):
+                prepared_request.headers["Cookie"] = cookie
 
-    session = CredentialsSession() if with_credentials else requests.Session()
-    session.mount("https://",
-                  HTTPAdapter() if with_credentials else SSLContextAdapter())
-    session.mount("http://", HTTPAdapter())
-    return session
+    return CredentialsSession()
 
 
 def make_http_request(custom_headers, proxy):

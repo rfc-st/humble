@@ -80,7 +80,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_csp_report_only]", "[test_permissions_report_only]",
                  "[test_request_unhandled_exception]", "[test_csp_meta]",
                  "[test_downgrade_note]", "[test_export_md_hostile]",
-                 "[test_credentials_downgrade]"]
+                 "[test_credentials_downgrade]",
+                 "[test_credentials_cookie_redirect]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -1416,6 +1417,22 @@ def test_credentials_downgrade():
     request = Request("GET", "http://example.com/").prepare()
     with pytest.raises(humble_module.CredentialsDowngradeError):
         session.rebuild_auth(request, MagicMock())
+
+
+def test_credentials_cookie_redirect():
+    """Verify the 'Cookie' header follows same-host redirects only."""
+    with suppress(SystemExit):
+        _spec.loader.exec_module(humble_module)
+    session = humble_module.build_credentials_session()
+    response = MagicMock()
+    response.request = Request("GET", "https://example.com/",
+                               headers={"Cookie": "session=1"}).prepare()
+    same_host = Request("GET", "https://example.com/final").prepare()
+    other_host = Request("GET", "https://other.example/").prepare()
+    session.rebuild_auth(same_host, response)
+    session.rebuild_auth(other_host, response)
+    assert same_host.headers.get("Cookie") == "session=1"
+    assert "Cookie" not in other_host.headers
 
 
 def delete_export_files(extension, ko_msg):

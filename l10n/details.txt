@@ -2740,6 +2740,9 @@ Generator
 [test_credentials_downgrade]
  verify that redirects to HTTP URLs are refused and TLS is verified when request credentials are provided.
 
+[test_credentials_cookie_redirect]
+ verify that the 'Cookie' request header is kept on redirects to the same host and dropped when the host changes.
+
 [test_request_invalid_header]
  verify an error is displayed for invalid request headers.
 
