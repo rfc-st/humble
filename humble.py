@@ -256,8 +256,8 @@ RE_PATTERN = (
 def check_python_version():
     """Verify that the host's Python version meets the minimum requirements.
 
-    Prints an error and exit if the version is below the threshold defined in
-    `PYTHON_REQUIRED_VERSION`.
+    Prints an error and exit if the version is below the threshold (defined in
+    `PYTHON_REQUIRED_VERSION`).
     """
     if sys.version_info < PYTHON_REQUIRED_VERSION:
         host_python = f"{sys.version_info.major}.{sys.version_info.minor}"
