@@ -4308,14 +4308,22 @@ def get_analysis_ip(final_url):
 def validate_url(url):
     """Exit cleanly if the URL is empty, malformed or has control characters.
 
+    Credentials embedded in the URL ('user:password@') are refused too: they
+    would be sent as 'Authorization' by 'requests' without the protections
+    applied to the '-H' option (TLS verification, HTTP downgrade refusal)
+    and stored verbatim in the analysis history and exports.
+
     Related to `-u` option.
     """
     if not url or not url.isprintable():
         print_error_detail("[e_url]")
     try:
-        _ = urlparse(url).port
+        parsed_url = urlparse(url)
+        _ = parsed_url.port
     except ValueError:
         print_error_detail("[e_url]")
+    if parsed_url.username is not None:
+        print_error_detail("[e_url_userinfo]")
 
 
 def check_russian_scope():

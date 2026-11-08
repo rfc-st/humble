@@ -472,6 +472,8 @@ TEST_CFGS = {
                              "Check for updates at")),
     "test_updates_error": (["-v"], "error"),
     "test_url_empty": (["-u", ""], "not valid"),
+    "test_url_userinfo": (["-u", "https://user:secret@example.com/"],
+                          "Credentials"),
     "test_url_malformed": (["-u", TEST_URLS[16]], "Error"),
     "test_url_statistics": (["-u", TEST_URLS[5], "-if", PATHS["ALL_HEADERS"],
                              "-a"], "Empty headers"),

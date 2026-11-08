@@ -1124,6 +1124,9 @@ Cabeceras de respuesta HTTP
 [e_url]
  Error: La URL no resuelve; revísala y prueba de nuevo.
 
+[e_url_userinfo]
+ Error: La URL no puede incluir credenciales; indícalas con '-H' (p. ej. 'Authorization: Basic ...').
+
 [server_serror]
  Error en servidor; espera unos minutos y prueba de nuevo.
 
@@ -2798,6 +2801,9 @@ Generador
 
 [test_url_empty]
  verifica que se muestre un error para una URL vacía.
+
+[test_url_userinfo]
+ verifica que se muestre un error para una URL con credenciales incrustadas.
 
 [test_url_malformed]
  verifica que se muestre mensaje de error al analizar una URL mal formada.

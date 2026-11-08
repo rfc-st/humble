@@ -1123,6 +1123,9 @@ HTTP Response Headers
 [e_url]
  Error: The URL is not valid. Check it and try again.
 
+[e_url_userinfo]
+ Error: Credentials are not allowed in the URL; provide them with '-H' (e.g. 'Authorization: Basic ...').
+
 [server_serror]
  Server error; wait a while and try again.
 
@@ -2820,6 +2823,9 @@ Generator
 
 [test_url_empty]
  verify an error is displayed for an empty URL.
+
+[test_url_userinfo]
+ verify an error is displayed for a URL with embedded credentials.
 
 [test_url_malformed]
  verify an error is displayed when analyzing a malformed URL.

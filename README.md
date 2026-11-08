@@ -567,7 +567,7 @@ It is also reviewed with the following extensions in Visual Studio Code:
 
 And is regularly audited manually using the following tools (for each of them, I indicate how I use them):
 
-- <a href="https://pypi.org/project/bandit/" target="_blank">Bandit</a>: `bandit -r /home/bluesman/humble/humble.py --severity-level high`
+- <a href="https://github.com/PyCQA/bandit" target="_blank">Bandit</a>: `bandit -r /home/bluesman/humble/humble.py --severity-level high`
 - <a href="https://github.com/nocomplexity/codeaudit" target="_blank">Codeaudit</a>: `codeaudit filescan humble.py --n`
 - <a href="https://github.com/rohaquinlop/complexipy" target="_blank">Complexipy</a>: `complexipy . --exclude /home/bluesman/humble/tests`
 - <a href="https://github.com/opengrep/opengrep" target="_blank">opengrep</a>: `opengrep scan --taint-intrafile --config /home/bluesman/opengrep-rules/python humble.py`
