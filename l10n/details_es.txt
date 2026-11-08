@@ -2733,6 +2733,9 @@ Generador
 [test_request_control_chars]
  verifica que se rechacen como mal formadas las cabeceras de petición con caracteres de control.
 
+[test_request_non_ascii]
+ verifica que se rechacen como mal formadas las cabeceras de petición con caracteres no ASCII.
+
 [test_request_unhandled_exception]
  verifica que se muestre el tipo de una excepción de petición no controlada.
 
@@ -2819,6 +2822,9 @@ Generador
 
 [test_url_malformed]
  verifica que se muestre mensaje de error al analizar una URL mal formada.
+
+[test_url_long_label]
+ verifica que se muestre un error para una URL cuyo host tiene una etiqueta de más de 63 caracteres.
 
 [test_url_statistics]
  verifica que se muestren las estadísticas para una URL concreta analizada.

@@ -63,7 +63,8 @@ ASSERT_STR = ["error", "Error"]
 EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_print_detail_s]", "[test_skip_file]",
                  "[test_proxy_wrong]", "[test_response_headers_none]",
-                 "[test_cache_no_store]", "[test_case_insensitive_values]",
+                 "[test_url_long_label]", "[test_cache_no_store]",
+                 "[test_case_insensitive_values]",
                  "[test_csp_fallback_present]", "[test_csp_tokens]",
                  "[test_csp_keywords]", "[test_csp_base64url_nonce]",
                  "[test_permissions_format]", "[test_permissions_values]",
@@ -442,6 +443,8 @@ TEST_CFGS = {
         ["-u", TEST_URLS[9], "-H", ""], "least"),
     "test_request_control_chars": (
         ["-u", TEST_URLS[9], "-H", "humble: a\rb"], "malformed"),
+    "test_request_non_ascii": (["-u", TEST_URLS[9], "-H", "X-Test: caf\u00e9"],
+                               "malformed"),
     "test_response_headers": (["-u", TEST_URLS[9], "-r"],
                               "HTTP Response Headers"),
     "test_russian_block": (["-u", TEST_URLS[8]], "withdraws"),
@@ -978,6 +981,12 @@ def test_print_detail_s():
     humble_module.args = args
     result = humble_module.print_detail_s("[nonexistent_id]")
     assert result is None
+
+
+def test_url_long_label():
+    """Verify a host label over 63 characters is reported as an invalid URL."""
+    run_test(["-u", f"http://{'a' * 64}.com/"], "not valid")
+    run_test(["-u", f"https://{'a' * 64}.com/"], "not valid")
 
 
 def test_proxy_wrong():

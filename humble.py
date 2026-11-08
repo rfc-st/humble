@@ -530,16 +530,26 @@ def testssl_command(testssl_temp_path, uri, *, accepted):
     if not testssl_path or not which(testssl_path):
         print_error_detail("[notestssl_fileexec]")
     print(f"\n{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
-    if not accepted:
-        choice = ""
-        with suppress(EOFError):
-            choice = input( # false-positive
-                f"{get_detail('[testssl_choice]', replace=True)} ")[:1].strip()
-        if choice.lower() != "y":
-            sys.exit(0)
-        delete_lines()
+    if not (accepted or testssl_prompt_accepted()):
+        sys.exit(0)
     testssl_analysis([testssl_path, *TESTSSL_OPTIONS, uri])
     sys.exit(0)
+
+
+def testssl_prompt_accepted():
+    """Ask whether the testssl.sh file is trusted; related to `-e` option.
+
+    A closed or non-interactive stdin counts as declining. When accepted,
+    the prompt lines are erased before the analysis starts.
+    """
+    choice = ""
+    with suppress(EOFError):
+        choice = input( # false-positive
+            f"{get_detail('[testssl_choice]', replace=True)} ")[:1].strip()
+    if choice.lower() != "y":
+        return False
+    delete_lines()
+    return True
 
 
 def testssl_analysis(testssl_cmd):
@@ -4736,9 +4746,10 @@ def process_requests_exception(exception):
     """Print error messages for request timeout and unhandled exceptions.
 
     ??? tip
-        `requests` is lazy-loaded to avoid unnecessary overhead.
+        `requests` and `urllib3` are lazy-loaded to avoid unnecessary overhead.
     """
     import requests
+    from urllib3.exceptions import LocationParseError
     exception_d = {
         requests.exceptions.ChunkedEncodingError: "[e_chunk]",
         requests.exceptions.ConnectionError: "[e_connection]",
@@ -4750,6 +4761,8 @@ def process_requests_exception(exception):
         requests.exceptions.SSLError: "[e_ssl]",
         requests.exceptions.TooManyRedirects: "[e_redirect]",
         CredentialsDowngradeError: "[e_downgrade]",
+        LocationParseError: "[e_url]",
+        UnicodeEncodeError: "[e_url]",
     }
     if isinstance(exception, requests.exceptions.Timeout):
         delete_lines()
@@ -4805,7 +4818,7 @@ def process_request_headers(request_headers):
 
     Exit if empty entries are found, while returning a list of any malformed
     headers: those without a name, a value or a ':' separator, or containing
-    control characters.
+    control or non-ASCII characters (RFC 9110, section 5.5).
     """
     if not all(request_headers):
         delete_lines()
@@ -4820,7 +4833,8 @@ def process_request_headers(request_headers):
             continue
         key, value = header.split(":", 1)
         key, value = key.strip(), value.strip()
-        if not key or not value or not header.isprintable():
+        if not key or not value or not header.isascii() or \
+                not header.isprintable():
             malformed_headers.append(header)
             continue
         headers[key] = value

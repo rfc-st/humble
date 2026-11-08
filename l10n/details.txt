@@ -2755,6 +2755,9 @@ Generator
 [test_request_control_chars]
  verify request headers with control characters are rejected as malformed.
 
+[test_request_non_ascii]
+ verify request headers with non-ASCII characters are rejected as malformed.
+
 [test_request_unhandled_exception]
  verify the type of an unhandled request exception is displayed.
 
@@ -2841,6 +2844,9 @@ Generator
 
 [test_url_malformed]
  verify an error is displayed when analyzing a malformed URL.
+
+[test_url_long_label]
+ verify an error is displayed for a URL whose host has a label longer than 63 characters.
 
 [test_url_statistics]
  verify statistics are displayed for a specific URL.
