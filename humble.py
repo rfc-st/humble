@@ -279,8 +279,11 @@ def mask_proxy_credentials(proxy_url):
 
 def process_proxy_url(proxy_url, timeout=3.0):
     """Parse and validate proxy URL accessibility, related to `-p` option."""
-    parsed_proxy_url = urlparse(proxy_url)
-    proxy_host = parsed_proxy_url.hostname
+    try:
+        parsed_proxy_url = urlparse(proxy_url)
+        proxy_host = parsed_proxy_url.hostname
+    except ValueError:
+        proxy_host = None
     if not proxy_host:
         print_error_detail("[proxy_host]", clean_lines=True)
     try:

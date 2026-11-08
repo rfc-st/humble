@@ -983,6 +983,7 @@ def test_print_detail_s():
 def test_proxy_wrong():
     """Consolidate invalid host and port checks of the `-p` option."""
     run_test(["-u", TEST_URLS[9], "-p", "https://"], "Invalid proxy format")
+    run_test(["-u", TEST_URLS[9], "-p", "http://[::1"], "Invalid proxy format")
     run_test(["-u", TEST_URLS[9], "-p", "http://127.0.0.1:test"],
              "Invalid proxy port")
 
