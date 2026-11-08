@@ -2146,6 +2146,9 @@ Error: That User-Agent ID does not exist; check the available ones with '-ua 0'
 [args_notestssl]
 Error: The '-e' parameter requires the path of 'testssl' and the parameter '-u'.
 
+[args_testssl_yes]
+Error: The only value accepted after the 'testssl' path in '-e' is 'yes', which skips the confirmation prompt.
+
 [args_inputfile]
 Error: The '-if' parameter does not require the parameters '-df' or '-r'.
 
@@ -2799,6 +2802,15 @@ Generator
 
 [test_testssl_command_declined]
  verify declining the testssl.sh confirmation prompt exits without running the analysis.
+
+[test_testssl_command_no_stdin]
+ verify a closed stdin at the testssl.sh confirmation prompt exits without running the analysis.
+
+[test_testssl_command_accepted]
+ verify the 'yes' value of '-e' runs the testssl.sh analysis without the confirmation prompt.
+
+[test_testssl_value]
+ verify an error is displayed for a value other than 'yes' after the testssl.sh path in '-e'.
 
 [test_testssl_analysis]
  verify the output of a mocked up testssl.sh test stops upon completion.

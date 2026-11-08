@@ -384,10 +384,10 @@ $ sudo apt install --only-upgrade humble
 (Linux)   $ python3 humble.py
 (macOS)   $ python3 humble.py
 
-usage: humble.py [-h] [-a] [-b] [-c] [-cicd [GRADE]] [-df] [-e [TESTSSL_PATH]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
+usage: humble.py [-h] [-a] [-b] [-c] [-cicd [GRADE]] [-df] [-e [TESTSSL_PATH ...]] [-f [FINGERPRINT_TERM]] [-g] [-grd] [-H REQUEST_HEADER] [-if INPUT_FILE] [-l {es}] [-lic]
                  [-o {all,csv,html,json,md,pdf,txt,xlsx,xml}] [-of OUTPUT_FILE] [-op OUTPUT_PATH] [-p PROXY] [-r] [-s [SKIP_HEADERS ...]] [-u URL] [-ua USER_AGENT] [-v]
 
-'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-10-15
+'humble' (HTTP Headers Analyzer) | https://github.com/rfc-st/humble | v.2026-11-08
 
 options:
   -h, --help                                  show this help message and exit
@@ -396,7 +396,7 @@ options:
   -c                                          Checks URL response HTTP headers for compliance with OWASP 'Secure Headers Project' best practices
   -cicd [GRADE]                               Print analysis for CI/CD processing; optionally, set the minimum required GRADE (E, D, C, B, A, A+)
   -df                                         Do not follow redirects; if omitted the last redirection will be the one analyzed
-  -e [TESTSSL_PATH]                           Print only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/)
+  -e [TESTSSL_PATH ...]                       Print only TLS/SSL checks; requires the PATH of testssl (https://testssl.sh/); add 'yes' to skip the confirmation prompt
   -f [FINGERPRINT_TERM]                       Print fingerprint statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 results will be printed
   -g                                          Print guidelines for enabling security HTTP response headers on popular frameworks, servers and services
   -grd                                        Print the checks to grade an analysis, along with advice for improvement

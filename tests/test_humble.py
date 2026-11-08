@@ -76,6 +76,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_sanitize_header_value]",
                  "[test_strip_response_headers_sanitized]",
                  "[test_testssl_command]", "[test_testssl_command_declined]",
+                 "[test_testssl_command_no_stdin]",
+                 "[test_testssl_command_accepted]",
                  "[test_testssl_analysis]", "[test_helper_functions]",
                  "[test_csp_report_only]", "[test_permissions_report_only]",
                  "[test_request_unhandled_exception]", "[test_csp_meta]",
@@ -463,6 +465,8 @@ TEST_CFGS = {
         "Supports-Loading-Mode (Ignored Values)"),
     "test_testssl_error": ([], "Error"),
     "test_testssl_nopath": (["-u", TEST_URLS[9], "-e"], "requires"),
+    "test_testssl_value": (["-u", TEST_URLS[9], "-e", str(HUMBLE_TESTS_DIR),
+                            "no"], "'yes'"),
     "test_unicode_error": (["-u", TEST_URLS[9], "-if", PATHS["UNICODE"]],
                            "unicode"),
     "test_unsupported_header": (["-u", TEST_URLS[9], "-s", "testhumbleheader"],
@@ -741,7 +745,8 @@ def test_testssl_command(capsys, tmp_path):
         patch.object(humble_module, "testssl_analysis") as mock_run,
         pytest.raises(SystemExit) as wrapped_exit,
     ):
-        humble_module.testssl_command(str(tmp_path), TEST_URLS[9])
+        humble_module.testssl_command(str(tmp_path), TEST_URLS[9],
+                                      accepted=False)
     assert wrapped_exit.value.code == 0
     mock_run.assert_called_once_with(
         [fake_testssl, *humble_module.TESTSSL_OPTIONS, TEST_URLS[9]])
@@ -756,9 +761,40 @@ def test_testssl_command_declined(tmp_path):
         patch.object(humble_module, "testssl_analysis") as mock_run,
         pytest.raises(SystemExit) as wrapped_exit,
     ):
-        humble_module.testssl_command(str(tmp_path), TEST_URLS[9])
+        humble_module.testssl_command(str(tmp_path), TEST_URLS[9],
+                                      accepted=False)
     assert wrapped_exit.value.code == 0
     mock_run.assert_not_called()
+
+
+def test_testssl_command_no_stdin(tmp_path):
+    """Verify a closed stdin at the terms prompt is treated as declining."""
+    set_testssl_env(tmp_path)
+    with (
+        patch("builtins.input", side_effect=EOFError),
+        patch.object(humble_module, "testssl_analysis") as mock_run,
+        pytest.raises(SystemExit) as wrapped_exit,
+    ):
+        humble_module.testssl_command(str(tmp_path), TEST_URLS[9],
+                                      accepted=False)
+    assert wrapped_exit.value.code == 0
+    mock_run.assert_not_called()
+
+
+def test_testssl_command_accepted(capsys, tmp_path):
+    """Verify the 'yes' value of `-e` runs the analysis without prompting."""
+    fake_testssl = set_testssl_env(tmp_path)
+    with (
+        patch("builtins.input", side_effect=AssertionError),
+        patch.object(humble_module, "testssl_analysis") as mock_run,
+        pytest.raises(SystemExit) as wrapped_exit,
+    ):
+        humble_module.testssl_command(str(tmp_path), TEST_URLS[9],
+                                      accepted=True)
+    assert wrapped_exit.value.code == 0
+    mock_run.assert_called_once_with(
+        [fake_testssl, *humble_module.TESTSSL_OPTIONS, TEST_URLS[9]])
+    assert str(fake_testssl) in capsys.readouterr().out
 
 
 def test_testssl_analysis(capsys):

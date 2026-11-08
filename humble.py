@@ -496,11 +496,12 @@ def validate_testssl_uri(uri):
         print_error_detail("[e_url]")
 
 
-def testssl_command(testssl_temp_path, uri):
+def testssl_command(testssl_temp_path, uri, *, accepted):
     """Prepare the TLS/SSL analysis.
 
     Validate the URI and prompt the user to accept terms and exit if declined;
-    related to `-e` option.
+    `accepted` (the 'yes' value of the `-e` option) skips the prompt for
+    non-interactive sessions, e.g. CI/CD pipelines. Related to `-e` option.
 
     ??? tip
         The options used in the analysis are defined in the `TESTSSL_OPTIONS`
@@ -526,11 +527,15 @@ def testssl_command(testssl_temp_path, uri):
     if not testssl_path or not which(testssl_path):
         print_error_detail("[notestssl_fileexec]")
     print(f"\n{get_detail('[testssl_warning]', replace=True)} '{testssl_path}'")
-    choice = input( # false-positive
-        f"{get_detail('[testssl_choice]', replace=True)} ")[:1].strip().lower()
-    if choice == "y":
+    if not accepted:
+        choice = ""
+        with suppress(EOFError):
+            choice = input( # false-positive
+                f"{get_detail('[testssl_choice]', replace=True)} ")[:1].strip()
+        if choice.lower() != "y":
+            sys.exit(0)
         delete_lines()
-        testssl_analysis([testssl_path, *TESTSSL_OPTIONS, uri])
+    testssl_analysis([testssl_path, *TESTSSL_OPTIONS, uri])
     sys.exit(0)
 
 
@@ -4999,9 +5004,10 @@ metavar="GRADE", help="Print analysis for CI/CD processing; optionally, set the\
  minimum required GRADE (E, D, C, B, A, A+)")
 parser.add_argument("-df", dest="redirects", action="store_true", help="Do not\
  follow redirects; if omitted the last redirection will be the one analyzed")
-parser.add_argument("-e", nargs="?", const="", type=str, dest="testssl_path",
-                    help="Print only TLS/SSL checks; requires the PATH of \
-testssl (https://testssl.sh/)")
+parser.add_argument("-e", nargs="*", type=str, dest="testssl_path",
+                    metavar="TESTSSL_PATH", help="Print only TLS/SSL checks; \
+requires the PATH of testssl (https://testssl.sh/); add 'yes' to skip the \
+confirmation prompt")
 parser.add_argument("-f", nargs="?", const="", type=str,
                     dest="fingerprint_term", help="Print fingerprint \
 statistics; if 'FINGERPRINT_TERM' (E.g., 'Google') is omitted the top 20 \
@@ -5108,6 +5114,8 @@ if args.testssl_path is not None:
         print_l10n_file(args, "testssl", slice_ln=True)
     if not args.testssl_path or URL is None:
         print_error_detail("[args_notestssl]")
+    if args.testssl_path[1:] not in ([], ["yes"]):
+        print_error_detail("[args_testssl_yes]")
 
 if args.lang and not URL and not args.URL_A and not args.guides:
     print_error_detail("[args_lang]")
@@ -5145,7 +5153,8 @@ if args.guides:
     print_l10n_file(args, "security_guides", slice_ln=True)
 
 if args.testssl_path:
-    testssl_command(args.testssl_path, URL)
+    testssl_command(args.testssl_path[0], URL,
+                    accepted=args.testssl_path[1:] == ["yes"])
 
 if args.URL_A:
     check_analysis(HISTORY_FILE)

@@ -2147,6 +2147,9 @@ Error: No existe ese ID de User-Agent; consulta los disponibles con '-ua 0'
 [args_notestssl]
 Error: El parámetro '-e' requiere la ruta de 'testssl' y el parámetro '-u'.
 
+[args_testssl_yes]
+Error: El único valor admitido tras la ruta de 'testssl' en '-e' es 'yes', que omite el prompt de confirmación.
+
 [args_inputfile]
 Error: El parámetro '-if' no requiere los parámetros '-df' o '-r'.
 
@@ -2777,6 +2780,15 @@ Generador
 
 [test_testssl_command_declined]
  verifica que rechazar el prompt de confirmación de testssl.sh finalice sin ejecutar el análisis.
+
+[test_testssl_command_no_stdin]
+ verifica que un stdin cerrado en el prompt de confirmación de testssl.sh finalice sin ejecutar el análisis.
+
+[test_testssl_command_accepted]
+ verifica que el valor 'yes' de '-e' ejecute el análisis de testssl.sh sin el prompt de confirmación.
+
+[test_testssl_value]
+ verifica que se muestre un error para un valor distinto de 'yes' tras la ruta de testssl.sh en '-e'.
 
 [test_testssl_analysis]
  verifica que se muestre la finalización de un análisis simulado con testssl.sh.
