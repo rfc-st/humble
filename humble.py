@@ -3043,7 +3043,9 @@ def generate_xlsx(final_filename, temp_filename, *, export_all=False):
         export is not used.
     """
     from xlsxwriter import Workbook
-    workbook = Workbook(final_filename, {"in_memory": True})
+    workbook = Workbook(final_filename, {
+        "in_memory": True, "strings_to_formulas": False,
+        "strings_to_urls": False})
     set_xlsx_metadata(workbook)
     set_xlsx_content(final_filename, workbook)
     workbook.close()

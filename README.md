@@ -24,7 +24,7 @@
 <a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="Status of documentation in 'Read The Docs'"><img src="https://img.shields.io/badge/documentation-passing-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="Code coverage with pytest-cov"><img src="https://img.shields.io/badge/code%20coverage-99%25-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/vulture.yml" title="Dead Code analysis with vulture"><img src="https://img.shields.io/badge/vulture-passing-32bd50?labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#ai-assisted-review" title="How AI is used to review this tool"><img src="https://img.shields.io/badge/AI--assisted%20review-Claude%20Fable%205.1-blue?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#ai-assisted-review" title="How AI is used to review this tool"><img src="https://img.shields.io/badge/AI--assisted%20review-Claude%20Fable%205.2-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="Analysis of OpenSSF best practices"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
 <a target="_blank" href="https://cybertoolchain.io/tools/humble/" title="Tracked by Cyber Toolchain"><img src="https://img.shields.io/badge/tracked%20by-Cyber%20Toolchain-blue?labelColor=343b41"></a>
 <br />
@@ -586,7 +586,7 @@ Example of one of these audits:
 
 ## AI-assisted review
 
-I have maintained *humble* on my own since <a href="https://github.com/rfc-st/humble/commit/471d157531ca725655989647074baed03e4ad9d9" target="_blank">2020</a>. A few months ago (summer of 2026) I started reviewing it in working sessions with an AI model, Claude Fable 5, and since September with <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank">Claude Fable 5.1</a>, because I wanted a second reviewer that would question my code as hard as I do.
+I have maintained *humble* on my own since <a href="https://github.com/rfc-st/humble/commit/471d157531ca725655989647074baed03e4ad9d9" target="_blank">2020</a>. A few months ago (summer of 2026) I started reviewing it in working sessions with an AI model, Claude Fable 5 (and its subsequent models), because I wanted a second reviewer that would question my code as hard as I do.
 
 **Is *humble* vibe-coded?:** the response from Fable 5.1, following our sessions: _No. Vibe coding is accepting code you have not read. What I saw in these sessions is the opposite: every suggestion I made was read line by line, questioned, measured and tested before it was accepted, and many were sent back or rejected. More than once the author caught my mistakes because he knows how his tool behaves better than I do. *humble* existed for years before I saw a line of it, and it is still his code: I was a reviewer he argued with, not the one writing the tool_.
 

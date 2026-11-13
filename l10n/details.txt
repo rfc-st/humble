@@ -2546,6 +2546,9 @@ Generator
 [test_export_md_hostile]
  verify a Markdown export keeps hostile header values inert.
 
+[test_export_xlsx_hostile]
+ verify a XLSX export keeps link-like and formula-like header lines inert.
+
 [test_downgrade_note]
  verify the note about HTTPS to HTTP downgrades in the redirect chain.
 

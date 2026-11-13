@@ -2524,6 +2524,9 @@ Generador
 [test_export_md_hostile]
  verifica que al exportar a Markdown los valores hostiles de las cabeceras queden inertes.
 
+[test_export_xlsx_hostile]
+ verifica que al exportar a XLSX las líneas de cabecera con forma de enlace o fórmula queden inertes.
+
 [test_downgrade_note]
  verifica la nota sobre degradaciones de HTTPS a HTTP en la cadena de redirecciones.
 

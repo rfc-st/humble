@@ -44,6 +44,7 @@ from threading import Thread
 from time import sleep
 from typing import NamedTuple
 from unittest.mock import MagicMock, patch
+from zipfile import ZipFile
 
 # Third-Party imports
 import pytest
@@ -83,7 +84,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_csp_report_only]", "[test_permissions_report_only]",
                  "[test_request_unhandled_exception]", "[test_csp_meta]",
                  "[test_downgrade_note]", "[test_export_md_hostile]",
-                 "[test_credentials_downgrade]",
+                 "[test_export_xlsx_hostile]", "[test_credentials_downgrade]",
                  "[test_credentials_cookie_redirect]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
@@ -187,6 +188,9 @@ HOSTILE_RESPONSES = {
             b"Content-Length: 6\r\n\r\nhumble",
     "location": b"HTTP/1.1 302 Found\r\nLocation: file:///etc/passwd\r\n"
                 b"Connection: close\r\nContent-Length: 0\r\n\r\n",
+    "links": b"HTTP/1.1 200 OK\r\nexternal: \\\\evil.example\\humble\r\n"
+             b"mailto: humble@evil.example\r\n=1+1: humble\r\n"
+             b"Content-Length: 0\r\n\r\n",
     "loop": b"HTTP/1.1 302 Found\r\nLocation: /hostile/loop\r\n"
             b"Connection: close\r\nContent-Length: 0\r\n\r\n",
     "status": b"HTTP/1.1 999 Humble\r\nContent-Length: 0\r\n\r\n",
@@ -1416,6 +1420,19 @@ def test_export_json_brackets(tmp_path):
     content = (tmp_path / "humble_brackets.json").read_text(encoding="utf-8")
     assert '"Value": "prefs=[1,2]"' in content
     assert '"[1,2]": [' not in content
+
+
+def test_export_xlsx_hostile(tmp_path):
+    """Verify a XLSX export keeps link-like and formula-like headers inert."""
+    run_test(["-u", f"{LOCAL_SERVER_URL}/hostile/links", "-r", "-o", "xlsx",
+              "-op", tmp_path, "-of", "humble_links"], "saved")
+    with ZipFile(tmp_path / "humble_links.xlsx") as xlsx:
+        sheet = xlsx.read("xl/worksheets/sheet1.xml")
+        strings = xlsx.read("xl/sharedStrings.xml").decode()
+    assert b"<hyperlink" not in sheet
+    assert b"<f>" not in sheet
+    assert "external: \\\\evil.example" in strings
+    assert "mailto: humble@evil.example" in strings
 
 
 def test_export_md_hostile(tmp_path):
