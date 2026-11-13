@@ -2672,6 +2672,33 @@ Generator
 [test_har_malformed_file]
  verify an error is displayed when analyzing a malformed HAR file.
 
+[test_hostile_body]
+ verify the analysis completes when the declared response body is far larger than the one read.
+
+[test_hostile_charset_nul]
+ verify the analysis completes when the 'Content-Type' charset has a NUL character.
+
+[test_hostile_charset_unknown]
+ verify the analysis completes when the 'Content-Type' charset is unknown.
+
+[test_hostile_gzip]
+ verify an error message is displayed when the response body is not valid gzip.
+
+[test_hostile_location]
+ verify an error message is displayed when a redirect points to a 'file:' URL.
+
+[test_hostile_loop]
+ verify an error message is displayed when the server redirects in a loop.
+
+[test_hostile_status]
+ verify the analysis completes when the HTTP status code is unknown.
+
+[test_hostile_status_line]
+ verify an error message is displayed when the response has no HTTP status line.
+
+[test_hostile_values]
+ verify the analysis completes with control characters and oversized values in the headers.
+
 [test_http_exception]
  verify an error is displayed for HTTP exceptions during analysis.
 

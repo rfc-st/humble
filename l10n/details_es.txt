@@ -2650,6 +2650,33 @@ Generador
 [test_har_malformed_file]
  verifica que se muestre un error al analizar un fichero HAR con sintaxis JSON inválida.
 
+[test_hostile_body]
+ verifica que el análisis se complete cuando el cuerpo declarado es mucho mayor que el leído.
+
+[test_hostile_charset_nul]
+ verifica que el análisis se complete cuando el charset de 'Content-Type' tiene un carácter NUL.
+
+[test_hostile_charset_unknown]
+ verifica que el análisis se complete cuando el charset de 'Content-Type' es desconocido.
+
+[test_hostile_gzip]
+ verifica que se muestre mensaje de error cuando el cuerpo de la respuesta no es gzip válido.
+
+[test_hostile_location]
+ verifica que se muestre mensaje de error cuando una redirección apunta a una URL 'file:'.
+
+[test_hostile_loop]
+ verifica que se muestre mensaje de error cuando el servidor redirige en bucle.
+
+[test_hostile_status]
+ verifica que el análisis se complete cuando el código de estado HTTP es desconocido.
+
+[test_hostile_status_line]
+ verifica que se muestre mensaje de error cuando la respuesta no tiene línea de estado HTTP.
+
+[test_hostile_values]
+ verifica que el análisis se complete con caracteres de control y valores enormes en las cabeceras.
+
 [test_http_exception]
  verifica que se muestre un error por excepción HTTP durante el análisis.
 

@@ -174,16 +174,43 @@ META_BODY = (
     b'content="default-src *"></head></html>'
 )
 
+# Raw responses of a hostile or broken server, served by '/hostile/<name>'
+HOSTILE_RESPONSES = {
+    "body": b"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n"
+            b"Content-Length: 200000000\r\n\r\n"
+            + b'<meta http-equiv="x" ' * 3500,
+    "charset-nul": b"HTTP/1.1 200 OK\r\nContent-Type: text/html; "
+                   b'charset="\x00"\r\nContent-Length: 2\r\n\r\nOK',
+    "charset-unknown": b"HTTP/1.1 200 OK\r\nContent-Type: text/html; "
+                       b"charset=humble\r\nContent-Length: 2\r\n\r\nOK",
+    "gzip": b"HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\n"
+            b"Content-Length: 6\r\n\r\nhumble",
+    "location": b"HTTP/1.1 302 Found\r\nLocation: file:///etc/passwd\r\n"
+                b"Connection: close\r\nContent-Length: 0\r\n\r\n",
+    "loop": b"HTTP/1.1 302 Found\r\nLocation: /hostile/loop\r\n"
+            b"Connection: close\r\nContent-Length: 0\r\n\r\n",
+    "status": b"HTTP/1.1 999 Humble\r\nContent-Length: 0\r\n\r\n",
+    "status-line": b"humble\r\n\r\n",
+    "values": b"HTTP/1.1 200 OK\r\nServer: \x1b[2J\x1b[31mhumble\x07\r\n"
+              b"Access-Control-Max-Age: \xb2\r\n"
+              b"Content-Security-Policy: " + b"default-src " * 3000 + b"\r\n"
+              b"Strict-Transport-Security: max-age=" + b"9" * 5000 + b"\r\n"
+              b"Content-Length: 0\r\n\r\n",
+}
+
 
 class _LocalStatusHandler(BaseHTTPRequestHandler):
     """Serve '/status/<code>' paths returning that HTTP status code.
 
     '/meta/<code>' paths also return an HTML body with '<meta http-equiv>'
-    tags.
+    tags and '/hostile/<name>' ones the raw bytes of `HOSTILE_RESPONSES`.
     """
 
     def do_GET(self):
         """Reply with the status code encoded in the request path."""
+        if self.path.startswith("/hostile/"):
+            self.wfile.write(HOSTILE_RESPONSES[self.path.rsplit("/", 1)[-1]])
+            return
         status_code = int(self.path.rsplit("/", 1)[-1])
         self.send_response(status_code)
         self.send_header("Content-Type", "text/html")
@@ -369,6 +396,26 @@ TEST_CFGS = {
                         "Error:"),
     "test_har_malformed_file": (["-u", TEST_URLS[2], "-if",
                                  HUMBLE_HAR_MALFORMED_FILE], "Error:"),
+    "test_hostile_body": (["-u", f"{LOCAL_SERVER_URL}/hostile/body"],
+                          "Analysis Grade:"),
+    "test_hostile_charset_nul": (
+        ["-u", f"{LOCAL_SERVER_URL}/hostile/charset-nul"], "Analysis Grade:"),
+    "test_hostile_charset_unknown": (
+        ["-u", f"{LOCAL_SERVER_URL}/hostile/charset-unknown"],
+        "Analysis Grade:"),
+    "test_hostile_gzip": (["-u", f"{LOCAL_SERVER_URL}/hostile/gzip"],
+                          "Failed to decode"),
+    "test_hostile_location": (["-u", f"{LOCAL_SERVER_URL}/hostile/location"],
+                              "invalid or unsupported"),
+    "test_hostile_loop": (["-u", f"{LOCAL_SERVER_URL}/hostile/loop"],
+                          "Too many redirects"),
+    "test_hostile_status": (["-u", f"{LOCAL_SERVER_URL}/hostile/status"],
+                            "Analysis Grade:"),
+    "test_hostile_status_line": (
+        ["-u", f"{LOCAL_SERVER_URL}/hostile/status-line"],
+        "trying to connect"),
+    "test_hostile_values": (["-u", f"{LOCAL_SERVER_URL}/hostile/values"],
+                            "Analysis Grade:"),
     "test_http_exception": (["-u", TEST_URLS[11]], "scheme"),
     "test_input_file": (["-u", TEST_URLS[2], "-if", HUMBLE_INPUT_FILE],
                         "Input:"),
