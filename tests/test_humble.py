@@ -104,6 +104,7 @@ HUMBLE_TEST_FILES = {
     "CHALLENGE": "headers_test_challenge.txt",
     "CLIENT_ERROR": "client_error_test.txt",
     "CLOUDFLARE": "headers_test_cloudflare.txt",
+    "COOKIE_PARTITIONED": "headers_test_cookie_partitioned.txt",
     "CSP_BASE64_NONCE": "headers_test_csp_base64_nonce.txt",
     "CSP_BASE64URL_NONCE": "headers_test_csp_base64url_nonce.txt",
     "CSP_HEX_NONCE": "headers_test_csp_hex_nonce.txt",
@@ -318,6 +319,9 @@ TEST_CFGS = {
     "test_connection_allowlist_values": (
         ["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
         "Connection-Allowlist (Too Permissive Value)"),
+    "test_cookie_partitioned": (
+        ["-u", TEST_URLS[2], "-if", PATHS["COOKIE_PARTITIONED"]],
+        "Set-Cookie (Missing Attribute)"),
     "test_corner_cases": (["-u", TEST_URLS[2], "-if", PATHS["CORNER_CASES"]],
                           "Analysis Grade"),
     "test_corner_cases_brief": (["-u", TEST_URLS[2], "-if",

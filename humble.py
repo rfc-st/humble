@@ -1558,7 +1558,7 @@ def check_cookie_values(stc_cookies, unsafe_scheme):
     elif any("secure" in attrs for _, attrs in stc_cookies):
         print_details("[iseti_h]", "[iseti]", "d")
     check_cookie_prefixes(stc_cookies, unsafe_scheme)
-    if any("samesite=none" in attrs and "secure" not in attrs
+    if any("secure" not in attrs and attrs & {"partitioned", "samesite=none"}
            for _, attrs in stc_cookies):
         print_details("[iseti_m]", "[isetm]", "d")
 

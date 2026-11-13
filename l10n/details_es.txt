@@ -1664,7 +1664,7 @@ Cabeceras de respuesta HTTP
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 [isetm]
- Las cookies 'SameSite=None' también deben establecerse con el atributo 'Secure'.
+ Las cookies 'SameSite=None' y 'Partitioned' requieren 'Secure'; si no, el navegador las rechaza.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 [ispref]
@@ -2469,6 +2469,9 @@ Generador
 
 [test_connection_allowlist_values]
  verifica que se informe de parámetros y patrones inseguros de la cabecera 'Connection-Allowlist'.
+
+[test_cookie_partitioned]
+ verifica que se informe de una cookie 'Partitioned' sin el atributo 'Secure'.
 
 [test_corner_cases]
  verifica que se comprueben casos específicos en varias cabeceras.

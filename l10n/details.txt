@@ -1663,7 +1663,7 @@ HTTP Response Headers
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 [isetm]
- 'SameSite=None' cookies must also be set with the 'Secure' attribute.
+ 'SameSite=None' and 'Partitioned' cookies require 'Secure'; browsers reject them otherwise.
  Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 
 [ispref]
@@ -2491,6 +2491,9 @@ Generator
 
 [test_connection_allowlist_values]
  verify unsafe parameters and patterns of the 'Connection-Allowlist' header are reported.
+
+[test_cookie_partitioned]
+ verify a 'Partitioned' cookie without the 'Secure' attribute is reported.
 
 [test_corner_cases]
  verify corner cases of headers are analyzed.

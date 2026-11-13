@@ -17,7 +17,7 @@ Timing-Allow-Origin: https://github.com
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Security-Policy: default-src 'none'; font-src 'self'; object-src 'self'; require-trusted-types-for 'script'; trusted-types 'none'; base-uri 'self'; child-src github.githubassets.com; connect-src 'self' uploads.github.com; form-action 'self' github.com; frame-ancestors 'none'; frame-src viewscreen.githubusercontent.com; img-src 'self' github.githubassets.com; manifest-src 'self'; media-src github.com user-images.githubusercontent.com/; script-src github.githubassets.com; style-src github.githubassets.com; worker-src github.githubassets.com
 Accept-Ranges: bytes
-Set-Cookie: __Host-session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax
+Set-Cookie: __Host-session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax; Partitioned
 Clear-Site-Data: "cache"
 Cross-Origin-Embedder-Policy: require-corp
 Cross-Origin-Opener-Policy: same-origin-allow-popups

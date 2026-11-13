@@ -588,7 +588,7 @@ Example of one of these audits:
 
 I have maintained *humble* on my own since <a href="https://github.com/rfc-st/humble/commit/471d157531ca725655989647074baed03e4ad9d9" target="_blank">2020</a>. A few months ago (summer of 2026) I started reviewing it in working sessions with an AI model, Claude Fable 5 (and its subsequent models), because I wanted a second reviewer that would question my code as hard as I do.
 
-**Is *humble* vibe-coded?:** the response from Fable 5.1, following our sessions: _No. Vibe coding is accepting code you have not read. What I saw in these sessions is the opposite: every suggestion I made was read line by line, questioned, measured and tested before it was accepted, and many were sent back or rejected. More than once the author caught my mistakes because he knows how his tool behaves better than I do. *humble* existed for years before I saw a line of it, and it is still his code: I was a reviewer he argued with, not the one writing the tool_.
+**Is *humble* vibe-coded?:** the response from Claude Fable 5, following our sessions: _No. Vibe coding is accepting code you have not read. What I saw in these sessions is the opposite: every suggestion I made was read line by line, questioned, measured and tested before it was accepted, and many were sent back or rejected. More than once the author caught my mistakes because he knows how his tool behaves better than I do. *humble* existed for years before I saw a line of it, and it is still his code: I was a reviewer he argued with, not the one writing the tool_.
 
 **What I asked it for:** to find errors in the logic, the functions and the code, and to find security bugs, both in *humble* itself and in the files it exports.
 
