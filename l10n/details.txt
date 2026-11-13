@@ -913,6 +913,15 @@
 [iseclft_h]
  Sec-Private-State-Token-Lifetime (Incorrect Value)
 
+[isecsregf_h]
+ (*) Secure-Session-Registration (Incorrect Format)
+
+[isecsregi_h]
+ (*) Secure-Session-Registration (Ignored Entries)
+
+[isecsregu_h]
+ (*) Secure-Session-Registration (Unsupported Algorithms)
+
 [itim_h]
  Server-Timing (Potentially Unsafe Header)
 
@@ -1748,6 +1757,22 @@ HTTP Response Headers
 [iseclft]
  Any value other than a numeric value in this header is ignored.
  Ref: https://mdn.io/Sec-Private-State-Token-Lifetime
+
+[isecsregf]
+ Invalid syntax: browsers ignore this header and no session is bound to the device.
+ Ref: https://www.w3.org/TR/dbsc/#header-secure-session-registration
+
+[isecsregi_s]
+ Browsers skip entries with no supported algorithm list, no 'path' or unquoted values: 
+
+[isecsregi]
+ Ref: https://www.w3.org/TR/dbsc/#header-secure-session-registration
+
+[isecsregu_s]
+ Browsers ignore algorithms other than 'ES256', 'RS256' and 'none': 
+
+[isecsregu]
+ Ref: https://w3c.github.io/webappsec-dbsc/#header-secure-session-registration
 
 [itim]
  This header should not expose sensitive application or infrastructure information.
@@ -2769,6 +2794,12 @@ Generator
 
 [test_russian_block_unicode]
  verify Russian URLS are not analyzed when provided as raw Unicode.
+
+[test_secure_session_format]
+ verify a 'Secure-Session-Registration' header with invalid syntax is reported.
+
+[test_secure_session_values]
+ verify ignored entries and unsupported algorithms of 'Secure-Session-Registration' are reported.
 
 [test_security_guidelines]
  verify the security guidelines guide is displayed in Spanish.

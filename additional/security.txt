@@ -69,6 +69,7 @@ Report-To
 Reporting-Endpoints
 Repr-Digest
 Sec-Private-State-Token-Lifetime
+Secure-Session-Registration
 Server-Timing
 Set-Cookie
 Set-Login

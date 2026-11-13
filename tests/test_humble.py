@@ -68,9 +68,9 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_csp_fallback_present]", "[test_csp_tokens]",
                  "[test_csp_keywords]", "[test_csp_base64url_nonce]",
                  "[test_permissions_format]", "[test_permissions_values]",
-                 "[test_cors_origin]", "[test_unreliable_analysis]",
-                 "[test_export_csv_brackets]", "[test_export_json_brackets]",
-                 "[test_empty_headers]",
+                 "[test_secure_session_values]", "[test_cors_origin]",
+                 "[test_unreliable_analysis]", "[test_export_csv_brackets]",
+                 "[test_export_json_brackets]", "[test_empty_headers]",
                  "[test_export_json_no_security_headers]",
                  "[test_export_json_no_findings]",
                  "[test_browser_compatibility_excluded]",
@@ -115,6 +115,8 @@ HUMBLE_TEST_FILES = {
     "INTEGRITY_POLICY": "headers_test_integrity_policy.txt",
     "PERMISSIONS_FORMAT": "headers_test_permissions_format.txt",
     "PERMISSIONS_VALUES": "headers_test_permissions_values.txt",
+    "SECURE_SESSION": "headers_test_secure_session.txt",
+    "SECURE_SESSION_FORMAT": "headers_test_secure_session_format.txt",
     "NO_HEADERS": "headers_test_none.txt",
     "NO_VARY_SEARCH": "headers_test_no_vary_search.txt",
     "NO_SEC_HEADERS": "headers_test_nonesecurity.txt",
@@ -449,6 +451,9 @@ TEST_CFGS = {
                               "HTTP Response Headers"),
     "test_russian_block": (["-u", TEST_URLS[8]], "withdraws"),
     "test_russian_block_unicode": (["-u", TEST_URLS[12]], "withdraws"),
+    "test_secure_session_format": (
+        ["-u", TEST_URLS[2], "-if", PATHS["SECURE_SESSION_FORMAT"]],
+        "Secure-Session-Registration (Incorrect Format)"),
     "test_security_guidelines": (["-g"], "headers-in-wordpress"),
     "test_server_error_response": (["-u", f"{LOCAL_SERVER_URL}/status/502"],
                                    "Server"),
@@ -1301,6 +1306,30 @@ def test_permissions_format():
     assert "(Too Permissive Value)" not in output
 
 
+def test_secure_session_values():
+    """Verify ignored entries and unsupported algorithms of DBSC registration.
+
+    The first, valid entry of the fixture and the 'none' algorithm are not
+    reported.
+    """
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["SECURE_SESSION"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert (""": '(ES384);path="/alt"', 'ES256;path="/bare"', """
+            """'(RS256);challenge="c2"', """
+            """'(ES256 none);path="/p";challenge=c3'\n""") in output
+    assert "'none': 'ES384'\n" in output
+    assert "(Incorrect Format)" not in output
+
+
 def test_permissions_values():
     """Verify unknown, duplicated, ignored and broad 'Permissions-Policy'."""
     result = subprocess.run(
@@ -1570,7 +1599,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-11-08")
+local_version = date.fromisoformat("2026-11-13")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

@@ -914,6 +914,15 @@
 [iseclft_h]
  Sec-Private-State-Token-Lifetime (Valores incorrectos)
 
+[isecsregf_h]
+ (*) Secure-Session-Registration (Formato incorrecto)
+
+[isecsregi_h]
+ (*) Secure-Session-Registration (Entradas ignoradas)
+
+[isecsregu_h]
+ (*) Secure-Session-Registration (Algoritmos no soportados)
+
 [itim_h]
  Server-Timing (Cabecera potencialmente insegura)
 
@@ -1749,6 +1758,22 @@ Cabeceras de respuesta HTTP
 [iseclft]
  Se ignora cualquier valor que no sea numérico en esta cabecera.
  Ref: https://mdn.io/Sec-Private-State-Token-Lifetime
+
+[isecsregf]
+ Sintaxis inválida: los navegadores ignoran esta cabecera y no vinculan la sesión al dispositivo.
+ Ref: https://www.w3.org/TR/dbsc/#header-secure-session-registration
+
+[isecsregi_s]
+ Se omiten las entradas sin lista de algoritmos soportados, sin 'path' o con valores sin comillas: 
+
+[isecsregi]
+ Ref: https://www.w3.org/TR/dbsc/#header-secure-session-registration
+
+[isecsregu_s]
+ Los navegadores ignoran los algoritmos distintos de 'ES256', 'RS256' y 'none': 
+
+[isecsregu]
+ Ref: https://w3c.github.io/webappsec-dbsc/#header-secure-session-registration
 
 [itim]
  Esta cabecera no debe exponer datos sensibles o de infraestructura.
@@ -2747,6 +2772,12 @@ Generador
 
 [test_russian_block_unicode]
  verifica que no se analicen URL rusas cuando sean Unicode sin procesar.
+
+[test_secure_session_format]
+ verifica que se informe de una cabecera 'Secure-Session-Registration' con sintaxis inválida.
+
+[test_secure_session_values]
+ verifica que se informe de entradas ignoradas y algoritmos no soportados en 'Secure-Session-Registration'.
 
 [test_security_guidelines]
  verifica que la guía con directrices de seguridad se muestre correctamente.

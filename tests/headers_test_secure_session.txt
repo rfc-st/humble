@@ -1,0 +1,4 @@
+HTTP/2 200
+date: Fri, 13 Nov 2026 19:00:00 GMT
+content-type: text/html; charset=utf-8
+secure-session-registration: (ES256 RS256); path="/StartSession", (ES384);path="/alt", ES256;path="/bare", (RS256);challenge="c2", (ES256 none);path="/p";challenge=c3

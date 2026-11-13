@@ -151,6 +151,9 @@ Reporting-Endpoints: Ignored Value
 Repr-Digest: No Secure Algorithms
 Repr-Digest: Unsafe Algorithms
 Sec-Private-State-Token-Lifetime: Incorrect Value
+Secure-Session-Registration: Ignored Entries
+Secure-Session-Registration: Incorrect Format
+Secure-Session-Registration: Unsupported Algorithms
 Server-Timing: Potentially Unsafe Header
 Service-Worker-Allowed: Too Permissive Value
 Set-Cookie: Invalid Prefixes

@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-11-08")
+local_version = date.fromisoformat("2026-11-13")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -115,8 +115,8 @@ ERROR_CODES_MIXED = (400, 451, 500, 511, 599)
 EXP_HEADERS = (
     "connection-allowlist", "connection-allowlist-report-only", "critical-ch",
     "document-policy", "nel", "permissions-policy",
-    "sec-private-state-token-lifetime", "speculation-rules",
-    "supports-loading-mode",
+    "sec-private-state-token-lifetime", "secure-session-registration",
+    "speculation-rules", "supports-loading-mode",
 )
 FORCED_CIPHERS = "HIGH:!DH:!aNULL"
 CREDENTIAL_HEADERS = frozenset({"authorization", "cookie"})
@@ -1833,6 +1833,56 @@ def permissions_ro_check_values(perm_ro_header):
     if matches_perm_ro := sorted(perm_ro_fts.intersection(t_per_dep)):
         print_matched_details("[ifpolnd_h]", "[icsi_d_s]", ", ".join(
             f"'{x}'" for x in matches_perm_ro), "[ipermro_d_r]")
+
+
+def secsreg_skipped(entry, algorithms):
+    """Check if browsers skip an entry of `Secure-Session-Registration`.
+
+    Unless it is an Inner List with a supported algorithm and a quoted
+    'path'; 'challenge' and 'authorization', if present, must be quoted too.
+    """
+    if entry[:1] != "(" or set(algorithms).isdisjoint(t_secsreg):
+        return True
+    params = SECSREG_STRINGS | dict(
+        param.lstrip(" ").partition("=")[::2]
+        for param in permissions_split(entry, ";")[1:])
+    return any(params[key][:1] != '"' for key in SECSREG_STRINGS)
+
+
+def secsreg_ignored(secsreg_header):
+    """Return the entries and algorithms of the header that browsers ignore.
+
+    `ValueError` if the header is not a Structured Fields List, which
+    browsers ignore whole.
+    """
+    entries = {entry: permissions_allowlist(permissions_strip_params(entry))
+               for entry in map(str.strip,
+                                permissions_split(secsreg_header, ","))}
+    algorithms = set().union(*entries.values())
+    if not all(map(permissions_valid_item, algorithms)):
+        raise ValueError(secsreg_header)
+    skipped = [entry for entry, items in entries.items()
+               if secsreg_skipped(entry, items)]
+    return skipped, sorted(algorithms.difference(t_secsreg))
+
+
+def secsreg_check_values(secsreg_header):
+    """Check the values of the `Secure-Session-Registration` header.
+
+    ??? quote "References"
+        - [Device Bound Session Credentials](https://w3c.github.io/webappsec-dbsc/#header-secure-session-registration){:target="_blank"}
+    """
+    try:
+        entries, algorithms = secsreg_ignored(secsreg_header)
+    except ValueError:
+        print_details("[isecsregf_h]", "[isecsregf]", "d")
+        return
+    if entries:
+        print_matched_details("[isecsregi_h]", "[isecsregi_s]", ", ".join(
+            f"'{x}'" for x in entries), "[isecsregi]")
+    if algorithms:
+        print_matched_details("[isecsregu_h]", "[isecsregu_s]", ", ".join(
+            f"'{x}'" for x in algorithms), "[isecsregu]")
 
 
 def speculation_check_values(spec_header):
@@ -5523,6 +5573,10 @@ t_ref_values = ("no-referrer", "no-referrer-when-downgrade", "origin",
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Refresh
 t_refresh = ("QA==", "@")
 
+# https://w3c.github.io/webappsec-dbsc/
+t_secsreg = ("ES256", "RS256", "none")
+SECSREG_STRINGS = {"authorization": '"', "challenge": '"', "path": ""}
+
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
 t_cookie_prf = ("__host-", "__host-http-", "__http-", "__secure-")
 t_cookie_sec = ("httponly", "secure")
@@ -5873,6 +5927,9 @@ if header_eligible("sec-private-state-token-lifetime") \
         and not seclft_header.isdigit():
     print_details("[iseclft_h]", "[iseclft]", "d")
 
+if header_eligible("secure-session-registration"):
+    secsreg_check_values(headers_l["secure-session-registration"])
+
 if header_eligible("server-timing"):
     print_details("[itim_h]", "[itim]", "d")
 
@@ -6075,8 +6132,8 @@ t_sec = ("Access-Control-Allow-Credentials", "Access-Control-Max-Age",
          "Activate-Storage-Access", "Connection-Allowlist-Report-Only",
          "Content-Disposition", "Content-Security-Policy-Report-Only",
          "Cross-Origin-Resource-Policy", "Proxy-Authenticate",
-         "Sec-Private-State-Token-Lifetime", "Strict-Transport-Security",
-         "X-Content-Type-Options")
+         "Sec-Private-State-Token-Lifetime", "Secure-Session-Registration",
+         "Strict-Transport-Security", "X-Content-Type-Options")
 
 # Section 1 headers that return a single result with the format
 # 'mdn-http_headers_<header>'
