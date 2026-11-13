@@ -36,7 +36,7 @@ import xml.etree.ElementTree as ET  # nosemgrep: use-defused-xml
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from base64 import b64decode
 from collections import Counter, defaultdict
-from contextlib import suppress
+from contextlib import redirect_stdout, suppress
 from datetime import date, datetime
 from functools import partial
 from html import escape
@@ -1972,8 +1972,26 @@ def print_general_info(unreliable, export_filename):
         print(f"\n\n{humble_desc}\n{BANNER_VERSION}\n")
     if single_export() in ("html", "pdf"):
         print(end="\n\n")
-    print_basic_info(export_filename)
-    print_extended_info(unreliable)
+    with redirect_stdout(StringIO()) as info:
+        print_basic_info(export_filename)
+        print_extended_info(unreliable)
+    print_aligned_info(info.getvalue())
+
+
+def print_aligned_info(info):
+    """Print the section with basic information, aligning its labels.
+
+    Every line is 'label: value', so each label is padded to the longest one
+    printed in this analysis; exports keep the original lines, which they
+    parse.
+    """
+    if args.output:
+        print(info, end="")
+        return
+    rows = [line.partition(":") for line in info.splitlines()]
+    width = max(len(label.rstrip()) for label, sep, _ in rows if sep)
+    for label, sep, value in rows:
+        print(f"{label.rstrip():<{width}} {sep}{value}" if sep else label)
 
 
 def print_redirect_info():
