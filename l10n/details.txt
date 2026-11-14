@@ -2546,6 +2546,9 @@ Generator
 [test_export_json_brackets]
  verify a JSON export keeps a header value ending in ']' inside its section.
 
+[test_export_html_info]
+ verify a HTML export aligns and links the lines of the '[0. Info]' section.
+
 [test_export_md_hostile]
  verify a Markdown export keeps hostile header values inert.
 

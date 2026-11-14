@@ -84,7 +84,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_csp_report_only]", "[test_permissions_report_only]",
                  "[test_request_unhandled_exception]", "[test_csp_meta]",
                  "[test_downgrade_note]", "[test_export_md_hostile]",
-                 "[test_export_xlsx_hostile]", "[test_credentials_downgrade]",
+                 "[test_export_xlsx_hostile]", "[test_export_html_info]",
+                 "[test_credentials_downgrade]",
                  "[test_credentials_cookie_redirect]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
@@ -1437,6 +1438,16 @@ def test_export_xlsx_hostile(tmp_path):
     assert b"<f>" not in sheet
     assert "external: \\\\evil.example" in strings
     assert "mailto: humble@evil.example" in strings
+
+
+def test_export_html_info(tmp_path):
+    """Verify a HTML export aligns and links the '[0. Info]' section."""
+    run_test(["-u", f"{LOCAL_SERVER_URL}/status/403", "-l", "es", "-o", "html",
+              "-op", tmp_path, "-of", "humble_info"], "exportado")
+    content = (tmp_path / "humble_info.html").read_text(encoding="utf-8")
+    assert f' URL    : <a href="{LOCAL_SERVER_URL}/status/403">' in content
+    assert ' Ref    : <a href="https://developer.mozilla.org/' in content
+    assert " Código : 403" in content
 
 
 def test_export_md_hostile(tmp_path):

@@ -76,7 +76,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-11-13")
+local_version = date.fromisoformat("2026-11-14")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -244,7 +244,7 @@ RE_PATTERN = (
     (r'<meta\s+http-equiv=["\']((?:[^"\'<\n]|["\'](?!\s+content=))*+)["\']'
      r'\s+content=["\']((?:[^"\'<\n]|["\'](?!\s*/?>))*+)["\']\s*/?>'),
     r"\(humble_sec_style\)([^:]+)", r"\(humble_sec_style\)",
-    r"(?: Nota : | Note : )", r"^[0-9a-fA-F]+$", r"^[A-Za-z0-9+/=_-]+$",
+    r"(?: Nota +: | Note +: )", r"^[0-9a-fA-F]+$", r"^[A-Za-z0-9+/=_-]+$",
     r", (?=[^;,]+?=)", r"'(?i:nonce)-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
     r"'(?i:(sha256|sha384|sha512))-([A-Za-z0-9+/=_-]+)'",
     r"(?<!')\b(?i:sha256|sha384|sha512)-[A-Za-z0-9+/=_-]+(?!')",
@@ -1981,17 +1981,26 @@ def print_general_info(unreliable, export_filename):
 def print_aligned_info(info):
     """Print the section with basic information, aligning its labels.
 
-    Every line is 'label: value', so each label is padded to the longest one
-    printed in this analysis; exports keep the original lines, which they
-    parse.
+    Exports receive the original lines, which they parse; the HTML one
+    aligns them on its own.
     """
     if args.output:
         print(info, end="")
         return
-    rows = [line.partition(":") for line in info.splitlines()]
+    for line in align_info(info).splitlines():
+        print(line)
+
+
+def align_info(info):
+    """Return the section with basic information, with its labels aligned.
+
+    Every line of that section is 'label: value', so each label is padded to
+    the longest one. Related to the console and to `-o html` option.
+    """
+    rows = [line.partition(":") for line in info.splitlines(keepends=True)]
     width = max(len(label.rstrip()) for label, sep, _ in rows if sep)
-    for label, sep, value in rows:
-        print(f"{label.rstrip():<{width}} {sep}{value}" if sep else label)
+    return "".join(f"{label.rstrip():<{width}} {sep}{value}" if sep else label
+                   for label, sep, value in rows)
 
 
 def print_redirect_info():
@@ -3811,7 +3820,8 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False,
     html_writers = build_html_writers()
     inside_section = False
     with Path(final_filename).open("a", encoding="utf8") as html_final:
-        for ln in decrease_html_spacing(content).splitlines(keepends=True):
+        for ln in decrease_html_spacing(
+                align_html_info(content)).splitlines(keepends=True):
             inside_section = write_html_line(html_final, ln, html_writers,
                                              inside_section)
         html_final.write(HTML_TAGS[12] * inside_section + HTML_TAGS[13])
@@ -3834,6 +3844,16 @@ def generate_html():
                     "html_body": "<body><pre>"}
     replaced_html = Template(html_shell).substitute(html_replace)
     Path(final_filename).write_text(replaced_html, encoding="utf8")
+
+
+def align_html_info(content):
+    """Align the labels of the section with basic information.
+
+    Related to `-o html` option.
+    """
+    head, title, rest = content.partition(INFO_SECTION)
+    info, mark, tail = rest.partition("\n[")
+    return f"{head}{title}{align_info(info)}{mark}{tail}"
 
 
 def decrease_html_spacing(content):
@@ -3898,6 +3918,11 @@ def write_html_line(html_final, ln, html_writers, inside_section):
     return inside_section
 
 
+def html_link(url):
+    """Return `url` as a link, related to `-o html` option."""
+    return f"{HTML_TAGS[1]}{url}{HTML_TAGS[2]}{url}{HTML_TAGS[0]}"
+
+
 def format_html_info(html_final, ln_rstrip):
     """Write formatted lines.
 
@@ -3906,17 +3931,11 @@ def format_html_info(html_final, ln_rstrip):
     Related to `-o html` option.
     """
     if ln_rstrip.startswith(URL_LIST[4]):
-        html_final.write(
-            f"{HTML_TAGS[1]}{ln_rstrip[:32]}{HTML_TAGS[2]}"
-            f"{ln_rstrip[:32]}{HTML_TAGS[0]}{ln_rstrip[32:]}",
-        )
+        html_final.write(f"{html_link(ln_rstrip[:32])}{ln_rstrip[32:]}")
         return True
-    if ln_rstrip.startswith(URL_STRING[1]):
-        safe_url = ln_rstrip[8:].replace('"', "&quot;")
-        html_final.write(
-            f"{ln_rstrip[:8]}{HTML_TAGS[1]}{safe_url}"
-            f"{HTML_TAGS[2]}{safe_url}{HTML_TAGS[0]}{HTML_TAGS[11]}",
-        )
+    label, _, url = ln_rstrip.replace('"', "&quot;").partition(" : ")
+    if label.rstrip() in (" URL", " Ref"):
+        html_final.write(f"{label} : {html_link(url)}{HTML_TAGS[11]}")
         return True
     return False
 
@@ -3951,9 +3970,7 @@ def format_html_references(html_final, ln_rstrip, *, lang_slice):
         if ref not in ln_rstrip or not content.startswith(HTTP_SCHEMES_URL):
             continue
         html_final.write(
-            f"{ln_rstrip[:off]}{HTML_TAGS[1]}{content}"
-            f"{HTML_TAGS[2]}{content}{HTML_TAGS[0]}{HTML_TAGS[11]}",
-        )
+            f"{ln_rstrip[:off]}{html_link(content)}{HTML_TAGS[11]}")
         return True
     return False
 
@@ -3966,10 +3983,8 @@ def format_html_compatibility(html_final, ln_rstrip):
     prefix, _, link = ln_rstrip.replace('"', "&quot;").partition(": ")
     if not link.startswith(URL_STRING[2]):
         return False
-    html_final.write(
-        f"{HTML_TAGS[4]}{prefix[1:]}: {HTML_TAGS[5]}"
-        f"{HTML_TAGS[1]}{link}{HTML_TAGS[2]}{link}{HTML_TAGS[0]}\
-{HTML_TAGS[11]}")
+    html_final.write(f"{HTML_TAGS[4]}{prefix[1:]}: {HTML_TAGS[5]}"
+                     f"{html_link(link)}{HTML_TAGS[11]}")
     return True
 
 

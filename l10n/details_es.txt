@@ -1239,7 +1239,7 @@ Cabeceras de respuesta HTTP
  Nota : No se pudo acceder al histórico, analysis_h.txt.
 
 [proxy_analysis_note]
- Note : El proxy especificado para este análisis es
+ Nota : El proxy especificado para este análisis es
 
 [analysis_output]
  Analizando URL y guardando el informe, espera por favor ...
@@ -2329,7 +2329,7 @@ Excepción no gestionada:
 
 [comp_ref]
   Ref  : https://secure-headers-project.owasp.org/best-practices/#configuration-proposal
-  Note : Usa este análisis como base para asegurar las cabeceras HTTP y sus valores.
+  Nota : Usa este análisis como base para asegurar las cabeceras HTTP y sus valores.
 
 [comp_experimental]
   Significado de '(*)': Cabecera de respuesta HTTP experimental
@@ -2523,6 +2523,9 @@ Generador
 
 [test_export_json_brackets]
  verifica que al exportar a JSON un valor terminado en ']' siga dentro de su sección.
+
+[test_export_html_info]
+ verifica que al exportar a HTML las líneas de la sección '[0. Información]' queden alineadas y enlazadas.
 
 [test_export_md_hostile]
  verifica que al exportar a Markdown los valores hostiles de las cabeceras queden inertes.
