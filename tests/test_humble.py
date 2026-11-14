@@ -1699,7 +1699,7 @@ l10n_main = []
 l10n_map = {}
 
 
-@pytest.fixture(scope="session", autouse=True) # noqa: vulture
+@pytest.fixture(scope="session", autouse=True)  # noqa: V103
 def delete_temp_coverage():
     """Set up session globals and clean up temporary files after testing."""
     args.lang = "en"

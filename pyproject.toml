@@ -4,11 +4,14 @@ target-version = "py311"
 
 [tool.ruff.lint]
 # https://docs.astral.sh/ruff/rules/
+external = ["V"]  # Codes of 'vulture', used in '# noqa' comments
 select = [
     "ALL",     # With the exceptions listed in the following sections
     ]
 ignore = [
     "ANN",     # TO-DO: and a big one, I know
+    "D203",    # WONT-FIX: Incompatible with 'D211', the one enforced
+    "D213",    # WONT-FIX: Incompatible with 'D212', the one enforced
     "EXE001",  # WONT-FIX: Shebang is mandatory for apt/packages; execution mode varies by platform
     "S603",    # WONT-FIX: The input of 'testssl_analysis' is validated
     "T201",    # WONT-FIX: 'print' findings are needed to output information not debugging/logging

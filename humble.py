@@ -4495,6 +4495,7 @@ def print_owasp_findings(header_dict, header_list):
     print()
     print_detail("[comp_experimental]", 2)
 
+
 def print_owasp_missing(header_list):
     """Print `OWASP Secure Headers Project` missing check results.
 
