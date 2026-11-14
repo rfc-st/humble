@@ -424,7 +424,7 @@ TEST_CFGS = {
                             "Analysis Grade:"),
     "test_hostile_status_line": (
         ["-u", f"{LOCAL_SERVER_URL}/hostile/status-line"],
-        "trying to connect"),
+        "no valid HTTP response"),
     "test_hostile_values": (["-u", f"{LOCAL_SERVER_URL}/hostile/values"],
                             "Analysis Grade:"),
     "test_http_exception": (["-u", TEST_URLS[11]], "scheme"),

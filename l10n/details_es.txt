@@ -1140,7 +1140,7 @@ Cabeceras de respuesta HTTP
  Error en servidor; espera unos minutos y prueba de nuevo.
 
 [e_connection]
- Error: La petición ha expirado al intentar conectarse al servidor; revisa la URL y prueba de nuevo.
+ Error: No se pudo conectar con el servidor, o este no envió una respuesta HTTP válida; revisa la URL y prueba de nuevo.
 
 [e_ssl]
  Error: La negociación TLS/SSL con la URL ha fallado; no se recibió respuesta; revisa la URL y prueba de nuevo.
