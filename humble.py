@@ -202,6 +202,7 @@ PDF_SECTION = {
 MD_BLOCKS = (PDF_SECTION["[HTTP R"], PDF_SECTION["[1."])
 MD_FINDINGS = (PDF_SECTION["[2."], PDF_SECTION["[3."], PDF_SECTION["[4."])
 REF_LINKS = (" Ref  : ", " Ref: ", "Ref  :", "Ref: ", " ref:")
+INFO_LINKS = (" URL", " Ref")
 MD_REFS = tuple(ref.strip() for ref in REF_LINKS)
 SECTIONS_EXPORT_STATES = {RESP_SECTION: (True, False, False),
                           "[1.": (False, True, False),
@@ -1981,8 +1982,8 @@ def print_general_info(unreliable, export_filename):
 def print_aligned_info(info):
     """Print the section with basic information, aligning its labels.
 
-    Exports receive the original lines, which they parse; the HTML one
-    aligns them on its own.
+    Exports receive the original lines, which they parse; the HTML and PDF
+    ones align them on their own.
     """
     if args.output:
         print(info, end="")
@@ -1995,7 +1996,8 @@ def align_info(info):
     """Return the section with basic information, with its labels aligned.
 
     Every line of that section is 'label: value', so each label is padded to
-    the longest one. Related to the console and to `-c` and `-o html` options.
+    the longest one. Related to the console and to `-c`, `-o html` and
+    `-o pdf` options.
     """
     rows = [line.partition(":") for line in info.splitlines(keepends=True)]
     width = max(len(label.rstrip()) for label, sep, _ in rows if sep)
@@ -3551,8 +3553,7 @@ def initialize_pdf(pdf, ypos):
         combined_h=tuple(dict.fromkeys(
             (*l_miss, *l_ins, *l_fng, *titled_fng, XFRAME_CHECK))),
         pdf=pdf,
-        pdf_links=(URL_STRING[1], REF_LINKS[2], REF_LINKS[3], URL_LIST[0],
-                   REF_LINKS[4]),
+        pdf_links=(REF_LINKS[3], URL_LIST[0], REF_LINKS[4]),
         ypos=ypos,
     )
 
@@ -3563,7 +3564,7 @@ def generate_pdf(tmp_filename, content, ctx, *, export_all=False):
     Related to `-o pdf` option.
     """
     set_pdf_file(ctx.pdf)
-    set_pdf_content(content, ctx)
+    set_pdf_content(align_export_info(content), ctx)
     ctx.pdf.output(final_filename)
     finalize_export(final_filename, tmp_filename, "pdf", export_all)
 
@@ -3619,6 +3620,10 @@ def apply_pdf_links(line, ctx):
 
     Related to `-o pdf` option.
     """
+    label = line.partition(" : ")[0].rstrip()
+    if label in INFO_LINKS:
+        format_pdf_links(line, label, ctx.pdf)
+        return
     for string in ctx.pdf_links:
         if string in line:
             format_pdf_links(line, string, ctx.pdf)
@@ -3721,8 +3726,8 @@ def set_pdf_links(i, pdf_string):
 
     Related to `-o pdf` option.
     """
-    pdf_links_d = {URL_STRING[1]: URL,
-                   REF_LINKS[2]: i.partition(REF_LINKS[2])[2].strip(),
+    pdf_links_d = {INFO_LINKS[0]: URL,
+                   INFO_LINKS[1]: i.partition(" : ")[2].strip(),
                    REF_LINKS[3]: i.partition(REF_LINKS[3])[2].strip(),
                    REF_LINKS[4]: i.partition(REF_LINKS[4])[2].strip(),
                    URL_LIST[0]: i.partition(": ")[2].strip()}
@@ -3821,7 +3826,7 @@ def export_html_file(final_filename, tmp_filename, *, export_all=False,
     inside_section = False
     with Path(final_filename).open("a", encoding="utf8") as html_final:
         for ln in decrease_html_spacing(
-                align_html_info(content)).splitlines(keepends=True):
+                align_export_info(content)).splitlines(keepends=True):
             inside_section = write_html_line(html_final, ln, html_writers,
                                              inside_section)
         html_final.write(HTML_TAGS[12] * inside_section + HTML_TAGS[13])
@@ -3846,10 +3851,10 @@ def generate_html():
     Path(final_filename).write_text(replaced_html, encoding="utf8")
 
 
-def align_html_info(content):
+def align_export_info(content):
     """Align the labels of the section with basic information.
 
-    Related to `-o html` option.
+    Related to `-o html` and `-o pdf` options.
     """
     head, title, rest = content.partition(INFO_SECTION)
     info, mark, tail = rest.partition("\n[")
@@ -3934,7 +3939,7 @@ def format_html_info(html_final, ln_rstrip):
         html_final.write(f"{html_link(ln_rstrip[:32])}{ln_rstrip[32:]}")
         return True
     label, _, url = ln_rstrip.replace('"', "&quot;").partition(" : ")
-    if label.rstrip() in (" URL", " Ref"):
+    if label.rstrip() in INFO_LINKS:
         html_final.write(f"{label} : {html_link(url)}{HTML_TAGS[11]}")
         return True
     return False

@@ -45,6 +45,7 @@ from time import sleep
 from typing import NamedTuple
 from unittest.mock import MagicMock, patch
 from zipfile import ZipFile
+from zlib import decompress
 
 # Third-Party imports
 import pytest
@@ -85,7 +86,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_request_unhandled_exception]", "[test_csp_meta]",
                  "[test_downgrade_note]", "[test_export_md_hostile]",
                  "[test_export_xlsx_hostile]", "[test_export_html_info]",
-                 "[test_credentials_downgrade]",
+                 "[test_export_pdf_info]", "[test_credentials_downgrade]",
                  "[test_credentials_cookie_redirect]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
@@ -1451,6 +1452,19 @@ def test_export_html_info(tmp_path):
     assert f' URL    : <a href="{LOCAL_SERVER_URL}/status/403">' in content
     assert ' Ref    : <a href="https://developer.mozilla.org/' in content
     assert " Código : 403" in content
+
+
+def test_export_pdf_info(tmp_path):
+    """Verify a PDF export aligns and links the '[0. Info]' section."""
+    run_test(["-u", f"{LOCAL_SERVER_URL}/status/403", "-l", "es", "-o", "pdf",
+              "-op", tmp_path, "-of", "humble_info"], "exportado")
+    content = (tmp_path / "humble_info.pdf").read_bytes()
+    text = b"".join(map(decompress, re.findall(
+        rb"stream\n(.*?)\nendstream", content, re.DOTALL)))
+    assert b" URL    : " in text
+    assert b" Ref    : https://developer.mozilla.org/" in text
+    assert f"/URI ({LOCAL_SERVER_URL}/status/403)".encode() in content
+    assert b"/Reference/Status/403)" in content
 
 
 def test_export_md_hostile(tmp_path):

@@ -1226,7 +1226,7 @@ HTTP Response Headers
  Note : The response came through Cloudflare, which may add, modify or remove headers.
 
 [analysis_request_note]
- Note : The HTTP request headers expressly included for this analysis are
+ Note : Request headers expressly included for this analysis:
 
 [analysis_skipped_note]
  Note : The HTTP headers expressly excluded from this analysis are
@@ -2548,6 +2548,9 @@ Generator
 
 [test_export_html_info]
  verify a HTML export aligns and links the lines of the '[0. Info]' section.
+
+[test_export_pdf_info]
+ verify a PDF export aligns and links the lines of the '[0. Info]' section.
 
 [test_export_md_hostile]
  verify a Markdown export keeps hostile header values inert.

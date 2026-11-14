@@ -1200,10 +1200,10 @@ Cabeceras de respuesta HTTP
  Nota : El análisis puede no ser fiable por el tiempo que tardó en responder la URL.
 
 [analysis_redirects_note]
- Nota : Se analizó la última redirección; usa el parámetro '-df' para cambiar este comportamiento.
+ Nota : Se analizó la última redirección; usa '-df' para cambiar este comportamiento.
 
 [analysis_downgrade_note]
- Nota : Degradación de HTTPS a HTTP en la cadena de redirecciones:
+ Nota : Degradación de HTTPS a HTTP al redirigir:
 
 [analysis_downgrade_single]
  petición se envió sin cifrar.
@@ -1224,10 +1224,10 @@ Cabeceras de respuesta HTTP
  Nota : La respuesta es una página de desafío de un WAF o protección anti-bots.
 
 [analysis_cloudflare_note]
- Nota : La respuesta llegó a través de Cloudflare, que puede añadir, modificar o eliminar cabeceras.
+ Nota : La respuesta llegó vía Cloudflare, que puede añadir, modificar o eliminar cabeceras.
 
 [analysis_request_note]
- Nota : Las cabeceras HTTP de petición incluídas expresamente en este análisis son
+ Nota : Cabeceras de petición incluidas expresamente en este análisis:
 
 [analysis_skipped_note]
  Nota : Las cabeceras HTTP excluidas expresamente en este análisis son
@@ -2526,6 +2526,9 @@ Generador
 
 [test_export_html_info]
  verifica que al exportar a HTML las líneas de la sección '[0. Información]' queden alineadas y enlazadas.
+
+[test_export_pdf_info]
+ verifica que al exportar a PDF las líneas de la sección '[0. Información]' queden alineadas y enlazadas.
 
 [test_export_md_hostile]
  verifica que al exportar a Markdown los valores hostiles de las cabeceras queden inertes.
