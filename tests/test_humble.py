@@ -1482,6 +1482,7 @@ def test_export_txt_info(tmp_path):
     assert " Código : 403" in multi
     assert '"Código": "403"' in source
 
+
 def test_export_md_hostile(tmp_path):
     """Verify a Markdown export keeps hostile header values inert."""
     run_test(["-u", TEST_URLS[2], "-if", PATHS["MARKDOWN"], "-o", "md",

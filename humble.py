@@ -2005,6 +2005,7 @@ def align_info(info):
     return "".join(f"{label.rstrip():<{width}} {sep}{value}" if sep else label
                    for label, sep, value in rows)
 
+
 def print_redirect_info():
     """Print the final URL, its redirect count and the analysis note."""
     redir_id = ("[analysis_redirect_single]" if redirect_count == 1
