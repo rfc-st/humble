@@ -2552,6 +2552,9 @@ Generator
 [test_export_pdf_info]
  verify a PDF export aligns and links the lines of the '[0. Info]' section.
 
+[test_export_txt_info]
+ verify a TXT export, alone or with other formats, aligns the lines of the '[0. Info]' section.
+
 [test_export_md_hostile]
  verify a Markdown export keeps hostile header values inert.
 

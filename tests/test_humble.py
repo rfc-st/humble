@@ -86,7 +86,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_request_unhandled_exception]", "[test_csp_meta]",
                  "[test_downgrade_note]", "[test_export_md_hostile]",
                  "[test_export_xlsx_hostile]", "[test_export_html_info]",
-                 "[test_export_pdf_info]", "[test_credentials_downgrade]",
+                 "[test_export_pdf_info]", "[test_export_txt_info]",
+                 "[test_credentials_downgrade]",
                  "[test_credentials_cookie_redirect]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
@@ -1466,6 +1467,20 @@ def test_export_pdf_info(tmp_path):
     assert f"/URI ({LOCAL_SERVER_URL}/status/403)".encode() in content
     assert b"/Reference/Status/403)" in content
 
+
+def test_export_txt_info(tmp_path):
+    """Verify a TXT export aligns the '[0. Info]' section, alone or not."""
+    common = ["-u", f"{LOCAL_SERVER_URL}/status/403", "-l", "es", "-op",
+              tmp_path, "-of"]
+    run_test([*common, "humble_info", "-o", "txt"], "exportado")
+    run_test([*common, "humble_infos", "-o", "txt", "json"], "exportados")
+    single = (tmp_path / "humble_info.txt").read_text(encoding="utf-8")
+    multi = (tmp_path / "humble_infos.txt").read_text(encoding="utf-8")
+    source = (tmp_path / "humble_infos.json").read_text(encoding="utf-8")
+    assert f" URL    : {LOCAL_SERVER_URL}/status/403" in single
+    assert " Ref    : https://developer.mozilla.org/" in single
+    assert " Código : 403" in multi
+    assert '"Código": "403"' in source
 
 def test_export_md_hostile(tmp_path):
     """Verify a Markdown export keeps hostile header values inert."""

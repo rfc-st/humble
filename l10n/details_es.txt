@@ -2530,6 +2530,9 @@ Generador
 [test_export_pdf_info]
  verifica que al exportar a PDF las líneas de la sección '[0. Información]' queden alineadas y enlazadas.
 
+[test_export_txt_info]
+ verifica que al exportar a TXT, solo o con otros formatos, las líneas de la sección '[0. Información]' queden alineadas.
+
 [test_export_md_hostile]
  verifica que al exportar a Markdown los valores hostiles de las cabeceras queden inertes.
 

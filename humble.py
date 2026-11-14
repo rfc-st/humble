@@ -1983,9 +1983,10 @@ def print_aligned_info(info):
     """Print the section with basic information, aligning its labels.
 
     Exports receive the original lines, which they parse; the HTML and PDF
-    ones align them on their own.
+    ones align them on their own. A TXT export on its own, the source of no
+    other format, is aligned here.
     """
-    if args.output:
+    if args.output and single_export() != "txt":
         print(info, end="")
         return
     for line in align_info(info).splitlines():
@@ -1996,14 +1997,13 @@ def align_info(info):
     """Return the section with basic information, with its labels aligned.
 
     Every line of that section is 'label: value', so each label is padded to
-    the longest one. Related to the console and to `-c`, `-o html` and
-    `-o pdf` options.
+    the longest one. Related to the console and to `-c`, `-o html`,
+    `-o pdf` and `-o txt` options.
     """
     rows = [line.partition(":") for line in info.splitlines(keepends=True)]
     width = max(len(label.rstrip()) for label, sep, _ in rows if sep)
     return "".join(f"{label.rstrip():<{width}} {sep}{value}" if sep else label
                    for label, sep, value in rows)
-
 
 def print_redirect_info():
     """Print the final URL, its redirect count and the analysis note."""
@@ -2758,13 +2758,15 @@ def fix_pdf_all_content(content, base_pdffilename):
 def normalize_txt_all_export(tmp_filename, content):
     """Apply format to section and lines to the TXT file.
 
-    Writes the normalized content to the final TXT file from the in-memory
-    analysis content; related to `-o` option.
+    Writes the normalized content, with the labels of its section with basic
+    information aligned, to the final TXT file from the in-memory analysis
+    content; related to `-o` option.
     """
     txt_path = Path(tmp_filename)
     identity = txt_path.stem[:-1]
     txt_path.with_name(f"{identity}.txt").write_text(
-        content.replace(f"{identity}.all", f"{identity}.txt"),
+        align_export_info(content.replace(f"{identity}.all",
+                                          f"{identity}.txt")),
         encoding="utf-8")
 
 
@@ -3854,7 +3856,8 @@ def generate_html():
 def align_export_info(content):
     """Align the labels of the section with basic information.
 
-    Related to `-o html` and `-o pdf` options.
+    Related to `-o html` and `-o pdf` options, and to `-o txt` along with
+    other formats.
     """
     head, title, rest = content.partition(INFO_SECTION)
     info, mark, tail = rest.partition("\n[")
