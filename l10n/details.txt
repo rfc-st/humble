@@ -2768,6 +2768,9 @@ Generator
 [test_owasp_compliance]
  verify the results of the OWASP 'Secure Headers Project' compliance check are displayed.
 
+[test_owasp_compliance_info]
+ verify the labels of the OWASP 'Secure Headers Project' compliance overview are aligned.
+
 [test_owasp_perfect_compliance]
  verify the results of a perfect OWASP 'Secure Headers Project' compliance check are displayed.
 

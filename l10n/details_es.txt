@@ -2746,6 +2746,9 @@ Generador
 [test_owasp_compliance]
  verifica que el cumplimiento de las mejores prácticas de OWASP 'Secure Headers Project' se muestre correctamente.
 
+[test_owasp_compliance_info]
+ verifica que las etiquetas del resumen de las mejores prácticas de OWASP 'Secure Headers Project' queden alineadas.
+
 [test_owasp_perfect_compliance]
  verifica que se muestren los resultados del cumplimiento perfecto de las mejores prácticas de OWASP 'Secure Headers Project'.
 

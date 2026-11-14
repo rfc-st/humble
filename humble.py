@@ -1995,7 +1995,7 @@ def align_info(info):
     """Return the section with basic information, with its labels aligned.
 
     Every line of that section is 'label: value', so each label is padded to
-    the longest one. Related to the console and to `-o html` option.
+    the longest one. Related to the console and to `-c` and `-o html` options.
     """
     rows = [line.partition(":") for line in info.splitlines(keepends=True)]
     width = max(len(label.rstrip()) for label, sep, _ in rows if sep)
@@ -4482,11 +4482,11 @@ def print_owasp_findings(header_dict, header_list):
     """
     print(end="\n\n")
     print(f"{STYLE[0]}{get_detail('[comp_analysis]')}")
-    print(" ", end="")
-    print_detail_l("[analysis_date]")
-    print(f" {current_time}")
-    print(f" {URL_STRING[1]}{URL}")
-    print_detail("[comp_ref]", num_lines=2)
+    with redirect_stdout(StringIO()) as info:
+        print(f" {get_detail('[analysis_date]', replace=True)} {current_time}")
+        print(f" {URL_STRING[1]}{URL}")
+        print_detail("[comp_ref]", num_lines=2)
+    print(align_info(info.getvalue()), end="")
     missing_owasp = print_owasp_missing(header_list)
     wrong_owasp = print_owasp_wrong(header_dict)
     if wrong_owasp:
@@ -4494,7 +4494,6 @@ def print_owasp_findings(header_dict, header_list):
     print_owasp_summary(missing_owasp, wrong_owasp)
     print()
     print_detail("[comp_experimental]", 2)
-
 
 def print_owasp_missing(header_list):
     """Print `OWASP Secure Headers Project` missing check results.
