@@ -2533,6 +2533,15 @@ Generador
 [test_export_txt_info]
  verifica que al exportar a TXT, solo o con otros formatos, las líneas de la sección '[0. Información]' queden alineadas.
 
+[test_export_path_kept]
+ verifica que la opción '-op' conserve los ficheros que ya existen en la ruta de exportación.
+
+[test_export_filename]
+ verifica que el nombre de un fichero exportado no conserve caracteres de ruta tomados de la URL.
+
+[test_export_html_scheme]
+ verifica que al exportar a HTML solo se enlacen las URL con esquema 'http' o 'https'.
+
 [test_export_md_hostile]
  verifica que al exportar a Markdown los valores hostiles de las cabeceras queden inertes.
 

@@ -87,7 +87,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_downgrade_note]", "[test_export_md_hostile]",
                  "[test_export_xlsx_hostile]", "[test_export_html_info]",
                  "[test_export_pdf_info]", "[test_export_txt_info]",
-                 "[test_credentials_downgrade]",
+                 "[test_export_path_kept]", "[test_export_filename]",
+                 "[test_export_html_scheme]", "[test_credentials_downgrade]",
                  "[test_credentials_cookie_redirect]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
@@ -632,6 +633,8 @@ HELPER_CASES = (
     ("csp_valid_hash",
      ("SHA256", "LXEWQrcmsEQBYnyp-6wy9chTD7GQPMTbAiWHF5IaSIE"), True),
     ("decrease_html_spacing", ("humble",), "humble"),
+    ("get_skipped_unsupported_headers", (["x\x1b]0;h"], set(), []),
+     (["x\\x1b]0;h"], [])),
     ("mask_proxy_credentials", ("http://user:pass@a.com:8080",),
      "http://****:****@a.com:8080"),
     ("mask_proxy_credentials", ("http://user@a.com:8080",),
@@ -1075,10 +1078,16 @@ def test_skip_file(tmp_path, monkeypatch):
     humble_module.l10n_map = l10n_map
     monkeypatch.chdir(tmp_path)
     assert humble_module.check_skip_file() == []
+    skip_file = tmp_path / "humble.skip"
+    skip_file.mkdir()
+    assert humble_module.check_skip_file() == []
+    skip_file.rmdir()
+    skip_file.write_bytes(b"\xff\xfeVary")
+    assert humble_module.check_skip_file() == ["\ufffd\ufffdVary"]
     skip_content = (HUMBLE_PROJECT_ROOT / "humble.skip").read_text(
         encoding="utf-8").replace("# Vary", "Vary").replace(
         "# X-XSS-Protection", "X-XSS-Protection")
-    (tmp_path / "humble.skip").write_text(skip_content, encoding="utf-8")
+    skip_file.write_text(skip_content, encoding="utf-8")
     assert humble_module.check_skip_file() == ["Vary", "X-XSS-Protection"]
     run_test(["-u", TEST_URLS[5]], "excluded from this analysis")
 
@@ -1481,6 +1490,33 @@ def test_export_txt_info(tmp_path):
     assert " Ref    : https://developer.mozilla.org/" in single
     assert " Código : 403" in multi
     assert '"Código": "403"' in source
+
+
+def test_export_path_kept(tmp_path):
+    """Verify `-op` keeps a file named as its former path check."""
+    kept = tmp_path / "check_path_permissions"
+    kept.write_text("humble", encoding="utf-8")
+    run_test(["-u", TEST_URLS[2], "-if", PATHS["ALL_HEADERS"], "-o", "txt",
+              "-op", tmp_path], "Analysis saved")
+    assert kept.read_text(encoding="utf-8") == "humble"
+
+
+def test_export_filename(tmp_path):
+    """Verify the export file name drops path characters taken from the URL."""
+    run_test(["-u", "http://127.0.0.1\\..\\..\\humble", "-if",
+              PATHS["ALL_HEADERS"], "-o", "txt", "-op", tmp_path],
+             "Analysis saved")
+    assert list(tmp_path.glob("humble_http_127.0.0.1_.._.._humble*.txt"))
+
+
+def test_export_html_scheme(tmp_path):
+    """Verify a HTML export only links 'http' and 'https' URLs."""
+    run_test(["-u", "javascript:alert(1)", "-if", PATHS["ALL_HEADERS"], "-o",
+              "html", "-op", tmp_path, "-of", "humble_scheme"],
+             "Analysis saved")
+    content = (tmp_path / "humble_scheme.html").read_text(encoding="utf-8")
+    assert "javascript:alert(1)" in content
+    assert 'href="javascript:' not in content
 
 
 def test_export_md_hostile(tmp_path):

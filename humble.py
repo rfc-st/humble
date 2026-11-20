@@ -49,6 +49,7 @@ from shutil import which
 from socket import create_connection, getaddrinfo
 from string import Template, ascii_letters, ascii_lowercase, digits
 from subprocess import PIPE, STDOUT, Popen
+from tempfile import TemporaryFile
 from threading import Event, Thread
 from time import strftime, strptime, time
 from typing import NamedTuple, NoReturn
@@ -2435,15 +2436,12 @@ def validate_path(output_path):
     Exit in case of error, related to `-op` option.
     """
     try:
-        validate_path = Path(output_path) / HUMBLE_FILES[1]
-        with validate_path.open("w", encoding="utf8"):
+        with TemporaryFile(dir=output_path):
             pass
     except OSError as path_err:
         print(f"\n {get_detail('[args_pathe]', replace=True)} "
               f"'{output_path}' ({path_err.strerror})")
         sys.exit(1)
-    else:
-        validate_path.unlink()
 
 
 def validate_file_access(target_path, *, context="history"):
@@ -2542,8 +2540,8 @@ def check_skip_file():
     Returns a list of clean header name strings.
     """
     file_skipped = []
-    with suppress(FileNotFoundError, PermissionError), \
-         Path("humble.skip").open("r", encoding="utf-8") as humble_skip_file:
+    with suppress(OSError), Path("humble.skip").open(
+            encoding="utf-8", errors="replace") as humble_skip_file:
         file_skipped = [
             line.strip() for line in humble_skip_file
             if line.strip() and not line.strip().startswith("#")
@@ -2578,8 +2576,10 @@ def get_skipped_unsupported_headers(cli_headers, insecure_headers,
     insecure_set = {header.strip().lower() for header in combined_headers}
     skip_list = [header for header in insecure_set
                  if header in insecure_headers]
-    unsupported_headers = sorted(insecure_set - insecure_headers)
+    unsupported_headers = sorted(map(sanitize_header_value,
+                                     insecure_set - insecure_headers))
     return unsupported_headers, skip_list
+
 
 def print_skipped_headers(skip_set):
     """Print skipped HTTP response headers."""
@@ -3943,7 +3943,7 @@ def format_html_info(html_final, ln_rstrip):
         html_final.write(f"{html_link(ln_rstrip[:32])}{ln_rstrip[32:]}")
         return True
     label, _, url = ln_rstrip.replace('"', "&quot;").partition(" : ")
-    if label.rstrip() in INFO_LINKS:
+    if label.rstrip() in INFO_LINKS and url.startswith(HTTP_SCHEMES_URL):
         html_final.write(f"{label} : {html_link(url)}{HTML_TAGS[11]}")
         return True
     return False
@@ -4701,8 +4701,9 @@ def build_tmp_file(suffix):
     url, url_str = urlparse(URL), extract(URL)
     host = f"{url_str.subdomain}.{url_str.domain}".lstrip(".")
     port = f"_{url.port}" if url.port else ""
-    return (f"{HUMBLE_DESC[1:7]}_{url.scheme}_{host}.{url_str.suffix}{port}_"
-            f"{suffix}")
+    name = re.sub(r"[^\w.-]", "_",
+                  f"{url.scheme}_{host}.{url_str.suffix}{port}")
+    return f"{HUMBLE_DESC[1:7]}_{name}_{suffix}"
 
 
 def process_server_error(http_status_code, l10n_id):

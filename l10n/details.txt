@@ -2555,6 +2555,15 @@ Generator
 [test_export_txt_info]
  verify a TXT export, alone or with other formats, aligns the lines of the '[0. Info]' section.
 
+[test_export_path_kept]
+ verify the '-op' option keeps the files that already exist in the export path.
+
+[test_export_filename]
+ verify the name of an exported file does not keep path characters taken from the URL.
+
+[test_export_html_scheme]
+ verify a HTML export only links URLs with the 'http' or 'https' scheme.
+
 [test_export_md_hostile]
  verify a Markdown export keeps hostile header values inert.
 
