@@ -88,7 +88,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_export_xlsx_hostile]", "[test_export_html_info]",
                  "[test_export_pdf_info]", "[test_export_txt_info]",
                  "[test_export_path_kept]", "[test_export_filename]",
-                 "[test_export_html_scheme]", "[test_credentials_downgrade]",
+                 "[test_export_html_scheme]", "[test_export_pdf_markers]",
+                 "[test_credentials_downgrade]",
                  "[test_credentials_cookie_redirect]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
@@ -648,6 +649,10 @@ HELPER_CASES = (
     ("permissions_valid_item", ('"https://a.com"',), True),
     ("permissions_valid_item", ("?1",), True),
     ("permissions_valid_item", ("5",), False),
+    ("sanitize_header_value", ("(humble_sec_style)a: b",),
+     "(humble-sec_style)a: b"),
+    ("sanitize_header_value", ("(humble_pdf_style)a",), "(humble-pdf_style)a"),
+    ("sanitize_header_value", ("(humble_style)a",), "(humble_style)a"),
     ("valid_analysis_line", ("humble",), False),
     ("valid_analysis_line", ("humble ; humble ; 1 ; 2 ; 3 ; 4 ; 5 ; 6",),
      False),
@@ -1517,6 +1522,20 @@ def test_export_html_scheme(tmp_path):
     content = (tmp_path / "humble_scheme.html").read_text(encoding="utf-8")
     assert "javascript:alert(1)" in content
     assert 'href="javascript:' not in content
+
+
+def test_export_pdf_markers(tmp_path):
+    """Verify a PDF export keeps a header value that imitates a link inert."""
+    headers = tmp_path / "headers.txt"
+    headers.write_text("HTTP/2 200\nreferrer-policy: no-referrer Ref: "
+                       "https://humble.test/\n", encoding="utf-8")
+    run_test(["-u", TEST_URLS[2], "-if", headers, "-o", "pdf", "-op", tmp_path,
+              "-of", "humble_markers"], "saved")
+    content = (tmp_path / "humble_markers.pdf").read_bytes()
+    text = b"".join(map(decompress, re.findall(
+        rb"stream\n(.*?)\nendstream", content, re.DOTALL)))
+    assert b"humble.test" not in content
+    assert b"humble_sec_style" not in text
 
 
 def test_export_md_hostile(tmp_path):

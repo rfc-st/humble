@@ -2542,6 +2542,9 @@ Generador
 [test_export_html_scheme]
  verifica que al exportar a HTML solo se enlacen las URL con esquema 'http' o 'https'.
 
+[test_export_pdf_markers]
+ verifica que al exportar a PDF un valor de cabecera que imita un enlace de referencia quede inerte.
+
 [test_export_md_hostile]
  verifica que al exportar a Markdown los valores hostiles de las cabeceras queden inertes.
 

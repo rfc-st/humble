@@ -3628,7 +3628,7 @@ def apply_pdf_links(line, ctx):
         format_pdf_links(line, label, ctx.pdf)
         return
     for string in ctx.pdf_links:
-        if string in line:
+        if string in line and STYLE[6] not in line and STYLE[8] not in line:
             format_pdf_links(line, string, ctx.pdf)
             return
 
@@ -4977,7 +4977,9 @@ def process_http_request(unreliable, proxy, custom_headers):
 
 
 def sanitize_header_value(value):
-    """Neutralize control and format characters in server-supplied values."""
+    """Neutralize control characters and style markers in supplied values."""
+    value = value.replace(STYLE[6], "(humble-pdf_style)")
+    value = value.replace(STYLE[8], "(humble-sec_style)")
     if value.isprintable():
         return value
     return "".join(

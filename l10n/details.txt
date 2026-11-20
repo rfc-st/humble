@@ -2564,6 +2564,9 @@ Generator
 [test_export_html_scheme]
  verify a HTML export only links URLs with the 'http' or 'https' scheme.
 
+[test_export_pdf_markers]
+ verify a PDF export keeps inert a header value that imitates a reference link.
+
 [test_export_md_hostile]
  verify a Markdown export keeps hostile header values inert.
 
