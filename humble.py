@@ -788,18 +788,11 @@ def get_analysis_metrics(all_analysis):
     if not url_ln:
         print_error_detail("[no_analysis]")
     adj_url_ln = adjust_old_analysis(url_ln)
-    total_a = len(adj_url_ln)
-    return print_metrics(
-        get_analytics_length(SECTION_V[:5]),
-        get_analytics_length(SECTION_V[5:12]),
-        total_a,
-        get_first_metrics(adj_url_ln),
-        get_second_metrics(adj_url_ln, total_a),
-        get_third_metrics(adj_url_ln),
-        get_additional_metrics(adj_url_ln),
-        get_highlights(adj_url_ln),
-        get_trends(adj_url_ln),
-    )
+    return build_metrics(
+        adj_url_ln,
+        get_basic_metrics(len(adj_url_ln), get_first_metrics(adj_url_ln)),
+        {"[highlights]": "\n" + "\n".join(get_highlights(adj_url_ln)),
+         **get_trend_metrics(get_trends(adj_url_ln))})
 
 
 def get_first_metrics(adj_url_ln):
@@ -972,21 +965,24 @@ def calculate_trends(values):
     return print_detail_l("[t_fluctuating]", analytics=True)
 
 
-def print_metrics(analytics_s, analytics_w, total_a, *m_data):
-    """Build the metrics dictionary for the final statistics output of a URL.
+def build_metrics(adj_url_ln, basic_m, detail_m):
+    """Build the metrics dictionary for the statistics of one URL or of all.
 
-    Consolidates and formats security, analysis, and trend values with localized
-    headers.
+    Consolidates the given metrics with the security, warning, average and
+    date ones, under localized headers; related to `-a` option.
     """
-    basic_m = get_basic_metrics(total_a, m_data[0])
-    error_m = get_security_metrics(analytics_s, m_data[1])
-    warning_m = get_warnings_metrics(m_data[3], analytics_w)
-    averages_m = get_averages_metrics(analytics_w, m_data[2])
-    fourth_m = get_highlights_metrics(m_data[4])
-    trend_m = get_trend_metrics(m_data[5])
-    analysis_year_m = get_date_metrics(m_data[3])
-    totals_m = {**basic_m, **error_m, **warning_m, **averages_m, **fourth_m,
-                **trend_m, **analysis_year_m}
+    total_a = len(adj_url_ln)
+    additional_m = get_additional_metrics(adj_url_ln)
+    analytics_w = get_analytics_length(SECTION_V[5:12])
+    totals_m = {
+        **basic_m,
+        **get_security_metrics(get_analytics_length(SECTION_V[:5]),
+                               get_second_metrics(adj_url_ln, total_a)),
+        **get_warnings_metrics(additional_m, analytics_w),
+        **get_averages_metrics(analytics_w, get_third_metrics(adj_url_ln)),
+        **detail_m,
+        "[analysis_year_month]": f"\n{additional_m[1]}",
+    }
     return {get_detail(key, replace=True): value for key, value in
             totals_m.items()}
 
@@ -1039,25 +1035,12 @@ def get_averages_metrics(analytics_w, third_m):
             "[average_ety]": f"{analytics_w[6]}{third_m[4]}\n"}
 
 
-def get_highlights_metrics(fourth_m):
-    """Print highlight-related metrics details for a URL analysis.
-
-    Related to `-a` option.
-    """
-    return {"[highlights]": "\n" + "\n".join(fourth_m)}
-
-
 def get_trend_metrics(fifth_m):
     """Print trend-related metrics details for a URL analysis."""
     if "5" in fifth_m[0]:
         trends_s = get_detail("[t_insufficient]")
         return {"[trends]": "\n" + trends_s}
     return {"[trends]": "\n" + "\n".join(fifth_m) + "\n"}
-
-
-def get_date_metrics(additional_m):
-    """Print date-related metrics details related."""
-    return {"[analysis_year_month]": f"\n{additional_m[1]}"}
 
 
 def extract_global_metrics(all_analysis):
@@ -1069,20 +1052,11 @@ def extract_global_metrics(all_analysis):
     if not url_ln:
         print_error_detail("[no_global_analysis]")
     adj_url_ln = adjust_old_analysis(url_ln)
-    total_a = len(adj_url_ln)
-    additional_m = get_additional_metrics(adj_url_ln)
-    analytics_w = get_analytics_length(SECTION_V[5:12])
-    totals_m = {
-        **get_basic_global_metrics(get_analytics_length(SECTION_V[12:26]),
-                                   total_a, get_global_metrics(adj_url_ln)),
-        **get_security_metrics(get_analytics_length(SECTION_V[:5]),
-                               get_second_metrics(adj_url_ln, total_a)),
-        **get_warnings_metrics(additional_m, analytics_w),
-        **get_averages_metrics(analytics_w, get_third_metrics(adj_url_ln)),
-        **get_date_metrics(additional_m),
-    }
-    return {get_detail(key, replace=True): value for key, value in
-            totals_m.items()}
+    return build_metrics(
+        adj_url_ln,
+        get_basic_global_metrics(get_analytics_length(SECTION_V[12:26]),
+                                 len(adj_url_ln),
+                                 get_global_metrics(adj_url_ln)), {})
 
 
 def get_global_metrics(url_ln):
@@ -1108,15 +1082,10 @@ def get_global_totals(url_ln, field):
 
     Related to `-a` option.
     """
-    most_totals = max(url_ln, key=lambda line: int(line.split(" ; ")[field]))
-    least_totals = min(url_ln, key=lambda line: int(line.split(" ; ")[field]))
-    most_totals_c, most_totals_cu = most_totals.split(" ; ")[1], \
-        most_totals.split(" ; ")[field].strip()
-    most_totals_p = f"({most_totals_cu}) {most_totals_c}"
-    least_totals_c, least_totals_cu = least_totals.split(" ; ")[1], \
-        least_totals.split(" ; ")[field].strip()
-    least_totals_p = f"({least_totals_cu}) {least_totals_c}"
-    return (most_totals_p, least_totals_p)
+    def total(line):
+        return int(line.split(" ; ")[field])
+    return tuple(f"({line.split(' ; ')[field].strip()}) {line.split(' ; ')[1]}"
+                 for line in (max(url_ln, key=total), min(url_ln, key=total)))
 
 
 def get_basic_global_metrics(analytics_l, total_a, first_m):
@@ -2629,34 +2598,38 @@ def check_export_scope():
     A single format uses the direct exporters; several formats reuse
     the batch pipeline, processed in `EXPORT_ORDER`.
     """
-    if single_export():
-        check_output_format(final_filename, unreliable, tmp_filename)
+    if fmt := single_export():
+        build_export_actions(final_filename, tmp_filename)[fmt]()
     else:
         export_selected_formats(final_filename, tmp_filename)
 
 
-def build_export_actions(final_filename, tmp_filename, content):
+def build_export_actions(final_filename, tmp_filename, content=None):
     """Map each export format to its generation function.
 
     Related to `-o` option.
     """
-    return {
+    names = (final_filename, tmp_filename)
+    mode = {"export_all": content is not None, "content": content}
+    actions = {
+        "csv": lambda: generate_csv(*names, **mode),
+        "json": lambda: generate_json(*names, **mode),
+        "xlsx": lambda: generate_csv(*names, to_xlsx=True, **mode),
+        "xml": lambda: generate_xml(*names, **mode),
+        "md": lambda: generate_md(*names, **mode),
+    }
+    if content is None:
+        return actions | {
+            "txt": lambda: generate_txt(unreliable, tmp_filename),
+            "html": lambda: export_html_file(*names),
+            "pdf": lambda: export_pdf_file(tmp_filename),
+        }
+    return actions | {
         "txt": lambda: normalize_txt_all_export(tmp_filename, content),
-        "csv": lambda: generate_csv(final_filename, tmp_filename,
-                                    export_all=True, content=content),
-        "json": lambda: generate_json(final_filename, tmp_filename,
-                                      export_all=True, content=content),
-        "xlsx": lambda: generate_csv(final_filename, tmp_filename,
-                                     to_xlsx=True, export_all=True,
-                                     content=content),
-        "xml": lambda: generate_xml(final_filename, tmp_filename,
-                                    export_all=True, content=content),
         "html": lambda: normalize_htmlpdf_all_export("html", tmp_filename,
                                                      content, final_filename),
         "pdf": lambda: normalize_htmlpdf_all_export("pdf", tmp_filename,
                                                     content),
-        "md": lambda: generate_md(final_filename, tmp_filename,
-                                  export_all=True, content=content),
     }
 
 
@@ -2807,28 +2780,6 @@ def generate_txt(unreliable, tmp_filename):
     print_export_path(tmp_filename, unreliable)
     if args.compliance:
         check_owasp_compliance(tmp_filename)
-
-
-def check_output_format(final_filename, unreliable, tmp_filename):
-    """Dispatch the export logic for the selected output format.
-
-    Maps each supported format (TXT, CSV, JSON, XLSX, XML, HTML, PDF and MD)
-    to its corresponding function.
-
-    Related to `-o` option.
-    """
-    exporters = {
-        "txt": lambda: generate_txt(unreliable, tmp_filename),
-        "csv": lambda: generate_csv(final_filename, tmp_filename),
-        "json": lambda: generate_json(final_filename, tmp_filename),
-        "xlsx": lambda: generate_csv(final_filename, tmp_filename,
-                                     to_xlsx=True),
-        "xml": lambda: generate_xml(final_filename, tmp_filename),
-        "html": lambda: export_html_file(final_filename, tmp_filename),
-        "pdf": lambda: export_pdf_file(tmp_filename),
-        "md": lambda: generate_md(final_filename, tmp_filename),
-    }
-    exporters[single_export()]()
 
 
 def check_cicd(analysis_grade, threshold_grade):
@@ -3397,47 +3348,20 @@ def json_detailed_miss(json_lns, l_miss, json_miss_h, json_miss_d,
     return result
 
 
-def json_detailed_fng_process(line, ctx, entry, current_header):
-    """Format the lines to include in the fingerprint section.
-
-    Related to `-o json` option.
-    """
-    for fng in ctx.fingerprint_set:
-        if line.startswith(fng):
-            return {ctx.fng_header: fng}, fng
-    if current_header and line.startswith(ctx.fng_val):
-        entry[ctx.fng_val] = line.split(": ", 1)[1].strip("'\" ")
-    return entry, current_header
-
-
-class JsonFngContext(NamedTuple):
-    """Loop-invariant context for the fingerprint JSON section."""
-
-    fingerprint_set: set
-    fng_header: str
-    fng_val: str
-
-
 def json_detailed_fng(json_lns, fingerprint_set):
     """Select the lines to include in the fingerprint section.
 
     Related to `-o json` option.
     """
-    result, entry, current_header = [], {}, None
-    ctx = JsonFngContext(
-        fingerprint_set=fingerprint_set,
-        fng_header=get_detail("[json_det_fngheader]", replace=True),
-        fng_val=get_detail(JSON_L10N[2], replace=True),
-    )
+    fng_header = get_detail("[json_det_fngheader]", replace=True)
+    fng_val = get_detail(JSON_L10N[2], replace=True)
+    result = []
     for line in json_lns:
-        new_entry, current_header = json_detailed_fng_process(
-            line, ctx, entry, current_header)
-        if new_entry != entry:
-            if entry:
-                result.append(entry)
-            entry = new_entry
-    if entry:
-        result.append(entry)
+        if fng := next((f for f in fingerprint_set if line.startswith(f)),
+                       None):
+            result.append({fng_header: fng})
+        elif result and line.startswith(fng_val):
+            result[-1][fng_val] = line.split(": ", 1)[1].strip("'\" ")
     return result
 
 
