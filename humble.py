@@ -2454,27 +2454,6 @@ def check_output_path(args):
         sys.exit(1)
 
 
-def parse_user_agent(*, user_agent=False):
-    """Select and validate the provided user agent, related to `-ua` option."""
-    if not user_agent:
-        return get_user_agent("1")
-    user_agent_id = args.user_agent
-    if not URL:
-        return nourl_user_agent(user_agent_id)
-    return get_user_agent(user_agent_id)
-
-
-def nourl_user_agent(user_agent_id):
-    """Display available User-Agents if the ID is `0`.
-
-    Otherwise, display an error indicating that a URL is required for the
-    provided User-Agent ID; related to `-ua` option.
-    """
-    if user_agent_id == "0":
-        return get_user_agent("0")
-    print_error_detail("[args_useragent]")
-
-
 def get_user_agent(user_agent_id):
     """Select and validate the User-Agent for a URL analysis.
 
@@ -5143,9 +5122,11 @@ if args.request_header and not URL:
 if args.user_agent is not None:
     if sys.argv.count("-ua") > 1:
         print_error_detail("[args_useragent_single]")
-    ua_header = parse_user_agent(user_agent=True)
+    if not URL and args.user_agent != "0":
+        print_error_detail("[args_useragent]")
+    ua_header = get_user_agent(args.user_agent)
 elif URL:
-    ua_header = parse_user_agent()
+    ua_header = get_user_agent("1")
 
 if args.testssl_path is not None:
     if sys.platform.startswith("win"):
@@ -5167,9 +5148,7 @@ if args.output_path is not None:
     check_output_path(args)
 
 if any([args.brief, args.output, args.proxy is not None, args.ret,
-        args.redirects, args.skip_headers]) and (URL is None or
-                                                 args.guides is None or
-                                                 args.URL_A is None):
+        args.redirects, args.skip_headers]) and URL is None:
     print_error_detail("[args_several]")
 
 skip_list, unsupported_headers, skip_set = [], [], set()
@@ -5200,7 +5179,7 @@ if args.URL_A:
 
 start = time()
 
-if not args.URL_A and not args.cicd:
+if not args.cicd:
     if not args.compliance:
         detail = "[analysis_output]" if args.output else "[analysis]"
     else:
@@ -5210,13 +5189,9 @@ if not args.URL_A and not args.cicd:
 
 final_url, redirect_count, insecure_hops = None, 0, 0
 added_request_headers = {}
+http_equiv = None
 if args.input_file is None:
-    headers_l, http_equiv = {}, None
     unreliable = False
-else:
-    http_equiv = None
-
-if args.input_file is None:
     proxy = None
     if args.proxy:
         process_proxy_url(args.proxy)
