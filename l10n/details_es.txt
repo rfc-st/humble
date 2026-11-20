@@ -2119,7 +2119,7 @@ Tu versión     :
 
 [humble_recent]
 
- Tienes una versión reciente de 'humble', ¡genial! :)
+ Tu versión de 'humble' es al menos tan reciente como la última (comparadas por fecha), ¡genial! :)
 
  Mantener tus herramientas de seguridad (como ésta) actualizadas te permite:
 

@@ -2118,7 +2118,7 @@ Your version   :
 
 [humble_recent]
 
- You have a recent version of 'humble', cool! :)
+ Your version of 'humble' is at least as recent as the latest one (compared by date), cool! :)
 
  Keeping your security tools (such as this one) updated allows you to:
 
