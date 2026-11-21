@@ -580,7 +580,7 @@ And is regularly audited manually using the following tools (for each of them, I
 - <a href="https://github.com/netromdk/vermin" target="_blank">vermin</a>: `vermin -t=3.11- --eval-annotations --backport argparse --backport ipaddress --backport typing --no-parse-comments humble.py`
 - <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a>: `vulture --min-confidence 60 humble.py`
 
-<a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/20261121_2023_audit-report.html">Example</a> of one of these audits.
+<a href="https://htmlpreview.github.io/?https://github.com/rfc-st/humble/blob/master/samples/20261121_2040_audit-report.html">Example</a> of one of these audits.
 
 ## AI-assisted review
 
