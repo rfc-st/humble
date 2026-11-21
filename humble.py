@@ -77,7 +77,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-11-20")
+local_version = date.fromisoformat("2026-11-21")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -93,8 +93,6 @@ HUMBLE_FILES = (
 PATHS = {
     "help_epilog": OS_PATH / HUMBLE_DIRS[1] / HUMBLE_FILES[4],
     "fingerprint_header": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
-    "fingerprint_term": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
-    "fingerprint_top": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[2],
     "html_source": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[7],
     "insecure_header": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[6],
     "owasp_compliance": OS_PATH / HUMBLE_DIRS[0] / HUMBLE_FILES[17],
@@ -365,45 +363,33 @@ def check_updates_diff(days_diff, github_version, local_version):
 {get_detail(days_id)}\n{get_detail('[github_humble]', replace=True)}\n")
 
 
+def fng_statistics_lines():
+    """Print the header of the fingerprint statistics and return its source.
+
+    Related to `-f` option.
+    """
+    print(f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}"
+          f"{STYLE[4]}{get_detail('[fng_source]', replace=True)}\n")
+    return PATHS["fingerprint_header"].read_text(encoding="utf8").splitlines(
+        keepends=True)[SLICE_INT[0]:]
+
+
 def fng_statistics_top():
     """Print top 20 HTTP fingerprint header statistics.
 
     Grouped by service and terminate execution, related to `-f` option.
     """
-    print(
-        f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}"
-        f"{STYLE[4]}{get_detail('[fng_source]', replace=True)}\n",
-    )
-    fng_lines = PATHS["fingerprint_top"].read_text(encoding="utf8").splitlines(
-        keepends=True,
-    )
-    fng_lines = fng_lines[SLICE_INT[0]:]
-    fng_incl = len(fng_lines)
-    fng_statistics_top_groups(fng_lines, fng_incl)
-    sys.exit(0)
-
-
-def fng_statistics_top_groups(fng_lines, fng_incl):
-    """Count fingerprint headers per service, related to `-f` option."""
-    top_groups_pattern = re.compile(RE_PATTERN[3])
-    fng_top_groups = Counter(match.strip() for line in fng_lines for match in
-                             top_groups_pattern.findall(line))
-    fng_statistics_top_result(fng_top_groups, fng_incl)
-
-
-def fng_statistics_top_result(fng_top_groups, fng_incl):
-    """Print the Top 20 services.
-
-    By total number of fingerprint headers, related to `-f` option.
-    """
-    max_ln_len = max(len(content) for content, _ in
-                     fng_top_groups.most_common(20))
-    print(f"{get_detail('[fng_top]', replace=True)} {fng_incl}\
+    fng_lines = fng_statistics_lines()
+    fng_top = Counter(match.strip() for line in fng_lines for match in
+                      re.findall(RE_PATTERN[3], line)).most_common(20)
+    max_ln_len = max(len(content) for content, _ in fng_top)
+    print(f"{get_detail('[fng_top]', replace=True)} {len(fng_lines)}\
 {get_detail('[fng_top_2]', replace=True)}\n")
-    for content, count in fng_top_groups.most_common(20):
-        fng_global_pct = round(count / fng_incl * 100, 2)
+    for content, count in fng_top:
         fng_padding = " " * (max_ln_len - len(content))
-        print(f" [{content}]: {fng_padding}{fng_global_pct:.2f}% ({count})")
+        fng_pct = round(count / len(fng_lines) * 100, 2)
+        print(f" [{content}]: {fng_padding}{fng_pct:.2f}% ({count})")
+    sys.exit(0)
 
 
 def fng_statistics_term(fng_term):
@@ -411,13 +397,7 @@ def fng_statistics_term(fng_term):
 
     Exit if no results are found, related to `-f` option.
     """
-    print(
-        f"\n{STYLE[0]}{get_detail('[fng_stats]', replace=True)}"
-        f"{STYLE[4]}{get_detail('[fng_source]', replace=True)}\n",
-    )
-    fng_incl = PATHS["fingerprint_term"].read_text(encoding="utf8").splitlines(
-        keepends=True,
-    )[SLICE_INT[0]:]
+    fng_incl = fng_statistics_lines()
     fng_groups, term_cnt = fng_statistics_term_groups(fng_incl, fng_term)
     if not fng_groups:
         print(
@@ -2761,16 +2741,6 @@ def generate_txt(unreliable, tmp_filename):
         check_owasp_compliance(tmp_filename)
 
 
-def check_cicd(analysis_grade, threshold_grade):
-    """Check if the analysis grade fails the minimum required for CI/CD.
-
-    Both grades must belong to `GRADE_ORDER`, which is guaranteed by
-    `validate_cicd_grade`; equal grades pass.
-    """
-    return GRADE_ORDER.index(analysis_grade) < GRADE_ORDER.index(
-        threshold_grade)
-
-
 def build_cicd_info(info_lines):
     """Build the CI/CD info dict from analysis metadata lines.
 
@@ -2843,7 +2813,8 @@ def threshold_cicd(threshold_grade, totals):
     threshold_norm = threshold_grade.strip().upper()
     analysis_grade = validate_cicd_grade(threshold_norm, threshold_grade,
                                          totals)
-    fails_security_gate = check_cicd(analysis_grade, threshold_norm)
+    fails_security_gate = GRADE_ORDER.index(
+        analysis_grade) < GRADE_ORDER.index(threshold_norm)
     msg_key = "[cicd_ko]" if fails_security_gate else "[cicd_ok]"
     return (
         f"{get_detail(msg_key, replace=True)}, '{threshold_norm}'",
@@ -2907,23 +2878,9 @@ def parse_cicd_totals(cicd_totals_lines, cicd_total_t, cicd_diff_t, pattern):
     Related to `-cicd` option.
     """
     return {
-        k: v for line in cicd_totals_lines
-        if (processed := parse_cicd_lines(line, pattern, cicd_total_t,
-                                          cicd_diff_t))
-        for k, v in [processed]}
-
-
-def parse_cicd_lines(line, pattern, cicd_total_t, cicd_diff_t):
-    """Process lines associated with analysis designed for CI/CD.
-
-    Related to `-cicd` option.
-    """
-    if match := pattern.match(line):
-        key = match[1].strip()
-        cicd_total_v = int(match[2])
-        cicd_diff_v = match[3].strip()
-        return key, {cicd_total_t: cicd_total_v, cicd_diff_t: cicd_diff_v}
-    return None
+        match[1].strip(): {cicd_total_t: int(match[2]),
+                           cicd_diff_t: match[3].strip()}
+        for line in cicd_totals_lines if (match := pattern.match(line))}
 
 
 def write_csv_content(csv_file, txt_source):
@@ -3103,12 +3060,32 @@ def set_xlsx_width(col_wd, worksheet):
 
 
 def parse_analysis(content):
-    """Parse the sections of a brief or detailed analysis.
+    """Parse the sections of an analysis.
 
     Related to `-o json` and `-o xml` options.
     """
-    parser = parse_json if args.brief else json_detailed_parse
-    return parser(re.split(RE_PATTERN[5], content)[1:])
+    if args.brief:
+        writer = partial(write_json, sections=tuple(
+            get_detail(f"[{i}]", replace=True) for i in JSON_SECTION))
+    else:
+        writer = partial(json_detailed_write, json_miss=[
+            get_detail(i, replace=True) for i in
+            (JSON_L10N[0], "[json_det_details]", JSON_L10N[1])])
+    return parse_sections(re.split(RE_PATTERN[5], content)[1:], writer)
+
+
+def parse_sections(txt_sections, writer):
+    """Apply `writer` to the lines of each section of the analysis.
+
+    Related to `-o json` and `-o xml` options.
+    """
+    data = {}
+    for i in range(0, len(txt_sections), 2):
+        section = f"[{txt_sections[i]}]"
+        lines = [line.strip() for line in txt_sections[i + 1].split("\n")
+                 if line.strip()]
+        data[section] = writer(lines, section)
+    return data
 
 
 def generate_json(final_filename, temp_filename, *, export_all=False,
@@ -3122,18 +3099,6 @@ def generate_json(final_filename, temp_filename, *, export_all=False,
     with Path(final_filename).open("w", encoding="utf8") as json_file:
         dump(parse_analysis(content), json_file, indent=4, ensure_ascii=False)
     finalize_export(final_filename, temp_filename, "json", export_all)
-
-
-def parse_json(txt_sections):
-    """Parse sections for a JSON export; related to `-o json -b` options."""
-    sections = tuple(get_detail(f"[{i}]", replace=True) for i in JSON_SECTION)
-    data = {}
-    for i in range(0, len(txt_sections), 2):
-        json_section = f"[{txt_sections[i]}]"
-        json_lns = [line.strip() for line in txt_sections[i + 1].split("\n")
-                    if line.strip()]
-        data[json_section] = write_json(json_lns, json_section, sections)
-    return data
 
 
 def write_json(json_lns, json_section, sections):
@@ -3180,19 +3145,6 @@ def json_detailed_sources(file_idx, slice_idx):
                                                 None) if line.strip()}
 
 
-def json_detailed_parse(txt_sections):
-    """Parse sections for a JSON export, related to `-o json` option."""
-    params = [JSON_L10N[0], "[json_det_details]", JSON_L10N[1]]
-    details = [get_detail(p, replace=True) for p in params]
-    data = {}
-    for i in range(0, len(txt_sections), 2):
-        section = f"[{txt_sections[i]}]"
-        lines = [line.strip() for line in txt_sections[i + 1].split("\n")
-                 if line.strip()]
-        data[section] = json_detailed_write(lines, section, *details)
-    return data
-
-
 def json_detailed_actions(json_lns, json_miss):
     """Map each section prefix to its JSON export handler.
 
@@ -3213,15 +3165,13 @@ def json_detailed_actions(json_lns, json_miss):
     }
 
 
-def json_detailed_write(json_lns, json_section, json_miss_h, json_miss_d,
-                        json_miss_r):
+def json_detailed_write(json_lns, json_section, json_miss):
     """Write sections for a JSON export, related to `-o json` option.
 
     A section without entries keeps its "nothing to report" message, if the
     analysis printed it.
     """
-    actions = json_detailed_actions(json_lns, (json_miss_h, json_miss_d,
-                                               json_miss_r))
+    actions = json_detailed_actions(json_lns, json_miss)
     action = next((act for prefix, act in actions.items()
                    if json_section.startswith(prefix)), None)
     result = action() if action else list(json_lns)
@@ -3336,9 +3286,8 @@ def json_detailed_fng(json_lns, fingerprint_set):
     fng_val = get_detail(JSON_L10N[2], replace=True)
     result = []
     for line in json_lns:
-        if fng := next((f for f in fingerprint_set if line.startswith(f)),
-                       None):
-            result.append({fng_header: fng})
+        if line in fingerprint_set:
+            result.append({fng_header: line})
         elif result and line.startswith(fng_val):
             result[-1][fng_val] = line.split(": ", 1)[1].strip("'\" ")
     return result
@@ -5276,17 +5225,18 @@ print()
 # Section '4. Deprecated HTTP Response Headers/Protocols and Insecure Values'
 # The file associated with this check is /additional/insecure.txt
 #
-# About 'https://mdn.io/' short links: due to limited character space per line,
-# when exporting an analysis to PDF, certain reference URLs were too long and
-# caused formatting issues. After researching how to fix these errors, I found
-# https://github.com/lazd/mdn.io, which uses DuckDuckGo's Bang! to redirect to
-# the first search result associated with 'Mozilla Developer Network'.
+# Regarding the https://mdn.io/ links in the /l10n/ files associated with this
+# section: due to limited character space per line, when exporting an analysis
+# to PDF, certain URLs were too long and caused formatting issues; after
+# investigating this matter, I found https://github.com/lazd/mdn.io which uses
+# DuckDuckGo's Bang! to redirect to the first search result associated with
+# 'Mozilla Developer Network'.
 #
-# E.g., https://mdn.io/Cross-Origin-Embedder-Policy.
-#
-# I have checked all of these short links one by one: they all resolve to the
-# original URL, but I cannot guarantee that they will remain that way over
-# time. I will keep an eye on them, though :)
+# E.g., https://mdn.io/Cross-Origin-Embedder-Policy redirects to
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy
+
+# I cannot guarantee that all links will remain valid over time, or that they
+# will redirect to the correct page, but I will review them periodically.
 print_detail_r("[4depinsecure]")
 i_cnt = [0]
 
