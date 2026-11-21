@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Audit of 'humble'</title>
+<style>
+body { background: #ffffff; color: #000000; }
+pre { font-family: monospace; font-size: 14px; }
+.ok { color: #1e8e3e; }
+.ko { color: #d93025; }
+</style>
+</head>
+<body>
+<pre>
+Audit scan (QA and security checks) of "humble.py".
+Date: 2026/11/21 - 20:23:50
+
+Checking required tools
+***********************
+
+<span class="ok">OK:</span> All required tools are available!
+
+
+Radon (Code - Breakdown and complexity)
+***************************************
+
+Breakdown of 'humble.py':
+
+ Source lines        3,756   62%
+ Blank lines         1,111   18%
+ Docstrings lines      975   16%
+ Comments lines        225    4%
+
+ Total lines         6,067
+
+<span class="ok">OK:</span> No Classes/Functions rated C or worse!
+
+Classes/Functions rated A: 244
+Classes/Functions rated B: 64
+
+Classes/Functions Maximum Complexity: 9
+Classes/Functions Average Complexity: 3.68
+
+
+Complexipy (Code - Cognitive Complexity)
+****************************************
+
+<span class="ok">OK:</span> No Classes/Functions rated 15 or worse!
+
+Classes/Functions Maximum Complexity: 8
+Classes/Functions Average Complexity: 2.01
+
+
+Vulture (Code - Dead Code)
+**************************
+
+<span class="ok">OK:</span> No dead code!
+
+
+Bandit (Code - Security Issues)
+*******************************
+
+<span class="ok">OK:</span> No high-severity issues!
+
+
+Opengrep (Code - Security Issues)
+*********************************
+
+<span class="ok">OK:</span> No security findings!
+
+
+Pip-audit (Dependencies - Security Issues)
+******************************************
+
+<span class="ok">OK:</span> No known vulnerabilities found in dependencies!
+
+
+Refurb (Code - Modernization &amp; Optimization)
+********************************************
+
+<span class="ok">OK:</span> No static analysis or linting findings!
+
+
+Sourcery (Code - Quality Score)
+*******************************
+
+<span class="ok">OK:</span> No Classes/Functions rated below 65%!
+
+Classes/Functions Average Quality Score: 78%
+
+
+Drift (Data - Consistency)
+**************************
+
+<span class="ok">OK:</span> Every l10n id is defined in both languages and used by the code.
+<span class="ok">OK:</span> Every '[test_*]' l10n id has a unit test, and every unit test has one.
+<span class="ok">OK:</span> Every 'insecure.txt' line matches a finding title printed by 'humble.py'.
+<span class="ok">OK:</span> Every 'header_eligible' gate has its header in 'insecure.txt' ('-s').
+<span class="ok">OK:</span> 'missing.txt', 'l_miss' and 'l_detail' list the same headers.
+<span class="ok">OK:</span> Section 6 only links headers listed in section 1 ('security.txt').
+<span class="ok">OK:</span> README/docs counters match the files under 'additional/'.
+
+
+Vermin (Code - Python Version Compatibility)
+********************************************
+
+<span class="ok">OK:</span> All the code is supported by Python 3.11, the minimum version required to run 'humble'!
+
+
+Codeaudit (Code - Security Issues)
+**********************************
+
+<span class="ok">OK:</span> No high-severity issues!
+
+</pre>
+</body>
+</html>

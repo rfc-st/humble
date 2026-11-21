@@ -580,9 +580,7 @@ And is regularly audited manually using the following tools (for each of them, I
 - <a href="https://github.com/netromdk/vermin" target="_blank">vermin</a>: `vermin -t=3.11- --eval-annotations --backport argparse --backport ipaddress --backport typing --no-parse-comments humble.py`
 - <a href="https://github.com/jendrikseipp/vulture" target="_blank">vulture</a>: `vulture --min-confidence 60 humble.py`
 
-Example of one of these audits:
-
-<img src="https://github.com/rfc-st/humble/blob/master/screenshots/humble_secqa.png" alt="Security and QA checks" width="344">
+<a href="https://github.com/rfc-st/humble/raw/master/samples/20261121_2023_audit-report.html">Example</a> of one of these audits.
 
 ## AI-assisted review
 
