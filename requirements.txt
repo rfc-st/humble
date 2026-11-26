@@ -6,4 +6,4 @@ pytest-cov>=6.2.1
 requests>=2.32.3
 tldextract>=5.1.2
 urllib3>=2.6.0
-xlsxwriter>=3.2.5
+xlsxwriter>=3.3.4
