@@ -102,7 +102,7 @@ PATHS = {
 TESTSSL_FILE = ("testssl", "testssl.sh")
 HISTORY_FILE = Path(HUMBLE_FILES[0])
 
-# HTTP status codes, network analysis and timeouts
+# Exceptions of a request, HTTP status codes, network analysis and timeouts
 CDN_HTTP_CODES = {*range(500, 512), *range(520, 528), 530}
 # https://developers.cloudflare.com/cloudflare-challenges/challenge-types/challenge-pages/detect-response/
 # https://docs.aws.amazon.com/waf/latest/developerguide/waf-captcha-and-challenge-actions.html
@@ -119,6 +119,22 @@ EXP_HEADERS = (
 )
 FORCED_CIPHERS = "HIGH:!DH:!aNULL"
 CREDENTIAL_HEADERS = frozenset({"authorization", "cookie"})
+REQ_EXCEPTIONS = {
+    "ChunkedEncodingError": "[e_chunk]",
+    "ConnectionError": "[e_connection]",
+    "ContentDecodingError": "[e_decoding]",
+    "CredentialsDowngradeError": "[e_downgrade]",
+    "InvalidHeader": "[e_connection]",
+    "InvalidSchema": "[e_ischema]",
+    "InvalidURL": "[e_url]",
+    "LocationParseError": "[e_url]",
+    "MissingSchema": "[e_mschema]",
+    "ProxyError": "[e_proxy]",
+    "SSLError": "[e_ssl]",
+    "TooManyRedirects": "[e_redirect]",
+    "UnicodeDecodeError": "[e_connection]",
+    "UnicodeEncodeError": "[e_url]",
+}
 REQ_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Encoding": "gzip, deflate, br, zstd",
@@ -4705,29 +4721,16 @@ def make_http_request(custom_headers, proxy):
 def process_requests_exception(exception):
     """Print error messages for request timeout and unhandled exceptions.
 
+    Each exception is matched by its class name against `REQ_EXCEPTIONS`.
+
     ??? tip
-        `requests` and `urllib3` are lazy-loaded to avoid unnecessary overhead.
+        `requests` is lazy-loaded to avoid unnecessary overhead.
     """
     import requests
-    from urllib3.exceptions import LocationParseError
-    exception_d = {
-        requests.exceptions.ChunkedEncodingError: "[e_chunk]",
-        requests.exceptions.ConnectionError: "[e_connection]",
-        requests.exceptions.ContentDecodingError: "[e_decoding]",
-        requests.exceptions.InvalidSchema: "[e_ischema]",
-        requests.exceptions.InvalidURL: "[e_url]",
-        requests.exceptions.MissingSchema: "[e_mschema]",
-        requests.exceptions.ProxyError: "[e_proxy]",
-        requests.exceptions.SSLError: "[e_ssl]",
-        requests.exceptions.TooManyRedirects: "[e_redirect]",
-        CredentialsDowngradeError: "[e_downgrade]",
-        LocationParseError: "[e_url]",
-        UnicodeEncodeError: "[e_url]",
-    }
     if isinstance(exception, requests.exceptions.Timeout):
         delete_lines()
         print_error_detail("[e_timeout]", clean_lines=True)
-    if exception_id := exception_d.get(type(exception)):
+    if exception_id := REQ_EXCEPTIONS.get(type(exception).__name__):
         print_http_exception(exception_id, exception)
     else:
         print_detail_l("[unhandled_exception]")
