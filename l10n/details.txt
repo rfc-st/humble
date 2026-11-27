@@ -2708,11 +2708,17 @@ Generator
 [test_hostile_charset_unknown]
  verify the analysis completes when the 'Content-Type' charset is unknown.
 
+[test_hostile_content_length]
+ verify an error message is displayed when the response has conflicting 'Content-Length' headers.
+
 [test_hostile_gzip]
  verify an error message is displayed when the response body is not valid gzip.
 
 [test_hostile_location]
  verify an error message is displayed when a redirect points to a 'file:' URL.
+
+[test_hostile_location_bytes]
+ verify an error message is displayed when the 'Location' of a redirect cannot be decoded.
 
 [test_hostile_loop]
  verify an error message is displayed when the server redirects in a loop.

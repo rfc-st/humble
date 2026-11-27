@@ -190,10 +190,14 @@ HOSTILE_RESPONSES = {
                    b'charset="\x00"\r\nContent-Length: 2\r\n\r\nOK',
     "charset-unknown": b"HTTP/1.1 200 OK\r\nContent-Type: text/html; "
                        b"charset=humble\r\nContent-Length: 2\r\n\r\nOK",
+    "content-length": b"HTTP/1.1 200 OK\r\nContent-Length: 1\r\n"
+                      b"Content-Length: 2\r\n\r\nOK",
     "gzip": b"HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\n"
             b"Content-Length: 6\r\n\r\nhumble",
     "location": b"HTTP/1.1 302 Found\r\nLocation: file:///etc/passwd\r\n"
                 b"Connection: close\r\nContent-Length: 0\r\n\r\n",
+    "location-bytes": b"HTTP/1.1 302 Found\r\nLocation: /hostile/\xff\r\n"
+                      b"Connection: close\r\nContent-Length: 0\r\n\r\n",
     "links": b"HTTP/1.1 200 OK\r\nexternal: \\\\evil.example\\humble\r\n"
              b"mailto: humble@evil.example\r\n=1+1: humble\r\n"
              b"Content-Length: 0\r\n\r\n",
@@ -416,10 +420,16 @@ TEST_CFGS = {
     "test_hostile_charset_unknown": (
         ["-u", f"{LOCAL_SERVER_URL}/hostile/charset-unknown"],
         "Analysis Grade:"),
+    "test_hostile_content_length": (
+        ["-u", f"{LOCAL_SERVER_URL}/hostile/content-length"],
+        "no valid HTTP response"),
     "test_hostile_gzip": (["-u", f"{LOCAL_SERVER_URL}/hostile/gzip"],
                           "Failed to decode"),
     "test_hostile_location": (["-u", f"{LOCAL_SERVER_URL}/hostile/location"],
                               "invalid or unsupported"),
+    "test_hostile_location_bytes": (
+        ["-u", f"{LOCAL_SERVER_URL}/hostile/location-bytes"],
+        "no valid HTTP response"),
     "test_hostile_loop": (["-u", f"{LOCAL_SERVER_URL}/hostile/loop"],
                           "Too many redirects"),
     "test_hostile_status": (["-u", f"{LOCAL_SERVER_URL}/hostile/status"],

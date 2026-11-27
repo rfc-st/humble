@@ -2686,11 +2686,17 @@ Generador
 [test_hostile_charset_unknown]
  verifica que el análisis se complete cuando el charset de 'Content-Type' es desconocido.
 
+[test_hostile_content_length]
+ verifica que se muestre mensaje de error cuando la respuesta tiene cabeceras 'Content-Length' conflictivas.
+
 [test_hostile_gzip]
  verifica que se muestre mensaje de error cuando el cuerpo de la respuesta no es gzip válido.
 
 [test_hostile_location]
  verifica que se muestre mensaje de error cuando una redirección apunta a una URL 'file:'.
+
+[test_hostile_location_bytes]
+ verifica que se muestre mensaje de error cuando el 'Location' de una redirección no se puede decodificar.
 
 [test_hostile_loop]
  verifica que se muestre mensaje de error cuando el servidor redirige en bucle.
