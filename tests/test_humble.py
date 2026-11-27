@@ -90,7 +90,9 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_export_path_kept]", "[test_export_filename]",
                  "[test_export_html_scheme]", "[test_export_pdf_markers]",
                  "[test_credentials_downgrade]",
-                 "[test_credentials_cookie_redirect]"]
+                 "[test_credentials_cookie_redirect]", "[test_clean_values]",
+                 "[test_uncommon_values]", "[test_uncommon_values_http]",
+                 "[test_meta_values]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -107,6 +109,7 @@ HUMBLE_TEST_FILES = {
     "GRADE_D": "headers_test_grade_d.txt",
     "HAR_ENTRIES": "headers_test_entries.har",
     "CHALLENGE": "headers_test_challenge.txt",
+    "CLEAN_VALUES": "headers_test_clean_values.txt",
     "CLIENT_ERROR": "client_error_test.txt",
     "CLOUDFLARE": "headers_test_cloudflare.txt",
     "COOKIE_PARTITIONED": "headers_test_cookie_partitioned.txt",
@@ -131,6 +134,8 @@ HUMBLE_TEST_FILES = {
     "PERFECT_OWASP": "headers_test_perfect_owasp.txt",
     "REDIRECTS": "headers_test_redirects.txt",
     "REPORT_ONLY": "headers_test_report_only.txt",
+    "UNCOMMON_VALUES": "headers_test_uncommon_values.txt",
+    "UNCOMMON_VALUES_HTTP": "headers_test_uncommon_values_http.txt",
     "UNICODE": "headers_test_unicode.txt",
 }
 CSP_FALLBACK_MISSING = ("child-src", "connect-src", "img-src", "object-src",
@@ -178,7 +183,9 @@ META_BODY = (
     b"default-src 'self' https://sandbox.example.com; frame-ancestors 'none'; "
     b'report-uri /csp">'
     b'<meta http-equiv="Content-Security-Policy-Report-Only" '
-    b'content="default-src *"></head></html>'
+    b'content="default-src *">'
+    b'<meta http-equiv="Content-Type" content="text/html; charset=latin1">'
+    b'<meta http-equiv="X-UA-Compatible" content="IE=7"></head></html>'
 )
 
 # Raw responses of a hostile or broken server, served by '/hostile/<name>'
@@ -1687,6 +1694,83 @@ def test_credentials_cookie_redirect():
     session.rebuild_auth(other_host, response)
     assert same_host.headers.get("Cookie") == "session=1"
     assert "Cookie" not in other_host.headers
+
+
+def test_clean_values():
+    """Verify legal values of several headers raise no findings."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["CLEAN_VALUES"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Deprecated/Insecure headers:   0" in output
+
+
+def test_uncommon_values():
+    """Verify findings of rarely seen header values are reported."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["UNCOMMON_VALUES"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Attribution-Reporting-Register-Source (Deprecated" in output
+    assert "Attribution-Reporting-Register-Trigger (Deprecated" in output
+    assert "Content-Security-Policy (No Valid Directives)" in output
+    assert "Content-Security-Policy (Incorrect Values)" in output
+    assert "Content-Security-Policy (Unsafe Functionality)" in output
+    assert "Set-Cookie (Invalid Prefixes)" in output
+    assert "Strict-Transport-Security (Required Values)" in output
+
+
+def test_uncommon_values_http():
+    """Verify findings of rarely seen header values in an analysis via HTTP.
+
+    The cookie of the fixture lacks 'Secure', so it must not be reported as
+    sent through an insecure scheme.
+    """
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[3], "-if",
+         PATHS["UNCOMMON_VALUES_HTTP"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Proxy-Authenticate (Unsafe Value)" in output
+    assert "Strict-Dynamic (Incorrect Header)" in output
+    assert "Set-Cookie (Insecure Scheme)" not in output
+
+
+def test_meta_values():
+    """Verify the 'Content-Type' and 'X-UA-Compatible' checks of the body."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u",
+         f"{LOCAL_SERVER_URL}/meta/200"],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Content-Type (Incorrect Value - Response body)" in output
+    assert "X-UA-Compatible (Incorrect Value - Response body)" in output
 
 
 def delete_export_files(extension, ko_msg):

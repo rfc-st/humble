@@ -1,0 +1,18 @@
+HTTP/2 200
+date: Fri, 27 Nov 2026 20:00:00 GMT
+content-type: text/html; charset=utf-8
+access-control-allow-methods: GET, POST
+access-control-allow-origin: https://app.example.com
+allow: GET, POST
+connection-allowlist: (response-origin "https://api.example.com")
+connection-allowlist-report-only: (response-origin "https://api.example.com");report-to=allowlist
+content-digest: sha-256=:RK/0qy18MlBSVnWgjwz6lZEWjP/lF5HF9bvEF8FabDg=:
+content-security-policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://127.0.0.1; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; trusted-types 'none'
+content-security-policy-report-only: default-src 'self'; report-to csp
+permissions-policy-report-only: geolocation=()
+proxy-authenticate: Bearer realm="proxy"
+repr-digest: sha-512=:YMAam51Jz/jOATT6/zvHrLVgOYTGFy1d6GJiOHTohq4yP+pgk4vf2aCsyRZOtw8MjkM7iw7yZ/WkppmM44T3qg==:
+secure-session-registration: (ES256 RS256);path="/StartSession"
+supports-loading-mode: credentialed-prerender
+want-content-digest: sha-256=10
+want-repr-digest: sha-512=10

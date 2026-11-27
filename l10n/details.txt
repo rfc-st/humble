@@ -2837,6 +2837,18 @@ Generator
 [test_credentials_cookie_redirect]
  verify that the 'Cookie' request header is kept on redirects to the same host and dropped when the host changes.
 
+[test_clean_values]
+ verify legal values of several headers raise no findings.
+
+[test_uncommon_values]
+ verify findings of rarely seen header values are reported.
+
+[test_uncommon_values_http]
+ verify findings of rarely seen header values are reported in an analysis via HTTP.
+
+[test_meta_values]
+ verify the 'Content-Type' and 'X-UA-Compatible' checks related to the response body.
+
 [test_request_invalid_header]
  verify an error is displayed for invalid request headers.
 

@@ -22,7 +22,7 @@
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml" title="Vulnerability analysis with Bandit"><img src="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml/badge.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="Vulnerability analysis with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="Status of documentation in 'Read The Docs'"><img src="https://img.shields.io/badge/documentation-passing-32bd50?labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="Code coverage with pytest-cov"><img src="https://img.shields.io/badge/code%20coverage-99%25-32bd50?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="Code coverage with pytest-cov"><img src="https://img.shields.io/badge/coverage-statements%2099%25%20%7C%20branches%2097%25-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/vulture.yml" title="Dead Code analysis with vulture"><img src="https://img.shields.io/badge/vulture-passing-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#ai-assisted-review" title="How AI is used to review this tool"><img src="https://img.shields.io/badge/AI--assisted%20review-Claude%20Fable%205.2-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="Analysis of OpenSSF best practices"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
@@ -484,7 +484,7 @@ $ cd tests
 ```
 $ cd <humble dir>
 $ cd tests
-$ pytest test_humble.py --cov-config=.coveragerc --cov=.. --cov-report=html --tb=no -rA -q -v -W ignore -p no:cacheprovider
+$ pytest test_humble.py --cov-config=.coveragerc --cov=.. --cov-branch --cov-report=html --tb=no -rA -q -v -W ignore -p no:cacheprovider
 $ cd humble_coverage_report
 Open the index.html file in a browser.
 ```
@@ -502,13 +502,14 @@ Open the index.html file in a browser.
 >
 > - `--cov-config=.coveragerc`: Specifies the coverage configuration file
 > - `--cov=..`: Specifies what code to measure coverage for
+> - `--cov-branch`: Enables branch coverage
 > - `--cov-report=html`: Defines the coverage report format
 > - `--tb=no`: Does not show tracebacks for failed tests
 > - `-rA`: Show all extra test summary info
 > - `-q`: Quiet mode (during the analysis)
 > - `-v`: Verbose mode (after the analysis)
 > - `-W ignore`: Ignore all warnings during test execution
-> - `--p no:cacheprovider`: Prevents creation of `.pytest_cache`
+> - `-p no:cacheprovider`: Prevents creation of `.pytest_cache`
 
 ## Global humble.skip
 

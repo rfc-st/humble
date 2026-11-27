@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+date: Fri, 27 Nov 2026 20:00:00 GMT
+content-type: text/html; charset=utf-8
+proxy-authenticate: Basic realm="proxy"
+set-cookie: humble=test; Path=/; HttpOnly
+strict-dynamic: 'nonce-f_NFD3FHL4xcol-s11ViqzDJTSIjTTOt'

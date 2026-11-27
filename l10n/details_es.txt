@@ -2815,6 +2815,18 @@ Generador
 [test_credentials_cookie_redirect]
  verifica que la cabecera de petición 'Cookie' se mantenga en las redirecciones al mismo host y se descarte al cambiar de host.
 
+[test_clean_values]
+ verifica que los valores correctos de varias cabeceras no generen hallazgos.
+
+[test_uncommon_values]
+ verifica que se informe de hallazgos en valores poco habituales de cabeceras.
+
+[test_uncommon_values_http]
+ verifica que se informe de hallazgos en valores poco habituales de cabeceras en un análisis vía HTTP.
+
+[test_meta_values]
+ verifica las comprobaciones de 'Content-Type' y 'X-UA-Compatible' relacionadas con el cuerpo de la respuesta.
+
 [test_request_invalid_header]
  verifica que se muestre un error para las cabeceras de petición HTTP incorrectas.
 

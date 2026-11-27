@@ -1,0 +1,8 @@
+HTTP/2 200
+date: Fri, 27 Nov 2026 20:00:00 GMT
+content-type: text/html; charset=utf-8
+attribution-reporting-register-source: {"source_event_id":"12345678","destination":"https://shop.example.com"}
+attribution-reporting-register-trigger: {"event_trigger_data":[{"trigger_data":"1"}]}
+content-security-policy: default_src='self'; script_src='self' 'unsafe-hashes'
+set-cookie: __Host-Http-session=humble; Path=/; Secure
+strict-transport-security: max-age=31536000; preload
