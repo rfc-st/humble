@@ -77,7 +77,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-11-21")
+local_version = date.fromisoformat("2026-11-27")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -1906,6 +1906,22 @@ def print_nowarnings():
         print(f"{STYLE[10]}{get_detail(DIR_MSG[2])}{STYLE[5]}")
     else:
         print_detail(DIR_MSG[2])
+
+
+def print_section_end(count):
+    """Close a section, reporting that it has no warnings if `count` is 0."""
+    if args.brief and count != 0:
+        print()
+    if count == 0:
+        print_nowarnings()
+    print()
+
+
+def print_no_valid(header, valid, short_d, long_d, id_mode):
+    """Report a header whose value has none of the `valid` ones."""
+    if header_eligible(header) and all(
+            elem not in headers_l[header] for elem in valid):
+        print_details(short_d, long_d, id_mode)
 
 
 def print_header(header):
@@ -4312,14 +4328,11 @@ def check_owasp_compliance(tmp_filename):
     Related to `-c` option.
     """
     Path(tmp_filename).unlink()
-    header_list = []
-    header_dict = {}
     with PATHS["owasp_compliance"].open("r", encoding="utf8") as owasp_file:
-        for line in islice(owasp_file, SLICE_INT[8], None):
-            header_name, header_val = line.split(": ", 1)
-            header_list.append(header_name.lower())
-            header_dict[header_name] = header_val.rstrip()
-    print_owasp_findings(header_dict, header_list)
+        header_dict = {name: value.rstrip() for name, value in (
+            line.split(": ", 1) for line in
+            islice(owasp_file, SLICE_INT[8], None))}
+    print_owasp_findings(header_dict, [name.lower() for name in header_dict])
 
 
 def print_owasp_summary(missing, wrong):
@@ -5201,11 +5214,7 @@ l_detail = ["[mcache]", "[mcsd]", "[mctype]", "[mcoe]", "[mcop]", "[mcor]",
 
 m_cnt = print_missing_headers(l_miss, l_detail)
 
-if args.brief and m_cnt != 0:
-    print()
-if m_cnt == 0:
-    print_nowarnings()
-print()
+print_section_end(m_cnt)
 
 # Section '3. Fingerprint HTTP Response Headers'
 print_detail_r("[3fingerprint]")
@@ -5216,11 +5225,7 @@ if not args.brief:
 l_fng_ex, l_fng, titled_fng = get_fingerprint_headers()
 f_cnt = print_fingerprint_headers(headers_l, l_fng_ex, titled_fng)
 
-if args.brief and f_cnt != 0:
-    print()
-if f_cnt == 0:
-    print_nowarnings()
-print()
+print_section_end(f_cnt)
 
 # Section '4. Deprecated HTTP Response Headers/Protocols and Insecure Values'
 # The file associated with this check is /additional/insecure.txt
@@ -5669,10 +5674,8 @@ if header_eligible("cross-origin-embedder-policy"):
     if "credentialless" in coep_h:
         print_details("[icoepu_h]", "[icoepu]", "d")
 
-if header_eligible("cross-origin-embedder-policy-report-only"):
-    coepr_h = headers_l["cross-origin-embedder-policy-report-only"]
-    if not any(elem in coepr_h for elem in t_coepr):
-        print_details("[icoepr_h]", "[icoepr]", "d")
+print_no_valid("cross-origin-embedder-policy-report-only", t_coepr,
+               "[icoepr_h]", "[icoepr]", "d")
 
 if header_eligible("cross-origin-opener-policy"):
     coop_h = headers_l["cross-origin-opener-policy"]
@@ -5683,28 +5686,19 @@ if header_eligible("cross-origin-opener-policy"):
     if "unsafe-none" in coop_h:
         print_details("[icoopi_h]", "[icoopi]", "d")
 
-if header_eligible("cross-origin-opener-policy-report-only"):
-    coopr_h = headers_l["cross-origin-opener-policy-report-only"]
-    if not any(elem in coopr_h for elem in t_coop):
-        print_details("[icoopr_h]", "[icoopr]", "d")
+print_no_valid("cross-origin-opener-policy-report-only", t_coop, "[icoopr_h]",
+               "[icoopr]", "d")
 
-if header_eligible("cross-origin-resource-policy"):
-    corp_h = headers_l["cross-origin-resource-policy"]
-    if not any(elem in corp_h for elem in t_corp):
-        print_details("[icorp_h]", "[icorp]", "d")
+print_no_valid("cross-origin-resource-policy", t_corp, "[icorp_h]", "[icorp]",
+               "d")
 
 if header_eligible("digest"):
     print_details("[idig_h]", "[idig]", "d")
 
-if header_eligible("document-isolation-policy"):
-    doci_h = headers_l["document-isolation-policy"]
-    if not any(elem in doci_h for elem in t_doci):
-        print_details("[idocpi_h]", "[idocpi]", "d")
+print_no_valid("document-isolation-policy", t_doci, "[idocpi_h]", "[idocpi]",
+               "d")
 
-if header_eligible("document-policy"):
-    docp_h = headers_l["document-policy"]
-    if not any(elem in docp_h for elem in t_docp):
-        print_details("[idocp_h]", "[idoc]", "m")
+print_no_valid("document-policy", t_docp, "[idocp_h]", "[idoc]", "m")
 
 if header_eligible("etag"):
     print_details("[ieta_h]", "[ieta]", "d")
@@ -5866,10 +5860,8 @@ if header_eligible("supports-loading-mode"):
     support_mode_check_values(headers_l["supports-loading-mode"],
                               unsafe_scheme)
 
-if header_eligible("surrogate-control"):
-    surrogate_mode_h = headers_l["surrogate-control"]
-    if not any(elem in surrogate_mode_h for elem in t_surrogate):
-        print_details("[isurrmode_h]", "[isurrmode]", "d")
+print_no_valid("surrogate-control", t_surrogate, "[isurrmode_h]",
+               "[isurrmode]", "d")
 
 tao_header = headers_l.get("timing-allow-origin", "")
 if header_eligible("timing-allow-origin") \
@@ -5998,11 +5990,7 @@ if header_eligible("x-xss-protection"):
     xxss_header = headers_l["x-xss-protection"]
     xxss_check_values(xxss_header)
 
-if args.brief and i_cnt[0] != 0:
-    print()
-if i_cnt[0] == 0:
-    print_nowarnings()
-print()
+print_section_end(i_cnt[0])
 
 # Section '5. Empty HTTP Response Headers Values'
 print_detail_r("[5empty]")
