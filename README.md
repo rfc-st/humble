@@ -18,6 +18,7 @@
 <a target="_blank" href="https://merginit.com/blog/18082025-http-security-header-checker-tools" title="MerginIT"><img src="https://img.shields.io/badge/MerginIT-blue"></a>
 <a target="_blank" href="https://secure-headers-project.owasp.org/technical-resources/#analysis-tools" title="OWASP Secure Headers Project"><img src="https://img.shields.io/badge/OWASP-blue"></a>
 <a target="_blank" href="https://qiita.com/prograti/items/8eea5d60056f6df0d160#humble" title="Security Tools in Kali Linux"><img src="https://img.shields.io/badge/Qiita-blue"></a>
+<a target="_blank" href="https://undercodetesting.com/humble-http-headers-analyzer-the-security-tool-that-exposes-your-websites-hidden-weaknesses-in-seconds-video/" title="Undercode Testing"><img src="https://img.shields.io/badge/Undercode%20Testing-blue"></a>
 <br />
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml" title="Vulnerability analysis with Bandit"><img src="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml/badge.svg"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="Vulnerability analysis with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>

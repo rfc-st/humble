@@ -5418,9 +5418,9 @@ t_nel_req = ("report_to", "max_age")
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search
 t_nvarysearch = ("except", "key-order", "params")
 
-# https://developer.chrome.com/origintrials/
 # https://privacysandbox.google.com/overview/status
 # https://github.com/MicrosoftEdge/MSEdgeExplainers
+# https://developer.chrome.com/origintrials/#/trials/active
 # https://developer.microsoft.com/en-us/microsoft-edge/origin-trials/trials
 # https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy
