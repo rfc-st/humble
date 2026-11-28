@@ -9,6 +9,10 @@
 <a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--11--28-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
+<a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml" title="Vulnerability analysis with Bandit"><img src="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml/badge.svg"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="Vulnerability analysis with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
+<a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="Status of documentation in 'Read The Docs'"><img src="https://img.shields.io/badge/Documentation-passing-32bd50?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/vulture.yml" title="Dead Code analysis with vulture"><img src="https://img.shields.io/badge/vulture-passing-32bd50?labelColor=343b41"></a><br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
 <a target="_blank" href="https://artemis-scanner.readthedocs.io/en/latest/search.html?q=humble&check_keywords=yes&area=default" title="Artemis vulnerability scanner"><img src="https://img.shields.io/badge/Artemis-blue"></a>
 <a target="_blank" href="https://blog.csdn.net/gitblog_01072/article/details/141745712" title="Chinese Software Developer Network"><img src="https://img.shields.io/badge/CSDN-blue"></a>
@@ -20,10 +24,6 @@
 <a target="_blank" href="https://qiita.com/prograti/items/8eea5d60056f6df0d160#humble" title="Security Tools in Kali Linux"><img src="https://img.shields.io/badge/Qiita-blue"></a>
 <a target="_blank" href="https://undercodetesting.com/humble-http-headers-analyzer-the-security-tool-that-exposes-your-websites-hidden-weaknesses-in-seconds-video/" title="Undercode Testing"><img src="https://img.shields.io/badge/Undercode%20Testing-blue"></a>
 <br />
-<a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml" title="Vulnerability analysis with Bandit"><img src="https://github.com/rfc-st/humble/actions/workflows/bandit-security-scan.yml/badge.svg"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="Vulnerability analysis with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
-<a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="Status of documentation in 'Read The Docs'"><img src="https://img.shields.io/badge/Documentation-passing-32bd50?labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/vulture.yml" title="Dead Code analysis with vulture"><img src="https://img.shields.io/badge/vulture-passing-32bd50?labelColor=343b41"></a><br />
 <a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="Code coverage with pytest-cov"><img src="https://img.shields.io/badge/coverage-statements%2099%25%20%7C%20branches%2098%25-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#ai-assisted-review" title="How AI is used to review this tool"><img src="https://img.shields.io/badge/AI--review-Claude%20Fable%205.2-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="Analysis of OpenSSF best practices"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
