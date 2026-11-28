@@ -21,6 +21,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - References: references.md
+  - Regex: regex.md
   - Unit Tests: unit_tests.md
 
 plugins:
