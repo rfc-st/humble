@@ -92,7 +92,8 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_credentials_downgrade]",
                  "[test_credentials_cookie_redirect]", "[test_clean_values]",
                  "[test_uncommon_values]", "[test_uncommon_values_http]",
-                 "[test_meta_values]", "[test_brief_findings]"]
+                 "[test_meta_values]", "[test_brief_findings]",
+                 "[test_permissions_features]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -125,6 +126,7 @@ HUMBLE_TEST_FILES = {
     "CSP_UNSAFE_INLINE": "headers_test_csp_unsafe_inline.txt",
     "EMPTY": "headers_test_empty.txt",
     "INTEGRITY_POLICY": "headers_test_integrity_policy.txt",
+    "PERMISSIONS_FEATURES": "headers_test_permissions_features.txt",
     "PERMISSIONS_FORMAT": "headers_test_permissions_format.txt",
     "PERMISSIONS_VALUES": "headers_test_permissions_values.txt",
     "SECURE_SESSION": "headers_test_secure_session.txt",
@@ -1448,6 +1450,23 @@ def test_permissions_values():
     assert "Permissions-Policy-Report-Only (Incorrect Format)" in output
     assert "Permissions-Policy (Incorrect Format)" not in output
     assert "(Deprecated Features)" not in output
+
+
+def test_permissions_features():
+    """Verify client hints are known and retired features are deprecated."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["PERMISSIONS_FEATURES"]],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "Permissions-Policy (Unknown Features)" not in output
+    assert "features: 'interest-cohort', 'shared-storage', 'vr'" in output
 
 
 def test_export_csv_brackets(tmp_path):

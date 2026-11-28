@@ -2534,6 +2534,9 @@ Generator
 [test_permissions_values]
  verify unknown, duplicated, ignored and too permissive 'Permissions-Policy' features are reported.
 
+[test_permissions_features]
+ verify client hints are known and retired features are reported as deprecated in 'Permissions-Policy'.
+
 [test_permissions_format]
  verify a 'Permissions-Policy' header with invalid syntax is reported and not analyzed.
 

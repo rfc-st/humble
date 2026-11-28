@@ -2512,6 +2512,9 @@ Generador
 [test_permissions_values]
  verifica que se informe de características desconocidas, duplicadas, ignoradas y muy permisivas en 'Permissions-Policy'.
 
+[test_permissions_features]
+ verifica que las client hints se reconozcan y que las directivas deprecadas se informen en 'Permissions-Policy'.
+
 [test_permissions_format]
  verifica que la cabecera 'Permissions-Policy' con sintaxis inválida se informe y no se analice.
 
