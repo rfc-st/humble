@@ -2981,6 +2981,9 @@ Generator
 [test_user_agent_only]
  verify an error is displayed when a URL is missing when specifying a valid User-Agent.
 
+[test_user_agent_twice]
+ verify an error is displayed when the User-Agent parameter is specified more than once.
+
 [test_user_agent_wrong]
  verify an error is displayed when an invalid User-Agent is provided.
 

@@ -584,6 +584,8 @@ TEST_CFGS = {
                         "Selected the User-Agent"),
     "test_user_agent_list": (["-ua", "0"], "source: "),
     "test_user_agent_only": (["-ua", "4"], "requires"),
+    "test_user_agent_twice": (["-u", TEST_URLS[9], "-ua", "1", "-ua", "2"],
+                              "only accepts one value"),
     "test_user_agent_wrong": (["-u", TEST_URLS[9], "-ua", "999999"],
                               "available"),
     "test_valid_output_path": (["-u", TEST_URLS[9], "-o", "csv", "-op", "."],
@@ -1813,6 +1815,7 @@ def test_brief_findings():
     output = result.stdout + result.stderr
     assert "X-Frame-Options" in output
     assert "Content-Security-Policy (Incorrect Hash)" in output
+    assert "Content-Security-Policy (Insecure Schemes)" in output
     assert "Content-Security-Policy (Unsafe Nonce)" in output
     assert "Set-Cookie (Invalid Prefixes)" in output
     assert "X-XSS-Protection (Unsafe Value)" in output

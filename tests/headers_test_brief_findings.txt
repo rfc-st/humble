@@ -1,6 +1,6 @@
 HTTP/2 200
 date: Sat, 28 Nov 2026 12:00:00 GMT
 content-type: text/html; charset=utf-8
-content-security-policy: default-src 'self'; script-src 'nonce-humble' 'sha256-hum=ble'
+content-security-policy: default-src 'self'; img-src http:; script-src 'nonce-humble' 'sha256-hum=ble'
 set-cookie: __Host-Http-session=humble; Path=/; Secure
 x-xss-protection: 1; mode=block

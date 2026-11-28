@@ -2959,6 +2959,9 @@ Generador
 [test_user_agent_only]
  verifica que se muestre un error al indicar un User-Agent sin URL a analizar.
 
+[test_user_agent_twice]
+ verifica que se muestre un error al indicar más de una vez el parámetro del User-Agent.
+
 [test_user_agent_wrong]
  verifica que se muestre un error al indicar un User-Agent inválido.
 

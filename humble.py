@@ -1940,6 +1940,12 @@ def print_no_valid(header, valid, short_d, long_d, id_mode):
         print_details(short_d, long_d, id_mode)
 
 
+def print_present(header, short_d, long_d, id_mode, num_lines=None):
+    """Report a header whose mere presence is a finding."""
+    if header_eligible(header):
+        print_details(short_d, long_d, id_mode, num_lines)
+
+
 def print_header(header):
     """Print the header name."""
     print(f" {header}" if args.output else f"{STYLE[1]} {header}")
@@ -5544,11 +5550,9 @@ if header_eligible("accept-ch"):
         print_matched_details("[ixachd_h]", "[ixachd_s]", ", ".join(
             f"'{x}'" for x in match_value), "[ixachd]")
 
-if header_eligible("accept-ch-lifetime"):
-    print_details("[ixacl_h]", "[ixacld]", "d")
+print_present("accept-ch-lifetime", "[ixacl_h]", "[ixacld]", "d")
 
-if header_eligible("accept-patch"):
-    print_details("[ixacp_h]", "[ixacp]", "m")
+print_present("accept-patch", "[ixacp_h]", "[ixacp]", "m")
 
 if header_eligible("access-control-allow-credentials") \
         and headers_l["access-control-allow-credentials"] != "true":
@@ -5587,11 +5591,11 @@ if header_eligible("allow"):
         print_matched_details("[imethods_hh]", "[imethods_s]",
                               ", ".join(match_method), "[imethods]")
 
-if header_eligible("attribution-reporting-register-source"):
-    print_details("[iarrs_h]", "[iarrs]", "d")
+print_present("attribution-reporting-register-source", "[iarrs_h]", "[iarrs]",
+              "d")
 
-if header_eligible("attribution-reporting-register-trigger"):
-    print_details("[iarrt_h]", "[iarrt]", "d")
+print_present("attribution-reporting-register-trigger", "[iarrt_h]", "[iarrt]",
+              "d")
 
 if header_eligible("cache-control"):
     cache_header = headers_l.get("cache-control", "").casefold()
@@ -5626,8 +5630,7 @@ if header_eligible("content-digest"):
     if any(elem in contdig_header for elem in t_digest_ins):
         print_details("[icontdigi_h]", "[icontdigi]", "d")
 
-if header_eligible("content-dpr"):
-    print_details("[ixcdpr_h]", "[ixcdprd]", "d")
+print_present("content-dpr", "[ixcdpr_h]", "[ixcdprd]", "d")
 
 # https://mdn.io/Content-Disposition
 if header_eligible("content-disposition") \
@@ -5705,27 +5708,23 @@ print_no_valid("cross-origin-opener-policy-report-only", t_coop, "[icoopr_h]",
 print_no_valid("cross-origin-resource-policy", t_corp, "[icorp_h]", "[icorp]",
                "d")
 
-if header_eligible("digest"):
-    print_details("[idig_h]", "[idig]", "d")
+print_present("digest", "[idig_h]", "[idig]", "d")
 
 print_no_valid("document-isolation-policy", t_doci, "[idocpi_h]", "[idocpi]",
                "d")
 
 print_no_valid("document-policy", t_docp, "[idocp_h]", "[idoc]", "m")
 
-if header_eligible("etag"):
-    print_details("[ieta_h]", "[ieta]", "d")
+print_present("etag", "[ieta_h]", "[ieta]", "d")
 
-if header_eligible("expect-ct"):
-    print_details("[iexct_h]", "[iexct]", "m")
+print_present("expect-ct", "[iexct_h]", "[iexct]", "m")
 
 if header_eligible("expires") and any(elem in headers_l.get("cache-control",
                                                             "").casefold()
                                    for elem in t_excc):
     print_details("[iexpi_h]", "[iexpi]", "d")
 
-if header_eligible("feature-policy"):
-    print_details("[iffea_h]", "[iffea]", "d")
+print_present("feature-policy", "[iffea_h]", "[iffea]", "d")
 
 if unsafe_scheme:
     print_details("[ihttp_h]", "[ihttp]", "d")
@@ -5743,11 +5742,9 @@ if header_eligible("keep-alive") and headers_l["keep-alive"] \
         and "keep-alive" not in map(str.strip, connection_h):
     print_details("[ickeep_h]", "[ickeep]", "d")
 
-if header_eligible("large-allocation"):
-    print_details("[ixlalloc_h]", "[ixallocd]", "d")
+print_present("large-allocation", "[ixlalloc_h]", "[ixallocd]", "d")
 
-if header_eligible("mcp-session-id"):
-    print_details("[imcp_h]", "[imcp]", "m")
+print_present("mcp-session-id", "[imcp_h]", "[imcp]", "m")
 
 if header_eligible("nel"):
     nel_header = headers_l["nel"]
@@ -5760,19 +5757,16 @@ if header_eligible("no-vary-search"):
     sf_check_values(headers_l["no-vary-search"], "ifnvarys", t_nvarysearch,
                     nvarys_invalid_keys)
 
-if header_eligible("observe-browsing-topics"):
-    print_details("[iobsb_h]", "[iobsb]", "d")
+print_present("observe-browsing-topics", "[iobsb_h]", "[iobsb]", "d")
 
-if header_eligible("onion-location"):
-    print_details("[ionloc_h]", "[ionloc]", "m")
+print_present("onion-location", "[ionloc_h]", "[ionloc]", "m")
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Origin-Agent-Cluster
 if header_eligible("origin-agent-cluster") \
         and "?1" not in headers_l["origin-agent-cluster"]:
     print_details("[iorigcluster_h]", "[iorigcluster]", "d")
 
-if header_eligible("p3p"):
-    print_details("[ip3p_h]", "[ip3p]", "d")
+print_present("p3p", "[ip3p_h]", "[ip3p]", "d")
 
 if header_eligible("permissions-policy"):
     perm_header = headers_l["permissions-policy"]
@@ -5786,8 +5780,7 @@ if header_eligible("permissions-policy"):
 if header_eligible("permissions-policy-report-only"):
     permissions_ro_check_values(headers_l["permissions-policy-report-only"])
 
-if header_eligible("pragma"):
-    print_details("[iprag_h]", "[iprag]", "d")
+print_present("pragma", "[iprag_h]", "[iprag]", "d")
 
 if header_eligible("proxy-authenticate"):
     prxyauth_h = headers_l["proxy-authenticate"].casefold()
@@ -5796,11 +5789,9 @@ if header_eligible("proxy-authenticate"):
     if not any(elem.casefold() in prxyauth_h for elem in t_proxy_auth):
         print_details("[iprxauthn_h]", "[iprxauthn]", "d")
 
-if header_eligible("public-key-pins"):
-    print_details("[ipkp_h]", "[ipkp]", "d")
+print_present("public-key-pins", "[ipkp_h]", "[ipkp]", "d")
 
-if header_eligible("public-key-pins-report-only"):
-    print_details("[ipkpr_h]", "[ipkp]", "d")
+print_present("public-key-pins-report-only", "[ipkpr_h]", "[ipkp]", "d")
 
 if header_eligible("referrer-policy"):
     referrer_header = headers_l.get("referrer-policy", "")
@@ -5811,8 +5802,7 @@ if header_eligible("refresh") \
         and any(elem in refresh_header for elem in t_refresh):
     print_details("[irefr_h]", "[irefr]", "d")
 
-if header_eligible("report-to"):
-    print_details("[irept_h]", "[irept]", "d")
+print_present("report-to", "[irept_h]", "[irept]", "d")
 
 report_h = headers_l.get("reporting-endpoints", "")
 if header_eligible("reporting-endpoints") and "http:" in report_h:
@@ -5833,8 +5823,7 @@ if header_eligible("sec-private-state-token-lifetime") \
 if header_eligible("secure-session-registration"):
     secsreg_check_values(headers_l["secure-session-registration"])
 
-if header_eligible("server-timing"):
-    print_details("[itim_h]", "[itim]", "d")
+print_present("server-timing", "[itim_h]", "[itim]", "d")
 
 servwall_header = headers_l.get("service-worker-allowed", "")
 if header_eligible("service-worker-allowed") and servwall_header == "/":
@@ -5850,8 +5839,7 @@ if header_eligible("set-login") \
         and setlogin_header.partition(";")[0].strip() not in t_setlogin:
     print_details("[islogin_h]", "[islogin]", "d")
 
-if header_eligible("sourcemap"):
-    print_details("[ismap_m]", "[ismap]", "d")
+print_present("sourcemap", "[ismap_m]", "[ismap]", "d")
 
 if header_eligible("speculation-rules"):
     speculation_check_values(headers_l["speculation-rules"])
@@ -5881,8 +5869,7 @@ if header_eligible("timing-allow-origin") \
         and "*" in map(str.strip, tao_header.split(",")):
     print_details("[itao_h]", "[itao]", "d")
 
-if header_eligible("tk"):
-    print_details("[ixtk_h]", "[ixtkd]", "d")
+print_present("tk", "[ixtk_h]", "[ixtkd]", "d")
 
 if header_eligible("trailer"):
     trailer_h = {name.strip().casefold()
@@ -5896,8 +5883,7 @@ if header_eligible("transfer-encoding"):
     if not any(elem in transfer_h for elem in t_transfer):
         print_details("[ictrf_h]", "[itrf]", "d")
 
-if header_eligible("vary"):
-    print_details("[ixvary_h]", "[ixvary]", "m")
+print_present("vary", "[ixvary_h]", "[ixvary]", "m")
 
 if header_eligible("want-content-digest"):
     wcondig_header = headers_l.get("want-content-digest", "")
@@ -5906,8 +5892,7 @@ if header_eligible("want-content-digest"):
     if any(elem in wcondig_header for elem in t_digest_ins):
         print_details("[iwcondigi_h]", "[iwcondigi]", "d")
 
-if header_eligible("want-digest"):
-    print_details("[ixwandig_h]", "[ixwandig]", "d")
+print_present("want-digest", "[ixwandig_h]", "[ixwandig]", "d")
 
 if header_eligible("want-repr-digest"):
     wreprdig_header = headers_l.get("want-repr-digest", "")
@@ -5916,19 +5901,18 @@ if header_eligible("want-repr-digest"):
     if any(elem in wreprdig_header for elem in t_digest_ins):
         print_details("[iwreprdigi_h]", "[iwreprdigi]", "d")
 
-if header_eligible("warning"):
-    print_details("[ixwar_h]", "[ixward]", "d")
+print_present("warning", "[ixwar_h]", "[ixward]", "d")
 
 wwwa_header = headers_l.get("www-authenticate", "").casefold()
 if header_eligible("www-authenticate") \
         and unsafe_scheme and "basic" in wwwa_header:
     print_details("[ihbas_h]", "[ihbas]", "d")
 
-if header_eligible("x-content-security-policy"):
-    print_details("[ixcsp_h]", "[ixcsp]", "d", num_lines=5)
+print_present("x-content-security-policy", "[ixcsp_h]", "[ixcsp]", "d",
+              num_lines=5)
 
-if header_eligible("x-content-security-policy-report-only"):
-    print_details("[ixcspr_h]", "[ixcspr]", "d")
+print_present("x-content-security-policy-report-only", "[ixcspr_h]",
+              "[ixcspr]", "d")
 
 if header_eligible("x-content-type-options"):
     xcto_header = headers_l["x-content-type-options"].casefold()
@@ -5943,8 +5927,7 @@ if header_eligible("x-dns-prefetch-control") \
         and headers_l.get("x-dns-prefetch-control") == "on":
     print_details("[ixdp_h]", "[ixdp]", "d")
 
-if header_eligible("x-download-options"):
-    print_details("[ixdow_h]", "[ixdow]", "m")
+print_present("x-download-options", "[ixdow_h]", "[ixdow]", "m")
 
 if header_eligible("x-frame-options"):
     xfo_header = headers_l.get("x-frame-options", "")
@@ -5955,8 +5938,7 @@ if header_eligible("x-frame-options"):
     if xfo_header.upper() not in t_xfo_dir:
         print_details("[ixfoi_h]", "[ixfodi]", "m")
 
-if header_eligible("x-pad"):
-    print_details("[ixpad_h]", "[ixpad]", "d")
+print_present("x-pad", "[ixpad_h]", "[ixpad]", "d")
 
 if header_eligible("x-permitted-cross-domain-policies"):
     permcross_header = headers_l.get("x-permitted-cross-domain-policies", "")
@@ -5978,14 +5960,11 @@ if header_eligible("x-robots-tag"):
     if "all" in robots_header:
         print_details("[ixrob_h]", "[ixrob]", "m")
 
-if header_eligible("x-runtime"):
-    print_details("[ixrun_h]", "[ixrun]", "d")
+print_present("x-runtime", "[ixrun_h]", "[ixrun]", "d")
 
-if header_eligible("x-sourcemap"):
-    print_details("[ixsrc_h]", "[ixsrc]", "d")
+print_present("x-sourcemap", "[ixsrc_h]", "[ixsrc]", "d")
 
-if header_eligible("x-ua-compatible"):
-    print_details("[ixuacom_h]", "[ixuacom]", "m")
+print_present("x-ua-compatible", "[ixuacom_h]", "[ixuacom]", "m")
 
 if http_equiv:
     x_ua_meta = [content.casefold() for name, content in http_equiv
@@ -5993,11 +5972,9 @@ if http_equiv:
     if x_ua_meta and "ie=edge" not in x_ua_meta:
         print_details("[ixuameta_h]", "[ixuameta]", "d")
 
-if header_eligible("x-webkit-csp"):
-    print_details("[ixwcsp_h]", "[ixcsp]", "d", num_lines=5)
+print_present("x-webkit-csp", "[ixwcsp_h]", "[ixcsp]", "d", num_lines=5)
 
-if header_eligible("x-webkit-csp-report-only"):
-    print_details("[ixwcspr_h]", "[ixcspr]", "d")
+print_present("x-webkit-csp-report-only", "[ixwcspr_h]", "[ixcspr]", "d")
 
 if header_eligible("x-xss-protection"):
     xxss_header = headers_l["x-xss-protection"]
