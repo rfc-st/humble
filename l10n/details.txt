@@ -2516,6 +2516,9 @@ Generator
 [test_csp_fallback_present]
  verify missing fetch directives are not reported when 'default-src' exists in the 'Content-Security-Policy' header.
 
+[test_csp_hash]
+ verify hashes with invalid characters are reported in the 'Content-Security-Policy' header.
+
 [test_csp_hex_nonce]
  verify invalid hexadecimal nonces are checked in the ‘Content-Security-Policy’ header.
 

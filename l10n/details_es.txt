@@ -2494,6 +2494,9 @@ Generador
 [test_csp_fallback_present]
  verifica que no se reporten directivas ausentes si se informa 'default-src' en la cabecera 'Content-Security-Policy'.
 
+[test_csp_hash]
+ verifica que se informe de los hashes con caracteres inválidos en la cabecera 'Content-Security-Policy'.
+
 [test_csp_hex_nonce]
  verifica que se comprueben nonces en hexadecimal inválidos, en la cabecera 'Content-Security-Policy'.
 

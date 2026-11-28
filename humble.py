@@ -262,7 +262,7 @@ RE_PATTERN = (
     r"\(humble_sec_style\)([^:]+)", r"\(humble_sec_style\)",
     r"(?: Nota +: | Note +: )", r"^[0-9a-fA-F]+$", r"^[A-Za-z0-9+/=_-]+$",
     r", (?=[^;,]+?=)", r"'(?i:nonce)-[^']+'", r"(^|[\s;])({dir})($|[\s;])",
-    r"'(?i:(sha256|sha384|sha512))-([A-Za-z0-9+/=_-]+)'",
+    r"'(?i:(sha256|sha384|sha512))-([^']*)'",
     r"(?<!')\b(?i:sha256|sha384|sha512)-[A-Za-z0-9+/=_-]+(?!')",
     r"^([a-zA-Z0-9\-]+)", r"\s{2,},", r"^(.*?):\s+(\d+)\s+\((.*?)\)$",
     r"<pre(?:\s[^>]*)?>\s*</pre>", r"(?<!')(?i:nonce)-",
@@ -1283,7 +1283,7 @@ def csp_valid_hash(algo, b64hash):
     try:
         return len(b64decode(b64hash, validate=True)) == \
             HASH_CHARS[algo]  # nosec
-    except binascii.Error:
+    except ValueError:
         return False
 
 
