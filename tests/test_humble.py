@@ -92,7 +92,7 @@ EXTENDED_TAGS = ["[test_python_version]", "[test_missing_arguments]",
                  "[test_credentials_downgrade]",
                  "[test_credentials_cookie_redirect]", "[test_clean_values]",
                  "[test_uncommon_values]", "[test_uncommon_values_http]",
-                 "[test_meta_values]"]
+                 "[test_meta_values]", "[test_brief_findings]"]
 HUMBLE_TESTS_DIR = Path(__file__).parent
 HUMBLE_TEMP_HISTORY = HUMBLE_TESTS_DIR / "analysis_h.txt"
 HUMBLE_TEMP_PREFIX = "humble_"
@@ -108,6 +108,7 @@ HUMBLE_TEST_FILES = {
     "GRADE_C": "headers_test_grade_c.txt",
     "GRADE_D": "headers_test_grade_d.txt",
     "HAR_ENTRIES": "headers_test_entries.har",
+    "BRIEF_FINDINGS": "headers_test_brief_findings.txt",
     "CHALLENGE": "headers_test_challenge.txt",
     "CLEAN_VALUES": "headers_test_clean_values.txt",
     "CLIENT_ERROR": "client_error_test.txt",
@@ -1773,6 +1774,27 @@ def test_meta_values():
     assert "X-UA-Compatible (Incorrect Value - Response body)" in output
 
 
+def test_brief_findings():
+    """Verify a brief analysis reports findings without their details."""
+    result = subprocess.run(
+        [sys.executable, HUMBLE_MAIN_FILE, "-u", TEST_URLS[2], "-if",
+         PATHS["BRIEF_FINDINGS"], "-b"],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout + result.stderr
+    assert "X-Frame-Options" in output
+    assert "Content-Security-Policy (Incorrect Hash)" in output
+    assert "Content-Security-Policy (Unsafe Nonce)" in output
+    assert "Set-Cookie (Invalid Prefixes)" in output
+    assert "X-XSS-Protection (Unsafe Value)" in output
+    assert "Review the " not in output
+
+
 def delete_export_files(extension, ko_msg):
     """Remove temporary files from export unit tests."""
     msgs = []
@@ -1860,7 +1882,7 @@ def cleanup_analysis_history():
         fsync(original_file.fileno())
 
 
-local_version = date.fromisoformat("2026-11-27")
+local_version = date.fromisoformat("2026-11-28")
 parser = ArgumentParser(
     formatter_class=lambda prog: RawDescriptionHelpFormatter(
         prog, max_help_position=34,

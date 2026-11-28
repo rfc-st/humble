@@ -6,7 +6,7 @@
 <a target="_blank" href="https://devguide.python.org/versions/" title="Minimum Python version required to run this tool"><img src="https://img.shields.io/badge/Python-%3E%3D3.11-blue?labelColor=343b41"></a>
 <a target="_blank" href="LICENSE" title="License of this tool"><img src="https://img.shields.io/badge/License-MIT-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/releases" title="Latest release of this tool"><img src="https://img.shields.io/github/v/release/rfc-st/humble?display_name=release&label=Latest%20Release&labelColor=343b41"></a>
-<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--11--27-blue.svg?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/commits/master" title="Latest commit of this tool"><img src="https://img.shields.io/badge/Latest_Commit-2026--11--28-blue.svg?labelColor=343b41"></a>
 <a target="_blank" href="https://pkg.kali.org/pkg/humble" title="Official tool in Kali Linux"><img src="https://img.shields.io/badge/Kali%20Linux-Tool-blue?labelColor=343b41"></a>
 <br />
 <a target="_blank" href="#" title="Featured on:"><img src="https://img.shields.io/badge/Featured%20on:-343b41"></a>
@@ -23,7 +23,7 @@
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL" title="Vulnerability analysis with CodeQL"><img src="https://github.com/rfc-st/humble/workflows/CodeQL/badge.svg"></a>
 <a target="_blank" href="https://humble.readthedocs.io/en/latest/" title="Status of documentation in 'Read The Docs'"><img src="https://img.shields.io/badge/documentation-passing-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/actions/workflows/vulture.yml" title="Dead Code analysis with vulture"><img src="https://img.shields.io/badge/vulture-passing-32bd50?labelColor=343b41"></a><br />
-<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="Code coverage with pytest-cov"><img src="https://img.shields.io/badge/coverage-statements%2099%25%20%7C%20branches%2097%25-32bd50?labelColor=343b41"></a>
+<a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#unit-tests" title="Code coverage with pytest-cov"><img src="https://img.shields.io/badge/coverage-statements%2099%25%20%7C%20branches%2098%25-32bd50?labelColor=343b41"></a>
 <a target="_blank" href="https://github.com/rfc-st/humble/?tab=readme-ov-file#ai-assisted-review" title="How AI is used to review this tool"><img src="https://img.shields.io/badge/AI--review-Claude%20Fable%205.2-blue?labelColor=343b41"></a>
 <a target="_blank" href="https://www.bestpractices.dev/projects/9543" title="Analysis of OpenSSF best practices"><img src="https://www.bestpractices.dev/projects/9543/badge"></a>
 <a target="_blank" href="https://cybertoolchain.io/tools/humble/" title="Tracked by Cyber Toolchain"><img src="https://img.shields.io/badge/tracked%20by-Cyber%20Toolchain-blue?labelColor=343b41"></a>

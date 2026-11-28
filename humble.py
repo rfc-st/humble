@@ -77,7 +77,7 @@ Reference/Status/", "https://raw.githubusercontent.com/rfc-st/humble/master/\
 humble.py", "https://github.com/rfc-st/humble")
 DATE_FORMAT = "%Y/%m/%d - %H:%M:%S"
 current_time = datetime.now().astimezone().strftime(DATE_FORMAT)
-local_version = date.fromisoformat("2026-11-27")
+local_version = date.fromisoformat("2026-11-28")
 BANNER_VERSION = f"{URL_LIST[4]} | v.{local_version}"
 
 # Files, path resolution and system directories
@@ -2441,11 +2441,10 @@ def validate_file_access(target_path, *, context="history"):
             msg = get_detail("[analysis_history_note]", replace=True)
             print(f"{msg} ({err_str})")
             return False, None
-        if context == "export":
-            delete_lines()
-            err_msg = get_detail("[e_export_analysis]", replace=True)
-            print(f"\n{err_msg} ({err_str}).")
-            sys.exit(1)
+        delete_lines()
+        err_msg = get_detail("[e_export_analysis]", replace=True)
+        print(f"\n{err_msg} ({err_str}).")
+        sys.exit(1)
     return True, None
 
 

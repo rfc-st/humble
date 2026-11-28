@@ -2849,6 +2849,9 @@ Generator
 [test_meta_values]
  verify the 'Content-Type' and 'X-UA-Compatible' checks related to the response body.
 
+[test_brief_findings]
+ verify a brief analysis reports findings without their details.
+
 [test_request_invalid_header]
  verify an error is displayed for invalid request headers.
 
